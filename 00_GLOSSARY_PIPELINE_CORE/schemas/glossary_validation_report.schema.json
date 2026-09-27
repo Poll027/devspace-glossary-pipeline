@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glossary_validation_report.schema.json",
+  "title": "Glossary Validation Report",
+  "description": "09_final_validation's output. Same shape as the sibling TOC pack's toc_validation_report.schema.json, applied to a batch's assembled path_glossary_bundle.json files instead of a single toc.json.",
+  "type": "object",
+  "required": ["metadata", "batch_id", "validation_status", "checks", "warnings", "blocking_errors"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "validation_status": { "enum": ["PASS", "FAIL"] },
+    "checks": {
+      "type": "object",
+      "additionalProperties": { "type": "boolean" },
+      "description": "One boolean per deterministic check run: schema conformance for every path_glossary_bundle.json, zero prerequisite_leakage_count, every media segment's URLs derive from its video_id and start, no overlapping segments in a group, every required fact taught by a teaching block, no path_id in the batch is missing its bundle."
+    },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "blocking_errors": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

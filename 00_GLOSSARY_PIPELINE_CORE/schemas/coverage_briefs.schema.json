@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "coverage_briefs.schema.json",
+  "title": "Coverage Briefs (batch output)",
+  "description": "03_coverage_brief's output. One brief per (concept_id, path_id): this path's learning objective plus the canonical evidence (new, or copied from the registry / the owning path in this batch).",
+  "type": "object",
+  "required": ["metadata", "batch_id", "briefs"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "briefs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["concept_id", "path_id", "learning_objective", "canonical_status", "evidence"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "path_id": { "type": "string" },
+          "learning_objective": {
+            "type": "string",
+            "minLength": 10,
+            "description": "This path's objective, grounded in extracted_concepts.primary_objective. Path-specific; may differ between paths sharing the concept."
+          },
+          "canonical_status": { "enum": ["new", "reuse_registry", "shared_in_batch"] },
+          "evidence": { "$ref": "concept_evidence.schema.json" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

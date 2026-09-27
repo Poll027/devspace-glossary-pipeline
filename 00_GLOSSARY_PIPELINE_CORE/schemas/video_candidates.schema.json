@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "video_candidates.schema.json",
+  "title": "Video Candidates (batch output)",
+  "description": "06_video_candidates' output: the search brief (playbook §10) and the metadata-filtered candidate list (§12) for every concept whose video_need is HIGH or MEDIUM. Allowlist channel catalogues are searched first; open YouTube search only when they yield nothing usable.",
+  "type": "object",
+  "required": ["metadata", "batch_id", "searches"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "searches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["concept_id", "path_id", "search_brief", "search_route", "candidates"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "path_id": { "type": "string" },
+          "search_brief": {
+            "type": "object",
+            "required": ["concept_name", "learner_level", "required_fact_ids", "preferred_visual_modes", "blocked_concepts_to_avoid"],
+            "properties": {
+              "concept_name": { "type": "string" },
+              "learner_level": { "type": "string" },
+              "required_fact_ids": { "type": "array", "items": { "type": "string" } },
+              "preferred_visual_modes": { "type": "array", "items": { "$ref": "glossary_learning_bundle.schema.json#/$defs/visual_mode" } },
+              "blocked_concepts_to_avoid": { "type": "array", "items": { "type": "string" }, "description": "The few blocked concepts a video on this topic is likely to drift into — not the whole blocked list." }
+            },
+            "additionalProperties": false
+          },
+          "search_route": { "enum": ["allowlist_only", "allowlist_then_open_search", "reused_segments_only"] },
+          "candidates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["video_id", "youtube_url", "title", "channel_id", "channel_name", "found_via", "duration_seconds", "filter_verdict", "reason"],
+              "properties": {
+                "video_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{11}$" },
+                "youtube_url": { "type": "string" },
+                "title": { "type": "string" },
+                "channel_id": { "type": "string" },
+                "channel_name": { "type": "string" },
+                "found_via": { "enum": ["allowlist_catalogue", "open_search", "reused_segment"] },
+                "duration_seconds": { "type": "integer", "minimum": 0 },
+                "filter_verdict": { "enum": ["kept", "rejected"] },
+                "reason": { "type": "string", "description": "Why it's a candidate, or the cheap-filter rejection reason (wrong topic/level/language, not embeddable, opinion/news, obsolete, assumes advanced knowledge)." }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

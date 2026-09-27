@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "channel_allowlist.schema.json",
+  "title": "Channel Allowlist",
+  "description": "video_bank/channel_allowlist.json. The one place a human's judgment enters the video-sourcing system: which creators are trustworthy enough to source segments from. Curated occasionally via video_bank/CHANNEL_DISCOVERY_GENERATOR.md + CHANNEL_DISCOVERY_EVALUATOR.md, not per batch. Everything downstream (matching, transcripts, segment proposal, verification) only ever draws from channels listed here.",
+  "type": "object",
+  "required": ["channels"],
+  "properties": {
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "channel_id", "channel_name", "career_family_ids", "trust_tier",
+          "verified_stats", "added_at", "review_state"
+        ],
+        "properties": {
+          "channel_id": { "type": "string", "description": "The real YouTube channel ID, e.g. UCWv7vMbMWH4-V0ZXdmDpPBA." },
+          "channel_name": { "type": "string" },
+          "career_family_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" },
+            "description": "Which career families this channel is a candidate source for. A general channel (freeCodeCamp) may list several; a narrow one (a single-framework channel) may list one."
+          },
+          "trust_tier": {
+            "enum": ["high", "standard"],
+            "description": "Tie-breaker in 10_media_selection (select_media.py) when approved segments from different channels score equally for the same concept."
+          },
+          "verified_stats": {
+            "type": "object",
+            "required": ["subscriber_count", "checked_at", "checked_via"],
+            "description": "Real numbers looked up at verification time, not recalled from an LLM's training data — see video_bank/CHANNEL_DISCOVERY_EVALUATOR.md.",
+            "properties": {
+              "subscriber_count": { "type": "integer", "minimum": 0 },
+              "checked_at": { "type": "string" },
+              "checked_via": { "type": "string", "description": "e.g. 'YouTube Data API channels.list' or a specific URL looked up directly." }
+            },
+            "additionalProperties": false
+          },
+          "added_at": { "type": "string" },
+          "review_state": {
+            "type": "object",
+            "required": ["review_status"],
+            "properties": {
+              "review_status": { "enum": ["evaluator_verified", "flagged_for_removal"] },
+              "notes": { "type": ["string", "null"] }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

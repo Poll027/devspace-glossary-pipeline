@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "batch_artifact_metadata.schema.json",
+  "title": "Batch Artifact Metadata",
+  "description": "Field-for-field the sibling TOC pack's ../UNIVERSAL_TOC_PIPELINE_PACK_V2_FINAL/00_PIPELINE_CORE/schemas/artifact_metadata.schema.json, with path_id replaced by batch_id. Every glossary stage output that isn't itself a cross-batch registry (concept_evidence_registry.json, video_bank/approved_segments.json, source_pack.json) requires this under 'metadata', same discipline as every per-run TOC artifact requiring artifact_metadata.schema.json.",
+  "type": "object",
+  "required": [
+    "artifact_type", "artifact_version", "schema_version", "batch_id",
+    "run_id", "prompt_version", "model", "generated_at", "source_snapshot_id",
+    "parent_artifact_hashes"
+  ],
+  "properties": {
+    "artifact_type": { "type": "string", "minLength": 1 },
+    "artifact_version": { "type": "string", "minLength": 1 },
+    "schema_version": { "type": "string", "minLength": 1 },
+    "batch_id": { "type": "string", "minLength": 1 },
+    "run_id": { "type": "string", "minLength": 1 },
+    "prompt_version": { "type": "string", "minLength": 1 },
+    "model": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "source_snapshot_id": { "type": "string", "minLength": 1 },
+    "parent_artifact_hashes": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+    }
+  },
+  "additionalProperties": false
+}

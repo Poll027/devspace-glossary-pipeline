@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glossary_stage_gate_ledger.schema.json",
+  "title": "Glossary Stage Gate Ledger",
+  "description": "Written only by scripts/update_ledger.py: one row per stage, upserted by stage_id each time a stage passes or fails, re-verified at 15b_stage_gate_ledger. Never hand-edited — hashes are computed, not typed.",
+  "type": "object",
+  "required": ["metadata", "batch_id", "gates"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["stage_id", "artifact", "artifact_hash", "verdict", "unresolved_issue_count", "gated_at"],
+        "properties": {
+          "stage_id": { "type": "string" },
+          "artifact": {
+            "type": "string",
+            "description": "The gated artifact's filename, or a glob like path_glossary_bundle.*.json for fan-out stages (hash covers every match, sorted)."
+          },
+          "artifact_hash": {
+            "type": "string",
+            "description": "sha256 of the current artifact bytes. Must be re-verified on read — a stale hash means the gate no longer applies to what's on disk."
+          },
+          "generator_model": { "type": ["string", "null"] },
+          "evaluator_model": { "type": ["string", "null"] },
+          "verdict": {
+            "enum": ["PASS", "FAIL"],
+            "description": "Stage-gate verdicts are strictly binary, matching the sibling TOC pack's per-gate convention. PASS_WITH_NONBLOCKING_CHANGES exists only at the audit/consensus/freeze level, never at an individual stage gate."
+          },
+          "unresolved_issue_count": { "type": "integer", "minimum": 0 },
+          "gated_at": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "video_catalogue_entry.schema.json",
+  "title": "Video Catalogue Entry",
+  "description": "video_bank/catalogue/<video_id>.json — the central Video Catalogue (playbook §17, cost gate 6). Written by 07_transcript_sync from yt-dlp metadata the first time a video becomes a candidate; never re-fetched. Chapters and thumbnails are the evidence for visual quality without downloading the video.",
+  "type": "object",
+  "required": ["video_id", "youtube_url", "channel_id", "title", "publish_date", "duration_seconds", "language", "playable_in_embed", "caption_tracks", "chapters", "thumbnail_urls", "transcript_available", "fetched_at", "fetch_tool", "judged_ranges"],
+  "properties": {
+    "video_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{11}$" },
+    "youtube_url": { "type": "string" },
+    "channel_id": { "type": "string" },
+    "title": { "type": "string" },
+    "publish_date": { "type": "string" },
+    "duration_seconds": { "type": "integer", "minimum": 0 },
+    "language": { "type": ["string", "null"] },
+    "playable_in_embed": { "type": ["boolean", "null"], "description": "yt-dlp's playable_in_embed. false is a hard rejection." },
+    "caption_tracks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["lang", "kind"],
+        "properties": { "lang": { "type": "string" }, "kind": { "enum": ["creator", "auto"] } },
+        "additionalProperties": false
+      }
+    },
+    "chapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "start_seconds", "end_seconds"],
+        "properties": { "title": { "type": "string" }, "start_seconds": { "type": "number" }, "end_seconds": { "type": "number" } },
+        "additionalProperties": false
+      },
+      "description": "Creator chapter markers. The strongest cheap signal of clean topic boundaries."
+    },
+    "thumbnail_urls": { "type": "array", "items": { "type": "string" } },
+    "transcript_available": { "type": "boolean", "description": "true when video_bank/transcripts/<video_id>.json exists. false means every segment from this video is rejected (README decision 4)." },
+    "fetched_at": { "type": "string" },
+    "fetch_tool": { "type": "string" },
+    "judged_ranges": {
+      "type": "array",
+      "description": "Every range 09_segment_judge has ruled on, so later batches don't re-judge the same cut for the same concept.",
+      "items": {
+        "type": "object",
+        "required": ["concept_id", "start_seconds", "end_seconds", "verdict", "batch_id"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "start_seconds": { "type": "integer" },
+          "end_seconds": { "type": "integer" },
+          "verdict": { "type": "string" },
+          "batch_id": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

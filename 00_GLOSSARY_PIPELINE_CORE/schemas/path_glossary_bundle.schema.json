@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "path_glossary_bundle.schema.json",
+  "title": "Path Glossary Bundle",
+  "description": "14_bundle_assembly's output, one file per path: path_glossary_bundle.<path_id>.json. What the Final Schema consumes (playbook §32). Terminal artifact — no metadata wrapper, same precedent as the TOC pipeline's toc.json.",
+  "type": "object",
+  "required": ["path_id", "batch_id", "assembled_at", "bundles", "clusters", "counts"],
+  "properties": {
+    "path_id": { "type": "string" },
+    "batch_id": { "type": "string" },
+    "assembled_at": { "type": "string" },
+    "bundles": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "glossary_learning_bundle.schema.json" },
+      "description": "In TOC sequence order."
+    },
+    "clusters": { "type": "array", "items": { "$ref": "clusters.schema.json#/properties/clusters/items" } },
+    "counts": {
+      "type": "object",
+      "required": ["concepts", "with_video", "segments", "core", "standard", "reference"],
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "approved_segment.schema.json",
+  "title": "Approved Segment (canonical)",
+  "description": "One record in video_bank/approved_segments.json. Written by 16b_registry_merge from the audited bundles. Reusable by another path teaching the same concept_id once that path's 09_segment_judge confirms prerequisites still hold (playbook §25).",
+  "type": "object",
+  "required": ["segment_id", "concept_id", "label", "video_id", "channel_id", "youtube_url", "review_url", "start_seconds", "end_seconds", "summary", "fact_ids", "transcript_ref", "visual_mode", "role", "mean_score", "approved_in_batch_id", "used_by_path_ids"],
+  "properties": {
+    "segment_id": { "type": "string" },
+    "concept_id": { "type": "string" },
+    "label": { "type": "string" },
+    "video_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{11}$" },
+    "channel_id": { "type": "string" },
+    "youtube_url": { "type": "string" },
+    "review_url": { "type": "string" },
+    "start_seconds": { "type": "integer", "minimum": 0 },
+    "end_seconds": { "type": "integer", "minimum": 1 },
+    "summary": { "type": "string" },
+    "fact_ids": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "transcript_ref": { "type": "string" },
+    "visual_mode": { "$ref": "glossary_learning_bundle.schema.json#/$defs/visual_mode" },
+    "role": { "type": "string" },
+    "mean_score": { "type": "number" },
+    "approved_in_batch_id": { "type": "string" },
+    "used_by_path_ids": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

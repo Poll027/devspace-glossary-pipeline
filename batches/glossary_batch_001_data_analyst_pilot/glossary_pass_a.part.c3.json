@@ -1,0 +1,1449 @@
+{
+  "metadata": {
+    "artifact_type": "glossary_pass_a",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_001_data_analyst_pilot",
+    "run_id": "glossary_batch_001_data_analyst_pilot",
+    "prompt_version": "05_glossary_pass_a@v1",
+    "model": "claude-sonnet-5",
+    "generated_at": "2026-09-27T12:05:13Z",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "extracted_concepts.json": "8e3969d65e33ee46f6e3ca399cf9ada942a5b349eb85f07e6b5d60dfe6acdc8e",
+      "coverage_briefs.json": "d0ef2fa55a4fc956f7aec86aa706596e791e638ea60e8c7c721fdb8273290611",
+      "depth_classification.json": "167f98b6a223279f6b6029cd521b982ca807bbe158217cf523734184ba027a2b"
+    }
+  },
+  "batch_id": "glossary_batch_001_data_analyst_pilot",
+  "entries": [
+    {
+      "concept_id": "sql.relational_model",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Now that you've worked with a single delivery-orders table in pandas, picture the same business run out of a real database instead of one spreadsheet: a customers table, an orders table, a products table, each living on its own. A relational database is built out of exactly this kind of piece.",
+          "fact_ids": [
+            "f1",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A relation -- what SQL calls a table -- holds data where each row (also called a record or tuple) represents one group of related data values, and its columns are also called fields or attributes. So the customers table's rows are individual customers, and its columns (customer_id, name, city) are the attributes recorded about every customer. A database is composed of multiple tables like this, each holding its own kind of data -- customers, orders and products each get their own table rather than being crammed together.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Two properties keep a table well-formed. It has a name distinct from every other table in the database -- 'customers' is not also used for anything else -- and it contains no duplicate rows; the order its rows and columns happen to be listed in is not meaningful. On top of that, each table should contain information about one kind of thing only, such as the Customer or the Order, rather than mixing unrelated things into one table -- which is exactly why a customer's details and an order's details live in two separate tables instead of one merged one.",
+          "fact_ids": [
+            "f3",
+            "f5"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Reading a relational database, then, starts with the same question every time: which table am I looking at, what one kind of thing does each of its rows represent, and what does each column tell me about that thing. That question is what the SELECT statement you write next will answer.",
+          "fact_ids": [
+            "f1",
+            "f5"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "This is a static structural definition -- what a table, row and column are, and that a database holds several of them for different entities. A short labeled diagram of the customers/orders/products tables would help, but the text and the multi-table example already make the structure clear without any demonstration.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Introduce the customers/orders/products schema here -- it is reused across the whole SQL and data-modeling run.",
+        "Don't explain SELECT syntax yet -- that's the next concept."
+      ]
+    },
+    {
+      "concept_id": "sql.select_fundamentals",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "You know the customers table has columns customer_id, name and city. To actually pull that data out of the database, you write a SELECT statement.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "The SELECT list -- everything between the keywords SELECT and FROM -- specifies the expressions that form the output rows of the statement, and the FROM clause derives the table (or tables) the query reads from. So SELECT name, city FROM customers reads the customers table and returns just those two columns, for every row.",
+          "fact_ids": [
+            "f1",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "You can also rename an output column by writing AS output_name after its expression in the SELECT list -- AS can be left out if the name you want doesn't collide with a keyword. SELECT name AS customer_name, city FROM customers returns the same data, but the first column is now labeled customer_name in the result instead of name.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "Writing * in the SELECT list is shorthand for all columns of the selected rows, so SELECT * FROM customers returns every column of every customer row without listing them one by one; table_name.* narrows that to just one table's columns when a query reads from more than one table.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "SELECT ... FROM is the shape every query in this path builds on: FROM says which table to read, and the SELECT list says which columns -- renamed or not -- come back out.",
+          "fact_ids": [
+            "f1",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching a SELECT statement actually run against the customers table, and seeing the output columns appear in the chosen order and names, makes the SELECT-list/FROM mapping concrete faster than reading about it -- but the definition and example here are complete enough to stand alone.",
+        "preferred_visual_modes": [
+          "annotated_code",
+          "screen_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Keep this to SELECT/FROM/AS/* only -- no WHERE, ordering or filtering yet.",
+        "The AS output_name syntax here is the same mechanism sql.aliasing reuses for tables next."
+      ]
+    },
+    {
+      "concept_id": "sql.aliasing",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Typing out orders or customers in full every time gets tedious, especially once a query starts referring to a table's columns repeatedly. SQL lets you give a table a short temporary name for the query instead.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A table alias is a temporary name given to a table reference, written FROM table_reference AS alias, with AS optional -- FROM orders AS o gives the orders table the short name o for the rest of that query. Once assigned, the table must be referred to by its alias, not its original name, for the remainder of the query -- writing FROM orders AS o and then referencing orders again later would be an error.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "A column can be aliased the same way, by writing AS output_name after the column's expression in the SELECT list, exactly as you already saw with select_fundamentals. A column can also be referenced as correlation.columnname, where correlation is a table name or an alias defined in the FROM clause -- so with orders aliased to o, you can write o.customer_id instead of orders.customer_id. The correlation name and dot can be left off entirely when the column name is unique across every table used in the query.",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "practical_context",
+          "content": "On a single table like SELECT o.order_id, o.delivery_time_minutes FROM orders AS o, qualifying a column this way is optional. The alias starts to matter once a query reads from more than one table at a time and two of those tables happen to share a column name -- qualifying which table's copy you mean is what keeps the query unambiguous.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Whether it's naming a table or a column, an alias is the same idea: a temporary rename that exists only for the current query, chosen to make the query shorter or its columns clearer to read.",
+          "fact_ids": [
+            "f1",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Aliasing is a renaming convention applied inside a single query -- a short annotated-code example showing FROM orders AS o and o.customer_id is enough; there's no changing state or process to demonstrate.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "TOC conflict: this concept's own practice_objective calls for 'a multi-table join query using short table aliases,' but sql.inner_join is not taught until much later in this path and is blocked knowledge here. Taught aliasing here using only single-table qualification (o.customer_id); the multi-table join use of aliasing has to wait for sql.inner_join.",
+        "Table self-joins needing two aliases for the same table are not covered here -- that's an edge case for later."
+      ]
+    },
+    {
+      "concept_id": "sql.distinct",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "SELECT DISTINCT removes duplicate rows from the result, keeping one row from each group of duplicates. SELECT DISTINCT city FROM customers returns each city that appears in the customers table exactly once, no matter how many customers share it.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "SELECT ALL is the default behavior when DISTINCT is not written -- it keeps every row, duplicates included. So SELECT city FROM customers (no DISTINCT) would list Lagos once per customer who lives there, while SELECT DISTINCT city FROM customers lists Lagos only once.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "A before/after row count is easy to state in one sentence and one short example table; no demonstration is needed to see that DISTINCT collapses repeats.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Keep this short -- reference tier, one contrast (DISTINCT vs ALL) is the whole concept."
+      ]
+    },
+    {
+      "concept_id": "sql.where_filtering",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "SELECT * FROM orders returns every order. To ask a real question -- 'which orders took a long time to deliver?' -- you need to narrow that down to just the matching rows.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "WHERE takes a search condition that evaluates to a boolean value for each row; a row is kept in the output only if the condition is true, and discarded otherwise. SELECT order_id, delivery_time_minutes FROM orders WHERE delivery_time_minutes > 40 keeps only the orders whose delivery time exceeds 40 minutes.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "The comparison operators <, >, <=, >=, =, and <> compare two values of the same or a compatible type and produce a boolean result: = tests for equal and <> tests for not equal (!= is an alias for <>). WHERE customer_id = 2 keeps only orders placed by customer 2; WHERE delivery_time_minutes <> 20 keeps the orders whose recorded delivery time is something other than 20 minutes.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "WHERE is evaluated per row: for each row it asks 'is this condition true for this row?' and keeps the rows where the answer is yes.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "The mechanism is one boolean test applied row by row; the definition plus one worked example already shows exactly which rows survive and which don't.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Keep to single-condition WHERE with basic comparisons -- AND/OR/NOT and IS NULL are the next two concepts."
+      ]
+    },
+    {
+      "concept_id": "sql.logical_operators",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "A WHERE clause often needs more than one condition at once -- for example, orders from customer 1 that also took longer than 30 minutes.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "For true/false operands, a AND b is true only when both a and b are true, and a OR b is true when at least one of a or b is true; NOT a reverses a true or false value. WHERE customer_id = 1 AND delivery_time_minutes > 30 keeps only rows where both conditions hold; WHERE customer_id = 1 OR customer_id = 2 keeps a row if either is true.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Without parentheses, NOT is evaluated before AND, and AND is evaluated before OR; parentheses group expressions to force a different order. WHERE customer_id = 1 AND delivery_time_minutes > 30 OR customer_id = 2 is read as (customer_id = 1 AND delivery_time_minutes > 30) OR customer_id = 2, which keeps any order from customer 2 regardless of delivery time -- writing WHERE customer_id = 1 AND (delivery_time_minutes > 30 OR customer_id = 2) instead groups the OR first, and since customer_id = 1 already rules out customer_id = 2, that version keeps only customer 1's orders that took longer than 30 minutes. NOT reverses a condition the same way: WHERE NOT (customer_id = 1) keeps every order except customer 1's.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "AND/OR/NOT combine the same way they do in ordinary logic, and the operator-precedence rule is a short, precise statement best shown with one worked expression, not a demonstration.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "AND/OR commutativity is optional enrichment -- skipped here to keep focus on precedence and parentheses, the part learners actually get wrong."
+      ]
+    },
+    {
+      "concept_id": "sql.null_handling",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose one order's delivery_time_minutes was never recorded -- it's missing, not zero. SQL represents that with a special value, NULL, and testing for it does not work the way testing for an ordinary value does.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "The null value represents an unknown value, and it is not known whether two unknown values are equal. To test whether a value is or is not null, you use the predicates 'expression IS NULL' and 'expression IS NOT NULL' -- WHERE delivery_time_minutes IS NULL finds the orders with a missing delivery time, and IS NOT NULL finds the rest.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "misconception",
+          "content": "Writing WHERE delivery_time_minutes = NULL does not test for null: NULL is not considered 'equal to' NULL, so that comparison never evaluates to true, and the query would silently return zero rows instead of the missing-time orders you meant to find.",
+          "fact_ids": [
+            "m1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The failure mode in the misconception -- a query that runs without error but silently returns nothing because '= NULL' never matches -- is the kind of subtle, easy-to-miss behavior that's more convincing seen running than described, even though the text states it precisely.",
+        "preferred_visual_modes": [
+          "annotated_code",
+          "screen_demo"
+        ]
+      },
+      "teaching_notes": [
+        "The misconception (m1) is the entire point of this concept -- make sure it's stated explicitly, not left implicit in the IS NULL syntax alone."
+      ]
+    },
+    {
+      "concept_id": "sql.order_by",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "A WHERE clause decides which orders come back, but not what order they come back in. To read them from slowest to fastest delivery, you need ORDER BY.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "ORDER BY sorts the result rows according to the given expression(s); if the direction isn't specified, ascending (ASC) order is assumed by default. SELECT order_id, delivery_time_minutes FROM orders ORDER BY delivery_time_minutes sorts orders from the shortest delivery time to the longest.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "Writing DESC after an ORDER BY expression sorts that expression in descending order instead: ORDER BY delivery_time_minutes DESC lists the slowest deliveries first. If two rows are equal according to the leftmost ORDER BY expression, they're compared according to the next expression, and so on -- ORDER BY customer_id, delivery_time_minutes DESC groups each customer's orders together, slowest first within each customer.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Sort direction and tiebreaking are simple, static rules that one worked multi-column example already demonstrates in full.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Reinforce that ORDER BY only changes sequence, not which rows come back -- that's still WHERE's job."
+      ]
+    },
+    {
+      "concept_id": "sql.limit_offset",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "LIMIT count restricts the maximum number of rows a query returns, and OFFSET start specifies how many rows to skip before returning rows. SELECT order_id, delivery_time_minutes FROM orders ORDER BY delivery_time_minutes DESC LIMIT 3 returns the 3 orders at the top of that descending sort.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "When both are specified, the OFFSET rows are skipped first, and then up to the LIMIT count of the remaining rows are returned -- LIMIT 3 OFFSET 3 on that same sorted list skips the first 3 rows and returns the next 3, a second 'page' of results.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "misconception",
+          "content": "Without an ORDER BY clause, LIMIT/OFFSET can return an unpredictable subset of rows, because SQL does not promise to deliver a query's results in any particular order unless ORDER BY is used.",
+          "fact_ids": [
+            "m1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Slicing an already-sorted list into a window is easy to state precisely in one example; no demonstration is needed.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Pair LIMIT/OFFSET with ORDER BY in the example so the misconception (unordered LIMIT) doesn't read as the default way to use it."
+      ]
+    },
+    {
+      "concept_id": "sql.aggregate_functions",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "So far every query has returned one row per order. Sometimes what you want instead is a single summary number across all of them -- how many orders were there, what was the average delivery time.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "Aggregate functions compute a single result from a set of input values. COUNT(*) computes the number of input rows, while COUNT(expression) computes the number of rows where that expression's value is not null -- SELECT COUNT(*) FROM orders counts every order, while COUNT(delivery_time_minutes) would skip any order with a missing delivery time.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "SUM computes the sum of the non-null input values, AVG computes their average (arithmetic mean), MIN computes their minimum, and MAX computes their maximum -- all ignoring nulls. SELECT SUM(delivery_time_minutes), AVG(delivery_time_minutes), MIN(delivery_time_minutes), MAX(delivery_time_minutes) FROM orders returns one row with the total, average, fastest, and slowest delivery time across every order.",
+          "fact_ids": [
+            "f3",
+            "f4",
+            "f5",
+            "f6"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Whichever function you pick, the shape is the same: many row values in, one summary value out. The functions only differ in which summary they compute.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing many order rows visually collapse down to a single COUNT/SUM/AVG number is a genuine before/after that helps the collapsing intuition land, though the definition and worked query already cover what each function computes.",
+        "preferred_visual_modes": [
+          "data_table_demo",
+          "screen_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Keep this to computing one summary over the whole table -- per-group summaries are the next concept, GROUP BY."
+      ]
+    },
+    {
+      "concept_id": "sql.group_by",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "AVG(delivery_time_minutes) over the whole orders table gives one number for every customer combined. To instead see each customer's own average delivery time, you need to split the rows into per-customer buckets first.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mental_model",
+          "content": "GROUP BY groups together the rows that share the same values in the listed columns, combining each such group into one output row, so any aggregate function in the SELECT list is then computed separately within each group rather than over the whole table. SELECT customer_id, AVG(delivery_time_minutes) AS avg_time FROM orders GROUP BY customer_id returns one row per customer_id, each with that customer's own average delivery time.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "misconception",
+          "content": "If a table is grouped, a column that is not listed in GROUP BY cannot be referenced in the SELECT list except inside an aggregate function -- SELECT customer_id, order_id, AVG(delivery_time_minutes) FROM orders GROUP BY customer_id would fail, because order_id is neither grouped nor aggregated, and each customer group can contain several different order_ids.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Every GROUP BY query answers a 'per X' question: pick the column that defines the buckets, list it in GROUP BY, and any aggregate in the SELECT list is computed once per bucket instead of once overall.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Splitting one flat table of orders into separate per-customer buckets, then collapsing each bucket to one aggregated row, is a spatial rearrangement of the data that is much easier to follow watching rows visibly move into groups than reading the same steps described in prose.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "screen_demo"
+        ]
+      },
+      "teaching_notes": [
+        "The 'column not in GROUP BY or an aggregate' rule (f2) is the single most common error learners hit -- keep the counter-example concrete."
+      ]
+    },
+    {
+      "concept_id": "sql.having",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "GROUP BY customer_id, AVG(delivery_time_minutes) gives one average per customer. To keep only the customers whose average is unusually high, filtering has to happen after the grouping, not before it -- and WHERE can't do that.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "HAVING filters out groups after GROUP BY has combined rows and computed aggregates, much like WHERE filters rows, but it acts on groups rather than raw rows. SELECT customer_id, AVG(delivery_time_minutes) AS avg_time FROM orders GROUP BY customer_id HAVING AVG(delivery_time_minutes) > 30 keeps only the customer groups whose average delivery time exceeds 30 minutes.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Expressions in HAVING can refer to grouped columns and to aggregate expressions computed over the group. SELECT customer_id, AVG(delivery_time_minutes) AS avg_time FROM orders WHERE delivery_time_minutes > 0 GROUP BY customer_id HAVING customer_id > 1 AND AVG(delivery_time_minutes) > 30 shows both clauses in one query: WHERE removes raw rows before grouping, and HAVING then filters the grouped result, mixing a grouped column and an aggregate expression in the same HAVING clause.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The WHERE-before-grouping versus HAVING-after-grouping distinction is easier to internalize watching one query's rows get grouped and then filtered in sequence than from the rule stated alone, though the definition and example already state the rule precisely.",
+        "preferred_visual_modes": [
+          "annotated_code",
+          "screen_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Keep contrasting explicitly with WHERE ('raw rows' vs 'groups') -- that contrast is the whole point of HAVING existing as a separate clause."
+      ]
+    },
+    {
+      "concept_id": "sql.case_expressions",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Sometimes what a query needs isn't a filter or a summary, but a label computed per row -- for instance, calling each order 'fast', 'normal' or 'slow' based on its delivery time.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A CASE WHEN condition THEN result ... END expression evaluates its WHEN conditions in order and returns the result of the first one that is true. SELECT order_id, CASE WHEN delivery_time_minutes < 20 THEN 'fast' WHEN delivery_time_minutes < 40 THEN 'normal' ELSE 'slow' END AS speed FROM orders labels every order this way, checking the conditions top to bottom.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "If no WHEN condition is true, CASE returns the ELSE result if one is given, or null if ELSE is omitted -- an order that matched neither 'fast' nor 'normal' above falls through to the ELSE 'slow' branch. CASE also has a simpler form, CASE expression WHEN value THEN result ... END, which compares one expression against each listed value directly -- CASE city WHEN 'Lagos' THEN 'south' WHEN 'Kano' THEN 'north' ELSE 'other' END compares city to each listed city value instead of writing out a full condition each time.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "CASE's top-to-bottom, first-match logic is a small, precise rule that one fully worked expression already traces completely.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Keep the delivery-time bucketing example simple -- two WHEN branches plus ELSE is enough to show the top-to-bottom, first-match rule."
+      ]
+    },
+    {
+      "concept_id": "sql.style_conventions",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "Reserved keywords, such as SELECT and WHERE, should always be written in uppercase, and column names should always be written in lowercase, except where it makes sense not to, such as proper nouns -- so SELECT customer_id, city FROM customers WHERE city = 'Lagos' follows the convention, while a mix of select Customer_ID from Customers where City = 'Lagos' does not.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "A correlation (alias) name should relate to the object it aliases -- as a rule of thumb, the first letter of each word in the object's name -- and the AS keyword should always be included to make it explicit: FROM orders AS o rather than FROM orders o or FROM orders AS x. Each root keyword starts a line and is right-aligned so the keywords end on the same character boundary (a 'river'), with values left-aligned after them, spaces around '=' and after commas, and a newline before AND or OR so each clause starts its own line:\n\nSELECT customer_id, city\n  FROM customers\n WHERE city = 'Lagos'\n   AND customer_id > 1",
+          "fact_ids": [
+            "f3",
+            "f4",
+            "f5"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "This is a set of formatting and naming conventions with no behavior to demonstrate -- a query returns the same rows regardless of casing or line breaks -- so a before/after formatted-query comparison in text is all that's needed.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": [
+        "Keep the reformatted-query example limited to SELECT/FROM/WHERE, the only clauses taught by this point."
+      ]
+    },
+    {
+      "concept_id": "sql.string_functions",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "LOWER(text) converts a string to all lower case, and UPPER(text) converts a string to all upper case -- LOWER(city) would turn 'LAGOS' or 'Lagos' into 'lagos', useful for comparing city names that were typed inconsistently.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "TRIM removes the longest string containing only the given characters (a space by default) from the start, end, or both ends of a string -- TRIM(city) strips accidental leading or trailing spaces from a city value. CONCAT concatenates the text representations of all its arguments and ignores any NULL arguments -- CONCAT(name, ' (', city, ')') builds a single readable label out of a customer's name and city. LENGTH(text) returns the number of characters in a string, for example LENGTH(name).",
+          "fact_ids": [
+            "f2",
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Each function is a small, self-contained input-to-output transformation that one line of example text already shows completely.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "sql.date_time_functions",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "EXTRACT(field FROM source) retrieves a subfield, such as year or hour, from a date, time, timestamp, or interval value -- EXTRACT(month FROM order_date) pulls out just the month an order was placed.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "date - date subtracts two dates and produces the number of days elapsed between them -- if today's date minus an order's order_date gives 12, that order was placed 12 days ago.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Extracting a subfield and subtracting two dates are both simple, one-line operations that a worked example already covers.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "date + integer (adding days to a date) is optional enrichment -- skipped here."
+      ]
+    },
+    {
+      "concept_id": "sql.type_casting",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "PostgreSQL accepts two equivalent syntaxes for a type cast: CAST(expression AS type), and the shorthand expression::type -- CAST(delivery_time_minutes AS text) and delivery_time_minutes::text both convert that numeric column to text for the same result.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "A cast on a value expression of a known type succeeds only if a suitable type conversion has been defined between the value's type and the target type -- converting delivery_time_minutes (a number) to text works, but casting an arbitrary text value like a city name to a number would fail unless that text actually looks like a number.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Both cast syntaxes and the success condition are stated precisely in one example each; no demonstration is needed.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Note in the text that these two cast syntaxes are PostgreSQL-specific, per the source."
+      ]
+    },
+    {
+      "concept_id": "sql.coalesce",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "COALESCE(value [, ...]) returns the first of its arguments that is not null, and returns null only if every argument is null. COALESCE(delivery_time_minutes, 0) returns the actual delivery time when it's recorded, and 0 when it's missing.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "COALESCE is often used to substitute a default value for null values, the same way COALESCE(description, short_description, '(none)') falls back through several columns before finally using a fixed default.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "COALESCE's fallback behavior is a short, precise rule that one worked example already shows in full.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "sql.union",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "UNION effectively appends the result rows of the second query to the result of the first, although there is no guarantee that this is the order the rows actually come back in -- SELECT name FROM customers UNION SELECT product_name FROM products stacks every customer name and every product name into one combined list of names.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "UNION eliminates duplicate rows from its combined result, the same way DISTINCT does, unless UNION ALL is used, which keeps every row -- if a customer happened to share a name with a product, plain UNION would list that name once, while UNION ALL would list it twice.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "To be combined with UNION, the two queries must return the same number of columns, with corresponding columns having compatible data types -- SELECT name FROM customers UNION SELECT product_name FROM products works because both queries return exactly one text column.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Stacking two compatible result sets and optionally de-duplicating is a static behavior that one worked example already shows completely.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "datamodel.entities_tables",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Before you design any table, you have to decide what real thing each table is even supposed to represent. That decision is what turns a business into a set of tables in the first place.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "An entity is an object in the real world with an independent existence that can be differentiated from other objects; it may have physical existence, such as a customer or a delivery driver, or conceptual existence, such as an order. Entities are defined as tables that hold specific information (data) -- the customers table holds data about the Customer entity, and orders holds data about the Order entity.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "An entity type defines a collection of similar entities, and an entity set is the collection of entities of that entity type at a particular point in time -- Customer is the entity type, and the actual set of customer rows in the table right now is the entity set. Each entity is described by a set of attributes, for example Customer = (customer_id, name, city), the same way Employee might be (Name, Address, Birthdate, Salary) in another business.",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "An entity type that does not depend on another entity for its existence is called an independent entity -- Customer and Product are independent entities in this schema, since a customer or a product can exist in the database without needing any other table to already contain a row for it. Deciding what counts as 'one entity' -- customers separate from orders separate from products -- is a modeling judgment you make before writing a single CREATE TABLE statement.",
+          "fact_ids": [
+            "f5"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Recognizing which real-world objects deserve their own table is a judgment call best built up through several worked examples side by side, though the customer/order/product example already walks through that judgment in text.",
+        "preferred_visual_modes": [
+          "annotated_ui",
+          "slides_with_signaling"
+        ]
+      },
+      "teaching_notes": [
+        "This is a modeling-judgment concept, not new SQL syntax -- keep the tone 'what counts as one entity', not a new clause to memorize."
+      ]
+    },
+    {
+      "concept_id": "datamodel.primary_keys",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Once customers is its own table, you need a way to point at exactly one customer row unambiguously -- name alone won't do, since two customers could share a name.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A primary key constraint indicates that a column, or group of columns, can be used as a unique identifier for the rows of a table; this requires the values to be both unique and not null. customer_id, where every customer gets a distinct id and no row is ever missing one, is a natural primary key for customers.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A table can have at most one primary key, and a primary key can span more than one column -- a composite key, composed of two or more attributes. For example, a table recording one row per (student_id, course_id) enrollment pair has no single column that's unique on its own -- the same student_id repeats across courses and the same course_id repeats across students -- so the pair (student_id, course_id) together becomes the composite primary key.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Entity integrity requires that every table have a primary key, and that neither the primary key nor any part of it contain null values -- a customers table without a reliable, always-present unique id can't guarantee you're ever looking at exactly one customer.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Uniqueness and not-null are two precise, easy-to-state rules that the customer_id example already demonstrates in full.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "The composite-key illustration uses a generic student/course example rather than this schema's own tables, to avoid pulling in the junction-table concept before it's taught."
+      ]
+    },
+    {
+      "concept_id": "datamodel.foreign_keys_referential_integrity",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Every order in the orders table belongs to some customer. The orders table needs a way to point back to the exact customer row it belongs to, and to make sure that pointer is never left dangling.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A foreign key constraint specifies that the values in a column (or group of columns) of one table must match values appearing in some row of another, referenced table. orders.customer_id is a foreign key referencing customers.customer_id -- every customer_id value in orders must match an actual customer_id already in customers.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A null foreign key value also satisfies referential integrity -- an order with no customer_id at all doesn't violate the constraint -- but a non-null one must match an existing primary key value in the referenced table. A row whose foreign key value is not found in the referenced table is called an orphan record, and referential integrity is exactly what prevents these: an order row with customer_id = 99 would be an orphan if no customer 99 exists.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing the orders.customer_id column line up with matching customers.customer_id rows, and seeing what an orphaned, non-matching value would look like, is easier to trace visually across two tables than purely from the definition -- though the customer/order example already states the rule precisely.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Keep the orphan-record example concrete (a specific made-up customer_id that doesn't exist) rather than abstract."
+      ]
+    },
+    {
+      "concept_id": "datamodel.one_to_many",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "A customer can place several orders, but every order belongs to exactly one customer. That asymmetry between customers and orders is a specific, named kind of relationship.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "In a one-to-many (1:M) relationship, one row on the 'one' side relates to many rows on the 'many' side -- one department has many employees, and here, one customer has many orders.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "In the customer/order relationship, a customer can place a minimum of zero and a maximum of many orders, while an order relates to a maximum of one customer, so orders is the 'many' side (the many side is optional, since a customer doesn't need to place an order to still be a customer); the foreign key customer_id is placed in the orders table and must match a valid customer_id in customers.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing one customer row visually connect out to several order rows makes the direction of the relationship (which side is 'one', which is 'many') more immediate than reading it stated, though the customer/order example already walks through it precisely.",
+        "preferred_visual_modes": [
+          "diagram_animation"
+        ]
+      },
+      "teaching_notes": [
+        "Reinforce which table gets the foreign key (the 'many' side) -- that's the fact learners most often get backwards."
+      ]
+    },
+    {
+      "concept_id": "datamodel.normalization_basics",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Imagine, instead of separate customers and orders tables, one big orders table that repeats each customer's name and city on every single order row they place. That design has a real cost.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "Normalization is the process of determining how much redundancy exists in a table, with the goal of transforming the schema to remove that redundancy. In that hypothetical merged table, a customer with 5 orders would have their name and city written out 5 separate times.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Redundant data like that is generally undesirable because it causes problems maintaining consistency after updates: if the customer's city changes, every one of those 5 repeated rows must be updated, and missing even one leaves inconsistent data -- an update anomaly, where the same customer now appears to live in two different cities depending on which row you read. One way to remove the redundancy is to move the data that would otherwise repeat across many rows into a new, separate table, linked back to the original record by a key column -- exactly the split into customers (name, city, once each) and orders (just customer_id) that this schema already uses.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "The customers/orders split you've been using throughout this tile isn't an arbitrary choice -- it's normalization already applied, keeping each customer's name and city stored in exactly one place.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "The redundant, repeated-data 'before' table and the split, normalized 'after' tables are a genuine before/after transformation of the same data -- watching the repeated columns get pulled out into their own table makes the redundancy, and the fix, concrete in a way that's harder to picture from description alone.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "The 'before' merged table here is a hypothetical, invented purely to illustrate redundancy -- it isn't a table actually used elsewhere in this batch."
+      ]
+    },
+    {
+      "concept_id": "datamodel.many_to_many_junction_tables",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "One order can include several products, and one product (say, a bag of rice) can show up in several different orders. Neither side is limited to 'one' the way customer/order was -- this is a different shape of relationship entirely.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A many-to-many (M:N) relationship cannot be implemented directly in the relational model; it is resolved into two one-to-many relationships using a composite entity, also called a junction or bridge table. Between orders and products, that junction table -- call it order_items -- holds one row for every order/product pairing: order 101 paired with the rice bag, order 101 paired with cooking oil, order 103 paired with the rice bag again, and so on.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The junction table must contain at least the primary keys of the two original tables, used as foreign keys, and may also contain additional attributes of its own -- order_items holds order_id (a foreign key to orders) and product_id (a foreign key to products). The combination of those two foreign keys will make the primary key of the junction table -- the pair (order_id, product_id) together is unique, since the same order won't list the same product twice.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "order_items is what turns 'many orders can each have many products' into two ordinary one-to-many relationships: orders to order_items, and products to order_items.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Watching how a single M:N relationship visually splits into two separate one-to-many arrows through the junction table is exactly the kind of structural, spatial transformation that's much clearer drawn than described -- the order_items pairing rows are easier to grasp seeing them laid out than reading them listed.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "whiteboard_drawing"
+        ]
+      },
+      "teaching_notes": [
+        "This is the first place order_items is introduced -- previous concepts (primary_keys, normalization) deliberately avoided naming it early."
+      ]
+    },
+    {
+      "concept_id": "datamodel.er_diagram_reading",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "In an entity relationship diagram (ERD), an entity type is represented by its name shown inside a box -- Customer, Order, Product and Order_Item would each get their own box. Each attribute is represented by an oval with its name inside, attached to its entity's box, and the primary key attribute is shown by underlining it -- customer_id, underlined, inside an oval attached to the Customer box.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "An ERD shows relationships between entities as lines; among the relationship types shown this way are one-to-one (1:1), one-to-many (1:M), and many-to-many (M:N) -- the Customer-to-Order line would be drawn as a 1:M relationship, matching what you already know about that pair. Markings on a relationship line show cardinality and connectivity, the minimum and maximum number of related entities on each side: a symbol with three prongs on a side means 'many' on that side, a zero and one together mean 'zero or one', and a one and only one symbol means that side is mandatory -- the Order side of the Customer-Order line would carry the 'many' marking, and the Customer side a 'zero or one' marking, since an order needs exactly one customer but a customer needs zero orders.",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Reading an ERD's boxes, ovals, underlines and cardinality-line markings is a visual-notation skill that is fundamentally about recognizing shapes on a diagram -- a real annotated diagram, pointed at while explaining each symbol, teaches this far faster than a text description of what each symbol looks like.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": [
+        "Describe the notation applied to the customers/orders schema already built up, rather than introducing a new example schema just for this concept."
+      ]
+    },
+    {
+      "concept_id": "sql.inner_join",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "customers holds each customer's name and city; orders holds each order's delivery time and a customer_id pointing back to customers. To see a customer's name next to their own delivery times, you need both tables combined into one result at once.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "For each row of T1, an INNER JOIN produces a joined row for each row of T2 that satisfies the join condition; rows from either table with no match are dropped. SELECT c.name, o.delivery_time_minutes FROM customers AS c JOIN orders AS o ON c.customer_id = o.customer_id combines every customer row with every order row that shares its customer_id.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "The join condition is written in an ON clause, a boolean expression of the same kind used in a WHERE clause, or as a USING clause when both tables use the same column name -- ON c.customer_id = o.customer_id could also be written USING (customer_id) if the column is named identically in both tables. INNER is the default kind of join; writing JOIN alone, without CROSS, LEFT, RIGHT or FULL, already means an INNER JOIN.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "Because it's an inner join, a customer with zero orders -- like a new customer who hasn't ordered yet -- produces no row at all in this result: only customers who actually have at least one matching order appear.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "An inner join's rule is symmetric and simple: a row survives only if both sides have a match; either side's unmatched rows disappear.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Combining two separate tables row-by-row on a matching key, and watching non-matching rows from each side drop out, is the canonical visual mechanism in relational data -- seeing the customers and orders rows actually pair up and the unmatched ones vanish is far clearer than reading the matching rule described.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "screen_demo"
+        ]
+      },
+      "teaching_notes": [
+        "This is the first place a real multi-table join query appears -- sql.aliasing earlier could only foreshadow this, not demonstrate it.",
+        "Chaining joins across more than two tables is optional enrichment -- skipped here to keep the two-table case clear first."
+      ]
+    },
+    {
+      "concept_id": "sql.composite_join_conditions",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose a separate shipments table records, for each order_id and product_id pair, the date that item actually shipped. Matching shipments to order_items now needs two columns to agree at once, not just one.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "The ON clause takes a boolean expression of the same kind used in a WHERE clause, so several column-equality tests can be combined with AND to require all of them to match before rows join. FROM order_items AS oi JOIN shipments AS s ON oi.order_id = s.order_id AND oi.product_id = s.product_id only joins a shipment row to the order_items row for the exact same order and the exact same product.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "The USING clause is a shorthand for the case where both sides of the join share column names: USING (a, b) forms the join condition ON T1.a = T2.a AND T1.b = T2.b. Since order_items and shipments both use order_id and product_id, that same join could be written FROM order_items JOIN shipments USING (order_id, product_id).",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "A two-column match is a small extension of the single-column ON condition already taught, so the AND'd equality tests and their USING shorthand are stated fully in the definition, though seeing rows checked against both columns at once helps confirm the extension.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Keep this to extending the ON clause with AND, plus its USING shorthand -- no new join type introduced here."
+      ]
+    },
+    {
+      "concept_id": "sql.outer_joins",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "An inner join between customers and orders drops any customer with zero orders. To instead list every customer -- including ones who haven't ordered yet -- you need an outer join.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A LEFT OUTER JOIN performs an inner join, then adds a row for each row of T1 with no match in T2, filling T2's columns with null; the joined table always has at least one row for each row of T1. SELECT c.name, o.delivery_time_minutes FROM customers AS c LEFT JOIN orders AS o ON c.customer_id = o.customer_id lists every customer, with delivery_time_minutes shown as null for any customer with no orders.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A RIGHT OUTER JOIN is the converse of a left join: it keeps every row of T2, null-filling T1's columns for rows of T2 with no match -- FROM customers AS c RIGHT JOIN orders AS o ON c.customer_id = o.customer_id keeps every order row instead, even one that (hypothetically) had no matching customer. A FULL OUTER JOIN performs an inner join, then adds null-filled rows for the unmatched rows of both T1 and T2, keeping everything from both sides at once.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "syntax",
+          "content": "INNER and OUTER are both optional keywords; LEFT, RIGHT, and FULL each already imply an outer join even without writing OUTER, so LEFT JOIN and LEFT OUTER JOIN mean the same thing.",
+          "fact_ids": [
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "The null-filled 'phantom' rows that outer joins add for unmatched customers or orders are a genuine before/after against the inner join just learned -- watching which side keeps everything and which gets null-filled makes LEFT vs RIGHT vs FULL far easier to track than the definitions alone.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Contrast directly against sql.inner_join's dropped-row behavior -- that contrast is what makes 'outer' meaningful."
+      ]
+    },
+    {
+      "concept_id": "sql.clause_execution_order",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "A query like SELECT customer_id, AVG(delivery_time_minutes) AS avg_time FROM orders WHERE delivery_time_minutes > 0 GROUP BY customer_id HAVING AVG(delivery_time_minutes) > 30 ORDER BY avg_time DESC is written top to bottom, SELECT first -- but that's not the order it actually runs in.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "In a SELECT's general processing order (after any WITH queries), the FROM list is computed first, then WHERE eliminates non-matching rows, then GROUP BY groups the rows and HAVING eliminates groups, then the SELECT output expressions are computed; ORDER BY sorts the rows after that. So in the query above, orders is read, rows with delivery_time_minutes <= 0 are dropped, the remaining rows are grouped by customer_id, groups whose average is 30 or under are dropped, avg_time is computed for what's left, and only then is the result sorted.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "misconception",
+          "content": "An output column's alias, assigned with AS in the SELECT list, can be referred to in ORDER BY and GROUP BY, but not in the WHERE or HAVING clauses, where the expression must be written out instead. WHERE avg_time > 30 would fail in that query, because WHERE runs before SELECT has computed avg_time at all -- WHERE has to say delivery_time_minutes directly, and the aggregate condition belongs in HAVING, not WHERE, in the first place.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "The logical processing order runs in a completely different sequence than the order the clauses are written in -- tracing which clause actually executes when, step by step through one real query, is the kind of process relationship that's much easier to follow watching it unfold in order than reading the six-step rule as prose.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "screen_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Reuse one single running query for the whole explanation so the FROM->WHERE->GROUP BY->HAVING->SELECT->ORDER BY sequence maps onto concrete clauses, not an abstract list."
+      ]
+    },
+    {
+      "concept_id": "sql.subquery_in_where",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you want the orders that took longer than the average delivery time across all orders. You don't know that average number ahead of time -- it has to be computed by another query, used right inside the WHERE clause.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A subquery that returns a single (scalar) value can be used as a value expression in a comparison. SELECT order_id, delivery_time_minutes FROM orders WHERE delivery_time_minutes > (SELECT AVG(delivery_time_minutes) FROM orders) keeps only the orders slower than the overall average -- the inner SELECT computes that one average number, and the outer WHERE compares each row's delivery time against it.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A subquery can also appear in a WHERE clause as the right side of IN, for example WHERE c1 IN (SELECT c1 FROM t2), which keeps rows whose c1 value is found in the subquery's result. SELECT name FROM customers WHERE customer_id IN (SELECT customer_id FROM orders WHERE delivery_time_minutes > 40) finds the customers who have placed at least one order slower than 40 minutes.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The inner query running first to produce a value or list, which the outer query's WHERE then tests against, is a two-step process that a diagram of the two queries running in sequence would make immediate, though the average and IN examples already state the mechanism precisely.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Correlated subqueries (referencing the outer query's own columns) are optional enrichment -- skipped here; both examples given are uncorrelated."
+      ]
+    },
+    {
+      "concept_id": "sql.subquery_in_from",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Sometimes the thing you want to filter or select from isn't a real table at all, but the result of an aggregate query -- like each customer's own average delivery time, treated as if it were a table you could query further.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A subquery used in FROM must be enclosed in parentheses and may be given a table alias, for example FROM (SELECT * FROM table1) AS alias_name -- the SQL standard requires this alias, and while PostgreSQL allows it to be omitted, writing one is good practice. SELECT * FROM (SELECT customer_id, AVG(delivery_time_minutes) AS avg_time FROM orders GROUP BY customer_id) AS customer_avg WHERE avg_time > 30 treats the grouped, averaged result as a temporary table named customer_avg, then filters it in the outer query.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "When a SELECT is used as a subquery, the name of each of its output columns -- its own column name or its AS alias -- is seen by the outer query as the column name of the virtual table the subquery produces. That's why the outer query above can refer to avg_time directly: it's the alias the inner query already gave that column.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Treating a query's own result as a derived table that the outer query then reads from is easier to follow watching the inner result appear first and the outer query run against it, though the customer_avg example already traces the mechanism in full.",
+        "preferred_visual_modes": [
+          "screen_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Reuse the same customer_avg derived table across the explanation, rather than introducing a second unrelated example."
+      ]
+    },
+    {
+      "concept_id": "sql.cte",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The customer_avg subquery from before works, but naming it once up front, instead of burying it inside FROM, can make a longer query easier to read.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "WITH provides a way to write one or more auxiliary statements, called Common Table Expressions (CTEs), that can be thought of as defining temporary tables that exist just for one query. A CTE is written as WITH name AS (query), and the primary statement then reads it by name, as if it were a table: WITH customer_avg AS (SELECT customer_id, AVG(delivery_time_minutes) AS avg_time FROM orders GROUP BY customer_id) SELECT * FROM customer_avg WHERE avg_time > 30 does exactly what the FROM-subquery version did, with the aggregate query named up front instead of nested inside FROM.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A second CTE can then read from the first, the way a query might define customer_avg and then a second CTE, slow_customers, that selects FROM customer_avg -- with the primary query finally reading from slow_customers. Breaking a complex query into named CTEs with WITH is an alternative to nested subqueries, and can make the query easier to follow.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Naming a subquery once with WITH and then reading it by name -- especially chaining a second CTE off the first -- is easier to trace watching each named block get defined and then reused, though the customer_avg rewrite already shows the mechanism precisely.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Point out explicitly that this CTE does the same job as the sql.subquery_in_from example -- the value here is readability, not new capability."
+      ]
+    }
+  ]
+}

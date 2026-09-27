@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "selected_media.schema.json",
+  "title": "Selected Media (batch output)",
+  "description": "10_media_selection's output, written by scripts/select_media.py. Picks approved segments per (concept, path) and derives youtube_url/review_url from video_id — never typed by a model. Summaries are added later by 11_reconciliation.",
+  "type": "object",
+  "required": ["metadata", "batch_id", "selections"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "selections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["concept_id", "path_id", "media_status", "segments", "uncovered_fact_ids"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "path_id": { "type": "string" },
+          "media_status": { "enum": ["selected", "no_video_needed", "no_segment_found"] },
+          "segments": { "type": "array", "items": { "$ref": "#/$defs/selected_segment" } },
+          "uncovered_fact_ids": { "type": "array", "items": { "type": "string" }, "description": "Required facts no selected segment covers. The text must cover them (it must cover all of them anyway)." }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "selected_segment": {
+      "type": "object",
+      "required": ["segment_id", "label", "video_id", "channel_id", "youtube_url", "review_url", "start_seconds", "end_seconds", "fact_ids", "transcript_ref", "visual_mode", "role", "mean_score"],
+      "properties": {
+        "segment_id": { "type": "string" },
+        "label": { "type": "string" },
+        "video_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{11}$" },
+        "channel_id": { "type": "string" },
+        "youtube_url": { "type": "string" },
+        "review_url": { "type": "string" },
+        "start_seconds": { "type": "integer", "minimum": 0 },
+        "end_seconds": { "type": "integer", "minimum": 1 },
+        "fact_ids": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "transcript_ref": { "type": "string" },
+        "visual_mode": { "$ref": "glossary_learning_bundle.schema.json#/$defs/visual_mode" },
+        "role": { "type": "string" },
+        "mean_score": { "type": "number" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

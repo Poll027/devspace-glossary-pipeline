@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "leakage_audit_report.schema.json",
+  "title": "Leakage Audit Report",
+  "description": "13_leakage_check's output. Evaluator-only. Checks every bundle's text, examples, anchors and selected transcript ranges against the concept's knowledge boundary and its evidence (playbook §5, §29).",
+  "type": "object",
+  "required": ["metadata", "batch_id", "reviewed_bundle_ids", "reviews", "blocking_issue_count"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "reviewed_bundle_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "description": "concept_id:path_id for every bundle in the draft — exhaustive, never sampled."
+    },
+    "reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["concept_id", "path_id", "leaked_concepts", "unsupported_claims", "blocking"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "path_id": { "type": "string" },
+          "leaked_concepts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["concept_id", "where"],
+              "properties": {
+                "concept_id": { "type": "string", "description": "A blocked (later) concept the learner would need to understand." },
+                "where": { "type": "string", "description": "e.g. tb3, media.segments[1] transcript range, practice_anchor." }
+              },
+              "additionalProperties": false
+            }
+          },
+          "unsupported_claims": { "type": "array", "items": { "type": "string" } },
+          "blocking": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "blocking_issue_count": { "type": "integer", "minimum": 0 }
+  },
+  "additionalProperties": false
+}

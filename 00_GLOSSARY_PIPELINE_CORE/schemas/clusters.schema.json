@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "clusters.schema.json",
+  "title": "Presentation-Compatible Clusters (batch output)",
+  "description": "12_cluster_pass' output (playbook §24). Adjacent concepts that may appear together as clickable sub-concepts. Never merges curriculum — every concept keeps its own bundle and TOC position. The Final Schema decides tabs vs chips vs separate screens.",
+  "type": "object",
+  "required": ["metadata", "batch_id", "clusters"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "clusters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["cluster_id", "path_id", "tile_id", "title", "concept_ids", "reasoning"],
+        "properties": {
+          "cluster_id": { "type": "string" },
+          "path_id": { "type": "string" },
+          "tile_id": { "type": "string", "description": "Clusters never cross tiles." },
+          "title": { "type": "string" },
+          "concept_ids": {
+            "type": "array",
+            "minItems": 2,
+            "items": { "type": "string" },
+            "description": "In TOC order — the playbook's preferred_order is always the TOC order, so it isn't stored twice."
+          },
+          "reasoning": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

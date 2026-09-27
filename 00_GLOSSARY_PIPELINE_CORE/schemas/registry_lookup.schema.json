@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "registry_lookup.schema.json",
+  "title": "Registry Lookup (batch output)",
+  "description": "02_registry_lookup's output, written by scripts/registry_lookup.py. Exact concept_id match against the canonical registries — no fuzzy matching.",
+  "type": "object",
+  "required": ["metadata", "batch_id", "lookups"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "lookups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["concept_id", "path_id", "canonical_status", "evidence_built_by_path_id", "reusable_segment_ids"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "path_id": { "type": "string" },
+          "canonical_status": {
+            "enum": ["new", "reuse_registry", "shared_in_batch"],
+            "description": "new: this path builds the concept's canonical evidence. reuse_registry: an earlier batch already built it — copy it. shared_in_batch: another path in this same batch builds it — wait for and reuse that path's version."
+          },
+          "evidence_built_by_path_id": { "type": ["string", "null"] },
+          "reusable_segment_ids": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Approved segments already in the video bank for this concept_id. Still re-judged for this path's prerequisites before reuse (playbook §25)."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

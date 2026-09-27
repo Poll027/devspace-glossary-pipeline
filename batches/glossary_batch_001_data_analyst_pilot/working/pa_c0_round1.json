@@ -1,0 +1,316 @@
+{
+  "metadata": {
+    "artifact_type": "glossary_pass_a",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_001_data_analyst_pilot",
+    "run_id": "glossary_batch_001_data_analyst_pilot",
+    "prompt_version": "05_glossary_pass_a@v1",
+    "model": "claude-sonnet-5",
+    "generated_at": "2026-09-27T11:50:06Z",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "extracted_concepts.json": "8e3969d65e33ee46f6e3ca399cf9ada942a5b349eb85f07e6b5d60dfe6acdc8e",
+      "coverage_briefs.json": "d0ef2fa55a4fc956f7aec86aa706596e791e638ea60e8c7c721fdb8273290611",
+      "depth_classification.json": "167f98b6a223279f6b6029cd521b982ca807bbe158217cf523734184ba027a2b"
+    }
+  },
+  "batch_id": "glossary_batch_001_data_analyst_pilot",
+  "entries": [
+    {
+      "concept_id": "data.dataset_rows_columns",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Picture a week's worth of delivery orders for a small courier company: order numbers, the city each order went to, how long the delivery took, which driver handled it. Written down, all of that information becomes what analysts call a dataset -- a collection of observations that are all recorded on the same set of variables. Every delivery in the batch was recorded using the same kind of information: an order number, a city, a delivery time, a driver. That shared structure is what turns a pile of individual facts into one dataset you can work with.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "To make a dataset usable, that information is almost always organized as a table -- sometimes called a data matrix -- made of rows and columns. If you opened the delivery-orders file in a spreadsheet, you would see exactly this: a grid where every delivery has its own line, and every piece of information about a delivery has its own column.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The two directions of that grid mean different things. Each row represents one observation -- one record. In the delivery data, that means one row per delivery: order #1042 is one row, order #1043 is the next row, and so on. Each column represents one variable: one attribute that is recorded for every observation in the dataset. So the city column holds the destination city for every single delivery, and the delivery-time column holds the delivery time for every single delivery -- never a mix of different kinds of information in one column.",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "Reading the table this way tells you exactly how to answer a question about it. Asked 'how many deliveries went to Lagos?', you would scan down the city column and count matching rows. Asked 'what happened with order #1042?', you would look across that one row and read every column for it. The row tells you about one delivery; the column tells you about one kind of fact across all deliveries.",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "This row/column structure is the foundation everything else in analysis builds on: before you can check, clean or make sense of delivery data, you first have to know that a row is one delivery and a column is one attribute of every delivery.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "The row/column structure is a static layout, not a changing process. A single labeled table image would show it, but the text and the delivery-orders example already make row-vs-column fully clear without any demonstration or animation.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Learners have zero prior data vocabulary here (allowed_knowledge_ids is empty) -- establish 'row = one delivery' and 'column = one attribute' before anything else.",
+        "Don't introduce the categorical/numeric distinction here -- that's the next concept."
+      ]
+    },
+    {
+      "concept_id": "data.categorical_numeric_types",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Back in the delivery-orders table, look at two of its columns: delivery time (say, 32 minutes) and city (say, 'Lagos'). Both are columns in the same table, but they behave completely differently, and knowing which kind of column you're looking at changes what you're allowed to do with it.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A numerical variable takes numerical values for which it is sensible to add or subtract -- delivery time is numerical, because '32 minutes plus 41 minutes' or the difference between two delivery times both mean something real. A categorical variable's values are categories, also called levels -- city is categorical, because its values ('Lagos', 'Abuja', 'Kano') are just labels for a group; there is nothing to add or subtract between them.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "misconception",
+          "content": "A column stored as numbers is not automatically numerical. If arithmetic on the values would be meaningless, the column is categorical even though it looks like numbers. In the delivery data, the order_id column might hold 1042, 1043, 1044 -- but adding two order numbers together produces nothing useful, the same way adding two telephone area codes would. order_id is a label, not a quantity, so it's categorical despite being written as digits.",
+          "fact_ids": [
+            "m1"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Before doing anything with a column, check which kind it is: can these values be meaningfully added or subtracted, or are they just labels for groups? Getting that distinction right up front decides whether treating that column as a quantity will make sense at all.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The definitions are fully explained in text, but seeing two similarly numeric-looking columns treated differently -- one you can add up, one you can't -- would reinforce the order_id misconception faster than prose alone.",
+        "preferred_visual_modes": [
+          "spreadsheet_demo",
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Keep the order_id-as-categorical example short -- it's a preview of the misconception, not a deep dive into identifiers.",
+        "Don't mention averaging, grouping or plotting -- those are later, currently blocked concepts."
+      ]
+    },
+    {
+      "concept_id": "data.data_quality_basics",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Before trusting any conclusion drawn from the delivery-orders table, you need to ask whether the data itself is any good. Data quality means whether a dataset is fit for the purpose it will be used for -- not whether it looks tidy, but whether it can actually support the question you're asking of it.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Two checks look at what's missing or repeated. Completeness checks whether the records and values that should be present in the dataset actually are, rather than missing -- for example, an order row with no delivery time recorded at all. Uniqueness checks whether a record that should appear once, one entity, one row, is duplicated in the dataset -- for example, the same order number showing up as two separate rows.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Two more checks look at whether the values themselves are trustworthy. Validity checks whether a column's values are in the range and format expected for that column -- a delivery time recorded as '-5 minutes' fails validity, because negative time isn't a valid delivery time. Accuracy checks whether the data correctly matches the real-world thing it describes -- an order logged as delivered to Lagos when the driver actually delivered it to Abuja is complete, unique and validly formatted, but still inaccurate.",
+          "fact_ids": [
+            "f4",
+            "f5"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "misconception",
+          "content": "Good-quality data does not have to be perfect. The goal of these checks isn't a flawless dataset; it's a dataset good enough to answer the question you actually have, using completeness, uniqueness, validity and accuracy as the specific things to look for.",
+          "fact_ids": [
+            "m1"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Running through these checks on the delivery-orders table before analyzing it is what tells you whether you can trust what the numbers say next.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Each check (completeness, uniqueness, validity, accuracy) is about spotting a specific kind of problem inside a real table. Watching someone scan an actual table and point at a blank cell, a duplicate row, an out-of-range value and a real-world mismatch makes the four checks concrete in a way that describing each one in prose alone doesn't fully convey.",
+        "preferred_visual_modes": [
+          "data_table_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": [
+        "The four required checks (completeness, uniqueness, validity, accuracy) are the core; consistency and timeliness are optional enrichment facts and can be skipped or touched only briefly.",
+        "Keep each check's example tight -- one line each, same delivery-orders table throughout."
+      ]
+    },
+    {
+      "concept_id": "data.analysis_workflow",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Once you know how to read the delivery-orders table and check its quality, the next question is what order to actually do things in. A repeatable analysis process typically begins by clarifying the question or purpose -- for the delivery data, that might be 'which cities have unusually slow deliveries?' Clarifying this first means both you and whoever asked for the analysis share an understanding of what is being analyzed and why, before any work starts.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "workflow",
+          "content": "Next comes inspecting and cleaning. Before analysis, the data should be inspected and checked for quality, so problems are addressed as early as possible -- this is exactly the completeness, uniqueness, validity and accuracy checks from before. Cleaning the data then helps reduce quality problems such as duplication and inconsistent values, for example removing the duplicate order row you found during inspection.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "workflow",
+          "content": "Only once the data is prepared do you analyze it: examining the prepared data to answer the question. Exploratory data analysis, for example, looks at the data to uncover its underlying structure and spot anomalies -- unusual values, like one delivery that took far longer than every other delivery in the batch. Visualizing is a separate step from analyzing: it means turning data into plots or other graphics, and exploratory data analysis relies mostly on such graphical techniques to gain insight into a dataset and reveal its structure. So for the delivery data, analyzing might mean looking closely at the cleaned rows to see which cities' deliveries stand out, while visualizing might mean turning those delivery times into a graphic so the pattern is easy to see at a glance.",
+          "fact_ids": [
+            "f4",
+            "f5"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "workflow",
+          "content": "The final stage is communicating the findings, and how far they can be trusted, to the people who will use them -- not merely producing the analysis itself. Telling a manager 'Lagos deliveries are running slow, but the sample is small' is part of the workflow, not an afterthought.",
+          "fact_ids": [
+            "f6"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "This process is commonly iterative rather than strictly linear: earlier stages, such as inspecting or cleaning, may be revisited as later stages reveal new issues -- if analyzing the delivery data turns up a value that looks wrong, you go back and inspect or clean it before continuing, rather than treating each stage as done for good.",
+          "fact_ids": [
+            "f7"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "This is a multi-stage workflow with a loop back into earlier stages -- exactly the kind of process relationship that a diagram of the stages, with the iterative loop drawn in, makes easier to hold in mind than prose describing the same stages in sequence.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "slides_with_signaling"
+        ]
+      },
+      "teaching_notes": [
+        "Keep 'analyze' and 'visualize' as clearly distinct steps -- don't let visualize collapse into analyze; this path splits them explicitly.",
+        "The iterative note (going back to inspect/clean) should stay a short closing point, not a new sub-workflow."
+      ]
+    },
+    {
+      "concept_id": "data.ethics_privacy_basics",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The delivery-orders table almost certainly contains information about real people -- customers' addresses, drivers' names. Data users should respect the privacy and confidentiality of the individuals a dataset describes, which means treating that table as more than just numbers to analyze.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "practical_context",
+          "content": "Responsible data handling includes minimizing data collection to what is needed and being accountable for how the data is used -- if the analysis only needs delivery times and cities, there's no reason to also keep customers' phone numbers around. Data work should also consider its potential impact on the people and communities it affects: a finding like 'deliveries to this neighborhood are consistently late' could affect real customers and drivers, not just look interesting in a report.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "practical_context",
+          "content": "When sharing data and findings, data users should honestly report data limitations and known biases rather than overstating certainty -- if the delivery data only covers one week, or one driver logged times inconsistently, that limitation belongs in the report, not left out to make the conclusion sound stronger than it is.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "misconception",
+          "content": "Identifying information that isn't needed for the purpose should be left out or removed, especially before data is shared; findings can describe a group without identifying individuals -- reporting 'the eastern delivery zone runs slow' rather than naming individual customers. But removing identifying information does not by itself remove the risk of re-identification: the data, combined with other available data, can still identify people, so removing a name column alone isn't automatically enough.",
+          "fact_ids": [
+            "f5",
+            "m1"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Treating the people behind the delivery-orders data with care, and being honest about what the analysis can and can't claim, is as much a part of the job as getting the numbers right.",
+          "fact_ids": [
+            "f1",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "These are principles and judgment calls -- privacy, minimization, honest reporting, the limits of de-identification -- stated and grounded in the delivery-orders example through text. There is no mechanism, tool or changing state to show, so a video would only restate the same points in another voice.",
+        "preferred_visual_modes": [
+          "talking_head_with_visual_support"
+        ]
+      },
+      "teaching_notes": [
+        "Keep ethics principles grounded in the same delivery-orders example, not abstract.",
+        "The de-identification misconception (m1) is easy to skip -- make sure it's stated explicitly, not implied."
+      ]
+    }
+  ]
+}

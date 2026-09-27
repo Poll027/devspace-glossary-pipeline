@@ -1,0 +1,1476 @@
+{
+  "metadata": {
+    "artifact_type": "glossary_pass_a",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_001_data_analyst_pilot",
+    "run_id": "glossary_batch_001_data_analyst_pilot",
+    "prompt_version": "05_glossary_pass_a@v1",
+    "model": "claude-sonnet-5",
+    "generated_at": "2026-09-27T12:05:23Z",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "extracted_concepts.json": "8e3969d65e33ee46f6e3ca399cf9ada942a5b349eb85f07e6b5d60dfe6acdc8e",
+      "coverage_briefs.json": "d0ef2fa55a4fc956f7aec86aa706596e791e638ea60e8c7c721fdb8273290611",
+      "depth_classification.json": "167f98b6a223279f6b6029cd521b982ca807bbe158217cf523734184ba027a2b"
+    }
+  },
+  "batch_id": "glossary_batch_001_data_analyst_pilot",
+  "entries": [
+    {
+      "concept_id": "python.variables_assignment",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you're writing code to work with one delivery order and need to keep track of how many minutes it took to arrive. Before you can do anything with that number, you need to store it under a name you can refer back to later. In Python, the equal sign (=) is used to assign a value to a variable, so delivery_minutes = 32 stores the value 32 under the name delivery_minutes.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "misconception",
+          "content": "A name only exists once something has been assigned to it. Trying to use a name before assigning it a value -- referring to average_delivery_minutes before any earlier line has assigned it something -- raises a NameError, rather than quietly giving back some default value.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Assigning to a name that already holds a value doesn't create a second value alongside the first: it rebinds the name to the new value, replacing what it held. If delivery_minutes = 32 is followed later by a corrected delivery_minutes = 45, the name delivery_minutes now refers to 45 -- the earlier 32 is gone.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "syntax",
+          "content": "Not every word can be a variable name. A valid name is made of letters, digits and the underscore, cannot start with a digit, is case-significant (so delivery_minutes and Delivery_Minutes are two different names), and cannot be one of Python's reserved keywords, such as if, for or class -- those are reserved for Python's own syntax.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "example",
+          "content": "Once a name holds a value, later code can use it in an expression, the same way the value 20 assigned to width and 5 * 9 assigned to height let a later line compute width * height. In a delivery context, after orders_per_driver = 20 and days_worked = 5, a later line such as orders_per_driver * days_worked reads back both stored values and computes a result from them.",
+          "fact_ids": [
+            "f5"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "= stores a value under a name, assigning again to that same name replaces what it held, and using a name that was never assigned raises an error instead of producing a value.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Assignment is a simple naming-and-replacement rule with no changing process or tool to show; the worked example already makes the rebinding behavior concrete.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Learner has zero prior Python vocabulary here -- keep values simple (a delivery-minutes number) and don't lean on any type distinctions yet, since python.core_data_types comes next."
+      ]
+    },
+    {
+      "concept_id": "python.core_data_types",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Every value in Python has a type, and that type determines what operations make sense on it and how it prints. In delivery data, an order id like 1042, a delivery time like 32.5, a city name like 'Lagos', and whether an order was late are four different kinds of value -- Python has a core scalar type for each kind.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "Integer literals -- whole numbers written without a decimal point, such as 2, 4, or 20 -- have type int. A literal written with a fractional part, such as 5.0 or 1.6, has type float. So order_id = 1042 is an int, while delivery_minutes = 32.5 is a float.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "definition",
+          "content": "Text values are of type str, and they can be written with either single quotes or double quotes with the same result -- city = 'Lagos' and city = \"Lagos\" create the identical string value.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "definition",
+          "content": "The bool type has exactly two values, True and False -- for example, is_late = True records whether a delivery ran late, and there is no third bool value.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "mechanism",
+          "content": "print() writes out the value of its arguments, and when that value is a string, print() writes it without the surrounding quotes -- print(city) displays Lagos, not 'Lagos'.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "syntax",
+          "content": "The built-in type() function, called with one argument, returns the type of that object -- type(delivery_minutes) reports float, and type(city) reports str, letting you check a value's type directly instead of guessing from how it was written.",
+          "fact_ids": [
+            "f5"
+          ]
+        },
+        {
+          "id": "tb7",
+          "purpose": "takeaway",
+          "content": "Recognizing which of these four types a value is -- before doing anything with it -- is the first thing to check about any piece of delivery data you work with in code.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "These are four fixed literal forms plus two small built-in functions; one labeled example of each already makes every distinction concrete without needing a demo.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "TOC conflict: this concept's assessment_target asks the learner to predict how a value behaves in arithmetic and comparisons, but python.arithmetic_operators and python.comparison_operators come later in the same region -- this entry teaches only literal recognition, print() and type(), per the coverage brief's required facts.",
+        "Don't demonstrate bool-as-int behavior (optional f6) at length -- it's easy to skip and mostly a caution against relying on it."
+      ]
+    },
+    {
+      "concept_id": "python.arithmetic_operators",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "The operators +, -, * and / perform addition, subtraction, multiplication and division, and / always returns a float, even when both operands are whole numbers. // performs floor division, discarding the fractional part, and % returns the remainder of the division; ** calculates a power, so 5 ** 2 is 5 squared.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "Parentheses can be used to group an expression and control how it is evaluated, e.g. (delivery_minutes + wait_minutes) * 2. Mixing an int and a float in one of these operators converts the integer operand to floating point first -- 4 * 3.75 - 1 evaluates to 14.0, not 14.",
+          "fact_ids": [
+            "f4",
+            "f5"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Each operator's behavior is a fixed rule statable in one line, and the worked expressions already show the int/float conversion; there's no mechanism or tool to demonstrate.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": [
+        "Keep this tight -- reference tier, one line per operator group."
+      ]
+    },
+    {
+      "concept_id": "python.comparison_operators",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "Comparing two values in code is how a question like 'is this delivery late?' turns into something a program can act on. The standard comparison operators are <, <=, >, >=, == and !=.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "A comparison evaluates to a boolean value, True or False -- for example 3 < 5 evaluates to True. Applied to delivery data, delivery_minutes > 60 evaluates to True for an order that took more than 60 minutes, and False otherwise.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "Any of the six operators works the same way: delivery_minutes == 0 checks for an exact match, and city != 'Lagos' checks for a mismatch.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Every comparison you write produces exactly one of two values, which is what makes it useful for decisions later in the code.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "A comparison is a fixed rule producing True or False; the worked delivery-minutes example already shows the pattern completely.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": [
+        "Skip chained comparisons (optional f3) unless there's room -- it's enrichment, not required."
+      ]
+    },
+    {
+      "concept_id": "python.logical_operators",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "A single comparison like delivery_minutes > 60 only asks one question at a time. Combining more than one condition -- 'is this delivery both late and far from the depot?' -- needs Python's logical operators.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "The Boolean operations, in ascending order of priority, are or, and, and not.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "x or y evaluates to x if x is true, otherwise to y. or is a short-circuit operator: it only evaluates y if x turns out to be false -- so is_late or is_far only checks is_far once is_late has come back false.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "x and y evaluates to x if x is false, otherwise to y. and is also short-circuit: it only evaluates y if x turns out to be true -- so is_late and is_far only checks is_far once is_late has already come back true.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "mechanism",
+          "content": "not x evaluates to True if x is false, and False if x is true -- not is_late flips whichever value is_late holds. not has a lower priority than the comparison operators, so not delivery_minutes == 0 is interpreted as not (delivery_minutes == 0).",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "example",
+          "content": "A rule like 'flag this delivery if it's late or unusually far' reads directly as is_late or is_far, and a stricter rule like 'flag it only if it's late and it's the driver's first week' reads as is_late and is_first_week.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb7",
+          "purpose": "takeaway",
+          "content": "and, or and not let you build one compound condition out of several simpler comparisons, instead of writing separate checks by hand.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Short-circuit evaluation -- which side actually gets evaluated, and when -- is a small changing-state behavior that a traced example helps confirm, though the text already states and demonstrates the rule precisely.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Keep is_late/is_far as the running example throughout -- don't introduce a third condition."
+      ]
+    },
+    {
+      "concept_id": "python.type_conversion",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Data often arrives as the wrong type for what you want to do with it -- a delivery time typed into a form as the text '32' rather than the number 32. The constructors int() and float() can be used to produce a number of a specific type from another value.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "int(string) returns an integer object constructed from a string -- int('123') returns 123.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "float(string) returns a floating-point number constructed from a string -- float('+1.23') returns 1.23.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "Strings may also be created from other objects using the str constructor -- so str(32) turns the integer 32 into the string '32'.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "misconception",
+          "content": "Not every string can be converted this way. float(string) requires the string to conform to a specific numeric format -- an optional sign and digits, optionally with a decimal point or exponent, after surrounding whitespace is removed. A string that isn't in the format the target type accepts raises an error: for int(), a string that isn't a plain integer, such as int('3.5'), raises a ValueError.",
+          "fact_ids": [
+            "f5",
+            "f6"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "Converting a value only works when its text actually matches the target type's expected format -- otherwise the conversion fails with an error rather than guessing.",
+          "fact_ids": [
+            "f5",
+            "f6"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Each constructor is a small function with a clear input and output, and the worked examples already cover both the success and the failure case.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "python.lists",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Keeping five separate variables for five delivery times gets unwieldy fast. A list groups values together in one ordered collection: it's written as a comma-separated sequence of values inside square brackets, e.g. delivery_times = [32, 45, 21, 60, 18].",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Like strings, lists can be indexed and sliced. delivery_times[0] returns the first item (32), and delivery_times[-1] returns the last item (18); a slice such as delivery_times[-3:] returns a new list of the last three items ([21, 60, 18]).",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "In a slice such as delivery_times[1:3], the start index is included and the end index is excluded, so it returns [45, 21] -- the items from index 1 up to but not including index 3. Lists support the same indexing and slicing operations as strings.",
+          "fact_ids": [
+            "f5"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "Lists are mutable: an item can be replaced in place. delivery_times[3] = 50 changes the value stored at index 3 from 60 to 50, without creating a new list.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "mechanism",
+          "content": "New items can be added to the end of a list with the list.append() method -- delivery_times.append(27) adds a sixth delivery time onto the end of the list.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "example",
+          "content": "The built-in function len() returns the number of items in a list, so len(delivery_times) tells you how many deliveries are currently in the collection.",
+          "fact_ids": [
+            "f6"
+          ]
+        },
+        {
+          "id": "tb7",
+          "purpose": "takeaway",
+          "content": "A list keeps an ordered group of values under one name, lets you reach any item by position, and can grow, shrink or change in place as new delivery data comes in.",
+          "fact_ids": [
+            "f1",
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Which index a slice includes and excludes is easier to check visually against a labeled row of boxes than to hold in mind from prose alone, though the worked numeric example already walks through it precisely.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Keep delivery_times = [32, 45, 21, 60, 18] as the one running list for every operation in this entry."
+      ]
+    },
+    {
+      "concept_id": "python.dictionaries",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Sometimes what you need isn't a plain ordered list but a lookup by name. A dictionary is a collection of key: value pairs, written inside braces, where the keys must be unique within the dictionary -- order_city = {1042: 'Lagos', 1043: 'Abuja'} maps each order id to the city it was delivered to.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "A value is stored or updated by assigning to a key, e.g. order_city[1044] = 'Kano' adds a new order, and retrieved by subscripting with the key, e.g. order_city[1042] returns 'Lagos'.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "misconception",
+          "content": "Extracting a value for a key that is not in the dictionary by subscripting raises a KeyError -- order_city[9999] fails if no order 9999 was ever added.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "The get() method returns None (or a specified default value) instead of raising an error when a key is not in the dictionary, so order_city.get(9999) returns None rather than crashing.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "mechanism",
+          "content": "The in keyword checks whether a key is present in a dictionary, e.g. 1042 in order_city.",
+          "fact_ids": [
+            "f5"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "A dictionary looks values up by key instead of by position, which is exactly what you need when 'find the city for this order id' matters more than 'what's the third item.'",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing an id map to a value through a labeled key-value diagram makes the lookup mechanism land faster than prose alone, though the worked order_city example already shows every operation concretely.",
+        "preferred_visual_modes": [
+          "diagram_animation"
+        ]
+      },
+      "teaching_notes": [
+        "Keep order_city as the one running dictionary across all blocks."
+      ]
+    },
+    {
+      "concept_id": "python.tuples",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Sometimes you want to group a small, fixed set of values together, rather than a list, which is meant to grow and shrink. A tuple consists of a number of values separated by commas; its items are shown enclosed in parentheses on output, and a tuple may be written with or without surrounding parentheses as input, e.g. order = 1042, 'Lagos', 32 (equivalently order = (1042, 'Lagos', 32)).",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "misconception",
+          "content": "Tuples are immutable: once created, an item inside a tuple cannot be reassigned -- order[0] = 1099 raises a TypeError.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A tuple can be unpacked into several variables at once, e.g. order_id, city, minutes = order, provided there are as many variables as there are elements in the tuple.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "misconception",
+          "content": "Enclosing a single value in parentheses does not make it a tuple -- a one-item tuple needs a trailing comma, e.g. singleton = 'Lagos',; without that comma, singleton is just the string 'Lagos'.",
+          "fact_ids": [
+            "m1"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Use a tuple when you're grouping a fixed, known number of values together, and unpack it back into separate names whenever you need to work with each piece on its own.",
+          "fact_ids": [
+            "f1",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Tuple creation, immutability and unpacking are each a single fixed rule that the worked order example already covers completely.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "TOC conflict: this concept's practice_objective returns a tuple from a function, but functions aren't taught until python.defining_calling_functions, much later in this region -- this entry teaches tuple creation, immutability and unpacking without using any function."
+      ]
+    },
+    {
+      "concept_id": "python.sets",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Sometimes you only care about which distinct values appear -- which cities orders were delivered to, with no duplicates. A set is an unordered collection with no duplicate elements, used for membership testing and eliminating duplicate entries.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Curly braces or the set() function create a set -- but set() must be used for an empty set, because {} creates an empty dictionary instead.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "set() can also build a set from the items of another collection, e.g. set(['Lagos', 'Abuja', 'Lagos', 'Kano']) produces {'Lagos', 'Abuja', 'Kano'} -- the set of unique cities, with the repeated 'Lagos' collapsed to one.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "The in operator tests membership in a set, e.g. 'Lagos' in cities checks whether 'Lagos' is one of the cities in the set.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "mechanism",
+          "content": "Set objects support mathematical operations such as union (a | b) and intersection (a & b) -- if week1_cities and week2_cities are two sets of cities, week1_cities & week2_cities gives the cities that appear in both weeks.",
+          "fact_ids": [
+            "f5"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "A set is the right structure whenever duplicates don't matter and all that's needed is which distinct values are present, or whether one value is present at all.",
+          "fact_ids": [
+            "f1",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Union and intersection are easier to see as two overlapping regions than to compute mentally from prose, though the worked week1/week2 example already states the exact operations.",
+        "preferred_visual_modes": [
+          "diagram_animation"
+        ]
+      },
+      "teaching_notes": [
+        "Keep the cities-from-orders framing throughout so 'unique values' stays concrete."
+      ]
+    },
+    {
+      "concept_id": "python.string_basics_formatting",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "mechanism",
+          "content": "A quote character can be embedded in a string without escaping it by enclosing the string in the other kind of quote instead: writing \"doesn't\" inside double quotes needs no escaping, where the same text inside single quotes would need the apostrophe escaped.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "An f-string is a string literal prefixed with f or F that embeds the value of a Python expression inside the string by writing the expression in curly brackets {expression} -- f\"Delivery to {city} took {delivery_minutes} minutes\" substitutes in the current values of city and delivery_minutes.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "An optional format specifier can follow the expression after a colon, giving greater control over how the value is formatted, such as rounding a number to a chosen number of places after the decimal, e.g. f\"Average: {avg_minutes:.2f} minutes\" prints avg_minutes rounded to two decimal places.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "f-strings let you build one readable message out of literal text and live variable values, with the format specifier controlling exactly how a number like a delivery time is displayed.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "f-string substitution and the format specifier are both shown fully in the worked examples; there's no changing state or tool to demonstrate beyond that.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "python.conditional_statements",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Not every line of code should always run -- sometimes what happens next depends on the data. An if statement executes its block only when its condition is true.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "There can be zero or more elif parts after an if, and the else part is optional; elif is short for 'else if' and helps avoid excessive indentation from nested if statements.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "An if/elif/.../else chain selects exactly one suite by evaluating the conditions one by one until one is found to be true; if none of them are true, the else suite (if present) is executed.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "syntax",
+          "content": "Each condition in an if/elif/else chain ends with a colon, and the block belonging to that branch is indented beneath it: if delivery_minutes < 15: category = 'fast', elif delivery_minutes < 45: category = 'normal', else: category = 'slow'.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Reading top to bottom, exactly one branch of an if/elif/else chain runs for any given delivery time -- the first whose condition is true, or else if none are.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "The branching rule and its worked delivery-minutes example fully cover a fixed, one-path-only decision structure.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "python.for_loops",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Once delivery times are collected in a list, you'll usually want to do something with every single one of them, not just one at a time by hand. Python's for statement iterates over the items of any sequence, such as a list or a string, in the order that they appear in the sequence.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Each pass through a for loop binds the loop variable to the next item of the sequence -- for minutes in delivery_times: print(minutes) prints every delivery time in delivery_times, one per pass.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "A for statement's header line ends with a colon, and the statements to repeat are indented beneath it, e.g. for minutes in delivery_times: print(minutes).",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "Combined with a conditional check, for minutes in delivery_times: if minutes > 45: print(minutes) prints only the delivery times that were unusually slow.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "A for loop visits every item of a known collection exactly once, in order, which is exactly what's needed to process each delivery time in turn.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching the loop variable take on each item one pass at a time makes the binding behavior concrete, though the worked delivery_times example already traces through it precisely.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Reuse the delivery_times list from python.lists as the one collection iterated over here."
+      ]
+    },
+    {
+      "concept_id": "python.while_loops",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Sometimes you don't know in advance how many times you'll need to repeat something -- you just want to keep going as long as some condition holds. A while loop executes its body repeatedly as long as its condition remains true; the condition can be a comparison, such as a < 10.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "The body of a while loop is indented beneath it; in the Fibonacci example, a, b = b, a+b updates a on each pass, and the loop stops once a < 10 becomes false.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "Applied to delivery data, a while loop could keep asking for the next delivery time to record as long as more remain, stopping only once the condition checking for that becomes false.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Unlike a for loop, which is bound to a known collection, a while loop keeps running purely based on its condition, so the code inside it must eventually make that condition false or the loop never stops.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Tracing a and b changing on each pass until the condition flips false is easier to follow live than from prose, though the Fibonacci-pattern example already lays out the exact update.",
+        "preferred_visual_modes": [
+          "diagram_animation"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "python.loop_control",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "mechanism",
+          "content": "The break statement breaks out of the innermost enclosing for or while loop -- useful for stopping a search over delivery orders as soon as the one you want is found.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "The continue statement continues with the next iteration of the loop, skipping the rest of the current one -- for example, skipping a delivery record that's missing a time without exiting the whole loop.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "break and continue are each a one-line rule about where control jumps to, fully shown by the two short examples.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "python.comprehensions",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "Building a new list from an existing one by looping, one item at a time, is common enough that Python has a shorthand for it. A list comprehension consists of brackets containing an expression followed by a for clause, and optionally more for or if clauses; it produces a new list from evaluating the expression in that context -- [minutes * 2 for minutes in delivery_times] doubles each value in delivery_times.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "A list comprehension can filter its source with an if clause, e.g. [minutes for minutes in delivery_times if minutes >= 45] keeps only the delivery times that satisfy that condition.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Dict comprehensions create dictionaries from arbitrary key and value expressions, e.g. {city: len(city) for city in ('Lagos', 'Abuja', 'Kano')} maps each city name to the length of its name.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "A comprehension does in one line what a for loop with an if check and an empty list to append into would otherwise take several lines to build.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "The bracket-expression-for-if skeleton is a fixed pattern that the worked delivery_times and city examples already demonstrate completely.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "python.iterating_collections",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "mechanism",
+          "content": "You've already looped over lists with for. Looping over other collections follows the same for x in ... pattern, but what you get back per pass differs by collection. Looping directly over a dictionary (for x in d) yields its keys, since iter(d) returns an iterator over the dictionary's keys -- for order_id in order_city: visits each order id, not each city.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "When looping through a dictionary, the key and its corresponding value can be retrieved together using the items() method, e.g. for order_id, city in order_city.items(): print(order_id, city).",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "misconception",
+          "content": "A set's elements may come out in a different order than expected when iterated over, because a set is unordered -- looping over a set of cities won't necessarily visit them in the order they were added.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "Tuples are a sequence type, so a for loop visits their items in order the same way it does for a list.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "The same for x in ... syntax works across lists, dicts, sets and tuples -- what changes is only what each pass hands you: an item, a key, or (with .items()) a key-value pair.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Each collection's iteration behavior is a short, statable rule already covered by the order_city and set examples.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Reuse order_city from python.dictionaries as the running dict example here."
+      ]
+    },
+    {
+      "concept_id": "python.defining_calling_functions",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "Repeating the same block of code for every delivery record gets tedious to copy and paste. The keyword def introduces a function definition, followed by the function's name and a parenthesized, possibly empty, list of parameter names, e.g. def summarize_delivery():; the statements forming the body start on the next line and must be indented.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "A function definition associates the function name with the function object; calling the function by that name (e.g. summarize_delivery()) runs its body.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "Defining summarize_delivery() once and then calling summarize_delivery() wherever it's needed runs the same body again each time, instead of retyping it.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "def creates a reusable block of code under a name; calling that name followed by parentheses is what actually runs it.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Defining and calling a function is a small, fixed two-step pattern that the worked example already shows in full.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "python.parameters_arguments",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "A function that always does exactly the same thing on every call is limited. The formal parameters of a function are named in its def statement's parenthesized list -- def classify_delivery(minutes): names one parameter, minutes.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Inside the function body, each parameter name refers to the argument value that was passed for it when the function was called -- inside classify_delivery, minutes refers to whatever value was passed in that particular call.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "When a function is called with positional arguments, if there are N positional arguments, they are placed in the function's first N parameter slots, in order -- calling classify_delivery(32) places 32 into the minutes slot.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Parameters name the inputs a function expects; the arguments in a specific call supply the actual values for that one run.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Positional matching of arguments to parameter slots is a fixed rule the classify_delivery example already demonstrates.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "python.return_values",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Printing a result from inside a function shows it once, but the caller can't reuse it afterward. A return statement sends a value back to the code that called the function -- return category gives the caller access to that value instead of just displaying it.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "misconception",
+          "content": "Even a function without a return statement does return a value: the built-in value None. So a function that only prints something, without an explicit return, hands back None to its caller, not the thing it printed.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The returned value can be stored in a variable for later use -- result = classify_delivery(32) stores whatever classify_delivery returns in result, so later code can reuse result without calling the function again.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "A function such as:\ndef classify_delivery(minutes):\n    if minutes > 45:\n        return 'slow'\n    else:\n        return 'fast'\nhands its caller a usable string, which category = classify_delivery(60) then stores for later code to check.",
+          "fact_ids": [
+            "f1",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "return is what turns a function from something that just does an action into something that hands back a result the rest of your code can store and reuse.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing that a call produces a value that gets stored and reused, rather than only printed, is clearer traced live, though the classify_delivery example already walks through storing and reusing the result.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "python.function_default_keyword_args",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "Specifying a default value for a parameter, e.g. def ask_ok(prompt, retries=4):, creates a function that can be called with fewer arguments than it's defined to accept -- ask_ok('Delete this order?') works, using 4 for retries.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "A function can also be called using keyword arguments of the form kwarg=value, e.g. ask_ok(prompt='Delete this order?', retries=2); in a call, keyword arguments must follow any positional arguments.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "All the keyword arguments passed in a call must match one of the function's parameters, and no parameter may receive a value more than once.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "misconception",
+          "content": "A default value is evaluated only once, at the point the function is defined, not on each call. If that default is a mutable object such as a list, the same object is shared across calls and can accumulate changes unless the function is written to create a fresh value each time.",
+          "fact_ids": [
+            "m1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The shared-mutable-default gotcha only becomes visible by tracing several calls in sequence, which a live run makes clearer than a single static description.",
+        "preferred_visual_modes": [
+          "live_code",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "The mutable-default misconception is easy to skip -- state it explicitly, don't just imply it."
+      ]
+    },
+    {
+      "concept_id": "python.variable_scope",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "A variable created inside a function doesn't automatically become visible outside it. All variable assignments in a function store the value in that function's local symbol table.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "For a function that is not nested inside another function, variable references inside it first look in the local symbol table, then the global symbol table, and finally the table of built-in names -- so a name assigned only outside the function is still readable inside it, found in the global table once the local lookup fails.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "misconception",
+          "content": "A global variable cannot be directly assigned a value from inside a function unless it is named in a global statement; it may still be referenced (read) without such a statement. A function that does total = total + 1 on a global total, without first writing global total, creates a new local total instead of updating the global one.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "This is why a same-named local can shadow a global inside a function without disturbing the global's value outside it -- reading the name inside the function sees the local one, while code outside the function still sees the unchanged global.",
+          "fact_ids": [
+            "f1",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Assigning to a name inside a function makes it local by default; only reading (not assigning) reaches out to a global with the same name, unless a global statement says otherwise.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Which symbol table a name resolves through -- local, then global, then built-in -- is easier to track with a labeled diagram of the three tables, though the total = total + 1 example already pins down the assignment rule precisely.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "python.error_handling",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Code that might fail -- like converting text a user typed into a number -- shouldn't crash the whole program over one bad input. The try statement first executes the statements in its try clause; if no exception occurs, the except clause is skipped and execution of the try statement finishes.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "If an exception occurs during the try clause and its type matches the exception named after except, the except clause is executed and execution continues after the try/except block.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "For example, wrapping int(input('Minutes late: ')) in a try clause with except ValueError lets the program print a message such as 'Oops! That was no valid number. Try again...' instead of crashing when the conversion fails.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "try/except lets the program attempt something that might fail and respond to the specific failure, rather than stopping entirely.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "The try/except flow is fully explained by the one worked int(input(...)) example, which shows both the failing case and the resulting message.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "python.import_statements",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Not all functionality needs to be written from scratch inside one file. A module is a file containing Python definitions and statements; definitions from a module can be imported into another module or into the main script with the import statement, e.g. import fibo.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Importing a module this way does not add the names defined in it directly to the current namespace -- it adds the module name, so its functions are accessed through that name, e.g. fibo.fib(1000).",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The from module import name variant imports names from a module directly into the importing module's namespace, e.g. from fibo import fib, so it can then be called as fib(500) without the module prefix.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "Python comes with a library of standard modules that are imported the same way, e.g. import sys makes the sys module's names, such as sys.path, available through sys.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "import gives you access to code someone else already wrote -- either through the module's name (import fibo, fibo.fib(...)) or directly by name (from fibo import fib, fib(...)).",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Both import forms are short, fixed patterns already shown in full by the fibo and sys examples.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "python.file_io",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Delivery records don't always start out inside your running program -- they might live in a text or CSV file on disk. open(filename, mode) returns a file object; mode can be 'r' to read, 'w' to write (erasing an existing file of the same name), or 'a' to append, and 'r' is assumed if mode is omitted.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "practical_context",
+          "content": "It's good practice to use the with keyword when working with a file object, because it closes the file automatically after its block finishes, even if an exception is raised -- with open('orders.txt') as f: ....",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "f.read() reads a file's contents and returns them as a string in text mode; once the end of the file is reached, further calls to f.read() return an empty string.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "csv.DictReader(f) creates a reader that maps each row of a CSV file to a dict, using the first row's values as keys by default, e.g. for row in reader: print(row['city'], row['delivery_minutes']).",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "mechanism",
+          "content": "f.write(string) writes the contents of string to the file, returning the number of characters written.",
+          "fact_ids": [
+            "f5"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "mechanism",
+          "content": "csv.DictWriter(f, fieldnames=['order_id', 'city']) creates a writer that maps a dict to a row; writer.writeheader() writes the header row and writer.writerow(dict) writes one data row, in the order given by fieldnames.",
+          "fact_ids": [
+            "f6"
+          ]
+        },
+        {
+          "id": "tb7",
+          "purpose": "mechanism",
+          "content": "A CSV file used with the csv module should be opened with newline='', e.g. open('orders.csv', 'w', newline='').",
+          "fact_ids": [
+            "f7"
+          ]
+        },
+        {
+          "id": "tb8",
+          "purpose": "takeaway",
+          "content": "Reading and writing files is how a program's delivery data gets in from, and results get out to, storage that outlives the program run -- open() and with manage the connection, and the csv module adds row/column structure on top of plain text.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f4",
+            "f6"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Opening, reading and writing a file, and building a CSV reader and writer, is a multi-step workflow whose before/after -- an actual file's contents changing on disk -- is much clearer demonstrated than described.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "live_code",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Keep 'orders.csv' with order_id/city/delivery_minutes-style columns as the one running file example."
+      ]
+    },
+    {
+      "concept_id": "python.pep8_style",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "PEP 8 recommends using 4 spaces per indentation level, with spaces rather than tabs as the preferred indentation method, and limiting all lines to a maximum of 79 characters.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "PEP 8 recommends avoiding extraneous whitespace, such as immediately inside parentheses, brackets or braces, or immediately before a comma, semicolon, or colon -- e.g. spam(ham[1], {eggs: 2}) rather than spam( ham[ 1 ], { eggs: 2 } ).",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "PEP 8 recommends that function and variable names be lowercase, with words separated by underscores as necessary for readability -- delivery_minutes rather than deliveryMinutes or DeliveryMinutes.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Following these conventions doesn't change what code does; it changes how readable it is to the next person -- including a later you -- who reads it.",
+          "fact_ids": [
+            "f1",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Each PEP 8 rule is a short readability convention already shown correctly and incorrectly in the worked examples.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    }
+  ]
+}

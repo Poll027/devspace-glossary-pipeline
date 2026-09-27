@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "extracted_concepts.schema.json",
+  "title": "Extracted Concepts (batch output)",
+  "description": "01_extraction's output, written by scripts/extract_concepts.py, never by a model. One row per (concept_id, path_id), copied from the frozen TOC. This is the knowledge boundary (playbook §5) every later stage checks against.",
+  "type": "object",
+  "required": ["metadata", "batch_id", "paths", "concepts"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "paths": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["path_id", "toc_workspace", "path_title", "learner_scope", "concept_count"],
+        "properties": {
+          "path_id": { "type": "string" },
+          "toc_workspace": { "type": "string" },
+          "path_title": { "type": "string" },
+          "learner_scope": { "type": "string" },
+          "concept_count": { "type": "integer", "minimum": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "concepts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "concept_id", "concept_name", "path_id", "concept_family_id", "toc_sequence_position",
+          "toc_location", "direct_prerequisite_ids", "allowed_knowledge_ids", "blocked_knowledge_ids",
+          "inline_vocabulary", "forward_preview_ids", "dependency_graph_centrality",
+          "primary_objective", "assessment_target", "practice_objective", "central_mental_model"
+        ],
+        "properties": {
+          "concept_id": { "type": "string", "minLength": 1 },
+          "concept_name": { "type": "string", "minLength": 1 },
+          "path_id": { "type": "string" },
+          "concept_family_id": { "type": "string" },
+          "toc_sequence_position": { "type": "integer", "minimum": 0 },
+          "toc_location": {
+            "type": "object",
+            "required": ["region_id", "terrain_id", "tile_id", "tile_title", "tile_summary"],
+            "properties": {
+              "region_id": { "type": "string" },
+              "terrain_id": { "type": "string" },
+              "tile_id": { "type": "string" },
+              "tile_title": { "type": "string" },
+              "tile_summary": { "type": "string" }
+            },
+            "additionalProperties": false
+          },
+          "direct_prerequisite_ids": { "type": "array", "items": { "type": "string" } },
+          "allowed_knowledge_ids": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Every concept earlier in this path's sequence. Examples, videos and anchors may assume these."
+          },
+          "blocked_knowledge_ids": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Every concept later in this path's sequence. May appear only as an un-required preview, and only if listed in forward_preview_ids."
+          },
+          "inline_vocabulary": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["term", "definition"],
+              "properties": { "term": { "type": "string" }, "definition": { "type": "string" } },
+              "additionalProperties": false
+            }
+          },
+          "forward_preview_ids": { "type": "array", "items": { "type": "string" } },
+          "dependency_graph_centrality": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "How many concepts in this path list this one as a direct prerequisite. The TOC's own depth signal — its disposition field is almost always immediate_core and carries none."
+          },
+          "primary_objective": { "type": "string" },
+          "assessment_target": { "type": "string" },
+          "practice_objective": { "type": "string" },
+          "central_mental_model": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

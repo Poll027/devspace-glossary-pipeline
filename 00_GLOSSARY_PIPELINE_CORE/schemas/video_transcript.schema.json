@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "video_transcript.schema.json",
+  "title": "Video Transcript",
+  "description": "video_bank/transcripts/<video_id>.json. Fetched once per video_id, ever, reused by every concept and every batch that considers this video. Written by scripts/fetch_videos.py (stage 07_transcript_sync).",
+  "type": "object",
+  "required": ["video_id", "channel_id", "fetched_at", "fetch_tool", "caption_track_type", "segments"],
+  "properties": {
+    "video_id": { "type": "string" },
+    "channel_id": { "type": "string" },
+    "fetched_at": { "type": "string" },
+    "fetch_tool": { "type": "string", "description": "e.g. 'yt-dlp 2025.x, --write-auto-sub'. Record the real tool/version, not a placeholder." },
+    "caption_track_type": { "enum": ["creator_uploaded", "auto_generated"] },
+    "segments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["start_seconds", "end_seconds", "text"],
+        "properties": {
+          "start_seconds": { "type": "number", "minimum": 0 },
+          "end_seconds": { "type": "number", "minimum": 0 },
+          "text": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

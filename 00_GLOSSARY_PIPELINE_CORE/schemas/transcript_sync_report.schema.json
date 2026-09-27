@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "transcript_sync_report.schema.json",
+  "title": "Transcript Sync Report",
+  "description": "07_transcript_sync output (scripts/fetch_videos.py). Deterministic bookkeeping — which candidate video_ids already had a cached transcript, which were freshly fetched, which failed. No generator judgment happens in this stage.",
+  "type": "object",
+  "required": ["metadata", "batch_id", "results"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["video_id", "outcome"],
+        "properties": {
+          "video_id": { "type": "string" },
+          "outcome": {
+            "enum": ["already_cached", "fetched", "failed_no_captions", "failed_fetch_error"],
+            "description": "failed_no_captions: video genuinely has no caption track available, not a fetch problem. failed_fetch_error: a real fetch failure (rate limit, network) — retry-worthy, distinct from no_captions."
+          },
+          "error_detail": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

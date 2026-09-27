@@ -1,0 +1,39 @@
+{
+  "pipeline_name": "devspace_glossary_pipeline",
+  "version": "2.0.0",
+  "spec": "PLAYBOOK_v3.md (+ README.md 'Decisions on top of the playbook')",
+  "depends_on_pipeline": "devspace_toc_pipeline",
+  "eligibility_rule": "A path may enter a batch only if its toc_workspace (listed explicitly in batch_run_context.json — workspaces live in more than one folder) contains freeze_manifest.json. software_engineer is a test path, not one of the 64.",
+  "stage_kinds": {
+    "script": "RUN.md — a deterministic script in scripts/. No model judgment. Must exit 0.",
+    "generate_evaluate": "GENERATOR.md then EVALUATOR.md, each in its own fresh subagent. Loop until PASS.",
+    "evaluator_only": "EVALUATOR.md in a fresh subagent; it produces the stage's artifact itself."
+  },
+  "stages": [
+    { "id": "00_preflight", "kind": "generate_evaluate", "outputs": ["batch_run_context.json", "source_pack_manifest.json", "concept_evidence_registry_snapshot.json", "approved_segments_snapshot.json"], "depends_on": [] },
+    { "id": "01_extraction", "kind": "script", "script": "extract_concepts.py", "outputs": ["extracted_concepts.json"], "depends_on": ["batch_run_context.json"] },
+    { "id": "02_registry_lookup", "kind": "script", "script": "registry_lookup.py", "outputs": ["registry_lookup.json"], "depends_on": ["extracted_concepts.json", "concept_evidence_registry_snapshot.json", "approved_segments_snapshot.json"] },
+    { "id": "03_coverage_brief", "kind": "generate_evaluate", "outputs": ["coverage_briefs.json"], "depends_on": ["extracted_concepts.json", "registry_lookup.json", "source_pack_manifest.json"] },
+    { "id": "04_depth_classification", "kind": "generate_evaluate", "outputs": ["depth_classification.json"], "depends_on": ["extracted_concepts.json", "coverage_briefs.json"] },
+    { "id": "05_glossary_pass_a", "kind": "generate_evaluate", "outputs": ["glossary_pass_a.json"], "depends_on": ["extracted_concepts.json", "coverage_briefs.json", "depth_classification.json"] },
+    { "id": "06_video_candidates", "kind": "generate_evaluate", "outputs": ["video_candidates.json"], "depends_on": ["glossary_pass_a.json", "coverage_briefs.json", "registry_lookup.json"] },
+    { "id": "07_transcript_sync", "kind": "script", "script": "fetch_videos.py", "outputs": ["transcript_sync_report.json"], "depends_on": ["video_candidates.json"] },
+    { "id": "08_segment_detection", "kind": "generate_evaluate", "evaluated_by": "09_segment_judge", "outputs": ["segment_proposals.json"], "depends_on": ["video_candidates.json", "transcript_sync_report.json", "coverage_briefs.json", "extracted_concepts.json"] },
+    { "id": "09_segment_judge", "kind": "evaluator_only", "outputs": ["segment_judgments.json"], "depends_on": ["segment_proposals.json"] },
+    { "id": "10_media_selection", "kind": "script", "script": "select_media.py", "outputs": ["selected_media.json"], "depends_on": ["segment_judgments.json", "glossary_pass_a.json", "coverage_briefs.json"] },
+    { "id": "11_reconciliation", "kind": "generate_evaluate", "outputs": ["glossary_bundles_draft.json"], "depends_on": ["glossary_pass_a.json", "selected_media.json", "coverage_briefs.json", "depth_classification.json", "extracted_concepts.json"] },
+    { "id": "12_cluster_pass", "kind": "generate_evaluate", "outputs": ["clusters.json"], "depends_on": ["glossary_bundles_draft.json", "extracted_concepts.json"] },
+    { "id": "13_leakage_check", "kind": "evaluator_only", "outputs": ["leakage_audit_report.json"], "depends_on": ["glossary_bundles_draft.json"] },
+    { "id": "14_bundle_assembly", "kind": "script", "script": "assemble_bundles.py", "outputs": ["path_glossary_bundle.*.json"], "depends_on": ["glossary_bundles_draft.json", "clusters.json", "leakage_audit_report.json"] },
+    { "id": "15_final_validation", "kind": "script", "script": "validate_bundles.py", "then": "CROSS_ARTIFACT_REVIEW.md", "outputs": ["glossary_validation_report.json"], "depends_on": ["path_glossary_bundle.*.json"] },
+    { "id": "15b_stage_gate_ledger", "kind": "script", "script": "update_ledger.py verify", "gated": false, "outputs": [], "depends_on": ["glossary_stage_gate_ledger.json"] },
+    { "id": "16_final_audit", "kind": "evaluator_only", "outputs": ["glossary_independent_audit_report.json"], "depends_on": ["glossary_validation_report.json", "glossary_stage_gate_ledger.json"] },
+    { "id": "16b_registry_merge", "kind": "script", "script": "merge_registry.py", "gated": false, "outputs": ["../00_GLOSSARY_PIPELINE_CORE/registry/concept_evidence_registry.json", "../00_GLOSSARY_PIPELINE_CORE/video_bank/approved_segments.json"], "depends_on": ["glossary_independent_audit_report.json"] }
+  ],
+  "freeze_requires": {
+    "glossary_validation_status": "PASS",
+    "audit_verdict_in": ["PASS", "PASS_WITH_NONBLOCKING_CHANGES"],
+    "prerequisite_leakage_count": 0,
+    "ledger_verify": "update_ledger.py verify exits 0"
+  }
+}

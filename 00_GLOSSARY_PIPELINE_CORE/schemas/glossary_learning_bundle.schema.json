@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glossary_learning_bundle.schema.json",
+  "title": "Glossary Learning Bundle",
+  "description": "The Final Schema handoff for one (concept_id, path_id) — playbook §4 and §32. Everything the Final Schema needs to build screens without another research call; nothing about screens, rewards, question wording or UI.",
+  "type": "object",
+  "required": ["context", "coverage", "teaching_blocks", "video_need", "media", "assessment_anchors", "practice_anchor", "visual_anchor", "teaching_notes", "cluster_ref", "validation"],
+  "properties": {
+    "context": {
+      "type": "object",
+      "required": ["concept_id", "concept_name", "path_id", "depth_tier", "toc_location", "prerequisites", "blocked_future_concepts"],
+      "properties": {
+        "concept_id": { "type": "string" },
+        "concept_name": { "type": "string" },
+        "path_id": { "type": "string" },
+        "depth_tier": { "enum": ["core", "standard", "reference"] },
+        "toc_location": {
+          "type": "object",
+          "required": ["region_id", "terrain_id", "tile_id"],
+          "properties": { "region_id": { "type": "string" }, "terrain_id": { "type": "string" }, "tile_id": { "type": "string" } },
+          "additionalProperties": false
+        },
+        "prerequisites": { "type": "array", "items": { "type": "string" } },
+        "blocked_future_concepts": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "coverage": {
+      "type": "object",
+      "required": ["learning_objective", "required_facts", "misconceptions"],
+      "properties": {
+        "learning_objective": { "type": "string" },
+        "required_facts": { "type": "array", "minItems": 1, "items": { "$ref": "concept_evidence.schema.json#/$defs/fact" } },
+        "misconceptions": { "type": "array", "items": { "type": "object" } }
+      },
+      "additionalProperties": false
+    },
+    "teaching_blocks": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/teaching_block" } },
+    "video_need": { "$ref": "#/$defs/video_need" },
+    "media": {
+      "oneOf": [
+        { "type": "null", "description": "No video: video_need was LOW/NONE, or nothing passed 09_segment_judge. The text must teach alone either way." },
+        { "$ref": "#/$defs/media_group" }
+      ]
+    },
+    "assessment_anchors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["fact_ids", "capability"],
+        "properties": {
+          "fact_ids": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "capability": { "type": "string", "description": "snake_case capability, e.g. choose_first_action, order_steps, predict_output." }
+        },
+        "additionalProperties": false
+      }
+    },
+    "practice_anchor": {
+      "type": "object",
+      "required": ["type", "objective", "success"],
+      "properties": {
+        "type": { "enum": ["live_code", "spreadsheet", "field_selection", "ordering", "matching", "tool_simulation", "data_cleanup", "UI_edit", "formula", "external_proof"] },
+        "objective": { "type": "string" },
+        "success": { "type": "string", "description": "Observable success condition." },
+        "live_code": {
+          "type": "object",
+          "required": ["required_skill", "allowed_syntax", "blocked_syntax", "starter_state_intent", "observable_success"],
+          "properties": {
+            "required_skill": { "type": "string" },
+            "allowed_syntax": { "type": "array", "items": { "type": "string" } },
+            "blocked_syntax": { "type": "array", "items": { "type": "string" } },
+            "starter_state_intent": { "type": "string" },
+            "observable_success": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "visual_anchor": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["type", "purpose"],
+          "properties": {
+            "type": { "enum": ["diagram", "data_table", "spreadsheet", "code", "UI_state", "process_flow", "before_after", "comparison", "formula", "chart", "annotated_screenshot"] },
+            "purpose": { "type": "string", "description": "What must become visible, not how it looks." }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "teaching_notes": { "type": "array", "items": { "type": "string" } },
+    "cluster_ref": { "type": ["string", "null"], "description": "cluster_id from clusters.json, set at 14_bundle_assembly." },
+    "validation": {
+      "type": "object",
+      "required": ["source_supported", "prerequisite_safe", "media_aligned", "ready_for_final_schema"],
+      "properties": {
+        "source_supported": { "type": "boolean" },
+        "prerequisite_safe": { "type": "boolean" },
+        "media_aligned": { "type": "boolean", "description": "true when media is null." },
+        "ready_for_final_schema": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "teaching_block": {
+      "type": "object",
+      "required": ["id", "purpose", "content", "fact_ids"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^tb[0-9]+$" },
+        "purpose": { "enum": ["intro", "definition", "mental_model", "mechanism", "syntax", "example", "walkthrough", "workflow", "misconception", "practical_context", "takeaway"] },
+        "title": { "type": "string" },
+        "content": { "type": "string", "minLength": 10, "description": "Coherent teaching prose that works without any video. Never refers to 'the video'." },
+        "fact_ids": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "video_need": {
+      "type": "object",
+      "required": ["level", "reason", "preferred_visual_modes"],
+      "properties": {
+        "level": { "enum": ["HIGH", "MEDIUM", "LOW", "NONE"], "description": "Only HIGH and MEDIUM go to YouTube discovery (playbook §9, cost gate 3)." },
+        "reason": { "type": "string" },
+        "preferred_visual_modes": { "type": "array", "items": { "$ref": "#/$defs/visual_mode" } }
+      },
+      "additionalProperties": false
+    },
+    "visual_mode": {
+      "enum": ["diagram_animation", "whiteboard_drawing", "annotated_code", "live_code", "spreadsheet_demo", "data_table_demo", "annotated_ui", "slides_with_signaling", "screen_demo", "talking_head_with_visual_support", "talking_head_only"]
+    },
+    "media_group": {
+      "type": "object",
+      "required": ["group_title", "segments", "bridge_note"],
+      "properties": {
+        "group_title": { "type": "string" },
+        "segments": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/media_segment" } },
+        "bridge_note": {
+          "type": "object",
+          "required": ["before", "after"],
+          "properties": {
+            "before": { "type": "string", "description": "Why this clip, what to watch for. Devspace terminology." },
+            "after": { "type": "string", "description": "The takeaway or gap Devspace clarifies after the clip." }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "media_segment": {
+      "type": "object",
+      "description": "Playbook §17 shape. youtube_url and review_url are derived from video_id/start_seconds by code, never typed. Duration is end - start and is not stored.",
+      "required": ["segment_id", "label", "video_id", "youtube_url", "review_url", "start_seconds", "end_seconds", "summary", "fact_ids", "transcript_ref"],
+      "properties": {
+        "segment_id": { "type": "string", "description": "seg_<concept_id>_<video_id>_<start>_<end>, set by select_media.py. Key into video_bank/approved_segments.json (the playbook's video_ref role)." },
+        "label": { "type": "string" },
+        "video_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{11}$" },
+        "youtube_url": { "type": "string", "pattern": "^https://www\\.youtube\\.com/watch\\?v=[A-Za-z0-9_-]{11}$" },
+        "review_url": { "type": "string", "pattern": "^https://www\\.youtube\\.com/watch\\?v=[A-Za-z0-9_-]{11}&t=[0-9]+s$" },
+        "start_seconds": { "type": "integer", "minimum": 0 },
+        "end_seconds": { "type": "integer", "minimum": 1 },
+        "summary": { "type": "string", "minLength": 10, "description": "Devspace-written read alternative. Never the creator's transcript text." },
+        "fact_ids": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "transcript_ref": { "type": "string", "description": "<video_id>:<start>-<end>, pointing into video_bank/transcripts/<video_id>.json. Internal grounding only — full transcripts are not shown to learners." }
+      },
+      "additionalProperties": false
+    }
+  }
+}

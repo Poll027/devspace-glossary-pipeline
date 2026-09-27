@@ -1,0 +1,1435 @@
+{
+  "metadata": {
+    "artifact_type": "glossary_pass_a",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_001_data_analyst_pilot",
+    "run_id": "glossary_batch_001_data_analyst_pilot",
+    "prompt_version": "05_glossary_pass_a@v1",
+    "model": "claude-sonnet-5",
+    "generated_at": "2026-09-27T12:10:00Z",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "extracted_concepts.json": "8e3969d65e33ee46f6e3ca399cf9ada942a5b349eb85f07e6b5d60dfe6acdc8e",
+      "coverage_briefs.json": "d0ef2fa55a4fc956f7aec86aa706596e791e638ea60e8c7c721fdb8273290611",
+      "depth_classification.json": "167f98b6a223279f6b6029cd521b982ca807bbe158217cf523734184ba027a2b"
+    }
+  },
+  "batch_id": "glossary_batch_001_data_analyst_pilot",
+  "entries": [
+    {
+      "concept_id": "spreadsheet.grid_model",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you open a new Excel workbook to start tracking a week of delivery orders. Before you type a single order number, the blank workbook already has structure: its cells are grouped into rows and columns, forming a grid, and each cell can hold a number, text, or a formula.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "Every cell has an address made of its column and row position. Cell A1 is in the first row of column A; by default Excel uses the A1 reference style, referring to columns with letters and rows with numbers, so a cell like B2 is at the intersection of column B and row 2. If you type an order's city into the second row of the second column, you're really typing into B2.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A workbook is not limited to one grid. It can contain multiple sheets, often called spreadsheets, and you can add as many sheets to a workbook as you want. By default, Excel names them Sheet1, Sheet2, Sheet3 and so on, with the name shown on the sheet tab -- and that name can be renamed. So your delivery-orders workbook might start with Sheet1 for the orders themselves and Sheet2 for a list of drivers, and you'd rename each tab to something clearer, like \"Orders\" and \"Drivers\".",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Everything else you do in a spreadsheet -- writing a formula, sorting a table, building a chart -- starts from this: a cell is found by its column-letter/row-number address, and a workbook can hold several such grids side by side as separate sheets.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "The grid and the addressing/sheet-naming rules are a static layout and a naming convention, not a changing process. Text plus the delivery-orders/drivers example already makes the model clear; a labeled screenshot of the grid and sheet tabs would only restate it.",
+        "preferred_visual_modes": [
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": [
+        "The TOC's assessment for this concept expects the learner to identify which sheet a reference points to, which really belongs to spreadsheet.cross_sheet_references (taught later in this chunk) -- this text only covers the grid, cell addressing, and that a workbook can hold multiple named sheets.",
+        "Don't introduce range references (A10:A20) here -- that's the next concept."
+      ]
+    },
+    {
+      "concept_id": "spreadsheet.cell_references_ranges",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Once you know a cell has an address, the next question is how a formula points at one. A reference identifies a cell or a range of cells on a worksheet, and tells Excel where to look for the values you want to use in a formula.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "In the A1 reference style, a single cell is referred to by its column letter followed by its row number, for example B2 -- the same address you'd use to describe one order's city in your Orders sheet.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A reference can also point at a block of cells at once, not just one. A10:A20 refers to the range of cells in column A and rows 10 through 20; A10:E20 refers to the range in columns A through E and rows 10 through 20. So if your delivery times sit in column B, rows 2 through 51, B2:B51 is the range covering every delivery time in that batch.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "You can also reference an entire row or column at once, using just its row number or column letter repeated on either side of a colon -- 5:5 for all cells in row 5, or H:H for all cells in column H. If new orders keep being added to your Orders sheet and you want a reference that always covers the whole city column no matter how many rows exist, C:C does that.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "A cell reference points at one cell's current value; a range reference -- whether a rectangular block like A10:E20 or a whole row or column like H:H -- points at several cells at once. Which one a formula needs depends on whether it's working with a single value or a whole set of them.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "A two-dimensional range like A10:E20, or a whole-column reference like H:H, is a spatial idea -- seeing it highlighted across an actual grid makes the extent of the block instantly clear in a way the notation alone takes a moment to parse.",
+        "preferred_visual_modes": [
+          "annotated_ui",
+          "screen_demo"
+        ]
+      },
+      "teaching_notes": [
+        "The TOC's practice for this concept has the learner sum a range, but SUM and formula syntax in general are taught later in this chunk (spreadsheet.formula_syntax, spreadsheet.aggregation_functions) -- this text only covers how to write a cell or range reference, not how a formula uses one."
+      ]
+    },
+    {
+      "concept_id": "spreadsheet.structured_tables",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Your Orders sheet keeps growing as new deliveries come in, but a plain cell range like A1:F50 doesn't know that -- a formula written against A1:F50 won't automatically notice row 51. Converting the range into an Excel table fixes that.",
+          "fact_ids": [
+            "f1",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "To quickly create a table from a data range, select the cell or range and then select Home > Format as Table, and pick a table style. By default, the resulting table has a header row that labels each column, though that header row can be turned off if it isn't wanted.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Once a range is a table, formulas can refer to its columns by name instead of by raw cell address -- this is called a structured reference. Instead of =SUM(C2:C7), a formula can use =SUM(DeptSales[Sales Amount]), naming the table and the column directly.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "The table also grows with your data on its own: typing a value in a cell just below the table's last row, or in a cell to the right of its last column, expands the table to include that new row or column. So as tomorrow's deliveries get added below your existing Orders table, the table -- and anything referencing it by name -- automatically includes them.",
+          "fact_ids": [
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Watching a plain range turn into a labeled table, and then watching a new row typed just below it get absorbed automatically, is a clear before/after and a UI action -- exactly the kind of change-of-state that's easy to show and slower to describe in words alone.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": [
+        "The TOC's assessment for this concept has the learner write a formula using a structured reference, but formula syntax itself is taught later in this chunk (spreadsheet.formula_syntax) -- this text quotes the given structured-reference example (=SUM(DeptSales[Sales Amount])) without explaining how SUM or formula syntax work in general."
+      ]
+    },
+    {
+      "concept_id": "spreadsheet.named_ranges",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "A named range lets a formula use a readable label instead of a raw cell address. To name a cell or range, select it, type a name into the Name Box, and press Enter -- for example, selecting B2:B51 (your delivery-time column) and naming it DeliveryTimes.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "Once a name is defined, typing the name into a formula, or selecting Formulas > Use in Formula and choosing the name, lets that formula reference the named cell or range instead of its raw address -- a formula can refer to DeliveryTimes instead of B2:B51.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Naming a range is a short, one-step UI action with no branching or changing state; the Name Box and the two ways to insert the name into a formula are fully covered by the text.",
+        "preferred_visual_modes": [
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": [
+        "The TOC's practice for this concept has the learner reference a named range inside a lookup formula, but lookup formulas (spreadsheet.vlookup_xlookup) and formula syntax in general (spreadsheet.formula_syntax) are taught later in this chunk -- this text only covers defining a name and dropping it into a formula in place of a raw address, not what the formula around it does."
+      ]
+    },
+    {
+      "concept_id": "spreadsheet.sorting",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "With a week of orders in your Orders sheet, you often want them in a particular order rather than the order they were entered in -- oldest first, or largest amount first.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "To sort a column of numbers, select a cell in that column and, on the Data tab in the Sort & Filter group, select Sort Smallest to Largest or Sort Largest to Smallest. To sort a column of dates or times, select a cell in that column and select Sort Oldest to Newest or Sort Newest to Oldest instead.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "To sort by more than one column, open the Sort dialog box from Data > Sort, choose the first column to sort by in the Sort by box, then select Add Level to add another column to sort by -- entries higher in the list are sorted before entries lower in the list. Each level added in the dialog box has its own Order setting, so different columns within the same multi-level sort can be sorted in different directions.",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "Sorting your Orders sheet by order date, oldest to newest, and adding a second level that sorts amount largest to smallest as a tiebreaker, puts same-day orders in descending amount order while the days themselves stay in ascending order.",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The single-column sort commands are simple enough for text alone, but the multi-level Sort dialog -- adding a level, and giving each level its own independent direction -- is a short workflow with a UI dialog that a demo makes faster to follow than describing each click.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.filtering",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Sometimes you don't want to reorder your Orders sheet, you want to see only some of it -- for example, only the orders above a certain amount.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "To filter a range of data, select any cell within the range, select Data > Filter, select the column header's filter arrow, choose Number Filters or Text Filters and a comparison such as Greater Than, enter the filter criteria, and select OK. AutoFilter shows the data you want and hides the rest; clearing a filter redisplays all of the data.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "A range or table can be filtered by more than one column at once; filters are additive, so each additional filter is based on the current filter and further reduces the subset of data shown. Filtering your Orders sheet to amounts greater than 100, then filtering the city column to Lagos, leaves only the Lagos orders above 100 -- both conditions apply together, not separately.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Rows appearing and disappearing as a filter is applied, and shrinking further as a second filter is added, is a before/after effect that's quicker to see than to describe, though the underlying idea -- hide rather than delete, filters stack -- is simple enough that the text alone still teaches it.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.conditional_formatting",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "Conditional formatting applies a format to cells automatically based on rules you create that determine the format based on the cells' values -- rather than you manually coloring cells one at a time.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "To apply a quick conditional formatting rule, select the cells, then on the Home tab in the Style group select Conditional Formatting > Highlight Cells Rules, choose a comparison command such as Less Than, enter the comparison value, and select a format. Selecting your delivery-time column and applying Highlight Cells Rules > Less Than with a value of 15 and a green fill would automatically color every delivery under 15 minutes, and keep coloring new fast deliveries as they're entered.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The rule re-evaluating automatically as values change -- a cell's color flipping on and off as its number crosses the threshold -- is a before/after worth seeing, even though the single Highlight Cells Rules dialog is simple enough to follow from text.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.data_validation",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "Data validation restricts the type of data or the values users can enter into a cell, such as a dropdown list, and can display a customized error message when a user enters invalid data.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "To add a dropdown-list data validation rule, select the cells, select Data > Data Validation, on the Settings tab set Allow to List, then in the Source box type the list values separated by commas, making sure the In-cell dropdown check box is selected. Restricting your Orders sheet's status column this way -- with Source set to Pending,Delivered,Cancelled -- means every entry in that column has to be one of those three words.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "Data validation can also restrict entry to a whole number, decimal, date, time, or text length within limits: under Allow choose the type (for example Whole Number), under Data choose a condition (for example between), and then enter the minimum, maximum, or specific value to allow. On the delivery-time column, choosing Whole Number, between 0 and 300, would block anyone from typing a negative or unreasonably large delivery time.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing the dropdown appear in the cell, and seeing the customized error message pop up on an invalid entry, is a concrete before/after that a screen demo shows faster than prose, though the dialog's fields are simple enough to also follow from the text.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.remove_duplicates_cleaning",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Say the same order number shows up twice in your Orders sheet -- maybe it was entered once by mistake. Excel has a dedicated tool for this, but it's worth being careful with.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "When you use the Remove Duplicates feature, the duplicate data is permanently deleted, so it's a good idea to copy the original data to another worksheet before removing duplicates.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "To remove duplicates, select the range of cells that has duplicate values, select Data > Remove Duplicates, and then check or uncheck the columns under Columns to choose which columns are used to identify a duplicate row. On your Orders sheet, checking only the order-number column means two rows with the same order number get treated as duplicates even if other columns differ -- while checking every column would only catch rows that match everywhere.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Choosing which columns define a duplicate changes which rows disappear, and seeing that choice made in the Columns list -- and the row count shrink afterward -- is a before/after that's easier to follow watched than described.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.text_to_columns_split",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "To split text into columns, select the cell or column that contains the text, select Data > Text to Columns, choose Delimited, select the delimiter(s) such as Comma or Space, choose the destination for the split data, and select Finish.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "If your Orders sheet has a single column holding \"Lagos, Nigeria\" as one text value, running Text to Columns with Comma as the delimiter splits it into a City column and a Country column.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The wizard's steps and the before/after of one messy column becoming several clean ones are easy to follow in text, but watching the split happen makes the delimiter choice's effect immediately visible.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.cross_sheet_references",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "A formula can refer to a cell on another sheet in the same workbook by writing the sheet name followed by an exclamation point (!) and then the cell or range reference, for example Marketing!B1. So a formula on your Orders sheet that needs a value sitting on your Drivers sheet could reference Drivers!B1.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "If the referenced worksheet's name contains spaces or numbers, the name must be enclosed in single quotation marks in the reference, for example ='January Revenue'!A1. So if you renamed your drivers tab to \"Driver List\", a reference to it would need to be written 'Driver List'!A1, not Driver List!A1.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A workbook link (previously called an external reference) to a cell range in another workbook, when the source workbook is open, includes the workbook name in square brackets, followed by the worksheet name, an exclamation point, and the cells the formula depends on, for example =SUM([Budget.xlsx]Annual!C10:C25).",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "This is a notation rule for how a reference is written, not a process with changing state; the quoted examples fully specify the syntax for a same-workbook cross-sheet reference, a name with spaces, and a cross-workbook link.",
+        "preferred_visual_modes": [
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.formula_syntax",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "So far you've entered plain values into your Orders sheet -- a formula lets a cell compute something instead.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "Formulas in Excel always begin with the equal sign (=). Excel's arithmetic operators include + for addition, - for subtraction, * for multiplication, and / for division; for example =2+4, =4-2, =2*4, and =4/2 are all valid formulas.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "To create a formula that refers to values in other cells, select a cell, type an equal sign, select or type the first cell's address, enter an operator such as - for subtraction, select or type the next cell's address, and press Enter. So a cell computing the difference between an order's promised time and its actual delivery time might be written =B2-C2.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "To enter a formula that contains a built-in function, type an equal sign and the function's name, an opening parenthesis, then select the range of cells the function should use, and a closing parenthesis, then press Enter.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "mechanism",
+          "content": "Excel performs the operations in a formula in a specific precedence order (for example, multiplication and division before addition and subtraction); parentheses change that order -- =5+2*3 gives 11, but =(5+2)*3 gives 21. Getting the parentheses right matters whenever a formula mixes more than one kind of operation.",
+          "fact_ids": [
+            "f5"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "Every formula starts with =, combines cell references and operators or a function call, and follows Excel's precedence rules unless parentheses override them -- that combination is the basis for every calculation you'll write in a spreadsheet.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f4",
+            "f5"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching someone click cells into a formula while typing operators shows the mechanics faster than describing each keystroke, though the precedence rule itself is fully pinned down by the two quoted examples in text.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": [
+        "The TOC's practice for this concept asks for a percentage-change formula, which overlaps with the later stats.lift_interpretation concept -- this text teaches only general arithmetic-operator and function-call syntax, not percentage change specifically."
+      ]
+    },
+    {
+      "concept_id": "spreadsheet.relative_absolute_references",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Copy a formula like =B2*C2 down a column of orders, and normally both references shift down with it -- which is usually what you want, but not always.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A relative cell reference, such as A1, is based on the relative position of the cell containing the formula and the cell it refers to; if you copy or fill the formula across rows or down columns, the reference automatically adjusts, and by default new formulas use relative references.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "An absolute cell reference, such as $A$1, always refers to a cell in a specific location; if you copy or fill the formula across rows or down columns, the absolute reference does not adjust. If a fixed tax rate lives in one cell, say $F$1, a formula like =B2*$F$1 copied down every order row keeps pointing at that same tax-rate cell, while B2 still shifts to B3, B4, and so on.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "A mixed reference has either an absolute column and relative row (for example $A1) or an absolute row and relative column (for example A$1); when the formula is copied, the relative part adjusts and the absolute part does not.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "The whole point of relative, absolute, and mixed references only shows up when a formula is copied -- watching one reference shift and another stay fixed as the fill handle is dragged down a column is a before/after that's far clearer seen than described.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.aggregation_functions",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "With a full column of delivery amounts or delivery times, you often want one summary number rather than reading every row.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "The SUM function adds values; its syntax is SUM(number1, [number2], ...), where each argument can be a number, a cell reference, or a range, for example =SUM(A2:A10). On your Orders sheet, =SUM(D2:D51) would total every order's amount.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "The AVERAGE function returns the average (arithmetic mean) of its arguments; its syntax is AVERAGE(number1, [number2], ...), and if a range or cell-reference argument contains text, logical values, or empty cells, those values are ignored, though cells with the value zero are included. =AVERAGE(C2:C51) over your delivery-time column gives the average delivery time, skipping any row where the time was never entered.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "The COUNT function counts the number of cells that contain numbers; its syntax is COUNT(value1, [value2], ...), and only numbers in the array or reference are counted, while empty cells, logical values, text, and error values are not. The COUNTA function counts the number of cells that are not empty in a range, counting cells with any type of information including text and error values, but not empty cells; its syntax is COUNTA(value1, [value2], ...). So =COUNT(C2:C51) tells you how many delivery times were actually recorded as numbers, while =COUNTA(C2:C51) tells you how many rows in that range have anything entered at all, including a stray text note.",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "SUM, AVERAGE, COUNT and COUNTA all reduce a range to one number; which one you reach for depends only on which summary you need -- total, mean, count of numbers, or count of anything non-blank.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "COUNT and COUNTA look almost identical but quietly behave differently on the same range (numbers only versus anything non-blank) -- running both against one real column side by side and comparing the two results clarifies that difference faster than describing it.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.logical_functions",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Some columns in your Orders sheet call for a decision rather than a sum -- for example, labeling an order \"Late\" or \"On Time\" based on its delivery time.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "The IF function tests a condition and returns one value if the condition is TRUE and another value if it's FALSE; its syntax is IF(logical_test, value_if_true, [value_if_false]). Text in formulas goes in quotes; for example =IF(A2>B2,\"Over Budget\",\"OK\") tests whether A2 is greater than B2 and returns one of the two quoted text results. On your Orders sheet, =IF(C2>60,\"Late\",\"On Time\") would label any delivery over 60 minutes as Late.",
+          "fact_ids": [
+            "f1",
+            "f5"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Multiple IF functions can be nested inside each other in order to perform more than one comparison. A nested IF can convert a numeric score to a letter grade, for example =IF(D2>89,\"A\",IF(D2>79,\"B\",IF(D2>69,\"C\",IF(D2>59,\"D\",\"F\")))). The same structure could sort your orders into bands by amount instead of by a single Late/On-Time split.",
+          "fact_ids": [
+            "f2",
+            "f6"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "The AND function returns TRUE if all of its arguments evaluate to TRUE, and returns FALSE if one or more arguments evaluate to FALSE; its syntax is AND(logical1, [logical2], ...), and it is commonly used as the logical_test argument of IF to test more than one condition at once. The OR function returns TRUE if any of its arguments evaluate to TRUE, and returns FALSE if all of its arguments evaluate to FALSE; its syntax is OR(logical1, [logical2], ...). So =IF(AND(C2>60,D2>100),\"Late & High Value\",\"Other\") only labels an order that way when both the delivery is late and the amount is over 100.",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "A nested IF's evaluation order -- which branch fires first, and where the next IF sits inside the false branch -- is easier to trace by walking through it step by step on screen than by reading the parentheses cold.",
+        "preferred_visual_modes": [
+          "annotated_code",
+          "screen_demo"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.text_combining",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "syntax",
+          "content": "TEXTJOIN combines text from multiple ranges or strings and inserts a delimiter you specify between each text value; its syntax is TEXTJOIN(delimiter, ignore_empty, text1, [text2], ...). Setting ignore_empty to TRUE skips empty cells among the arguments rather than joining them in as blank values. Joining a city and a status column with TEXTJOIN(\", \", TRUE, B2, E2) would skip a blank status instead of leaving a stray comma behind.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "CONCATENATE joins two or more text strings into one string; its syntax is CONCATENATE(text1, [text2], ...), though Microsoft recommends using the newer CONCAT function instead, since CONCATENATE may not be available in future versions of Excel.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Combining text values is a single, minor function call with no branching or changing state; the two syntaxes and the ignore_empty behavior are fully specified in text.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.text_extraction",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "syntax",
+          "content": "LEFT returns the first character or characters in a text string, based on the number of characters you specify; its syntax is LEFT(text, [num_chars]). RIGHT returns the last character or characters in a text string, based on the number of characters you specify; its syntax is RIGHT(text, [num_chars]). If order IDs look like \"LG-2045\", =LEFT(A2,2) pulls out \"LG\" and =RIGHT(A2,4) pulls out \"2045\".",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "MID returns a specific number of characters from a text string, starting at the position you specify; its syntax is MID(text, start_num, num_chars). On the same order ID, =MID(A2,4,4) starting at position 4 for 4 characters would also return \"2045\".",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "TRIM removes all spaces from a text value except for single spaces between words; its syntax is TRIM(text). If a city column was imported with stray leading or trailing spaces -- \" Lagos \" instead of \"Lagos\" -- =TRIM(B2) cleans it.",
+          "fact_ids": [
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Each function reads a fixed piece of an existing string by position; the worked examples on one order ID and one city value fully show what each function returns without needing a demonstration.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.date_functions",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "mechanism",
+          "content": "Excel stores dates as sequential serial numbers so they can be used in calculations; by default, January 1, 1900 is serial number 1. That's why date functions can do arithmetic on dates the same way ordinary functions do on numbers.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "The TODAY function returns the serial number of the current date and takes no arguments; its syntax is TODAY().",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "The DATEDIF function returns the difference between a start_date and an end_date in the unit you specify; its syntax is DATEDIF(start_date, end_date, unit), where a unit of \"Y\" returns the number of complete years in the period, and a unit of \"D\" returns the number of days in the period. DATEDIF is useful in formulas where you need to calculate an age.",
+          "fact_ids": [
+            "f2",
+            "f5",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "On your Orders sheet, =DATEDIF(A2,TODAY(),\"D\") would tell you how many days have passed since order A2 was placed.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "TODAY and DATEDIF are two function calls with a stated unit argument; the serial-number model and the age-calculation use case are both fully explained by the text without needing a demonstration.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.conditional_aggregation",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "SUM, AVERAGE, COUNT and COUNTA all take whatever range you give them, with no built-in way to restrict which rows count. Often you only want the rows that meet some condition -- orders from one city, say.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "COUNTIF counts the number of cells in a range that meet a single criterion; its syntax is COUNTIF(range, criteria). SUMIF sums the values in a range that meet criteria you specify, optionally applying the criteria to one range while summing the corresponding values in a different range; its syntax is SUMIF(range, criteria, [sum_range]). =COUNTIF(B2:B51,\"Lagos\") counts Lagos orders; =SUMIF(B2:B51,\"Lagos\",D2:D51) sums their amounts.",
+          "fact_ids": [
+            "f1",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "COUNTIFS applies criteria to cells across multiple ranges and counts the number of times all the criteria are met together; its syntax is COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2], ...), and each additional range must have the same number of rows and columns as criteria_range1. SUMIFS adds the cells in a sum_range that meet multiple criteria at once, where each criteria_range/criteria pair is a separate condition that must all be met; its syntax is SUMIFS(sum_range, criteria_range1, criteria1, [criteria_range2, criteria2], ...). =SUMIFS(D2:D51,B2:B51,\"Lagos\",E2:E51,\"Delivered\") sums only the Lagos orders that are also marked Delivered.",
+          "fact_ids": [
+            "f2",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "Criteria for these functions can be a number, expression, cell reference, or text, such as 32, \">32\", B4, or \"apples\"; criteria containing comparison symbols or text must be enclosed in quotation marks. The same range can be used in more than one criteria pair to test a range condition, for example =COUNTIFS(A2:A7,\"<6\",A2:A7,\">1\") counts values between 1 and 6 -- the same trick would let you count deliveries with a delivery time between 10 and 60 minutes using =COUNTIFS(C2:C51,\">10\",C2:C51,\"<60\").",
+          "fact_ids": [
+            "f5",
+            "f6"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Lining up which criteria_range pairs with which criteria across a multi-condition COUNTIFS or SUMIFS is easy to get backwards from reading syntax alone -- watching one built live, argument by argument, against a real range makes the pairing concrete.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.vlookup_xlookup",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose your Drivers sheet has driver IDs in its leftmost column and driver names in the column next to it, and your Orders sheet only records a driver ID. You want each order row to show the matching driver's name.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "VLOOKUP looks up a value in the leftmost column of a range and returns a value from the same row in a column you specify by its position; its syntax is VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]). In VLOOKUP, entering FALSE (or 0) for range_lookup searches for an exact match to lookup_value; leaving range_lookup blank or entering TRUE searches for an approximate match instead, and TRUE is the default if the argument is omitted. Looking up a driver ID with =VLOOKUP(A2,Drivers!A:B,2,FALSE) forces an exact match, which matters because an approximate match against driver IDs would return the wrong driver.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "HLOOKUP works like VLOOKUP but searches across the top row of a table and returns a value from a row you specify by its position; its syntax is HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup]).",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "VLOOKUP can only look up a value from left to right, but XLOOKUP works in any direction and returns exact matches by default. XLOOKUP searches lookup_array for lookup_value and returns the corresponding item from return_array, producing an exact match by default; its syntax is XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]). The same driver lookup written as =XLOOKUP(A2,Drivers!A:A,Drivers!B:B) already matches exactly, without needing FALSE spelled out.",
+          "fact_ids": [
+            "f4",
+            "f5"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Watching a lookup formula scan down a key column and pull back a value from another column -- and watching an exact match go wrong when range_lookup is left as an approximate match by default -- is a mechanism that's far easier to follow demonstrated than described.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.index_match",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "VLOOKUP only works when the column you're returning a value from sits to the right of the key column. If your Drivers sheet instead had driver names in column A and driver IDs in column B, VLOOKUP couldn't look up an ID and return the name to its left.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "MATCH searches for a specified item in a range of cells and returns the relative position of that item within the range; its syntax is MATCH(lookup_value, lookup_array, [match_type]). Setting MATCH's match_type to 0 finds an exact match; a match_type of 1, or omitting the argument, finds the largest value that is less than or equal to lookup_value, and requires lookup_array to be sorted in ascending order.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "INDEX returns the value of an element in a range or array, selected by its row and column position; the array form's syntax is INDEX(array, row_num, [column_num]).",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "VLOOKUP can only look up a value from left to right, meaning the column containing the lookup value must be to the left of the column containing the return value; when the layout isn't built that way, MATCH can find the row position of the key and INDEX can then return the value from any column at that row position. So =INDEX(A:A,MATCH(B2,B:B,0)) finds the row where the driver ID in B2 occurs, then reads the driver name from column A at that same row -- something VLOOKUP alone couldn't do on this layout.",
+          "fact_ids": [
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Seeing MATCH return a row position and then watching INDEX use that same position to pull a value from a completely different column makes the two-step handoff between the functions concrete in a way that reading the nested formula doesn't.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.formula_error_troubleshooting",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Formulas in your Orders or Drivers sheets sometimes show an error code instead of a value. Each code points at a different kind of problem.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "The #N/A error generally indicates that a formula can't find what it's been asked to look for; the most common cause is with XLOOKUP, VLOOKUP, HLOOKUP, LOOKUP, or MATCH functions when the lookup value doesn't exist in the source data. A VLOOKUP for a driver ID that was never entered on the Drivers sheet would show #N/A.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The #REF! error shows when a formula refers to a cell that's not valid, which happens most often when cells that were referenced by formulas get deleted or pasted over. Deleting the amount column that a SUM formula depended on would turn that formula into a #REF! error.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "#VALUE! is Excel's way of saying there's something wrong with the way a formula is typed, or something wrong with the cells it's referencing. A formula like =A1+B1+C1 can break and return a #VALUE! error if any of the referenced cells contains a non-numeric (text) value, whereas a SUM formula over the same cells ignores the text values and sums only the numeric ones -- so typing a stray note into an amount cell breaks a plain + formula but not a SUM over the same range.",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "If AVERAGE or SUM refer to cells that contain #VALUE! errors, the formulas will result in a #VALUE! error too -- one bad cell's error can spread into every summary formula built on top of it.",
+          "fact_ids": [
+            "f5"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Recognizing which error code you're looking at, and seeing how a bad cell's #VALUE! error propagates into a SUM or AVERAGE built over it, is easier to spot when watched happening on a real sheet than described in the abstract.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.pivot_tables",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Reading down a long Orders sheet to compare total amounts by city and status by hand would take forever. A PivotTable does that comparison for you.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A PivotTable is a tool to calculate, summarize, and analyze data that lets you see comparisons, patterns, and trends in your data.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "To create a PivotTable, select the data cells, select Insert > PivotTable, choose where to place the PivotTable report, and select OK. To add a field to the PivotTable, select its checkbox in the PivotTable Fields pane; selected fields are added to their default areas, with non-numeric fields added to Rows and numeric fields added to Values, and a field can be moved to a different area by dragging it there.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "Filters area fields are shown as top-level report filters above the PivotTable; Columns area fields are shown as Column Labels at the top of the PivotTable; Rows area fields are shown as Row Labels on the left side of the PivotTable; Values area fields are shown as summarized numeric values in the PivotTable. Building a PivotTable from your Orders data with City dragged into Rows, Status dragged into Columns, and Amount left in Values gives a grid of total order amounts for every city/status combination at once.",
+          "fact_ids": [
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Dragging fields between the Rows, Columns, Values, and Filters areas and watching the summary grid rearrange itself is exactly the kind of changing-state, tool-usage demonstration that's much faster to show than to narrate field by field.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.pivot_summarization",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "Data in a PivotTable's Values area summarizes the underlying source data by default using the SUM function for numeric values and the COUNT function for text values. Placing Amount in Values on your Orders PivotTable defaults to a total of every matching order's amount, not an average.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "To change a value field's summary function, select the field in the Values area, on the PivotTable Analyze tab select Active Field > Field Settings (or right-click the value and choose Value Field Settings), select the Summarize Values By tab, and choose the summary function you want, such as Average. Switching Amount from Sum to Average turns the same PivotTable from showing total revenue per city into showing average order value per city, without changing which fields are in Rows or Columns.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching the numbers in an existing PivotTable recompute the instant the summary setting is switched from Sum to Average is a clear before/after that a quick demo shows in seconds.",
+        "preferred_visual_modes": [
+          "screen_demo"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.bar_chart_creation",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "Bar charts illustrate comparisons among individual items; in a bar chart, the categories are typically organized along one axis and the values along the other. A summary table of total order amount by city is exactly the kind of category-versus-value data a bar chart compares.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "To create a chart, select the data for the chart, select Insert > Recommended Charts, and select a chart on the Recommended Charts tab to preview it; if you don't see a bar chart you like, select the All Charts tab to see all chart types, select the chart, and select OK.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "A bar chart's whole point is visual comparison, so seeing the finished chart -- and the Recommended Charts preview step that produces it -- is worth showing, even though the two-step creation process is simple enough to follow from text.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.line_chart_creation",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "In a line chart, category data is distributed evenly along the horizontal axis and value data along the vertical axis; line charts can show continuous data over time on an evenly scaled axis, making them well suited to showing trends at equal intervals such as months, quarters, or fiscal years. A summary of total order amount by month is exactly this kind of evenly-spaced, time-ordered data.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "To create a chart, select the data for the chart, select Insert > Recommended Charts, and select a chart on the Recommended Charts tab to preview it; if you don't see a line chart you like, select the All Charts tab to see all chart types, select the chart, and select OK.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The value of a line chart is seeing the trend's shape, so showing the finished chart alongside its monthly-totals source table is worth doing, even though the creation steps themselves are simple.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "spreadsheet.pie_chart_creation",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "Pie charts show the size of items in one data series proportional to the sum of the items, and are appropriate when you have only one data series to plot, none of the values are negative, there are no more than seven categories, and the categories represent parts of the whole pie. A summary of total order amount by city, for a handful of cities, fits that description as long as every amount is positive.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "To create a chart, select the data for the chart, select Insert > Recommended Charts, and select a chart on the Recommended Charts tab to preview it; if you don't see a pie chart you like, select the All Charts tab to see all chart types, select the chart, and select OK.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "A pie chart's proportional wedges are inherently visual, so seeing the finished chart is worth it, though the eligibility conditions (one series, no negatives, up to seven categories) and the creation steps are both fully covered by text.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stats.ab_test_structure",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The delivery company wants to know whether a redesigned checkout button on its ordering app gets more people to complete an order. Rather than guess, it runs a controlled test on real users.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "Studies where researchers assign treatments to cases are called experiments; when the assignment includes randomization, it is called a randomized experiment. Researchers randomly assign cases to a control group and a treatment group so that differences between the groups that cannot otherwise be controlled are evened out.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A/B testing works by showing two variants of a page or experience to users at random: the original (control, or A) and a modified version (variation, or B); engagement with each version is measured and then compared against the baseline, the control. For the checkout button, the existing button is the control (A), the redesigned button is the treatment (B), users are randomly shown one or the other, and the metric compared is how many of each group complete an order.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Naming the control, the treatment, and the metric being compared is the first thing to pin down before looking at any result -- without a control group to compare against, a treatment group's numbers alone don't tell you whether the change did anything.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Randomly splitting one population of users into two groups that each experience something different is a spatial/process relationship -- a diagram showing users being randomly routed into a control arm and a treatment arm makes the structure clearer than describing the split in words.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "slides_with_signaling"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stats.lift_interpretation",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Once the checkout-button test has run, the raw numbers -- say, a 20% completion rate for the control button and a 22% completion rate for the redesigned one -- need to be turned into a comparison that's easy to talk about.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "Relative improvement (lift) is the percentage difference in the variation's conversion rate over the baseline (control) conversion rate; for example, a 10% relative improvement over a 25% baseline conversion rate means the variation's conversion rate is 27.5%. Relative improvement describes the variation's change as a percentage of the baseline's rate.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "Applying that to the checkout test: a treatment rate of 22% over a control rate of 20% is a 2-percentage-point difference, which as a percentage of the 20% baseline is a 10% lift -- the same 10%-relative-improvement structure as the textbook example, just with the checkout numbers in place of its.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Analyzing an A/B test's results means determining whether the variation had a positive, negative, or neutral effect compared with the baseline (control) -- lift is the number that answers that question in one figure.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Lift is a percentage-change calculation on two numbers that are already known; the worked example fully shows how to compute and read it, with no mechanism, UI, or changing state to demonstrate.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stats.sample_size_effect_concept",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose two versions of the checkout-button test both come back showing the same 10% lift -- but one ran with 50 users in each group and the other ran with 5,000 users in each group. Should you trust them equally?",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A bigger sample tends to provide a more precise point estimate than a smaller sample. The more cases researchers observe, the more accurately they can estimate the effect of the explanatory variable on the response; in a single study, this is done by collecting a sufficiently large sample.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "So the 5,000-user version of the checkout test gives a more precise estimate of the button's true effect than the 50-user version, even though both happened to show the same 10% lift -- the smaller test's result is more likely to have been thrown off by which particular users happened to land in each group.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The idea that small-sample estimates scatter more widely around the true effect than large-sample ones is a spread that's easier to picture with a diagram of estimates clustering tightly for the large sample and spreading widely for the small one than to hold in mind from a description alone.",
+        "preferred_visual_modes": [
+          "diagram_animation"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stats.significance_confidence_concept",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The checkout test showed a 10% lift for the redesigned button. Before recommending it company-wide, you need language for how sure that result actually is.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "The null hypothesis (H0) often represents a skeptical position or a perspective of \"no difference\", and the alternative hypothesis (HA) represents an alternative claim under consideration. For the checkout test, H0 would be that the redesigned button makes no real difference to completion rate, and HA would be that it does.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The p-value is the probability of observing data at least as favorable to the alternative hypothesis as our current data set, if the null hypothesis were true; it is used to quantify the strength of evidence against the null hypothesis. Statistical significance is a measure of how unusual an experiment's results would be if there were actually no difference in performance between the variation and the baseline and the discrepancy were due to random chance alone.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "A confidence interval represents a range of plausible values where we are likely to find the population parameter; if many samples were taken and a 95% confidence interval were built from each one, about 95% of those intervals would contain the parameter.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "misconception",
+          "content": "Describing a confidence interval as capturing the population parameter with a certain probability is a common error; while it may be useful to think of it that way, the confidence level only quantifies how plausible it is that the parameter is in the given interval. So it's not quite right to say \"there's a 95% chance the true completion-rate difference is in this interval\" -- the 95% describes how the method behaves across many samples, not the probability attached to this one interval.",
+          "fact_ids": [
+            "f5"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "misconception",
+          "content": "Not every confidence interval captures the true value, even when the method is followed correctly: in an illustrative set of twenty-five 95% confidence intervals built from different samples (around p = 0.88), only one failed to contain the population proportion -- showing that a small fraction of intervals will miss it purely by chance. The same is true of any single confidence interval you compute for a result like the checkout test.",
+          "fact_ids": [
+            "m1"
+          ]
+        },
+        {
+          "id": "tb7",
+          "purpose": "takeaway",
+          "content": "When the sample size becomes large, even a very small, practically unimportant difference can be detected and called statistically significant; such a difference is statistically significant but not practically significant. A large enough checkout test could find a tiny, real-but-trivial lift and correctly call it significant -- significance tells you the result probably isn't due to chance, not that the result is big enough to matter.",
+          "fact_ids": [
+            "f6"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Hypotheses, p-values, and confidence intervals are all defined in terms of what would happen across many repeated samples -- an animation showing repeated samples each producing their own interval, most catching the true value and a few missing it, makes that repeated-sampling idea concrete in a way that a single static definition can't.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "slides_with_signaling"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stats.business_conclusion_from_experiment",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Running the numbers and getting a p-value or a confidence interval isn't the end of the job -- someone still has to decide what to do about the checkout button.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "The null hypothesis (H0) often represents a skeptical perspective or a claim to be tested, and the alternative hypothesis (HA) represents an alternative claim under consideration; the value being compared to the parameter in this setup is called the null value.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Consider two versions of a proportion test against a null value of 0.333. In one, because the null value (p0 = 0.333) fell within the confidence interval computed from the sample, that value was not implausible, so the data did not provide sufficient evidence to reject the null hypothesis. In a second, the null value (p0 = 0.333) was not in the 95% confidence interval, so the null hypothesis was rejected: the data provided statistically significant evidence that the proportion differed from 0.333, and because the entire interval was below 0.333, it was concluded to be lower.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "misconception",
+          "content": "While the first example failed to reject the null hypothesis, that does not necessarily mean the null hypothesis is true; perhaps there was an actual difference, but it wasn't possible to detect it with the relatively small sample of 50. Failing to reject the null hypothesis is not equivalent to accepting the null hypothesis as true; it only means there was not strong enough evidence for the alternative.",
+          "fact_ids": [
+            "f6",
+            "m1"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "example",
+          "content": "Analyzing an A/B test's results means determining whether the variation had a positive, negative, or neutral effect compared with the baseline (control). For the checkout test, that means stating plainly whether the redesigned button did better, worse, or about the same as the original -- not just reporting a p-value and stopping.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "When the sample size becomes large, even a very small, practically unimportant difference can be detected and called statistically significant; for example, an online experiment might find that placing additional ads on a movie review website statistically significantly increases viewership of a TV show by 0.001%, but this increase might not have any practical value. A business conclusion has to weigh that: a statistically significant lift on the checkout button is only worth acting on if the size of the lift is big enough to matter, not just detectable.",
+          "fact_ids": [
+            "f5"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The two contrasting outcomes -- a null value sitting inside a confidence interval versus falling outside it -- are easier to place and compare with a number-line diagram showing the interval and where the null value lands than to hold in mind from the worked numbers alone.",
+        "preferred_visual_modes": [
+          "diagram_animation"
+        ]
+      },
+      "teaching_notes": []
+    }
+  ]
+}

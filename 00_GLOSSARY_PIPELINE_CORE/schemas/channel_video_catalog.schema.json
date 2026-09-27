@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "channel_video_catalog.schema.json",
+  "title": "Channel Video Catalog",
+  "description": "video_bank/channel_catalogs/<channel_id>.json, written by scripts/sync_catalogs.py. One file per allowlisted channel, its full upload list, refreshed occasionally (not per batch). 06_video_candidates searches these first instead of spending YouTube search quota. The cheap flat listing has no description or date; full metadata is fetched only for real candidates, by 07_transcript_sync.",
+  "type": "object",
+  "required": ["channel_id", "synced_at", "videos"],
+  "properties": {
+    "channel_id": { "type": "string" },
+    "synced_at": { "type": "string" },
+    "videos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["video_id", "title", "description", "duration_seconds", "published_at"],
+        "properties": {
+          "video_id": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": ["string", "null"] },
+          "duration_seconds": { "type": "integer", "minimum": 0 },
+          "published_at": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

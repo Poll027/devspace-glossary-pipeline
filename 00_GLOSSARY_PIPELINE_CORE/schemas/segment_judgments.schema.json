@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "segment_judgments.schema.json",
+  "title": "Segment Judgments (batch output)",
+  "description": "09_segment_judge's output (playbook §16). Evaluator-only, fresh context. The real video quality gate — nothing reaches a learner that isn't approved here.",
+  "type": "object",
+  "required": ["metadata", "batch_id", "judgments"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "judgments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["proposal_id", "verdict", "final_start_seconds", "final_end_seconds", "confirmed_fact_ids", "scores", "reasoning"],
+        "properties": {
+          "proposal_id": { "type": "string" },
+          "verdict": {
+            "enum": ["approved", "rejected_inaccurate", "rejected_prerequisite_leak", "rejected_needs_prior_context", "rejected_off_topic", "rejected_not_embeddable", "rejected_no_transcript", "rejected_bad_boundaries", "rejected_too_long", "rejected_weak_visual", "rejected_fact_mismatch"]
+          },
+          "final_start_seconds": { "type": ["integer", "null"], "description": "The cut the judge actually approves; may tighten the proposal. null when rejected." },
+          "final_end_seconds": { "type": ["integer", "null"] },
+          "confirmed_fact_ids": { "type": "array", "items": { "type": "string" }, "description": "Facts the judge verified the range really teaches — may be fewer than proposed." },
+          "scores": {
+            "type": "object",
+            "required": ["technical_accuracy", "fact_coverage", "prerequisite_safety", "standalone_clarity", "visual_teaching_value", "pacing", "boundary_quality"],
+            "additionalProperties": { "type": "integer", "minimum": 1, "maximum": 5 }
+          },
+          "reasoning": { "type": "string", "minLength": 10, "description": "Cites what the judge read in the transcript window itself, not the detector's summary." }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "depth_classification.schema.json",
+  "title": "Depth Classification (batch output)",
+  "description": "04_depth_classification's output. Core / Standard / Reference per (concept_id, path_id), derived from the frozen TOC's dependency graph and objectives — not a second curriculum ranking (playbook §8).",
+  "type": "object",
+  "required": ["metadata", "batch_id", "classifications"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "classifications": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["concept_id", "path_id", "depth_tier", "reasoning"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "path_id": { "type": "string" },
+          "depth_tier": { "enum": ["core", "standard", "reference"] },
+          "reasoning": {
+            "type": "string",
+            "minLength": 10,
+            "description": "Cites the real evidence: dependency_graph_centrality, position, what the assessment_target demands. Not 'this seems important'."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

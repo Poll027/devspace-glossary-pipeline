@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "source_pack.schema.json",
+  "title": "Source Pack Manifest",
+  "description": "One curated source pack per career family, checked by preflight_source_pack_check before a batch may start. 03_evidence_card must cite only sources listed here.",
+  "type": "object",
+  "required": ["career_family_id", "sources"],
+  "properties": {
+    "career_family_id": { "type": "string" },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["source_id", "title", "source_type", "url_or_citation", "trust_tier"],
+        "properties": {
+          "source_id": { "type": "string" },
+          "title": { "type": "string" },
+          "source_type": { "enum": ["official_docs", "educational", "practitioner"] },
+          "url_or_citation": { "type": "string" },
+          "trust_tier": {
+            "enum": ["technical_truth", "explanation_and_sequencing", "realistic_context"],
+            "description": "official_docs → technical_truth (use for core_definition, syntax_or_structure). educational → explanation_and_sequencing (use for intuitive_explanation, common_misconception). practitioner → realistic_context (use for practical_use, worked_example scenarios)."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

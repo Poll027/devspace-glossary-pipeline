@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "concept_evidence.schema.json",
+  "title": "Concept Evidence (canonical)",
+  "description": "Path-neutral knowledge contract for one concept_id: the facts that must be learned, the misconceptions that damage later learning, and which source backs each fact (playbook §6–7). Built once, stored in registry/concept_evidence_registry.json, reused by every path that teaches the same concept_id. Path-specific framing never lives here.",
+  "type": "object",
+  "required": ["concept_id", "required_facts", "optional_enrichment", "misconceptions", "created_in_batch_id", "used_by_path_ids"],
+  "properties": {
+    "concept_id": { "type": "string" },
+    "required_facts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/fact" },
+      "description": "The minimum complete set a learner must understand. Every assessment question later must trace back to one of these."
+    },
+    "optional_enrichment": { "type": "array", "items": { "$ref": "#/$defs/fact" } },
+    "misconceptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "statement"],
+        "properties": {
+          "id": { "type": "string" },
+          "statement": { "type": "string", "minLength": 5 },
+          "source_refs": { "type": "array", "items": { "type": "string" }, "description": "Optional; same source_id[#locator] form as facts." }
+        },
+        "additionalProperties": false
+      }
+    },
+    "created_in_batch_id": { "type": "string" },
+    "used_by_path_ids": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "fact": {
+      "type": "object",
+      "required": ["id", "statement", "source_refs"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^f[0-9]+$", "description": "Scoped to this concept: f1, f2, ..." },
+        "statement": { "type": "string", "minLength": 5 },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "source_id, optionally with a locator: source_id#section (e.g. openintro_statistics_textbook#1.2.1). The source_id must exist in the batch's source pack. A fact with no source is not a required fact — drop it or back it."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

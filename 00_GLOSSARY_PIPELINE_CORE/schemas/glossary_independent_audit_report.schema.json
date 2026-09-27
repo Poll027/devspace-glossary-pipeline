@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glossary_independent_audit_report.schema.json",
+  "title": "Glossary Independent Audit Report",
+  "description": "10_final_audit's output. Same shape as the sibling TOC pack's independent_audit_report.schema.json, minus reviewed_benchmark_capability_ids (no role-scope benchmark exists in this pipeline — not force-fit).",
+  "type": "object",
+  "required": ["metadata", "batch_id", "reviewed_bundle_ids", "issues", "verdict"],
+  "properties": {
+    "metadata": { "$ref": "batch_artifact_metadata.schema.json" },
+    "batch_id": { "type": "string" },
+    "reviewed_bundle_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "description": "concept_id:path_id pairs. Must equal the full batch's assembled bundle set exactly — exhaustive, not a sample."
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "artifact", "concept_ids", "problem", "required_fix"],
+        "properties": {
+          "severity": { "enum": ["BLOCKER", "HIGH", "MEDIUM", "LOW"] },
+          "artifact": { "type": "string" },
+          "concept_ids": { "type": "array", "items": { "type": "string" } },
+          "problem": { "type": "string", "minLength": 5 },
+          "required_fix": { "type": "string", "minLength": 5 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "verdict": { "enum": ["PASS", "PASS_WITH_NONBLOCKING_CHANGES", "FAIL"] }
+  },
+  "additionalProperties": false
+}
