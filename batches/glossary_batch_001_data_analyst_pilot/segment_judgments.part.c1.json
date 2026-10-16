@@ -1,0 +1,584 @@
+{
+  "metadata": {
+    "artifact_type": "segment_judgments",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_001_data_analyst_pilot",
+    "run_id": "glossary_batch_001_data_analyst_pilot_09_c1",
+    "prompt_version": "09_segment_judge@v1",
+    "model": "claude-opus-5-5",
+    "generated_at": "2026-10-02T10:25:40Z",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "segment_proposals.part.c1.json": "91494077e3f1710940abfaf8f1de29764f776b7c4e25f9a2051a69c320745927",
+      "coverage_briefs.json": "d0ef2fa55a4fc956f7aec86aa706596e791e638ea60e8c7c721fdb8273290611",
+      "extracted_concepts.json": "8e3969d65e33ee46f6e3ca399cf9ada942a5b349eb85f07e6b5d60dfe6acdc8e"
+    }
+  },
+  "batch_id": "glossary_batch_001_data_analyst_pilot",
+  "judgments": [
+    {
+      "proposal_id": "prop_0djtjjy12fI_distribution_shape",
+      "verdict": "rejected_too_long",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [],
+      "scores": {
+        "technical_accuracy": 3,
+        "fact_coverage": 3,
+        "prerequisite_safety": 4,
+        "standalone_clarity": 3,
+        "visual_teaching_value": 3,
+        "pacing": 2,
+        "boundary_quality": 3
+      },
+      "reasoning": "Read 25-388s. The substance is short. Right skew is defined at 68-84 ('right hand side of this particular curve is little bit elongated'), symmetric at 217-230 ('the right hand curve will almost be equal to the left hand curve... mirror'), and left/negative skew at 233-240. The ordering rule (mean > median > mode for right skew, the reverse for negative skew) is asserted at 291-353 'just by seeing this particular diagram'. It is never explained, and nothing says the mean is pulled by extreme values. The wealth example (99-127) is used only to illustrate the shape, not the mean. So f3 is not taught; f1 and f2 are. The other ~3 of the 5 minutes are padding: a second comment-length example (127-170), references to 'the morning video' and 'my channel' (25-54, 160-170, 277-280), and a machine-learning aside (178-217: iris dataset, 'most of the machine learning algorithm likes the data to have this kind of normal distribution'). The clip also states 'symmetrical distribution... this is nothing but our normal distribution' (171-176), which wrongly treats symmetric and normal as the same thing. The lifespan example for left skew (249-275) is muddled: it says both early deaths and people living past 70 are rare. No contiguous cut keeps all three shapes without the tangents, so this is ~5 min for ~90 s of teaching. The video also has the visual mode wrong: it is Krish Naik drawing curves on a whiteboard, not diagram_animation."
+    },
+    {
+      "proposal_id": "prop_1E7NU-uWalY_measures_of_spread",
+      "verdict": "rejected_inaccurate",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [],
+      "scores": {
+        "technical_accuracy": 1,
+        "fact_coverage": 2,
+        "prerequisite_safety": 2,
+        "standalone_clarity": 2,
+        "visual_teaching_value": 3,
+        "pacing": 3,
+        "boundary_quality": 2
+      },
+      "reasoning": "Read 0-251s. Confirmed: at 41-51 the presenter writes 'the formula is 1 by n summation of i is equal to 1 to n X of i minus mu whole square', and he applies it to what he calls 'my sample of distribution... sample of heights' (19-24). That is the population formula used on a sample. It contradicts f2, which requires dividing by n - 1. The proposed range 24-221 contains this formula, and the standard deviation is then defined as 'root of' that variance (60-62). So the clip's f3 claim also rests on the wrong variance, and a learner would carry the 1/n formula away. Cutting it out doesn't work: starting after 62 leaves 'variance' undefined. Other problems in the range: the clip opens on 'in my previous video I have already explained you about mean median and mode and I'm going to take the same example' (15-24), so it needs prior context. A misstated value is corrected live ('it should not be 164 it should be 173.5', 136-141), and the mean is called 'my median' at 166. 172-200 teaches the 1/2/3-standard-deviation bands as a Gaussian/normal bell shape, which needs stats.distribution_shape, a blocked concept. Range (f1) and units (f4) never appear."
+    },
+    {
+      "proposal_id": "prop_2E6fDoz7LuU_histograms",
+      "verdict": "approved",
+      "final_start_seconds": 0,
+      "final_end_seconds": 281,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 5,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 0-309s. 0-30 explains what a histogram is: 'Histograms group values into bins... We'll count how many fall in each range, in each bucket or bin'. 114-145 calls plt.hist(scores) and shows the bars, so f1 is taught. For f2, only the integer form is shown, at 248-281: 'bins... I'll set the number of bins to be 10... If I were to set this to 20, we would now have 20'. The default (10 via rcParams), explicit bin edges and 'auto' never appear, so I don't confirm f2. 184-248 is a 64-second detour into np.clip, but at 4.7 min the clip still fits the live-code band. I tightened the end from 279 to 281 so it closes on 'But I think 10 is a good number' instead of mid-sentence, before the color customization starts. Bro Code live code on screen; good visual."
+    },
+    {
+      "proposal_id": "prop_2KY5AaFvWtE_pyplot_basic_plotting",
+      "verdict": "approved",
+      "final_start_seconds": 179,
+      "final_end_seconds": 367,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 5,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 149-397s. At 179 'Here's how we can create a basic plot. We'll need a set of x and y coordinates' starts a new thought. x = years and y = class sizes are built as lists, and 'plt.plot... pass in our coordinates x, y. The first argument is for the points on the x-axis. The second... y-axis' (246-261) gives f2, with the plot shown at 276-310. 'if you only pass in a single parameter, this argument would be for points on the Y axis... The default behavior for plot is to start at zero and place a point at each increment of one' (327-358) gives f1. The clip ends at 'But we'll pass in both x and y' (~367), before the numpy section. Small caveat: the plt alias was set up at 160-179, just before the start. The import line stays visible in the editor, so this doesn't block understanding."
+    },
+    {
+      "proposal_id": "prop_35dXEQJkFE8_dictionaries",
+      "verdict": "approved",
+      "final_start_seconds": 0,
+      "final_end_seconds": 164,
+      "confirmed_fact_ids": [
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 5,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 0-192s. 0-90 defines a dictionary as values each with a key, 'within the curly braces... each item will consist of a key as well as a value... this together is called as a key value pair'. 110-124 retrieves a value with laptop['brand'], and 139-164 updates 'size' from 13 to 16 by assigning to the key, so f2 is taught. f1 is only partly taught: the clip never says keys must be unique, which is a substantive part of f1, so I don't confirm f1. KeyError (f3) is not in the range. The comparison to list indexes (16-30) is fine because lists are not blocked for this concept. I trimmed the end to 164, right after 'changed from 13 to 16', so the update() method isn't started. Code editor with output shown; really live_code rather than annotated_code."
+    },
+    {
+      "proposal_id": "prop_3SRyslGSMW4_integrate_python_pandas",
+      "verdict": "rejected_off_topic",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 2,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 3,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 3
+      },
+      "reasoning": "Read 256-468s. This is a generic groupby tutorial on a Pokemon DataFrame. 'Group by is a function... We can group together rows by something that they have in common' (288-303), then df.groupby('Type 1'), and mean/sum/min/max/count per type (338-442). It teaches the mechanics of pandas.groupby_aggregation, a prerequisite of this concept, again. The concept itself is capstone integration: applying already-learned cleaning (isna/dropna/fillna) and groupby to the learner's own retrieved dataset. Nothing in the range shows integration or end-to-end use, and f1's cleaning operations never appear. The clip also opens on 'Now, there's also something called group by' and leans on the previous section's aggregate-function examples. For a capstone concept, a re-teach of a prerequisite on toy data isn't about this concept. This range belongs under the groupby concept."
+    },
+    {
+      "proposal_id": "prop_3TxcPKu9ec4_variable_scope",
+      "verdict": "approved",
+      "final_start_seconds": 0,
+      "final_end_seconds": 284,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 2,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 5,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 0-314s. Animated sketches (Data with Baraa). 89-117: y created inside the function 'we call it a local variable... it is only available for this function'. 206-236: the memory walkthrough shows y created only when the assignment inside the function runs and destroyed when the function ends. Together these teach f1. f2 is not taught as a rule: 206-221 shows only that reading f inside the function 'access[es] the global variable'. The clip never says the local table is checked first, then the global, then built-ins, and it never shows a same-named local and global. f3 (global statement) is absent. The 'remove the argument from the parameter... empty placeholder' model (244-256) simplifies how frames work but doesn't contradict the evidence. The opening 'looking back to our very simple function' re-shows the code, so it's followable. The clip ends at 284, right after 'it destroyed it', before the lifetime summary chapter. This is mostly a variable-lifetime clip, so pair it with 5bwpXLHzZRo for f2 and f3."
+    },
+    {
+      "proposal_id": "prop_3Xc3CA655Y4_box_plots",
+      "verdict": "rejected_inaccurate",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [],
+      "scores": {
+        "technical_accuracy": 1,
+        "fact_coverage": 3,
+        "prerequisite_safety": 4,
+        "standalone_clarity": 2,
+        "visual_teaching_value": 4,
+        "pacing": 3,
+        "boundary_quality": 3
+      },
+      "reasoning": "Read 4693-5061s. At 4759-4775 the presenter says what a box and whiskers chart shows: 'it shows your highest score... it will show like the max it'll show the mean and then I'll show a box around where the middle 50% of scores... were'. The line in the box is the median, not the mean, and whiskers stop at 1.5x IQR, not the max (f2). Those are the facts a learner would take away about reading the chart. The range also leans on earlier chapters: 'looking back at our FIFA chart' (4725) uses a DataFrame loaded about an hour earlier, and 4922-4952 fixes 'a residual effect of changing the style in one cell'. plt.boxplot([barcelona, madrid]) with labels= (4887-5018) does show f1, f3 and f4, but the wrong statement of what the plot shows rules it out."
+    },
+    {
+      "proposal_id": "prop_3hyKQZYe1HY_having",
+      "verdict": "rejected_inaccurate",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [],
+      "scores": {
+        "technical_accuracy": 1,
+        "fact_coverage": 4,
+        "prerequisite_safety": 2,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 3,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 0-323s. The central explanation is wrong. At 102-132: 'the conditions on aggregate function cannot be specified in a where clause because as we already know that where clause gets executed after group by clause and we want a condition on aggregate so there has to be some condition which has to be executed after the grouping'. WHERE runs before GROUP BY. This concept exists to teach exactly that distinction: WHERE filters raw rows before grouping, HAVING filters groups after. The clip states the order backwards, and it leans on clause execution order, which is blocked for this concept (SQL query execution/clause order). The HAVING COUNT(*) >= 2 and WHERE + HAVING examples (132-316) are correct, but the 'why' a learner would remember contradicts the evidence. Talking over a SQL console."
+    },
+    {
+      "proposal_id": "prop_4MVNjzsGokc_relative_absolute_references",
+      "verdict": "approved",
+      "final_start_seconds": 31,
+      "final_end_seconds": 338,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 5,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 0-405s. 33-95: C3*2 is copied and 'automatically adjusts to 600 because excel heard one cell to the left times two... is called relative references' (f1). 96-128: $C$3 'is absolutely locked to c3 and no matter where you copy paste your formulas it will always be on c3' (f2). 220-338: the bonus grid locks column E ($E) and row 4 (F$4) so one formula fills every combination (f3). The clinic tracker (140-229) is genuine reinforcement of relative refs between the two halves, and no clean contiguous cut skips it. I tightened both ends. The new start is 31 ('let's say you have a number in the cell c3'), which drops the intro list of six styles including structured/table refs. The new end is 338 ('bonus for all combinations with a single formula'), which drops the F4 tip and the half-started absolute-reference recap that the proposal cut mid-sentence at 375. Duration 5.1 min, inside the tool-workflow band. Chandoo screen demo; strong visual."
+    },
+    {
+      "proposal_id": "prop_5HcDJ8e9NwY_data_quality_basics",
+      "verdict": "approved",
+      "final_start_seconds": 37,
+      "final_end_seconds": 199,
+      "confirmed_fact_ids": [
+        "f2",
+        "f3",
+        "f5"
+      ],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 3,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 0-233s. 59-85: 'Accuracy is about the current state of your data versus reality', with the bot-traffic example (f5). 85-118: 'completeness, which is about how you have filled out all the required fields' (f2). 162-199: 'uniqueness, which is largely tied to the number of duplicates' (f3). f1 ('fit for purpose') is never stated; the chef/ingredients analogy (0-37) is about bad outcomes, not fitness for a purpose, so I don't confirm f1. Validity (f4) is absent. The consistency section (119-162) is extra; its 5- vs 9-digit zip example is closer to format validity, and it closes with 'it might be incomplete', which muddles the terms slightly. On visuals I don't accept the detector's guess. The thumbnail shows an IBM lightboard: the presenter in front of hand-drawn sketches (tomato, 'Completeness', 'Consistency', 'Uniqueness -> duplicates'). That is whiteboard_drawing with a talking presenter: modest visual value, but the concept is conceptual and the explanation is clear and well paced. I trimmed to 37-199. That drops the analogy, which teaches no required fact, and stops before the AI/ML sales pitch at 199. The clip runs 2.7 min, inside the mental-model band. Advisory: channel UCKWaEZ-_VweaEx1j62do_vQ (IBM Technology) is not in channel_allowlist.json."
+    },
+    {
+      "proposal_id": "prop_5OpBjU-OWh8_composite_join_conditions",
+      "verdict": "rejected_prerequisite_leak",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [],
+      "scores": {
+        "technical_accuracy": 2,
+        "fact_coverage": 3,
+        "prerequisite_safety": 1,
+        "standalone_clarity": 1,
+        "visual_teaching_value": 3,
+        "pacing": 3,
+        "boundary_quality": 2
+      },
+      "reasoning": "Read 244-519s. The range is built on LEFT JOIN: 'again we will use this left join only and with this left join the second left join we will use this student marks table' (282-295). LEFT/RIGHT/FULL OUTER JOIN is in this concept's blocked list, and the result counts (50 rows vs 250) only make sense with left-join semantics. The start also needs prior context. 'once we have our course name we need to get the total marks' (274-280) continues a student + course join built in the previous chapter, and alias sd/scd come from that earlier query. 341-356 says 'whenever you are using more than one common keys to join two tables then you have to use brackets'. That is false: parentheses are optional in ON, and f1 says only that conditions are combined with AND. The proposed end of 489 cuts in the middle of the explanation of why the AND matters ('let me show you in excel that what exactly happens', 480-495). The ON ... AND ... condition itself (323-405) matches f1, but the clip can't be watched alone without outer-join knowledge."
+    },
+    {
+      "proposal_id": "prop_5bwpXLHzZRo_variable_scope",
+      "verdict": "approved",
+      "final_start_seconds": 322,
+      "final_end_seconds": 668,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 292-686s. 322-384: a global a is printed inside test() with no local, and the narrator says 'it will look for local variable a... if local variable by that name is not present it will then check if there is a global variable'. 397-427: 'it will always look for local scope first if a local scope is not present then it will look for global scope' (f2's local-then-global order; the built-in tier is not mentioned, which is an elaboration I'm noting rather than failing on). 427-500: assigning a later in the function makes print(a) raise 'local variable a referenced before assignment'. 'it sees that this function already has a local variable by the same name' is a direct demonstration of f1, since assignment anywhere makes the name local. 564-661: the global keyword is used to modify a global, while reading needed no keyword earlier (f3). The start word 'number three is that' is a leftover list number but harmless; the sentence that follows is self-contained. The end is 668, after 'modify the value of a global variable inside your local scope' and before the sign-off. The 509-564 same-name section is short and on-topic. 5.8 min, inside the live-code band; trimming would lose f1's UnboundLocalError demo or f3. Code editor with runs, so live_code."
+    },
+    {
+      "proposal_id": "prop_5vHT16cEOPc_logical_functions",
+      "verdict": "approved",
+      "final_start_seconds": 0,
+      "final_end_seconds": 224,
+      "confirmed_fact_ids": [
+        "f1",
+        "f3",
+        "f4",
+        "f5"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 5,
+        "pacing": 5,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 0-260s. 36-75: IF 'first argument is a logical test, which must evaluate to TRUE or FALSE', then 'high value' else 'standard' (f1), with 'the text needs to be wrapped inside double quotes' (57-60, f5). 78-121: AND in isolation, 'returns TRUE where both conditions are met, and FALSE if one or more are not met', then nested as IF's logical_test (f3). 147-221: OR 'If either of these are TRUE... returns TRUE. If both are FALSE, it will return FALSE' (f4), plus a contrast that a formula result is not quoted. Nested IF (f2, f6) is not shown. I tightened the end to 224, at 'the claims that meet either one of our conditions', before the Function Wizard tip. Spreadsheet demo with formulas built live; excellent pacing. This is spreadsheet_demo, not annotated_code."
+    },
+    {
+      "proposal_id": "prop_5x1uodxEIaM_cte",
+      "verdict": "approved",
+      "final_start_seconds": 23,
+      "final_end_seconds": 234,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 5,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 0-420s. 23-49: 'common table expression is a temporary named result set like a virtual table that could be used multiple times within your query to simplify and organize complex query', followed by an animated sketch. 95-219: the CTE query runs first and its output 'sales' is queried by the main query 'as any other table'. 'once the query ends... going to go and destroy this table' (172-190) and 'only locally available for the main query' (202-234) complete f1. The proposed 23-393 runs 6.2 min, which the visual_mechanism role doesn't justify. The extra 235-390 is a side-by-side subquery comparison. Most of it is the reuse argument ('in the subquery the result can be used only once', 310-390), stated three times, and that is not a required fact. Only the brief top-to-bottom vs bottom-to-top point touches f3's readability claim. I cut at 234, before 'you might tell me... I have heard this story before'. The clip is now 3.5 min, and f3 (alternative to nested subqueries, easier to follow) is left to the text or another clip. f2 (WITH syntax) is not in the range. Diagram animation confirmed by 'let's understand what this means using the following sketch'."
+    },
+    {
+      "proposal_id": "prop_6fUYt1alA1U_correlation",
+      "verdict": "approved",
+      "final_start_seconds": 331,
+      "final_end_seconds": 568,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 4,
+        "prerequisite_safety": 4,
+        "standalone_clarity": 3,
+        "visual_teaching_value": 4,
+        "pacing": 2,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 303-587s. 331-376: 'whenever you're trying to find out the correlation coefficient with respect to Pearson, your value will be ranging between -1 to +1', plus 'strength, like how much positive... how much negative' from just before (f1's range and strength). There's a passing reference to dividing by the standard deviations and 'this covariance'. You don't need it to follow the range claim, and measures of spread is allowed for this concept. 420-563: whiteboard scatter diagrams. Points on a straight line give 1, X up / Y down gives -1, a scatter with 'no relationship' gives 0, and non-straight trending clouds fall between 0 and ±1. Together these cover f2 and f3. Weak spots: a muddled self-correction at 434-483 ('as my X increases, my Y decreases. sorry it should be opposite way... as my X decreases, my Y increases', which is the same thing), 'will be always zero' overstating 'near zero', and repetition at 345-376. These lower clarity and pacing, but nothing contradicts the facts. I extended the end from 557 to 568 so it closes on 'that is what correlation coefficient says' instead of mid-sentence, before the feature-selection aside. Visual mode confirmed as whiteboard_drawing ('I'll create all these diagrams')."
+    },
+    {
+      "proposal_id": "prop_7Lc2AxiM17o_matplotlib_figure_axes",
+      "verdict": "approved",
+      "final_start_seconds": 303,
+      "final_end_seconds": 361,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 3,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 276-540s. 303-358 is the architecture explanation: 'A figure... is the top level container... the entire window', axes 'is the actual plot area... you can have multiple axes on one figure', and axis is the x/y axis. That is f1. The rest of the proposed range can't be used. 371-453 teaches plt.plot(x, y), xlabel/ylabel/title and plt.show(). Basic pyplot plotting, line plots and labeling axes are all in this concept's blocked list, and that is what is being taught there. The subplots demo (453-506) then depends on it ('as well as using the global PLT object as we've kind of seen here'), so f2 and f3 can't be cut out cleanly. The clip says fig, axis = plt.subplots() but never verbally shows ax.plot. I also cut before the canvas analogy at 360-370 ('an axis as an individual painting... and then the axes as like the data'), which swaps the two terms the clip just distinguished. The final clip is 303-361 (~1 min). The video is a notebook on screen ('as it says' reads the markdown), not a diagram animation, so visual value is moderate. f2 and f3 need another source."
+    },
+    {
+      "proposal_id": "prop_7LmcYJpbDJY_null_handling",
+      "verdict": "approved",
+      "final_start_seconds": 52,
+      "final_end_seconds": 222,
+      "confirmed_fact_ids": [
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 24-248s. 52-104: students whose marks are absent. 'where marks equal to null... this should return me record number two but it will not... we are not getting any records' shows the = NULL misconception empirically. 135-160 rewrites it as 'where marks is null' and gets the row back, and 164-201 does 'is not null' (f2). f1 is not taught. The clip calls null 'the absence of record' / 'not applicable value' and 'a special kind of keyword that is not applicable for any data type' (71-135). It never says null is unknown, or that two unknowns can't be known to be equal, so it gives no correct reason why = fails. That isn't a contradiction, but the misconception callout stays shallow. The start is clean at 'the first question is get the details of students who have not appeared the exam'. I set the end to 222, after 'or we write it as is not null okay', before the LIKE question."
+    },
+    {
+      "proposal_id": "prop_7QCHpAtlSMo_function_default_keyword_args",
+      "verdict": "approved",
+      "final_start_seconds": 0,
+      "final_end_seconds": 201,
+      "confirmed_fact_ids": [
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 2,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 5,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 0-228s. 0-13 defines keyword arguments. 103-135: 'prefix any arguments with the name of the parameter followed by equals... with these keyword arguments the order really doesn't matter'. 135-160: mixing them gives a syntax error when 'positional arguments follow keyword arguments', so 'make sure any positional arguments are first'. Together that is f2. f3 is not taught: no call with an unknown keyword, and no parameter given twice. The closing John/James example is about readability. f1 (defaults) and the mutable-default misconception are absent; 'positional default... arbitrary' at 13-20 only names the argument styles. I set the end to 201, after 'hello Mr James John', before the for-loop example ('let's cover another example I'm going to print the numbers 1 through 10 using a for Loop'). Ending at 200 would have clipped into that. Live code."
+    },
+    {
+      "proposal_id": "prop_8rtvDQVQaA0_vlookup_xlookup",
+      "verdict": "approved",
+      "final_start_seconds": 79,
+      "final_end_seconds": 221,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 5,
+        "pacing": 5,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 52-250s. 79-100: 'using vlookup you can ask Excel hey look at my table find out... the record that has Jonathan in it and then get me the corresponding sales data'. 102-150: VLOOKUP built argument by argument: the value, range B4:E16, 'sales person is first column one two three so we will give the third column'. That is f1, with the lookup column as the first column. 147-184: 'tells we look up whether you want an exact match or an approximate match... this will be false in most business cases... we will use true or omit this completely only when your data is arranged in a sort order' (f2). I moved the start back from 82 to 79 so it opens on 'whereas using vlookup' instead of mid-clause. The end is 221, at 'there is no joy in the data', before the #N/A/IFERROR section; error values are blocked for this concept. HLOOKUP and XLOOKUP (f3-f5) are absent. Chandoo screen demo."
+    },
+    {
+      "proposal_id": "prop_94UHCEmprCY_for_loops",
+      "verdict": "approved",
+      "final_start_seconds": 0,
+      "final_end_seconds": 128,
+      "confirmed_fact_ids": [
+        "f2",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 5,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 0-250s. 25-66: 'for number in range(3)' with 'we need to terminate this line with a colon... we get indentation so in this block we can write all the statements that should be repeated' (f3). 66-124: number is printed as 0 1 2, 'in each iteration number will have a different value initially it will be zero in the second iteration it will be one and finally... two' (f2's per-pass binding). f1 is not taught. The loop is framed as 'repeat a task a number of times' over range(), never as iterating the items of a list or string, so the concept's 'visit every element of a collection' framing is only shown indirectly. I trimmed the end from 216 to 128, after 'attempting number one attempting number two'. That drops string-times-number repetition (125-161) and range start/stop/step (161-216), which aren't required here. The clip is now 2.1 min. 'similar to our if statements' is fine because conditionals are not blocked. Code editor with runs."
+    },
+    {
+      "proposal_id": "prop_9URM1_2S0ho_inner_join",
+      "verdict": "approved",
+      "final_start_seconds": 76,
+      "final_end_seconds": 244,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 46-276s. 76-133: 'a join is a way to combine multiple tables into a single output', with the two tables shown and a shared employee ID. 136-190: 'let's do join we can also say inner join but join by default is gonna say inner' (f3), with 'on employee demographics.employee ID = employee salary.employee ID' (f2's ON form; USING is not shown). 206-244: 'an inner join is really only going to show everything that is the same... there is data that is missing', then a Venn graphic 'common or overlapping between table a and table B' (f1, unmatched rows dropped). I tightened the end to 244, at 'based off this employee ID in both tables', so it stops before 'now let's change this join to a full outer join'. Outer joins are blocked for this concept. SSMS query plus a Venn graphic."
+    },
+    {
+      "proposal_id": "prop_9URM1_2S0ho_outer_joins",
+      "verdict": "approved",
+      "final_start_seconds": 245,
+      "final_end_seconds": 447,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 3,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 220-473s. 245-330: the inner join is changed to a full outer join. Ryan Howard (1011) has no salary row 'so it fills in everything as null... and vice versa', and the Venn graphic shows 'everything from table a and table B regardless of if it has a match' (f3). 330-395: left outer join takes 'everything from the left table and everything that's overlapping', with 'the left table is gonna be our first table'; unmatched demographics rows show no salary info (f1). 395-447: right is 'the exact opposite' (f2). Standalone clarity is only fair. 'change this join' and 'everything down till here is the exact same' compare against the inner-join output just before the clip. The tables and ON condition stay on screen, and inner join is this concept's prerequisite, so it's followable. f4 (OUTER optional) is not taught. I moved the start to 245 to open on 'now let's change this join to a full outer join' and set the end to 447, before the column-selection section."
+    },
+    {
+      "proposal_id": "prop_9barqPO2pvg_text_to_columns_split",
+      "verdict": "approved",
+      "final_start_seconds": 0,
+      "final_end_seconds": 180,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 5,
+        "pacing": 5,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 0-210s. 16-46 sets up the task of splitting full name into first and last. 76-163 runs the wizard: select the column, 'data tab... text to columns button... the text to columns wizard', 'choose delimited', 'choose the delimiter... space', data preview, Finish. That is f1's workflow. The destination field is not used. Instead the column is duplicated first to keep the original (46-76), which reaches the same result and doesn't contradict f1. I extended the end from 169, which cut 'of course you'll want to go rename' mid-sentence, to 180 ('but really that is the entire process there'). That is before the pros/cons and power query plug. Excel Campus screen demo."
+    },
+    {
+      "proposal_id": "prop_ADArCWLz55Y_remove_duplicates_cleaning",
+      "verdict": "approved",
+      "final_start_seconds": 34,
+      "final_end_seconds": 189,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 5,
+        "pacing": 5,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 0-210s. I moved the start back from 75 to 34 ('Okay, so I have this table with sales agent region and sales value... what are the duplicates?'). 34-75 explains that a duplicate is judged on 'the combination of all the columns'. That is the idea behind choosing which columns define a duplicate, and starting at 75 cut it off. 75-96: 'do you want to keep the original data set or not? If you want to keep it so you can compare before and after, you should create a copy of it' (f1's copy-first advice, implying deletion is destructive). 96-137: Data > Data Tools > Remove Duplicates, with headers and columns checked, 'five duplicate values found and removed'. 137-189 repeats it on just the Sales Agent column (f2's column choice). The end is 189, before 'method two' (UNIQUE). 'the first example' refers back to the intro's 'three methods' but doesn't need it. Leila Gharani screen demo."
+    },
+    {
+      "proposal_id": "prop_AZuBNWMh7VM_conditional_aggregation",
+      "verdict": "approved",
+      "final_start_seconds": 118,
+      "final_end_seconds": 366,
+      "confirmed_fact_ids": [
+        "f3",
+        "f4"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 5,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 52-720s. The proposed 80-691 (10.2 min) isn't justified as one embed. About 2 min of it is not required: SUMIFS history (211-255), wildcards (366-407) and AVERAGEIFS (557-583). There's also opening advice (80-118: 'I recommend that you don't learn to use it now'). The later COUNTIF/COUNTIFS (584-684) and comparison-operator (407-549) sections lean on the earlier example ('so if we have this, but instead of USA', 'you don't need that sum range'), so they can't be cut out cleanly either. I trimmed to 118-366, 4.1 min. 118-193: SUMIF, 'first comes the range... the criteria range... Next is the criteria itself... And then there's the sum range' (f3). 193-366: SUMIFS with 'the sum range is at the beginning... criteria range one, criteria one, criteria range two, criteria two', then a third criterion for USA (f4). This loses COUNTIF/COUNTIFS (f1, f2) and the quoting rule for operators (f5; 494-549 says to put them 'in quotation marks because it's like text'). Those need the text layer or a second clip. I judge that better than a 10-minute embed. f6 is never shown. Leila Gharani spreadsheet demo; screen_demo is fine."
+    },
+    {
+      "proposal_id": "prop_AdR_gx5Y4wE_boolean_filtering",
+      "verdict": "approved",
+      "final_start_seconds": 198,
+      "final_end_seconds": 376,
+      "confirmed_fact_ids": [
+        "f2",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 5,
+        "pacing": 5,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 0-390s. The proposed 0-374 opens with 'In the previous lessons, we've been working with the data frame that contains the original 150 Pokémon' (10-20). It then runs three near-identical single-column filters (height, weight, legendary) over 0-198. I tightened to 198-376, 3 min. 198-221: water_pokemon = df[df['Type 1'] == 'Water'] is a single-condition filter (f2 shown in code). 221-285: 'be sure to enclose your first condition within a set of parenthesis' with | for OR. 285-368: & for AND, 'Be sure you're not using the Python and. If we're using a logical operator, enclose your conditions within a set of parenthesis' (f3's rule; the reason is not given). 368-376: 'That is filtering. Basically, you're keeping the rows that match a condition', before the homework plug. f1 is not stated: nothing explains the boolean mask or that rows where True are kept. Live code."
+    },
+    {
+      "proposal_id": "prop_AetGXMcNU3M_return_values",
+      "verdict": "approved",
+      "final_start_seconds": 0,
+      "final_end_seconds": 300,
+      "confirmed_fact_ids": [
+        "f1",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 5,
+        "pacing": 5,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 0-330s. CS50P short. 0-71: area() prints length*width. 121-173: 'area doesn't have what we would call a return value... really only has... a side effect' and 'how could I get a value from area that I could reuse'. 173-224: 'return in this sense means that area, once it is finished running, will give back to me a value I could use in my program. I could store it in a variable' (f1). 224-300: house = area(50, 20), yard = area(50, 50), total = house + yard prints 3,500 (f3). f2 (None) is not in the range. I set the end to 300, after 'use throughout my main function', before the 'common misconception' section, which starts a separate point. 5 min, but tight build-up with no filler. The proposal's 0-299 cut off mid-sentence."
+    },
+    {
+      "proposal_id": "prop_AndS0RLdxtk_frequency_distribution_reading",
+      "verdict": "approved",
+      "final_start_seconds": 195,
+      "final_end_seconds": 417,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 0-440s. The proposed 0-414 (6.9 min) spends 18-193 counting test scores into bins one by one ('one two... so two students received a score between 60 and 69'). For a reading-a-histogram concept, that is construction drudgery the learner doesn't need, and it has a counting slip at 155-172 ('we have 1 2 3 so four students'). I trimmed to 195-417, 3.7 min. It opens on 'this is our frequency distribution table', with the completed bin/frequency table on the board (f3 named and shown). 201-339 draws the bars from that table: 'the bars are attached to each other... between 40 and 50 the frequency is only one... from 80 to 89 it goes up to five' (f1). 339-387 reads the shape: 'long tail on the left side... skewed to the left or it has a negative skew'. Distribution shape is this concept's prerequisite, so that is allowed. 387-417: 'the mode is basically the range... with the highest frequency... between 80 and 89' (f2). The end is 417, after 'the mode for this particular histogram'. The axis self-correction at 226-245 ('actually take that back') is resolved immediately. Whiteboard drawing. Advisory: channel UCEWpbFLzoYGPfuWUMFPSaoA is not in channel_allowlist.json."
+    }
+  ]
+}

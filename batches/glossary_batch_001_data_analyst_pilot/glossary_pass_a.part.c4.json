@@ -93,7 +93,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "A reference can also point at a block of cells at once, not just one. A10:A20 refers to the range of cells in column A and rows 10 through 20; A10:E20 refers to the range in columns A through E and rows 10 through 20. So if your delivery times sit in column B, rows 2 through 51, B2:B51 is the range covering every delivery time in that batch.",
+          "content": "A reference can also point at a block of cells at once, not just one. A10:A20 refers to the range of cells in column A and rows 10 through 20; A10:E20 refers to the range in columns A through E and rows 10 through 20. So if your delivery times sit in column C, rows 2 through 51, C2:C51 is the range covering every delivery time in that batch.",
           "fact_ids": [
             "f3"
           ]
@@ -101,7 +101,7 @@
         {
           "id": "tb4",
           "purpose": "mechanism",
-          "content": "You can also reference an entire row or column at once, using just its row number or column letter repeated on either side of a colon -- 5:5 for all cells in row 5, or H:H for all cells in column H. If new orders keep being added to your Orders sheet and you want a reference that always covers the whole city column no matter how many rows exist, C:C does that.",
+          "content": "You can also reference an entire row or column at once, using just its row number or column letter repeated on either side of a colon -- 5:5 for all cells in row 5, or H:H for all cells in column H. If new orders keep being added to your Orders sheet and you want a reference that always covers the whole city column no matter how many rows exist, B:B does that.",
           "fact_ids": [
             "f4"
           ]
@@ -137,7 +137,7 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "Your Orders sheet keeps growing as new deliveries come in, but a plain cell range like A1:F50 doesn't know that -- a formula written against A1:F50 won't automatically notice row 51. Converting the range into an Excel table fixes that.",
+          "content": "Your Orders sheet keeps growing as new deliveries come in. Converting its range into an Excel table gives each column a labeled header, lets formulas refer to columns by name, and lets the table expand as you add data just below or beside it.",
           "fact_ids": [
             "f1",
             "f4"
@@ -155,7 +155,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "Once a range is a table, formulas can refer to its columns by name instead of by raw cell address -- this is called a structured reference. Instead of =SUM(C2:C7), a formula can use =SUM(DeptSales[Sales Amount]), naming the table and the column directly.",
+          "content": "Once a range is a table, formulas can refer to its columns by name instead of by raw cell address -- this is called a structured reference. Instead of =SUM(C2:C7), a formula can use =SUM(DeptSales[Sales Amount]), naming the table and the column directly. On an Orders table, that same pattern looks like =SUM(Orders[Amount]), naming the table and its Amount column instead of a cell range such as D2:D51.",
           "fact_ids": [
             "f3"
           ]
@@ -163,7 +163,7 @@
         {
           "id": "tb4",
           "purpose": "example",
-          "content": "The table also grows with your data on its own: typing a value in a cell just below the table's last row, or in a cell to the right of its last column, expands the table to include that new row or column. So as tomorrow's deliveries get added below your existing Orders table, the table -- and anything referencing it by name -- automatically includes them.",
+          "content": "The table also grows with your data on its own: typing a value in a cell just below the table's last row, or in a cell to the right of its last column, expands the table to include that new row or column. So as tomorrow's deliveries get typed in just below your existing Orders table, the table expands to include those new rows.",
           "fact_ids": [
             "f4"
           ]
@@ -188,7 +188,7 @@
         {
           "id": "tb1",
           "purpose": "definition",
-          "content": "A named range lets a formula use a readable label instead of a raw cell address. To name a cell or range, select it, type a name into the Name Box, and press Enter -- for example, selecting B2:B51 (your delivery-time column) and naming it DeliveryTimes.",
+          "content": "A named range lets a formula use a readable label instead of a raw cell address. To name a cell or range, select it, type a name into the Name Box, and press Enter -- for example, selecting C2:C51 (your delivery-time column) and naming it DeliveryTimes.",
           "fact_ids": [
             "f1"
           ]
@@ -196,7 +196,7 @@
         {
           "id": "tb2",
           "purpose": "example",
-          "content": "Once a name is defined, typing the name into a formula, or selecting Formulas > Use in Formula and choosing the name, lets that formula reference the named cell or range instead of its raw address -- a formula can refer to DeliveryTimes instead of B2:B51.",
+          "content": "Once a name is defined, typing the name into a formula, or selecting Formulas > Use in Formula and choosing the name, lets that formula reference the named cell or range instead of its raw address -- a formula can refer to DeliveryTimes instead of C2:C51.",
           "fact_ids": [
             "f2"
           ]
@@ -345,7 +345,7 @@
         {
           "id": "tb2",
           "purpose": "example",
-          "content": "To add a dropdown-list data validation rule, select the cells, select Data > Data Validation, on the Settings tab set Allow to List, then in the Source box type the list values separated by commas, making sure the In-cell dropdown check box is selected. Restricting your Orders sheet's status column this way -- with Source set to Pending,Delivered,Cancelled -- means every entry in that column has to be one of those three words.",
+          "content": "To add a dropdown-list data validation rule, select the cells, select Data > Data Validation, on the Settings tab set Allow to List, then in the Source box type the list values separated by commas, making sure the In-cell dropdown check box is selected. Restricting your Orders sheet's status column this way -- with Source set to Pending,Delivered,Cancelled -- gives each cell a dropdown of those three words and restricts what users can enter there to those values.",
           "fact_ids": [
             "f2"
           ]
@@ -421,7 +421,7 @@
         {
           "id": "tb2",
           "purpose": "example",
-          "content": "If your Orders sheet has a single column holding \"Lagos, Nigeria\" as one text value, running Text to Columns with Comma as the delimiter splits it into a City column and a Country column.",
+          "content": "If your Orders sheet has a single column holding \"Lagos,Nigeria\" as one text value, running Text to Columns with Comma as the delimiter splits it into two columns.",
           "fact_ids": [
             "f1"
           ]
@@ -497,7 +497,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "To create a formula that refers to values in other cells, select a cell, type an equal sign, select or type the first cell's address, enter an operator such as - for subtraction, select or type the next cell's address, and press Enter. So a cell computing the difference between an order's promised time and its actual delivery time might be written =B2-C2.",
+          "content": "To create a formula that refers to values in other cells, select a cell, type an equal sign, select or type the first cell's address, enter an operator such as - for subtraction, select or type the next cell's address, and press Enter. So a cell computing how much one order's amount differs from the next might be written =D3-D2.",
           "fact_ids": [
             "f4"
           ]
@@ -505,7 +505,7 @@
         {
           "id": "tb4",
           "purpose": "mechanism",
-          "content": "To enter a formula that contains a built-in function, type an equal sign and the function's name, an opening parenthesis, then select the range of cells the function should use, and a closing parenthesis, then press Enter.",
+          "content": "To enter a formula that contains a built-in function, type an equal sign and the function's name, an opening parenthesis, then select the range of cells the function should use, and a closing parenthesis, then press Enter. For example, typing =SUM(D2:D51) sums every value in that range of your Orders sheet's amount column.",
           "fact_ids": [
             "f3"
           ]
@@ -550,7 +550,7 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "Copy a formula like =B2*C2 down a column of orders, and normally both references shift down with it -- which is usually what you want, but not always.",
+          "content": "Copy a formula like =C2*D2 down a column of orders, and normally both references shift down with it, but not always.",
           "fact_ids": []
         },
         {
@@ -564,7 +564,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "An absolute cell reference, such as $A$1, always refers to a cell in a specific location; if you copy or fill the formula across rows or down columns, the absolute reference does not adjust. If a fixed tax rate lives in one cell, say $F$1, a formula like =B2*$F$1 copied down every order row keeps pointing at that same tax-rate cell, while B2 still shifts to B3, B4, and so on.",
+          "content": "An absolute cell reference, such as $A$1, always refers to a cell in a specific location; if you copy or fill the formula across rows or down columns, the absolute reference does not adjust. If a fixed tax rate lives in one cell, say $H$1, a formula like =D2*$H$1 copied down every order row keeps pointing at that same tax-rate cell, while D2 still shifts to D3, D4, and so on.",
           "fact_ids": [
             "f2"
           ]
@@ -626,7 +626,7 @@
         {
           "id": "tb5",
           "purpose": "takeaway",
-          "content": "SUM, AVERAGE, COUNT and COUNTA all reduce a range to one number; which one you reach for depends only on which summary you need -- total, mean, count of numbers, or count of anything non-blank.",
+          "content": "SUM, AVERAGE, COUNT and COUNTA all reduce a range to one number; which one you reach for depends on which summary you need -- total, mean, count of numbers, or count of anything non-blank.",
           "fact_ids": [
             "f1",
             "f2",
@@ -676,7 +676,7 @@
         {
           "id": "tb4",
           "purpose": "mechanism",
-          "content": "The AND function returns TRUE if all of its arguments evaluate to TRUE, and returns FALSE if one or more arguments evaluate to FALSE; its syntax is AND(logical1, [logical2], ...), and it is commonly used as the logical_test argument of IF to test more than one condition at once. The OR function returns TRUE if any of its arguments evaluate to TRUE, and returns FALSE if all of its arguments evaluate to FALSE; its syntax is OR(logical1, [logical2], ...). So =IF(AND(C2>60,D2>100),\"Late & High Value\",\"Other\") only labels an order that way when both the delivery is late and the amount is over 100.",
+          "content": "The AND function returns TRUE if all of its arguments evaluate to TRUE, and returns FALSE if one or more arguments evaluate to FALSE; its syntax is AND(logical1, [logical2], ...), and it is commonly used as the logical_test argument of IF to test more than one condition at once. The OR function returns TRUE if any of its arguments evaluate to TRUE, and returns FALSE if all of its arguments evaluate to FALSE; its syntax is OR(logical1, [logical2], ...). On your Orders sheet, =OR(E2=\"Cancelled\",E2=\"Pending\") returns TRUE for any order that isn't yet delivered, since OR only needs one of the two statuses to match. So =IF(AND(C2>60,D2>100),\"Late & High Value\",\"Other\") only labels an order that way when both the delivery is late and the amount is over 100.",
           "fact_ids": [
             "f3",
             "f4"
@@ -792,7 +792,7 @@
         {
           "id": "tb4",
           "purpose": "example",
-          "content": "On your Orders sheet, =DATEDIF(A2,TODAY(),\"D\") would tell you how many days have passed since order A2 was placed.",
+          "content": "On your Orders sheet, with an order date in G2, =DATEDIF(G2,TODAY(),\"D\") would tell you how many days have passed since that order was placed.",
           "fact_ids": [
             "f1",
             "f2"
@@ -813,7 +813,7 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "SUM, AVERAGE, COUNT and COUNTA all take whatever range you give them, with no built-in way to restrict which rows count. Often you only want the rows that meet some condition -- orders from one city, say.",
+          "content": "SUM, AVERAGE, COUNT and COUNTA all take every value in the range you give them. Often you only want the rows that meet some condition -- orders from one city, say.",
           "fact_ids": []
         },
         {
@@ -861,13 +861,13 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "Suppose your Drivers sheet has driver IDs in its leftmost column and driver names in the column next to it, and your Orders sheet only records a driver ID. You want each order row to show the matching driver's name.",
+          "content": "Suppose your Drivers sheet has driver IDs in its leftmost column and driver names in the column next to it, and your Orders sheet records a driver ID in column F. You want each order row to show the matching driver's name.",
           "fact_ids": []
         },
         {
           "id": "tb2",
           "purpose": "syntax",
-          "content": "VLOOKUP looks up a value in the leftmost column of a range and returns a value from the same row in a column you specify by its position; its syntax is VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]). In VLOOKUP, entering FALSE (or 0) for range_lookup searches for an exact match to lookup_value; leaving range_lookup blank or entering TRUE searches for an approximate match instead, and TRUE is the default if the argument is omitted. Looking up a driver ID with =VLOOKUP(A2,Drivers!A:B,2,FALSE) forces an exact match, which matters because an approximate match against driver IDs would return the wrong driver.",
+          "content": "VLOOKUP looks up a value in the leftmost column of a range and returns a value from the same row in a column you specify by its position; its syntax is VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup]). In VLOOKUP, entering FALSE (or 0) for range_lookup searches for an exact match to lookup_value; leaving range_lookup blank or entering TRUE searches for an approximate match instead, and TRUE is the default if the argument is omitted. Looking up a driver ID with =VLOOKUP(F2,Drivers!A:B,2,FALSE) searches for an exact match to the driver ID in F2; leaving the last argument off would search for an approximate match instead.",
           "fact_ids": [
             "f1",
             "f2"
@@ -884,7 +884,7 @@
         {
           "id": "tb4",
           "purpose": "mechanism",
-          "content": "VLOOKUP can only look up a value from left to right, but XLOOKUP works in any direction and returns exact matches by default. XLOOKUP searches lookup_array for lookup_value and returns the corresponding item from return_array, producing an exact match by default; its syntax is XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]). The same driver lookup written as =XLOOKUP(A2,Drivers!A:A,Drivers!B:B) already matches exactly, without needing FALSE spelled out.",
+          "content": "XLOOKUP searches lookup_array for lookup_value and returns the corresponding item from return_array, producing an exact match by default; its syntax is XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]). VLOOKUP can only look up a value from left to right, but XLOOKUP works in any direction. The same driver lookup written as =XLOOKUP(F2,Drivers!A:A,Drivers!B:B) already matches exactly, without needing FALSE spelled out.",
           "fact_ids": [
             "f4",
             "f5"
@@ -931,7 +931,7 @@
         {
           "id": "tb4",
           "purpose": "mechanism",
-          "content": "VLOOKUP can only look up a value from left to right, meaning the column containing the lookup value must be to the left of the column containing the return value; when the layout isn't built that way, MATCH can find the row position of the key and INDEX can then return the value from any column at that row position. So =INDEX(A:A,MATCH(B2,B:B,0)) finds the row where the driver ID in B2 occurs, then reads the driver name from column A at that same row -- something VLOOKUP alone couldn't do on this layout.",
+          "content": "VLOOKUP can only look up a value from left to right, meaning the column containing the lookup value must be to the left of the column containing the return value; when the layout isn't built that way, MATCH can find the row position of the key and INDEX can then return the value from any column at that row position. So on your Orders sheet, with an order's driver ID in F2, =INDEX(Drivers!A:A,MATCH(F2,Drivers!B:B,0)) finds the row where that driver ID occurs in the Drivers sheet's column B, then reads the driver name from column A at that same row -- something VLOOKUP alone couldn't do on this layout.",
           "fact_ids": [
             "f4"
           ]
@@ -985,7 +985,7 @@
         {
           "id": "tb5",
           "purpose": "takeaway",
-          "content": "If AVERAGE or SUM refer to cells that contain #VALUE! errors, the formulas will result in a #VALUE! error too -- one bad cell's error can spread into every summary formula built on top of it.",
+          "content": "If AVERAGE or SUM refer to cells that contain #VALUE! errors, the formulas will result in a #VALUE! error too -- so one bad cell's error can spread into a SUM or AVERAGE built on top of it.",
           "fact_ids": [
             "f5"
           ]
@@ -1031,7 +1031,7 @@
         {
           "id": "tb4",
           "purpose": "example",
-          "content": "Filters area fields are shown as top-level report filters above the PivotTable; Columns area fields are shown as Column Labels at the top of the PivotTable; Rows area fields are shown as Row Labels on the left side of the PivotTable; Values area fields are shown as summarized numeric values in the PivotTable. Building a PivotTable from your Orders data with City dragged into Rows, Status dragged into Columns, and Amount left in Values gives a grid of total order amounts for every city/status combination at once.",
+          "content": "Filters area fields are shown as top-level report filters above the PivotTable; Columns area fields are shown as Column Labels at the top of the PivotTable; Rows area fields are shown as Row Labels on the left side of the PivotTable; Values area fields are shown as summarized numeric values in the PivotTable. Building a PivotTable from your Orders data with City dragged into Rows, Status dragged into Columns, and Amount left in Values gives a grid of summarized order amounts for every city/status combination at once.",
           "fact_ids": [
             "f4"
           ]
@@ -1146,7 +1146,7 @@
         {
           "id": "tb1",
           "purpose": "definition",
-          "content": "Pie charts show the size of items in one data series proportional to the sum of the items, and are appropriate when you have only one data series to plot, none of the values are negative, there are no more than seven categories, and the categories represent parts of the whole pie. A summary of total order amount by city, for a handful of cities, fits that description as long as every amount is positive.",
+          "content": "Pie charts show the size of items in one data series proportional to the sum of the items, and are appropriate when you have only one data series to plot, none of the values are negative, there are no more than seven categories, and the categories represent parts of the whole pie. A summary of total order amount by city, for no more than seven cities, fits that description as long as no amount is negative.",
           "fact_ids": [
             "f1"
           ]
@@ -1192,7 +1192,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "A/B testing works by showing two variants of a page or experience to users at random: the original (control, or A) and a modified version (variation, or B); engagement with each version is measured and then compared against the baseline, the control. For the checkout button, the existing button is the control (A), the redesigned button is the treatment (B), users are randomly shown one or the other, and the metric compared is how many of each group complete an order.",
+          "content": "A/B testing works by showing two variants of a page or experience to users at random: the original (control, or A) and a modified version (variation, or B); engagement with each version is measured and then compared against the baseline, the control. For the checkout button, the existing button is the control (A), the redesigned button is the treatment (B), users are randomly shown one or the other, and the metric compared is the share of each group that completes an order.",
           "fact_ids": [
             "f3"
           ]
@@ -1200,7 +1200,7 @@
         {
           "id": "tb4",
           "purpose": "takeaway",
-          "content": "Naming the control, the treatment, and the metric being compared is the first thing to pin down before looking at any result -- without a control group to compare against, a treatment group's numbers alone don't tell you whether the change did anything.",
+          "content": "Every A/B test has these parts: a control group, a treatment group, and the measure being compared between them. The treatment group's result is then compared against the control, the baseline.",
           "fact_ids": [
             "f1",
             "f2",
@@ -1240,7 +1240,7 @@
         {
           "id": "tb3",
           "purpose": "example",
-          "content": "Applying that to the checkout test: a treatment rate of 22% over a control rate of 20% is a 2-percentage-point difference, which as a percentage of the 20% baseline is a 10% lift -- the same 10%-relative-improvement structure as the textbook example, just with the checkout numbers in place of its.",
+          "content": "Applying that to the checkout test: a treatment rate of 22% over a control rate of 20% is a 2-percentage-point difference, which as a percentage of the 20% baseline is a 10% lift -- the same 10%-relative-improvement structure as the textbook example, just with the checkout numbers.",
           "fact_ids": [
             "f1"
           ]
@@ -1248,7 +1248,7 @@
         {
           "id": "tb4",
           "purpose": "takeaway",
-          "content": "Analyzing an A/B test's results means determining whether the variation had a positive, negative, or neutral effect compared with the baseline (control) -- lift is the number that answers that question in one figure.",
+          "content": "Analyzing an A/B test's results means determining whether the variation had a positive, negative, or neutral effect compared with the baseline (control). Lift puts the observed difference into one figure: a positive lift means the variation's rate came out above the control's in this test, and a negative lift means it came out below.",
           "fact_ids": [
             "f3"
           ]
@@ -1274,7 +1274,7 @@
         {
           "id": "tb2",
           "purpose": "definition",
-          "content": "A bigger sample tends to provide a more precise point estimate than a smaller sample. The more cases researchers observe, the more accurately they can estimate the effect of the explanatory variable on the response; in a single study, this is done by collecting a sufficiently large sample.",
+          "content": "A bigger sample tends to provide a more precise point estimate than a smaller sample. The more cases researchers observe, the more accurately they can estimate the effect of the explanatory variable (here, which button a user saw) on the response (whether they completed an order); in a single study, this is done by collecting a sufficiently large sample.",
           "fact_ids": [
             "f1",
             "f2"
@@ -1283,7 +1283,7 @@
         {
           "id": "tb3",
           "purpose": "example",
-          "content": "So the 5,000-user version of the checkout test gives a more precise estimate of the button's true effect than the 50-user version, even though both happened to show the same 10% lift -- the smaller test's result is more likely to have been thrown off by which particular users happened to land in each group.",
+          "content": "So the 5,000-user version of the checkout test tends to provide a more precise estimate of the button's effect than the 50-user version, even though both happened to show the same 10% lift -- the larger test observed far more cases, so it can estimate the button's effect on completed orders more accurately.",
           "fact_ids": [
             "f1",
             "f2"
@@ -1320,7 +1320,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "The p-value is the probability of observing data at least as favorable to the alternative hypothesis as our current data set, if the null hypothesis were true; it is used to quantify the strength of evidence against the null hypothesis. Statistical significance is a measure of how unusual an experiment's results would be if there were actually no difference in performance between the variation and the baseline and the discrepancy were due to random chance alone.",
+          "content": "The p-value is the probability of observing data at least as favorable to the alternative hypothesis as our current data set, if the null hypothesis were true -- it quantifies the strength of evidence against the null hypothesis. Statistical significance measures how unusual a result would be if there were actually no difference between the variation and the baseline and the discrepancy were due to chance alone.",
           "fact_ids": [
             "f2",
             "f3"
@@ -1329,7 +1329,7 @@
         {
           "id": "tb4",
           "purpose": "mechanism",
-          "content": "A confidence interval represents a range of plausible values where we are likely to find the population parameter; if many samples were taken and a 95% confidence interval were built from each one, about 95% of those intervals would contain the parameter.",
+          "content": "A confidence interval is a range of plausible values likely to contain the population parameter (the true value you are trying to estimate); if many samples were taken and a 95% interval built from each one, about 95% of those intervals would contain it.",
           "fact_ids": [
             "f4"
           ]
@@ -1345,7 +1345,7 @@
         {
           "id": "tb6",
           "purpose": "misconception",
-          "content": "Not every confidence interval captures the true value, even when the method is followed correctly: in an illustrative set of twenty-five 95% confidence intervals built from different samples (around p = 0.88), only one failed to contain the population proportion -- showing that a small fraction of intervals will miss it purely by chance. The same is true of any single confidence interval you compute for a result like the checkout test.",
+          "content": "Not every confidence interval captures the true value, even when the method is followed correctly: in an illustrative set of twenty-five 95% confidence intervals built from different samples (around p = 0.88), only one failed to contain the population proportion -- showing that a small fraction of intervals will miss it. The same is true of any single confidence interval you compute for a result like the checkout test.",
           "fact_ids": [
             "m1"
           ]
@@ -1353,7 +1353,7 @@
         {
           "id": "tb7",
           "purpose": "takeaway",
-          "content": "When the sample size becomes large, even a very small, practically unimportant difference can be detected and called statistically significant; such a difference is statistically significant but not practically significant. A large enough checkout test could find a tiny, real-but-trivial lift and correctly call it significant -- significance tells you the result probably isn't due to chance, not that the result is big enough to matter.",
+          "content": "When the sample size becomes large, even a very small, practically unimportant difference can be detected and called statistically significant; such a difference is statistically significant but not practically significant. A large enough checkout test could detect a tiny, practically unimportant lift and call it statistically significant -- significance tells you how unusual the result would be if there were truly no difference, not that the lift is big enough to matter.",
           "fact_ids": [
             "f6"
           ]
@@ -1376,13 +1376,13 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "Running the numbers and getting a p-value or a confidence interval isn't the end of the job -- someone still has to decide what to do about the checkout button.",
+          "content": "Getting a p-value or confidence interval isn't the end of the job -- someone still has to decide what to do about the checkout button.",
           "fact_ids": []
         },
         {
           "id": "tb2",
           "purpose": "definition",
-          "content": "The null hypothesis (H0) often represents a skeptical perspective or a claim to be tested, and the alternative hypothesis (HA) represents an alternative claim under consideration; the value being compared to the parameter in this setup is called the null value.",
+          "content": "As before, H0 often represents a skeptical perspective or a claim to be tested, and HA an alternative claim under consideration; the value being compared to the parameter in this setup is called the null value.",
           "fact_ids": [
             "f1"
           ]
@@ -1390,7 +1390,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "Consider two versions of a proportion test against a null value of 0.333. In one, because the null value (p0 = 0.333) fell within the confidence interval computed from the sample, that value was not implausible, so the data did not provide sufficient evidence to reject the null hypothesis. In a second, the null value (p0 = 0.333) was not in the 95% confidence interval, so the null hypothesis was rejected: the data provided statistically significant evidence that the proportion differed from 0.333, and because the entire interval was below 0.333, it was concluded to be lower.",
+          "content": "Consider two textbook examples, each testing whether a proportion equals a null value of 0.333. In one, because the null value (p0 = 0.333) fell within the confidence interval computed from the sample, that value was not implausible, so the data did not provide sufficient evidence to reject the null hypothesis. In a second, the null value (p0 = 0.333) was not in the 95% confidence interval, so the null hypothesis was rejected: the data provided statistically significant evidence that the proportion differed from 0.333, and because the entire interval was below 0.333, it was concluded to be lower.",
           "fact_ids": [
             "f2",
             "f3"
@@ -1399,7 +1399,7 @@
         {
           "id": "tb4",
           "purpose": "misconception",
-          "content": "While the first example failed to reject the null hypothesis, that does not necessarily mean the null hypothesis is true; perhaps there was an actual difference, but it wasn't possible to detect it with the relatively small sample of 50. Failing to reject the null hypothesis is not equivalent to accepting the null hypothesis as true; it only means there was not strong enough evidence for the alternative.",
+          "content": "While the first example failed to reject the null hypothesis, that does not necessarily mean the null hypothesis is true; perhaps there was an actual difference, but it could not be detected with the relatively small sample of 50. Failing to reject the null hypothesis is not equivalent to accepting the null hypothesis as true; it only means there was not strong enough evidence for the alternative.",
           "fact_ids": [
             "f6",
             "m1"
@@ -1408,7 +1408,7 @@
         {
           "id": "tb5",
           "purpose": "example",
-          "content": "Analyzing an A/B test's results means determining whether the variation had a positive, negative, or neutral effect compared with the baseline (control). For the checkout test, that means stating plainly whether the redesigned button did better, worse, or about the same as the original -- not just reporting a p-value and stopping.",
+          "content": "Analyzing a test's results means saying whether the variation had a positive, negative, or neutral effect versus the baseline (control). For the checkout test, that means stating plainly whether the redesigned button did better, worse, or about the same as the original -- not just reporting a p-value and stopping. If the checkout test's summary showed its null value inside the confidence interval, the conclusion would be that the data did not provide sufficient evidence of a difference -- not that the new button makes no difference.",
           "fact_ids": [
             "f4"
           ]
@@ -1416,7 +1416,7 @@
         {
           "id": "tb6",
           "purpose": "takeaway",
-          "content": "When the sample size becomes large, even a very small, practically unimportant difference can be detected and called statistically significant; for example, an online experiment might find that placing additional ads on a movie review website statistically significantly increases viewership of a TV show by 0.001%, but this increase might not have any practical value. A business conclusion has to weigh that: a statistically significant lift on the checkout button is only worth acting on if the size of the lift is big enough to matter, not just detectable.",
+          "content": "When the sample size becomes large, even a very small, practically unimportant difference can be detected and called statistically significant; for example, an online experiment might find that placing additional ads on a movie review website statistically significantly increases viewership of a TV show by 0.001%, but this increase might not have any practical value. A business conclusion has to weigh that: a statistically significant lift on the checkout button might still be too small to have any practical value, so look at the size of the lift, not just whether it was detected.",
           "fact_ids": [
             "f5"
           ]

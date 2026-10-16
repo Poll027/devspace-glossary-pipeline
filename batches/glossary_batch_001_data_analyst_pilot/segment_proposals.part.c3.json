@@ -1,0 +1,838 @@
+{
+ "metadata": {
+  "artifact_type": "segment_proposals",
+  "artifact_version": "1.0.0",
+  "schema_version": "1.0.0",
+  "batch_id": "glossary_batch_001_data_analyst_pilot",
+  "run_id": "glossary_batch_001_data_analyst_pilot_08_c3",
+  "prompt_version": "08_segment_detection@v1",
+  "model": "claude-sonnet-5",
+  "generated_at": "2026-10-02T10:26:43Z",
+  "source_snapshot_id": "data_analytics.source_pack",
+  "parent_artifact_hashes": {
+   "video_candidates.json": "a9dd00375318a03dd502c9d981df36820d2e1bc6300e0fb93049ed206606252e",
+   "coverage_briefs.json": "d0ef2fa55a4fc956f7aec86aa706596e791e638ea60e8c7c721fdb8273290611",
+   "extracted_concepts.json": "8e3969d65e33ee46f6e3ca399cf9ada942a5b349eb85f07e6b5d60dfe6acdc8e"
+  }
+ },
+ "batch_id": "glossary_batch_001_data_analyst_pilot",
+ "proposals": [
+  {
+   "proposal_id": "prop_KkTaQ5OjAGc_spreadsheet_logical_functions",
+   "concept_id": "spreadsheet.logical_functions",
+   "path_id": "data_analyst",
+   "video_id": "KkTaQ5OjAGc",
+   "start_seconds": 55,
+   "end_seconds": 557,
+   "label": "Live demo: building IF, IF+AND, nested IF, and IF+OR formulas on the same revenue list",
+   "role": "tool_workflow",
+   "covered_fact_ids": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+   ],
+   "visual_mode": "spreadsheet_demo",
+   "chapter_aligned": true,
+   "transcript_evidence": "AND allows us to do a logical test for more than one thing.",
+   "issues": [
+    "f6 (nested IF converting a numeric score to a letter grade) is not covered -- this video's nested-IF example marks revenue as Good/Exceptional against thresholds, not a letter-grade conversion.",
+    "Range is ~8.4 min, well above the tool-workflow/live-demo band (2-6 min, playbook SS15), because the Nested-IF chapter (305-472) explicitly reuses the AND formula built in the previous chapter ('I'm actually going to copy this... and paste it in here'), so the AND chapter is required earlier context for the nested chapter, and OR (f4) is a separate required fact only taught in the following chapter -- trimming any of the four chapters would drop a required fact.",
+    "Both ends sit on creator chapter markers (55 = start of 'Excel IF THEN formula', 557 = start of 'Excel IF formula with threshold', excluded)."
+   ]
+  },
+  {
+   "proposal_id": "prop_KyCw1uA1-M8_python_variable_scope",
+   "concept_id": "python.variable_scope",
+   "path_id": "data_analyst",
+   "video_id": "KyCw1uA1-M8",
+   "start_seconds": 19,
+   "end_seconds": 220,
+   "label": "Tracing why a name inside a function resolves to the local version first, then the global version (the LEGB order)",
+   "role": "visual_mechanism",
+   "covered_fact_ids": [
+    "f1",
+    "f2"
+   ],
+   "visual_mode": "annotated_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "you use any local variables first then enclosed variables then global and then any built-in variables in that order",
+   "issues": [
+    "f3 (a global variable cannot be assigned from inside a function without a `global` statement) is not covered -- the video never writes or mentions the `global` keyword; it only demonstrates reading a global from inside a function and failing to read a local from outside.",
+    "Start sits on the 'Scope' chapter marker (19), skipping the channel-intro/subscribe-plug segment (0-19); end (220) cuts before the outro ('so that's variable scope in python... if you would like a copy of this code I will post this to the comment section'), which is channel filler, not content."
+   ]
+  },
+  {
+   "proposal_id": "prop_Liv6eeb1VfE_pandas_inspecting_dataframes",
+   "concept_id": "pandas.inspecting_dataframes",
+   "path_id": "data_analyst",
+   "video_id": "Liv6eeb1VfE",
+   "start_seconds": 225,
+   "end_seconds": 367,
+   "label": "Live demo: running df.info() and df.describe() on a real dataset and reading what each prints",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f4",
+    "f5"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "we're going to do dot info and this gives us just some really high level information",
+   "issues": [
+    "f1 (head/tail) and f2 (shape) are never covered anywhere in this 32-minute video -- it never calls .head() or .shape, so this video cannot serve those two required facts at all.",
+    "f3 (dtypes) is covered only in a disjoint chapter 1747-1841, 1400+ seconds away from this range, and goes well past the required fact into .select_dtypes() filtering -- not combined into this proposal since it isn't adjacent.",
+    "A ~19s Udemy sponsor-ad plug ('let's get back to the video', 282-301) sits inside this range, between the info() and describe() explanations -- content is otherwise continuous and on-topic before/after it; trimming to avoid it would drop one of the two facts this range covers, so it is left in and flagged for the judge.",
+    "End (367) extends past the catalog's labeled Describe() chapter boundary (347) to let the describe() explanation finish its point ('just a nice high level overview...'); it stops right before the video pivots to counting null values (blocked concept pandas.missing_data_handling)."
+   ]
+  },
+  {
+   "proposal_id": "prop_Lw2rlcxScZY_pandas_boolean_filtering",
+   "concept_id": "pandas.boolean_filtering",
+   "path_id": "data_analyst",
+   "video_id": "Lw2rlcxScZY",
+   "start_seconds": 88,
+   "end_seconds": 584,
+   "label": "Live demo: a True/False filter mask, applying it with df[] and .loc, then combining conditions with &, |, and ~ in parentheses",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": false,
+   "transcript_evidence": "the true values are the rows that met our filter criteria and the false values are the rows that didn't meet our filter criteria",
+   "issues": [
+    "Start (88) is 8s before the catalog's labeled 'Filter Mask' chapter marker (96) -- starting exactly at 96 lands mid-sentence on an unresolved 'that' ('that says DF...') whose antecedent ('a comparison') is spoken just before the marker, so the true clean start is in the preceding 'Introduction' chapter, not on a marker; chapter_aligned is set false to reflect this.",
+    "f3 is only partially demonstrated: the video models wrapping each & / | condition in parentheses but frames it purely as a readability preference ('I think it makes it a bit easier to read'), and never states the actual reason (Python's operator precedence would otherwise misorder the comparisons) -- the required causal fact itself is not spoken, only the resulting convention.",
+    "Range is ~8.3 min, above the live-code-demo band (2-6 min, playbook SS15), because all three required facts (mask mechanism, [] / .loc filtering, &  / | / ~ with parentheses) are taught as one continuous live walkthrough on the same small DataFrame -- cutting the OR or NOT (~) portions would drop part of f3's required operator set.",
+    "End (584, 'that kind of covers the basics of filtering on a small data frame') is a clean wrap-up just before the video pivots to a different, larger survey dataset for the 'Filter Examples' chapter (595)."
+   ]
+  },
+  {
+   "proposal_id": "prop_MZZSMaEAC2g_python_dictionaries",
+   "concept_id": "python.dictionaries",
+   "path_id": "data_analyst",
+   "video_id": "MZZSMaEAC2g",
+   "start_seconds": 0,
+   "end_seconds": 77,
+   "label": "Defining a dictionary of country-capital key:value pairs inside curly braces",
+   "role": "mental_model",
+   "covered_fact_ids": [
+    "f1"
+   ],
+   "visual_mode": "annotated_code",
+   "chapter_aligned": false,
+   "transcript_evidence": "a dictionary consists of key value pairs they are ordered and changeable no duplicates allowed",
+   "issues": [
+    "f2 (storing/updating via tel['guido']=4127 and retrieving via tel['jack'] subscripting) is not demonstrated anywhere in this video -- it builds the dict literal directly inside braces, then exclusively uses the .get() and .update() methods for lookup/updates, never plain key-subscript assignment or retrieval.",
+    "f3 (subscripting a missing key raises KeyError) is not demonstrated and is arguably in tension with what the video does show: it explicitly states that looking up a missing key with .get() 'would return none' ('if python doesn't find a key this is what will be returned... this method would return none'). That is correct for .get() specifically, but the video never distinguishes this from subscript ([]) access, so pairing this clip with f3's KeyError fact risks reading as a contradiction to a learner who doesn't already know .get() and [] differ.",
+    "No catalog chapters exist for this video (chapters list is empty) -- chapter_aligned is false by necessity; boundaries are based on transcript thought breaks only.",
+    "End (77, 'I think that's good enough') is the natural end of the dict-construction example, right before an aside about the dir()/help() introspection functions, which isn't part of this concept."
+   ]
+  },
+  {
+   "proposal_id": "prop_N6hyN6BW6ao_pandas_reading_data",
+   "concept_id": "pandas.reading_data",
+   "path_id": "data_analyst",
+   "video_id": "N6hyN6BW6ao",
+   "start_seconds": 58,
+   "end_seconds": 375,
+   "label": "Live demo: pd.read_csv() with a file path and index_col, then switching its sep argument to read a tab-delimited file",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f1",
+    "f4"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": false,
+   "transcript_evidence": "if you're reading in tab CSV files then all you need to do is take this sep equal to backslash T and you can just add that as an argument up here to read CSV",
+   "issues": [
+    "f2 (read_excel) and f3 (read_excel's sheet_name argument) are not covered by this range -- this video's read_excel demo is a separate, non-adjacent chapter (roughly 650-719) with ~225s of unrelated pip-install/to_excel-writing content between it and this CSV range, so the two can't be combined into one standalone segment without including that off-topic material.",
+    "Start (58, 'ok so first let's look at CSV files') is inside the catalog's single 'Intro' chapter (0-375, no finer chapter markers exist for this span) -- chapter_aligned is false. It opens with 'since we've already been using these throughout the series' (a backward series reference) but immediately re-explains read_csv from scratch ('let's go over this one more time'), so the segment is still self-contained.",
+    "End (375) is exactly where the video pivots to Excel-specific package installation, a different topic."
+   ]
+  },
+  {
+   "proposal_id": "prop_N6hyN6BW6ao_capstone_data_retrieval_method_selection",
+   "concept_id": "capstone.data_retrieval_method_selection",
+   "path_id": "data_analyst",
+   "video_id": "N6hyN6BW6ao",
+   "start_seconds": 1522,
+   "end_seconds": 1683,
+   "label": "Live demo: retrieving data from a SQL database with pandas' read_sql / read_sql_query",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f1"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": false,
+   "transcript_evidence": "to do this we can use the method read underscore SQL underscore query to run a specific SQL query",
+   "issues": [
+    "f2 (read_excel) is not covered in this range -- this video's read_excel demo is a separate, non-adjacent chapter (~650-719) with the SQL write/connection-setup and URL-loading chapters in between; combining them would pull in unrelated material.",
+    "Start is placed right after the creator's own aside 'if you skip to this part of the video... please go back to when we wrote data to our database and see how I set up this database connection' -- that aside is skipped because it explicitly tells the viewer this part depends on earlier unseen setup; what remains ('now that we actually have this database connection set up...') is self-explanatory since the segment itself says the connection 'I called engine', which is enough for this concept's required fact (that pandas can query a SQL database), without needing the connection's original setup code.",
+    "The video uses df.head() in this range to verify the query result; head()/inspecting dataframes is allowed knowledge for this concept (not on its blocked list), so this isn't a leak, just noted for completeness.",
+    "End (1683) is exactly where the video pivots to a different 'loading data from a URL' tip, unrelated to this concept."
+   ]
+  },
+  {
+   "proposal_id": "prop_NdeeSEknp58_datamodel_er_diagram_reading",
+   "concept_id": "datamodel.er_diagram_reading",
+   "path_id": "data_analyst",
+   "video_id": "NdeeSEknp58",
+   "start_seconds": 4261,
+   "end_seconds": 4789,
+   "label": "Entity type, instance and set defined, then the ERD symbols: entity = rectangle box, attribute = oval (with derived/multivalued/composite variants)",
+   "role": "visual_mechanism",
+   "covered_fact_ids": [
+    "f1",
+    "f2"
+   ],
+   "visual_mode": "diagram_animation",
+   "chapter_aligned": false,
+   "transcript_evidence": "there's only symbol for entity type which is this rectangular box and here you write the table name",
+   "issues": [
+    "f2 is only partially covered: the video shows attribute = oval, including its dotted (derived) and double (multivalued) variants, but never mentions underlining the primary-key attribute -- the word 'underline' does not occur anywhere in this 9-hour transcript, so this video cannot supply that half of f2.",
+    "f3 (relationships as lines labeled 1:1/1:M/M:N) and f4 (cardinality markings -- three-prong 'many', zero-or-one, mandatory-one symbols) are not covered by this range at all. The video does teach relationship notation (diamond symbol) and 1:1/1:M/M:N cardinality, but ~770s later (around 5560-5790) in a different sub-section with unrelated 'keys' material (super key/candidate key, ~770s) in between, and its cardinality notation there is drawn as written 1/M labels or arrow-vs-plain-line, not the three-prong crow's-foot style f4 describes -- a candidate video using the same notation convention as f4 should be preferred for those two facts if one exists.",
+    "This range sits inside the catalog's 'Three-Level Data Abstraction' chapter (3600-4800), which is the wrong label for this content (entity/attribute ER-model basics, not data-abstraction levels) -- confirms this video's creator/auto chapters don't reliably describe its actual content, consistent with other videos in this batch; chapter_aligned is false.",
+    "Range is ~8.8 min, well above the visual-mechanism band (1-4 min, playbook SS15) because the entity-type/instance/set vocabulary (4261-4356) is referenced by name ('remember there is no symbol for entity instance...') right at the entity-box definition and can't be cut without leaving an unresolved backward reference; the attribute-oval variants (derived/multivalued/composite) are listed together as one block and trimming mid-list would drop part of f2.",
+    "A short strong/weak-entity-type aside and a domain-constraint aside (both on-topic ER-model vocabulary, not blocked concepts) fall inside this range between the entity and attribute symbol explanations."
+   ]
+  },
+  {
+   "proposal_id": "prop_O5v4NrSCw_A_pandas_missing_data_handling",
+   "concept_id": "pandas.missing_data_handling",
+   "path_id": "data_analyst",
+   "video_id": "O5v4NrSCw_A",
+   "start_seconds": 245,
+   "end_seconds": 838,
+   "label": "Live demo: dropna() with how='any'/'all' and threshold, fillna() with a forward/backward fill and with a scalar value, then checking remaining gaps with isnull()",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "drop na what this does is any road that contains any not of numbers gets removed from our data",
+   "issues": [
+    "f1 is demonstrated using df.isnull() rather than df.isna() -- isnull() is pandas' literal alias for isna() (same behavior), but the video never uses the exact isna() spelling the fact names.",
+    "f2's subset argument (restricting which columns count toward 'has a missing value') is not demonstrated -- only the how='any'/'all' and threshold parameters are covered.",
+    "Range is ~9.9 min, well above the live-code-demo band (2-6 min, playbook SS15): this is the entire video, included in full because dropna (how/threshold), fillna's forward/backward-fill variant, fillna's required scalar-value variant, fillna's limit parameter, and the isnull() check are taught back-to-back with no off-topic material between them -- cutting anywhere in that chain drops one of the three required facts (the scalar fillna demo sits between the ffill/bfill demo and the isnull() check).",
+    "Start (245) sits exactly on the catalog's 'Delete Data' chapter marker. End (838, 'I think that's good enough for handling of missing data') is a clean wrap-up line, cut before the video's next-tutorial preview and outro/subscribe plug.",
+    "Presenter's narration is informal and sometimes hesitant/self-correcting (sentdex's older tutorial style) but the code and its stated behavior are accurate throughout this range."
+   ]
+  },
+  {
+   "proposal_id": "prop_O9hORRFxV-A_sql_having",
+   "concept_id": "sql.having",
+   "path_id": "data_analyst",
+   "video_id": "O9hORRFxV-A",
+   "start_seconds": 0,
+   "end_seconds": 341,
+   "label": "Writing HAVING COUNT(*) > 1 after GROUP BY, then contrasting it with WHERE on a non-aggregated column",
+   "role": "worked_example",
+   "covered_fact_ids": [
+    "f1",
+    "f2"
+   ],
+   "visual_mode": "annotated_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "where you could use it only on the columns that exist in the database... but once I want to filter the data based on a column that doesn't exist in the database for example the count star... we cannot use the where we should use having",
+   "issues": [
+    "Opens with 'so far we have learned how to group up our data using the group by SQL clouds' -- a backward reference to an earlier lesson, but GROUP BY is this concept's allowed prerequisite knowledge and the reference doesn't require having watched that video to follow what comes next.",
+    "Both ends are clean: starts at 0 (catalog's 'Introduction to HAVING' chapter marker) and ends right after 'we have covered the having clouds' (341), cut before the next-tutorial preview and outro."
+   ]
+  },
+  {
+   "proposal_id": "prop_OUnnuKHbmbU_pandas_creating_dataframes",
+   "concept_id": "pandas.creating_dataframes",
+   "path_id": "data_analyst",
+   "video_id": "OUnnuKHbmbU",
+   "start_seconds": 0,
+   "end_seconds": 134,
+   "label": "Live demo: building a dict of equal-length lists and passing it to pd.DataFrame() to get a table with a default index",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f1"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "we're also given an index. This index has a label for each row starting with zero. But you can set that to be something custom.",
+   "issues": [
+    "f2 (list-of-dicts construction) is not covered in this range -- the video does build a DataFrame from a list containing one dict later (around 320-355), but only as an intermediate step to create a single new row for pd.concat(), not taught as a general alternative constructor; it's also separated from this range by the 'Accessing rows' chapter (167-210), which uses .loc/.iloc -- blocked knowledge for this concept -- so the two can't be merged into one standalone clip.",
+    "End (134) is the exact chapter boundary before 'Setting custom index', which is extra (not required) content; start (0) is the video's opening, chapter-aligned at both ends."
+   ]
+  },
+  {
+   "proposal_id": "prop_P6HCyxSyFpY_capstone_data_retrieval_method_selection",
+   "concept_id": "capstone.data_retrieval_method_selection",
+   "path_id": "data_analyst",
+   "video_id": "P6HCyxSyFpY",
+   "start_seconds": 179,
+   "end_seconds": 267,
+   "label": "Live demo: loading an Excel file into a DataFrame in one line with pd.read_excel()",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f2"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "with just one line of code we were able to take all of the data within this Excel file and load it into a pandas data frame",
+   "issues": [
+    "f1 (SQL retrieval via pandas) is not covered -- this video is Excel-only end to end.",
+    "Kept tight per the TOC conflict note (this is a decision concept, not a syntax lesson): ends right after the core read_excel() result ('this is all you need'), before the video goes on to detail the sheet_name/decimal/skip_rows parameters.",
+    "Start (179) is 1s after the catalog's 'Read single Excel file' chapter marker (178)."
+   ]
+  },
+  {
+   "proposal_id": "prop_P90mCSsGE1c_stats_correlation_interpretation",
+   "concept_id": "stats.correlation_interpretation",
+   "path_id": "data_analyst",
+   "video_id": "P90mCSsGE1c",
+   "start_seconds": 930,
+   "end_seconds": 1125,
+   "label": "Live demo: scanning a 50x50 state correlation table to find the strongest and weakest pairwise correlations",
+   "role": "worked_example",
+   "covered_fact_ids": [
+    "f1"
+   ],
+   "visual_mode": "data_table_demo",
+   "chapter_aligned": false,
+   "transcript_evidence": "you could look through here and try to find like the smallest number like here we've got a 79% correlation between Texas and Nevada",
+   "issues": [
+    "f2 (confounding variables) is never mentioned anywhere in this video.",
+    "f1 is only demonstrated with positive correlations (every state pair in this housing-price dataset is positively correlated, 74%-100%) -- the 'regardless of sign' part of f1 (that a correlation near -1 is equally strong as one near +1) is never shown with an actual negative example.",
+    "Start (930) is after the catalog's 'Correlation' chapter marker (903); the 903-930 span is leftover discussion from the prior section, and the actual correlation-table explanation begins at 930 ('the way that you can do... stats on data frames... is going to be correlation'); chapter_aligned is false.",
+    "End (1125) cuts before the video pivots into unrelated investing/short-selling commentary ('if you have two states that start to diverge... you can short the housing market')."
+   ]
+  },
+  {
+   "proposal_id": "prop_PyYgERKq25I_sql_select_fundamentals",
+   "concept_id": "sql.select_fundamentals",
+   "path_id": "data_analyst",
+   "video_id": "PyYgERKq25I",
+   "start_seconds": 25,
+   "end_seconds": 123,
+   "label": "Live demo: SELECT *, selecting named columns, and SELECT TOP N on an employee table",
+   "role": "worked_example",
+   "covered_fact_ids": [
+    "f1"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": false,
+   "transcript_evidence": "if we want to return all columns and all rows then all we have to do is use this star so that's what the star does",
+   "issues": [
+    "f2 (AS output_name aliasing) is not covered in this range -- in this video AS is only demonstrated later, attached to COUNT()'s output column, and sql.aggregate_functions is this concept's blocked knowledge, so that section (and the AS example inside it) can't be included.",
+    "f3 (FROM clause) is not covered in this range either -- this video does have a clean, self-contained FROM explanation (demonstrating database.owner.table addressing), but it sits after the blocked COUNT/aggregate-functions chapter (126-272), so it can't be merged into this same standalone clip without crossing that blocked content.",
+    "Start (25) and end (123) are not on catalog chapter markers (the 'Introduction to select' chapter runs 0-92 and covers both SELECT and an early DISTINCT mention): start skips the video's opening recap of the prior video in this series ('if you joined us for our last video we went over creating our tables...'); end is placed a few seconds before the transcript line 'now we want to look at count' to stay clear of the aggregate-functions content that follows."
+   ]
+  },
+  {
+   "proposal_id": "prop_QNfnuK-1YYY_sql_cte",
+   "concept_id": "sql.cte",
+   "path_id": "data_analyst",
+   "video_id": "QNfnuK-1YYY",
+   "start_seconds": 34,
+   "end_seconds": 385,
+   "label": "Writing WITH average_salary AS (...) and reading it by name in the main query, like a temporary table",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "visual_mode": "annotated_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "a width clause can also be referred to as cte which stands for common table expression",
+   "issues": [
+    "Uses a different worked example (an employee/salary table, WITH average_salary AS (...)) than the source's regional_sales/top_regions example in f2 -- the general WITH name AS (query), then-reference-by-name pattern is taught correctly, just not with the source's literal column/table names.",
+    "f3 is demonstrated by contrast rather than by naming nested subqueries directly: the video shows that this particular query didn't strictly need WITH ('you could have just passed it here') and frames WITH's value as syntax clarity, which matches f3's point without using the term 'nested subquery'.",
+    "Start (34) sits exactly on the catalog's 'Query 1' chapter marker, skipping the channel's subscribe-plug intro (0-34); end (385) is the clean line 'this was just to show you an example of what is the syntax of using a width clause,' exactly before the video moves to its second, longer example."
+   ]
+  },
+  {
+   "proposal_id": "prop_QVdf0LgmICw_python_variable_scope",
+   "concept_id": "python.variable_scope",
+   "path_id": "data_analyst",
+   "video_id": "QVdf0LgmICw",
+   "start_seconds": 34,
+   "end_seconds": 468,
+   "label": "The LEGB resolution order, then live demos of a local variable shadowing a global one, and the global statement letting a function reassign it",
+   "role": "visual_mechanism",
+   "covered_fact_ids": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "visual_mode": "annotated_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "Python first checks the variables in the local scope, then the enclosing scope, then the global, and then lastly the built-ins",
+   "issues": [
+    "Range is ~7.2 min, well above the visual-mechanism band (1-4 min, playbook SS15): it covers the LEGB order statement, assigning inside a function stays local (f1), reading a global from inside a function without shadowing it (f2), then the global statement letting a function actually reassign the outer variable (f3) -- each demo builds directly on the previous one's same X/Y variables, so cutting partway through would leave the next demo's setup unexplained.",
+    "End (468) is deliberately before the catalog's 'Built in Scope' chapter (565), which is skipped entirely because it demonstrates built-ins via 'import builtins' -- python.import_statements is blocked knowledge for this concept. f2's built-in-names mention is still covered since the LEGB order itself (including built-ins as the last lookup step) is stated explicitly near the start of this range, just without that later demo.",
+    "This video also teaches enclosing scope as part of LEGB (not required by f1-f3, which only cover non-nested functions) -- mentioned but not demonstrated in this range, so it doesn't add any inaccuracy.",
+    "Start (34) and end (468, 'I wanted to show you how the global statement works... but be careful not to overuse it') both fall on or next to catalog chapter boundaries ('Variable Scope in Python' starts at 2, 'Understanding the Scoping Rules' at 35; end sits just before the video moves on to function parameters as a new sub-topic)."
+   ]
+  },
+  {
+   "proposal_id": "prop_RY526I9h2SE_spreadsheet_bar_chart_creation",
+   "concept_id": "spreadsheet.bar_chart_creation",
+   "path_id": "data_analyst",
+   "video_id": "RY526I9h2SE",
+   "start_seconds": 0,
+   "end_seconds": 22,
+   "label": "Selecting a data range, then Insert > Column Chart button > bar chart",
+   "role": "tool_workflow",
+   "covered_fact_ids": [
+    "f2"
+   ],
+   "visual_mode": "screen_demo",
+   "chapter_aligned": true,
+   "transcript_evidence": "to make a bar chart just select your data and then go to insert click on the column chart button here and select the bar chart",
+   "issues": [
+    "f2 is only partially matched: this video creates the chart via Insert > Column Chart button > bar chart, not via the source's specific Insert > Recommended Charts > (All Charts tab if needed) > OK path. Both are real, valid Excel UI paths to the same result, but the exact described steps differ.",
+    "f1 (bar charts compare items; categories on one axis, values on the other) is never stated conceptually anywhere in this video -- it's a '5 advanced tips' video that assumes the viewer already knows what a bar chart is and jumps straight into tips (reversing axis order, sorting, overlap styling, etc.).",
+    "This clip is only 22s, short of even the mental-model band floor (45s, playbook SS15) -- it's genuinely all the basic-creation content this video has before it moves into its first advanced tip; extending it would pull in tip content (axis-order fix) that isn't part of either required fact."
+   ]
+  },
+  {
+   "proposal_id": "prop_RiEZ_hEf96A_stakeholder_chart_type_to_point_matching",
+   "concept_id": "stakeholder.chart_type_to_point_matching",
+   "path_id": "data_analyst",
+   "video_id": "RiEZ_hEf96A",
+   "start_seconds": 0,
+   "end_seconds": 101,
+   "label": "The same sleep/work/eat/rest time data shown as a pie chart, then a bar chart, to see why the bar chart answers 'who does more of what, and by how much' instantly",
+   "role": "mental_model",
+   "covered_fact_ids": [
+    "f1"
+   ],
+   "visual_mode": "diagram_animation",
+   "chapter_aligned": true,
+   "transcript_evidence": "with a bar chart it's obvious that Herman spends an hour more working each day than he spends sleeping",
+   "issues": [
+    "f4 (pie chart's part-to-whole purpose, and its 100%-whole requirement) is not stated -- this video is a one-sided 'use bar charts instead of pie charts' argument; it shows pie charts failing on near-equal-sized categories (consistent with f4's implication that pie charts don't suit precise comparison) but never states what pie charts ARE good for or their need for a meaningful whole, so f4 is left out of covered_fact_ids.",
+    "f2, f3, f5, f6 (line/box/scatter charts) are not covered -- this video is pie-vs-bar only.",
+    "Covers the whole video except the sign-off line ('all right that's it for this stat quickie, tune in next time')."
+   ]
+  },
+  {
+   "proposal_id": "prop_RpCZ_kb1Gfs_spreadsheet_pivot_summarization",
+   "concept_id": "spreadsheet.pivot_summarization",
+   "path_id": "data_analyst",
+   "video_id": "RpCZ_kb1Gfs",
+   "start_seconds": 0,
+   "end_seconds": 136,
+   "label": "Why a PivotTable value field defaults to Count for text and Sum for numbers -- and why blanks or errors in a numeric column also trigger Count",
+   "role": "mental_model",
+   "covered_fact_ids": [
+    "f1"
+   ],
+   "visual_mode": "screen_demo",
+   "chapter_aligned": true,
+   "transcript_evidence": "typically when we add fields to the values area of the pivot table the calculation type either defaults to count or it defaults to sum and that is based on what data type is in the field",
+   "issues": [
+    "f2 (manually changing the summary function via PivotTable Analyze > Field Settings > Summarize Values By, e.g. to Average) is NOT covered anywhere in this video -- despite the title, the whole video is actually about fixing SOURCE DATA (replacing blanks with zeros) so a numeric field defaults to Sum instead of Count; it never opens the native Value Field Settings dialog or chooses a different summary function like Average.",
+    "The video's second half promotes a paid third-party add-in ('Pivot Pal', by the same creator/channel) as a faster way to find blank/error cells -- not a native Excel feature, and not part of either required fact; excluded from this range.",
+    "Start (0) and end (136, right as the video pivots to the blanks-fixing workaround) both fall at natural boundaries; end is a few seconds before the catalog's 'Find and Replace' chapter marker (145) since the transition itself starts at 136."
+   ]
+  },
+  {
+   "proposal_id": "prop_STxEQKu5KiI_sql_aggregate_functions",
+   "concept_id": "sql.aggregate_functions",
+   "path_id": "data_analyst",
+   "video_id": "STxEQKu5KiI",
+   "start_seconds": 0,
+   "end_seconds": 384,
+   "label": "Live demo: MAX, AVG with a WHERE filter, COUNT(*) vs COUNT(column) excluding NULLs, and COUNT(DISTINCT column)",
+   "role": "worked_example",
+   "covered_fact_ids": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "aggregate functions calculates results and returns us as a single value",
+   "issues": [
+    "f5 (MIN) only gets a brief verbal mention in the intro ('if I want the minimum of marks I'll get the answer as zero') -- there is no actual SELECT MIN(...) query run on screen anywhere in this video, unlike MAX/AVG/COUNT which all get dedicated worked queries.",
+    "f3 (SUM) is never run as its own standalone query either -- it's demonstrated indirectly, written out as part of decomposing AVG ('average of marks... sum of marks divided by count of marks'), which does show real SUM(marks) syntax but framed as a sub-step of AVG, not as its own example.",
+    "f2 is unusually well covered: the video explicitly contrasts COUNT(*) (counts all 7 rows) with COUNT(marks) (counts 6, excluding one NULL), and separately shows AVG(marks) silently excluding that NULL from both its sum and its divisor -- a precise, accurate demonstration.",
+    "Range is ~6.4 min, slightly above the worked-example band (1.5-5 min, playbook SS15) because it is the entire video; no GROUP BY or HAVING content (this concept's blocked knowledge) appears anywhere in it, and every one of the six required functions gets at least a mention, so nothing was trimmed.",
+    "Start (0) and end (384) are chapter-aligned: 0 is the video's start, 384 cuts right before the sign-off ('that's it for this small tutorial, thanks for watching')."
+   ]
+  },
+  {
+   "proposal_id": "prop_SfX8IIxoJwQ_python_lists",
+   "concept_id": "python.lists",
+   "path_id": "data_analyst",
+   "video_id": "SfX8IIxoJwQ",
+   "start_seconds": 19,
+   "end_seconds": 208,
+   "label": "Building a list with square brackets, indexing elements by position, and replacing an element in place",
+   "role": "worked_example",
+   "covered_fact_ids": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "visual_mode": "annotated_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "a list is used to store multiple items within a single variable",
+   "issues": [
+    "f2 is only partially covered: only positive-index access (food[0], food[1], ...) is shown -- negative indexing (squares[-1]) and slicing (squares[-3:]) never appear anywhere in this video.",
+    "f5 (slice start-included/end-excluded rule) is not covered at all -- there is no slicing content in this video.",
+    "f4 (list.append()) is demonstrated later in this same video (around 250-265), but it sits right after a standard for-loop demo (210-242) -- python.for_loops is blocked knowledge for this concept -- so it can't be reached from this range without crossing that blocked section.",
+    "Start (19) sits on the catalog's 'What are lists' chapter marker, skipping the channel's subscribe-plug intro; end (208) is placed right before the video introduces that for loop ('now if you need to display all of the elements... you can easily do so with a standard for loop')."
+   ]
+  },
+  {
+   "proposal_id": "prop_SzZ6GpcfoQY_stats_measures_of_spread",
+   "concept_id": "stats.measures_of_spread",
+   "path_id": "data_analyst",
+   "video_id": "SzZ6GpcfoQY",
+   "start_seconds": 236,
+   "end_seconds": 651,
+   "label": "Calculating variance (squared deviations from the mean, divided by n), taking its square root for standard deviation, then re-deriving variance from a sample by dividing by n-1 instead",
+   "role": "visual_mechanism",
+   "covered_fact_ids": [
+    "f2",
+    "f3",
+    "f4"
+   ],
+   "visual_mode": "diagram_animation",
+   "chapter_aligned": true,
+   "transcript_evidence": "Second, we are dividing by n minus 1 instead of n.",
+   "issues": [
+    "f1 (range = max - min) is never mentioned anywhere in this video -- it's entirely about variance and standard deviation.",
+    "f2 specifically requires the n-1 (sample) formula; this video reaches that formula by first teaching the population variance formula (divide by n) and then explicitly contrasting the two ('the differences between this formula and the one for the calculated population variance are subtle but important... we are dividing by n minus 1 instead of n') -- the sample-variance chapter alone is not self-contained without that preceding contrast, which is why both chapters are included as one range.",
+    "f4 (variance in squared units, SD in the data's own units) is demonstrated vividly with the population-variance half ('100 mRNA transcripts squared... we can't plot the variance on the graph since the units on the x-axis are not squared... the population standard deviation... is 10').",
+    "Range is ~6.9 min, above the visual-mechanism band (1-4 min, playbook SS15), because the n-1 explanation in the second half only makes sense next to the population (divide-by-n) formula taught in the first half.",
+    "Start (236) and end (651) both sit exactly on catalog chapter markers ('Calculating population variance' start and 'Estimating sample variance' end)."
+   ]
+  },
+  {
+   "proposal_id": "prop_TPivN7tpdwc_pandas_merge_join",
+   "concept_id": "pandas.merge_join",
+   "path_id": "data_analyst",
+   "video_id": "TPivN7tpdwc",
+   "start_seconds": 0,
+   "end_seconds": 573,
+   "label": "Diagrams of inner/outer/left/right joins, then live df.merge() with the default inner join and on=, then an outer join showing NaN for unmatched keys",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f1",
+    "f2",
+    "f3",
+    "f4"
+   ],
+   "visual_mode": "diagram_animation",
+   "chapter_aligned": true,
+   "transcript_evidence": "it just gives us an Nan which is not a number and it's going to do that for any value where it couldn't find that join or it couldn't match something within that either ID or first name",
+   "issues": [
+    "Range is ~9.6 min, well above the live-code-demo band (2-6 min, playbook SS15): the opening diagram walkthrough (0-62) is what actually teaches f4's inner/outer/left/right distinctions conceptually (the merge demo itself only runs inner and outer, not left/right), and the data setup (62-193) is necessary context for the merge() calls that follow -- all three pieces are needed together for full coverage of f1-f4.",
+    "A ~30s Zendesk sponsor segment (162-192) sits between the data setup and the merge demo; left in because trimming it would require a mid-sentence cut right before 'now the first one that I want to look at is merge'.",
+    "Left and right joins (f4's remaining two options) are only explained verbally/visually in the opening diagram (0-62), not run as code in this range -- their actual code demos sit later (573-675), after this range ends.",
+    "Start (0) and end (573) both land on catalog chapter boundaries (video start; start of 'Left join examples')."
+   ]
+  },
+  {
+   "proposal_id": "prop_TqOeMYtOc1w_stats_significance_confidence_concept",
+   "concept_id": "stats.significance_confidence_concept",
+   "path_id": "data_analyst",
+   "video_id": "TqOeMYtOc1w",
+   "start_seconds": 68,
+   "end_seconds": 325,
+   "label": "A 95% confidence interval as the range covering 95% of bootstrapped means, then reading it as a visual significance test against a specific value",
+   "role": "visual_mechanism",
+   "covered_fact_ids": [
+    "f2",
+    "f3",
+    "f4"
+   ],
+   "visual_mode": "diagram_animation",
+   "chapter_aligned": true,
+   "transcript_evidence": "a 95% confidence interval is just an interval that covers 95% of the means that we just calculated",
+   "issues": [
+    "f1 (null/alternative hypothesis terminology) is never used anywhere in this video.",
+    "f2 and f3 (p-value, statistical significance) are taught here via the confidence interval itself ('anything outside of the confidence interval... the p value of anything outside... is less than .05 and thus significantly different') rather than through a formal null-hypothesis test -- substantively correct and matches f2/f3's definitions, just via a different pedagogical route than a null/alt-hypothesis framing.",
+    "f5 (the common CI-misinterpretation error) and f6 (statistically vs practically significant) are not covered anywhere in this video.",
+    "Start (68) sits on the catalog's 'Calculating bootstrapped means' chapter marker, skipping the channel-intro jingle/sponsor mention (0-68); end (325) is the 'Visual statistical tests' chapter boundary, cut before the video moves to a two-sample (male vs female mice) comparison example not required by any of this concept's facts."
+   ]
+  },
+  {
+   "proposal_id": "prop_UFuo7EHI8zc_pandas_datetime_handling",
+   "concept_id": "pandas.datetime_handling",
+   "path_id": "data_analyst",
+   "video_id": "UFuo7EHI8zc",
+   "start_seconds": 170,
+   "end_seconds": 461,
+   "label": "A date column stored as strings fails a datetime method, then pd.to_datetime() (with an explicit format string) converts it so the method works",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f1"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "if you want to convert a column like we have here to a date time then we can use the pandas to underscore date time method",
+   "issues": [
+    "f2 (.dt accessor exposing date/time component properties) is not covered in this range -- this video does demonstrate it well later (around 682-730: 'we can access the DT class on the series object... if I want to get the day name of all these values then I can just do day name there'), but it's separated from this range by ~250s of resampling/lambda-function content, so it can't be merged into one standalone clip.",
+    "That later .dt demo (not included here) uses .dt.day_name(), a method, rather than a property like .dt.year/.dt.month that f2's wording specifically names -- a minor mismatch worth noting if that range is ever proposed separately.",
+    "This range goes deep into strptime format-code syntax (%Y, %I, %p) to parse a non-standard date format -- accurate and useful, though more mechanical detail than f1 strictly requires.",
+    "Start (170) sits on the catalog's 'DateTime' chapter marker; end (461) is a clean wrap-up sentence ('the way that we did this here is that we converted this to a date after we loaded in our data with this line right here'), cut before the video pivots to an alternative approach (parse_dates in read_csv)."
+   ]
+  },
+  {
+   "proposal_id": "prop_UO98lJQ3QGI_viz_pyplot_basic_plotting",
+   "concept_id": "viz.pyplot_basic_plotting",
+   "path_id": "data_analyst",
+   "video_id": "UO98lJQ3QGI",
+   "start_seconds": 225,
+   "end_seconds": 383,
+   "label": "Live demo: two lists (ages, median salaries) plotted with plt.plot(dev_x, dev_y) and shown with plt.show()",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f2"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "to plot this data it's as easy as simply saying PLT dot plot and first we want to pass in the data for our x-axis which is going to be dev X and then the data for our y-axis here as dev Y",
+   "issues": [
+    "f1 (plt.plot(y) with a single array, auto-numbering x from 0) is not demonstrated anywhere in this ~35-minute video -- every plot call shown passes both x and y arguments.",
+    "Start (225) sits on the catalog's 'Creating a list' chapter marker; end (383) is right after the video reads the plot ('it looks like the salaries typically get higher as you get older'), cut before it tours the matplotlib window's pan/zoom/save UI controls, which isn't part of either required fact."
+   ]
+  },
+  {
+   "proposal_id": "prop_UO98lJQ3QGI_viz_line_plots",
+   "concept_id": "viz.line_plots",
+   "path_id": "data_analyst",
+   "video_id": "UO98lJQ3QGI",
+   "start_seconds": 225,
+   "end_seconds": 383,
+   "label": "Live demo: plt.plot(dev_x, dev_y) connects the age/median-salary points into a line that rises as age increases",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f2",
+    "f3"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "it looks like the salaries typically get higher as you get older",
+   "issues": [
+    "f1 (line graphs suit showing change over time) is not covered -- this example plots median salary against age, not against time, and no time-series example appears anywhere else in this video either.",
+    "f3 is supported by the default plt.plot() behavior (a connected line, not just points) and by the video's own reading of the resulting trend ('salaries typically get higher as you get older'), though the video never names this a 'line graph' explicitly or discusses connecting points as a deliberate design choice.",
+    "Same range as this video's pandas.pyplot_basic_plotting proposal, since it's the only plot built in this clip; start/end reasoning is the same (chapter-aligned start, end before the window-UI tour)."
+   ]
+  },
+  {
+   "proposal_id": "prop_Uh2ebFW8OYM_python_file_io",
+   "concept_id": "python.file_io",
+   "path_id": "data_analyst",
+   "video_id": "Uh2ebFW8OYM",
+   "start_seconds": 0,
+   "end_seconds": 386,
+   "label": "open()'s r/w/a/r+ modes and its default-to-read behavior, manually closing a file, then the with statement closing it automatically (even on exceptions), then f.read()",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "this will also close the file if there any exceptions that are thrown or anything like that so that's why using these context managers are considered a best practice",
+   "issues": [
+    "f4, f6 and f7 (csv.DictReader, csv.DictWriter, and opening a CSV with newline='') are not covered anywhere in this entire 24.5-minute video -- the word 'csv' never occurs in its transcript; it is a generic text/binary file-I/O lesson (open/read/write/seek/copy), not a CSV-specific one.",
+    "f5 (f.write()) is covered later in this same video (the 'Writing to files' chapter, ~884-1083), but it sits well past 'Reading chunks and seek' and 'File position manipulation' (both on-topic file-I/O content, not blocked or irrelevant, just not required facts) -- including it would make this one clip roughly 18 minutes, which is too long to justify as one standalone segment.",
+    "f3's second half (further read() calls return an empty string once EOF is reached) is demonstrated later too (around 591-613, using chunked f.read(100) calls) rather than inside this range, which only shows the basic single-call f.read() returning the whole file as a string.",
+    "Start (0) and end (386, 'if you have a small file then this is probably what you want') both fall at natural boundaries: start is the video's opening, end is right before the video moves on to alternative reading methods (readlines/readline) for large files, which aren't required facts."
+   ]
+  },
+  {
+   "proposal_id": "prop_UsdedFoTA68_spreadsheet_pivot_summarization",
+   "concept_id": "spreadsheet.pivot_summarization",
+   "path_id": "data_analyst",
+   "video_id": "UsdedFoTA68",
+   "start_seconds": 248,
+   "end_seconds": 280,
+   "label": "Right-click (or dropdown) a value field, open Value Field Settings, and switch its summary from Sum to Average",
+   "role": "tool_workflow",
+   "covered_fact_ids": [
+    "f2"
+   ],
+   "visual_mode": "screen_demo",
+   "chapter_aligned": true,
+   "transcript_evidence": "you can click on this drop down, go to Value Field Settings and change your selection from here",
+   "issues": [
+    "f1 (sum for numbers / count for text defaults) is only implied in passing ('if for some reason you don't want to see the sum of sales USD') -- the video never explains or demonstrates why it defaults to Sum here, or that a text field would default to Count; covered_fact_ids is limited to f2.",
+    "This clip is 32s, under the mental-model band floor (45s, playbook SS15), but it's the complete, self-contained content for this fact in this video -- extending further pulls in Number Format styling (280-310), a different, non-required feature.",
+    "Start (248) and end (280) both sit exactly on catalog chapter markers ('Change aggregation...' start/end), deliberately placed after the 'Create Pivot Table' chapter so as not to re-teach spreadsheet.pivot_tables, this concept's blocked prerequisite."
+   ]
+  },
+  {
+   "proposal_id": "prop_V6V5aR0wrkY_capstone_end_to_end_workflow_structure",
+   "concept_id": "capstone.end_to_end_workflow_structure",
+   "path_id": "data_analyst",
+   "video_id": "V6V5aR0wrkY",
+   "start_seconds": 0,
+   "end_seconds": 254,
+   "label": "Five project phases narrated in order: define the objective, gather data, clean it, analyze it, then visualize and interpret it for stakeholders",
+   "role": "mental_model",
+   "covered_fact_ids": [
+    "f1",
+    "f2",
+    "f4"
+   ],
+   "visual_mode": "talking_head_only",
+   "chapter_aligned": false,
+   "transcript_evidence": "so the first process of analysis is what we call objective definition or define your objective and your questions this is where define why you want to do data analysis in the first place",
+   "issues": [
+    "f1 is only half-covered: scoping-to-delivery phases are named in order, but there is no mention of revisiting an earlier phase if a later one hits changes or limitations.",
+    "f2 is covered only generically -- 'data gathering' is described as sourcing data 'from any source,' without naming a SQL query or spreadsheet import specifically, and quality is only addressed once (the cleaning step), not described as assessed 'at every stage.'",
+    "f3 (the modeling stage connecting related tables) is not covered at all, consistent with this video's candidate note.",
+    "f4 is covered loosely: the final step does describe visualizing and interpreting results so stakeholders understand them, but never uses 'commissioner/approver' language or names specific deliverables like summary packs, dashboards, or presentations.",
+    "No catalog chapters exist for this video; visual_mode is inferred as talking-head only since the transcript contains no on-screen-signaling cues ('as you can see', diagrams, etc.) -- this is a plain narrated list, not a diagram walkthrough, despite this concept's HIGH video_need expecting one.",
+    "End (254) is placed right before the video pivots to a subscriber-count appeal ('my goal this year is to get to 10K subscribers... subscribe')."
+   ]
+  },
+  {
+   "proposal_id": "prop_VRmXto2YA2I_pandas_groupby_aggregation",
+   "concept_id": "pandas.groupby_aggregation",
+   "path_id": "data_analyst",
+   "video_id": "VRmXto2YA2I",
+   "start_seconds": 0,
+   "end_seconds": 445,
+   "label": "Live demo: df.groupby('base_flavor').mean()/count()/min()/max()/sum(), then .agg({'col': ['mean','max','count','sum']}) for several aggregations at once",
+   "role": "live_code_demo",
+   "covered_fact_ids": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "visual_mode": "live_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "Group by is going to group together the values in a column and display them all on the same row. And this allows you to perform aggregate functions on those groupings.",
+   "issues": [
+    "'Split-apply-combine' is never named as formal terminology, but the mechanism is described functionally in the intro ('group together the values in a column and display them all on the same row... perform aggregate functions on those groupings') and demonstrated repeatedly -- matches f1's substance.",
+    "Range is ~7.4 min, above the live-code-demo band (2-6 min, playbook SS15): covers five separate aggregate functions (mean/count/min/max/sum) plus the .agg() dict-of-functions form that f3 explicitly names ('.agg([...]) to compute several aggregations at once') -- trimming the min/max digression (which also usefully shows aggregates behaving differently on string vs numeric columns) or the .agg() demo would drop required content.",
+    "A ~19s Udemy sponsor mention (160-179) sits inside this range, right after the first .mean() result; left in since cutting around it would require a mid-demo gap.",
+    "Start (0) and end (445) are not both exact chapter markers -- start is the video's opening (chapter-aligned); end is mid-way through 'agg Function' (338-452), placed right after a clean, complete multi-aggregation example and before the video extends to a second column."
+   ]
+  },
+  {
+   "proposal_id": "prop_VT479YDPB0I_spreadsheet_structured_tables",
+   "concept_id": "spreadsheet.structured_tables",
+   "path_id": "data_analyst",
+   "video_id": "VT479YDPB0I",
+   "start_seconds": 1409,
+   "end_seconds": 1568,
+   "label": "Typing a new column name at a table's edge auto-expands it, then writing =[@Salary]*5% instead of a cell address",
+   "role": "tool_workflow",
+   "covered_fact_ids": [
+    "f3",
+    "f4"
+   ],
+   "visual_mode": "screen_demo",
+   "chapter_aligned": false,
+   "transcript_evidence": "to refer to the current columns value you simply say at the rate and column name so here it is salary",
+   "issues": [
+    "f1 (Ctrl+T / Home > Format as Table to create a table) and f2 (default header row) are covered earlier in this same video (around 162-195: 'you can do this by selecting any one cell and pressing control T... it will give you this create table dialogue... enable my table as headers option'), but that section is ~1200s away from this one, with a filtering demo (spreadsheet.filtering, this concept's blocked knowledge) and several other topics in between -- the two can't be merged into one standalone clip.",
+    "f1 is taught there via the Ctrl+T keyboard shortcut rather than the Home > Format as Table menu path this fact names -- a different, equally valid route to the same result, noted for completeness since it isn't in this chosen range anyway.",
+    "'@' is rendered by auto-captions as 'at the rate' throughout this range (a transliteration artifact) -- the on-screen formula is the standard [@Salary] structured-reference syntax.",
+    "Start (1409) and end (1568) are not on catalog chapter markers (both fall inside 'Using IF / IFS functions in Excel', 1364-1895, which labels this a bonus-calculation example rather than a tables example) -- start is the setup for a 5% bonus calculation, end is the wrap-up line about consistency, cut before the video moves into a second, absolute-reference variant of the same example."
+   ]
+  },
+  {
+   "proposal_id": "prop_VgBxnayDXk0_spreadsheet_pie_chart_creation",
+   "concept_id": "spreadsheet.pie_chart_creation",
+   "path_id": "data_analyst",
+   "video_id": "VgBxnayDXk0",
+   "start_seconds": 38,
+   "end_seconds": 199,
+   "label": "A pie chart as percent-of-total per category, contrasted through an 'even split' example (hard to read) versus a 'clear winner' example (one slice dominates)",
+   "role": "mental_model",
+   "covered_fact_ids": [
+    "f1"
+   ],
+   "visual_mode": "screen_demo",
+   "chapter_aligned": true,
+   "transcript_evidence": "a pie chart simply displays the percent of total for each category",
+   "issues": [
+    "f1's specific eligibility checklist (no more than seven categories, no negative values, only one data series) is never stated as explicit rules in this range -- the video teaches the core definition (percent of total per category) clearly, but the 'when is a pie chart appropriate' guidance here is experiential ('too many slices' discussed later, 199+) rather than the precise checklist.",
+    "f2 (Insert > Recommended Charts > ... > OK) is not covered in this range -- the video does show a creation step later (around 570-579: 'selecting the data here, insert tab, we're going to choose a 2D pie chart'), but that uses the direct chart-type button rather than the Recommended Charts dialog, and sits ~370s away inside a 'Quiz Time' segment, non-adjacent to this range.",
+    "This range mentions turning the data into a bar chart as a design alternative ('if the order here matters... turn it into a bar chart instead') -- a passing comparison without teaching how to build one, so it doesn't require understanding spreadsheet.bar_chart_creation (this concept's blocked knowledge), just recognizing a bar chart when shown.",
+    "Start (38) and end (199) both sit on catalog chapter markers ('What is a Pie Chart?' start, 'Too many slices' start)."
+   ]
+  },
+  {
+   "proposal_id": "prop_VtVB-XsooiM_spreadsheet_text_to_columns_split",
+   "concept_id": "spreadsheet.text_to_columns_split",
+   "path_id": "data_analyst",
+   "video_id": "VtVB-XsooiM",
+   "start_seconds": 124,
+   "end_seconds": 247,
+   "label": "Running the Text to Columns wizard (Data tab > Text to Columns > Delimited > Date format > Finish) to convert text-formatted dates into real dates",
+   "role": "tool_workflow",
+   "covered_fact_ids": [
+    "f1"
+   ],
+   "visual_mode": "screen_demo",
+   "chapter_aligned": false,
+   "transcript_evidence": "we're going to go to the data tab on the ribbon and go to text to columns and that'll open the text to columns wizard",
+   "issues": [
+    "This use case is a special no-split variant of the feature: the video explicitly skips f1's delimiter-selection step ('we don't really need to specify a delimiter here because we're not actually going to split the column') and never chooses a destination range, since the goal here is reformatting text into dates in place, not splitting one column into several. The wizard navigation itself (select cells, Data tab > Text to Columns, Delimited, Next, Finish) matches f1, but the delimiter/destination sub-steps are not demonstrated.",
+    "Start (124) sits on the catalog's 'Text to Columns' chapter marker but is not the wizard's literal first action (a few seconds of restating the problem precede it); end (247) is a clean wrap-up ('great to convert those text-based values to dates for additional features and analysis'), cut before the video repeats the entire demo a second time under a different regional date-format setting."
+   ]
+  },
+  {
+   "proposal_id": "prop_W6WFX_H-AA4_pandas_dataframe_series_model",
+   "concept_id": "pandas.dataframe_series_model",
+   "path_id": "data_analyst",
+   "video_id": "W6WFX_H-AA4",
+   "start_seconds": 0,
+   "end_seconds": 163,
+   "label": "A Series as a one-dimensional labeled array built from a Python list, holding ints/floats/strings/bools, with a default 0,1,2... index",
+   "role": "mental_model",
+   "covered_fact_ids": [
+    "f1",
+    "f3"
+   ],
+   "visual_mode": "annotated_code",
+   "chapter_aligned": true,
+   "transcript_evidence": "A series is a panda's one-dimensional labeled array.",
+   "issues": [
+    "f3 is only covered for the list/array-like construction case; the dict-based case (dict keys become the index) is demonstrated later in this same video (around 406-511: 'since our dictionary is made of key value pairs, we'll use the keys as the labels... you don't need to pass in an index'), but that section is separated from this one by 'Accessing and updating data' and 'Filtering series data' (225-404), both of which use the .loc/.iloc properties -- pandas.loc_iloc_selection is blocked knowledge for this concept -- so the two ranges can't be merged.",
+    "f2 (DataFrame as 2D, dict of Series sharing an index), f4 (DataFrame from dict of lists) and f5 (df['col'] get/set) are not covered -- this video is Series-only, not DataFrame content.",
+    "Start (0) and end (163, 'the default behavior for each label is to start at zero and increment by one') both fall right at/after the catalog's 'Creating a series object' to 'Customizing the index' chapter boundary (151), extended slightly to capture this explicit statement of the default-index rule before the video moves into setting a custom index."
+   ]
+  }
+ ],
+ "rejected_videos": [
+  {
+   "video_id": "OUnnuKHbmbU",
+   "concept_id": "pandas.dataframe_series_model",
+   "reason": "This video never discusses pandas Series at all (f1, f3 are absent) and never frames a DataFrame as a dict of Series sharing an index -- the defining relationship this concept is named for (f2). It only demonstrates building a DataFrame from a dict of lists (f4) and stops there; too thin a match for a concept whose core content is the Series/DataFrame relationship."
+  },
+  {
+   "video_id": "TqOeMYtOc1w",
+   "concept_id": "stats.business_conclusion_from_experiment",
+   "reason": "This video never uses this concept's required worked example (a null value p0=0.333 falling inside vs outside a 95% CI) or null/alternative-hypothesis terminology, and never frames anything as an A/B test's positive/negative/neutral business effect (f4) -- it's a general StatQuest explainer of what a confidence interval is via bootstrapping, using unrelated examples (mouse weights). Too thin a match for this concept's specific required facts."
+  },
+  {
+   "video_id": "UsglokDLa2o",
+   "concept_id": "viz.seaborn_dataframe_plotting",
+   "reason": "No cached transcript file exists for this video (catalogue marks transcript_available: false) -- per playbook SS30/README decision 4, no transcript means the segment is rejected rather than manually verified."
+  },
+  {
+   "video_id": "V6V5aR0wrkY",
+   "concept_id": "data.analysis_workflow",
+   "reason": "This video presents 5 steps (objective definition, data gathering, cleaning, analysis, and a combined 'interpretation and visualization' step), not this concept's required 6 distinct stages -- there is no separate 'inspect for quality' step before cleaning (f2 absent), analyze and visualize are not kept distinct (f5 is folded into the final communicate step, contrary to this concept's own teaching note to keep them clearly separate), and the process is presented as strictly linear with no mention of revisiting earlier stages (f7 absent). Too structurally different from the required framework to propose a range without misteaching it."
+  }
+ ]
+}

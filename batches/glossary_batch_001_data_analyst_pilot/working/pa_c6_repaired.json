@@ -1,0 +1,691 @@
+{
+  "metadata": {
+    "artifact_type": "glossary_pass_a",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_001_data_analyst_pilot",
+    "run_id": "glossary_batch_001_data_analyst_pilot",
+    "prompt_version": "05_glossary_pass_a@v1",
+    "model": "claude-sonnet-5",
+    "generated_at": "2026-09-27T16:40:58Z",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "extracted_concepts.json": "8e3969d65e33ee46f6e3ca399cf9ada942a5b349eb85f07e6b5d60dfe6acdc8e",
+      "coverage_briefs.json": "d0ef2fa55a4fc956f7aec86aa706596e791e638ea60e8c7c721fdb8273290611",
+      "depth_classification.json": "167f98b6a223279f6b6029cd521b982ca807bbe158217cf523734184ba027a2b"
+    }
+  },
+  "batch_id": "glossary_batch_001_data_analyst_pilot",
+  "entries": [
+    {
+      "concept_id": "capstone.defining_business_question",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose the operations team at a courier company comes to you with a vague complaint: deliveries feel slow lately, can you look into it? That request isn't yet something you can analyze. Before any analytical work begins, the question to be addressed, its context, and its boundaries should be identified.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "Turning that complaint into a workable target is called scoping. Scoping ensures an appropriate, common understanding of the problem is defined, and that expectations are aligned with what the analysis can produce.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "For the courier company, scoping the vague complaint means settling its context and boundaries: which orders (a specific quarter's deliveries), which measure (delivery time against a target), and which unit of comparison (delivery zone). The result is a specific business question: 'Which delivery zones are missing the delivery-time target, and by how much, over the last quarter?' That question already carries a context (this company's last quarter of orders) and boundaries (zones and delivery time, not every possible cause of delay), so you and the operations team share the same understanding of what the analysis will and won't answer.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Every later capstone step -- what data to retrieve, how to clean it, what to compute -- serves this one sentence. Scope it loosely, and the rest of the project has nothing precise to aim at.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Turning a vague complaint into a specific, bounded question is a reasoning step, not a process with moving parts. A short recap slide of the before/after question is enough; the text already walks through the scoping itself.",
+        "preferred_visual_modes": [
+          "slides_with_signaling"
+        ]
+      },
+      "teaching_notes": [
+        "Keep the delivery-operations scenario introduced here consistent for the rest of the capstone chunk.",
+        "Don't pre-empt the workflow-structure concept -- this block only scopes the question, not the whole project plan."
+      ]
+    },
+    {
+      "concept_id": "capstone.data_retrieval_method_selection",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "With the question scoped, the next decision is how to get the data. This capstone's order records live in the courier company's SQL database (an orders table), while the driver roster is kept in an Excel workbook.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Data that lives in a SQL database can be retrieved with a SQL query; pandas' SQL query wrappers (pandas.io.sql) facilitate this retrieval. So the orders table, sitting in the company's database, is a SQL-query job.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "read_excel() reads an Excel file directly into a DataFrame. So the driver roster workbook, which never touches a database, is a read_excel() job instead.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "The capstone ends up using both: a SQL query pulls the last quarter's orders (zone, driver_id, delivery_time) from the orders table, and read_excel() pulls the driver roster (driver_id, name, zone, shift) from the spreadsheet. Two different sources, matched to two different retrieval tools.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "misconception",
+          "content": "It can look like everything should go through one tool, but the method follows where each source actually sits: the orders table lives in the company's database, so a SQL query retrieves it, while the driver roster is an Excel workbook, so read_excel() reads it into a DataFrame.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "Matching each source to its retrieval tool -- SQL query for the database, read_excel() for the workbook -- is the first executable step of the workflow, before any cleaning or analysis starts.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing both retrieval calls actually run against their real sources helps confirm the match, though the text's side-by-side explanation of database-vs-workbook already carries the decision.",
+        "preferred_visual_modes": [
+          "live_code",
+          "spreadsheet_demo"
+        ]
+      },
+      "teaching_notes": [
+        "This is a decision (which tool matches which source), not new SQL or pandas syntax -- keep the query/read_excel() details light here."
+      ]
+    },
+    {
+      "concept_id": "capstone.end_to_end_workflow_structure",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "With the question scoped and both retrieval tools chosen, sketch the whole project's shape before touching either one.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "An analytical project is commonly structured through phases that begin with scoping the question and end with delivering and communicating the results; a phase such as scoping or design may need to be revisited if a later phase encounters changes or limitations. For the capstone: scope the question, retrieve, clean/model, analyze, visualize, and communicate -- and if, say, cleaning the orders data reveals that 'last quarter' is ambiguous in the source system, that sends you back to re-scope the question rather than pressing on.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Within that structure, the source data is retrieved (for example via a SQL query or a spreadsheet import), and data quality should be assessed at every stage, with quality improvements such as cleaning focused as early as possible. So right after the orders query and the roster import, the capstone checks for problems like missing delivery times, rather than waiting until the final analysis to discover them.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "Where the project's data spans more than one table, the modeling stage connects related tables; relationships are what connect related information between tables. The capstone's orders and drivers are two such tables, so a modeling stage links them before any deeper analysis relies on both together.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "mechanism",
+          "content": "In the delivery and communication stage, insights are communicated to the commissioner and approver -- the people who need them; activities may include producing summary packs and reports, launching dashboards or websites, and presentations. The capstone's version of this is reporting the zone-delay findings back to the operations team that raised the original complaint.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "Scope, retrieve, clean/model, analyze, visualize, communicate -- with quality checked throughout and any stage open to revisiting -- is the shape every remaining capstone concept fills in one piece at a time.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Sequencing several phases, showing where a later phase can send you back to an earlier one, and connecting two tables mid-workflow are exactly the process relationships a diagram communicates better than prose alone.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "whiteboard_drawing"
+        ]
+      },
+      "teaching_notes": [
+        "This concept only plans the sequence -- don't execute any of the SQL, pandas, or spreadsheet steps here, those are the next concepts."
+      ]
+    },
+    {
+      "concept_id": "capstone.integrate_sql",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The first executable step of the workflow is retrieving last quarter's orders with SQL.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "A single SELECT statement's syntax allows a FROM clause, a WHERE clause, and a GROUP BY clause to appear together in the same query. In the capstone, that means the orders query can filter down to last quarter's rows and group the result by zone in one statement, rather than as separate steps.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A join, such as an INNER JOIN, can be included in that same SELECT statement's FROM clause to combine matching rows from more than one table before the query's WHERE filtering or GROUP BY grouping is applied. In the capstone, that means the orders and drivers tables can be joined in the same FROM clause, before the WHERE and GROUP BY narrow and group the combined rows.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "Combined, the capstone's retrieval query looks like: SELECT o.zone, AVG(o.delivery_time) FROM orders o INNER JOIN drivers d ON o.driver_id = d.driver_id WHERE o.order_date >= '2026-04-01' AND o.order_date < '2026-07-01' GROUP BY o.zone; -- the join combines each order with its matching driver row first, the WHERE clause then narrows the rows to last quarter (April 1 to June 30), and the GROUP BY groups what's left by zone, so AVG gives one average delivery time per zone.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "None of this is new SQL syntax -- it's the same SELECT, FROM, WHERE, JOIN, and GROUP BY already learned, aimed at the capstone's own question.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching the joined, filtered, grouped query actually run and return zone-level rows helps confirm the clause ordering, though the text's worked query already shows the full combination.",
+        "preferred_visual_modes": [
+          "live_code",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "This applies already-learned SELECT/WHERE/JOIN/GROUP BY to the capstone's own tables -- don't reintroduce join or grouping mechanics from scratch."
+      ]
+    },
+    {
+      "concept_id": "capstone.integrate_spreadsheet",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "For part of the analysis, the driver roster's shift and zone details are paired with each order's delivery_time in one sheet, so that step runs in spreadsheet tools instead of SQL.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "A PivotTable is built by selecting the data range and inserting a PivotTable, then adding fields to it: non-numeric fields default to Rows, date/time fields to Columns, and numeric fields to Values, and fields can be dragged between these areas to rearrange the summary. In the capstone, that means the delivery sheet's zone and shift fields default into Rows while delivery_time defaults into Values, ready to be rearranged into a more useful layout.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2]...) applies criteria across one or more ranges and counts the cells for which all the criteria are met. In the capstone, that means counting how many deliveries in a specific zone exceeded a time threshold, using the zone and the time as the two criteria.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "For the capstone's delivery sheet, where each row pairs an order's zone and delivery_time with its driver's shift from the roster: selecting the data range, inserting a PivotTable and adding those fields puts zone and shift -- both non-numeric -- in Rows by default, and delivery_time, which is numeric, in Values. Dragging shift from Rows to Columns rearranges the summary into a zone-by-shift grid, and changing the Values field's summary function to Average makes each cell an average delivery time. Separately, COUNTIFS(zone_range, \"Ikeja\", delivery_time_range, \">45\") counts how many Ikeja deliveries in the sheet took more than 45 minutes, since both criteria -- the zone and the time threshold -- must be met at once.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "The PivotTable and COUNTIFS skills already learned are now run on this project's own roster and delivery data instead of a practice file.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Selecting a range, inserting a PivotTable, and dragging fields between Rows/Columns/Values is UI-driven and shown far more clearly on screen than described in a paragraph.",
+        "preferred_visual_modes": [
+          "spreadsheet_demo",
+          "screen_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Assume PivotTables and COUNTIFS were already taught -- this concept applies them to the capstone's own sheet, not a new spreadsheet feature."
+      ]
+    },
+    {
+      "concept_id": "capstone.integrate_python_pandas",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Once orders and roster are both retrieved, pandas is where they get cleaned and combined for the actual analysis.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "isna() detects which values in a DataFrame are missing, and dropna() removes rows with missing values or fillna() replaces them with a specified value. In the capstone, that means flagging which of the retrieved orders are missing a delivery_time before deciding whether to drop or fill those rows.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A groupby operation splits data into groups based on some criteria, applies a function independently to each group, and combines the results back into a single structure; an aggregation is a groupby operation that reduces each group to one summary value per column. In the capstone, that means splitting the cleaned orders by zone and reducing each zone's delivery times to one summary number.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "On the capstone's retrieved orders, orders['delivery_time'].isna() flags rows with no delivery time recorded; those rows get removed with dropna() (or, where a default makes sense, filled with fillna()). Then orders.groupby('zone')['delivery_time'].mean() splits the cleaned orders by zone, computes the mean delivery time independently within each zone, and combines the per-zone results into one summary -- an aggregation, since each zone group is reduced to a single number.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "The same isna()/dropna()/fillna() and groupby skills already learned are now run on the capstone's own retrieved data instead of a practice dataset.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching isna()/dropna() and the groupby aggregation execute against the capstone's actual data helps confirm the result, though the text's worked example already covers the same steps.",
+        "preferred_visual_modes": [
+          "live_code",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Applies already-learned isna()/dropna()/fillna() and groupby to the capstone's own dataset -- don't re-teach missing-data or groupby mechanics from scratch."
+      ]
+    },
+    {
+      "concept_id": "capstone.building_data_model",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The capstone's data spans two tables -- Orders and Drivers -- so before deeper analysis relies on both together, they need to be modeled as related tables.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "A primary key uniquely identifies each row of a table; a foreign key's values must match values appearing in some row of the table it references. In the capstone, that means the Drivers table needs a column that uniquely identifies each driver, and the Orders table needs a column whose values must match one of those driver identifiers.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "In a one-to-many relationship, one row on the 'one' side relates to many rows on the 'many' side (for example, one department has many employees); in the Customer/Order example, the foreign key CustID is placed in the Order table and must match a valid CustID in the Customer table. In the capstone, that means one driver can appear in many orders, the same one-to-many pattern as one customer having many orders.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "Mapped onto the capstone: Drivers has driver_id as its primary key, uniquely identifying each driver row. Orders has its own primary key, order_id, plus a driver_id column that is a foreign key -- its values must match a driver_id that already exists in Drivers. Since one driver delivers many orders, this is a one-to-many relationship: one row on the Drivers ('one') side relates to many rows on the Orders ('many') side, the same pattern as CustID sitting in the Order table and matching a valid CustID in the Customer table.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Getting the primary key/foreign key pairing right connects the two tables correctly before any join or aggregation across them can be trusted.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "The one-to-many pattern was already established with the Customer/Order example; a single labeled diagram mapping Drivers/Orders onto it is enough on top of the text's own walkthrough.",
+        "preferred_visual_modes": [
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": [
+        "This applies the already-taught primary-key/foreign-key/one-to-many pattern to the capstone's own two tables -- don't reintroduce normalization or many-to-many, which aren't needed for a two-table model."
+      ]
+    },
+    {
+      "concept_id": "capstone.applying_descriptive_statistics",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "With cleaned, modeled data, the business question needs actual numbers: how late are deliveries, by zone?",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "describe() computes a variety of summary statistics about a Series or the columns of a DataFrame. In the capstone, that means running describe() on a zone's delivery_time column to get that summary in one call.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The mean is more strongly affected by extreme observations than the median, which is more robust to them; so when the goal is to understand a typical individual value in a skewed dataset, the median can be more useful. In the capstone, that means checking whether a handful of unusually long deliveries are skewing a zone's average before trusting it as typical.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "Running describe() on one zone's delivery_time column returns a mean of 52 minutes, with the median showing up in describe()'s 50% row as 38 minutes. But a handful of deliveries in that zone took over three hours -- a stalled vehicle, a wrong address -- and the mean is pulled up by those extreme observations, while the median, more robust to them, stays at 38 minutes. The capstone's business question is which zones are missing the delivery-time target and by how much, which calls for judging a typical delivery against that target rather than one skewed by a few rare extremes, so the median is the more useful number here.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "describe() gives the full summary; deciding whether the mean or the median actually answers the business question depends on whether extreme values are skewing that particular column.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "describe()'s output is a static table, and the mean-vs-median contrast is a numeric comparison the worked example already spells out; a simple table view is enough on top of that.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Applies already-learned describe() and mean/median robustness to the capstone's own delivery_time column -- keep the statistics themselves brief, the point is which one answers this question."
+      ]
+    },
+    {
+      "concept_id": "capstone.building_dashboard_or_viz",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The findings now need a visualization set a stakeholder can look at, not just numbers in a table.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "fig, axs = plt.subplots(2, 2) creates one Figure containing a 2x2 grid of Axes, so several charts can share one figure. In the capstone, that means four related delivery charts can share one figure instead of opening as four separate windows.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "plt.subplot(131), plt.subplot(132), and plt.subplot(133) can each hold a different chart side by side in one figure, and plt.suptitle() adds one title over the whole figure. In the capstone, that means three of the delivery charts can instead sit side by side under one shared title.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "For the capstone, fig, axs = plt.subplots(2, 2) lays out four related charts -- delivery time by zone, delivery time by shift, order count by zone, and the distribution of delivery times -- in one 2x2 figure. Alternatively, plt.subplot(131), plt.subplot(132), plt.subplot(133) place three of those charts side by side in a single row, and plt.suptitle('Delivery Performance -- Last Quarter') puts one title over all three so they read as one visualization set.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Either layout turns several separate charts into one coherent figure the stakeholder summary can point to as a set.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Building a multi-panel figure and watching how subplots(2,2) or side-by-side subplot() calls arrange on screen is a spatial layout task that a live demo shows far better than a description.",
+        "preferred_visual_modes": [
+          "live_code",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "This applies already-learned matplotlib plotting to the capstone's own figures -- don't re-teach individual chart types, only the multi-panel arrangement."
+      ]
+    },
+    {
+      "concept_id": "capstone.independent_execution",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "With the plan, retrieval, cleaning, modeling, statistics, and visualization steps all defined, what's left is carrying the whole thing out yourself, end to end, without being walked through each step again.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "During the design phase, the commission is converted into an analytical plan, with some iteration expected as the solution is developed. For the capstone, the workflow outline from earlier becomes that analytical plan, and it's normal to adjust it once the SQL, spreadsheet, and pandas work actually starts.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "During the analysis phase, the planned analysis is carried out while progress and relevance are monitored, and appropriate records of the analysis conducted, changes, decisions, and assumptions made are maintained. So as the capstone's query, cleaning, modeling, statistics, and figures get built, a short record of what was decided -- for example, how missing delivery times were handled -- is kept alongside a check that the results still answer the original zone-delay question.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Independent execution is running the whole plan yourself, adjusting it as needed, and keeping a record of the decisions made along the way -- not any single new tool.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "This concept is carrying out already-demonstrated tool work under one's own direction and keeping a decision record; there is no new mechanism, tool, or process a demo would add beyond restating the same two phases.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": [
+        "TOC conflict: this concept's assessment_target mentions executing 'across SQL/spreadsheet/Python/BI', but the path teaches no BI-tool concept -- the text here covers only SQL, spreadsheet, and Python/pandas, the tools this capstone actually uses."
+      ]
+    },
+    {
+      "concept_id": "capstone.narrated_stakeholder_summary",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The finished analysis now needs to be turned into something the operations team can act on: a narrated stakeholder summary of what was found.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Designing a communication with a specific person in mind, even if that isn't always the reality, can help avoid treating a 'mixed audience' as one undifferentiated group; knowing what motivates that audience lets you frame what you need them to know or do in those terms. So instead of writing for 'the ops team' in general, the capstone summary is written as if for the Head of Operations specifically, framing the zone-delay finding around what would motivate that person -- meeting the delivery-time target.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A summary can follow a story structure with an obvious beginning, middle, and end: the beginning level-sets the audience with the big picture and background context, the middle presents what the analysis found, and the ending gives the key takeaway, such as a recommended next step. For the capstone, that means opening with the courier company and last quarter's delivery-time target, then the finding that certain zones are missing it and by how much, then closing with a recommended next step -- though depending on the audience and relationship, that recommendation can instead be placed up front for a Head of Operations who prefers the bottom line first.",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "During delivery, insights are communicated to the people who need them, sufficiently for them to determine whether the work meets their requirements; this communication can include summary packs, reports, or presentations. For the capstone, that means the finished summary pack should let the Head of Operations judge for themselves whether it actually answers the zone-delay question they raised, not just report that the analysis was done.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "A narrated summary aimed at one specific person, moving through beginning, middle, and end, is what turns the capstone's findings into something its audience can actually use.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Writing for a specific audience and following a beginning/middle/end story structure is a composition skill the worked example already walks through in full; a short recap of the structure is enough.",
+        "preferred_visual_modes": [
+          "slides_with_signaling"
+        ]
+      },
+      "teaching_notes": [
+        "Applies already-learned audience-framing and story-structure skills to the capstone's own findings -- keep the recap of those skills short, the point is the capstone's own summary."
+      ]
+    },
+    {
+      "concept_id": "capstone.documenting_presenting_deliverable",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The very last capstone step: package the finished work so someone who never watched it get built can understand and evaluate it.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Transparency about the analytical decisions, process, limitations, and changes made at each stage should be clearly shown through documentation of the analysis, assumptions, and data, together with records of the decisions and quality-assurance checks made. For the capstone, that means documenting things like how missing delivery-time values were handled, what 'last quarter' was defined as, and the checks run to confirm the Orders/Drivers keys matched correctly.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Delivery and communication activities can include producing summary packs and reports, launching dashboards or websites, and giving presentations. The capstone's deliverable is the finished report or summary pack, together with the visualization set already built, presented to the operations team that raised the original question.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Documenting the decisions made and presenting the finished report and visuals together is what makes the capstone a deliverable someone else can evaluate, rather than just finished work only you understand.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Writing up decisions and assembling the already-built report and visuals into a presentation is a documentation task, not a new mechanism or tool a demo would clarify.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": [
+        "This concept packages work already done in earlier capstone concepts -- don't re-explain the SQL, pandas, or visualization steps themselves, only how they get documented and presented."
+      ]
+    }
+  ]
+}

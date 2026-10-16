@@ -106,7 +106,7 @@
         {
           "id": "tb5",
           "purpose": "misconception",
-          "content": "It can look like everything should go through one tool, but the retrieval method follows where the data actually sits, not personal preference: a spreadsheet file isn't queried with SQL, and a live database table isn't imported with read_excel().",
+          "content": "It can look like everything should go through one tool, but the method follows where each source actually sits: the orders table lives in the company's database, so a SQL query retrieves it, while the driver roster is an Excel workbook, so read_excel() reads it into a DataFrame.",
           "fact_ids": [
             "f1",
             "f2"
@@ -213,7 +213,7 @@
         {
           "id": "tb2",
           "purpose": "mechanism",
-          "content": "A single SELECT statement's syntax allows a FROM clause, a WHERE clause, and a GROUP BY clause to appear together in the same query.",
+          "content": "A single SELECT statement's syntax allows a FROM clause, a WHERE clause, and a GROUP BY clause to appear together in the same query. In the capstone, that means the orders query can filter down to last quarter's rows and group the result by zone in one statement, rather than as separate steps.",
           "fact_ids": [
             "f1"
           ]
@@ -221,7 +221,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "A join, such as an INNER JOIN, can be included in that same SELECT statement's FROM clause to combine matching rows from more than one table before the query's WHERE filtering or GROUP BY grouping is applied.",
+          "content": "A join, such as an INNER JOIN, can be included in that same SELECT statement's FROM clause to combine matching rows from more than one table before the query's WHERE filtering or GROUP BY grouping is applied. In the capstone, that means the orders and drivers tables can be joined in the same FROM clause, before the WHERE and GROUP BY narrow and group the combined rows.",
           "fact_ids": [
             "f2"
           ]
@@ -229,7 +229,7 @@
         {
           "id": "tb4",
           "purpose": "example",
-          "content": "Combined, the capstone's retrieval query looks like: SELECT o.zone, AVG(o.delivery_time) FROM orders o INNER JOIN drivers d ON o.driver_id = d.driver_id WHERE o.order_date >= '2026-04-01' GROUP BY o.zone; -- the join brings in driver information first, the WHERE clause then narrows the rows to last quarter, and the GROUP BY groups what's left by zone.",
+          "content": "Combined, the capstone's retrieval query looks like: SELECT o.zone, AVG(o.delivery_time) FROM orders o INNER JOIN drivers d ON o.driver_id = d.driver_id WHERE o.order_date >= '2026-04-01' AND o.order_date < '2026-07-01' GROUP BY o.zone; -- the join combines each order with its matching driver row first, the WHERE clause then narrows the rows to last quarter (April 1 to June 30), and the GROUP BY groups what's left by zone, so AVG gives one average delivery time per zone.",
           "fact_ids": [
             "f1",
             "f2"
@@ -264,13 +264,13 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "The driver roster arrived as a spreadsheet, so its analysis step uses spreadsheet tools instead of SQL.",
+          "content": "For part of the analysis, the driver roster's shift and zone details are paired with each order's delivery_time in one sheet, so that step runs in spreadsheet tools instead of SQL.",
           "fact_ids": []
         },
         {
           "id": "tb2",
           "purpose": "mechanism",
-          "content": "A PivotTable is built by selecting the data range and inserting a PivotTable, then adding fields to it: non-numeric fields default to Rows, date/time fields to Columns, and numeric fields to Values, and fields can be dragged between these areas to rearrange the summary.",
+          "content": "A PivotTable is built by selecting the data range and inserting a PivotTable, then adding fields to it: non-numeric fields default to Rows, date/time fields to Columns, and numeric fields to Values, and fields can be dragged between these areas to rearrange the summary. In the capstone, that means the delivery sheet's zone and shift fields default into Rows while delivery_time defaults into Values, ready to be rearranged into a more useful layout.",
           "fact_ids": [
             "f1"
           ]
@@ -278,7 +278,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2]...) applies criteria across one or more ranges and counts the cells for which all the criteria are met.",
+          "content": "COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2]...) applies criteria across one or more ranges and counts the cells for which all the criteria are met. In the capstone, that means counting how many deliveries in a specific zone exceeded a time threshold, using the zone and the time as the two criteria.",
           "fact_ids": [
             "f2"
           ]
@@ -286,7 +286,7 @@
         {
           "id": "tb4",
           "purpose": "example",
-          "content": "For the capstone's roster-and-delivery sheet: selecting the data range and inserting a PivotTable puts zone in Rows, shift in Columns, and delivery_time in Values by default, summarizing average delivery time by zone and shift. Separately, COUNTIFS(zone_range, \"Ikeja\", delivery_time_range, \">45\") counts how many Ikeja deliveries in the sheet took more than 45 minutes, since both criteria -- the zone and the time threshold -- must be met at once.",
+          "content": "For the capstone's delivery sheet, where each row pairs an order's zone and delivery_time with its driver's shift from the roster: selecting the data range, inserting a PivotTable and adding those fields puts zone and shift -- both non-numeric -- in Rows by default, and delivery_time, which is numeric, in Values. Dragging shift from Rows to Columns rearranges the summary into a zone-by-shift grid, and changing the Values field's summary function to Average makes each cell an average delivery time. Separately, COUNTIFS(zone_range, \"Ikeja\", delivery_time_range, \">45\") counts how many Ikeja deliveries in the sheet took more than 45 minutes, since both criteria -- the zone and the time threshold -- must be met at once.",
           "fact_ids": [
             "f1",
             "f2"
@@ -327,7 +327,7 @@
         {
           "id": "tb2",
           "purpose": "mechanism",
-          "content": "isna() detects which values in a DataFrame are missing, and dropna() removes rows with missing values or fillna() replaces them with a specified value.",
+          "content": "isna() detects which values in a DataFrame are missing, and dropna() removes rows with missing values or fillna() replaces them with a specified value. In the capstone, that means flagging which of the retrieved orders are missing a delivery_time before deciding whether to drop or fill those rows.",
           "fact_ids": [
             "f1"
           ]
@@ -335,7 +335,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "A groupby operation splits data into groups based on some criteria, applies a function independently to each group, and combines the results back into a single structure; an aggregation is a groupby operation that reduces each group to one summary value per column.",
+          "content": "A groupby operation splits data into groups based on some criteria, applies a function independently to each group, and combines the results back into a single structure; an aggregation is a groupby operation that reduces each group to one summary value per column. In the capstone, that means splitting the cleaned orders by zone and reducing each zone's delivery times to one summary number.",
           "fact_ids": [
             "f2"
           ]
@@ -384,7 +384,7 @@
         {
           "id": "tb2",
           "purpose": "mechanism",
-          "content": "A primary key uniquely identifies each row of a table; a foreign key's values must match values appearing in some row of the table it references.",
+          "content": "A primary key uniquely identifies each row of a table; a foreign key's values must match values appearing in some row of the table it references. In the capstone, that means the Drivers table needs a column that uniquely identifies each driver, and the Orders table needs a column whose values must match one of those driver identifiers.",
           "fact_ids": [
             "f1"
           ]
@@ -392,7 +392,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "In a one-to-many relationship, one row on the 'one' side relates to many rows on the 'many' side (for example, one department has many employees); in the Customer/Order example, the foreign key CustID is placed in the Order table and must match a valid CustID in the Customer table.",
+          "content": "In a one-to-many relationship, one row on the 'one' side relates to many rows on the 'many' side (for example, one department has many employees); in the Customer/Order example, the foreign key CustID is placed in the Order table and must match a valid CustID in the Customer table. In the capstone, that means one driver can appear in many orders, the same one-to-many pattern as one customer having many orders.",
           "fact_ids": [
             "f2"
           ]
@@ -400,7 +400,7 @@
         {
           "id": "tb4",
           "purpose": "example",
-          "content": "Mapped onto the capstone: Drivers has DriverID as its primary key, uniquely identifying each driver row. Orders has its own primary key, OrderID, plus a DriverID column that is a foreign key -- its values must match a DriverID that already exists in Drivers. Since one driver delivers many orders, this is a one-to-many relationship: one row on the Drivers ('one') side relates to many rows on the Orders ('many') side, the same pattern as CustID sitting in the Order table and matching a valid CustID in the Customer table.",
+          "content": "Mapped onto the capstone: Drivers has driver_id as its primary key, uniquely identifying each driver row. Orders has its own primary key, order_id, plus a driver_id column that is a foreign key -- its values must match a driver_id that already exists in Drivers. Since one driver delivers many orders, this is a one-to-many relationship: one row on the Drivers ('one') side relates to many rows on the Orders ('many') side, the same pattern as CustID sitting in the Order table and matching a valid CustID in the Customer table.",
           "fact_ids": [
             "f1",
             "f2"
@@ -420,7 +420,7 @@
         "level": "LOW",
         "reason": "The one-to-many pattern was already established with the Customer/Order example; a single labeled diagram mapping Drivers/Orders onto it is enough on top of the text's own walkthrough.",
         "preferred_visual_modes": [
-          "diagram_animation"
+          "whiteboard_drawing"
         ]
       },
       "teaching_notes": [
@@ -440,7 +440,7 @@
         {
           "id": "tb2",
           "purpose": "mechanism",
-          "content": "describe() computes a variety of summary statistics about a Series or the columns of a DataFrame.",
+          "content": "describe() computes a variety of summary statistics about a Series or the columns of a DataFrame. In the capstone, that means running describe() on a zone's delivery_time column to get that summary in one call.",
           "fact_ids": [
             "f1"
           ]
@@ -448,7 +448,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "The mean is more strongly affected by extreme observations than the median, which is more robust to them; so when the goal is to understand a typical individual value in a skewed dataset, the median can be more useful.",
+          "content": "The mean is more strongly affected by extreme observations than the median, which is more robust to them; so when the goal is to understand a typical individual value in a skewed dataset, the median can be more useful. In the capstone, that means checking whether a handful of unusually long deliveries are skewing a zone's average before trusting it as typical.",
           "fact_ids": [
             "f2"
           ]
@@ -456,7 +456,7 @@
         {
           "id": "tb4",
           "purpose": "example",
-          "content": "Running describe() on one zone's delivery_time column returns a mean of 52 minutes. But a handful of deliveries in that zone took over three hours -- a stalled vehicle, a wrong address -- and the mean is pulled up by those extreme observations, while the median, more robust to them, comes out at 38 minutes. Since the business question is about a typical delivery in that zone rather than the effect of a few rare extremes, the median is the more useful number here.",
+          "content": "Running describe() on one zone's delivery_time column returns a mean of 52 minutes, with the median (the middle quartile in describe()'s output) at 38 minutes. But a handful of deliveries in that zone took over three hours -- a stalled vehicle, a wrong address -- and the mean is pulled up by those extreme observations, while the median, more robust to them, stays at 38 minutes. The capstone's business question is which zones are missing the delivery-time target and by how much, which calls for judging a typical delivery against that target rather than one skewed by a few rare extremes, so the median is the more useful number here.",
           "fact_ids": [
             "f1",
             "f2"
@@ -496,7 +496,7 @@
         {
           "id": "tb2",
           "purpose": "mechanism",
-          "content": "fig, axs = plt.subplots(2, 2) creates one Figure containing a 2x2 grid of Axes, so several charts can share one figure.",
+          "content": "fig, axs = plt.subplots(2, 2) creates one Figure containing a 2x2 grid of Axes, so several charts can share one figure. In the capstone, that means four related delivery charts can share one figure instead of as four separate figures.",
           "fact_ids": [
             "f1"
           ]
@@ -504,7 +504,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "plt.subplot(131), plt.subplot(132), and plt.subplot(133) can each hold a different chart side by side in one figure, and plt.suptitle() adds one title over the whole figure.",
+          "content": "plt.subplot(131), plt.subplot(132), and plt.subplot(133) can each hold a different chart side by side in one figure, and plt.suptitle() adds one title over the whole figure. In the capstone, that means three of the delivery charts can instead sit side by side under one shared title.",
           "fact_ids": [
             "f2"
           ]
@@ -512,7 +512,7 @@
         {
           "id": "tb4",
           "purpose": "example",
-          "content": "For the capstone, fig, axs = plt.subplots(2, 2) lays out four related charts -- delivery time by zone, delivery time by shift, and two more -- in one 2x2 figure instead of four separate pop-ups. Alternatively, plt.subplot(131), plt.subplot(132), plt.subplot(133) place three charts side by side in a single row, and plt.suptitle('Delivery Performance -- Last Quarter') puts one title over all three so they read as one visualization set.",
+          "content": "For the capstone, fig, axs = plt.subplots(2, 2) lays out four related charts -- delivery time by zone, delivery time by shift, order count by zone, and the distribution of delivery times -- in one 2x2 figure. Alternatively, plt.subplot(131), plt.subplot(132), plt.subplot(133) place three of those charts side by side in a single row, and plt.suptitle('Delivery Performance -- Last Quarter') puts one title over all three so they read as one visualization set.",
           "fact_ids": [
             "f1",
             "f2"
@@ -569,7 +569,7 @@
         {
           "id": "tb4",
           "purpose": "takeaway",
-          "content": "Independent execution is running the whole plan yourself, adjusting it once as needed, and keeping a record of the decisions made along the way -- not any single new tool.",
+          "content": "Independent execution is running the whole plan yourself, adjusting it as needed, and keeping a record of the decisions made along the way -- not any single new tool.",
           "fact_ids": [
             "f1",
             "f2"
@@ -606,18 +606,18 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "A summary can follow a story structure with an obvious beginning, middle, and end: the beginning level-sets the audience with the big picture and background context, the middle presents what the analysis found, and the ending gives the key takeaway, such as a recommended next step. For the capstone, that means opening with the courier company and last quarter's delivery-time target, then the finding that certain zones are missing it and by how much, then closing with a recommended next step.",
+          "content": "A summary can follow a story structure with an obvious beginning, middle, and end: the beginning level-sets the audience with the big picture and background context, the middle presents what the analysis found, and the ending gives the key takeaway, such as a recommended next step. For the capstone, that means opening with the courier company and last quarter's delivery-time target, then the finding that certain zones are missing it and by how much, then closing with a recommended next step -- though depending on the audience and relationship, that recommendation can instead be placed up front for a Head of Operations who prefers the bottom line first.",
           "fact_ids": [
-            "f3"
+            "f3",
+            "f4"
           ]
         },
         {
           "id": "tb4",
           "purpose": "mechanism",
-          "content": "During delivery, insights are communicated to the people who need them, sufficiently for them to determine whether the work meets their requirements; this communication can include summary packs, reports, or presentations. The recommendation can instead be placed up front, depending on the audience and relationship -- so if the Head of Operations prefers the bottom line first, the recommendation could open the capstone summary rather than close it.",
+          "content": "During delivery, insights are communicated to the people who need them, sufficiently for them to determine whether the work meets their requirements; this communication can include summary packs, reports, or presentations. For the capstone, that means the finished summary pack should let the Head of Operations judge for themselves whether it actually answers the zone-delay question they raised, not just report that the analysis was done.",
           "fact_ids": [
-            "f2",
-            "f4"
+            "f2"
           ]
         },
         {

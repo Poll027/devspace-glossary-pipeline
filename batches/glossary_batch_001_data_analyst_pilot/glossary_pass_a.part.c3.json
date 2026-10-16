@@ -43,7 +43,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "Two properties keep a table well-formed. It has a name distinct from every other table in the database -- 'customers' is not also used for anything else -- and it contains no duplicate rows; the order its rows and columns happen to be listed in is not meaningful. On top of that, each table should contain information about one kind of thing only, such as the Customer or the Order, rather than mixing unrelated things into one table -- which is exactly why a customer's details and an order's details live in two separate tables instead of one merged one.",
+          "content": "A few properties keep a table well-formed. It has a name distinct from every other table in the database -- 'customers' is not also used for anything else -- and it contains no duplicate rows; the order its rows and columns happen to be listed in is not meaningful. On top of that, each table should contain information about one kind of thing only, such as the Customer or the Order, rather than mixing unrelated things into one table -- which is exactly why a customer's details and an order's details live in two separate tables instead of one merged one.",
           "fact_ids": [
             "f3",
             "f5"
@@ -155,7 +155,7 @@
         {
           "id": "tb3",
           "purpose": "syntax",
-          "content": "A column can be aliased the same way, by writing AS output_name after the column's expression in the SELECT list, exactly as you already saw with select_fundamentals. A column can also be referenced as correlation.columnname, where correlation is a table name or an alias defined in the FROM clause -- so with orders aliased to o, you can write o.customer_id instead of orders.customer_id. The correlation name and dot can be left off entirely when the column name is unique across every table used in the query.",
+          "content": "A column can be aliased the same way, by writing AS output_name after the column's expression in the SELECT list, exactly as you already saw with SELECT. A column can also be referenced as correlation.columnname, where correlation is a table name or an alias defined in the FROM clause -- so with orders aliased to o, you can write o.customer_id instead of orders.customer_id. The correlation name and dot can be left off entirely when the column name is unique across every table used in the query.",
           "fact_ids": [
             "f3",
             "f4"
@@ -295,7 +295,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "Without parentheses, NOT is evaluated before AND, and AND is evaluated before OR; parentheses group expressions to force a different order. WHERE customer_id = 1 AND delivery_time_minutes > 30 OR customer_id = 2 is read as (customer_id = 1 AND delivery_time_minutes > 30) OR customer_id = 2, which keeps any order from customer 2 regardless of delivery time -- writing WHERE customer_id = 1 AND (delivery_time_minutes > 30 OR customer_id = 2) instead groups the OR first, and since customer_id = 1 already rules out customer_id = 2, that version keeps only customer 1's orders that took longer than 30 minutes. NOT reverses a condition the same way: WHERE NOT (customer_id = 1) keeps every order except customer 1's.",
+          "content": "Without parentheses, NOT is evaluated before AND, and AND is evaluated before OR; parentheses group expressions to force a different order. WHERE customer_id = 1 AND delivery_time_minutes > 30 OR customer_id = 2 is read as (customer_id = 1 AND delivery_time_minutes > 30) OR customer_id = 2, which keeps any order from customer 2 regardless of delivery time -- writing WHERE customer_id = 1 AND (delivery_time_minutes > 30 OR customer_id = 2) instead groups the OR first, and since customer_id = 1 already rules out customer_id = 2, that version keeps only customer 1's orders that took longer than 30 minutes. NOT reverses a condition: WHERE NOT (customer_id = 1) keeps the orders whose customer_id is something other than 1.",
           "fact_ids": [
             "f2"
           ]
@@ -402,7 +402,7 @@
         {
           "id": "tb1",
           "purpose": "definition",
-          "content": "LIMIT count restricts the maximum number of rows a query returns, and OFFSET start specifies how many rows to skip before returning rows. SELECT order_id, delivery_time_minutes FROM orders ORDER BY delivery_time_minutes DESC LIMIT 3 returns the 3 orders at the top of that descending sort.",
+          "content": "LIMIT count restricts the maximum rows a query returns, and OFFSET start specifies how many rows to skip first. SELECT order_id, delivery_time_minutes FROM orders ORDER BY delivery_time_minutes DESC LIMIT 3 returns the 3 orders at the top of that descending sort.",
           "fact_ids": [
             "f1"
           ]
@@ -410,7 +410,7 @@
         {
           "id": "tb2",
           "purpose": "example",
-          "content": "When both are specified, the OFFSET rows are skipped first, and then up to the LIMIT count of the remaining rows are returned -- LIMIT 3 OFFSET 3 on that same sorted list skips the first 3 rows and returns the next 3, a second 'page' of results.",
+          "content": "With both specified, the OFFSET rows are skipped first, then up to the LIMIT count of what remains is returned -- LIMIT 3 OFFSET 3 on that same sorted list skips the first 3 rows and returns the next 3, a second 'page'.",
           "fact_ids": [
             "f2"
           ]
@@ -418,7 +418,7 @@
         {
           "id": "tb3",
           "purpose": "misconception",
-          "content": "Without an ORDER BY clause, LIMIT/OFFSET can return an unpredictable subset of rows, because SQL does not promise to deliver a query's results in any particular order unless ORDER BY is used.",
+          "content": "Without ORDER BY, LIMIT/OFFSET can return an unpredictable subset of rows, since SQL doesn't promise results in any particular order unless ORDER BY is used.",
           "fact_ids": [
             "m1"
           ]
@@ -442,7 +442,7 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "So far every query has returned one row per order. Sometimes what you want instead is a single summary number across all of them -- how many orders were there, what was the average delivery time.",
+          "content": "So far your queries have returned one row per record. Sometimes what you want instead is a single summary number across all of them -- how many orders were there, what was the average delivery time.",
           "fact_ids": [
             "f1"
           ]
@@ -601,7 +601,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "If no WHEN condition is true, CASE returns the ELSE result if one is given, or null if ELSE is omitted -- an order that matched neither 'fast' nor 'normal' above falls through to the ELSE 'slow' branch. CASE also has a simpler form, CASE expression WHEN value THEN result ... END, which compares one expression against each listed value directly -- CASE city WHEN 'Lagos' THEN 'south' WHEN 'Kano' THEN 'north' ELSE 'other' END compares city to each listed city value instead of writing out a full condition each time.",
+          "content": "If no WHEN condition is true, CASE returns the ELSE result if one is given, or null if ELSE is omitted -- an order that matched neither 'fast' nor 'normal' above falls through to the ELSE 'slow' branch. An order with a NULL delivery time also falls through to that same ELSE 'slow' branch, since none of the WHEN conditions evaluate to true for a null value. CASE also has a simpler form, CASE expression WHEN value THEN result ... END, which compares one expression against each listed value directly -- CASE city WHEN 'Lagos' THEN 'south' WHEN 'Kano' THEN 'north' ELSE 'other' END compares city to each listed city value instead of writing out a full condition each time.",
           "fact_ids": [
             "f2",
             "f3"
@@ -635,7 +635,7 @@
         {
           "id": "tb2",
           "purpose": "example",
-          "content": "A correlation (alias) name should relate to the object it aliases -- as a rule of thumb, the first letter of each word in the object's name -- and the AS keyword should always be included to make it explicit: FROM orders AS o rather than FROM orders o or FROM orders AS x. Each root keyword starts a line and is right-aligned so the keywords end on the same character boundary (a 'river'), with values left-aligned after them, spaces around '=' and after commas, and a newline before AND or OR so each clause starts its own line:\n\nSELECT customer_id, city\n  FROM customers\n WHERE city = 'Lagos'\n   AND customer_id > 1",
+          "content": "A correlation (alias) name should relate to the object it aliases -- as a rule of thumb, the first letter of each word in the object's name -- and the AS keyword should always be included to make it explicit: FROM orders AS o rather than FROM orders o or FROM orders AS x. Each root keyword starts a line and is right-aligned so the keywords end on the same character boundary (a 'river'), with values left-aligned after them, spaces around '=' and after commas, and a newline before AND or OR and after each keyword definition, so each condition and clause starts its own line:\n\nSELECT customer_id, city\n  FROM customers\n WHERE city = 'Lagos'\n   AND customer_id > 1",
           "fact_ids": [
             "f3",
             "f4",
@@ -659,7 +659,7 @@
         {
           "id": "tb1",
           "purpose": "definition",
-          "content": "LOWER(text) converts a string to all lower case, and UPPER(text) converts a string to all upper case -- LOWER(city) would turn 'LAGOS' or 'Lagos' into 'lagos', useful for comparing city names that were typed inconsistently.",
+          "content": "LOWER(text) converts a string to all lower case, and UPPER(text) converts a string to all upper case -- LOWER(city) turns 'LAGOS' or 'Lagos' into 'lagos', useful for comparing inconsistently typed city names.",
           "fact_ids": [
             "f1"
           ]
@@ -667,7 +667,7 @@
         {
           "id": "tb2",
           "purpose": "example",
-          "content": "TRIM removes the longest string containing only the given characters (a space by default) from the start, end, or both ends of a string -- TRIM(city) strips accidental leading or trailing spaces from a city value. CONCAT concatenates the text representations of all its arguments and ignores any NULL arguments -- CONCAT(name, ' (', city, ')') builds a single readable label out of a customer's name and city. LENGTH(text) returns the number of characters in a string, for example LENGTH(name).",
+          "content": "TRIM removes the longest string containing only the given characters (a space by default) from the start, end, or both ends of a string -- TRIM(city) strips accidental leading or trailing spaces from a city value. CONCAT concatenates the text representations of its arguments and ignores any NULL arguments -- CONCAT(name, ' (', city, ')') builds one label from a customer's name and city. LENGTH(text) returns a string's character count, for example LENGTH(name).",
           "fact_ids": [
             "f2",
             "f3",
@@ -731,7 +731,7 @@
         {
           "id": "tb2",
           "purpose": "example",
-          "content": "A cast on a value expression of a known type succeeds only if a suitable type conversion has been defined between the value's type and the target type -- converting delivery_time_minutes (a number) to text works, but casting an arbitrary text value like a city name to a number would fail unless that text actually looks like a number.",
+          "content": "A cast on a value expression of a known type succeeds only if a suitable type conversion has been defined between the value's type and the target type -- converting delivery_time_minutes (a number) to text works because a number-to-text conversion is defined; a cast between two types that have no such conversion defined does not succeed.",
           "fact_ids": [
             "f2"
           ]
@@ -755,7 +755,7 @@
         {
           "id": "tb1",
           "purpose": "definition",
-          "content": "COALESCE(value [, ...]) returns the first of its arguments that is not null, and returns null only if every argument is null. COALESCE(delivery_time_minutes, 0) returns the actual delivery time when it's recorded, and 0 when it's missing.",
+          "content": "COALESCE(value [, ...]) returns the first of its arguments that is not null, and returns null only if every argument is null. COALESCE(city, 'unknown') returns the customer's actual city when it's recorded, and 'unknown' when it's missing.",
           "fact_ids": [
             "f1"
           ]
@@ -763,7 +763,7 @@
         {
           "id": "tb2",
           "purpose": "example",
-          "content": "COALESCE is often used to substitute a default value for null values, the same way COALESCE(description, short_description, '(none)') falls back through several columns before finally using a fixed default.",
+          "content": "COALESCE is often used to substitute a default value for null values -- the same way COALESCE(name, 'unnamed customer') falls back to a fixed default whenever a customer's name wasn't recorded.",
           "fact_ids": [
             "f2"
           ]
@@ -785,7 +785,7 @@
         {
           "id": "tb1",
           "purpose": "definition",
-          "content": "UNION effectively appends the result rows of the second query to the result of the first, although there is no guarantee that this is the order the rows actually come back in -- SELECT name FROM customers UNION SELECT product_name FROM products stacks every customer name and every product name into one combined list of names.",
+          "content": "UNION effectively appends the result rows of the second query to the result of the first, although there is no guarantee that this is the order the rows actually come back in -- SELECT customer_id FROM customers WHERE city = 'Lagos' UNION SELECT customer_id FROM orders WHERE delivery_time_minutes > 60 combines the ids of customers who live in Lagos with the ids of customers who had a slow order, into one list of customers who live in Lagos or had a slow order.",
           "fact_ids": [
             "f1"
           ]
@@ -793,7 +793,7 @@
         {
           "id": "tb2",
           "purpose": "mechanism",
-          "content": "UNION eliminates duplicate rows from its combined result, the same way DISTINCT does, unless UNION ALL is used, which keeps every row -- if a customer happened to share a name with a product, plain UNION would list that name once, while UNION ALL would list it twice.",
+          "content": "UNION eliminates duplicate rows from its combined result, the same way DISTINCT does, unless UNION ALL is used, which keeps every row -- a Lagos customer who also placed two orders over 60 minutes appears once under UNION, but three times under UNION ALL (once from the first query, twice from the second), so any duplicate row collapses.",
           "fact_ids": [
             "f2"
           ]
@@ -801,7 +801,7 @@
         {
           "id": "tb3",
           "purpose": "example",
-          "content": "To be combined with UNION, the two queries must return the same number of columns, with corresponding columns having compatible data types -- SELECT name FROM customers UNION SELECT product_name FROM products works because both queries return exactly one text column.",
+          "content": "To be combined with UNION, the two queries must return the same number of columns, with corresponding columns having compatible data types -- SELECT customer_id FROM customers WHERE city = 'Lagos' UNION SELECT customer_id FROM orders WHERE delivery_time_minutes > 60 works because both queries return exactly one integer column.",
           "fact_ids": [
             "f3"
           ]
@@ -849,18 +849,17 @@
         {
           "id": "tb4",
           "purpose": "takeaway",
-          "content": "An entity type that does not depend on another entity for its existence is called an independent entity -- Customer and Product are independent entities in this schema, since a customer or a product can exist in the database without needing any other table to already contain a row for it. Deciding what counts as 'one entity' -- customers separate from orders separate from products -- is a modeling judgment you make before writing a single CREATE TABLE statement.",
+          "content": "An entity type that does not depend on another entity for its existence is called an independent entity -- Customer and Product are independent entities in this schema, since a customer or a product can exist in the database without needing any other table to already contain a row for it. Deciding what counts as 'one entity' -- customers separate from orders separate from products -- is a modeling judgment you make before designing any table.",
           "fact_ids": [
             "f5"
           ]
         }
       ],
       "video_need": {
-        "level": "MEDIUM",
-        "reason": "Recognizing which real-world objects deserve their own table is a judgment call best built up through several worked examples side by side, though the customer/order/product example already walks through that judgment in text.",
+        "level": "LOW",
+        "reason": "This is a definition-plus-judgment concept about which real-world objects deserve their own table; the customer/order/product example already walks through that judgment in text, so a single simple visual is enough rather than a demonstration.",
         "preferred_visual_modes": [
-          "annotated_ui",
-          "slides_with_signaling"
+          "annotated_ui"
         ]
       },
       "teaching_notes": [
@@ -964,7 +963,7 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "A customer can place several orders, but every order belongs to exactly one customer. That asymmetry between customers and orders is a specific, named kind of relationship.",
+          "content": "A customer can place several orders, but an order relates to at most one customer. That asymmetry between customers and orders is a specific, named kind of relationship.",
           "fact_ids": [
             "f1"
           ]
@@ -980,7 +979,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "In the customer/order relationship, a customer can place a minimum of zero and a maximum of many orders, while an order relates to a maximum of one customer, so orders is the 'many' side (the many side is optional, since a customer doesn't need to place an order to still be a customer); the foreign key customer_id is placed in the orders table and must match a valid customer_id in customers.",
+          "content": "In the customer/order relationship, a customer can place a minimum of zero and a maximum of many orders, while an order relates to a maximum of one customer, so orders is the 'many' side (the many side is optional, since a customer doesn't need to place an order to still be a customer); the foreign key customer_id is placed in the orders table and must match a valid customer_id in customers. A single customers row can't hold several order ids in one column, so the foreign key has to go on orders instead.",
           "fact_ids": [
             "f2"
           ]
@@ -1020,7 +1019,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "Redundant data like that is generally undesirable because it causes problems maintaining consistency after updates: if the customer's city changes, every one of those 5 repeated rows must be updated, and missing even one leaves inconsistent data -- an update anomaly, where the same customer now appears to live in two different cities depending on which row you read. One way to remove the redundancy is to move the data that would otherwise repeat across many rows into a new, separate table, linked back to the original record by a key column -- exactly the split into customers (name, city, once each) and orders (just customer_id) that this schema already uses.",
+          "content": "Redundant data like that is generally undesirable because it causes problems maintaining consistency after updates: if the customer's city changes, every one of those 5 repeated rows must be updated, and missing even one leaves inconsistent data -- an update anomaly, where the same customer now appears to live in two different cities depending on which row you read. One way to remove the redundancy is to move the data that would otherwise repeat across many rows into a new, separate table, linked back to the original record by a key column -- exactly the split into customers (name, city, once each) and orders (which keeps only customer_id to identify the customer) that this schema already uses.",
           "fact_ids": [
             "f2",
             "f3"
@@ -1029,7 +1028,7 @@
         {
           "id": "tb4",
           "purpose": "takeaway",
-          "content": "The customers/orders split you've been using throughout this tile isn't an arbitrary choice -- it's normalization already applied, keeping each customer's name and city stored in exactly one place.",
+          "content": "The customers/orders split you've been using throughout these lessons isn't an arbitrary choice -- it's normalization already applied, keeping each customer's name and city stored in exactly one place.",
           "fact_ids": [
             "f3"
           ]
@@ -1104,7 +1103,7 @@
         {
           "id": "tb1",
           "purpose": "definition",
-          "content": "In an entity relationship diagram (ERD), an entity type is represented by its name shown inside a box -- Customer, Order, Product and Order_Item would each get their own box. Each attribute is represented by an oval with its name inside, attached to its entity's box, and the primary key attribute is shown by underlining it -- customer_id, underlined, inside an oval attached to the Customer box.",
+          "content": "In an entity relationship diagram (ERD), an entity type is represented by its name inside a box -- Customer, Order, Product and Order_Item would each get their own box. Each attribute is represented by an oval with its name inside, attached to its entity's box, with the primary key underlined -- customer_id, underlined, inside an oval attached to the Customer box.",
           "fact_ids": [
             "f1",
             "f2"
@@ -1113,7 +1112,7 @@
         {
           "id": "tb2",
           "purpose": "example",
-          "content": "An ERD shows relationships between entities as lines; among the relationship types shown this way are one-to-one (1:1), one-to-many (1:M), and many-to-many (M:N) -- the Customer-to-Order line would be drawn as a 1:M relationship, matching what you already know about that pair. Markings on a relationship line show cardinality and connectivity, the minimum and maximum number of related entities on each side: a symbol with three prongs on a side means 'many' on that side, a zero and one together mean 'zero or one', and a one and only one symbol means that side is mandatory -- the Order side of the Customer-Order line would carry the 'many' marking, and the Customer side a 'zero or one' marking, since an order needs exactly one customer but a customer needs zero orders.",
+          "content": "An ERD shows relationships between entities as lines: one-to-one (1:1), one-to-many (1:M), and many-to-many (M:N) -- the Customer-to-Order line would be drawn as 1:M, matching that pair. Markings on a relationship line show cardinality and connectivity, the minimum and maximum number of related entities on each side: a three-pronged symbol means 'many', a zero and one together mean 'zero or one', and a one-and-only-one symbol means that side is mandatory -- the Order side of the Customer-Order line would carry the 'many' marking, since one customer can place many orders.",
           "fact_ids": [
             "f3",
             "f4"
@@ -1288,7 +1287,7 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "A query like SELECT customer_id, AVG(delivery_time_minutes) AS avg_time FROM orders WHERE delivery_time_minutes > 0 GROUP BY customer_id HAVING AVG(delivery_time_minutes) > 30 ORDER BY avg_time DESC is written top to bottom, SELECT first -- but that's not the order it actually runs in.",
+          "content": "A query like SELECT customer_id, AVG(delivery_time_minutes) AS avg_time FROM orders WHERE delivery_time_minutes > 0 GROUP BY customer_id HAVING AVG(delivery_time_minutes) > 30 ORDER BY avg_time DESC is written top to bottom, SELECT first -- but that's not the order it is logically processed in.",
           "fact_ids": [
             "f1"
           ]
@@ -1304,7 +1303,7 @@
         {
           "id": "tb3",
           "purpose": "misconception",
-          "content": "An output column's alias, assigned with AS in the SELECT list, can be referred to in ORDER BY and GROUP BY, but not in the WHERE or HAVING clauses, where the expression must be written out instead. WHERE avg_time > 30 would fail in that query, because WHERE runs before SELECT has computed avg_time at all -- WHERE has to say delivery_time_minutes directly, and the aggregate condition belongs in HAVING, not WHERE, in the first place.",
+          "content": "An output column's alias, assigned with AS in the SELECT list, can be referred to in ORDER BY and GROUP BY, but not in the WHERE or HAVING clauses, where the expression must be written out instead. WHERE avg_time > 30 would fail in that query -- the expression has to be written out instead of the alias, and because this one is an aggregate, the condition belongs in HAVING as AVG(delivery_time_minutes) > 30. The processing order above is a useful aid for remembering this, though it's the rule itself, not simply running before or after SELECT, that decides which clauses can use the alias.",
           "fact_ids": [
             "f2"
           ]
@@ -1378,7 +1377,7 @@
         {
           "id": "tb2",
           "purpose": "definition",
-          "content": "A subquery used in FROM must be enclosed in parentheses and may be given a table alias, for example FROM (SELECT * FROM table1) AS alias_name -- the SQL standard requires this alias, and while PostgreSQL allows it to be omitted, writing one is good practice. SELECT * FROM (SELECT customer_id, AVG(delivery_time_minutes) AS avg_time FROM orders GROUP BY customer_id) AS customer_avg WHERE avg_time > 30 treats the grouped, averaged result as a temporary table named customer_avg, then filters it in the outer query.",
+          "content": "A subquery used in FROM must be enclosed in parentheses and may be given a table alias, for example FROM (SELECT * FROM table1) AS alias_name -- the SQL standard requires this alias, and while PostgreSQL allows it to be omitted, writing one is good practice in SQL code that might be ported to another system. SELECT * FROM (SELECT customer_id, AVG(delivery_time_minutes) AS avg_time FROM orders GROUP BY customer_id) AS customer_avg WHERE avg_time > 30 treats the grouped, averaged result as a temporary table named customer_avg, then filters it in the outer query.",
           "fact_ids": [
             "f1"
           ]

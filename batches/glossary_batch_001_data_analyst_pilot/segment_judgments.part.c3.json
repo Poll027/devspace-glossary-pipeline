@@ -1,0 +1,701 @@
+{
+ "metadata": {
+  "artifact_type": "segment_judgments",
+  "artifact_version": "1.0.0",
+  "schema_version": "1.0.0",
+  "batch_id": "glossary_batch_001_data_analyst_pilot",
+  "run_id": "glossary_batch_001_data_analyst_pilot_09_c3",
+  "prompt_version": "09_segment_judge@v1",
+  "model": "claude-opus-5-5",
+  "generated_at": "2026-10-02T10:38:24Z",
+  "source_snapshot_id": "data_analytics.source_pack",
+  "parent_artifact_hashes": {
+   "segment_proposals.part.c3.json": "6ec7441801a683acd992353c09612753d2e917bd335716f56c7c036746c1ae4b",
+   "coverage_briefs.json": "d0ef2fa55a4fc956f7aec86aa706596e791e638ea60e8c7c721fdb8273290611",
+   "extracted_concepts.json": "8e3969d65e33ee46f6e3ca399cf9ada942a5b349eb85f07e6b5d60dfe6acdc8e"
+  }
+ },
+ "batch_id": "glossary_batch_001_data_analyst_pilot",
+ "judgments": [
+  {
+   "proposal_id": "prop_KkTaQ5OjAGc_spreadsheet_logical_functions",
+   "verdict": "approved",
+   "final_start_seconds": 55,
+   "final_end_seconds": 557,
+   "confirmed_fact_ids": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 4,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 5,
+    "pacing": 3,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 25-590. 55.7 opens cleanly ('Let's take a look at some examples... I have a list of apps'). 74-185 builds IF argument by argument ('The first argument is our logical test', value if true 'Good', 'if you're typing text in a formula, you have to put it in quotation marks' = f5, '\"\"' for nothing). 212-300 IF+AND ('AND allows us to do a logical test for more than one thing... type in all our tests that should occur and should be true inside the AND') = f3. 337-466 nested IF in the value_if_false argument ('Exactly in the value if false argument, that's where you need to put your second IF') = f2, and it opens with 'I'm actually going to copy this' (the AND formula), so the AND chapter really is required context. 492-556 OR ('An OR checks for if either of these conditions apply') = f4. The 8.4 min length is justified: it is one progressive build on the same revenue list where each step reuses the previous formula; no shorter contiguous cut keeps all four functions. F4/$ absolute refs are used but are not blocked for this concept. f6 (letter grades) not covered. Ends at 557 before the threshold chapter."
+  },
+  {
+   "proposal_id": "prop_KyCw1uA1-M8_python_variable_scope",
+   "verdict": "approved",
+   "final_start_seconds": 19,
+   "final_end_seconds": 220,
+   "confirmed_fact_ids": [
+    "f1",
+    "f2"
+   ],
+   "scores": {
+    "technical_accuracy": 4,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 4,
+    "pacing": 5,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 0-232. 19-73 defines scope with a display_name function holding a local 'name' ('a variable is only recognized inside of the region that it is created'); 73-95 printing it outside gives 'name is not defined'; 96-160 global vs local same-named variable, the function prints the local first; 161-193 removing the local line falls back to the global, then 'python will follow this rule known as the legb rule... local variables first then enclosed variables then global and then any built-in variables in that order' (f2; the passing 'enclosed' mention doesn't contradict the non-nested case). f1 is shown by the in-function assignment being local. f3 (global statement) is never mentioned. The NameError is shown, not taught, so it doesn't need the blocked try/except concept. Start skips the subscribe plug; 220 ends right before the outro."
+  },
+  {
+   "proposal_id": "prop_Liv6eeb1VfE_pandas_inspecting_dataframes",
+   "verdict": "approved",
+   "final_start_seconds": 225,
+   "final_end_seconds": 366,
+   "confirmed_fact_ids": [
+    "f4",
+    "f5"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 3,
+    "prerequisite_safety": 4,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 4,
+    "pacing": 3,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 190-400. 225-280: 'one of the first things that I like to do when I get a data set is to just look at the info... how many columns we have here are the column names here how many values... the count tells us that it's not null... and then we also have the data types' (f4; memory usage not mentioned but the core is there). 280-301 is a 19s Udemy sponsor read in the middle; it's ~13% of the clip, so it lowers pacing but doesn't dominate. 301-366 df.describe(): 'count the mean the standard deviation the minimum value and the maximum value as well as your 25 50 75 percentiles... a nice high level overview' (f5). Using describe() as a quick overview is this concept's own f5, so the blocked 'computing descriptive statistics' concept isn't needed to follow it. I moved the end from 367 to 366 because 365.9 already starts 'one thing that we just talked about was the null values', which leads into isnull().sum() (blocked missing-data concept). The start ('let's go down here and let's just pull up data frame, so we have this data') is a little casual but the DataFrame is on screen. f1-f3 not covered."
+  },
+  {
+   "proposal_id": "prop_Lw2rlcxScZY_pandas_boolean_filtering",
+   "verdict": "approved",
+   "final_start_seconds": 53,
+   "final_end_seconds": 285,
+   "confirmed_fact_ids": [
+    "f1",
+    "f2"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 4,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 5,
+    "pacing": 4,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 30-615. I tightened this a lot. Start moves to 53 ('ok so first of all let me show you something that's going to be the basis for our filters if we perform some basic comparisons'), a cleaner new thought than 88, which starts mid-setup ('so in our bottom cell here I'm going to put a comparison'). 96-150: df['last']=='Doe' returns 'a series with a bunch of true/false values... the true values are the rows that met our filter criteria... think of it like a mask' (f1, f2). 200-283 applies it with df[filt] and inline df[df[...]=='Doe'] (f2), ending 'okay so that's one way of narrowing down those rows'. I cut the &/|/~ section (376-584) on purpose. At 447-458 the presenter wraps each condition in parentheses and says only 'I like to have each one wrapped in parentheses I think it makes it a bit easier to read'. That tells the learner the parentheses are optional, but in pandas they're required (without them & binds before == and it errors), which contradicts f3. I also dropped the .loc alternative (285-376) because it isn't needed for f1/f2 and the cut is shorter without it. f3 is not confirmed. The new 232s length is inside the live-code band."
+  },
+  {
+   "proposal_id": "prop_MZZSMaEAC2g_python_dictionaries",
+   "verdict": "approved",
+   "final_start_seconds": 0,
+   "final_end_seconds": 77,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 4,
+    "fact_coverage": 2,
+    "prerequisite_safety": 4,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 3,
+    "pacing": 5,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 0-200. 0-12 defines a dictionary as key value pairs, 'ordered and changeable no duplicates allowed'. 24-75 builds capitals = {'USA': 'Washington DC', ...} with braces, a colon between key and value and commas between pairs (f1). It ends 'I think that's good enough'. On the .get() risk: the .get() lookup starts at 115 and the 'Japan... this method would return none' line is at 146-157, both well after this 77s end, and the dir()/help() aside (77-113) sits between them. So the clip never shows missing-key behaviour and can't contradict f3's KeyError fact. The cut is placed correctly. The surrounding glossary text still has to teach that d['missing'] raises KeyError, and the later .get() part of this video must never be used for this concept. The passing 'much like what you do with sets' (sets are blocked) is a comparison the learner can follow without knowing sets. Only f1 is taught. There are no subscript reads or writes in range, so f2 and f3 are not covered."
+  },
+  {
+   "proposal_id": "prop_N6hyN6BW6ao_pandas_reading_data",
+   "verdict": "approved",
+   "final_start_seconds": 55,
+   "final_end_seconds": 130,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 2,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 3,
+    "pacing": 4,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 25-405. The proposed 58-375 is a prerequisite leak. 147-200 builds a filter mask and does df.loc[filt] ('we've seen this in previous videos but if we want to filter then we can simply say I'll create a filter... India DF equals DF dot loc and pass in that filter'), then calls .head(). 206-280 is to_csv. Boolean filtering, loc/iloc, head/inspecting and exporting to_csv are all on this concept's blocked list, and the learner has to understand them to follow 130-280. The sep (f4) part at 282-372 is taught through writing a .tsv with to_csv(sep='\\t') and only mentions read_csv(sep=) in one line at the end, so I can't keep it without the blocked to_csv material. I tightened to 55-130: 'ok so first let's look at CSV files... in case this is the first video of the series that you're watching let's go over this one more time', the read_csv call with a relative path ('if you have a CSV file loaded elsewhere then you'll need to pass in the full path') and index_col, ending 'that is the read CSV method and it allows us to pull data in to pandas' (f1). f4 is not confirmed. The visual is modest because the code is pre-written and narrated."
+  },
+  {
+   "proposal_id": "prop_N6hyN6BW6ao_capstone_data_retrieval_method_selection",
+   "verdict": "approved",
+   "final_start_seconds": 1522,
+   "final_end_seconds": 1681,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 3,
+    "visual_teaching_value": 4,
+    "pacing": 4,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 1250-1690. 1522-1574: pd.read_sql('sample_table', engine, index_col=...) loads a database table into a DataFrame. 1594-1679: read_sql_query('select * from sample_table', ...) runs a specific SQL query, 'you could add in a where clause here to filter this down... especially useful when you're working with large databases where you only want to load in specific data using a query' (f1, and it frames the reason to choose a query). Context: the opening ('this is pretty simple now that we actually have this database connection set up') relies on the engine created during the to_sql section (~1240-1345). Pulling that in would add ~4 min of credentials, Postgres and to_sql content, so it can't be done. Within the clip, 'pass in our database connection, my connection here I called engine' tells a capstone learner (who already knows SQL and pandas) enough to follow, so I'm approving with a reduced standalone score. The 'filtered down to India' line is a passing reference. End trimmed to 1681, before 'okay so we're just about finished up'. f2 not covered."
+  },
+  {
+   "proposal_id": "prop_NdeeSEknp58_datamodel_er_diagram_reading",
+   "verdict": "approved",
+   "final_start_seconds": 4252,
+   "final_end_seconds": 4368,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 4,
+    "fact_coverage": 2,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 3,
+    "pacing": 4,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 4227-4820. The proposed 528s isn't justified. Only 4354-4368 teaches the entity symbol and 4682-4786 the attribute ovals. In between are 170s of weak/strong entity type (RFID-card and medical-dependent examples, 4368-4538), a domain-constraint aside, a descriptive-attribute aside and a null aside. None of that serves reading entities, keys and relationships off an ERD. The attribute half also never mentions underlining the primary key, so f2 can't be confirmed from it either way. I tightened to 4252-4368: 'Now what are the tools or constructs in this ER model? We have entities, attributes and relationships', then entity type vs instance vs set on a student table (roll number as the key), ending 'there's only symbol for entity type which is this rectangular box and here you write the table name' (f1). That's a self-contained 116s unit starting on a new question. The catalogue's 'Three-Level Data Abstraction' chapter label is wrong for this content. f2-f4 are not confirmed. This video's later relationship/cardinality section uses 1/M labels, not crow's-foot."
+  },
+  {
+   "proposal_id": "prop_O5v4NrSCw_A_pandas_missing_data_handling",
+   "verdict": "rejected_needs_prior_context",
+   "final_start_seconds": null,
+   "final_end_seconds": null,
+   "confirmed_fact_ids": [],
+   "scores": {
+    "technical_accuracy": 3,
+    "fact_coverage": 3,
+    "prerequisite_safety": 2,
+    "standalone_clarity": 1,
+    "visual_teaching_value": 3,
+    "pacing": 1,
+    "boundary_quality": 2
+   },
+   "reasoning": "Read 0-860. The range starts at 245 ('we'll kill it kill it um so the first one that we were going to say was to delete it'). Every result in it is judged on a plot of HPI_data's Texas column against a 'TX1yr' column that was resampled and plotted at 122-243 ('sure enough we got the graph... the regular Texas is also only sampled once every year', 'you get all these little steps'). A learner who starts here doesn't know what HPI_data, TX1yr or the resample are. Reading those graphs also needs pyplot plotting, which is on this concept's blocked list. Moving the start back to 122 would make the clip ~12 min and add more of the resample setup. Inside the range the teaching is shaky. ffill/bfill gets 'it's a little counterintuitive to me... maybe I don't know' (495-516). The -99999 machine-learning aside runs 583-613. The isnull check is assembled by trial and error ('let's see p is contains na I think it's um is na', 'print uh DF do is null do values. suum and let's say value fill that and then we could say limit equals 10', then 'DF doesn't exist for us'). dropna's subset argument (f2) is never shown, and the plain scalar fillna(0) case (f3) is shown only as fillna(value=-99999). At 593s, length isn't the main problem but the clip is also too long. This concept needs a different video."
+  },
+  {
+   "proposal_id": "prop_O9hORRFxV-A_sql_having",
+   "verdict": "approved",
+   "final_start_seconds": 0,
+   "final_end_seconds": 338,
+   "confirmed_fact_ids": [
+    "f1",
+    "f2"
+   ],
+   "scores": {
+    "technical_accuracy": 4,
+    "fact_coverage": 5,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 4,
+    "pacing": 4,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 0-369. 4-72: 'so far we have learned how to group up our data using the group by' (GROUP BY is allowed prior knowledge), HAVING goes 'exactly after the group by... once you want to filter the aggregations functions'. 87-222 worked task: count(*) customers by country, then 'we're gonna use the clouds having... the total number that's mean the count should be greater than one', and the UK with 1 customer disappears (f1, f2: HAVING on an aggregate). 222-336 contrasts with WHERE: 'where you could use it only on the columns that exist in the database... once I want to filter the data based on... the count star or the max Min... we cannot use the where we should use having', then demos WHERE country != 'USA' (f1's group vs row distinction). 'Columns that exist in the database' is a simplification of 'rows before grouping' but doesn't contradict it. The 74-85 clause-order list mentions joins in passing only. End tightened from 341 to 338: 'next we're going to talk about the concept of sub queries' starts at 340.5."
+  },
+  {
+   "proposal_id": "prop_OUnnuKHbmbU_pandas_creating_dataframes",
+   "verdict": "approved",
+   "final_start_seconds": 0,
+   "final_end_seconds": 134,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 4,
+    "pacing": 5,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 0-170. 0-14: 'a dataframe is a tabular data structure with rows and columns... similar to an Excel spreadsheet'. 16-71 builds data = {'name': [Spongebob, Patrick, Squidward], 'age': [30, 35, 50]} ('instead of just having a single value we'll use a list'). 74-109 df = pd.DataFrame(data) and prints it. 114-132: 'here's our data frame... rows and columns. We're also given an index. This index has a label for each row starting with zero' (f1: keys become columns, lists become values, default range index). 134 ends exactly before the custom-index chapter. f2 (list of dicts) not covered. No blocked content in range."
+  },
+  {
+   "proposal_id": "prop_P6HCyxSyFpY_capstone_data_retrieval_method_selection",
+   "verdict": "approved",
+   "final_start_seconds": 162,
+   "final_end_seconds": 267,
+   "confirmed_fact_ids": [
+    "f2"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 4,
+    "pacing": 5,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 140-300. The proposed start (179) begins mid-sentence ('this file into Python and to start off'), so I moved it to 162. 162-177 shows the pump-sensor Excel workbook open in Excel (timestamp, sensor_00-51, machine_status), so 'let's read this file into Python' has a referent. 196-261: import pandas as pd, data = pd.read_excel('<copied path>'), then display data: 'with just one line of code we were able to take all of the data within this Excel file and load it into a pandas data frame' (f2). It ends 'if that's what you came here for then this is all you need', before the sheet_name/decimal parameter tour. For a decision concept, a short clip showing the spreadsheet-import route is the right size. f1 (SQL) not covered."
+  },
+  {
+   "proposal_id": "prop_P90mCSsGE1c_stats_correlation_interpretation",
+   "verdict": "rejected_prerequisite_leak",
+   "final_start_seconds": null,
+   "final_end_seconds": null,
+   "confirmed_fact_ids": [],
+   "scores": {
+    "technical_accuracy": 2,
+    "fact_coverage": 2,
+    "prerequisite_safety": 1,
+    "standalone_clarity": 2,
+    "visual_teaching_value": 2,
+    "pacing": 3,
+    "boundary_quality": 3
+   },
+   "reasoning": "Read 898-1160. This statistics concept blocks 'Series and DataFrame data structures' and 'Computing descriptive statistics with pandas (describe...)', and the clip depends on both. 941-962 builds the table with HPI_data.corr() on a DataFrame from earlier parts of the series. 1029-1112 runs .describe() on the correlation DataFrame and reads it ('it tells you how many rows... average... standard deviation... 25th quartile... the interesting number is min... the lowest correlation for like Washington with anyone else is 86%'). To follow that half, the learner has to understand describe() output, which is blocked. Trimming to 930-1019 isn't worth it. That part is a scroll through a 50x50 console printout. It calls coefficients percentages ('92% correlated', '79% correlation between Texas and Nevada'), which teaches a misreading of r. Every value is positive, so f1's 'regardless of sign' is never shown. f2 (confounding) is absent. Needs a different video that compares coefficients, including negative ones, without pandas."
+  },
+  {
+   "proposal_id": "prop_PyYgERKq25I_sql_select_fundamentals",
+   "verdict": "approved",
+   "final_start_seconds": 12,
+   "final_end_seconds": 61,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 2,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 4,
+    "pacing": 4,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 0-160. The proposed 25-123 leaks blocked concepts. 62-86 is SELECT TOP 5 ('if we only want it to return let's say the top five'), which is the 'Limiting results' concept, and 88-121 teaches DISTINCT ('when we use distinct we're actually saying that we want the unique values'). Both are on this concept's blocked list. I tightened to 12-61. 12-24 introduces the employee demographics and salary tables. 25-58: 'select everything... from the employee demographics table', then select first name only, then first name, last name 'separate that by using a comma', then 'if we want to return all columns and all rows then all we have to do is use this star' (f1: the SELECT list decides the output columns). It ends just before 'now we have nine rows of data here and if we only want...'. FROM is used but not explained (f3), and AS (f2) isn't in range. The clip is short but complete for f1."
+  },
+  {
+   "proposal_id": "prop_QNfnuK-1YYY_sql_cte",
+   "verdict": "approved",
+   "final_start_seconds": 34,
+   "final_end_seconds": 385,
+   "confirmed_fact_ids": [
+    "f1",
+    "f2"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 4,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 4,
+    "pacing": 4,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 0-415. 34-52: 'a with clause can also be referred to as cte which stands for common table expression'. 57-105 sets the task: employees whose salary > average salary, which isn't a column. 130-245 writes 'with average_salary (avg_sal) as (select avg(salary) from employee)' before the main select and uses it 'in my main query as if I was just using any other table' (f2 pattern). 252-313: 'it's going to first run the query that is associated with the with clause... store this data something like a temporary table... whose scope will only be until the whole query execution is completed' (f1). It runs and checks the 70k/80k/90k result. f3 is not confirmed. The clip never says a CTE is easier to follow than a nested subquery. At 366-383 it actually says this example 'didn't really need to use a with clause' because the value could just be passed in, so it doesn't contradict f3 but doesn't teach it either. CAST and the comma join are earlier SQL concepts. At 351s it's within the live-code band. 385 ends before Query 2."
+  },
+  {
+   "proposal_id": "prop_QVdf0LgmICw_python_variable_scope",
+   "verdict": "approved",
+   "final_start_seconds": 34,
+   "final_end_seconds": 375,
+   "confirmed_fact_ids": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 5,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 5,
+    "pacing": 4,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 0-500. 34-85 states LEGB and 'Python first checks the variables in the local scope, then the enclosing scope, then the global, and then lastly the built-ins' (f2). 120-165 local y inside test() (f1). 172-219: print(x) inside the function finds the global ('do I have an X variable in my local scope... it checks if it has an X in its global scope') = reading without a global statement. 222-256 print(y) outside raises NameError. 274-322: assigning x='local x' inside the function 'just creates a local X variable... anything outside... still sees the global X' (f1, f3). 322-374: 'global x' makes the assignment change the global (f3). I tightened the end from 468 to 375 ('it's now in the global scope'). 375-420 shows 'global' creating a not-yet-defined global and 420-466 is the 'don't overuse it' opinion; neither is a required fact. Each demo builds on the same x/y code, so 341s (5.7 min) is justified even though it's above the 4-min visual-mechanism band. The import-builtins demo stays excluded."
+  },
+  {
+   "proposal_id": "prop_RY526I9h2SE_spreadsheet_bar_chart_creation",
+   "verdict": "approved",
+   "final_start_seconds": 0,
+   "final_end_seconds": 58,
+   "confirmed_fact_ids": [
+    "f2"
+   ],
+   "scores": {
+    "technical_accuracy": 4,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 4,
+    "pacing": 4,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 0-100. 10-19: 'to make a bar chart just select your data and then go to insert click on the column chart button here and select the bar chart'. On the UI path: I accept the Insert-tab chart-type button as an equivalent demonstration of f2. It is a standard Excel route to the same chart, the source doesn't say other routes are wrong, and the learner still does f2's real steps: select the data, go to Insert, choose the bar chart type. The Recommended Charts/All Charts dialog isn't shown, so the glossary text should name that route itself. The proposed 22s end cuts on 'now you might notice that the order of these items... is reverse of how they are laid out here in my data'. That leaves a just-made chart with an unexplained problem, and it's under every role floor. I extended to 58 so the first fix is included: select the axis, Ctrl+1, 'categories in reverse order', 'you will see the categories listed as per your original data'. That ties directly to arranging category data for the chart. 0-10 is a short intro with a music sting. f1 (what bar charts compare) is not stated."
+  },
+  {
+   "proposal_id": "prop_RiEZ_hEf96A_stakeholder_chart_type_to_point_matching",
+   "verdict": "approved",
+   "final_start_seconds": 0,
+   "final_end_seconds": 101,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 4,
+    "fact_coverage": 2,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 5,
+    "pacing": 5,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 0-105. 21-37 pie of Herman's sleep/work/eat/rest: 'it's hard to tell how much more time Herman spends sleeping or working they both look very similar in size'. 37-50 the same data as a bar chart: 'it's obvious that Herman spends an hour more working each day than he spends sleeping'. 50-90 two pies (Herman vs Earl) vs a grouped bar chart answering 'does Earl work more than Herman and if so how much more' (f1: bars for comparing values across categories; it also directly counters misconception m1). The opinion framing ('I typically prefer... consider drawing a bar chart instead') is softer than an absolute rule. It doesn't deny f4's legitimate part-to-whole use, but it doesn't teach it either, so the glossary text must carry f4. Ends at 101 before the sign-off."
+  },
+  {
+   "proposal_id": "prop_RpCZ_kb1Gfs_spreadsheet_pivot_summarization",
+   "verdict": "approved",
+   "final_start_seconds": 0,
+   "final_end_seconds": 132,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 4,
+    "pacing": 5,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 0-170. 17-31: 'when we add fields to the values area of the pivot table the calculation type either defaults to count or it defaults to sum and that is based on what data type is in the field'. 33-53 Product (text) becomes 'Count of Product' because 'we can't sum up text'. 53-66 Quantity (numbers) becomes Sum (f1). 66-132 is a useful extension: Revenue defaults to Count because the column has blank cells, and errors (#REF!, #N/A) have the same effect. End tightened from 136 to 132, since 132.1 already starts 'so I'm going to go back to my table that has blanks', the lead-in to the Find & Replace workaround. f2 (Value Field Settings) is never shown in this video. Only the excluded Pivot Pal add-in section follows."
+  },
+  {
+   "proposal_id": "prop_STxEQKu5KiI_sql_aggregate_functions",
+   "verdict": "approved",
+   "final_start_seconds": 0,
+   "final_end_seconds": 262,
+   "confirmed_fact_ids": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f6"
+   ],
+   "scores": {
+    "technical_accuracy": 4,
+    "fact_coverage": 4,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 4,
+    "pacing": 4,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 0-397. 0-34: Max, Min, AVG, sum and count 'calculates results and returns us as a single value' (f1). 36-70: select max(age) from students, giving 14 (f6). 72-106: avg(marks) where div='A'. 109-187: count(*) = 7, count(roll_no) = 7, then count(marks) = 6 because 'aggregate functions filter out the null values... the column marks contains one null value' (f2). 190-260: avg(marks) vs sum(marks)/count(*) give different results because 'average of marks internally actually calculates sum of marks divided by count of marks' (f3, f4 over non-null values). I tightened the end from 384 to 262. 262-384 is count(*) with BETWEEN and count(distinct div), neither of which is a required fact. That brings the clip to 4.4 min, inside the worked-example band. f5 (MIN) is not confirmed: it gets only one spoken line in the intro ('if I want the minimum of marks I'll get the answer as zero'), with no query and no explanation. The video starts abruptly at 0 ('five aggregate functions and those are...'), but the topic is clear immediately."
+  },
+  {
+   "proposal_id": "prop_SfX8IIxoJwQ_python_lists",
+   "verdict": "approved",
+   "final_start_seconds": 19,
+   "final_end_seconds": 208,
+   "confirmed_fact_ids": [
+    "f1",
+    "f3"
+   ],
+   "scores": {
+    "technical_accuracy": 3,
+    "fact_coverage": 3,
+    "prerequisite_safety": 4,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 4,
+    "pacing": 5,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 0-240. 23-80: 'a list is used to store multiple items within a single variable', food = ['pizza','hamburger','hotdog','spaghetti'], 'surround all of the values... with a set of square brackets' (f1). 95-175: food[0]..food[3], 'computers they always start with zero', and food[4] raises an index-out-of-range error until 'pudding' is added (positive indexing only). 175-206: food[0] = 'sushi' 'update and change the elements' (f3). f2 is not confirmed: there's no negative index and no slicing, which is half of f2 and all of f5. Accuracy flag: at 58 the presenter says 'we now have a list called food it is no longer a variable', which is wrong (food is still a variable, now holding a list). It's a one-line aside, the on-screen code is correct, and the rest is accurate, so I'm approving with a reduced accuracy score. The glossary text should state plainly that a list is assigned to a variable. The 'string value' and IndexError mentions are passing references the learner can follow. Ends at 208, before the for loop (blocked)."
+  },
+  {
+   "proposal_id": "prop_SzZ6GpcfoQY_stats_measures_of_spread",
+   "verdict": "approved",
+   "final_start_seconds": 236,
+   "final_end_seconds": 612,
+   "confirmed_fact_ids": [
+    "f2",
+    "f3",
+    "f4"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 4,
+    "prerequisite_safety": 4,
+    "standalone_clarity": 3,
+    "visual_teaching_value": 5,
+    "pacing": 3,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 0-700. 236-352: population variance formula explained term by term ('x minus mu means we subtract the population mean... the square tells us to square each term... sigma tells us to add up all the terms... divide by the number of measurements') = 100. 354-419: 'because each term is squared the units... are mRNA transcripts squared... we can't plot the variance on the graph', so take the square root to get the SD, 10, plotted as mean ± SD (f3, f4's units half). 423-600: we almost never have the population, so use x-bar and divide by n-1 because 'otherwise, we would consistently underestimate the variance', worked to 101.8 and SD 10.1 (f2). The length (6.3 min after trimming) is justified. A clip of the population section alone would teach divide-by-n and conflict with f2, so the n-1 section needs the contrast before it. I trimmed the end from 651 to 612 ('Double bam'), dropping the purple-curve vs true-curve comparison, which depends on reading normal-curve fits. Context caveat: the clip is set on the normal-curve graph from earlier in the video (the creator says at 30-38 it assumes histograms and normal distributions, which are blocked here). But mu and x-bar are re-explained inside the range, and the arithmetic and units argument make sense without reading the curve, so I lowered standalone clarity instead of rejecting. Range (f1, and the range half of f4) is never mentioned."
+  },
+  {
+   "proposal_id": "prop_TPivN7tpdwc_pandas_merge_join",
+   "verdict": "approved",
+   "final_start_seconds": 0,
+   "final_end_seconds": 399,
+   "confirmed_fact_ids": [
+    "f1",
+    "f2",
+    "f4"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 4,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 5,
+    "pacing": 3,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 0-605. 0-62: shaded diagrams of inner ('only the things that are in both'), outer ('it just takes everything'), left and right (f4). 62-160: loads the two Lord of the Rings CSVs, which overlap on ids 1001/1002 and Frodo/Sam. 160-192 is a 30s Zendesk sponsor read. 193-320: df1.merge(df2) defaults to inner ('we didn't specify this it's just a default it's going to do an inner join'), how='inner' gives the same result (f2). It notes that it joined on both shared columns. 325-398: on='fellowship_id' produces first_name_x/_y, and on=[both] reproduces the default (f1). I tightened the end from 573 to 399. 400-470 is a shift-tab tour of optional merge arguments (sort, suffixes, indicator, validate), and the outer-join demo at 472-572 is the only thing beyond that. Dropping both brings 9.6 min down to 6.6 min, and the 0-62 diagram still teaches all four how values. Cost: f3 (NaN for unmatched keys, 530-560) is dropped. The glossary text should cover it, or a separate outer-join clip (472-572 here starts with 'let's copy this... let's look at the outer join' and leans on the earlier cells) would need its own judgment. The sponsor read stays because it can't be cut out of the middle of the clip."
+  },
+  {
+   "proposal_id": "prop_TqOeMYtOc1w_stats_significance_confidence_concept",
+   "verdict": "rejected_inaccurate",
+   "final_start_seconds": null,
+   "final_end_seconds": null,
+   "confirmed_fact_ids": [],
+   "scores": {
+    "technical_accuracy": 1,
+    "fact_coverage": 3,
+    "prerequisite_safety": 4,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 5,
+    "pacing": 4,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 30-360. The range contradicts this concept's evidence. 182-201: 'a 95% confidence interval is just an interval that covers 95% of the means [bootstrapped]... that's it that's all a confidence interval is nothing more nothing less'. That defines a CI as the spread of bootstrap means and drops f4's repeated-sampling coverage meaning. Worse, 296-313: 'because the highlighted region is outside of the 95% confidence interval... we know that the probability that the true mean is in this area has to be less than 0.05 thus the P value is less than 0.05'. That is the exact probability-of-the-parameter misreading f5 warns about. It also recasts the p-value as the probability that the true mean lies in a region, which contradicts f2's definition (the probability of data this extreme if H0 is true). 237-249 says the same ('anything outside of occurs less than 5% of the time that is to say the P value of anything outside of the confidence interval is less than .05'). The visuals are good, but showing this would teach the misconception the concept exists to correct. There's no null/alternative framing (f1), and f6 is absent."
+  },
+  {
+   "proposal_id": "prop_UFuo7EHI8zc_pandas_datetime_handling",
+   "verdict": "approved",
+   "final_start_seconds": 137,
+   "final_end_seconds": 456,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 5,
+    "pacing": 4,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 130-495. The proposed 170 starts mid-sentence ('and then I'll go ahead and try to run a date/time method'), so I moved it to 137: 'okay so now let's actually get into working with date/time data so we have this date column here... right now this isn't actually a date/time object'. 170-215: df.loc[0,'Date'].day_name() fails with 'string object has no attribute day name'. 226-296: df['Date'] = pd.to_datetime(df['Date']) fails with 'unknown string format'. 296-399 builds the format string from the strftime docs (%Y-%m-%d %I-%p). 403-426: the column now displays as datetimes, '8 p.m. to 20'. 426-454: the earlier .day_name() call now returns Friday (f1: to_datetime converts a Series of date strings). I moved the end from 461 to 456, because 456-461 ('the way that we did this here is that we converted this to a date after we loaded in our data') is the lead-in to the parse_dates alternative. 319s, within the live-code band. .loc use is allowed for this concept. f2 (.dt accessor) is not in range."
+  },
+  {
+   "proposal_id": "prop_UO98lJQ3QGI_viz_pyplot_basic_plotting",
+   "verdict": "approved",
+   "final_start_seconds": 226,
+   "final_end_seconds": 383,
+   "confirmed_fact_ids": [
+    "f2"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 4,
+    "pacing": 4,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 190-415. 226-277: dev_x = ages 25-35 ('the values for the x-axis'). 277-297: dev_y = median salaries ('the values of our y-axis'). 307-322: 'PLT dot plot and first we want to pass in... the data for our x-axis which is going to be dev X and then the data for our y-axis which is dev Y' (f2). 349-360: 'it's not actually going to show us the plot if we want the plot to show then we have to say PLT dot show'. 363-381 reads the plot: 'ages down here on the x-axis... median salaries... on the y-axis... salaries typically get higher as you get older'. Start moved 1s to 226, so it opens on 'so first I'm going to create a list' instead of the tail of the survey preamble. The plt alias comes from the import line visible at the top of the file (imports are taught earlier). The passing 'figures and axes and subplots... we'll look at that further on' needs nothing from the learner. f1 (single-argument plt.plot(y)) is never shown."
+  },
+  {
+   "proposal_id": "prop_UO98lJQ3QGI_viz_line_plots",
+   "verdict": "approved",
+   "final_start_seconds": 226,
+   "final_end_seconds": 383,
+   "confirmed_fact_ids": [
+    "f2"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 2,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 4,
+    "pacing": 4,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 190-415, the same window as the pyplot proposal for this video. plt.plot(dev_x, dev_y) at 307-322 plots y against x (f2), and the result at 360-381 is a connected line read as a trend ('salaries typically get higher as you get older'). That's on-topic for a line plot over an ordered sequence (age bands). f3 is not confirmed. The video never says a line graph connects the measured points, never calls this a line graph at all, and the line only appears on screen. f1 (change over time) is absent because x is age, not time. The same 157s clip is approved for viz.pyplot_basic_plotting. If both concepts end up in one presentation cluster, the media group should show it once."
+  },
+  {
+   "proposal_id": "prop_Uh2ebFW8OYM_python_file_io",
+   "verdict": "approved",
+   "final_start_seconds": 18,
+   "final_end_seconds": 386,
+   "confirmed_fact_ids": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 5,
+    "pacing": 4,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 0-420 and checked each claim against the transcript myself. f1: 20-24 'to get a file object we can use the built-in open command'. 89-131: 'specify whether we want to open this file for reading writing appending or reading and writing now if we don't specify anything then it defaults to opening the file for reading... lowercase r... to write to a file then it would just be a lowercase w... appending to a file is a lowercase a and if I wanted to read and write to a file then I could do an R plus'. All correct, and 176-184 confirms f.mode prints 'r'. The 'w erases an existing file' detail is not stated in range. f2: 150-215 shows manual f.close() and why ('leaks that cause you to run over the maximum allowed file descriptors'). 222-279: 'with open(...) as f'... 'after we exit that block of code it'll automatically close the file... this will also close the file if there any exceptions that are thrown... considered a best practice'. All correct, and 303-329 proves it (f.closed is True, and reading after the block raises 'I/O operation on closed file'). f3: 356-383 f_contents = f.read(), printed, 'printed out all of the contents of our file'. Correct. The EOF/empty-string half of f3 isn't in range, so f3 is confirmed on its main claim only. I found no factual error, so this clip doesn't repeat the canary problem. Start moved from 0 to 18 to skip the generic 'desktop or web applications' preamble. 368s ≈ 6.1 min, justified because the context-manager explanation depends on the manual-close demo before it. f4-f7 (csv module, f.write) not in range."
+  },
+  {
+   "proposal_id": "prop_UsdedFoTA68_spreadsheet_pivot_summarization",
+   "verdict": "approved",
+   "final_start_seconds": 239,
+   "final_end_seconds": 280,
+   "confirmed_fact_ids": [
+    "f2"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 5,
+    "pacing": 5,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 188-340. The proposed 248 starts on 'Now, if for some reason you don't want to see the sum of sales USD', and the learner hasn't yet been told what is in the Values area. I moved the start to 239: 'What Excel went ahead and did, when you inserted your Pivot Table, is that it put the sales USD in the value section, and customer name in the row section'. 257-264: 'click on this drop down, go to Value Field Settings and change your selection from here. So I go with Average and OK'. 266-279: the second route, 'right mouse click... select Value Field Settings from here', back to Sum (f2, both entry points the source names). At 41s it's short, but it's the complete workflow with nothing missing. Extending would add Number Format, which isn't required. Pivot-table creation is this concept's prerequisite, not blocked. f1 (the reason Sum is the default) is not explained."
+  },
+  {
+   "proposal_id": "prop_V6V5aR0wrkY_capstone_end_to_end_workflow_structure",
+   "verdict": "rejected_weak_visual",
+   "final_start_seconds": null,
+   "final_end_seconds": null,
+   "confirmed_fact_ids": [],
+   "scores": {
+    "technical_accuracy": 2,
+    "fact_coverage": 2,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 3,
+    "visual_teaching_value": 1,
+    "pacing": 2,
+    "boundary_quality": 3
+   },
+   "reasoning": "Read 0-287. There are no chapters and nothing in the transcript is shown on screen (no 'as you can see', no diagram, no tool). It's a narrated list. For a talking head to pass, the explanation has to be exceptionally clear, and this one isn't. The stages are described loosely and partly wrongly. Cleaning is 'clean your data to your own taste because we have different taste' (109-148). Data gathering is 'from any source' (85-104). Analysis tools are a stakeholder-preference aside (172-198). It also doesn't match the concept's structure. It names 5 strictly linear stages with no modelling stage (f3), no revisiting earlier phases (f1), quality is not assessed throughout (f2), and only a generic 'visualize them and interpret them for your stakeholders' for delivery (f4). This is the same structural gap the detector used to reject this video for data.analysis_workflow. Needs a diagram-based workflow video or text-only coverage."
+  },
+  {
+   "proposal_id": "prop_VRmXto2YA2I_pandas_groupby_aggregation",
+   "verdict": "approved",
+   "final_start_seconds": 0,
+   "final_end_seconds": 358,
+   "confirmed_fact_ids": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "scores": {
+    "technical_accuracy": 4,
+    "fact_coverage": 4,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 5,
+    "pacing": 4,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 0-480. 0-15: 'Group by is going to group together the values in a column and display them all on the same row. And this allows you to perform aggregate functions on those groupings' (f1, described rather than named as split-apply-combine). 15-57 loads flavors.csv. 57-105 explains why to group on base flavor (values repeat) and shows that groupby alone returns a DataFrameGroupBy object. 116-158: .mean() gives one row per base flavor, and 'base flavor... is now... the index' (f2, f3 including keys becoming the index). 159-179 is a 19s Udemy read. 185-207 one-liner df.groupby(...).mean(). 215-357: count, min/max (including the string-column behaviour), and sum ('six rows that we're grouping into this vanilla'). I tightened the end from 445 to 358 ('Now, that's a really simple way to do your aggregations'), which drops the .agg({...}) demo. f3 is fully met by groupby(key).mean()/.sum() ('or .agg' is an alternative, not a requirement), and the cut brings 7.4 min down to 6.0. Accuracy note: at 143-151 .mean() silently skips the string columns ('those are strings and they cannot aggregate'). In pandas >= 2.0 the same call raises TypeError unless numeric_only=True, so the glossary text or code sample should use a selected numeric column or numeric_only=True."
+  },
+  {
+   "proposal_id": "prop_VT479YDPB0I_spreadsheet_structured_tables",
+   "verdict": "approved",
+   "final_start_seconds": 1381,
+   "final_end_seconds": 1573,
+   "confirmed_fact_ids": [
+    "f3",
+    "f4"
+   ],
+   "scores": {
+    "technical_accuracy": 4,
+    "fact_coverage": 4,
+    "prerequisite_safety": 4,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 5,
+    "pacing": 5,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 1336-1600. The proposed 1409 starts on 'and here we have got employees salary', so I moved it to 1381: 'remember we have got all our staff data in a name table called staff and when you have got data in a table you can also use another kind of referencing called structural referencing this is where you refer to your data by the names you have given to it'. That's a self-resolving setup and the f3 definition. 1429-1460: typing 'bonus' in the cell to the right of the last column, 'Excel is going to add a column extend the table style automatically and make it part of the table' (f4). 1466-1517: pointing at H8 gives '=[@Salary]' instead of H8, 'it doesn't matter where your table is what the cell address is... each column has its own name', so =[@Salary]*5% (f3). 1519-1572: the calculated column fills automatically. End moved from 1568 to 1573, so the autocorrect-option sentence finishes. Prerequisite check: 'basic formula syntax' is blocked for this concept, but f3 is itself a formula-referencing fact, and '= salary times 5%' is narrated in plain words, so the learner doesn't need the formula concept to follow. Minor: the narrator says 'structural referencing' (the correct term is 'structured reference'), and the 'at the rate' transcript artefact is just '@'. On the Ctrl+T question: Ctrl+T (162-195 in this video, not in this range) opens the same Create Table dialog as Home > Format as Table, so it would be an acceptable equivalent if proposed for f1."
+  },
+  {
+   "proposal_id": "prop_VgBxnayDXk0_spreadsheet_pie_chart_creation",
+   "verdict": "approved",
+   "final_start_seconds": 38,
+   "final_end_seconds": 198,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 4,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 5,
+    "pacing": 5,
+    "boundary_quality": 5
+   },
+   "reasoning": "Read 0-230. 38-61: 'a pie chart simply displays the percent of total for each category... this column should add up to 100%' (f1 core: slices proportional to the total, parts of a whole). 84-137 'even split' story: the first-date survey pie is hard to read ('difficult to look at this chart and immediately determine what the winner would be'), with a bar-chart remake as an alternative. Bar chart creation isn't blocked for this concept and isn't taught here anyway. 138-197 'clear winner' story: grouped categories become 55/30 and then 65/35, which shows when a pie works. End at 198 (moved from 199), right before 'too many slices'. f1's explicit checklist (≤7 categories, no negatives, one series) isn't stated in range. 'Parts of the whole' is, so f1 is confirmed on its main claim and the text should give the checklist. Minor: 'the source data... is always going to contain a column that calculates that percent of total' overstates things, because Excel computes the proportions itself. f2 (creation steps) is not in range."
+  },
+  {
+   "proposal_id": "prop_VtVB-XsooiM_spreadsheet_text_to_columns_split",
+   "verdict": "rejected_fact_mismatch",
+   "final_start_seconds": null,
+   "final_end_seconds": null,
+   "confirmed_fact_ids": [],
+   "scores": {
+    "technical_accuracy": 4,
+    "fact_coverage": 1,
+    "prerequisite_safety": 4,
+    "standalone_clarity": 2,
+    "visual_teaching_value": 4,
+    "pacing": 4,
+    "boundary_quality": 3
+   },
+   "reasoning": "Read 60-280. The concept is splitting one column of delimited text into several columns. This range uses the wizard to turn text dates into real dates without splitting: 156-171 'we don't really need to specify a delimiter here because we're not actually going to split the column... leave tab checked and don't check anything else'. 171-197 is step 3, choosing the Date column format MDY. The rest (198-247) checks the result with filter grouping and number formats. f1's defining steps (choosing a delimiter such as comma or space, choosing a destination) are deliberately skipped, so a learner would see Text to Columns used for something other than what the concept teaches. The opening also depends on earlier context: 'if those two are different again the date formats are different' refers to the Windows regional-format setup at 89-124. Needs a video that splits, for example, 'First Last' or comma-separated values."
+  },
+  {
+   "proposal_id": "prop_W6WFX_H-AA4_pandas_dataframe_series_model",
+   "verdict": "approved",
+   "final_start_seconds": 0,
+   "final_end_seconds": 161,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 2,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 5,
+    "visual_teaching_value": 4,
+    "pacing": 5,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 0-235. 4-26: 'A series is a pandas one-dimensional labeled array. Think of it like a single column in a spreadsheet', with the hallway/apartment-number analogy for labels. 28-66: pd.Series([100,102,104]) printed, 'the left hand side has an index. The index has labels starting with zero 0 1 2'. 92-146: the same Series as float64, object (strings) and bool (f1: any data type, axis labels form the index). End trimmed from 163 to 161 ('start at zero and increment by one.'), because 161.5 'But we can pass in something custom' opens the custom-index demo. f3 is not confirmed: only list construction with the default index is shown, and the dict-keys-become-index half (406-511) sits after the blocked .loc/.iloc chapters. f2, f4 and f5 (all about DataFrames) are absent."
+  }
+ ]
+}

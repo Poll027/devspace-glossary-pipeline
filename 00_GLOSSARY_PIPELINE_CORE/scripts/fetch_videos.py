@@ -26,8 +26,11 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 
-def ytdlp(*args):
-    r = subprocess.run(["yt-dlp", "--no-warnings", *args], capture_output=True, text=True, timeout=180)
+def ytdlp(*args, client=None):
+    # ponytail: a single player client occasionally 429s on captions for one
+    # video while the rest succeed; retry() below switches client, not just time.
+    extra = ["--extractor-args", f"youtube:player_client={client}"] if client else []
+    r = subprocess.run(["yt-dlp", "--no-warnings", *extra, *args], capture_output=True, text=True, timeout=180)
     if r.returncode != 0:
         raise RuntimeError(r.stderr.strip().splitlines()[-1] if r.stderr.strip() else f"yt-dlp exit {r.returncode}")
     return r.stdout
@@ -59,15 +62,15 @@ def parse_json3(raw):
     return segments
 
 
-def fetch_one(video_id, bank):
+def fetch_one(video_id, bank, client=None):
     url = f"https://www.youtube.com/watch?v={video_id}"
-    meta = json.loads(ytdlp("--skip-download", "--dump-single-json", url))
+    meta = json.loads(ytdlp("--skip-download", "--dump-single-json", url, client=client))
     track = pick_track(meta)
     segments, track_kind = [], None
     if track:
         lang, track_kind, flag = track
         with tempfile.TemporaryDirectory() as tmp:
-            ytdlp("--skip-download", flag, "--sub-langs", lang, "--sub-format", "json3", "-o", f"{tmp}/%(id)s", url)
+            ytdlp("--skip-download", flag, "--sub-langs", lang, "--sub-format", "json3", "-o", f"{tmp}/%(id)s", url, client=client)
             files = list(Path(tmp).glob("*.json3"))
             if files:
                 segments = parse_json3(files[0].read_text())
@@ -112,7 +115,8 @@ def main(batch_dir, bank_dir):
             time.sleep(PACE_SECONDS)
         for attempt in (1, 2):
             try:
-                results.append({"video_id": vid, "outcome": fetch_one(vid, bank), "error_detail": None})
+                client = "android" if attempt == 2 else None  # retry on a different client, not just after a wait
+                results.append({"video_id": vid, "outcome": fetch_one(vid, bank, client=client), "error_detail": None})
                 break
             except Exception as e:  # network/yt-dlp failure: record it, the batch continues without this video
                 if attempt == 2:

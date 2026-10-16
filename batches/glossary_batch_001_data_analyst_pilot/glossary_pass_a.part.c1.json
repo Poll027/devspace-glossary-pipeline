@@ -40,7 +40,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "Assigning to a name that already holds a value doesn't create a second value alongside the first: it rebinds the name to the new value, replacing what it held. If delivery_minutes = 32 is followed later by a corrected delivery_minutes = 45, the name delivery_minutes now refers to 45 -- the earlier 32 is gone.",
+          "content": "Assigning to a name that already holds a value doesn't create a second value alongside the first: it rebinds the name to the new value, replacing what it held. If delivery_minutes = 32 is followed later by a corrected delivery_minutes = 45, the name delivery_minutes now refers to 45 instead of 32.",
           "fact_ids": [
             "f3"
           ]
@@ -90,7 +90,7 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "Every value in Python has a type, and that type determines what operations make sense on it and how it prints. In delivery data, an order id like 1042, a delivery time like 32.5, a city name like 'Lagos', and whether an order was late are four different kinds of value -- Python has a core scalar type for each kind.",
+          "content": "Every value in Python has a type. In delivery data, an order id like 1042, a delivery time like 32.5, a city name like 'Lagos', and whether an order was late are four different kinds of value -- Python has a core scalar type for each kind.",
           "fact_ids": [
             "f1",
             "f2",
@@ -132,7 +132,7 @@
         {
           "id": "tb6",
           "purpose": "syntax",
-          "content": "The built-in type() function, called with one argument, returns the type of that object -- type(delivery_minutes) reports float, and type(city) reports str, letting you check a value's type directly instead of guessing from how it was written.",
+          "content": "The built-in type() function, called with one argument, returns the type of that object -- print(type(delivery_minutes)) shows <class 'float'>, and print(type(city)) shows <class 'str'>, letting you check a value's type directly instead of guessing from how it was written.",
           "fact_ids": [
             "f5"
           ]
@@ -140,11 +140,12 @@
         {
           "id": "tb7",
           "purpose": "takeaway",
-          "content": "Recognizing which of these four types a value is -- before doing anything with it -- is the first thing to check about any piece of delivery data you work with in code.",
+          "content": "The takeaway: 1042, 32.5, 'Lagos' and True are four different kinds of value -- int, float, str and bool -- and type() tells you which one a value is.",
           "fact_ids": [
             "f1",
             "f2",
-            "f3"
+            "f3",
+            "f5"
           ]
         }
       ],
@@ -167,7 +168,7 @@
         {
           "id": "tb1",
           "purpose": "definition",
-          "content": "The operators +, -, * and / perform addition, subtraction, multiplication and division, and / always returns a float, even when both operands are whole numbers. // performs floor division, discarding the fractional part, and % returns the remainder of the division; ** calculates a power, so 5 ** 2 is 5 squared.",
+          "content": "The operators +, -, * and / perform addition, subtraction, multiplication and division, and / always returns a float, even when both operands are whole numbers. // performs floor division, discarding the fractional part, and % returns the remainder of the division -- 17 // 5 is 3 and 17 % 5 is 2; ** calculates a power, so 5 ** 2 is 5 squared.",
           "fact_ids": [
             "f1",
             "f2",
@@ -225,7 +226,7 @@
         {
           "id": "tb4",
           "purpose": "takeaway",
-          "content": "Every comparison you write produces exactly one of two values, which is what makes it useful for decisions later in the code.",
+          "content": "A comparison like delivery_minutes > 60 evaluates to one of the two bool values, True or False.",
           "fact_ids": [
             "f2"
           ]
@@ -255,7 +256,7 @@
         {
           "id": "tb2",
           "purpose": "definition",
-          "content": "The Boolean operations, in ascending order of priority, are or, and, and not.",
+          "content": "The Boolean operations, in ascending order of priority, are or, and, and not. Priority decides how a mixed expression is grouped when there are no parentheses: and has higher priority than or, so is_late or is_far and is_first_week is read as is_late or (is_far and is_first_week).",
           "fact_ids": [
             "f1"
           ]
@@ -287,7 +288,7 @@
         {
           "id": "tb6",
           "purpose": "example",
-          "content": "A rule like 'flag this delivery if it's late or unusually far' reads directly as is_late or is_far, and a stricter rule like 'flag it only if it's late and it's the driver's first week' reads as is_late and is_first_week.",
+          "content": "A rule like 'flag this delivery if it's late or unusually far' reads directly as is_late or is_far, and a stricter rule like 'flag it only if it's late and it's the driver's first week' reads as is_late and is_first_week. With is_late = False and is_far = True, is_late or is_far evaluates to True, and is_late and is_far evaluates to False without checking is_far.",
           "fact_ids": [
             "f2",
             "f3"
@@ -296,7 +297,7 @@
         {
           "id": "tb7",
           "purpose": "takeaway",
-          "content": "and, or and not let you build one compound condition out of several simpler comparisons, instead of writing separate checks by hand.",
+          "content": "and, or and not let you build one compound condition out of several simpler comparisons.",
           "fact_ids": [
             "f1"
           ]
@@ -361,7 +362,7 @@
         {
           "id": "tb6",
           "purpose": "takeaway",
-          "content": "Converting a value only works when its text actually matches the target type's expected format -- otherwise the conversion fails with an error rather than guessing.",
+          "content": "Converting a string to a number only works when the string matches the format the target type accepts -- otherwise the conversion raises a ValueError instead of guessing.",
           "fact_ids": [
             "f5",
             "f6"
@@ -392,7 +393,7 @@
         {
           "id": "tb2",
           "purpose": "mechanism",
-          "content": "Like strings, lists can be indexed and sliced. delivery_times[0] returns the first item (32), and delivery_times[-1] returns the last item (18); a slice such as delivery_times[-3:] returns a new list of the last three items ([21, 60, 18]).",
+          "content": "Lists can be indexed and sliced. delivery_times[0] returns the first item (32), and delivery_times[-1] returns the last item (18); a slice such as delivery_times[-3:] returns a new list of the last three items ([21, 60, 18]).",
           "fact_ids": [
             "f2"
           ]
@@ -400,7 +401,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "In a slice such as delivery_times[1:3], the start index is included and the end index is excluded, so it returns [45, 21] -- the items from index 1 up to but not including index 3. Lists support the same indexing and slicing operations as strings.",
+          "content": "In a slice such as delivery_times[1:3], the start index is included and the end index is excluded, so it returns [45, 21] -- the items from index 1 up to but not including index 3.",
           "fact_ids": [
             "f5"
           ]
@@ -432,7 +433,7 @@
         {
           "id": "tb7",
           "purpose": "takeaway",
-          "content": "A list keeps an ordered group of values under one name, lets you reach any item by position, and can grow, shrink or change in place as new delivery data comes in.",
+          "content": "A list keeps an ordered group of values under one name, lets you reach any item by position, and can grow or change in place as new delivery data comes in.",
           "fact_ids": [
             "f1",
             "f3",
@@ -459,7 +460,7 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "Sometimes what you need isn't a plain ordered list but a lookup by name. A dictionary is a collection of key: value pairs, written inside braces, where the keys must be unique within the dictionary -- order_city = {1042: 'Lagos', 1043: 'Abuja'} maps each order id to the city it was delivered to.",
+          "content": "Sometimes what you need isn't a plain ordered list but a lookup by key. A dictionary is a collection of key: value pairs, written inside braces, where the keys must be unique within the dictionary -- order_city = {1042: 'Lagos', 1043: 'Abuja'} maps each order id to the city it was delivered to.",
           "fact_ids": [
             "f1"
           ]
@@ -467,7 +468,7 @@
         {
           "id": "tb2",
           "purpose": "mechanism",
-          "content": "A value is stored or updated by assigning to a key, e.g. order_city[1044] = 'Kano' adds a new order, and retrieved by subscripting with the key, e.g. order_city[1042] returns 'Lagos'.",
+          "content": "A value is stored or updated by assigning to a key, e.g. order_city[1044] = 'Kano' adds a new order, and retrieved by subscripting with the key, e.g. order_city[1042] returns 'Lagos'. Updating a key the same way replaces its value -- order_city[1042] = 'Ibadan' replaces 'Lagos' with 'Ibadan' for that order.",
           "fact_ids": [
             "f2"
           ]
@@ -491,7 +492,7 @@
         {
           "id": "tb5",
           "purpose": "mechanism",
-          "content": "The in keyword checks whether a key is present in a dictionary, e.g. 1042 in order_city.",
+          "content": "The in keyword checks whether a key is present in a dictionary, e.g. 1042 in order_city is True.",
           "fact_ids": [
             "f5"
           ]
@@ -524,7 +525,7 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "Sometimes you want to group a small, fixed set of values together, rather than a list, which is meant to grow and shrink. A tuple consists of a number of values separated by commas; its items are shown enclosed in parentheses on output, and a tuple may be written with or without surrounding parentheses as input, e.g. order = 1042, 'Lagos', 32 (equivalently order = (1042, 'Lagos', 32)).",
+          "content": "Sometimes you want to group a small, fixed set of values together, rather than a list, which can grow as you append to it. A tuple consists of a number of values separated by commas; its items are shown enclosed in parentheses on output, and a tuple may be written with or without surrounding parentheses as input, e.g. order = 1042, 'Lagos', 32 (equivalently order = (1042, 'Lagos', 32)).",
           "fact_ids": [
             "f1"
           ]
@@ -548,7 +549,7 @@
         {
           "id": "tb4",
           "purpose": "misconception",
-          "content": "Enclosing a single value in parentheses does not make it a tuple -- a one-item tuple needs a trailing comma, e.g. singleton = 'Lagos',; without that comma, singleton is just the string 'Lagos'.",
+          "content": "Enclosing a single value in parentheses does not make it a tuple -- singleton = ('Lagos') is still just the string 'Lagos'. A one-item tuple needs a trailing comma instead, e.g. singleton = 'Lagos',.",
           "fact_ids": [
             "m1"
           ]
@@ -556,9 +557,9 @@
         {
           "id": "tb5",
           "purpose": "takeaway",
-          "content": "Use a tuple when you're grouping a fixed, known number of values together, and unpack it back into separate names whenever you need to work with each piece on its own.",
+          "content": "A tuple groups a fixed set of values whose items can't be reassigned one by one, and unpacking hands each piece back to its own name when you need to work with it on its own.",
           "fact_ids": [
-            "f1",
+            "f2",
             "f3"
           ]
         }
@@ -597,7 +598,7 @@
         {
           "id": "tb3",
           "purpose": "example",
-          "content": "set() can also build a set from the items of another collection, e.g. set(['Lagos', 'Abuja', 'Lagos', 'Kano']) produces {'Lagos', 'Abuja', 'Kano'} -- the set of unique cities, with the repeated 'Lagos' collapsed to one.",
+          "content": "set() can also build a set from the items of another collection, e.g. cities = set(['Lagos', 'Abuja', 'Lagos', 'Kano']) produces {'Lagos', 'Abuja', 'Kano'} -- the set of unique cities, with the repeated 'Lagos' collapsed to one. The order the items print in may differ from the order they were added, since a set is unordered.",
           "fact_ids": [
             "f3"
           ]
@@ -605,7 +606,7 @@
         {
           "id": "tb4",
           "purpose": "mechanism",
-          "content": "The in operator tests membership in a set, e.g. 'Lagos' in cities checks whether 'Lagos' is one of the cities in the set.",
+          "content": "The in operator tests membership in a set, e.g. 'Lagos' in cities checks whether 'Lagos' is one of the cities in the set -- with cities = set(['Lagos', 'Abuja', 'Lagos', 'Kano']), 'Lagos' in cities is True.",
           "fact_ids": [
             "f4"
           ]
@@ -613,7 +614,7 @@
         {
           "id": "tb5",
           "purpose": "mechanism",
-          "content": "Set objects support mathematical operations such as union (a | b) and intersection (a & b) -- if week1_cities and week2_cities are two sets of cities, week1_cities & week2_cities gives the cities that appear in both weeks.",
+          "content": "Set objects support mathematical operations such as union (a | b) and intersection (a & b) -- if week1_cities and week2_cities are two sets of cities, week1_cities & week2_cities gives the cities that appear in both weeks, and week1_cities | week2_cities gives every city that appears in either week.",
           "fact_ids": [
             "f5"
           ]
@@ -621,7 +622,7 @@
         {
           "id": "tb6",
           "purpose": "takeaway",
-          "content": "A set is the right structure whenever duplicates don't matter and all that's needed is which distinct values are present, or whether one value is present at all.",
+          "content": "A set fits when duplicates don't matter and all you need is which distinct values are present, or whether one value is present at all.",
           "fact_ids": [
             "f1",
             "f4"
@@ -646,7 +647,7 @@
         {
           "id": "tb1",
           "purpose": "mechanism",
-          "content": "A quote character can be embedded in a string without escaping it by enclosing the string in the other kind of quote instead: writing \"doesn't\" inside double quotes needs no escaping, where the same text inside single quotes would need the apostrophe escaped.",
+          "content": "A quote character can be embedded in a string without escaping it by enclosing the string in the other kind of quote instead: writing \"This delivery wasn't late\" inside double quotes needs no escaping, where the same text inside single quotes would need the apostrophe escaped, e.g. 'This delivery wasn\\'t late'.",
           "fact_ids": [
             "f1"
           ]
@@ -662,7 +663,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "An optional format specifier can follow the expression after a colon, giving greater control over how the value is formatted, such as rounding a number to a chosen number of places after the decimal, e.g. f\"Average: {avg_minutes:.2f} minutes\" prints avg_minutes rounded to two decimal places.",
+          "content": "An optional format specifier can follow the expression after a colon, giving greater control over how the value is formatted, such as rounding a number to a chosen number of places after the decimal, e.g. f\"Average: {avg_minutes:.2f} minutes\" produces the string 'Average: 32.67 minutes' when avg_minutes is 32.666.",
           "fact_ids": [
             "f3"
           ]
@@ -709,7 +710,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "An if/elif/.../else chain selects exactly one suite by evaluating the conditions one by one until one is found to be true; if none of them are true, the else suite (if present) is executed.",
+          "content": "An if/elif/.../else chain selects exactly one block by evaluating the conditions one by one until one is found to be true; if none of them are true, the else block (if present) is executed.",
           "fact_ids": [
             "f3"
           ]
@@ -717,7 +718,7 @@
         {
           "id": "tb4",
           "purpose": "syntax",
-          "content": "Each condition in an if/elif/else chain ends with a colon, and the block belonging to that branch is indented beneath it: if delivery_minutes < 15: category = 'fast', elif delivery_minutes < 45: category = 'normal', else: category = 'slow'.",
+          "content": "Each condition in an if/elif/else chain ends with a colon, and the block belonging to that branch is indented beneath it:\nif delivery_minutes < 15:\n    category = 'fast'\nelif delivery_minutes < 45:\n    category = 'normal'\nelse:\n    category = 'slow'\nWith delivery_minutes = 30, the first condition is false and the second is true, so category becomes 'normal' and the else branch is skipped.",
           "fact_ids": [
             "f4"
           ]
@@ -747,7 +748,7 @@
         {
           "id": "tb1",
           "purpose": "intro",
-          "content": "Once delivery times are collected in a list, you'll usually want to do something with every single one of them, not just one at a time by hand. Python's for statement iterates over the items of any sequence, such as a list or a string, in the order that they appear in the sequence.",
+          "content": "Once delivery times are collected in a list, you'll want to do something with every single one of them, not just one at a time by hand. Python's for statement iterates over the items of any sequence, such as a list or a string, in the order that they appear in the sequence.",
           "fact_ids": [
             "f1"
           ]
@@ -755,7 +756,7 @@
         {
           "id": "tb2",
           "purpose": "mechanism",
-          "content": "Each pass through a for loop binds the loop variable to the next item of the sequence -- for minutes in delivery_times: print(minutes) prints every delivery time in delivery_times, one per pass.",
+          "content": "Each pass through a for loop binds the loop variable to the next item of the sequence:\nfor minutes in delivery_times:\n    print(minutes)\nThis prints every delivery time in delivery_times, one per pass.",
           "fact_ids": [
             "f2"
           ]
@@ -763,7 +764,7 @@
         {
           "id": "tb3",
           "purpose": "syntax",
-          "content": "A for statement's header line ends with a colon, and the statements to repeat are indented beneath it, e.g. for minutes in delivery_times: print(minutes).",
+          "content": "A for statement's header line ends with a colon, and the statements to repeat are indented beneath it:\nfor minutes in delivery_times:\n    print(minutes)",
           "fact_ids": [
             "f3"
           ]
@@ -771,7 +772,7 @@
         {
           "id": "tb4",
           "purpose": "example",
-          "content": "Combined with a conditional check, for minutes in delivery_times: if minutes > 45: print(minutes) prints only the delivery times that were unusually slow.",
+          "content": "Combined with a conditional check:\nfor minutes in delivery_times:\n    if minutes > 45:\n        print(minutes)\nWith delivery_times = [32, 45, 21, 60, 18], this prints only 60, the one delivery time above 45 minutes.",
           "fact_ids": [
             "f2",
             "f3"
@@ -780,7 +781,7 @@
         {
           "id": "tb5",
           "purpose": "takeaway",
-          "content": "A for loop visits every item of a known collection exactly once, in order, which is exactly what's needed to process each delivery time in turn.",
+          "content": "A for loop visits every item of a sequence such as a list once, in the order the items appear, which is what you need to process each delivery time in turn.",
           "fact_ids": [
             "f1"
           ]
@@ -813,7 +814,7 @@
         {
           "id": "tb2",
           "purpose": "mechanism",
-          "content": "The body of a while loop is indented beneath it; in the Fibonacci example, a, b = b, a+b updates a on each pass, and the loop stops once a < 10 becomes false.",
+          "content": "The body of a while loop is indented beneath it, and something in the body has to change what the condition checks:\na, b = 0, 1\nwhile a < 10:\n    print(a)\n    a, b = b, a+b\nEach pass prints a, then a, b = b, a+b updates a. The loop prints 0, 1, 1, 2, 3, 5, 8 and stops once a < 10 becomes false (a has reached 13).",
           "fact_ids": [
             "f2"
           ]
@@ -821,7 +822,7 @@
         {
           "id": "tb3",
           "purpose": "example",
-          "content": "Applied to delivery data, a while loop could keep asking for the next delivery time to record as long as more remain, stopping only once the condition checking for that becomes false.",
+          "content": "Applied to delivery data:\npending = 3\nwhile pending > 0:\n    print('deliveries left:', pending)\n    pending = pending - 1\nEach pass prints the current count and then decreases pending by 1, so the loop stops once pending reaches 0.",
           "fact_ids": [
             "f1"
           ]
@@ -929,7 +930,7 @@
         {
           "id": "tb1",
           "purpose": "mechanism",
-          "content": "You've already looped over lists with for. Looping over other collections follows the same for x in ... pattern, but what you get back per pass differs by collection. Looping directly over a dictionary (for x in d) yields its keys, since iter(d) returns an iterator over the dictionary's keys -- for order_id in order_city: visits each order id, not each city.",
+          "content": "You've already looped over lists with for. Looping over other collections follows the same for x in ... pattern, but what you get back per pass differs by collection. Looping directly over a dictionary (for x in d) yields its keys -- for order_id in order_city: visits each order id, not each city.",
           "fact_ids": [
             "f1"
           ]
@@ -953,7 +954,7 @@
         {
           "id": "tb4",
           "purpose": "mechanism",
-          "content": "Tuples are a sequence type, so a for loop visits their items in order the same way it does for a list.",
+          "content": "Tuples are a sequence type, so a for loop visits their items in order the same way it does for a list -- for value in order: visits 1042, then 'Lagos', then 32, when order = (1042, 'Lagos', 32).",
           "fact_ids": [
             "f4"
           ]
@@ -961,10 +962,11 @@
         {
           "id": "tb5",
           "purpose": "takeaway",
-          "content": "The same for x in ... syntax works across lists, dicts, sets and tuples -- what changes is only what each pass hands you: an item, a key, or (with .items()) a key-value pair.",
+          "content": "The same for x in ... syntax works across lists, dicts, sets and tuples -- what changes is what each pass hands you (an item, a key, or, with .items(), a key-value pair), and for a set the order isn't guaranteed.",
           "fact_ids": [
             "f1",
             "f2",
+            "f3",
             "f4"
           ]
         }
@@ -1003,7 +1005,7 @@
         {
           "id": "tb3",
           "purpose": "example",
-          "content": "Defining summarize_delivery() once and then calling summarize_delivery() wherever it's needed runs the same body again each time, instead of retyping it.",
+          "content": "For example:\ndef summarize_delivery():\n    print('--- delivery summary ---')\n\nsummarize_delivery()\nsummarize_delivery()\nThe def block only defines the function; its body runs when the function is called. Each call runs the same body again, so this prints the line twice without retyping the print().",
           "fact_ids": [
             "f1",
             "f2"
@@ -1050,7 +1052,7 @@
         {
           "id": "tb3",
           "purpose": "mechanism",
-          "content": "When a function is called with positional arguments, if there are N positional arguments, they are placed in the function's first N parameter slots, in order -- calling classify_delivery(32) places 32 into the minutes slot.",
+          "content": "When a function is called with positional arguments, if there are N positional arguments, they are placed in the function's first N parameter slots, in order -- for def delivery_summary(city, minutes):, calling delivery_summary('Lagos', 32) places 'Lagos' into the city slot and 32 into the minutes slot.",
           "fact_ids": [
             "f3"
           ]
@@ -1089,7 +1091,7 @@
         {
           "id": "tb2",
           "purpose": "misconception",
-          "content": "Even a function without a return statement does return a value: the built-in value None. So a function that only prints something, without an explicit return, hands back None to its caller, not the thing it printed.",
+          "content": "Even a function without a return statement does return a value: the built-in value None. So a function that only prints something, without an explicit return, hands back None to its caller, not the thing it printed -- for example:\ndef show(m):\n    print(m)\n\nx = show(5)\nThis prints 5, and x itself is None.",
           "fact_ids": [
             "f2"
           ]
@@ -1105,7 +1107,7 @@
         {
           "id": "tb4",
           "purpose": "example",
-          "content": "A function such as:\ndef classify_delivery(minutes):\n    if minutes > 45:\n        return 'slow'\n    else:\n        return 'fast'\nhands its caller a usable string, which category = classify_delivery(60) then stores for later code to check.",
+          "content": "A function such as:\ndef classify_delivery(minutes):\n    if minutes > 45:\n        return 'slow'\n    else:\n        return 'fast'\nhands its caller a usable string, which category = classify_delivery(60) then stores for later code to check -- category holds 'slow'.",
           "fact_ids": [
             "f1",
             "f3"
@@ -1202,7 +1204,7 @@
         {
           "id": "tb3",
           "purpose": "misconception",
-          "content": "A global variable cannot be directly assigned a value from inside a function unless it is named in a global statement; it may still be referenced (read) without such a statement. A function that does total = total + 1 on a global total, without first writing global total, creates a new local total instead of updating the global one.",
+          "content": "A global variable cannot be directly assigned a value from inside a function unless it is named in a global statement; it may still be referenced (read) without such a statement. A function that does total = 0 while a global total already exists, without first writing global total, creates a new local total instead of updating the global one -- the global total keeps its old value.",
           "fact_ids": [
             "f3"
           ]
@@ -1229,7 +1231,7 @@
       ],
       "video_need": {
         "level": "MEDIUM",
-        "reason": "Which symbol table a name resolves through -- local, then global, then built-in -- is easier to track with a labeled diagram of the three tables, though the total = total + 1 example already pins down the assignment rule precisely.",
+        "reason": "Which symbol table a name resolves through -- local, then global, then built-in -- is easier to track with a labeled diagram of the three tables, though the total = 0 example already pins down the assignment rule precisely.",
         "preferred_visual_modes": [
           "diagram_animation",
           "annotated_code"
@@ -1260,7 +1262,7 @@
         {
           "id": "tb3",
           "purpose": "example",
-          "content": "For example, wrapping int(input('Minutes late: ')) in a try clause with except ValueError lets the program print a message such as 'Oops! That was no valid number. Try again...' instead of crashing when the conversion fails.",
+          "content": "For example:\ntry:\n    minutes_late = int(input('Minutes late: '))\nexcept ValueError:\n    print('Oops! That was no valid number. Try again...')\nIf the typed text is 12, int() succeeds, the except clause is skipped, and minutes_late holds 12. If the typed text is twelve, int() raises a ValueError, so the program prints the message instead of crashing.",
           "fact_ids": [
             "f3"
           ]
@@ -1323,7 +1325,7 @@
         {
           "id": "tb5",
           "purpose": "takeaway",
-          "content": "import gives you access to code someone else already wrote -- either through the module's name (import fibo, fibo.fib(...)) or directly by name (from fibo import fib, fib(...)).",
+          "content": "import gives you access to code written in another file -- either through the module's name (import fibo, fibo.fib(...)) or directly by name (from fibo import fib, fib(...)).",
           "fact_ids": [
             "f2",
             "f3"
@@ -1401,6 +1403,18 @@
         },
         {
           "id": "tb8",
+          "purpose": "walkthrough",
+          "fact_ids": [
+            "f2",
+            "f4",
+            "f6",
+            "f7",
+            "f1"
+          ],
+          "content": "Put together:\nimport csv\n\nwith open('orders.csv', newline='') as f:\n    reader = csv.DictReader(f)\n    for row in reader:\n        print(row['order_id'], row['city'])\n\nwith open('lagos_orders.csv', 'w', newline='') as out:\n    writer = csv.DictWriter(out, fieldnames=['order_id', 'city'])\n    writer.writeheader()\n    writer.writerow({'order_id': 1042, 'city': 'Lagos'})\nIf orders.csv starts with the header order_id,city,delivery_minutes, each row is a dict with those keys, so row['city'] reads that row's city. The second block creates lagos_orders.csv (erasing any existing file of that name) containing the header order_id,city and the row 1042,Lagos. Both files close automatically when their with blocks end."
+        },
+        {
+          "id": "tb9",
           "purpose": "takeaway",
           "content": "Reading and writing files is how a program's delivery data gets in from, and results get out to, storage that outlives the program run -- open() and with manage the connection, and the csv module adds row/column structure on top of plain text.",
           "fact_ids": [
@@ -1456,7 +1470,7 @@
         {
           "id": "tb4",
           "purpose": "takeaway",
-          "content": "Following these conventions doesn't change what code does; it changes how readable it is to the next person -- including a later you -- who reads it.",
+          "content": "These are recommendations for readability: following them makes code easier to read for the next person -- including a later you.",
           "fact_ids": [
             "f1",
             "f4"

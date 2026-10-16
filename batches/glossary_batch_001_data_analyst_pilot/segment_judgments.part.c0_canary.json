@@ -1,0 +1,115 @@
+{
+ "metadata": {
+  "artifact_type": "segment_judgments",
+  "artifact_version": "1.0.0",
+  "schema_version": "1.0.0",
+  "batch_id": "glossary_batch_001_data_analyst_pilot",
+  "run_id": "glossary_batch_001_data_analyst_pilot_09_c0_canary",
+  "prompt_version": "09_segment_judge@v1",
+  "model": "claude-opus-5-5",
+  "generated_at": "2026-10-02T09:08:29Z",
+  "source_snapshot_id": "data_analytics.source_pack",
+  "parent_artifact_hashes": {
+   "segment_proposals.part.c0_canary.json": "bbb86462596e17fc2484f39a65573ad0732a1248ef183109f4fd9fb6e9fc224f",
+   "coverage_briefs.json": "d0ef2fa55a4fc956f7aec86aa706596e791e638ea60e8c7c721fdb8273290611",
+   "extracted_concepts.json": "8e3969d65e33ee46f6e3ca399cf9ada942a5b349eb85f07e6b5d60dfe6acdc8e"
+  }
+ },
+ "batch_id": "glossary_batch_001_data_analyst_pilot",
+ "judgments": [
+  {
+   "proposal_id": "prop_0MKcCHrTo0c_python_file_io",
+   "verdict": "rejected_inaccurate",
+   "final_start_seconds": null,
+   "final_end_seconds": null,
+   "confirmed_fact_ids": [],
+   "scores": {
+    "technical_accuracy": 2,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 4,
+    "pacing": 3,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 0-563s. At 41.5-45.3 the presenter states as fact 'the open function only has two arguments it has the file path and it has the mode'. That is false per the Python docs and directly contradicts this concept's own f7 ('open(\"names.csv\", \"w\", newline=\"\")', a third argument), so a learner who watches this clip and then reads f7 meets a contradiction. The false claim can't be cut out: the open( call and the path are set up at 36-83, and any later start (e.g. 85.5 'now the mode is going to specify how this file is opened') depends on code whose setup is missing. Other weaknesses in the range: 'w' is described only as 'create the file as well as allow us to write to it' (105-110), with no mention that it erases an existing file (f1). 'a' is described as 'this is already an existing file' (282-286). 124-158 is a Windows path-error detour that fixes the error with an r'' raw-string prefix ('what the r does is ... read in this string as a raw text'), which beginners can easily confuse with the 'r' read mode. 'r' mode is only named in passing ('appending or reading a file', 92-94) and the default-to-'r' is never said, so I agree with the detector that f1 is only partly covered. f5 is genuinely taught ('the 39 means we are inserting 39 characters', 210). The clip also ends at 332, right before the presenter says manual open/close 'isn't actually best practice' (332-337). The 332-538 context-manager and reading section (with keyword, .read(), 'r' mode, which would cover f2 and f3) is worth re-proposing, but it starts with 'let's copy this' from earlier cells, so it would need its own boundary check."
+  },
+  {
+   "proposal_id": "prop_0UA49Ds1XXo_pandas_creating_dataframes",
+   "verdict": "approved",
+   "final_start_seconds": 56,
+   "final_end_seconds": 265,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 4,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 4,
+    "pacing": 3,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 20-380s. 56-66: 'a data frame is a lot like a python dictionary in its heart'. 87-142: builds a dict with day, visitors and bounce-rate keys, each holding a six-value list. 153-178: 'convert this to a data frame ... with a dictionary ... DF equals PD ... data frame ... web stats boom we have created ourselves a data frame'. 199-250: print(df) shows the result. The proposed end of 252 cuts mid-sentence ('you'll notice that we've got this 0 1 2 3 4 5' / 'over here again that's the index'). I extended it to 265 so the cut ends on '...again that's the index now if you don't specify an index everything is treated as a normal column and an index will just be kind of generated automatically for you' (250-265). That completes f1's default-range-index clause and doesn't leak anything: pandas.inspecting_dataframes is head/tail/shape/dtypes/info/describe, and df.head only begins at 280. The new end stops before 'later on we'll be talking about how to set a specific index' (265-269). f2 (list of dicts) appears nowhere in the range. 'Dict of equal-length lists' is visible but never stated (at 134-140 he notices 'that's not six so one more' and fixes a short list, which hints at it). Pacing is weak at 180-243, a long aside about GUIs/Excel and naming the df variable that includes a passing reference to the previous video ('before we called it I think XOM', 218-223). That reference doesn't block understanding."
+  },
+  {
+   "proposal_id": "prop_082lfHzdTe8_sql_select_fundamentals",
+   "verdict": "approved",
+   "final_start_seconds": 326,
+   "final_end_seconds": 444,
+   "confirmed_fact_ids": [
+    "f1",
+    "f3"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 3,
+    "prerequisite_safety": 4,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 5,
+    "pacing": 4,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 110-470s. The task is 'retrieve only the first name and the country of all customers' (339-345). The query is built at 354-379: 'start with select ... first name then comma the second one is country ... from customers'. 382-396 shows the result: 'now we have only two columns first name and Country ... we don't see here the other columns like customer ID or score'. That teaches f1 (the SELECT list decides the output columns) and f3 (FROM names the table). The detector's note says the start of 337 skips the backward reference, but it doesn't: 'the difference from the previous one is that we don't need all the columns' is at 345.7, inside the cut. That reference is self-explanatory, so it isn't disqualifying. I moved the start back to the chapter boundary at 326 ('all right so now you might be saying I'm not really interested in all the columns from my table I want to specify a few columns'), which gives a clean motivating opener. 'I cannot use star' (357-360) refers to * from the previous chapter. That is optional f4, and the remark is followable. At 399-439 an on-screen step-through says the database 'starts from the table ... then it's gonna check okay which column we need'. That previews sql.clause_execution_order (blocked), but the clip teaches it from scratch in two steps, so the learner doesn't need prior knowledge. 'There is no filters' (425-430) is a passing mention. The end of 444 closes on 'with that we have learned how to use the select statement', and the next-video mention of DISTINCT is cut. f2 (AS aliasing) appears nowhere in this video; no alias is used in the whole transcript. The concept's 'aliasing' half needs another segment."
+  },
+  {
+   "proposal_id": "prop_-0GctLQhcjY_datamodel_one_to_many",
+   "verdict": "approved",
+   "final_start_seconds": 401,
+   "final_end_seconds": 480,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 3,
+    "prerequisite_safety": 5,
+    "standalone_clarity": 4,
+    "visual_teaching_value": 4,
+    "pacing": 4,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 220-540s. 402-431 (one-to-one): 'two tables about their customers ... connected using the customer ID. Now let's go and check the values inside the keys ... For each customer we have exactly one row. That's why the relationship on the left side is one'. 432-468 (one-to-many): 'on the left side we have the customers ... on the right side the orders ... same thing ... check the values inside the keys ... on the right side we have duplicates ... Maria did place two orders. So on the left side it is one, on the right side it is many'. Keeping the one-to-one example is justified: it introduces the 'check the keys for uniqueness' method that the one-to-many example reuses with 'same thing', and one-to-one isn't a blocked concept. I moved the start from 402 to 401 so the clip opens on 'a very simple example. We start with the one to one relationship' instead of mid-phrase. The end of 480 lands on 'flipping the sides, nothing new', before the many-to-many chapter (blocked datamodel.many_to_many_junction_tables). f1 is clearly taught. f2 is only partly taught. The clip shows Orders as the many side and the customer ID repeating there, but it never says 'foreign key' (the detector is right about that). It also never teaches that a customer can have zero orders or that the many side is optional ('Anna, she ordered only once', 462, is one order, not zero). Nor does it say that the order's CustID must match a valid customer (referential integrity). So f2 isn't confirmed. The transcript doesn't show that this is Power BI's model-view UI; it just describes 'two tables'. 'If the dimension now on the right side' (473) uses a BI term in passing in the many-to-one aside, which is followable."
+  },
+  {
+   "proposal_id": "prop_-Xmrrj7U34g_sql_clause_execution_order",
+   "verdict": "approved",
+   "final_start_seconds": 117,
+   "final_end_seconds": 237,
+   "confirmed_fact_ids": [
+    "f1"
+   ],
+   "scores": {
+    "technical_accuracy": 5,
+    "fact_coverage": 3,
+    "prerequisite_safety": 4,
+    "standalone_clarity": 3,
+    "visual_teaching_value": 5,
+    "pacing": 4,
+    "boundary_quality": 4
+   },
+   "reasoning": "Read 0-244s. The range walks through the execution order in sequence. 118: 'SQL going to execute the from clause'. 127-141: 'filter the data using the where clause ... before any aggregations'. 143-153: 'the third step is going to execute the group by'. 159-166: 'apply the second type of filter the having'. 168-177: 'step number five ... execute the select distinct'. 180-186: 'execute the order by'. 191-215: 'the last step ... top'. 217-230: 'the coding order is completely different than the execution order ... the select [is] executed almost at the end'. This matches f1 (FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY), and TOP coming after ORDER BY agrees with LIMIT coming last. I moved the start from 116 to 117. The segment from 114.2 reads 'see the execution order as we learned' and ends at 116.6, so a 116 start still plays 'learned'; 117 opens cleanly on 'the first thing that's going to happen'. I moved the end from 240 to 237 because music starts at 237.1 and content ends with 'how to build correct queries'. Standalone clarity is only fair: the clip opens with no framing sentence, and 'the second type of filter the having' (160) refers back to the 73-114 filter taxonomy. Both can still be followed. TOP/DISTINCT are not blocked for this concept. f2 (an alias can be used in ORDER BY/GROUP BY but not in WHERE/HAVING) isn't covered anywhere in the video. No alias is ever mentioned, so I confirm the detector's call."
+  }
+ ]
+}

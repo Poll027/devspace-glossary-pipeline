@@ -1,0 +1,1240 @@
+{
+  "metadata": {
+    "artifact_type": "glossary_pass_a",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_001_data_analyst_pilot",
+    "run_id": "glossary_batch_001_data_analyst_pilot",
+    "prompt_version": "05_glossary_pass_a@v1",
+    "model": "claude-sonnet-5",
+    "generated_at": "2026-10-01T11:17:45Z",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "extracted_concepts.json": "8e3969d65e33ee46f6e3ca399cf9ada942a5b349eb85f07e6b5d60dfe6acdc8e",
+      "coverage_briefs.json": "d0ef2fa55a4fc956f7aec86aa706596e791e638ea60e8c7c721fdb8273290611",
+      "depth_classification.json": "167f98b6a223279f6b6029cd521b982ca807bbe158217cf523734184ba027a2b"
+    }
+  },
+  "batch_id": "glossary_batch_001_data_analyst_pilot",
+  "entries": [
+    {
+      "concept_id": "viz.matplotlib_figure_axes",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you have this week's delivery times -- 18, 22, 26, 19, 30 minutes -- and you want to see them as a graph instead of a list of numbers. Matplotlib is the library that draws that graph, but it draws onto two different kinds of object, not just \"a plot\". Matplotlib graphs data on Figures, and each Figure can contain one or more Axes, which is the area where data is actually plotted.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "The Figure is the overall canvas: the whole window or image you eventually display or save. An Axes is one plotting area that lives inside that Figure -- the rectangle with its own x- and y-axis where lines, bars, or points are actually drawn. A single Figure can hold more than one Axes, but even the simplest plot needs at least one.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "After `import matplotlib.pyplot as plt`, `fig, ax = plt.subplots()` creates a Figure and one Axes together, giving explicit variables for both objects: `fig` refers to the whole canvas, and `ax` refers to the one plotting area inside it.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "Plotting calls such as `ax.plot(x, y)` draw onto that specific Axes object. `fig, ax = plt.subplots()` followed by `ax.plot([1, 2, 3, 4, 5], [18, 22, 26, 19, 30])` draws the week's delivery times as a line onto `ax`. `fig` itself doesn't receive any plotted data directly -- it just holds the Axes that does.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "With `plt.subplots()`, you get a Figure and an Axes first, then call a plotting method on the Axes, not the Figure. Keeping the two straight -- Figure is the canvas, Axes is where the data goes -- makes plotting calls like `ax.plot()` easier to read.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The Figure-as-canvas / Axes-as-plotting-area relationship is a spatial container relationship that is easier to picture when it is highlighted on screen and watched being created and drawn onto, though the text's canvas framing and the worked fig/ax example already make the idea workable from text alone.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Establish the Figure/Axes container relationship clearly before any other viz concept -- everything in this tile builds on fig, ax = plt.subplots().",
+        "Don't introduce figsize or tight_layout here -- that's viz.figure_size_layout next."
+      ]
+    },
+    {
+      "concept_id": "viz.figure_size_layout",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "`plt.subplots(figsize=(width, height))` sets the figure's dimensions. `figsize` is a (width, height) tuple, measured in inches, and its default is `rcParams['figure.figsize']`, which itself defaults to `[6.4, 4.8]`. `fig, ax = plt.subplots(figsize=(8, 4))` makes a wider-than-default figure, 8 inches by 4 inches, and `fig.tight_layout()` then adjusts the spacing to fit.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "`tight_layout()` automatically adjusts subplot parameters so the subplot(s) fit into the figure area; it works by checking the extents of tick labels, axis labels, and titles. It can be called as `plt.tight_layout()` or `fig.tight_layout()`.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "figsize and tight_layout are two keyword-level settings with no moving parts to demonstrate; a short paragraph and the two code lines are enough.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "This tile sits before any plotting concept, so there is no labeled or cramped plot yet to show tight_layout fixing -- teach figsize and tight_layout as general figure-level settings rather than as a fix for overlapping axis labels specifically (that payoff comes later, once viz.labeling_annotation adds labels that can overlap). TOC conflict noted, not resolved here.",
+        "Optional enrichment (layout='constrained') is skipped -- not required."
+      ]
+    },
+    {
+      "concept_id": "viz.pyplot_basic_plotting",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "You have already seen `ax.plot(x, y)` draw onto an Axes you created with `plt.subplots()`. pyplot also has its own `plot()` function, called directly as `plt.plot()`, and it accepts data in two different forms.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "`plt.plot(y)` called with a single array argument treats it as the y-values and automatically generates the x-values starting from 0. Given just the delivery times `[18, 22, 26, 19, 30]`, `plt.plot([18, 22, 26, 19, 30])` plots those five values against the automatic x-positions 0, 1, 2, 3, 4.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "`plt.plot(x, y)` called with two array arguments plots the y-values against the given x-values instead. `plt.plot([1, 2, 3, 4, 5], [18, 22, 26, 19, 30])` plots the same five delivery times, but now against the day numbers 1 through 5 you supplied, rather than the automatic 0-based positions.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Both forms call the same function and produce a similar-looking line; the only difference is whether you hand `plot()` an explicit x-axis or let it fill one in for you starting at 0.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing the one-array call auto-number its x-axis from 0, side by side with the two-array call using the supplied x-values, makes the difference between the two forms concrete in a way the text's description approximates.",
+        "preferred_visual_modes": [
+          "live_code",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "TOC conflict: this concept's practice_objective asks for a 'line chart', but line charts as a concept (trend over time, connecting points) belong to the later viz.line_plots. Here, teach plt.plot()'s two argument forms generically, without the 'trend' framing -- that framing is introduced next."
+      ]
+    },
+    {
+      "concept_id": "viz.bar_charts",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you want to compare average delivery time across three cities -- Lagos, Abuja, and Kano -- rather than look at individual deliveries. A bar chart is a common chart type for graphing categorical data or data sorted into groups, which fits this comparison exactly.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "`plt.bar(x, height)` (or `ax.bar(x, height)`) makes a bar plot with bars positioned at the given x coordinates and given heights, with the baseline defaulting to 0. Categorical variables such as names can be passed directly as the x argument, rather than only numeric x-positions: `city_avg = orders.groupby(\"city\")[\"delivery_time_minutes\"].mean()` stores one average per city, with the city names as its index, and `plt.bar(city_avg.index, city_avg)` plots those three city names directly as the bars' x-positions, with each city's average as its bar height.",
+          "fact_ids": [
+            "f1",
+            "f4"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mental_model",
+          "content": "Bar charts are easy to interpret because the eye is good at comparing lengths when the objects being compared are aligned to a common baseline -- here, every bar starts at 0, so the bar for Kano simply looks taller than Lagos's because its average delivery time is higher.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "misconception",
+          "content": "It can seem harmless to start the bars at some value other than 0 -- say at 20 minutes, to make small differences between cities stand out. That distorts the comparison. A bar chart is easy to read because the eye compares bar lengths from a common baseline, so the lengths themselves have to stay true to the values. If Kano averages 30 minutes and Lagos 25, bars that start at 20 are 10 and 5 units tall: Kano's bar looks twice as long as Lagos's even though its average is only 5 minutes higher. Keep the baseline at 0.",
+          "fact_ids": [
+            "m1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Why the shared zero baseline matters is a before/after comparison -- the same three city averages rendered with a shared baseline versus a shifted one look like they tell different stories, which is far more convincing seen than described.",
+        "preferred_visual_modes": [
+          "live_code",
+          "diagram_animation"
+        ]
+      },
+      "teaching_notes": [
+        "Build on pandas.groupby_aggregation's own orders/city/delivery_time_minutes example so the dataset is familiar."
+      ]
+    },
+    {
+      "concept_id": "viz.histograms",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "A bar chart compares categories, but delivery times themselves are a numeric variable, and you might instead want to see how those times are distributed -- how many deliveries were fast, how many were slow.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "`plt.hist(x, bins=...)` uses `numpy.histogram` to bin the data in `x`, count the number of values in each bin, and draw the result as bars. `plt.hist(orders[\"delivery_time_minutes\"])` bins every delivery's time and shows how many deliveries fall in each time range.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "The `bins` parameter defaults to `rcParams['hist.bins']`, which defaults to 10; passing an integer sets that many equal-width bins, passing a sequence sets explicit bin edges, and passing a string such as `'auto'` selects a binning strategy. `plt.hist(orders[\"delivery_time_minutes\"], bins=5)` groups the data into 5 equal-width bins instead of the default 10. Each bar's height shows how many deliveries fall into that bin, so a taller bar means more deliveries took that range of time.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "How the same delivery-time data reshapes as the bin count changes is a changing-state effect that is clearer watched live -- going from 5 bins to 10 to 'auto' on screen shows directly how bin choice can hide or reveal structure in a way a static description can only assert.",
+        "preferred_visual_modes": [
+          "live_code",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "viz.line_plots",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you have this week's average Lagos delivery time for each of 5 days and want to see whether it is getting better or worse. Line graphs are best when you want to show how the value of something changes over time, or compare how several things change over time relative to each other.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "A line graph plots the measured points and then draws a line that connects those points, making it easier to see how the values rose, fell, or stayed the same over time.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "`plt.plot(x, y)` plots the y-values against the given x-values. `plt.plot([1, 2, 3, 4, 5], [21, 23, 19, 25, 20])` plots 5 days of average Lagos delivery times, with the connecting line making the day-to-day rise and fall visible at a glance in a way the five numbers alone would not be.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching the line get drawn point by point reinforces how the connecting line, not just the points, is what makes a rise or fall readable, though the text's description and the day-by-day example largely cover this.",
+        "preferred_visual_modes": [
+          "live_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "viz.scatter_plots",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you want to see whether delivery distance and delivery time move together across your orders, rather than compare categories or track a trend over time. A scatterplot shows the relationship between two numerical variables plotted simultaneously along the horizontal and vertical axis, and is useful for focusing on the relationship between two series.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "`plt.scatter(x, y)` (or `ax.scatter(x, y)`) makes a scatter plot of the y-values against the x-values, one point per (x, y) pair. `plt.scatter(orders[\"distance_km\"], orders[\"delivery_time_minutes\"])` plots one point per order, with each point's position showing that order's distance and delivery time together.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing the point cloud appear order by order helps connect 'one point per row' to the resulting shape, though the text's definition and the distance/delivery-time example already convey the idea.",
+        "preferred_visual_modes": [
+          "live_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "viz.box_plots",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you want to compare the full spread of delivery times across Lagos, Abuja, and Kano -- not just their averages, but how spread out and how extreme each city's times get. Boxplots offer a condensed display for comparing the distributions of multiple datasets side by side.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "`plt.boxplot(x)` (or `ax.boxplot(x)`) draws a box plot from the data in `x`; it accepts array-like data and can draw one or more boxes. The box extends from the first quartile (Q1) to the third quartile (Q3) of the data, with a line at the median. The whiskers extend from the box to the farthest data point lying within 1.5x the interquartile range (IQR) from the box; points past the end of the whiskers are flier points (outliers). For example, if Lagos's box runs from Q1 = 20 minutes to Q3 = 30 minutes, the interquartile range (IQR) is the length of the box: 30 - 20 = 10 minutes. The whiskers can then reach at most 1.5 x 10 = 15 minutes beyond the box -- no lower than 5 minutes and no higher than 45 minutes -- so a 50-minute Lagos delivery would be drawn as a separate flier point.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "Passing a sequence of 1D arrays as `x` draws one box for each array in the sequence; `tick_labels=[...]` labels each boxplot's tick accordingly instead of leaving it as a numeric value. `lagos_times = orders.loc[orders[\"city\"] == \"Lagos\", \"delivery_time_minutes\"]` pulls out just the Lagos delivery times by boolean filtering, and `abuja_times`/`kano_times` are built the same way for the other two cities. `plt.boxplot([lagos_times, abuja_times, kano_times], tick_labels=[\"Lagos\", \"Abuja\", \"Kano\"])` then draws three boxes side by side, one per city, each labeled with its city name instead of 1, 2, 3.",
+          "fact_ids": [
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "The box/whisker anatomy -- which edge is Q1 versus Q3, where the median line sits, what counts as a whisker versus a flier point -- is a labeled-diagram concept that is far clearer pointed-to on an annotated drawing than described purely in words.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "viz.labeling_annotation",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Titles, axis labels, and legends are the text that tells a reader what a plot shows. Matplotlib gives two parallel ways to add them, depending on whether you are working with an Axes object or the pyplot interface directly.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "`ax.set_xlabel('...')` and `ax.set_ylabel('...')` set the x-axis and y-axis labels, and `ax.set_title('...')` sets the Axes title. `ax.set_xlabel(\"Day\")`, `ax.set_ylabel(\"Average delivery time (minutes)\")`, and `ax.set_title(\"Average delivery time by day\")` label the Lagos trend line from before.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "Passing `label='...'` to a plotting call (e.g. `ax.plot(data, label='data1')`) and then calling `ax.legend()` displays a legend identifying each labeled series. `days = [1, 2, 3, 4, 5]` and `lagos_avg = [21, 23, 19, 25, 20]` are the same 5 days of Lagos averages from before, so `ax.plot(days, lagos_avg, label=\"Lagos\")` followed by `ax.legend()` shows a legend identifying the Lagos line, which matters once a second city's line is added to the same Axes.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "syntax",
+          "content": "In the pyplot interface, `plt.xlabel()`, `plt.ylabel()`, and `plt.title()` set the same label/title elements on the current Axes -- the pyplot equivalents of `ax.set_xlabel()`, `ax.set_ylabel()`, and `ax.set_title()`.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Labeling is a short list of one-line method calls with an obvious visual result; a labeled before/after screenshot in the text covers it.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "viz.chart_type_selection",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "With five chart types available, the question during your own exploration is which one actually answers the question you're asking of the data.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "workflow",
+          "content": "A bar chart is used for graphing categorical data and comparing values across categories -- average delivery time per city, for instance. `plt.hist()` bins a numeric variable, counts values per bin, and draws the distribution as bars -- useful for how delivery times themselves are spread out. Line graphs are best when you want to show how a value changes over time, or compare how several things change over time relative to each other -- average delivery time across the days of the week. A scatterplot shows the relationship between two numerical variables plotted along the horizontal and vertical axis -- whether distance and delivery time move together. Boxplots offer a condensed display for comparing the distributions of multiple datasets side by side -- the full spread of delivery times across several cities at once, not just their averages.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f4",
+            "f5"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "takeaway",
+          "content": "Picking a chart type during exploration comes down to naming what you're actually asking: a category comparison, a single variable's spread, a trend over time, a relationship between two variables, or a spread comparison across several groups.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f4",
+            "f5"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Walking through the same delivery dataset rendered as each candidate chart type, side by side, makes the decision process more concrete than the text's recap, though the recap of each chart's purpose already orients a learner.",
+        "preferred_visual_modes": [
+          "slides_with_signaling"
+        ]
+      },
+      "teaching_notes": [
+        "This is a synthesis concept recapping facts already taught by the five chart-type concepts -- no new matplotlib syntax here."
+      ]
+    },
+    {
+      "concept_id": "viz.seaborn_dataframe_plotting",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Most plotting calls so far have needed you to pull a column or an array out of `orders` yourself before plotting it. Seaborn's plotting functions operate on dataframes and arrays containing whole datasets, taking only the names of the variables and their roles in the plot (for example `data=`, `x=`, `y=`) rather than requiring the caller to extract each array.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "`seaborn.barplot(data=..., x=..., y=...)` visualizes an aggregate statistical estimate for each category as a bar; its default estimator is the mean, and it draws an error bar (uncertainty indicator) around each bar by default. After `import seaborn as sns`, `sns.barplot(data=orders, x=\"city\", y=\"delivery_time_minutes\")` plots average delivery time per city directly from the `orders` DataFrame and its column names -- no separate `.groupby()` call needed first, and each bar comes with an error bar seaborn adds automatically.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "The error bar that seaborn draws around each bar by default is a new visual element not present in the matplotlib version of this chart, and seeing it appear automatically on screen reinforces that it's a default behaviour, not something added manually.",
+        "preferred_visual_modes": [
+          "live_code",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "viz.seaborn_statistical_functions",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "Many seaborn functions will automatically perform the statistical estimation necessary to answer questions such as the average value of one variable as a function of other variables. The `sns.barplot()` call from before is one such example -- it computed each city's mean delivery time automatically, without a separate `.groupby()` step.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "`seaborn.regplot(data=..., x=..., y=...)` plots a scatterplot of the observations together with a fitted linear regression line. `sns.regplot(data=orders, x=\"distance_km\", y=\"delivery_time_minutes\")` shows the distance/delivery-time scatter from before, now with a fitted trend line drawn through it in the same call.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "regplot is one function call that adds one fitted line to a chart already introduced; the text's comparison to the earlier scatter plot is enough.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "viz.seaborn_themes_palettes",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "syntax",
+          "content": "`seaborn.set_theme()` accepts a `style` parameter (default `'darkgrid'`) and a `palette` parameter (default `'deep'`) among its arguments, which set the plot's background/gridline style and its color palette respectively. `sns.set_theme(style=\"whitegrid\", palette=\"deep\")` switches to a white background with gridlines.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "`sns.set_theme(style=..., palette=...)` changes the global defaults for all plots using the matplotlib rcParams system, so it affects matplotlib plots too, even ones not made with seaborn. Because it works by changing global defaults, calling `sns.set_theme()` changes how plots drawn after that call look -- it does not go back and restyle a figure you already drew and displayed earlier.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Theme/palette selection is a one-line call with a visible but simple effect; the before/after is easy to picture from the style names alone.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "TOC conflict: the practice_objective says 'apply a seaborn theme to an existing plot', but set_theme() only changes defaults for plots drawn after the call, not a plot already drawn. Teach the mechanism as the fact states it (affects subsequent plots) rather than as retroactively restyling an existing one."
+      ]
+    },
+    {
+      "concept_id": "viz.custom_styling_theming",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "syntax",
+          "content": "`plt.style.use('style-name')` applies one of matplotlib's predefined style sheets (for example `'ggplot'` or `'dark_background'`); the available styles can be listed with `plt.style.available`.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "A custom style file can set specific properties, such as `'axes.titlesize'`, `'lines.linewidth'`, or tick label sizes, and rcParams can be set directly to change defaults globally. After `import matplotlib as mpl`, `mpl.rcParams['lines.linewidth'] = 2` sets the default line width for every plot drawn after that call.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "syntax",
+          "content": "`seaborn.set_palette(palette, ...)` sets the matplotlib color cycle from a seaborn palette, applying that color scheme to subsequent plots. `sns.set_palette(\"pastel\")` switches later plots to seaborn's pastel color scheme.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "These are three independent one-line settings (a style sheet, an rcParam, a palette); each is simple enough for a code comment to convey its effect.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "viz.multi_panel_figures",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you want to show the delivery-time histogram and the distance/delivery-time scatter plot together, side by side, instead of as two separate figures.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "syntax",
+          "content": "`fig, axs = plt.subplots(nrows, ncols)` creates a Figure containing a grid of Axes with the given number of rows and columns (for example `plt.subplots(2, 2)` creates a 2x2 grid). `fig, axs = plt.subplots(2, 2)` creates one Figure holding four Axes arranged in two rows and two columns.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Each Axes in the returned grid is indexed separately (for example `axs[0, 0]`) and plotting/labeling calls made on one Axes only affect that panel. `axs[0, 0].hist(orders[\"delivery_time_minutes\"])` draws the delivery-time histogram into the top-left panel, and `axs[0, 1].scatter(orders[\"distance_km\"], orders[\"delivery_time_minutes\"])` draws the distance/delivery-time scatter into the top-right panel without disturbing the first.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching each grid position fill in with its own plot while the others stay empty makes the 'each Axes is independent' idea concrete, though the indexed-grid description and example already explain the mechanism.",
+        "preferred_visual_modes": [
+          "live_code",
+          "diagram_animation"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stakeholder.identifying_decision_need",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "An operations manager emails you: \"Can you look into our delivery times?\" Before opening a notebook, the first thing worth asking is not what to measure, but what decision this is actually for.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "Analysis is the collection, manipulation and interpretation of information and data for use in decision-making. A request for analysis often exists because someone needs to decide something, even when the request itself doesn't say so directly.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The engagement and scoping stage of an analytical project should establish an understanding of how the analysis will inform decisions. For the delivery-times request, that can mean asking the manager directly: is this about deciding whether to hire more couriers for the Lagos route, whether to renegotiate with a courier partner, or something else? The answer changes what you'd actually need to measure.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Naming the decision up front -- \"this analysis is meant to help decide whether to add Lagos couriers\" -- gives everything that follows a target to aim at, rather than leaving you to guess what \"look into it\" was supposed to produce.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "This is a reasoning habit conveyed through a worked request-to-decision example in prose; there is no diagram, code, or process to watch.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": [
+        "Opens the stakeholder-communication thread's running scenario: an operations manager's delivery-times request, carried through later concepts in this tile group."
+      ]
+    },
+    {
+      "concept_id": "stakeholder.precise_finding_statement",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Once you've analyzed the delivery data, \"delivery times went up\" is a finding of sorts, but it doesn't say by how much, where, or compared to what.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A communication's big idea must articulate a unique point of view, convey what's at stake, and be a complete sentence -- not a fragment or a topic label. \"Lagos delivery times\" is only a topic label. \"Lagos delivery times have risen, so customers on that route are waiting longer for their orders\" is a complete sentence that takes a position (Lagos has slowed down) and says what's at stake (customers waiting longer).",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A claim about the data should be checked against what the data actually shows, and narrowed if needed; one article's example revises the broader claim \"Price has declined for all products\" to the more precise \"the average retail price of existing products declined\" once the underlying data was examined more closely. The same check applies to the delivery claim: if only Lagos routes actually slowed down, \"delivery times went up\" should narrow to \"Lagos delivery times went up\", not describe every city.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "Writing about data should be specific about the point being made, and putting data into context includes making comparisons -- for example: \"There were 787,000 suspensions in the 2022/23 academic year. This is an increase from the previous year, when 578,300 suspensions occurred...\" Following that same pattern, a precise delivery finding names the number and the comparison: \"the average Lagos delivery time rose to 30 minutes this month, up from 22 minutes last month,\" rather than just \"delivery times went up.\"",
+          "fact_ids": [
+            "f4",
+            "f5"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Precision in a written claim is demonstrated by rewriting a vague sentence into a specific one -- a text-and-example skill with no visual component.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": [
+        "Optional enrichment (quality assurance of communications, f1) is skipped -- not required for this concept's coverage."
+      ]
+    },
+    {
+      "concept_id": "stakeholder.framing_analytical_question",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "\"Are deliveries going well?\" is the kind of question a stakeholder might actually ask -- and it can't be answered with data as written.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "In the engagement and scoping stage, the analyst should engage with the commissioner to identify the question, the context, and the boundaries of the analysis, as well as constraints such as deadlines and available resources. That kind of conversation can turn \"are deliveries going well\" into something answerable: which cities, which time period, compared against what.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "definition",
+          "content": "A well-formed statistical question makes clear the variable(s) of interest, the group it focuses on, and its intent -- describing the data, comparing a variable across two or more groups, or looking at an association between two variables -- and can be answered with data collected or already in hand. \"Is average delivery time in Lagos this month higher than last month?\" names the variable (delivery time), the group (Lagos, this month vs. last), and the intent (a comparison) -- unlike the original vague question.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "practical_context",
+          "content": "The engagement and scoping stage should lead to agreement between the analyst and commissioner about the outputs of the work, including acceptable levels of accuracy, precision and margins of error, so both sides know in advance what kind of answer will count as sufficient.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Turning a vague question into a measurable one is demonstrated through a worked rewrite in text; there is nothing to watch that a comparison of the two question forms doesn't already show.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stakeholder.identifying_requirements",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Agreeing on the decision and the question still leaves open what you actually need from the operations manager before you can start: what data, by when, in what form.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "In the engagement and scoping stage, the commissioner should inform the analyst about the important aspects of the problem, its scope, and any constraints or issues, and should communicate to the analyst any relevant information about data sources and data quality -- for the delivery request, that could mean telling you which system holds delivery timestamps and whether any routes are missing GPS data.",
+          "fact_ids": [
+            "f1",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Constraints around resources and timelines should be clarified and agreed between the analyst and commissioner during engagement and scoping -- for instance, whether the manager needs an answer this week or can wait for a fuller analysis next month.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "workflow",
+          "content": "The analyst should create a specification document that captures the commissioner's requirements, providing a definition of the scope and project constraints; the analyst should share this specification with the commissioner for sign-off -- for the delivery request, a short written specification of the routes, time period, data source, and deadline, which the manager signs off. The engagement and scoping stage should lead to agreement between the analyst and commissioner about the outputs of the work -- for instance, agreeing the deliverable is a one-page summary with a bar chart of average delivery time per city.",
+          "fact_ids": [
+            "f2",
+            "f5"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Requirements-gathering is a checklist-style conversation habit explained adequately in prose, with no visual or procedural element to demonstrate.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stakeholder.data_driven_recommendation",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Having found that Lagos delivery times rose, the next step is turning that finding into something the operations manager can act on.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "The value of analytical efforts is only truly realized when the insights discovered are acted upon -- a finding that sits in a report, unconnected to any suggested action, may not do much for the manager who needs to decide something.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "The example shows a \"because we found X, we recommend Y\" pattern directly connecting a finding to a recommendation, for example: \"...was successful and, because of the success, we recommend continuing to offer it going forward; please approve our budget for this program.\" Following that same pattern for the delivery finding: \"because the average Lagos delivery time rose from 22 to 30 minutes this month, we recommend adding one more courier to the Lagos route.\"",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "The because-X-we-recommend-Y pattern is a sentence template illustrated by one worked example; no visual component is involved.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stakeholder.plain_language_translation",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The recommendation to \"add one more courier to the Lagos route\" is plain enough, but an analysis behind it can accumulate technical terms -- mean, variance, confidence interval -- that a non-technical manager won't necessarily follow.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Specialist terms can be used where needed -- they are not always jargon -- but explain them in plain English the first time they appear. If \"the average delivery time\" needs to be called out as a mean for precision, saying \"the average (mean) delivery time\" once keeps both the plain and the technical reader covered.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Formal or long words should be avoided when an easy or short one will do (for example \"buy\" instead of \"purchase\", \"help\" instead of \"assist\", \"about\" instead of \"approximately\"), and jargon or buzzwords should be avoided because they are often vague and can be misinterpreted. \"Delivery times got worse this month\" reads more plainly than \"delivery time performance exhibited negative variance this period.\"",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Word-choice guidance is demonstrated through before/after sentence pairs in text; there is nothing additional a video would show.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stakeholder.prioritizing_findings_by_relevance",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "A full look into delivery times might turn up several findings -- Lagos slowed down, Kano's delivery times are the most variable, one courier has unusually fast times. Not all of them belong at the top of the report to the operations manager.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "The engagement and scoping stage of an analytical project should establish an understanding of how the analysis will inform decisions -- and that decision (whether to add Lagos couriers) points to which finding matters most here: the Lagos slowdown, not the courier with the fastest times.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Crafting a communication's big idea requires knowing what is not essential, and boiling the overall message down to a single sentence that captures its core. Writing about data should only include information relevant to the audience -- the operations manager's decision about Lagos staffing doesn't need the full breakdown of every city's variability.",
+          "fact_ids": [
+            "f2",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "workflow",
+          "content": "Use the inverted pyramid: the most important information should be first, and everything else arranged from most to least important -- so the Lagos finding opens the report, with the other findings following only if there's room and relevance for them.",
+          "fact_ids": [
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Ranking findings by relevance to a decision is a judgment call illustrated through the delivery-times scenario in prose, with no visual element.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stakeholder.actionable_recommendation_framing",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "\"Lagos delivery times rose to 30 minutes\" is a finding. \"We recommend adding one more courier to the Lagos route\" is something different: a recommendation, stating what should happen next.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "The value of analytical efforts is only truly realized when the insights discovered are acted upon; an audience cannot be assumed to find the intended takeaway as obvious as the presenter thinks it is. Simply restating the Lagos finding again, more emphatically, may not tell the manager what to do about it -- the recommendation needs to say so explicitly.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "In the example Big Idea \"...was successful and, because of the success, we recommend continuing to offer it going forward; please approve our budget for this program,\" it's clear to the audience what they need to know and what they are being asked to do. \"We recommend adding one Lagos courier; please approve the added headcount\" does the same -- states the action and what's being asked of the reader.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Distinguishing a recommendation from a restated finding is shown through one worked example in text, with no visual or procedural content.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stakeholder.narrative_context_setup",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Before the operations manager reads any finding about Lagos delivery times, they need to know why they're reading this report at all.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "In a story's structure, the beginning establishes the context: what's happening, or what the situation is, when the story begins. A summary should have an obvious beginning, middle, and end; in one example the beginning level-sets the audience before diving into the analysis.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "A release shouldn't start with lengthy background information or technical definitions; instead it should include a short paragraph explaining what the publication is about, with more detailed information placed in a separate section. For the delivery report, that means a short opener -- \"this report looks at delivery times across our three cities this month\" -- rather than a page of methodology before getting to the point.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "practical_context",
+          "content": "Explaining why the statistics have been collected includes relevant, factual information about the policy and operational context -- for instance, noting that this review was prompted by rising customer complaints about Lagos deliveries gives the reader a reason the analysis exists at all.",
+          "fact_ids": [
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Writing an opening context paragraph is a text-composition skill with a worked example; there is no visual mechanism to show.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stakeholder.tailoring_detail_to_audience",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The same Lagos delivery-time analysis might go to the operations manager directly, or get folded into a slide for the company's executive team. Both readers need the finding, but probably not the same amount of detail.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "While it isn't always the reality, designing with a specific person in mind as the audience can help avoid the \"mixed audience\" trap; knowing the audience's motivations lets a presenter frame what they need to know or do in terms of those motivating factors. Knowledge of the audience should inform choices such as how much information density to include, and whether to add more context or explain something in greater detail.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Technical or detail-oriented people may prefer to understand the specifics of an analysis first, so they are prepared to take in ideas about next steps; with executives or other \"big-picture\"-oriented people, who do not have a lot of patience for the specifics of an analysis, you should think about starting with your request. An executive audience might only want the high-level arc -- the operations manager may want the day-by-day breakdown, while the executive slide can lead with the recommendation and skip the breakdown.",
+          "fact_ids": [
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Adjusting detail level for two audiences is shown through a text comparison of the two versions of the same finding; nothing here is visual.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stakeholder.anticipating_questions_objections",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Handing the operations manager a recommendation to add a Lagos courier is unlikely to be the end of the conversation -- expect a follow-up question about cost, or whether the slowdown is really about staffing at all.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "An analyst should be prepared to respond to challenge from the approver, or scrutiny from project or programme boards, about their analysis. Being tailored to the audience means thinking about what questions they will ask, and answering these in the writing -- so the Lagos report can note up front what else was ruled out (traffic patterns, order volume) before the manager has to ask.",
+          "fact_ids": [
+            "f1",
+            "f3"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "practical_context",
+          "content": "Some technical or detail-oriented people prefer to understand the specifics of an analysis first so they are prepared for ideas about next steps; presenting findings before a request could, in that situation, avoid an audience derailing the presentation with a bunch of questions -- showing the Lagos data before asking for budget approval can head off \"where's this number from\" mid-request.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Anticipating objections is a preparation habit described in prose with a worked example; there is no process or visual to watch.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stakeholder.chart_type_to_point_matching",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "During your own exploration, you might have built a bar chart, a line plot, and a box plot of the delivery data. Presenting to the operations manager, the question changes: which one actually makes the Lagos point, for this audience?",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "A bar chart is used for graphing categorical data and comparing values across categories -- showing average delivery time side by side across Lagos, Abuja, and Kano. Line graphs are best when you want to show how the value of something changes over time, or compare how several things change over time relative to each other -- showing Lagos delivery time rising week over week. Boxplots offer a condensed display for comparing the distributions of multiple datasets side by side -- but a boxplot may be unfamiliar to many people and could introduce a learning curve, so choosing a different display altogether may avoid confusion for audiences who do not know this chart type or how to read it; for a manager who hasn't seen a box plot before, the bar chart or line plot can often make the point more directly.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f5"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "practical_context",
+          "content": "A pie chart expresses a part-to-whole relationship in the data, and is best used either for a general sense of how parts relate to the whole, or to highlight that one segment is notably larger or smaller than the others; the pie must depict a meaningful whole (values that sum to 100%). If the point is \"Lagos accounts for most of our total delivery volume,\" a pie chart of each city's share of total orders fits that part-to-whole framing in a way a bar chart of averages would not.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "practical_context",
+          "content": "A scatterplot is often used to understand data rather than to communicate with it, though it can still be designed to convey findings to an audience -- useful to keep in mind if the distance/delivery-time relationship ever needs to go in front of the manager directly, rather than staying an exploratory chart.",
+          "fact_ids": [
+            "f6"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "misconception",
+          "content": "It can look like comparing pie slices is just as easy as comparing bar lengths, since both show a value at a glance -- but it is not. A bar chart's aligned, common baseline makes length differences easy to judge; two pie slices of similar size are harder to rank correctly by eye.",
+          "fact_ids": [
+            "m1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Choosing which chart best makes a specific point is clearest when the same delivery data is shown rendered as a bar chart, a line plot, and a pie chart side by side, so the audience can see directly why one framing lands and another doesn't -- a side-by-side visual the text's description can only approximate.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "slides_with_signaling"
+        ]
+      },
+      "teaching_notes": [
+        "TOC conflict: f4 requires teaching what a pie chart is and when it fits, but no viz concept in this path teaches matplotlib pie-chart creation syntax. Teach the pie chart as a communication-design concept only (what it shows, when it fits, its part-to-whole requirement) -- no plt.pie() code is given here, since no earlier concept taught it."
+      ]
+    },
+    {
+      "concept_id": "stakeholder.simplifying_charts_for_audience",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "A bar chart of city delivery times built during your own exploration can carry gridlines, a border, and precise decimal labels that help you double-check the numbers. The operations manager probably doesn't need any of that to get the point.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Gridlines can be deleted from a chart; if precise values matter to the audience, label the data point(s) directly instead of relying on gridlines. A chart's border can be removed, since it is not adding informative value; white space can differentiate parts of a visual better than a border.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Data labels should be used sparingly, only where the exact values are important to the audience; otherwise they should be removed and the axis used instead. Unnecessary trailing zeroes can be dropped from axis labels, and diagonally rotated axis text is slower to read, so labels can be abbreviated so they render horizontally instead -- \"22.00 minutes\" can become \"22 min\", and city-name tick labels don't need to be rotated at all when the names are as short as Lagos, Abuja, and Kano.",
+          "fact_ids": [
+            "f3",
+            "f5",
+            "f6"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Reducing clutter lets the audience use their attention to decide what actions might be warranted, rather than working out how to read the graph -- none of these changes alter the underlying delivery-time numbers, only how much visual effort it takes to read them.",
+          "fact_ids": [
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Decluttering is inherently a before/after transformation of the same chart -- gridlines, a border, and rotated labels present, then removed -- which is far more persuasive watched applied to one chart than read as a list of removals.",
+        "preferred_visual_modes": [
+          "screen_demo",
+          "annotated_ui"
+        ]
+      },
+      "teaching_notes": [
+        "No specific matplotlib method names are given by the facts for removing gridlines/borders (e.g. no ax.grid(False) is stated), so the example stays at the conceptual/design level rather than inventing exact syntax."
+      ]
+    },
+    {
+      "concept_id": "stakeholder.presentation_structure_basics",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "With the Lagos finding, the recommendation, and a simplified chart ready, the last piece is putting them in an order that actually carries the operations manager from \"why am I reading this\" to \"what do you want me to do.\"",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "A summary should have an obvious beginning, middle, and end; in one example, the beginning level-sets the audience, the middle presents the analysis, and the end concludes with the key takeaways. In a story's structure, the beginning establishes the context of the situation, and this gets carried, onward and upward, to the twist, before the ending brings the story to its close. Mapped onto the Lagos presentation, the beginning is the situation (delivery times across the three cities this month), the twist is the Lagos slowdown, and the ending is the courier recommendation that brings the story to its close.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "workflow",
+          "content": "A presentation can end with a call to action, stating what is being asked of the audience, once the audience has the context needed to understand the request -- so the Lagos presentation can open with why the review happened, move through the finding and chart, and close by asking the manager to approve the added courier.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Opening/body/call-to-action is a structural template conveyed through the running Lagos example in prose; there is no visual or procedural element involved.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "stakeholder.executive_summary_writing",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The full Lagos delivery-time presentation may never get read past its first page.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "An executive summary is a one- or two-page overview of a much longer presentation, provided so the reader gets the main messages without reading the entire communication; it may be the only thing the audience ever looks at.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The summary's title should state the main takeaway and set the tone for the rest of the page, and the summary should follow a narrative arc with an obvious beginning, middle, and end -- a title like \"Lagos delivery times are slowing -- recommend adding one courier\" already tells a skimming reader the point before they read a word of the body.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "workflow",
+          "content": "Content should be grouped into easily-discernible sections with text headers, so someone scanning for only a few seconds still understands the main points; bullets should generally be avoided in favor of well-constructed sentences and mini-paragraphs, except when listing elements. A short \"Finding\" section and a short \"Recommendation\" section, each a sentence or two, serve a scanning reader better than a single unbroken paragraph.",
+          "fact_ids": [
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Executive-summary structure is conveyed through the title/section pattern in prose with a worked example; there is no visual component to demonstrate.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    }
+  ]
+}

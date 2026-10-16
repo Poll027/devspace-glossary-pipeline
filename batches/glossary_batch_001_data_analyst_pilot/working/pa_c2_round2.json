@@ -1,0 +1,1561 @@
+{
+  "metadata": {
+    "artifact_type": "glossary_pass_a",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_001_data_analyst_pilot",
+    "run_id": "glossary_batch_001_data_analyst_pilot",
+    "prompt_version": "05_glossary_pass_a@v1",
+    "model": "claude-sonnet-5",
+    "generated_at": "2026-09-27T12:00:08Z",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "extracted_concepts.json": "8e3969d65e33ee46f6e3ca399cf9ada942a5b349eb85f07e6b5d60dfe6acdc8e",
+      "coverage_briefs.json": "d0ef2fa55a4fc956f7aec86aa706596e791e638ea60e8c7c721fdb8273290611",
+      "depth_classification.json": "167f98b6a223279f6b6029cd521b982ca807bbe158217cf523734184ba027a2b"
+    }
+  },
+  "batch_id": "glossary_batch_001_data_analyst_pilot",
+  "entries": [
+    {
+      "concept_id": "stats.descriptive_measures_of_center",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Imagine a batch of seven delivery orders whose delivery times, in minutes, are 18, 20, 22, 22, 26, 28, and 80. Before you can say anything useful about this batch, you need one number that answers \"what's typical here?\" -- and there are three different ways to compute that number.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "The sample mean is computed as the sum of the observed values divided by the number of observations. For the seven delivery times, the sum is 18+20+22+22+26+28+80 = 216, and 216 divided by 7 is about 30.9 minutes.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "definition",
+          "content": "The median is the middle value when the data are ordered from smallest to largest; if there is an even number of observations, the median is the average of the two middle values. Sorted, the seven times are 18, 20, 22, 22, 26, 28, 80 -- the middle (fourth) value is 22 minutes.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "definition",
+          "content": "The mode is the value that occurs most often in the data; there can be more than one mode. In this batch, 22 minutes appears twice while every other value appears once, so 22 is the mode.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "misconception",
+          "content": "Notice that the mean (about 30.9 minutes) sits well above the median and mode (both 22 minutes). That gap exists because the mean is more strongly affected by extreme observations (such as those in the tail of a skewed distribution) than the median, which is more robust to them; for this reason the median can better represent a typical value in a skewed dataset. Here, the single 80-minute delivery pulls the mean upward far more than it moves the median, so 22 minutes -- not 30.9 -- is the more representative \"typical\" delivery time for this batch.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "Mean, median, and mode all try to answer \"what's typical,\" but they compute it differently, and the mean and median react differently to a batch that includes one unusually large value -- so before reporting a single center number, it's worth checking whether an extreme value like that 80-minute delivery is pulling the mean away from where most of the data actually sits.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Sorting the values and locating the middle position, or watching the mean shift as the 80-minute delivery is added or removed, would reinforce the sensitivity comparison, but the worked calculation above already walks through the sum, the sort, and the count-based reasoning step by step.",
+        "preferred_visual_modes": [
+          "data_table_demo",
+          "diagram_animation"
+        ]
+      },
+      "teaching_notes": [
+        "The dataset (18, 20, 22, 22, 26, 28, 80 minutes) is reused across measures of center and spread for continuity -- keep the sum (216), mean (~30.9), median (22), and mode (22) consistent everywhere they reappear.",
+        "TOC conflict: the concept's own assessment/practice ask the learner to reason about a 'skewed dataset', but formal skew (stats.distribution_shape) isn't taught until later and isn't in this concept's allowed knowledge. The word 'skewed' above is used only in the informal sense the brief's own fact (f4) already uses it in, not as a defined term."
+      ]
+    },
+    {
+      "concept_id": "stats.measures_of_spread",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Knowing the typical delivery time (22 minutes, from the median) doesn't say how spread out the batch is. Most of the seven delivery times (18, 20, 22, 22, 26, 28, 80 minutes) cluster fairly close together, but one sits far away -- spread measures capture that difference.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "The range of a data set is the largest value minus the smallest value. For this batch, that's 80 minus 18, or 62 minutes.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The variance is computed by taking each observation's deviation from the mean, squaring it, summing the squared deviations, and dividing by n - 1 (one less than the number of observations); it is roughly the average squared distance of the observations from the mean. With a mean of about 30.9 minutes, the seven squared deviations sum to about 2886.9, and dividing by n - 1 = 6 gives a variance of about 481.1 (in minutes squared).",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "The standard deviation is the square root of the variance, and it describes the typical distance of an observation from the mean. The square root of about 481.1 is about 21.9 minutes -- roughly how far a typical delivery time sits from the 30.9-minute mean.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "misconception",
+          "content": "The standard deviation is expressed in the same units as the original data, while the variance is expressed in squared units; the range is based only on the two most extreme values and ignores how the rest of the data are spread. That's why \"about 21.9 minutes\" (the standard deviation) is easier to interpret directly than \"about 481.1 minutes squared\" (the variance) -- and why the range (62 minutes) says nothing about whether the other five delivery times are bunched tightly or scattered widely.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "Range, variance, and standard deviation all quantify spread, but the range only looks at the two extremes, while variance and standard deviation take every observation's distance from the mean into account -- with standard deviation, unlike variance, expressed in the original units, and so usually the easiest to talk about in context.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching each deviation get squared and visualized as a bar, or seeing a number line with the mean and spread marked, would build intuition for 'average squared distance,' but the worked variance-then-standard-deviation calculation above already walks through every step of the computation.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Reuses the same seven-value delivery-time dataset and mean (~30.9) from measures of center -- keep the variance (~481.1) and standard deviation (~21.9) consistent if this dataset resurfaces later.",
+        "Don't introduce a rule-of-thumb interpretation (e.g. 68-95-99.7) for standard deviation -- that's not in the source facts."
+      ]
+    },
+    {
+      "concept_id": "stats.distribution_shape",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Look at a different batch of delivery times, this one trailing off gradually: 18, 20, 22, 22, 26, 28, 34, 41, 52 minutes. Most of the batch sits bunched between 18 and 28 minutes, and the remaining values increase step by step rather than jumping straight to one far-off value. That overall pattern -- where the bulk of the values sit and which direction, if any, the data trails off toward -- is what analysts call the shape of a distribution.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A distribution is right-skewed when it has a longer tail trailing off to the right, and left-skewed when it has a longer tail trailing off to the left. This delivery-time batch is right-skewed: the bulk of the values sit between 18 and 28 minutes, and 34, 41, and 52 form a gradually lengthening tail trailing off to the right.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "definition",
+          "content": "A distribution is symmetric when it trails off by roughly equal amounts in both directions. If the batch instead had values spread evenly above and below its center -- say some deliveries a bit faster and some a bit slower than 24 minutes, with no single value trailing far off in either direction -- that would be a symmetric distribution instead.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "The mean is more affected by extreme observations, such as those in the long tail of a skewed distribution, than the median, which is more robust to them. That's consistent with this batch: its mean (about 29.2 minutes) sits above its median (26 minutes), pulled upward by the gradual right-hand tail.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Describing a distribution's shape -- symmetric, right-skewed, or left-skewed -- is about how the bulk of the values are arranged around the center and which direction, if any, a long tail points; it's a separate description from picking out any one extreme value by itself.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Seeing left-skewed, right-skewed, and symmetric shapes drawn side by side, with the tail visibly trailing in each direction, makes the definitions immediately intuitive in a way that describing 'a longer tail trailing off' in words only approximates.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "slides_with_signaling"
+        ]
+      },
+      "teaching_notes": [
+        "TOC conflict: the concept's practice_objective says 'given a histogram,' but reading histograms (stats.frequency_distribution_reading) isn't taught until later and isn't in this concept's allowed knowledge -- shape is described here from the ordered list of values, not a rendered histogram.",
+        "TOC conflict: the concept is named with 'outliers' in mind, but its central_mental_model scopes outlier-identification out to stats.outlier_reasoning -- this text describes overall shape only and leaves picking out the 80-minute value itself to that later concept.",
+        "Skip the optional unimodal/bimodal/multimodal fact -- not required."
+      ]
+    },
+    {
+      "concept_id": "stats.outlier_reasoning",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "In the same delivery-time batch (18, 20, 22, 22, 26, 28, 80 minutes), that 80-minute order stands out from the rest. An outlier is an observation that appears extreme relative to the rest of the data -- and that single delivery clearly qualifies.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Examining a dataset for outliers can help identify strong skew in the distribution, spot possible data collection or data entry errors, and reveal interesting properties of the data. For that 80-minute order, this could mean noticing the skew it creates, checking whether someone mistyped \"8.0\" as \"80,\" or discovering something genuinely unusual, like the delivery being stuck behind a road closure.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Examine an outlier to judge whether it is a possible data collection or data entry error or a genuine observation; a genuine outlier should not be removed without a very good reason. That means checking the order record itself -- was 80 actually logged, or should it have been 8.0? -- before deciding what to do about it.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "misconception",
+          "content": "An outlier is not automatically a data error: it may instead be a genuine, correct observation. If the driver really did take 80 minutes because of a road closure, that's real information about that specific delivery -- not something to delete just because the value looks unusual next to the rest of the batch.",
+          "fact_ids": [
+            "m1"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Spotting the extreme value is only the first step; reasoning about why it's there -- an error to fix, or a genuine event worth understanding -- is what actually decides what to do with it.",
+          "fact_ids": [
+            "f1",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching someone scan a table and point to the value that sits far from the rest reinforces the definition visually, but the delivery-time example and the error-vs-genuine reasoning steps above are already fully worked through in text.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Keep the reasoning case-by-case and grounded in the single 80-minute delivery -- don't drift into describing the whole distribution's shape, which is the separate, earlier concept."
+      ]
+    },
+    {
+      "concept_id": "stats.frequency_distribution_reading",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Instead of listing every delivery time one by one, imagine grouping a full day's 21 deliveries into 10-minute ranges and counting how many orders fall into each range.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A histogram groups numerical values into bins and represents the count of observations in each bin as a bar; taller bars show where the data values are relatively more common. For the day's 21 deliveries, the tallest bar would sit over the 20-30 minute bin, and a much shorter bar would sit far out over the 80-90 minute bin.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The table of counts of observations in each bin, which a histogram displays as bars, is called a frequency table. For that same day, the frequency table might read: 10-20 minutes, 4 orders; 20-30 minutes, 9 orders; 30-40 minutes, 5 orders; 40-50 minutes, 2 orders; 50-80 minutes, 0 orders; 80-90 minutes, 1 order.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "A mode appears in a histogram as a prominent peak: a bin, or region of neighboring bins, where observations are noticeably more concentrated than elsewhere. In the frequency table above, the 20-30 minute bin, with 9 of the 21 orders, is that peak.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Reading a histogram or frequency table means translating bar heights, or bin counts, back into statements about the data: where deliveries cluster most, and where the rare, far-out ones sit -- in this case, a strong cluster around 20-30 minutes with a single delivery trailing far out past 80 minutes.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Reading a histogram is inherently a visual-to-verbal translation task -- watching someone point at bars of different heights and read off which range has the most deliveries mirrors exactly what a learner needs to do, more directly than a frequency table described in prose alone.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Presented via a frequency table (bin counts) rather than a rendered histogram image, since the text must stand alone; the bin counts (4, 9, 5, 2, 1 across 21 orders) echo the earlier right-tail pattern without re-teaching formal skew classification."
+      ]
+    },
+    {
+      "concept_id": "stats.correlation",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose two numeric columns are recorded for many delivery orders: distance in kilometers, and delivery time in minutes. Do longer distances tend to go with longer delivery times?",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "Correlation, which always takes values between -1 and 1, describes the strength of the linear relationship between two numeric variables.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "In a positive association, higher values of one variable tend to go with higher values of the other; in a negative association, higher values of one variable tend to go with lower values of the other. For distance and delivery time, a positive association would mean farther orders tend to take longer; a negative association would look different -- for example, if drivers-on-shift and delivery time have a correlation of about -0.65, that means more drivers on shift tends to go with shorter delivery times.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "A correlation near +1 indicates a strong positive linear relationship, a correlation near -1 indicates a strong negative linear relationship, and a correlation near 0 indicates little or no linear relationship. Suppose the correlation between distance and delivery time in this dataset comes out to 0.82 -- close to +1, so distance and delivery time have a strong positive linear relationship: farther deliveries tend to take longer.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "misconception",
+          "content": "Correlation quantifies the strength of a linear relationship only; a nonlinear relationship can be strong even when its correlation value looks weak. So a correlation near 0 between two variables doesn't automatically mean they're unrelated -- it may mean their relationship isn't a straight-line one.",
+          "fact_ids": [
+            "m1"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "Reading a correlation value means reading its sign for direction and how close it sits to -1, 0, or +1 for strength -- without needing to recompute anything from the raw data yourself.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing scatterplots for a few different correlation values would make 'close to +1' versus 'close to 0' visually concrete, but the sign-and-magnitude reading rule and the worked distance/delivery-time example above already explain it fully in text.",
+        "preferred_visual_modes": [
+          "diagram_animation"
+        ]
+      },
+      "teaching_notes": [
+        "Skip the optional fact that r is exactly -1/+1 only for a perfectly linear relationship -- not required.",
+        "The correlation value (0.82) here is illustrative, matching the assessment_target's framing of reading an already-given coefficient rather than computing one from raw data."
+      ]
+    },
+    {
+      "concept_id": "stats.correlation_interpretation",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose three numeric variables are recorded for the same delivery orders -- distance in kilometers, package weight in kilograms, and delivery time in minutes -- and their pairwise correlations come out to: distance and delivery time, 0.82; weight and delivery time, -0.41; distance and weight, 0.38.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "The strength of a correlation is judged by its magnitude (absolute value): the closer the value is to 1, the stronger the linear relationship, regardless of whether the sign is positive or negative. Comparing the three values above by magnitude, 0.82 (distance and delivery time) is the strongest relationship, and 0.38 (distance and weight) is the weakest -- weaker even than the negative -0.41 between weight and delivery time.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "definition",
+          "content": "A confounding variable is a variable that is correlated with both of two other variables being studied, so it can produce an association between those two variables that is not a direct link between them. Here, distance is correlated with both weight and delivery time -- farther orders might tend to be heavier bulk shipments, and also tend to take longer -- so the -0.41 correlation between weight and delivery time doesn't by itself mean weight and delivery time are directly linked; distance could be behind both.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Comparing magnitudes across a set of correlations tells you which relationships are relatively stronger or weaker, but a strong pairwise correlation on its own never rules out a third variable driving both sides of that pair.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Scanning a small correlation matrix to compare magnitudes, and tracing how one variable links to both of the others, is easier to follow with a highlighted table, though the worked numeric comparison above already walks through the same reasoning.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "The three pairwise values (0.82, 0.41, 0.38) are illustrative, continuing the distance/delivery-time relationship established in stats.correlation."
+      ]
+    },
+    {
+      "concept_id": "stats.correlation_vs_causation_caveat",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose an analysis finds that orders placed with the delivery app's \"priority\" toggle switched on correlate with faster delivery times.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "Association does not imply causation: a correlation between two variables does not by itself establish that one causes the other. Finding that priority orders and fast deliveries move together in the data doesn't by itself prove that flipping the toggle is what speeds things up.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "practical_context",
+          "content": "When only observational (correlational) data supports a finding, it should be restated as an association, or as a hypothesis to check later, rather than as a causal claim. So instead of writing \"using priority delivery causes faster delivery,\" the honest version is closer to \"priority orders and faster delivery times tend to occur together in this data; whether the toggle itself speeds things up is worth checking further\" -- since, for example, priority orders might simply tend to come from closer neighborhoods.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Before writing up a correlational finding, check whether the wording claims a cause; if the data is only observational, restate it as an association instead of a causal claim.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "This is a wording and judgment skill about restating a claim correctly, fully grounded in the priority-delivery example through text; there's no mechanism or changing state to show, so a video would only restate the same caveat in another voice.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": [
+        "Keep the rewritten claim grounded in the same priority-delivery example, not abstract."
+      ]
+    },
+    {
+      "concept_id": "pandas.dataframe_series_model",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Every pandas table starts from two building blocks. A pandas Series is a one-dimensional labeled array that can hold data of any type; its axis labels are collectively called the index.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "A pandas Series can be constructed from data that is array-like, an Iterable (such as a Python list), a dict, or a scalar value. When built from a list (or other array-like data) with no index passed, the index defaults to 0, 1, ..., len(data) - 1; when built from a dict, the dict's keys become the index. `pd.Series([18, 20, 22, 22, 26, 28, 80])` -- built from a plain Python list of delivery times with no index passed -- defaults its labels to 0, 1, ..., 6. `pd.Series({\"Lagos\": 18, \"Abuja\": 20, \"Kano\": 26})`, built from a dict, instead uses \"Lagos\", \"Abuja\", and \"Kano\" as the index.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "definition",
+          "content": "A pandas DataFrame is a two-dimensional labeled data structure whose columns can hold different types, and it can be thought of as a dict of Series objects that share an index.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "A DataFrame can be constructed from a dict of equal-length lists, where each key becomes a column name and each list becomes that column's values: `orders = pd.DataFrame({\"order_id\": [1001, 1002, 1003], \"city\": [\"Lagos\", \"Abuja\", \"Kano\"], \"delivery_time_minutes\": [18, 20, 26]})` builds a three-column, three-row orders table this way.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "mechanism",
+          "content": "A DataFrame can be treated like a dict of like-indexed Series: `df['col']` gets a column, and `df['new'] = ...` sets (or adds) a column, using the same syntax as the analogous dict operations. `orders['city']` gets the city column back as a Series, and `orders['courier'] = ['Ada', 'Bayo', 'Chidi']` adds a new column, using exactly the syntax you'd use to read or write a dict entry.",
+          "fact_ids": [
+            "f5"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "A DataFrame's column, once pulled out with `orders['delivery_time_minutes']`, is itself a Series -- the same one-dimensional, indexed structure this concept started with, now sharing the DataFrame's index.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Watching each of these get built and printed -- a Series from a list, a Series from a dict, a DataFrame from a dict of lists, then a column pulled back out as a Series -- makes the 'DataFrame is a dict of Series sharing an index' relationship concrete in a way that reading the constructor calls alone doesn't fully convey.",
+        "preferred_visual_modes": [
+          "live_code",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Uses the same delivery-time values and city labels that recur across this batch's pandas concepts, for continuity."
+      ]
+    },
+    {
+      "concept_id": "pandas.reading_data",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose your delivery records arrive as a CSV export or an Excel workbook. Before pandas can work with them, you read the file into a DataFrame.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "read_csv() is the main pandas function for reading a delimited text file, such as a CSV file, into a DataFrame: `orders = pd.read_csv(\"orders.csv\")`.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "definition",
+          "content": "read_excel() reads an Excel file (such as a .xlsx workbook) into a DataFrame: `orders = pd.read_excel(\"orders.xlsx\", sheet_name=\"January\")`.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "read_csv() takes the file path (or URL) to read as its first argument, and read_excel() additionally takes a sheet_name argument to choose which sheet of the workbook to load -- which is why the Excel example above names \"January\" but the CSV example doesn't need to.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "mechanism",
+          "content": "read_csv() accepts arguments such as sep to change the field delimiter used to parse the file (the default is a comma). If a delivery export instead used semicolons, `pd.read_csv(\"orders.csv\", sep=\";\")` reads it correctly.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "Whichever reader you call, once the file is loaded successfully you have a DataFrame ready to work with -- what to check inside it comes next.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing the loader actually pull a real file into a running DataFrame helps confirm the call worked, but the two functions and their arguments are already fully explained by the text and the example calls above.",
+        "preferred_visual_modes": [
+          "live_code"
+        ]
+      },
+      "teaching_notes": [
+        "TOC conflict: don't verify the loaded result with shape or head() here -- pandas.inspecting_dataframes, which teaches those, comes later and isn't in this concept's allowed knowledge."
+      ]
+    },
+    {
+      "concept_id": "pandas.creating_dataframes",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Not every DataFrame starts life as a file -- sometimes delivery data already exists as Python data, and you build the table directly from it.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "A DataFrame can be constructed from a dict of equal-length lists, where each key becomes a column name and each list becomes that column's values; if no index is passed, the result uses a default range index: `orders = pd.DataFrame({\"order_id\": [1001, 1002, 1003], \"city\": [\"Lagos\", \"Abuja\", \"Kano\"]})`.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "A DataFrame can also be constructed from a list of dicts, where each dict becomes one row and the dict keys become the column names: `orders = pd.DataFrame([{\"order_id\": 1001, \"city\": \"Lagos\"}, {\"order_id\": 1002, \"city\": \"Abuja\"}, {\"order_id\": 1003, \"city\": \"Kano\"}])` builds the same kind of table one row at a time instead.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "Both routes end at the same kind of table; pick whichever shape your Python data is already in -- one dict per column, or one dict per row.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Running both constructor calls and watching the same table appear from two different input shapes makes the equivalence concrete, though the two code examples above already show the pattern clearly.",
+        "preferred_visual_modes": [
+          "live_code"
+        ]
+      },
+      "teaching_notes": [
+        "TOC conflict: don't verify the result's shape here -- pandas.inspecting_dataframes, which teaches that, comes later and isn't in this concept's allowed knowledge."
+      ]
+    },
+    {
+      "concept_id": "pandas.inspecting_dataframes",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Before doing anything else with a newly loaded or built orders DataFrame, get an overview of what's actually in it.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "head() (and tail()) shows a small sample of the first (or last) rows of a Series or DataFrame; by default it shows five rows. Calling `orders.head()` shows the first five delivery records.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The shape attribute reports a DataFrame's axis dimensions -- the number of rows and the number of columns. `orders.shape` might return `(250, 4)` for 250 orders across 4 columns.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "The dtypes attribute returns the data type of each column in a DataFrame: `orders.dtypes` tells you, for example, that delivery_time_minutes holds numbers and city holds text.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "mechanism",
+          "content": "info() prints a concise summary of a DataFrame, including its columns and their data types, how many non-missing values each column has, and its memory usage: `orders.info()` combines that dtype list with a count of how many delivery times are actually filled in, in one call.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "mechanism",
+          "content": "describe() computes a quick statistical overview of a Series' values, or of each numeric column of a DataFrame, in a single call: `orders.describe()` would summarize delivery_time_minutes with statistics like its count, mean, minimum, and maximum, without you writing each calculation separately.",
+          "fact_ids": [
+            "f5"
+          ]
+        },
+        {
+          "id": "tb7",
+          "purpose": "takeaway",
+          "content": "head, shape, dtypes, info, and describe each answer a different first question about a DataFrame -- what it looks like, how big it is, what type each column is, and what its numbers look like -- and running through all of them is a common first step before analysis.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f4",
+            "f5"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Watching each of these five calls run against one real DataFrame and comparing their different outputs side by side is far more concrete than describing five separate outputs in prose -- a case where seeing the tool in use demonstrates exactly what each command is for.",
+        "preferred_visual_modes": [
+          "live_code",
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Load and build examples now have this to build toward -- head/shape/dtypes/info/describe complete the picture that reading_data and creating_dataframes deliberately left open."
+      ]
+    },
+    {
+      "concept_id": "stats.pandas_descriptive_stats",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "The mean, median, and standard deviation computed by hand earlier for the seven-value delivery-time batch are exactly what pandas can compute directly from a DataFrame column.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "example",
+          "content": "pandas provides built-in statistical methods for a Series or DataFrame column, including mean() (mean of values), median() (arithmetic median), and std() (sample standard deviation): if delivery_time_minutes holds that seven-order batch, `orders[\"delivery_time_minutes\"].mean()`, `.median()`, and `.std()` reproduce the same approximately 30.9, 22, and 21.9-minute figures worked out earlier, straight from the column.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "describe() computes a set of summary statistics, such as count, mean, std, min, quartiles, and max, for a Series or for each numeric column of a DataFrame in one call: `orders[\"delivery_time_minutes\"].describe()` returns all of those at once instead of calling each method separately.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "pandas doesn't introduce new statistics here -- it gives you a direct method call for each one you already know how to compute by hand and interpret. A mean of about 30.9 minutes with a standard deviation of about 21.9 minutes says the typical delivery takes roughly half an hour, but individual deliveries commonly land plus or minus around 20 minutes from that.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing these calls run against the same delivery-times column and produce the already-familiar numbers reinforces the connection, but the method names and their outputs are already fully explained in text.",
+        "preferred_visual_modes": [
+          "live_code"
+        ]
+      },
+      "teaching_notes": [
+        "Keep the reproduced figures (~30.9, 22, ~21.9) consistent with the hand-computed values from stats.descriptive_measures_of_center and stats.measures_of_spread."
+      ]
+    },
+    {
+      "concept_id": "pandas.loc_iloc_selection",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you want the city and delivery time for a particular order, or the first three rows regardless of their labels -- pandas gives two different accessors depending on how you want to address the data.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": ".loc selects data primarily by label (row or column names), while .iloc selects data primarily by integer position, from 0 to length-1 of the axis.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Both .loc and .iloc select using a row selector and a column selector separated by a comma (e.g. df.loc[rows, cols]); an axis left out of the selection, or given as a colon (:), means \"all of that axis\", so `orders.loc[3]` is equivalent to `orders.loc[3, :]` -- both return every column for the row labeled 3.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "`orders.loc[2:4, \"city\"]` selects the city column for the rows labeled 2 through 4.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb5",
+          "purpose": "misconception",
+          "content": ".loc slicing with labels (e.g. 'a':'f') includes both the start and the stop labels in the result, unlike ordinary Python slicing where the stop is excluded. So `orders.loc[2:4]` returns the rows labeled 2, 3, and 4 -- three rows, not two.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "example",
+          "content": "`orders.iloc[0:3, 0:2]` selects, by pure position, the first three rows and first two columns.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb7",
+          "purpose": "mechanism",
+          "content": ".iloc uses 0-based positional indexing where, when slicing, the start position is included and the stop position is excluded, following ordinary Python/NumPy slicing rules. So `orders.iloc[0:3]` returns positions 0, 1, and 2 -- three rows, matching normal Python slicing behavior.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb8",
+          "purpose": "takeaway",
+          "content": "The boundary rule flips between the two accessors -- .loc's label slices include the stop label, .iloc's position slices exclude the stop position -- which is worth double-checking any time a slice's row count looks off by one.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "The inclusive-versus-exclusive boundary difference between .loc and .iloc slicing is exactly the kind of easy-to-miss detail that's much clearer when a real slice is highlighted on an actual table and the returned rows are counted, than when it's only described in words.",
+        "preferred_visual_modes": [
+          "live_code",
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": [
+        "Keep the .loc-inclusive vs .iloc-exclusive contrast explicit -- it's the single easiest thing to get backwards."
+      ]
+    },
+    {
+      "concept_id": "pandas.boolean_filtering",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you only want the delivery orders that took longer than 25 minutes.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Comparing a DataFrame column with a value (e.g. df['A'] > 0) produces a True/False Series of the same length as the column, which can be used directly inside the DataFrame's [] to keep only the matching rows (e.g. df[df['A'] > 0]): `orders[orders[\"delivery_time_minutes\"] > 25]` keeps only the slower deliveries.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "definition",
+          "content": "You may select rows from a DataFrame using a boolean vector the same length as the DataFrame's index; only the rows where the vector is True are kept -- which is exactly what happened above: every row lined up with a True in that comparison came through, every row lined up with a False was dropped.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "misconception",
+          "content": "When combining multiple boolean conditions with the operators | (or), & (and), or ~ (not), each condition must be grouped in parentheses, because Python would otherwise evaluate the comparison operators in an unintended order: `orders[(orders[\"city\"] == \"Lagos\") & (orders[\"delivery_time_minutes\"] > 25)]` needs those parentheses around each comparison to work correctly.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "A boolean filter is really just a same-length True/False column you compute first, then hand to [] to keep only the rows marked True -- one condition, or several grouped in parentheses.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching the True/False mask line up against the rows it keeps and drops makes the mechanism visually obvious, but the two worked filter examples above already walk through exactly what gets kept and why.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "pandas.sort_values",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "DataFrame.sort_values(by=...) sorts rows using the values of the listed column(s); when by is a list of column names, the first column sets the primary sort order and each later column breaks ties among rows that were equal in the previous column(s): `orders.sort_values(by=[\"city\", \"delivery_time_minutes\"])` sorts by city first, then by delivery time within each city.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "sort_values()'s ascending parameter defaults to True, and can be given as a list of booleans matching the length of by, to sort some columns ascending and others descending in the same call: `orders.sort_values(by=[\"city\", \"delivery_time_minutes\"], ascending=[True, False])` sorts cities alphabetically but delivery times from slowest to fastest within each city.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "The by and ascending arguments and their effects are fully shown by the two short examples above; a demo would only replay the same sort in another voice.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "pandas.rename_columns_index",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "The rename() method relabels a DataFrame's axes using a dict or Series mapping (or a function); passing a columns= mapping renames column labels and an index= mapping renames row index labels: `orders.rename(columns={\"delivery_time_minutes\": \"delivery_min\"})`.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "A single rename() call can rename columns and index labels together by passing both the columns and index arguments at once; any label not included in the mapping is left unchanged: `orders.rename(columns={\"city\": \"destination_city\"}, index={0: \"first_order\"})` relabels one column and one row label in a single call, leaving every other label as it was.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Renaming labels with a dict argument is a one-line substitution fully shown by the two example calls above; there's no changing state or mechanism a video would add.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "pandas.dtype_conversion",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose a delivery export loads distance_km as text (like \"12.5\") instead of a number, so it can't be used in arithmetic yet.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "The astype() method explicitly converts a column's (or Series') values from one dtype to another, returning a copy by default, and it raises an exception if the requested conversion is invalid: `orders[\"distance_km\"] = orders[\"distance_km\"].astype(float)` converts the text values to actual floats -- but if one row instead held \"unknown\", astype would raise an exception rather than silently guessing.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "astype() can convert a single column, a subset of a DataFrame's columns at once, or specific columns to specific dtypes by passing a dict mapping column names to target dtypes: `orders.astype({\"distance_km\": float, \"order_id\": str})` converts two columns to two different target types in one call.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "astype() is the tool for \"this column's dtype is wrong for what I need to do with it\" -- but it only succeeds if every value can actually be reinterpreted as the target type.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching a text column's astype conversion succeed, then fail on a genuinely invalid value, makes the 'raises an exception' behavior concrete, though the two worked examples above already show both the normal case and the dict-mapping case.",
+        "preferred_visual_modes": [
+          "annotated_code",
+          "live_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "pandas.datetime_handling",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose a delivery export records each order's pickup_date as plain text, like \"2024-03-14\" -- before you can ask \"which month had the most deliveries,\" that text needs to become an actual date.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "The to_datetime() function converts a Series (or list-like) of date-like strings or other date-like values into pandas datetime values; when passed a Series, it returns a Series with the same index: `orders[\"pickup_date\"] = pd.to_datetime(orders[\"pickup_date\"])` replaces the text column with genuine datetime values, one per order, in the same row positions as before.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "Once a column has a datetime dtype, its .dt accessor exposes date/time component properties, such as year, month, and day, for each value: `orders[\"pickup_month\"] = orders[\"pickup_date\"].dt.month` pulls just the month number out of every pickup date at once.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "takeaway",
+          "content": "to_datetime() is the one-time conversion step; after that, .dt unlocks pulling out whatever date component the analysis actually needs.",
+          "fact_ids": [
+            "f1",
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching a plain text date column get converted and .dt.month pull a new column of numbers out of it would reinforce the before/after change, but the two short calls above already show exactly what happens.",
+        "preferred_visual_modes": [
+          "live_code"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "pandas.str_accessor_cleaning",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose the city column in a delivery export has \"Lagos\", \" lagos\", and \"LAGOS \" scattered across different rows -- the same city, written three inconsistent ways.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "A Series' .str accessor lets you call ordinary string-processing methods, matching the names of Python's built-in string methods (such as lower, strip, and replace), on every element of the Series at once: `orders[\"city\"].str.strip().str.lower()` removes stray whitespace and lowercases every city value in the column in one chained call, turning all three variants into the same \"lagos\".",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "takeaway",
+          "content": "Whatever string method you'd normally call on one piece of text, the .str accessor lets you apply across an entire column at once instead of looping row by row.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching the three inconsistent versions of \"Lagos\" collapse into one clean value after the chained .str call makes the vectorized cleanup visually obvious, but the single worked example above already shows exactly what changes.",
+        "preferred_visual_modes": [
+          "annotated_code"
+        ]
+      },
+      "teaching_notes": [
+        "Skip the optional fact about .str methods excluding missing values automatically -- not required."
+      ]
+    },
+    {
+      "concept_id": "pandas.drop_duplicates",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose order #1042 accidentally appears twice in the orders DataFrame, logged the same way both times.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "duplicated() returns a boolean vector indicating which rows are duplicates, and drop_duplicates() removes duplicate rows; both take as an argument the columns used to identify a duplicated row: `orders.drop_duplicates(subset=[\"order_id\"])` removes rows that repeat the same order_id.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "By default, drop_duplicates() keeps the first occurrence of each duplicate set and drops the rest; passing keep='last' keeps the last occurrence instead, and keep=False drops every row that is part of a duplicate set: `orders.drop_duplicates(subset=[\"order_id\"], keep=\"last\")` would keep order #1042's second logged row instead of its first.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "The keep parameter's behaviors and the duplicate-order example above are fully shown in text; a demo would only replay the same before/after in another voice.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "pandas.missing_data_handling",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose a handful of orders never got a delivery_time_minutes recorded -- those cells are just blank.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "isna() (and its complement notna()) detects which values in a Series or DataFrame are missing: `orders[\"delivery_time_minutes\"].isna()` returns True for every order missing that value.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "dropna() removes rows that contain missing values; passing a subset of column labels restricts which columns are checked when deciding whether a row counts as having a missing value: `orders.dropna(subset=[\"delivery_time_minutes\"])` removes only the orders missing that one column, ignoring gaps elsewhere.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "fillna() replaces missing (NA) values with a specified value, such as a scalar (for example, replacing every missing value in a column with 0): `orders[\"delivery_time_minutes\"].fillna(orders[\"delivery_time_minutes\"].median())` replaces each missing delivery time with the column's median value instead of dropping the order entirely.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Handling missing data means detecting it first, then deciding what to do about it -- for example, dropping the order if a missing delivery time makes that row unusable for the analysis at hand, or filling it with the column's median if a reasonable substitute exists instead.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Watching a real blank cell get flagged True by isna(), then either vanish under dropna() or get replaced under fillna(), is a direct before/after demonstration of the exact decision this concept teaches -- more concrete than describing three separate function behaviors in prose.",
+        "preferred_visual_modes": [
+          "data_table_demo",
+          "live_code"
+        ]
+      },
+      "teaching_notes": [
+        "Skip the optional fact that isna() also treats None as missing -- not required."
+      ]
+    },
+    {
+      "concept_id": "pandas.map_substitution",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "Series.map() accepts a Python function taking a single value and returning a single value, and applies it to every element of the Series: with `def to_upper(code): return code.upper()` defined first, `orders[\"city_code\"].map(to_upper)` uppercases every city code in the column.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "Series.map() can substitute each value in the Series using a mapping correspondence that may be a function, a dict, or a Series: `orders[\"city_code\"].map({\"LOS\": \"Lagos\", \"ABJ\": \"Abuja\", \"KAN\": \"Kano\"})` replaces each three-letter code with its full city name using a lookup dict instead of a function.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "LOW",
+        "reason": "Both a function-based and a dict-based .map() call are fully shown by the two examples above; a demo would only replay the same substitution.",
+        "preferred_visual_modes": [
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "pandas.apply_transform",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you want to label every order \"fast\" or \"slow\" based on its delivery time, using a rule you write yourself as a small function.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "DataFrame.apply() applies an arbitrary function along an axis of the DataFrame, operating on each column by default, or on each row when axis=1. Writing a small function --\n\n    def label_speed(row):\n        if row[\"delivery_time_minutes\"] > 25:\n            return \"slow\"\n        else:\n            return \"fast\"\n\n-- then calling `orders[\"speed_label\"] = orders.apply(label_speed, axis=1)` runs that function once per row (because axis=1), giving it access to every column of the row at once, and collects the results into a new column.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "takeaway",
+          "content": "apply() lets you write the one-row (or one-column) logic yourself as a function, and run it across the whole axis.",
+          "fact_ids": [
+            "f1"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Watching the custom function run row by row and populate the new speed_label column makes the axis=1 behavior concrete, though the worked function-and-call example above already demonstrates exactly what happens.",
+        "preferred_visual_modes": [
+          "live_code"
+        ]
+      },
+      "teaching_notes": [
+        "Skip the optional note pointing to map() for elementwise work -- not required, and map() is covered separately."
+      ]
+    },
+    {
+      "concept_id": "pandas.concat_stacking",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose January, February, and March deliveries each live in their own DataFrame with identical columns, and you want one combined table.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "pd.concat() concatenates multiple Series or DataFrame objects along an axis: `pd.concat([jan_orders, feb_orders, mar_orders])`.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "By default, pd.concat() stacks the given DataFrames row-wise, appending each one's rows below the previous, producing one combined DataFrame when they share the same columns -- so the result above has every January row, then every February row, then every March row, one after another.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "pd.concat() takes an axis parameter: by default (no axis argument), it stacks the objects row-wise, while axis=1 places them side by side as columns: `pd.concat([orders_basic_info, orders_extra_columns], axis=1)` would instead line the two tables up next to each other, column by column.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "concat glues tables end to end; the axis argument is just which direction \"end to end\" points -- down for more rows, sideways for more columns.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "MEDIUM",
+        "reason": "Seeing three monthly tables actually glue into one -- rows stacking downward, or two tables placed side by side under axis=1 -- makes the spatial difference between the two axes clearer than describing 'row-wise' versus 'side by side' in words, though the two examples above already cover both cases.",
+        "preferred_visual_modes": [
+          "diagram_animation"
+        ]
+      },
+      "teaching_notes": [
+        "Skip the optional join-parameter and ignore_index facts -- not required."
+      ]
+    },
+    {
+      "concept_id": "pandas.merge_join",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose orders live in one DataFrame and driver details live in another, linked by a shared driver_id column.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "merge() combines two DataFrames by matching values in a shared key column, which can be specified with the on parameter: `orders.merge(drivers, on=\"driver_id\")`.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The how parameter to merge() controls which keys are kept in the result; how='inner' (the default) keeps only the key values present in both DataFrames -- so a driver_id that appears in orders but not in drivers wouldn't survive an inner merge, and vice versa.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "If a key value does not appear in one of the two DataFrames being merged, the corresponding values contributed by that DataFrame in the joined result are NA -- which is what happens once a join type other than the default inner merge is used, and unmatched keys are allowed to stay in the result.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "mechanism",
+          "content": "The how parameter also accepts 'left' (keep all keys from the left DataFrame only), 'right' (keep all keys from the right DataFrame only), and 'outer' (keep the union of keys from both DataFrames): `orders.merge(drivers, on=\"driver_id\", how=\"left\")` keeps every order, filling in NA for driver details on any driver_id merge can't find in the drivers table.",
+          "fact_ids": [
+            "f4"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "takeaway",
+          "content": "merge() matches rows on a shared key; setting the how parameter decides whether unmatched rows on either side get dropped or kept with NA gaps.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3",
+            "f4"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "The four how options -- which keys survive, which rows get NA-filled -- describe a matching/overlap relationship that an animation of two tables merging makes immediately visible, more so than reading four separate rules about which keys are kept.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "live_code"
+        ]
+      },
+      "teaching_notes": [
+        "TOC conflict: the concept's own objective frames merge as mirroring SQL joins, but SQL hasn't been taught yet and isn't in this concept's allowed knowledge -- this text explains merge purely in pandas terms, without comparing it to SQL."
+      ]
+    },
+    {
+      "concept_id": "pandas.groupby_aggregation",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose you want the average delivery time per city, not for the whole batch of orders at once.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "Group by refers to a process involving one or more of the following steps: splitting the data into groups based on some criteria, applying a function to each group independently, and combining the results into a data structure -- split every order into its city's group, apply \"average\" within each group, then combine the per-city averages into one result.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "definition",
+          "content": "An aggregation is a groupby operation that reduces each group to a single summary value per column, such as computing the sum of a column within each group.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "example",
+          "content": "In practice, you call df.groupby(key) and then an aggregation method such as .sum() or .mean() on the DataFrame or a selected column, or .agg([...]) to compute several aggregations at once; by default the group keys become the index of the result: `orders.groupby(\"city\")[\"delivery_time_minutes\"].mean()` returns one average delivery time per city, with the city names as the index; `orders.groupby(\"city\")[\"delivery_time_minutes\"].agg([\"mean\", \"sum\"])` computes both the average and the total in one call.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "Split, apply, combine is the whole idea -- groupby just gives you one call that does all three steps for whatever key and aggregation you choose.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Split-apply-combine is a multi-stage process with a genuine before/after shape -- one flat table splitting into groups, an aggregation running inside each, then those results combining back into one summary -- and a diagram of those three stages makes that shape far clearer than describing it as three verbs in a row.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "slides_with_signaling"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "pandas.melt_reshaping",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose a wide summary table has one row per city and separate columns \"jan_deliveries\", \"feb_deliveries\", \"mar_deliveries\" -- and you need one row per city-month combination instead.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "melt() reshapes a DataFrame from wide to long format: the columns listed as id_vars stay as identifier columns, while all other columns are unpivoted into two columns, one holding the original column names and one holding their values: `city_deliveries.melt(id_vars=[\"city\"])` keeps \"city\" as an identifier and turns \"jan_deliveries\", \"feb_deliveries\", and \"mar_deliveries\" into two new columns -- one holding those original column names, the other holding each of their counts.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "mechanism",
+          "content": "The default 'variable' and 'value' column names produced by melt() can be renamed using its var_name and value_name parameters: `city_deliveries.melt(id_vars=[\"city\"], var_name=\"month\", value_name=\"deliveries\")` gives those two new columns clearer names.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Watching three separate monthly columns collapse into one \"month\" column and one \"deliveries\" column is a genuine shape change that a before/after table diagram shows far more directly than describing 'unpivoted into two columns' in prose.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "pandas.pivot_table_reshaping",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "intro",
+          "content": "Suppose the long table that melt produced earlier is saved as long_deliveries, with one row per city-month and the columns city, month, and deliveries -- and it needs to go back to a wide table: cities as rows, months as columns.",
+          "fact_ids": []
+        },
+        {
+          "id": "tb2",
+          "purpose": "definition",
+          "content": "pivot_table() reshapes data by turning the distinct values of one column into new columns, and unlike plain pivot(), it can handle duplicate index/column combinations by aggregating the numeric values.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb3",
+          "purpose": "example",
+          "content": "pivot_table() takes index, columns, and values arguments: index sets the rows of the output table, columns sets the new columns, and values selects which column(s) to aggregate into the table: `long_deliveries.pivot_table(index=\"city\", columns=\"month\", values=\"deliveries\")` puts each city on its own row, each month as its own column, and the delivery counts as the values filling the grid.",
+          "fact_ids": [
+            "f2"
+          ]
+        },
+        {
+          "id": "tb4",
+          "purpose": "mechanism",
+          "content": "pivot_table() combines rows that share the same index/column values using aggfunc, which defaults to 'mean'; passing aggfunc='sum' (or another function) changes how those values are combined -- so if a city had two rows for the same month, the default call above would average them instead of erroring, and adding aggfunc=\"sum\" would total them instead.",
+          "fact_ids": [
+            "f3"
+          ]
+        },
+        {
+          "id": "tb5",
+          "purpose": "takeaway",
+          "content": "pivot_table spreads long data wider by turning one column's values into new column headers, aggregating whenever more than one row lands in the same cell.",
+          "fact_ids": [
+            "f1",
+            "f2",
+            "f3"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "HIGH",
+        "reason": "Seeing the same city-month rows fold into a grid -- cities down the side, months across the top -- is a spatial reshape that a diagram of rows folding into a table shows more directly than describing index/columns/values as three separate arguments.",
+        "preferred_visual_modes": [
+          "diagram_animation",
+          "data_table_demo"
+        ]
+      },
+      "teaching_notes": []
+    },
+    {
+      "concept_id": "pandas.export_to_csv",
+      "path_id": "data_analyst",
+      "teaching_blocks": [
+        {
+          "id": "tb1",
+          "purpose": "definition",
+          "content": "The to_csv() method on a Series or DataFrame writes its contents to a CSV file; the destination path or buffer is its only required argument: `orders.to_csv(\"cleaned_orders.csv\")`.",
+          "fact_ids": [
+            "f1"
+          ]
+        },
+        {
+          "id": "tb2",
+          "purpose": "mechanism",
+          "content": "to_csv()'s index argument controls whether the row (index) labels are written to the file; it defaults to True, and passing index=False omits them: `orders.to_csv(\"cleaned_orders.csv\", index=False)` writes the same file without an extra index column.",
+          "fact_ids": [
+            "f2"
+          ]
+        }
+      ],
+      "video_need": {
+        "level": "NONE",
+        "reason": "Writing a DataFrame to a file with one required argument and one boolean flag is fully covered by the two example calls above; there's no mechanism or state change a video would add beyond restating the same line of code.",
+        "preferred_visual_modes": []
+      },
+      "teaching_notes": []
+    }
+  ]
+}
