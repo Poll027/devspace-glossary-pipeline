@@ -20,34 +20,16 @@ The first run is the `data_analyst` path: 168 concepts, in batch folder `batches
 | 06 video candidates | `video_candidates.json`, 96 concepts searched (HIGH/MEDIUM only), 310 candidates, 239 kept. |
 | 07 transcript sync | 208 unique videos fetched into the shared `video_bank/` (207 catalogue entries, 204 with transcripts). One video permanently failed (429s); its concept has 2 other candidates. |
 
-## In progress — stage 08/09 (segment detection + judgment)
+## Done — stage 08/09/10 (gated PASS 2026-10-16)
 
-Fanned out by **video**, not by concept (`chunks_08.json`): a 5-video canary plus 6 chunks of ~32–34 videos.
+- **08/09:** all 7 chunks merged. 203 proposals, 174 approved, 29 rejected (inaccurate 9, prerequisite leak 5, needs prior context 4, fact mismatch 4, off topic 2, weak visual 2, no transcript 2, too long 1). 34 detector-side rejected videos.
+- **Detectors:** c0–c5 Claude Sonnet 5 subagent; c6 Claude Sonnet 4.6 via Bedrock (`scripts/glm_generate.py`). Judge: Opus for all chunks. The judge changed the cut on most approvals — detector ranges run long (sponsor reads, mid-sentence ends).
+- **ztHopE5Wnpc:** its transcript timing is broken past ~17800s (cues 1s-spaced, no longer match video time). Don't source from it past ~17400s.
+- **10 media selection:** `selected_media.json` — 85 selected, 72 `no_video_needed`, 11 `no_segment_found` (text-only).
+- `datamodel.normalization_basics` has no approved video (both proposals rejected); the judge suggests re-sourcing from 314s onward in `rBPQ5fg_kiY`.
 
-| Chunk | Detection (`segment_proposals.part.<chunk>.json`) | Judgment (`segment_judgments.part.<chunk>.json`) |
-|---|---|---|
-| c0_canary | done | done |
-| c1 | done | done |
-| c2 | done | done |
-| c3 | done | done |
-| c4 | done | done |
-| c5 | done (35 proposals, 4 rejected by the detector) | **not started** |
-| c6 | **not started** | **not started** |
+## Still to do after stage 10
 
-**Next steps:** judge c5, detect+judge c6, then:
-```bash
-python3 00_GLOSSARY_PIPELINE_CORE/scripts/merge_parts.py batches/glossary_batch_001_data_analyst_pilot segment_proposals.json segment_proposals.schema.json
-python3 00_GLOSSARY_PIPELINE_CORE/scripts/merge_parts.py batches/glossary_batch_001_data_analyst_pilot segment_judgments.json segment_judgments.schema.json
-python3 00_GLOSSARY_PIPELINE_CORE/scripts/update_ledger.py batches/glossary_batch_001_data_analyst_pilot record 08_segment_detection segment_proposals.json PASS
-python3 00_GLOSSARY_PIPELINE_CORE/scripts/update_ledger.py batches/glossary_batch_001_data_analyst_pilot record 09_segment_judge segment_judgments.json PASS
-```
-Prompts for both roles are in `batches/glossary_batch_001_data_analyst_pilot/working/sd_prompt.md` (detector) and `sj_prompt.md` (judge) — both carry the accumulated lessons from c0–c4 (don't pre-trim fact-bearing content; verify exact cut timestamps; flag factual errors in the source video, not just gaps).
-
-Across c0–c4, the judge has rejected content for real reasons on **19 of 162** proposals so far — wrong arithmetic, backwards claims, prerequisite leaks, videos that don't actually demonstrate what their title promises. Several concepts now have no approved video (will need text-only coverage): `viz.seaborn_dataframe_plotting`, `capstone.building_dashboard_or_viz`, among others logged in `orchestrator_notes.md`.
-
-## Still to do after stage 09
-
-- **10:** media selection (script).
 - **11:** reconciliation.
 - **12:** clusters.
 - **13:** leakage check.
@@ -77,7 +59,7 @@ Across c0–c4, the judge has rejected content for real reasons on **19 of 162**
 Hit Claude usage-limit risk; moving the generator role off the Claude Max-plan subscription.
 - **Final architecture decision:** GLM 5.3 (via Bedrock) runs the generator role; **Claude (Opus) stays the evaluator** — the generator/evaluator split is unchanged, only the generator's model changes. Claude Code can't run a third-party model directly, so GLM generation needs a standalone script calling Bedrock's API; Claude Code itself is unaffected (billed through the Max subscription, not a usage-limit risk on its own).
 - **Evaluator cost control** (added below, 2026-10-16): since GLM generation is cheap/fast, the risk flips to the Opus evaluator over-spending. Six rules are now baked into `01_GLOSSARY_PACK_TEMPLATE/START_HERE.md` (`## Evaluation cost control`) and into the individual stage files (03, 05, 06, 08, 09, 16) — mechanical checks before any evaluator call, generator self-check against its own mistakes checklist, depth scaled to concept tier/stakes, canary-then-sample across a stage's own chunks, an explicit ceiling next to every "at least N" sampling floor, and the evaluator-only `VERDICT` meaning "did I check honestly," not "did everything pass." Stages 13 (leakage) and 15 (cross-artifact review) were deliberately left as-is — already either exhaustive-by-design or tier-sampled.
-- AWS CLI/credentials were **not yet configured** in the working environment as of 2026-10-16 — needed before GLM generation can run. The boto3 script for the GLM generator role has not been written yet.
+- **Bedrock status (2026-10-16):** a Bedrock API key works (`AWS_BEARER_TOKEN_BEDROCK`, `AWS_REGION`, `GLM_MODEL_ID` in the gitignored `.env`). GLM 5.3, every OpenAI GPT-5.x/6.x and Claude >= 4.7 return AccessDenied "not available for this account" (account/billing-level; AWS Support case needed). Working: Claude 4.x (Sonnet 4.6, Opus 4.6...) and `gpt-oss-*`. gpt-oss-120b detection was too conservative; Sonnet 4.6 was close to Sonnet 5. Run the script with `~/ai-env/bin/python` (boto3, jsonschema live there). `glm_generate.py` covers stage 08 only.
 
 ## Known issues logged for later
 

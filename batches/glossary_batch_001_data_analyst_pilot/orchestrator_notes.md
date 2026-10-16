@@ -165,3 +165,11 @@ c6: DONE — all advisories closed, 12 entries.
 - c0-c4 fully done (detection+judgment). c5: proposals done (35, 4 rejected), judgment was in progress when stopped on request — not resumed, no partial file. c6: detection was in progress when stopped on request — no file written yet.
 - Resume by re-dispatching: Stage 09 judge for c5 (prompt: working/sj_prompt.md, CHUNK=c5, same re-check list as before), then stage 08 detection for c6 (prompt: working/sd_prompt.md, CHUNK=c6), then stage 09 judge for c6.
 - User asked to STOP generation and not restart until told — do not auto-resume on a future "continue" without an explicit instruction to resume this specific pipeline.
+
+## Stage 08/09 close-out (2026-10-16)
+- c5 judged: 28 approved / 7 rejected (logical_operators has no usable video at all; file_io, groupby_aggregation, subquery_in_where need prior context; junction_tables and one box-plot clip inaccurate; null_handling off topic).
+- c6 detected by Sonnet 4.6 via Bedrock, judged: 25 approved / 4 rejected (normalization_basics x2, correlation, er_diagram_reading). Note: the judge's prose said 24/5; the file says 25/4 — file is authoritative.
+- Text must carry (thin or no video): logical_operators; outer_joins (LEFT only); lookups (XLOOKUP only); capstone data retrieval (no SQL); pivot_tables (no Columns/Filters); frequency_distribution (f1 only); pyplot f1; histogram f2/f3; sets f4; FK f2/f3; one_to_many f2; many_to_many f3; significance f2/f4/f5; loc/iloc f2/f3; concat f3.
+- Detector-rejections worth reconsidering as partial-coverage proposals (judge's note): q7Bo line_plots (f2), rP4p0luqvR8 while_loops (f1), v7dOXTgT2YU bar_charts (f2,f3 at 20-141).
+- loc_iloc f2: zmdjNSmRXF4 Slicing chapters are allowed (reading_data is earlier in the TOC).
+- Stage 10: 85 selected / 72 no_video_needed / 11 no_segment_found.
