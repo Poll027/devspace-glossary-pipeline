@@ -89,9 +89,28 @@ def make_client():
     return boto3.client("bedrock-runtime", config=Config(retries={"max_attempts": 12, "mode": "adaptive"}, read_timeout=600))
 
 
+def price_usd(model, usage):
+    """USD for one call. Per-million-token (in, out): Opus-class 5/25, else 3/15. Override env PRICE_EVAL / PRICE_GEN = in,out."""
+    role = "EVAL" if "opus" in model.lower() else "GEN"
+    pin, pout = (5.0, 25.0) if role == "EVAL" else (3.0, 15.0)
+    if os.environ.get(f"PRICE_{role}"):
+        pin, pout = (float(x) for x in os.environ[f"PRICE_{role}"].split(","))
+    return usage.get("inputTokens", 0) / 1e6 * pin + usage.get("outputTokens", 0) / 1e6 * pout
+
+
+def log_usage(model, usage, label=""):
+    """Append the call's estimated cost to $COST_LOG (set by the driver) so every script's spend is counted."""
+    p = os.environ.get("COST_LOG")
+    if p:
+        with open(p, "a") as f:
+            f.write(json.dumps({"t": datetime.now(timezone.utc).isoformat(timespec="seconds"), "model": model, "label": label or Path(sys.argv[0]).name,
+                                "in": usage.get("inputTokens", 0), "out": usage.get("outputTokens", 0), "usd": round(price_usd(model, usage), 4)}) + "\n")
+
+
 def call_glm(client, model, prompt, max_tokens=32000):  # reasoning is always on and counts against this
     r = client.converse(modelId=model, messages=[{"role": "user", "content": [{"text": prompt}]}],
                         inferenceConfig={"maxTokens": max_tokens, "temperature": 0.2})
+    log_usage(model, r["usage"])
     return "".join(b.get("text", "") for b in r["output"]["message"]["content"])
 
 
