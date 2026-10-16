@@ -1,6 +1,6 @@
 # Progress — data_analyst pilot (glossary_batch_001)
 
-Status as of 2026-09-27. Read this first, then `CLAUDE.md` and `01_GLOSSARY_PACK_TEMPLATE/START_HERE.md`.
+Status as of 2026-10-16. Read this first, then `CLAUDE.md` and `01_GLOSSARY_PACK_TEMPLATE/START_HERE.md`.
 
 ## What this is
 
@@ -12,42 +12,41 @@ The first run is the `data_analyst` path: 168 concepts, in batch folder `batches
 
 | Stage | Result |
 |---|---|
-| 00 preflight | The source pack grew from 50 to **130** checked sources during stage 03, and 00 was re-gated. |
+| 00 preflight | Source pack grew to 130 sources during stage 03; re-gated. |
 | 01 extraction, 02 registry lookup | 168 concepts, all new. |
-| 03 coverage briefs | `coverage_briefs.json`, 168 briefs. Every chunk needed 2–3 repair rounds. |
+| 03 coverage briefs | `coverage_briefs.json`, 168 briefs. |
 | 04 depth classification | 42 core / 86 standard / 40 reference. |
+| 05 glossary pass A | `glossary_pass_a.json`, 168 entries — the teaching text. |
+| 06 video candidates | `video_candidates.json`, 96 concepts searched (HIGH/MEDIUM only), 310 candidates, 239 kept. |
+| 07 transcript sync | 208 unique videos fetched into the shared `video_bank/` (207 catalogue entries, 204 with transcripts). One video permanently failed (429s); its concept has 2 other candidates. |
 
-## In progress — stage 05 (Glossary Pass A: the teaching text)
+## In progress — stage 08/09 (segment detection + judgment)
 
-The work is split into chunks (see `chunks.json`). Each chunk writes `glossary_pass_a.part.<chunk>.json`.
+Fanned out by **video**, not by concept (`chunks_08.json`): a 5-video canary plus 6 chunks of ~32–34 videos.
 
-| Chunk | Concepts | State | Next step |
-|---|---|---|---|
-| c0_canary | 5 foundations | **PASS** | none |
-| c1 | 26 Python | FAIL, 17 blockers, **not yet repaired** | Repair from `working/findings_05_c1.md` |
-| c2 | 30 stats + pandas | FAIL, 7 blockers, **partly repaired** | Diff against `working/pa_c2_round1.json`, finish the remaining fixes |
-| c3 | 33 SQL + data modelling | FAIL, 6 blockers, **partly repaired** | Diff against `working/pa_c3_round1.json`, finish the remaining fixes |
-| c4 | 32 spreadsheets + experimentation | FAIL, 9 blockers, **not yet repaired** | Repair from `working/findings_05_c4.md` |
-| c5 | 30 visualization + stakeholder communication | **not written** (the draft was lost when the run stopped) | Generate with `working/pa_prompt.md` (`{CHUNK}` = c5) |
-| c6 | 12 capstone | written, **not yet evaluated** | Evaluate with `working/pa_eval_prompt.md` (`{CHUNK}` = c6) |
+| Chunk | Detection (`segment_proposals.part.<chunk>.json`) | Judgment (`segment_judgments.part.<chunk>.json`) |
+|---|---|---|
+| c0_canary | done | done |
+| c1 | done | done |
+| c2 | done | done |
+| c3 | done | done |
+| c4 | done | done |
+| c5 | done (35 proposals, 4 rejected by the detector) | **not started** |
+| c6 | **not started** | **not started** |
 
-Every blocking finding comes with pinned replacement wording. After each repair:
-1. Diff the part file against its round-1 snapshot.
-2. Confirm the pinned text is present and nothing else changed.
-3. Mark the chunk passed.
-
-Once all 7 chunks have passed:
-
+**Next steps:** judge c5, detect+judge c6, then:
 ```bash
-python3 00_GLOSSARY_PIPELINE_CORE/scripts/merge_parts.py batches/glossary_batch_001_data_analyst_pilot glossary_pass_a.json glossary_pass_a.schema.json
-python3 00_GLOSSARY_PIPELINE_CORE/scripts/update_ledger.py batches/glossary_batch_001_data_analyst_pilot record 05_glossary_pass_a glossary_pass_a.json PASS --generator claude-sonnet-5 --evaluator claude-opus-5-5 --unresolved 0
+python3 00_GLOSSARY_PIPELINE_CORE/scripts/merge_parts.py batches/glossary_batch_001_data_analyst_pilot segment_proposals.json segment_proposals.schema.json
+python3 00_GLOSSARY_PIPELINE_CORE/scripts/merge_parts.py batches/glossary_batch_001_data_analyst_pilot segment_judgments.json segment_judgments.schema.json
+python3 00_GLOSSARY_PIPELINE_CORE/scripts/update_ledger.py batches/glossary_batch_001_data_analyst_pilot record 08_segment_detection segment_proposals.json PASS
+python3 00_GLOSSARY_PIPELINE_CORE/scripts/update_ledger.py batches/glossary_batch_001_data_analyst_pilot record 09_segment_judge segment_judgments.json PASS
 ```
+Prompts for both roles are in `batches/glossary_batch_001_data_analyst_pilot/working/sd_prompt.md` (detector) and `sj_prompt.md` (judge) — both carry the accumulated lessons from c0–c4 (don't pre-trim fact-bearing content; verify exact cut timestamps; flag factual errors in the source video, not just gaps).
 
-## Still to do after stage 05
+Across c0–c4, the judge has rejected content for real reasons on **19 of 162** proposals so far — wrong arithmetic, backwards claims, prerequisite leaks, videos that don't actually demonstrate what their title promises. Several concepts now have no approved video (will need text-only coverage): `viz.seaborn_dataframe_plotting`, `capstone.building_dashboard_or_viz`, among others logged in `orchestrator_notes.md`.
 
-- **06:** video candidates. Search the allowlisted channel catalogues first.
-- **07:** transcript sync (script).
-- **08/09:** segment detection and judgement.
+## Still to do after stage 09
+
 - **10:** media selection (script).
 - **11:** reconciliation.
 - **12:** clusters.
@@ -65,19 +64,25 @@ python3 00_GLOSSARY_PIPELINE_CORE/scripts/update_ledger.py batches/glossary_batc
 - **Gate.** Only BLOCKING defects fail a round. ADVISORY findings go to the generator once, with no re-evaluation.
   - Advisory fixes may only reword, delete, move or cite. They must never add a new claim.
   - A re-check after a repair covers only the diff.
-  - Pinned-wording repairs can be verified by script.
-  - After 3 failed rounds, stop and ask the user.
-- **Batching.** Run about 3 agents at a time. Running 6 at once repeatedly hit session limits.
-- **Checklists.** Each stage's `GENERATOR.md` carries a checklist of "mistakes made". The most common are prose saying more than its source (upgraded hedges, closed lists, added causes) and code that doesn't run. Run or trace every snippet, and use only syntax the course has already taught.
-- **Content.** Teaching channels only (no news or commentary channels). The text must teach on its own and never mention video.
+  - Pinned-wording repairs can be verified by script, without spending another full evaluator round.
+  - After 3 failed rounds, stop and ask the user. A single blocker with pinned wording may get one more narrow fix + check instead of stopping.
+  - **Stage 08/09 is evaluator-only on the judge side** — there is no repair loop. The judge's own `VERDICT: PASS/FAIL` means "did I judge honestly and completely," not "did every proposal pass." Rejected proposals are the stage doing its job.
+- **Batching.** Run about 3 agents at a time. Running 6+ at once repeatedly hit session limits.
+- **Checklists.** Each stage's `GENERATOR.md` carries a checklist of "mistakes made." Run or trace every snippet/query/formula; verify exact cut-boundary timestamps rather than estimating; a video can state something factually wrong, not just omit a fact.
+- **Content.** Teaching channels only. A good video from a bad channel (career-advice/vendor/news) is rejected even if that one video teaches well.
+- **Tools.** `00_GLOSSARY_PIPELINE_CORE/scripts/search_catalogs.py` is the keyword search over the 43-channel video allowlist — use it instead of reading catalogue files directly. `fetch_videos.py` has a client-fallback retry (default → android) for one-off 429s.
+
+## Moving to AWS Bedrock (in progress, 2026-10-16)
+
+Hit Claude usage-limit risk; moving the heavy stages off the Claude Max-plan subscription.
+- **Claude via Bedrock** (same models, billed through AWS instead of the subscription) removes the usage-limit-reset problem with zero prompt changes — this is the fast fix if the goal is just "stop hitting limits."
+- **GLM 5.3 via Bedrock** (for generator-role stages) is a separate, additional integration: Claude Code can't run a third-party model directly, so this needs a standalone script calling Bedrock's API, with Claude still doing the evaluator/judge role. Not yet built as of this note.
+- AWS CLI/credentials were **not yet configured** in the working environment as of 2026-10-16 — needed before either path works.
 
 ## Known issues logged for later
 
-`orchestrator_notes.md` holds three kinds of issue for later:
-- About 20 TOC conflicts to fix upstream in the TOC pipeline, mostly practice tasks that need a concept taught later.
-- Placeholder objectives.
-- Deferred advisories. One example: the Orders column letters differ between the c4 spreadsheet entries.
+`orchestrator_notes.md` holds the running list: ~20 TOC conflicts to fix upstream, placeholder objectives, deferred advisories (e.g. the c4 Orders column-letter inconsistency, now fixed within c4 but not cross-checked against other chunks), and content gaps where no video covers a required fact (text already covers these independently — not a defect, see playbook §18).
 
-## Two-account coordination
+## Two-account / multi-compute coordination
 
-Only one account works on the batch at a time. Run `git pull` before starting, and commit and push when you stop.
+Only one compute path works on the batch at a time. `git pull` before starting, commit and push when you stop. GitHub: `Poll027/devspace-glossary-pipeline`.
