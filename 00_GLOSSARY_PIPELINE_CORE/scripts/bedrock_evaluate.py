@@ -9,7 +9,7 @@ problem, fix}]}. FAIL iff any BLOCKING defect. Model: env EVAL_MODEL_ID (default
 Each call sees only the sources + the bundle, never the generator's reasoning.
 # ponytail: stage 11 only; other evaluator stages keep their EVALUATOR.md and need their own prompt.
 """
-import argparse, json, os, sys
+import argparse, json, os, sys, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -57,6 +57,17 @@ First enumerate the checks, then the defects. Reply with ONE JSON object and not
 An empty list means you found nothing. claims_checked must include EVERY specific factual claim in the bridge notes and summaries (positive and negative: "only a spoken mention", "never shows", "both clips", "fixes it"), each with the quoted evidence from the transcript range, plus the practice_anchor consistency check (does success/objective/starter rely on anything in blocked_syntax?). Every claim with supported=false must appear in defects. Be specific enough that the fix can be applied without re-deriving your reasoning; do not invent defects to look thorough."""
 
 
+def ask(client, model, prompt, tries=4):
+    """One evaluation call, retried with backoff on throttling/API errors and unparseable replies (a fresh sample usually parses)."""
+    for i in range(tries):
+        try:
+            return parse(call_glm(client, model, prompt, 16000))
+        except Exception:
+            if i == tries - 1:
+                raise
+            time.sleep(15 * (i + 1))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("batch_dir"); ap.add_argument("chunk"); ap.add_argument("--only", nargs="*"); ap.add_argument("--part", help="part file suffix if different from chunk"); ap.add_argument("--passes", type=int, default=2, help="independent evaluations per concept; defects are unioned")
@@ -68,7 +79,7 @@ def main():
     client = make_client()
     ec, names, cbs, pas, dcs, sels, segj = load_inputs(B)
     bundles = {b["context"]["concept_id"]: b for b in load(B / f"glossary_bundles_draft.part.{a.part or a.chunk}.json")["bundles"]}
-    defects, errors = [], []
+    defects, errors, details = [], [], {}
     for cid, b in bundles.items():
         if a.only and cid not in a.only:
             continue
@@ -76,7 +87,7 @@ def main():
         found = {}  # independent passes, union of defects keyed by (field, kind), highest severity wins
         try:
             for _ in range(a.passes):
-                out = parse(call_glm(client, model, prompt, 16000))
+                out = ask(client, model, prompt)
                 for d in out["defects"]:
                     if d.get("severity") in ("BLOCKING", "ADVISORY"):
                         k = (d["field"], d["problem"][:40])
@@ -84,11 +95,11 @@ def main():
                             found[k] = {"concept_id": cid, **d}
             ds = list(found.values())
         except Exception as e:  # unparseable or API error: report it, never count as a pass
-            errors.append(cid); print(f"{cid}: EVAL ERROR {str(e)[:100]}", file=sys.stderr); continue
+            errors.append(cid); details[cid] = f"{type(e).__name__}: {str(e)[:300]}"; print(f"{cid}: EVAL ERROR {details[cid]}", file=sys.stderr); continue
         defects += ds
         print(f"{cid}: {sum(d['severity'] == 'BLOCKING' for d in ds)}B {sum(d['severity'] == 'ADVISORY' for d in ds)}A")
     verdict = "FAIL" if any(d["severity"] == "BLOCKING" for d in defects) else ("INCOMPLETE" if errors else "PASS")
-    rep = {"chunk": a.chunk, "evaluator_model": model, "verdict": verdict, "not_evaluated_due_to_errors": errors, "defects": defects}
+    rep = {"chunk": a.chunk, "evaluator_model": model, "verdict": verdict, "not_evaluated_due_to_errors": errors, "error_details": details, "defects": defects}
     dest = B / "working" / f"eval_11_{a.part or a.chunk}.json"
     dest.write_text(json.dumps(rep, indent=2))
     print(f"VERDICT: {verdict}; {sum(d['severity'] == 'BLOCKING' for d in defects)} blocking, {sum(d['severity'] == 'ADVISORY' for d in defects)} advisory, {len(errors)} errors -> {dest}")

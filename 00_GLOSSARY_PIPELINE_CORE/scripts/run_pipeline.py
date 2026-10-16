@@ -217,7 +217,7 @@ def evaluate(c, sid, chunk, ids, prior=None, only=None):
         c.sh(cmd)
         rep = load(c.B / "working" / f"eval_11_{chunk}.json")
         if rep["not_evaluated_due_to_errors"]:
-            return None, [f"EVAL ERROR concepts: {rep['not_evaluated_due_to_errors']}"]
+            return None, [f"EVAL ERROR concepts: {rep['not_evaluated_due_to_errors']}", *[f"{k}: {v}" for k, v in list(rep.get("error_details", {}).items())[:5]]]
         return rep["verdict"], [f"{d['severity']} {d['concept_id']}@{d.get('path_id', '')} {d['field']}: {d['problem']} -> {d['fix']}" for d in rep["defects"]]
     for _ in range(2):
         v, d = parse_eval(c.agent("EVAL", agent_prompt("EVAL"), evaluator_task(c, sid, chunk, ids, prior), f"{sid}:{chunk}:eval"))
