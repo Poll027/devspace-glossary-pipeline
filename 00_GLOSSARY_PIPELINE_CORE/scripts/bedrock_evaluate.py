@@ -80,7 +80,7 @@ def main():
     ec, names, cbs, pas, dcs, sels, segj = load_inputs(B)
     bundles = {b["context"]["concept_id"]: b for b in load(B / f"glossary_bundles_draft.part.{a.part or a.chunk}.json")["bundles"]}
     defects, errors, details = [], [], {}
-    cache_path = B / "working" / "eval_cache_11.json"  # concept -> {bundle hash, defects}: a rerun pays only for concepts that changed or errored
+    cache_path = B / "working" / f"eval_cache_11_{a.part or a.chunk}.json"  # concept -> {bundle hash, defects}: a rerun pays only for concepts that changed or errored
     cache = json.loads(cache_path.read_text()) if cache_path.exists() else {}
     for cid, b in bundles.items():
         if a.only and cid not in a.only:
