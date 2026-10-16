@@ -9,7 +9,7 @@ or inference-profile id as shown in the console). Region: env AWS_REGION / AWS_D
 --dry-run builds and prints the first prompt without calling AWS (no boto3 needed).
 # ponytail: stage 08 only; stages 11/12 need their own prompt builder, add when they move to GLM.
 """
-import argparse, hashlib, json, os, re, subprocess, sys
+import argparse, hashlib, json, os, re, subprocess, sys, time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -109,11 +109,94 @@ def log_usage(model, usage, label=""):
                                 "in": usage.get("inputTokens", 0), "out": usage.get("outputTokens", 0), "usd": round(price_usd(model, usage), 4)}) + "\n")
 
 
-def call_glm(client, model, prompt, max_tokens=32000):  # reasoning is always on and counts against this
-    r = client.converse(modelId=model, messages=[{"role": "user", "content": [{"text": prompt}]}],
-                        inferenceConfig={"maxTokens": max_tokens, "temperature": 0.2})
-    log_usage(model, r["usage"])
+DEFAULT_LADDERS = {
+    "GEN": ["us.anthropic.claude-sonnet-4-6", "us.anthropic.claude-sonnet-4-5-20250929-v1:0", "us.anthropic.claude-haiku-4-5-20251001-v1:0"],
+    # evaluators stay Opus-class: when both are out of quota the run waits instead of silently getting a weaker gate
+    "EVAL": ["us.anthropic.claude-opus-4-6-v1", "us.anthropic.claude-opus-4-5-20251101-v1:0"],
+}
+USED, LAST = set(), {}  # models actually called in this process / the one the latest call used
+
+
+def ladder(role):
+    v = os.environ.get(f"{role}_LADDER")
+    return [x.strip() for x in v.split(",") if x.strip()] if v else DEFAULT_LADDERS[role]
+
+
+_MEM = {}  # block list when no QUOTA_STATE file is configured (single-process use)
+
+
+def _state():
+    p = os.environ.get("QUOTA_STATE")
+    if not p:
+        return _MEM
+    try:
+        return json.loads(Path(p).read_text())
+    except (OSError, ValueError):
+        return {}
+
+
+def _block(model, hours):
+    p = os.environ.get("QUOTA_STATE")
+    st = _state(); st[model] = time.time() + hours * 3600
+    if p:
+        Path(p + ".tmp").write_text(json.dumps(st)); os.replace(p + ".tmp", p)
+
+
+def _warn(msg):
+    print(f"[ladder] {msg}", file=sys.stderr, flush=True)
+
+
+def converse_ladder(client, role, **kw):
+    """Converse on the first model of the role's ladder that is not quota-blocked. A daily-token-quota error blocks that model for
+    QUOTA_COOLDOWN_H hours (default 3, then it is tried again first) and the call moves to the next rung. All blocked: wait and re-probe."""
+    announced = False
+    while True:
+        st, now = _state(), time.time()
+        free = [m for m in ladder(role) if st.get(m, 0) <= now]
+        if not free:
+            wake = min(st.get(m, 0) for m in ladder(role))
+            _warn(f"all {role} models are out of quota; waiting until {time.strftime('%H:%M', time.localtime(wake))}")
+            if not announced:
+                announced = True
+                topic = os.environ.get("SNS_TOPIC_ARN")
+                if topic:
+                    try:
+                        import boto3
+                        boto3.client("sns", region_name=topic.split(":")[3]).publish(TopicArn=topic, Subject=f"Glossary pipeline waiting on {role} quota",
+                                                                                      Message=f"All {role} models are out of daily quota. The run waits and retries automatically.")
+                    except Exception as e:
+                        _warn(f"SNS failed: {e}")
+            time.sleep(min(max(wake - now, 5), 600))
+            continue
+        m = free[0]
+        try:
+            r = client.converse(modelId=m, **kw)
+        except Exception as e:
+            s = str(e)
+            if "per day" in s:
+                _block(m, float(os.environ.get("QUOTA_COOLDOWN_H", 3))); _warn(f"{m}: daily quota hit, falling back"); continue
+            if "not available for this account" in s or "AccessDenied" in type(e).__name__:
+                _block(m, 24); _warn(f"{m}: no access on this account, skipping for 24h"); continue
+            raise
+        USED.add(m); LAST["model"] = m
+        log_usage(m, r["usage"])
+        return r
+
+
+def call_glm(client, model, prompt, max_tokens=32000):
+    """model is a Bedrock model id (pinned) or "GEN"/"EVAL" (use that role's ladder)."""
+    kw = dict(messages=[{"role": "user", "content": [{"text": prompt}]}], inferenceConfig={"maxTokens": max_tokens, "temperature": 0.2})
+    if model in ("GEN", "EVAL"):
+        r = converse_ladder(client, model, **kw)
+    else:
+        r = client.converse(modelId=model, **kw)
+        USED.add(model); LAST["model"] = model
+        log_usage(model, r["usage"])
     return "".join(b.get("text", "") for b in r["output"]["message"]["content"])
+
+
+def used_label():
+    return ",".join(sorted(USED)) or "none"
 
 
 def parse(text):
@@ -164,7 +247,7 @@ def main():
     load_env()
     client = model = None
     if not a.dry_run:
-        model = os.environ.get("GLM_MODEL_ID") or sys.exit("set GLM_MODEL_ID to the GLM Bedrock model/inference-profile id")
+        model = os.environ.get("GLM_MODEL_ID") or "GEN"  # pinned id, or the GEN ladder
         client = make_client()  # default credential chain only
 
     proposals, rejected = [], []
@@ -197,7 +280,7 @@ def main():
 
     parents = {f: sha(B / f) for f in ("video_candidates.json", "coverage_briefs.json", "extracted_concepts.json")}
     doc = {"metadata": {"artifact_type": "segment_proposals", "artifact_version": "1.0.0", "schema_version": "1.0.0",
-                        "batch_id": batch_id, "run_id": batch_id, "prompt_version": f"{STAGE}@v1", "model": f"glm-bedrock:{model}",
+                        "batch_id": batch_id, "run_id": batch_id, "prompt_version": f"{STAGE}@v1", "model": f"bedrock:{used_label()}",
                         "generated_at": datetime.now(timezone.utc).isoformat(), "source_snapshot_id": "data_analytics.source_pack",
                         "parent_artifact_hashes": parents},
            "batch_id": batch_id, "proposals": proposals, "rejected_videos": rejected}

@@ -14,7 +14,7 @@ import json, os, re, subprocess, sys, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from glm_generate import ROOT, load_env, log_usage, make_client  # noqa: E402
+from glm_generate import ROOT, converse_ladder, load_env, log_usage, make_client  # noqa: E402
 
 MAX_TOOL_CHARS = 14000
 DENY = re.compile(r"\b(sudo|git\s+(push|reset|checkout|clean)|aws\s|shutdown|reboot|mkfs|dd\s+if=)\b|rm\s+-rf\s+(/|~|\.\.)")
@@ -30,6 +30,7 @@ class Budget:
     def __init__(self, max_usd, log_path):
         self.max_usd, self.log_path = max_usd, str(log_path)
         os.environ["COST_LOG"] = self.log_path  # subprocesses inherit it
+        os.environ.setdefault("QUOTA_STATE", str(Path(self.log_path).parent / "quota_state.json"))  # shared model-ladder block list
 
     def spent(self):
         try:
@@ -107,14 +108,17 @@ def run_agent(model_id, system, task, budget, role="GEN", write_roots=(), max_tu
         _elide_old(messages)
         for attempt in range(6):
             try:
-                r = client.converse(modelId=model_id, system=[{"text": system}], messages=messages, toolConfig=TOOLS,
-                                    inferenceConfig={"maxTokens": 32000, "temperature": 0.2})
+                kw = dict(system=[{"text": system}], messages=messages, toolConfig=TOOLS, inferenceConfig={"maxTokens": 32000, "temperature": 0.2})
+                if model_id in ("GEN", "EVAL"):  # role ladder: falls back per call when a model's daily quota is hit
+                    r = converse_ladder(client, model_id, **kw)
+                else:
+                    r = client.converse(modelId=model_id, **kw)
+                    log_usage(model_id, r["usage"])
                 break
             except Exception as e:
                 if attempt == 5 or "per day" in str(e) or "Throttling" not in type(e).__name__ + str(e):
                     raise
                 time.sleep(5 * 2 ** attempt)
-        log_usage(model_id, r["usage"], label)
         budget.check()
         msg = r["output"]["message"]
         messages.append(msg)

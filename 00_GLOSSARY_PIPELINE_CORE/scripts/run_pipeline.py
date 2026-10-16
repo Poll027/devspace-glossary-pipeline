@@ -20,7 +20,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import update_ledger as UL  # noqa: E402
 from bedrock_agent import Budget, BudgetExceeded, run_agent  # noqa: E402
-from glm_generate import CORE, ROOT, load, load_env  # noqa: E402
+from glm_generate import CORE, ROOT, ladder, load, load_env  # noqa: E402
 
 SCRIPTS = CORE / "scripts"
 TEMPLATE = ROOT / "01_GLOSSARY_PACK_TEMPLATE"
@@ -39,13 +39,35 @@ class Ctx:
     def __init__(self, B, args):
         self.B, self.args = B, args
         self.id = B.name
-        self.gen = os.environ.get("GEN_MODEL_ID", "us.anthropic.claude-sonnet-4-6")
-        self.ev = os.environ.get("EVAL_MODEL_ID", "us.anthropic.claude-opus-4-6-v1")
+        # None = use that role's model ladder (glm_generate.ladder); set GEN_MODEL_ID / EVAL_MODEL_ID to pin one model
+        self.gen_pin, self.ev_pin = os.environ.get("GEN_MODEL_ID"), os.environ.get("EVAL_MODEL_ID")
         (B / "working").mkdir(exist_ok=True)
         self.budget = Budget(args.max_usd, B / "working" / "cost_log.jsonl")
         self.manifest = load(CORE / "pipeline_manifest.json")
         self.stage = {s["id"]: s for s in self.manifest["stages"]}
-        self.env = {**os.environ, "GLM_MODEL_ID": self.gen, "PATH": f"{Path(sys.executable).parent}:{os.environ['PATH']}"}
+        self.env = {**os.environ, "PATH": f"{Path(sys.executable).parent}:{os.environ['PATH']}"}
+        if self.gen_pin:
+            self.env["GLM_MODEL_ID"] = self.gen_pin
+
+    def _used(self, evaluator):
+        """Models that actually ran for this role, from the cost log (the ladder may have fallen back); else the ladder head."""
+        ms = set()
+        try:
+            for ln in open(self.B / "working" / "cost_log.jsonl"):
+                m = json.loads(ln)["model"]
+                if ("opus" in m) == evaluator:
+                    ms.add(m)
+        except FileNotFoundError:
+            pass
+        return ",".join(sorted(ms)) or ladder("EVAL" if evaluator else "GEN")[0]
+
+    @property
+    def gen(self):
+        return self.gen_pin or self._used(False)
+
+    @property
+    def ev(self):
+        return self.ev_pin or self._used(True)
 
     def log(self, msg):
         line = f"{time.strftime('%Y-%m-%d %H:%M:%S')} {msg}"
@@ -85,7 +107,7 @@ class Ctx:
         return r.returncode == 0, (r.stdout + r.stderr)[-1500:]
 
     def agent(self, role, system, task, label):
-        model = self.gen if role == "GEN" else self.ev
+        model = (self.gen_pin if role == "GEN" else self.ev_pin) or role
         return run_agent(model, system, task, self.budget, role=role, write_roots=[self.B, ROOT / "scratch"], label=label)
 
 

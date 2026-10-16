@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from glm_generate import BANK, CORE, ROOT, call_glm, load, load_env, make_client, parse, sha  # noqa: E402
+from glm_generate import BANK, CORE, ROOT, call_glm, load, load_env, make_client, parse, sha, used_label  # noqa: E402
 
 STAGE = "11_reconciliation"
 PRACTICE = "live_code|spreadsheet|field_selection|ordering|matching|tool_simulation|data_cleanup|UI_edit|formula|external_proof"
@@ -170,7 +170,7 @@ def main():
 
     client = model = None
     if not a.dry_run:
-        model = os.environ.get("GLM_MODEL_ID") or sys.exit("set GLM_MODEL_ID in .env")
+        model = os.environ.get("GLM_MODEL_ID") or "GEN"  # pinned id, or the GEN ladder
         client = make_client()
 
     dest = B / f"glossary_bundles_draft.part.{a.out_name or a.chunk}.json"
@@ -204,7 +204,7 @@ def main():
 
     parents = {f: sha(B / f) for f in ("glossary_pass_a.json", "selected_media.json", "coverage_briefs.json", "depth_classification.json", "extracted_concepts.json")}
     doc = {"metadata": {"artifact_type": "glossary_bundles_draft", "artifact_version": "1.0.0", "schema_version": "1.0.0", "batch_id": batch_id, "run_id": batch_id,
-                        "prompt_version": f"{STAGE}@v1", "model": f"{model.split('.', 1)[-1]} (bedrock)", "generated_at": datetime.now(timezone.utc).isoformat(),
+                        "prompt_version": f"{STAGE}@v1", "model": f"bedrock:{used_label()}", "generated_at": datetime.now(timezone.utc).isoformat(),
                         "source_snapshot_id": "data_analytics.source_pack", "parent_artifact_hashes": parents},
            "batch_id": batch_id, "bundles": bundles}
     dest.write_text(json.dumps(doc, indent=2))

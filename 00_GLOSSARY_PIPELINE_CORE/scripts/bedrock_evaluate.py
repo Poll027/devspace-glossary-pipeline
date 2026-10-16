@@ -14,7 +14,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from bedrock_reconcile import ROOT, STAGE, concept_data, load_inputs  # noqa: E402
-from glm_generate import call_glm, load, load_env, make_client, parse  # noqa: E402
+from glm_generate import LAST, USED, call_glm, load, load_env, make_client, parse, used_label  # noqa: E402
 
 CHECKLIST = """Severity (from the pipeline's evaluator definition):
 - BLOCKING: a claim its source doesn't support or contradicts; a missing required fact or uncovered item; later-taught knowledge the learner must UNDERSTAND to follow the content; a structural break (wrong ids, altered copied fields). A needed new claim is BLOCKING, not ADVISORY.
@@ -75,7 +75,7 @@ def main():
     sys.stdout.reconfigure(line_buffering=True)
     load_env()
     B = Path(a.batch_dir); B = B if B.is_absolute() else ROOT / B
-    model = os.environ.get("EVAL_MODEL_ID", "us.anthropic.claude-opus-4-6-v1")
+    model = os.environ.get("EVAL_MODEL_ID") or "EVAL"  # pinned id, or the EVAL ladder
     client = make_client()
     ec, names, cbs, pas, dcs, sels, segj = load_inputs(B)
     bundles = {b["context"]["concept_id"]: b for b in load(B / f"glossary_bundles_draft.part.{a.part or a.chunk}.json")["bundles"]}
@@ -90,10 +90,10 @@ def main():
             defects += cache[cid]["defects"]; print(f"{cid}: cached"); continue
         t0 = time.time()
         prompt = evaluate_prompt(cid, concept_data(cid, ec, names, cbs[cid], pas[cid], dcs[cid], sels[cid], segj), b)
-        found = {}  # independent passes, union of defects keyed by (field, kind), highest severity wins
+        found, models = {}, set()  # independent passes, union of defects keyed by (field, kind), highest severity wins
         try:
             for _ in range(a.passes):
-                out = ask(client, model, prompt)
+                out = ask(client, model, prompt); models.add(LAST["model"])
                 for d in out["defects"]:
                     if d.get("severity") in ("BLOCKING", "ADVISORY"):
                         k = (d["field"], d["problem"][:40])
@@ -103,11 +103,11 @@ def main():
         except Exception as e:  # unparseable or API error: report it, never count as a pass
             errors.append(cid); details[cid] = f"{type(e).__name__}: {str(e)[:300]}"; print(f"{cid}: EVAL ERROR {details[cid]}", file=sys.stderr); continue
         defects += ds
-        cache[cid] = {"hash": h, "defects": ds}
+        cache[cid] = {"hash": h, "defects": ds, "models": sorted(models)}  # which model(s) judged it, so a weaker-model result can be re-checked later
         cache_path.write_text(json.dumps(cache))
         print(f"{cid}: {sum(d['severity'] == 'BLOCKING' for d in ds)}B {sum(d['severity'] == 'ADVISORY' for d in ds)}A ({time.time() - t0:.0f}s)")
     verdict = "FAIL" if any(d["severity"] == "BLOCKING" for d in defects) else ("INCOMPLETE" if errors else "PASS")
-    rep = {"chunk": a.chunk, "evaluator_model": model, "verdict": verdict, "not_evaluated_due_to_errors": errors, "error_details": details, "defects": defects}
+    rep = {"chunk": a.chunk, "evaluator_model": used_label(), "verdict": verdict, "not_evaluated_due_to_errors": errors, "error_details": details, "defects": defects}
     dest = B / "working" / f"eval_11_{a.part or a.chunk}.json"
     dest.write_text(json.dumps(rep, indent=2))
     print(f"VERDICT: {verdict}; {sum(d['severity'] == 'BLOCKING' for d in defects)} blocking, {sum(d['severity'] == 'ADVISORY' for d in defects)} advisory, {len(errors)} errors -> {dest}")
