@@ -9,5 +9,6 @@ Fresh context. Read each entry the way a learner at this point in the path would
 - **Quality vs the §8 benchmark:** concrete, example-led, coherent prose. Disconnected bullets, generic filler, or textbook-length sprawl are defects.
 - **Path-specific:** examples fit this path's work. If two paths in the batch share a concept, their text must differ in examples and framing, not just the path name.
 - **Video need:** HIGH for minor syntax, or NONE for a visual mechanism (joins, event loop, workflows), is a defect.
+- **Depth:** trace every code/formula/query example for Core entries without exception. For Standard and Reference entries, trace anything that looks non-trivial, but don't manufacture work tracing a one-line definition that has nothing to run.
 
 End with `VERDICT: PASS` or `VERDICT: FAIL` and each defect as `concept_id@path_id: block → problem → fix`.

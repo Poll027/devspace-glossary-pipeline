@@ -39,6 +39,17 @@ It concatenates rows, sums counts, rejects duplicate rows across parts, and sche
 
 **Repairs:** fix the earliest stage that owns the problem, then re-run and re-gate every stage downstream of it. `15b` catches anything you forget — it flags every gate whose artifact changed after it was recorded.
 
+## Evaluation cost control
+
+The evaluator is the expensive, high-value part of this loop — don't let it spend on what a script or a cheaper pass could have caught first.
+
+1. **Mechanical checks before any evaluator call.** Run `schema_check.py` and any deterministic cross-reference (duplicate ids, a `blocked_concepts_to_avoid` id checked against the real `blocked_knowledge_ids`, a title byte-matched against its catalogue entry) before dispatching the evaluator. These are free; don't pay evaluator tokens to rediscover what a script already could have.
+2. **Generator self-check before submitting.** Every `GENERATOR.md` carries a "mistakes made" checklist built from what evaluators have actually caught. Whatever model is generating should run its own output back through that checklist itself before handing it off — catches the mechanically-obvious errors (a dropped hedge, a formula that's backwards, a claim the source doesn't support) for a fraction of an evaluator call's cost.
+3. **Depth tracks stakes, not uniform max rigor.** Full, exhaustive verification (open every source, run every snippet, read every transcript window) for Core concepts and anything a stage's own criteria flag as high-stakes (centrality, HIGH video_need). Lighter, sampled checking is fine for Standard/Reference-tier work, unless a stage's own file says otherwise (13 and 16's text pass are deliberately exhaustive — see those files).
+4. **Canary-then-sample across a stage's chunks, not just its first run ever.** Full depth on the first chunk of any new stage, same as always. Once a generator/evaluator combination shows a low, stable defect rate across a few chunks of the *same* stage, later chunks of that stage can move to sampled verification instead of full depth on every single one. Re-upgrade to full depth immediately the moment a sampled chunk turns up a real defect — don't average it away.
+5. **State a ceiling, not just a floor, wherever a stage asks for a sample.** "Open at least a third" has repeatedly turned into "opened essentially all of them" in practice, because thoroughness feels safer than the rule requires. Where a stage file says "at least N", also say "and no more than roughly 2N unless something you find gives a specific reason to go further."
+6. **An `evaluator_only` stage's own `VERDICT: PASS/FAIL` describes whether it did its job completely, not whether the content turned out good.** Rejecting a large share of what it reviewed, for real stated reasons, is `PASS` — the gate worked. Say `FAIL` only if the evaluator couldn't finish, or realizes it was mirroring the generator's claims instead of checking the source itself.
+
 ## Stage kinds at a glance
 
 | Stage | Kind | Files |

@@ -11,7 +11,7 @@ Fresh context. You never saw the generator's reasoning; re-derive, don't skim.
 - **List-shaped names:** every item a concept name lists is covered.
 - **Overstatement:** a fact adding "always/every/only", an ordering, or a scope its source doesn't state is a defect. Follow `#locator`s to the exact section.
 - **Actionable:** a concept that will be practised has at least one fact a learner can act on.
-- **Sources:** open at least a third of the cited sources yourself (all of them for Core-looking concepts with centrality ≥ 3). A source that doesn't support its fact is a FAIL.
+- **Sources:** open at least a third of the cited sources yourself, and no more than about two-thirds unless something you find gives a specific reason to keep going (all of them for Core-looking concepts with centrality ≥ 3 — that floor stays a hard requirement, not a ceiling target). A source that doesn't support its fact is a FAIL.
 - **Neutrality:** `evidence` contains no path-specific framing — it will be reused by other paths.
 
 End with the verdict and defect lines in the BLOCKING/ADVISORY format from your agent file. Unsupported, contradicted or overstated claims, blocked knowledge and missing facts are blocking; repetition, wording, example choice and locators are advisory.

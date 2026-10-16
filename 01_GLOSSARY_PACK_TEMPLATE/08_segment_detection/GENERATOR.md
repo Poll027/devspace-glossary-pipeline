@@ -12,4 +12,11 @@ Produce `segment_proposals.json`. There is no EVALUATOR here — `09_segment_jud
 
 One long, well-chaptered video can legitimately supply ranges for several adjacent concepts (cost gate 7) — propose them all.
 
+**Mistakes the pilot run made — self-check every proposal against these before finishing:**
+- Don't pre-trim a fact-bearing sentence just to stay inside the §15 duration band. If cutting a range short mid-sentence drops a required fact, extend it (unless that extension leaks a blocked concept) and let the judge decide if it's too long — a clipped proposal that drops a fact it claims to cover is worse than an overlength one.
+- A claimed cut boundary ("ends before X is said") needs the real transcript timestamp, not an estimate. Check it against the actual line, not a guess from the surrounding context.
+- If the video itself states something factually wrong or contradicts a required fact — not just omits one — say so explicitly in `issues`. That's different from a coverage gap: it means the whole video should likely be rejected, not just trimmed.
+- A chapter title can misrepresent a video's actual content (a "Case Syntax" chapter that's actually about aggregate functions, an "Introduction" chapter that's actually mid-explanation). Read the transcript itself before trusting a chapter boundary.
+- Match proposals to allowed knowledge, not just to blocked knowledge: a demo that relies on syntax or a concept this path hasn't taught yet (even if it isn't formally `blocked_knowledge_ids`) still leaves the learner stranded.
+
 Validate: `schema_check.py segment_proposals.schema.json batches/<batch_id>/segment_proposals.json`

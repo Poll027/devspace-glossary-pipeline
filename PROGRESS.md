@@ -74,10 +74,10 @@ Across c0–c4, the judge has rejected content for real reasons on **19 of 162**
 
 ## Moving to AWS Bedrock (in progress, 2026-10-16)
 
-Hit Claude usage-limit risk; moving the heavy stages off the Claude Max-plan subscription.
-- **Claude via Bedrock** (same models, billed through AWS instead of the subscription) removes the usage-limit-reset problem with zero prompt changes — this is the fast fix if the goal is just "stop hitting limits."
-- **GLM 5.3 via Bedrock** (for generator-role stages) is a separate, additional integration: Claude Code can't run a third-party model directly, so this needs a standalone script calling Bedrock's API, with Claude still doing the evaluator/judge role. Not yet built as of this note.
-- AWS CLI/credentials were **not yet configured** in the working environment as of 2026-10-16 — needed before either path works.
+Hit Claude usage-limit risk; moving the generator role off the Claude Max-plan subscription.
+- **Final architecture decision:** GLM 5.3 (via Bedrock) runs the generator role; **Claude (Opus) stays the evaluator** — the generator/evaluator split is unchanged, only the generator's model changes. Claude Code can't run a third-party model directly, so GLM generation needs a standalone script calling Bedrock's API; Claude Code itself is unaffected (billed through the Max subscription, not a usage-limit risk on its own).
+- **Evaluator cost control** (added below, 2026-10-16): since GLM generation is cheap/fast, the risk flips to the Opus evaluator over-spending. Six rules are now baked into `01_GLOSSARY_PACK_TEMPLATE/START_HERE.md` (`## Evaluation cost control`) and into the individual stage files (03, 05, 06, 08, 09, 16) — mechanical checks before any evaluator call, generator self-check against its own mistakes checklist, depth scaled to concept tier/stakes, canary-then-sample across a stage's own chunks, an explicit ceiling next to every "at least N" sampling floor, and the evaluator-only `VERDICT` meaning "did I check honestly," not "did everything pass." Stages 13 (leakage) and 15 (cross-artifact review) were deliberately left as-is — already either exhaustive-by-design or tier-sampled.
+- AWS CLI/credentials were **not yet configured** in the working environment as of 2026-10-16 — needed before GLM generation can run. The boto3 script for the GLM generator role has not been written yet.
 
 ## Known issues logged for later
 

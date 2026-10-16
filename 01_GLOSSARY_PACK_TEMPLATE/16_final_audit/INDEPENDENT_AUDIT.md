@@ -6,7 +6,7 @@ Fresh context, no access to any earlier stage's reasoning. You write `glossary_i
 
 Re-derive from the source files, not from earlier reports:
 - **Exhaustive, text:** every bundle's teaching blocks against its required facts (all taught?) and its boundary (anything blocked needed?). Cheap relative to video — do all of them.
-- **Sampled, video:** re-judge at least 20% of segments, plus every segment with `mean_score` below 3.5, by reading their transcript ranges as `09_segment_judge` would. If your sample disagrees with 09 more than occasionally, say so — that means 09 is miscalibrated, and the batch needs a wider re-judge, not a pass.
+- **Sampled, video:** re-judge at least 20% of segments, plus every segment with `mean_score` below 3.5 — and no need to exceed roughly a third of segments overall unless your sample starts disagreeing with 09. Read their transcript ranges as `09_segment_judge` would. If your sample disagrees with 09 more than occasionally, say so and widen the re-judge — that means 09 is miscalibrated, and the batch needs a wider check, not a pass.
 - **New canonical evidence** (coverage briefs with `canonical_status: new`): open a sample of sources and confirm they back the facts. This evidence is about to be reused by other paths.
 - **Ledger:** `update_ledger.py verify` exits 0.
 
