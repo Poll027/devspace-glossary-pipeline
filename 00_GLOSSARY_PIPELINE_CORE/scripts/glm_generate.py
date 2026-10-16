@@ -87,7 +87,8 @@ def make_client():
     import boto3
     from botocore.config import Config  # adaptive retry/backoff: parallel runs get throttled otherwise
     region = os.environ.get("AWS_REGION") or os.environ.get("AWS_DEFAULT_REGION") or "us-east-1"
-    return boto3.client("bedrock-runtime", region_name=region, config=Config(retries={"max_attempts": 12, "mode": "adaptive"}, read_timeout=600))
+    # "standard" retries with a hard timeout: "adaptive" client-side rate limiting can stall a throttled run for an hour
+    return boto3.client("bedrock-runtime", region_name=region, config=Config(retries={"max_attempts": 6, "mode": "standard"}, read_timeout=300, connect_timeout=20))
 
 
 def price_usd(model, usage):

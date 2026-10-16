@@ -88,6 +88,7 @@ def main():
         h = hashlib.sha256(json.dumps(b, sort_keys=True).encode()).hexdigest()
         if cache.get(cid, {}).get("hash") == h:
             defects += cache[cid]["defects"]; print(f"{cid}: cached"); continue
+        t0 = time.time()
         prompt = evaluate_prompt(cid, concept_data(cid, ec, names, cbs[cid], pas[cid], dcs[cid], sels[cid], segj), b)
         found = {}  # independent passes, union of defects keyed by (field, kind), highest severity wins
         try:
@@ -104,7 +105,7 @@ def main():
         defects += ds
         cache[cid] = {"hash": h, "defects": ds}
         cache_path.write_text(json.dumps(cache))
-        print(f"{cid}: {sum(d['severity'] == 'BLOCKING' for d in ds)}B {sum(d['severity'] == 'ADVISORY' for d in ds)}A")
+        print(f"{cid}: {sum(d['severity'] == 'BLOCKING' for d in ds)}B {sum(d['severity'] == 'ADVISORY' for d in ds)}A ({time.time() - t0:.0f}s)")
     verdict = "FAIL" if any(d["severity"] == "BLOCKING" for d in defects) else ("INCOMPLETE" if errors else "PASS")
     rep = {"chunk": a.chunk, "evaluator_model": model, "verdict": verdict, "not_evaluated_due_to_errors": errors, "error_details": details, "defects": defects}
     dest = B / "working" / f"eval_11_{a.part or a.chunk}.json"

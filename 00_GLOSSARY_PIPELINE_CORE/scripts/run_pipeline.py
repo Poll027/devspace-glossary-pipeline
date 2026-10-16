@@ -60,8 +60,15 @@ class Ctx:
         a = self.artifact(sid)
         return self.B / (a.replace(".json", f".part.{chunk}.json") if sid in CONCEPT_CHUNKED | VIDEO_CHUNKED else a)
 
-    def sh(self, cmd, check=True):
-        r = subprocess.run(cmd, shell=True, cwd=ROOT, capture_output=True, text=True, env=self.env)
+    def sh(self, cmd, check=True, log=None):
+        """Run a shell command. With log=<name>, output streams live to working/<name>.log (tail -f it) instead of being captured."""
+        if log:
+            lf = self.B / "working" / f"{log}.log"
+            with open(lf, "w") as f:
+                r = subprocess.run(cmd, shell=True, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, text=True, env=self.env)
+            r.stdout, r.stderr = lf.read_text()[-2500:], ""
+        else:
+            r = subprocess.run(cmd, shell=True, cwd=ROOT, capture_output=True, text=True, env=self.env)
         self.budget.check()
         if check and r.returncode:
             raise Stuck(f"command failed ({r.returncode}): {cmd}\n{(r.stdout + r.stderr)[-2500:]}")
@@ -201,9 +208,9 @@ def parse_eval(text):
 # ---------- per-stage specialisations (cheaper, mechanical parts in code) ----------
 def generate(c, sid, chunk, ids):
     if sid == "08_segment_detection":
-        c.sh(c.py("glm_generate.py", c.B, chunk))
+        c.sh(c.py("glm_generate.py", c.B, chunk), log=f"sub_08_{chunk}")
     elif sid == "11_reconciliation":
-        c.sh(c.py("bedrock_reconcile.py", c.B, chunk))
+        c.sh(c.py("bedrock_reconcile.py", c.B, chunk), log=f"sub_11gen_{chunk}")
     else:
         c.agent("GEN", agent_prompt("GEN"), generator_task(c, sid, chunk, ids), f"{sid}:{chunk}:gen")
     ok, msg = c.valid(sid, c.part(sid, chunk))
@@ -214,7 +221,7 @@ def generate(c, sid, chunk, ids):
 def evaluate(c, sid, chunk, ids, prior=None, only=None):
     if sid == "11_reconciliation":
         cmd = c.py("bedrock_evaluate.py", c.B, chunk) + (" --only " + " ".join(only) if only else "")
-        c.sh(cmd)
+        c.sh(cmd, log=f"sub_11eval_{chunk}")
         rep = load(c.B / "working" / f"eval_11_{chunk}.json")
         if rep["not_evaluated_due_to_errors"]:
             return None, [f"EVAL ERROR concepts: {rep['not_evaluated_due_to_errors']}", *[f"{k}: {v}" for k, v in list(rep.get("error_details", {}).items())[:5]]]
