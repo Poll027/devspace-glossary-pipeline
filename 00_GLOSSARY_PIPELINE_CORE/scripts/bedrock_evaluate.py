@@ -62,8 +62,8 @@ def ask(client, model, prompt, tries=4):
     for i in range(tries):
         try:
             return parse(call_glm(client, model, prompt, 16000))
-        except Exception:
-            if i == tries - 1:
+        except Exception as ex:
+            if i == tries - 1 or "per day" in str(ex):  # a daily token quota does not recover by retrying
                 raise
             time.sleep(15 * (i + 1))
 

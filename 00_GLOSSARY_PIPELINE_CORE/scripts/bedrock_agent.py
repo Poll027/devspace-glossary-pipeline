@@ -111,7 +111,7 @@ def run_agent(model_id, system, task, budget, role="GEN", write_roots=(), max_tu
                                     inferenceConfig={"maxTokens": 32000, "temperature": 0.2})
                 break
             except Exception as e:
-                if attempt == 5 or "Throttling" not in type(e).__name__ + str(e):
+                if attempt == 5 or "per day" in str(e) or "Throttling" not in type(e).__name__ + str(e):
                     raise
                 time.sleep(5 * 2 ** attempt)
         log_usage(model_id, r["usage"], label)
