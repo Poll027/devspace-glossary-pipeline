@@ -86,7 +86,8 @@ transcript_evidence must be copied verbatim from a caption line INSIDE [start_se
 def make_client():
     import boto3
     from botocore.config import Config  # adaptive retry/backoff: parallel runs get throttled otherwise
-    return boto3.client("bedrock-runtime", config=Config(retries={"max_attempts": 12, "mode": "adaptive"}, read_timeout=600))
+    region = os.environ.get("AWS_REGION") or os.environ.get("AWS_DEFAULT_REGION") or "us-east-1"
+    return boto3.client("bedrock-runtime", region_name=region, config=Config(retries={"max_attempts": 12, "mode": "adaptive"}, read_timeout=600))
 
 
 def price_usd(model, usage):
