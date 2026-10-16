@@ -9,7 +9,7 @@ problem, fix}]}. FAIL iff any BLOCKING defect. Model: env EVAL_MODEL_ID (default
 Each call sees only the sources + the bundle, never the generator's reasoning.
 # ponytail: stage 11 only; other evaluator stages keep their EVALUATOR.md and need their own prompt.
 """
-import argparse, json, os, sys, time
+import argparse, hashlib, json, os, sys, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -80,9 +80,14 @@ def main():
     ec, names, cbs, pas, dcs, sels, segj = load_inputs(B)
     bundles = {b["context"]["concept_id"]: b for b in load(B / f"glossary_bundles_draft.part.{a.part or a.chunk}.json")["bundles"]}
     defects, errors, details = [], [], {}
+    cache_path = B / "working" / "eval_cache_11.json"  # concept -> {bundle hash, defects}: a rerun pays only for concepts that changed or errored
+    cache = json.loads(cache_path.read_text()) if cache_path.exists() else {}
     for cid, b in bundles.items():
         if a.only and cid not in a.only:
             continue
+        h = hashlib.sha256(json.dumps(b, sort_keys=True).encode()).hexdigest()
+        if cache.get(cid, {}).get("hash") == h:
+            defects += cache[cid]["defects"]; print(f"{cid}: cached"); continue
         prompt = evaluate_prompt(cid, concept_data(cid, ec, names, cbs[cid], pas[cid], dcs[cid], sels[cid], segj), b)
         found = {}  # independent passes, union of defects keyed by (field, kind), highest severity wins
         try:
@@ -97,6 +102,8 @@ def main():
         except Exception as e:  # unparseable or API error: report it, never count as a pass
             errors.append(cid); details[cid] = f"{type(e).__name__}: {str(e)[:300]}"; print(f"{cid}: EVAL ERROR {details[cid]}", file=sys.stderr); continue
         defects += ds
+        cache[cid] = {"hash": h, "defects": ds}
+        cache_path.write_text(json.dumps(cache))
         print(f"{cid}: {sum(d['severity'] == 'BLOCKING' for d in ds)}B {sum(d['severity'] == 'ADVISORY' for d in ds)}A")
     verdict = "FAIL" if any(d["severity"] == "BLOCKING" for d in defects) else ("INCOMPLETE" if errors else "PASS")
     rep = {"chunk": a.chunk, "evaluator_model": model, "verdict": verdict, "not_evaluated_due_to_errors": errors, "error_details": details, "defects": defects}

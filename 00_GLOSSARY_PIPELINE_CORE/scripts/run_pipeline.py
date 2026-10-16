@@ -5,7 +5,7 @@
 
 Walks pipeline_manifest.json. A stage already gated PASS on disk (ledger hash matches) is skipped, so a
 rerun resumes. Script stages run their RUN.md command. Generator/evaluator stages fan out over chunks
-(canary first, then 3 in parallel), with mechanical checks before any evaluator call, an evaluator pass,
+(canary first, then CHUNK_WORKERS in parallel, default 2), with mechanical checks before any evaluator call, an evaluator pass,
 up to 3 repair rounds, then merge + gate. Stage 08/09 (detect + judge) run together per chunk.
 Stops (exit 2, writes working/DRIVER_STOPPED.md, SNS if SNS_TOPIC_ARN is set) on: 3 failed rounds, a blocking
 leakage/audit result, a failed script, or the spend cap. Fix the cause and rerun the same command.
@@ -273,7 +273,7 @@ def fan_out(c, chunks, fn):
     rest = names[1:]
     if rest:
         errs = []
-        with cf.ThreadPoolExecutor(3) as ex:
+        with cf.ThreadPoolExecutor(int(os.environ.get("CHUNK_WORKERS", 2))) as ex:
             futs = {ex.submit(fn, n, chunks[n]): n for n in rest}
             for f in cf.as_completed(futs):
                 try:
