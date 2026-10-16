@@ -1,0 +1,36 @@
+{
+  "chunk": "c3",
+  "evaluator_model": "us.anthropic.claude-opus-4-6-v1",
+  "verdict": "FAIL",
+  "not_evaluated_due_to_errors": [],
+  "defects": [
+    {
+      "concept_id": "sql.aggregate_functions",
+      "severity": "BLOCKING",
+      "field": "media.bridge_note.after",
+      "problem": "'MIN gets only a spoken mention' is false across the two clips taken together. The first clip (AsuPVZ_EjEw) runs MIN live in SQL at [270]-[279] and returns 10. The claim is only true of the second clip. The bridge note misleads the learner into thinking MIN was never demonstrated.",
+      "fix": "Replace 'MIN gets only a spoken mention' with 'The second clip mentions MIN only in passing without running it, but the first clip runs MIN live and returns 10.' or simply 'The second clip does not run a MIN query, though the first one does.'"
+    },
+    {
+      "concept_id": "sql.aggregate_functions",
+      "severity": "BLOCKING",
+      "field": "segment seg_sql.aggregate_functions_STxEQKu5KiI_0_262 label",
+      "problem": "Label says 'COUNT(DISTINCT column)' but the transcript range 0-262 does not include a COUNT(DISTINCT) query. That content appears after timestamp 262 (which was excluded).",
+      "fix": "Remove 'COUNT(DISTINCT column)' from the label. Suggested label: 'Aggregates on a students table: MAX, AVG with a WHERE filter, and COUNT(*) versus COUNT(column) with a NULL'"
+    },
+    {
+      "concept_id": "sql.aggregate_functions",
+      "severity": "BLOCKING",
+      "field": "media.bridge_note.after",
+      "problem": "Claims 'MIN gets only a spoken mention' without specifying which clip. Clip 1 (AsuPVZ_EjEw) runs MIN live in SQL at [272]-[279] and gets the result 10. The blanket statement is false and misleads the learner about what clip 1 covers.",
+      "fix": "Replace with: 'In the second clip, MIN gets only a spoken mention and is not queried. Neither clip works a NULL example for SUM, MIN or MAX. The text above states the NULL-skipping rule for all of them.'"
+    },
+    {
+      "concept_id": "sql.aggregate_functions",
+      "severity": "ADVISORY",
+      "field": "segment seg_sql.aggregate_functions_STxEQKu5KiI_0_262 label",
+      "problem": "Label mentions 'COUNT(DISTINCT column)' but the segment ends at 262 and COUNT(DISTINCT) appears only after 262 per the judge_reasoning. The label describes content outside the segment range.",
+      "fix": "Remove 'and COUNT(DISTINCT column)' from the label. Suggested label: 'Aggregates on a students table: MAX, AVG with a WHERE filter, and COUNT(*) versus COUNT(column) with a NULL'"
+    }
+  ]
+}

@@ -20,6 +20,14 @@ STAGE = "08_segment_detection"
 norm = lambda s: re.sub(r"[^a-z0-9]+", " ", s.lower()).strip()
 
 
+def load_env():
+    """Read the gitignored .env (KEY=value lines); real env vars win."""
+    if (ROOT / ".env").exists():
+        for ln in (ROOT / ".env").read_text().splitlines():
+            if "=" in ln and not ln.lstrip().startswith("#"):
+                k, v = ln.split("=", 1); os.environ.setdefault(k.strip(), v.strip().strip("'\""))
+
+
 def load(p):
     return json.loads(Path(p).read_text())
 
@@ -75,6 +83,12 @@ role is one of mental_model|visual_mechanism|worked_example|live_code_demo|tool_
 transcript_evidence must be copied verbatim from a caption line INSIDE [start_seconds, end_seconds]."""
 
 
+def make_client():
+    import boto3
+    from botocore.config import Config  # adaptive retry/backoff: parallel runs get throttled otherwise
+    return boto3.client("bedrock-runtime", config=Config(retries={"max_attempts": 12, "mode": "adaptive"}, read_timeout=600))
+
+
 def call_glm(client, model, prompt, max_tokens=32000):  # reasoning is always on and counts against this
     r = client.converse(modelId=model, messages=[{"role": "user", "content": [{"text": prompt}]}],
                         inferenceConfig={"maxTokens": max_tokens, "temperature": 0.2})
@@ -82,8 +96,8 @@ def call_glm(client, model, prompt, max_tokens=32000):  # reasoning is always on
 
 
 def parse(text):
-    m = re.search(r"\{.*\}", text, re.S)  # tolerate prose / fences around the JSON
-    return json.loads(m.group(0))
+    """First JSON object in the reply (tolerates prose/fences before it and extra text after)."""
+    return json.JSONDecoder().raw_decode(text[text.index("{"):])[0]
 
 
 def mechanical_check(vid, pairs, out):
@@ -126,15 +140,11 @@ def main():
     pa = {e["concept_id"]: e for e in load(B / "glossary_pass_a.json")["entries"]}
     header = f"Pack root: {ROOT}. You are the generator for stage {STAGE}. You cannot read files; everything you need is below."
 
-    if (ROOT / ".env").exists():  # gitignored; KEY=value lines, real env vars win
-        for ln in (ROOT / ".env").read_text().splitlines():
-            if "=" in ln and not ln.lstrip().startswith("#"):
-                k, v = ln.split("=", 1); os.environ.setdefault(k.strip(), v.strip().strip("'\""))
+    load_env()
     client = model = None
     if not a.dry_run:
         model = os.environ.get("GLM_MODEL_ID") or sys.exit("set GLM_MODEL_ID to the GLM Bedrock model/inference-profile id")
-        import boto3  # default credential chain only
-        client = boto3.client("bedrock-runtime")
+        client = make_client()  # default credential chain only
 
     proposals, rejected = [], []
     for vid in vids:

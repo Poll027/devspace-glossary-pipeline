@@ -173,3 +173,10 @@ c6: DONE — all advisories closed, 12 entries.
 - Detector-rejections worth reconsidering as partial-coverage proposals (judge's note): q7Bo line_plots (f2), rP4p0luqvR8 while_loops (f1), v7dOXTgT2YU bar_charts (f2,f3 at 20-141).
 - loc_iloc f2: zmdjNSmRXF4 Slicing chapters are allowed (reading_data is earlier in the TOC).
 - Stage 10: 85 selected / 72 no_video_needed / 11 no_segment_found.
+
+## Stage 11 status (2026-10-16, paused: Claude session limit)
+- c0 canary: evaluator PASS (7 advisories applied). Verified by script.
+- c1: eval FAIL 3B (variables_assignment blocked_syntax/print contradiction x2; return_values bridge "both clips use str()") -> generator says repairs applied (7 fixes); NOT yet script-verified, not gated.
+- c2: generated, mechanical checks pass; evaluator was killed mid-run, NOT evaluated.
+- c3: eval FAIL 2B, NOT yet repaired: (1) sql.aggregate_functions bridge_note.after "MIN gets only a spoken mention" is false for AsuPVZ_EjEw (MIN shown, result 10) -> limit to "In the second clip (STxEQKu5KiI)"; (2) sql.having tYBOMw7Ob8E_14_198 summary "Switching to HAVING fixes it" -> "still errors until moved after GROUP BY (HAVING works on aggregated groups)". Advisories: subquery_in_from clip 2 "earlier query it does not show" -> "explained before the clip starts"; style_conventions teaching_note "only clauses taught" is false -> "kept to SELECT/FROM/WHERE for simplicity"; clause_execution_order practice success should match alias rule (ORDER BY/GROUP BY ok, WHERE/HAVING not); relational_model "small shop" -> "small library scenario"; case_expressions/aggregate_functions/group_by starters use columns not in the shared orders schema (use delivery_time_minutes or state the column); sql.aliasing TOC conflict (TOC wants multi-table practice before inner_join) -> upstream TOC fix.
+- c4: generator killed, nothing written. c5, c6: not started.
