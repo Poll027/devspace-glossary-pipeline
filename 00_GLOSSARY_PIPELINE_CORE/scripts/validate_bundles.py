@@ -22,21 +22,24 @@ def load(p):
     return json.loads(Path(p).read_text())
 
 
-def check_bundle(b, extracted_row, errors, warnings):
+def check_bundle(b, extracted_row, errors, warnings, optional_ids=frozenset()):
     ctx = b["context"]
     key = f"{ctx['concept_id']}@{ctx['path_id']}"
     required = {f["id"] for f in b["coverage"]["required_facts"]}
+    # ids a block/anchor/segment may legitimately cite: required facts, the concept's misconceptions, and its optional-enrichment
+    # facts (from the coverage brief; the bundle itself only carries required facts + misconceptions)
+    known = required | {m["id"] for m in b["coverage"].get("misconceptions", [])} | set(optional_ids)
     taught = {fid for tb in b["teaching_blocks"] for fid in tb["fact_ids"]}
     if required - taught:
         errors.append(f"{key}: required facts not taught by any teaching block: {sorted(required - taught)}")
     for tb in b["teaching_blocks"]:
         if VIDEO_REFERENCE.search(tb["content"]):
             errors.append(f"{key}: {tb['id']} refers to the video — text must stand alone")
-        if set(tb["fact_ids"]) - required:
-            errors.append(f"{key}: {tb['id']} cites unknown facts {sorted(set(tb['fact_ids']) - required)}")
+        if set(tb["fact_ids"]) - known:
+            errors.append(f"{key}: {tb['id']} cites unknown facts {sorted(set(tb['fact_ids']) - known)}")
     for a in b["assessment_anchors"]:
-        if set(a["fact_ids"]) - required:
-            errors.append(f"{key}: assessment anchor '{a['capability']}' cites unknown facts")
+        if set(a["fact_ids"]) - known:
+            errors.append(f"{key}: assessment anchor '{a['capability']}' cites unknown facts {sorted(set(a['fact_ids']) - known)}")
     if set(ctx["prerequisites"]) != set(extracted_row["direct_prerequisite_ids"]):
         errors.append(f"{key}: context.prerequisites differ from the frozen TOC")
 
@@ -53,8 +56,8 @@ def check_bundle(b, extracted_row, errors, warnings):
             errors.append(f"{where}: review_url does not derive from video_id + start_seconds")
         if s["end_seconds"] <= s["start_seconds"]:
             errors.append(f"{where}: end_seconds <= start_seconds")
-        if set(s["fact_ids"]) - required:
-            errors.append(f"{where}: cites facts that aren't required facts of this concept")
+        if set(s["fact_ids"]) - known:
+            errors.append(f"{where}: cites facts unknown to this concept: {sorted(set(s['fact_ids']) - known)}")
         if s["transcript_ref"] != f"{s['video_id']}:{s['start_seconds']}-{s['end_seconds']}":
             errors.append(f"{where}: transcript_ref does not match the approved cut")
         if s["end_seconds"] - s["start_seconds"] > LONG_CLIP_SECONDS:
@@ -68,6 +71,7 @@ def run(batch_dir):
     d = Path(batch_dir)
     ctx = load(d / "batch_run_context.json")
     extracted = load(d / "extracted_concepts.json")
+    optional = {(b["concept_id"]): {f["id"] for f in b["evidence"].get("optional_enrichment", [])} for b in load(d / "coverage_briefs.json")["briefs"]}
     rows = {(c["path_id"], c["concept_id"]): c for c in extracted["concepts"]}
     errors, warnings = [], []
     checks = {}
@@ -89,7 +93,7 @@ def run(batch_dir):
         for b in bundle["bundles"]:
             key = (b["context"]["path_id"], b["context"]["concept_id"])
             seen.add(key)
-            check_bundle(b, rows[key], errors, warnings)
+            check_bundle(b, rows[key], errors, warnings, optional.get(key[1], frozenset()))
         tiles = {c["concept_id"]: c["toc_location"]["tile_id"] for c in extracted["concepts"] if c["path_id"] == p["path_id"]}
         for cl in bundle["clusters"]:
             if {tiles[c] for c in cl["concept_ids"]} != {cl["tile_id"]}:
