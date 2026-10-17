@@ -111,7 +111,8 @@ def main():
     while True:
         if budget.spent() > a.max_usd:
             notify(f"Glossary pipeline stopped: budget cap ${a.max_usd:.0f}", f"Spend ${budget.spent():.2f}. Raise MAX_USD and restart the service to continue."); sys.exit(3)
-        (B / "working" / "DRIVER_STOPPED.md").unlink(missing_ok=True)  # only a stop written by THIS run may be triaged
+        for stale in ("DRIVER_STOPPED.md", "proposed_fix.md"):  # only files written by THIS run may be triaged or emailed
+            (B / "working" / stale).unlink(missing_ok=True)
         code = run_driver(cmd, B)
         if code == 0:
             print("[supervisor] driver finished cleanly", flush=True); return
