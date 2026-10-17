@@ -17,7 +17,12 @@ ROW_KEYS = ("concept_id", "path_id", "proposal_id", "video_id", "cluster_id")
 
 
 def row_key(row):
-    return tuple(row.get(k) for k in ROW_KEYS) if isinstance(row, dict) else row
+    if not isinstance(row, dict):
+        return row
+    key = tuple(row.get(k) for k in ROW_KEYS)
+    if all(v is None for v in key) and isinstance(row.get("context"), dict):  # glossary_bundles_draft rows carry their ids in "context"
+        key = tuple(row["context"].get(k) for k in ROW_KEYS)
+    return key
 
 
 def merge(parts):
