@@ -112,10 +112,10 @@ def run_agent(model_id, system, task, budget, role="GEN", write_roots=(), max_tu
             try:
                 kw = dict(system=[{"text": system}], messages=messages, toolConfig=TOOLS, inferenceConfig={"maxTokens": 32000, "temperature": 0.2})
                 if model_id in ("GEN", "EVAL"):  # role ladder: falls back per call when a model's daily quota is hit
-                    r = converse_ladder(client, model_id, **kw)
+                    r = converse_ladder(client, model_id, label=label, **kw)
                 else:
                     r = client.converse(modelId=model_id, **kw)
-                    log_usage(model_id, r["usage"])
+                    log_usage(model_id, r["usage"], label)
                 break
             except Exception as e:
                 if attempt == 5 or "per day" in str(e) or "Throttling" not in type(e).__name__ + str(e):

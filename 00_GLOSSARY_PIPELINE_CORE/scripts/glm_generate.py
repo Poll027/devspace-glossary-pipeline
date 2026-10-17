@@ -146,7 +146,7 @@ def _warn(msg):
     print(f"[ladder] {msg}", file=sys.stderr, flush=True)
 
 
-def converse_ladder(client, role, **kw):
+def converse_ladder(client, role, label="", **kw):
     """Converse on the first model of the role's ladder that is not quota-blocked. A daily-token-quota error blocks that model for
     QUOTA_COOLDOWN_H hours (default 1, then it is tried again first) and the call moves to the next rung. All blocked: wait and re-probe."""
     announced = False
@@ -183,7 +183,7 @@ def converse_ladder(client, role, **kw):
                 _block(m, 24); _warn(f"{m}: no access on this account, skipping for 24h"); continue
             raise
         USED.add(m); LAST["model"] = m
-        log_usage(m, r["usage"])
+        log_usage(m, r["usage"], label)
         return r
 
 
