@@ -47,6 +47,7 @@ def concept_data(cid, ec, names, cb, pa, dc, sel, segj):
         "assessment_target": c["assessment_target"], "practice_objective": c["practice_objective"],
         "required_facts": [{"id": f["id"], "statement": f["statement"]} for f in ev["required_facts"]],
         "misconceptions": ev.get("misconceptions", []),
+        "optional_enrichment_facts": [{"id": f["id"], "statement": f["statement"]} for f in ev.get("optional_enrichment", [])],  # valid ids teaching blocks and segments may cite
         "allowed_prior_concepts": [f"{k} ({names.get(k, '?')})" for k in c["allowed_knowledge_ids"]],
         "blocked_later_concepts": [f"{k} ({names.get(k, '?')})" for k in c["blocked_knowledge_ids"]],
         "teaching_notes": pa["teaching_notes"], "video_need": pa["video_need"],

@@ -16,11 +16,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from bedrock_reconcile import ROOT, STAGE, concept_data, load_inputs  # noqa: E402
 from glm_generate import LAST, USED, call_glm, load, load_env, make_client, parse, used_label  # noqa: E402
 
+PROMPT_VERSION = "v2-optional-facts-and-scope"  # bump when the evaluation prompt changes
+
 CHECKLIST = """Severity (from the pipeline's evaluator definition):
 - BLOCKING: a claim its source doesn't support or contradicts; a missing required fact or uncovered item; later-taught knowledge the learner must UNDERSTAND to follow the content; a structural break (wrong ids, altered copied fields). A needed new claim is BLOCKING, not ADVISORY.
 - ADVISORY: everything else (wording, repetition, example choice, style). A passing mention of a later idea the learner can follow without is at most advisory.
 
 Calibration rules: (a) ANY bridge_note/summary/label claim that the transcript range contradicts or overstates (patterns 1 below) is BLOCKING, because a learner is told something false about the clip; (b) a practice_anchor that relies on blocked syntax or cannot be done with allowed knowledge is BLOCKING; (c) the words watch/clip/video are NORMAL in bridge_note, summary and label (that is where they belong), so never flag them there, only inside teaching blocks; (d) never list a defect you retract: if you decide it is not a defect, leave it out.
+
+(e) Fact ids: the Sources list "required_facts" AND "optional_enrichment_facts". Teaching blocks and segments may legitimately cite an optional-enrichment id (e.g. f6); that is NOT a defect. (f) The teaching blocks are already-gated Pass A text and are OUT OF SCOPE: report nothing about them, except a required fact id that no block covers.
 
 Defect patterns earlier chunks actually had; look for each of these on THIS concept:
 1. A bridge_note or summary claim about a clip that its transcript range contradicts (e.g. "only a spoken mention" when the clip shows and runs it; "fixes it" when the first attempt still errors; "both clips do X" when only one does; "never shows the earlier query" when it is on screen; "a table" when the clip shows slides). Verify every specific claim, positive or negative, against the transcript range given, for EVERY clip in the group.
@@ -85,7 +89,7 @@ def main():
     for cid, b in bundles.items():
         if a.only and cid not in a.only:
             continue
-        h = hashlib.sha256(json.dumps(b, sort_keys=True).encode()).hexdigest()
+        h = hashlib.sha256((PROMPT_VERSION + json.dumps(b, sort_keys=True)).encode()).hexdigest()  # a prompt change invalidates cached verdicts
         if cache.get(cid, {}).get("hash") == h:
             defects += cache[cid]["defects"]; print(f"{cid}: cached"); continue
         t0 = time.time()

@@ -256,7 +256,17 @@ def evaluate(c, sid, chunk, ids, prior=None, only=None):
 
 
 def repair(c, sid, chunk, ids, defects):
+    part = c.part(sid, chunk)
+    before = {b["context"]["concept_id"]: b["teaching_blocks"] for b in load(part)["bundles"]} if sid == "11_reconciliation" else None
     c.agent("GEN", agent_prompt("GEN"), generator_task(c, sid, chunk, ids, repair="\n".join(defects)), f"{sid}:{chunk}:repair")
+    if before is not None:  # stage 11 never edits teaching text (gated Pass A): undo any repair that touched it
+        doc = load(part); n = 0
+        for b in doc["bundles"]:
+            cid = b["context"]["concept_id"]
+            if cid in before and b["teaching_blocks"] != before[cid]:
+                b["teaching_blocks"] = before[cid]; n += 1
+        if n:
+            part.write_text(json.dumps(doc, indent=2)); c.log(f"{sid}:{chunk} restored teaching blocks the repair changed in {n} bundle(s)")
     ok, msg = c.valid(sid, c.part(sid, chunk))
     if not ok:
         raise Stuck(f"{sid}:{chunk} repair broke the schema:\n{msg}")
@@ -271,7 +281,7 @@ def chunk_gen_eval(c, sid, chunk, ids):
     if not part.exists() or not c.valid(sid, part)[0]:
         c.log(f"{sid}:{chunk} generating")
         generate(c, sid, chunk, ids)
-    prior, only = None, None
+    prior, only, prev_keys = None, None, None
     for rnd in range(1, MAX_ROUNDS + 1):
         c.log(f"{sid}:{chunk} evaluating (round {rnd})")
         verdict, defects = evaluate(c, sid, chunk, ids, prior, only)
@@ -287,6 +297,10 @@ def chunk_gen_eval(c, sid, chunk, ids):
             done.write_text(json.dumps({"passed": True, "advisories": 0, "rounds": rnd}))
             return 0
         c.log(f"{sid}:{chunk} FAIL round {rnd}: {len(blocking)} blocking")
+        keys = {re.sub(r"^\W*BLOCKING\s+", "", d).split(":")[0].strip() for d in blocking}  # "concept@ field"
+        if rnd > 1 and keys == prev_keys:
+            raise Stuck(f"{sid}:{chunk} the same blocking defects came back unchanged after a repair (not fixable by repair; check the evaluator finding):\n" + "\n".join(blocking[:15]))
+        prev_keys = keys
         if rnd == MAX_ROUNDS:
             raise Stuck(f"{sid}:{chunk} still failing after {MAX_ROUNDS} rounds:\n" + "\n".join(blocking[:15]))
         repair(c, sid, chunk, ids, defects)
