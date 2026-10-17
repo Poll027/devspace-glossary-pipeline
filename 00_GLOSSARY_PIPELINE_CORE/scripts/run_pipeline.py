@@ -14,13 +14,13 @@ Env: GEN_MODEL_ID (default Sonnet 4.6 profile), EVAL_MODEL_ID (default Opus 4.6 
 # ponytail: sequential stages, chunk-level parallelism of 3; multi-path batches need an explicit chunks.json;
 # a blocking stage-13 leakage result stops for a human instead of auto-routing the fix to stage 05/09/11.
 """
-import argparse, concurrent.futures as cf, json, os, re, subprocess, sys, time
+import argparse, concurrent.futures as cf, contextlib, json, os, re, subprocess, sys, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import update_ledger as UL  # noqa: E402
 from bedrock_agent import Budget, BudgetExceeded, run_agent  # noqa: E402
-from glm_generate import CORE, ROOT, ladder, load, load_env  # noqa: E402
+from glm_generate import CORE, DEFAULT_LADDERS, ROOT, ladder, load, load_env  # noqa: E402
 
 SCRIPTS = CORE / "scripts"
 TEMPLATE = ROOT / "01_GLOSSARY_PACK_TEMPLATE"
@@ -29,6 +29,27 @@ VIDEO_CHUNKED = {"08_segment_detection", "09_segment_judge"}
 MIN_FANOUT = 150  # START_HERE: fan out from 150 concepts
 MAX_ROUNDS = 3
 VERDICT = re.compile(r"VERDICT:\s*(PASS_WITH_NONBLOCKING_CHANGES|PASS|FAIL)")
+
+
+# The last checks before the registry merge make evidence permanent and reusable by later batches, so they never fall back to a weaker
+# evaluator: Opus-class only, wait for quota instead. ALLOW_WEAK_FINAL_EVAL=1 lifts this (not recommended).
+STRICT_EVAL = {"13_leakage_check", "15_final_validation", "16_final_audit"}
+
+
+@contextlib.contextmanager
+def strict_eval(sid):
+    if sid in STRICT_EVAL and not os.environ.get("ALLOW_WEAK_FINAL_EVAL"):
+        old = os.environ.get("EVAL_LADDER")
+        os.environ["EVAL_LADDER"] = ",".join(DEFAULT_LADDERS["EVAL"])
+        try:
+            yield
+        finally:
+            if old is None:
+                os.environ.pop("EVAL_LADDER", None)
+            else:
+                os.environ["EVAL_LADDER"] = old
+    else:
+        yield
 
 
 class Stuck(Exception):
@@ -503,11 +524,12 @@ def main():
             if a.plan:
                 c.log(f"{sid}: WOULD RUN ({kind})"); continue
             c.log(f"=== {sid} ({kind}) spent ${c.budget.spent():.2f}")
-            if sid == "08_segment_detection": run_08_09(c)
-            elif sid == "15_final_validation": run_final_validation(c)
-            elif kind == "script": run_script_stage(c, sid); gate(c, sid)
-            elif kind == "generate_evaluate": run_gen_eval(c, sid)
-            elif kind == "evaluator_only": run_evaluator_only(c, sid)
+            with strict_eval(sid):
+                if sid == "08_segment_detection": run_08_09(c)
+                elif sid == "15_final_validation": run_final_validation(c)
+                elif kind == "script": run_script_stage(c, sid); gate(c, sid)
+                elif kind == "generate_evaluate": run_gen_eval(c, sid)
+                elif kind == "evaluator_only": run_evaluator_only(c, sid)
             git(c, f"{c.id}: {sid} gated")
         if not a.plan:
             notify(c, f"DONE {c.id}", f"All stages gated and registry merged. Spend ${c.budget.spent():.2f}. Review list: batches/{c.id}/human_spot_check.md")
