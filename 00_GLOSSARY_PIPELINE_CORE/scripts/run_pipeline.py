@@ -439,10 +439,11 @@ def run_final_validation(c):
     c.log("15: cross-artifact review")
     c.agent("EVAL", agent_prompt("EVAL"),
             f"Stage `{sid}`, batch folder `{c.B.relative_to(ROOT)}/`. Run `01_GLOSSARY_PACK_TEMPLATE/15_final_validation/CROSS_ARTIFACT_REVIEW.md` (the script already wrote "
-            f"`glossary_validation_report.json`; amend that same file, and write `human_spot_check.md` in the batch folder). Add findings ONLY by appending strings to "
+            f"`glossary_validation_report.json`; amend that same file. Do NOT write `human_spot_check.md`: a script generates it from the real scores). Add findings ONLY by appending strings to "
             f"`warnings` or `blocking_errors` and, if you add a blocking error, setting `validation_status` to FAIL. Do NOT add any other top-level key: the schema forbids "
             f"extra keys and the report would stop validating. A bundle `visual_anchor` of null is allowed. End with VERDICT: PASS or FAIL.", "15:review")
     normalize_report(c.B / "glossary_validation_report.json")
+    c.sh(c.py("make_spot_check.py", c.B))  # deterministic: the review agent can't see judge scores, so it can't build this list
     rep = load(c.B / "glossary_validation_report.json")
     ok = c.valid(sid, c.B / "glossary_validation_report.json")[0]
     status = "PASS" if ok and rep.get("validation_status") == "PASS" else "FAIL"
