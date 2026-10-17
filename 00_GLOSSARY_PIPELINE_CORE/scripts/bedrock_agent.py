@@ -104,7 +104,9 @@ def run_agent(model_id, system, task, budget, role="GEN", write_roots=(), max_tu
     load_env()
     client = make_client()
     messages = [{"role": "user", "content": [{"text": task}]}]
-    for _ in range(max_turns):
+    for turn in range(max_turns):
+        if turn == max_turns - 3:  # nudge: an agent that keeps investigating must still give its final reply
+            messages[-1]["content"].append({"text": "You are nearly out of turns. Stop investigating and give your final reply now."})
         _elide_old(messages)
         for attempt in range(6):
             try:

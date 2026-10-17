@@ -458,7 +458,7 @@ def notify(c, subject, body):
     c.log(f"NOTIFY {subject}")
     (c.B / "working" / ("DRIVER_STOPPED.md" if "STOPPED" in subject else "DRIVER_DONE.md")).write_text(f"# {subject}\n\n{body}\n")
     topic = os.environ.get("SNS_TOPIC_ARN")
-    if topic:
+    if topic and not ("STOPPED" in subject and os.environ.get("SUPERVISED")):  # the supervisor sends the triaged stop email
         try:
             import boto3
             boto3.client("sns", region_name=topic.split(":")[3]).publish(TopicArn=topic, Subject=subject[:100], Message=body[:20000])
