@@ -419,13 +419,30 @@ def run_evaluator_only(c, sid):
     gate(c, sid, ev=c.ev)
 
 
+REPORT_KEYS = {"metadata", "batch_id", "validation_status", "checks", "warnings", "blocking_errors"}
+
+
+def normalize_report(path):
+    """The review agent may add its own top-level keys; the schema forbids them. Fold each into a warning string instead of failing."""
+    rep = load(path)
+    extra = {k: v for k, v in rep.items() if k not in REPORT_KEYS}
+    if extra:
+        for k, v in extra.items():
+            rep["warnings"].append(f"cross-artifact review ({k}): {json.dumps(v)[:1500]}")
+            del rep[k]
+        path.write_text(json.dumps(rep, indent=2))
+
+
 def run_final_validation(c):
     sid = "15_final_validation"
     run_script_stage(c, sid)
     c.log("15: cross-artifact review")
     c.agent("EVAL", agent_prompt("EVAL"),
             f"Stage `{sid}`, batch folder `{c.B.relative_to(ROOT)}/`. Run `01_GLOSSARY_PACK_TEMPLATE/15_final_validation/CROSS_ARTIFACT_REVIEW.md` (the script already wrote "
-            f"`glossary_validation_report.json`; amend that same file, and write `human_spot_check.md` in the batch folder). End with VERDICT: PASS or FAIL.", "15:review")
+            f"`glossary_validation_report.json`; amend that same file, and write `human_spot_check.md` in the batch folder). Add findings ONLY by appending strings to "
+            f"`warnings` or `blocking_errors` and, if you add a blocking error, setting `validation_status` to FAIL. Do NOT add any other top-level key: the schema forbids "
+            f"extra keys and the report would stop validating. A bundle `visual_anchor` of null is allowed. End with VERDICT: PASS or FAIL.", "15:review")
+    normalize_report(c.B / "glossary_validation_report.json")
     rep = load(c.B / "glossary_validation_report.json")
     ok = c.valid(sid, c.B / "glossary_validation_report.json")[0]
     status = "PASS" if ok and rep.get("validation_status") == "PASS" else "FAIL"
