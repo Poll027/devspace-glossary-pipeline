@@ -48,7 +48,7 @@ def notify(subject, body):
 
 
 def last_activity(B):
-    files = list((B / "working").glob("*.log")) + [B / "working" / "cost_log.jsonl", B / "working" / "driver.log"]
+    files = list((B / "working").glob("*.log")) + [B / "working" / "cost_log.jsonl", B / "working" / "driver.log", ROOT / "run.log"]  # run.log: the driver's own stderr incl. "[ladder] waiting for quota" lines
     return max((f.stat().st_mtime for f in files if f.exists()), default=0)
 
 

@@ -148,7 +148,7 @@ def _warn(msg):
 
 def converse_ladder(client, role, **kw):
     """Converse on the first model of the role's ladder that is not quota-blocked. A daily-token-quota error blocks that model for
-    QUOTA_COOLDOWN_H hours (default 3, then it is tried again first) and the call moves to the next rung. All blocked: wait and re-probe."""
+    QUOTA_COOLDOWN_H hours (default 1, then it is tried again first) and the call moves to the next rung. All blocked: wait and re-probe."""
     announced = False
     while True:
         st, now = _state(), time.time()
@@ -156,8 +156,12 @@ def converse_ladder(client, role, **kw):
         if not free:
             wake = min(st.get(m, 0) for m in ladder(role))
             _warn(f"all {role} models are out of quota; waiting until {time.strftime('%H:%M', time.localtime(wake))}")
-            if not announced:
+            key = f"__announced_{role}"  # one email per role per 6h across all processes (state file), not one per process
+            if not announced and time.time() - _state().get(key, 0) > 6 * 3600:
                 announced = True
+                st = _state(); st[key] = time.time()
+                if os.environ.get("QUOTA_STATE"):
+                    Path(os.environ["QUOTA_STATE"] + ".tmp").write_text(json.dumps(st)); os.replace(os.environ["QUOTA_STATE"] + ".tmp", os.environ["QUOTA_STATE"])
                 topic = os.environ.get("SNS_TOPIC_ARN")
                 if topic:
                     try:
@@ -174,7 +178,7 @@ def converse_ladder(client, role, **kw):
         except Exception as e:
             s = str(e)
             if "per day" in s:
-                _block(m, float(os.environ.get("QUOTA_COOLDOWN_H", 3))); _warn(f"{m}: daily quota hit, falling back"); continue
+                _block(m, float(os.environ.get("QUOTA_COOLDOWN_H", 1))); _warn(f"{m}: daily quota hit, falling back"); continue
             if "not available for this account" in s or "AccessDenied" in type(e).__name__:
                 _block(m, 24); _warn(f"{m}: no access on this account, skipping for 24h"); continue
             raise
