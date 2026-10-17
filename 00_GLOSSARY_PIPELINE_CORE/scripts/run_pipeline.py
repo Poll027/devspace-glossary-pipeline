@@ -475,6 +475,8 @@ def main():
     B = Path(a.batch_dir); B = B if B.is_absolute() else ROOT / B
     B.mkdir(parents=True, exist_ok=True)
     c = Ctx(B, a)
+    if not a.plan:
+        (B / "working" / "DRIVER_STOPPED.md").unlink(missing_ok=True)  # a stale stop marker would mislead status/triage
     c.log(f"start {c.id}; cap ${a.max_usd}; generator {c.gen}; evaluator {c.ev}; spent so far ${c.budget.spent():.2f}")
     if not a.plan:
         git(c, "", pull=True)
