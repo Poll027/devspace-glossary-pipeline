@@ -20,7 +20,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import update_ledger as UL  # noqa: E402
 from bedrock_agent import Budget, BudgetExceeded, run_agent  # noqa: E402
-from glm_generate import CORE, ROOT, ladder, load, load_env  # noqa: E402
+from glm_generate import CORE, ROOT, load, load_env  # noqa: E402
 
 SCRIPTS = CORE / "scripts"
 TEMPLATE = ROOT / "01_GLOSSARY_PACK_TEMPLATE"
@@ -49,25 +49,27 @@ class Ctx:
         if self.gen_pin:
             self.env["GLM_MODEL_ID"] = self.gen_pin
 
-    def _used(self, evaluator):
-        """Models that actually ran for this role, from the cost log (the ladder may have fallen back); else the ladder head."""
+    t0 = ""  # UTC start of the stage being run; model labels come from the cost-log rows since then, never from all-time history
+
+    def window_models(self):
+        """Models that actually made calls during the current stage (the ladder may have fallen back), from the cost log."""
         ms = set()
         try:
             for ln in open(self.B / "working" / "cost_log.jsonl"):
-                m = json.loads(ln)["model"]
-                if ("opus" in m) == evaluator:
-                    ms.add(m)
+                r = json.loads(ln)
+                if r["t"][:19] >= self.t0:
+                    ms.add(r["model"])
         except FileNotFoundError:
             pass
-        return ",".join(sorted(ms)) or ladder("EVAL" if evaluator else "GEN")[0]
+        return ",".join(sorted(ms)) or "none"
 
     @property
     def gen(self):
-        return self.gen_pin or self._used(False)
+        return self.gen_pin or self.window_models()
 
     @property
     def ev(self):
-        return self.ev_pin or self._used(True)
+        return self.ev_pin or self.window_models()
 
     def log(self, msg):
         line = f"{time.strftime('%Y-%m-%d %H:%M:%S')} {msg}"
@@ -334,6 +336,16 @@ def merge(c, sid):
     c.sh(c.py("merge_parts.py", c.B, a, schema))
 
 
+def stamp_models(c, sid):
+    """Overwrite metadata.model of this stage's artifact files with the models that really ran (the agent only guesses)."""
+    stem = c.artifact(sid).replace(".json", "")
+    for f in sorted(c.B.glob(f"{stem}.json")) + sorted(c.B.glob(f"{stem}.part.*.json")):
+        doc = load(f)
+        if isinstance(doc.get("metadata"), dict):
+            doc["metadata"]["model"] = c.window_models()
+            f.write_text(json.dumps(doc, indent=2))
+
+
 def gate(c, sid, verdict="PASS", gen=None, ev=None, unresolved=0):
     UL.record(str(c.B), sid, c.artifact(sid), verdict, generator=gen or "none", evaluator=ev or "none", unresolved=unresolved)
     c.log(f"GATE {sid} {verdict}")
@@ -387,7 +399,7 @@ def run_08_09(c):
             c.log(f"08:{chunk} detecting"); generate(c, "08_segment_detection", chunk, vids)
         c.log(f"09:{chunk} judging"); return judge_chunk(c, chunk, vids)
     fan_out(c, chunks, one)
-    merge(c, "08_segment_detection"); merge(c, "09_segment_judge")
+    merge(c, "08_segment_detection"); merge(c, "09_segment_judge"); stamp_models(c, "09_segment_judge")
     gate(c, "08_segment_detection", gen=c.gen, ev="stage 09")
     gate(c, "09_segment_judge", ev=c.ev)
 
@@ -414,6 +426,7 @@ def run_evaluator_only(c, sid):
     rep = load(c.B / c.artifact(sid))
     if sid == "13_leakage_check" and rep.get("blocking_issue_count", 0) > 0:
         raise Stuck(f"13 leakage check found {rep['blocking_issue_count']} blocking issues; the fix belongs to stage 05/11 (or 09 for a leaking segment), then rerun downstream. See {c.artifact(sid)}.")
+    stamp_models(c, sid)
     if sid == "16_final_audit" and rep.get("verdict") == "FAIL":
         raise Stuck("16 independent audit verdict FAIL; see glossary_independent_audit_report.json")
     gate(c, sid, ev=c.ev)
@@ -520,6 +533,7 @@ def main():
                 c.log(f"{sid}: gated PASS on disk, skipping"); continue
             if a.plan:
                 c.log(f"{sid}: WOULD RUN ({kind})"); continue
+            c.t0 = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())
             c.log(f"=== {sid} ({kind}) spent ${c.budget.spent():.2f}")
             if sid == "08_segment_detection": run_08_09(c)
             elif sid == "15_final_validation": run_final_validation(c)
