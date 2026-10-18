@@ -411,6 +411,13 @@
       "source_refs": [
        "postgresql_docs_table_expressions#7.2.1. The FROM Clause"
       ]
+     },
+     {
+      "id": "f4",
+      "statement": "Writing * in the SELECT list is shorthand for all columns of the selected rows; table_name.* narrows that to one table's columns when a query reads from more than one table.",
+      "source_refs": [
+       "postgresql_docs_select#SELECT List"
+      ]
      }
     ],
     "misconceptions": []
@@ -488,7 +495,7 @@
     ],
     "bridge_note": {
      "before": "Watch how the column list after SELECT decides exactly which columns come back and the table named after FROM supplies them.",
-     "after": "The clip never renames a column; AS output_name is taught in the text above."
+     "after": "The clip never renames a column; AS output_name is taught in the text above. The step-through's FROM-first order previews execution order covered later; for now just note that the database reads the table before picking columns."
     }
    },
    "assessment_anchors": [
@@ -1955,7 +1962,8 @@
    "assessment_anchors": [
     {
      "fact_ids": [
-      "f1"
+      "f1",
+      "m1"
      ],
      "capability": "explain_why_equals_null_never_matches"
     },
@@ -2317,7 +2325,7 @@
       "self-joins"
      ],
      "starter_state_intent": "An orders table with customer_id, order_id and delivery_time_minutes is loaded; the editor is empty.",
-     "observable_success": "Rows are grouped by the first sort column ascending, and within each group the second column descends."
+     "observable_success": "Rows are ordered by the first sort column ascending, and within tied values the second column descends."
     }
    },
    "visual_anchor": {
@@ -2864,7 +2872,7 @@
     ],
     "bridge_note": {
      "before": "Watch the first clip for many rows becoming one value and the second for COUNT(*) versus COUNT(column) when one value is NULL.",
-     "after": "MIN gets only a spoken mention, and neither clip works a NULL example for SUM, MIN or MAX. The text above states the NULL-skipping rule for all of them."
+     "after": "The first clip demonstrates MIN live; the second clip does not cover MIN at all, and neither clip works a NULL example for SUM, MIN or MAX. The text above states the NULL-skipping rule for all of them."
     }
    },
    "assessment_anchors": [
@@ -3260,7 +3268,7 @@
       "CROSS JOIN",
       "self-joins"
      ],
-     "starter_state_intent": "A table with a category column and a numeric column (for example orders with city and delivery_time_minutes) is loaded; the editor is empty.",
+     "starter_state_intent": "A table with a category column and a numeric column (for example orders with category and sale_amount) is loaded; the editor is empty.",
      "observable_success": "One row per distinct category appears, and each total matches the hand-computed value."
     }
    },
@@ -4593,7 +4601,7 @@
     "objective": "Write a query that pulls the month out of each order date and computes how many days apart two date columns are.",
     "success": "The query returns the extracted month and a day-count difference for each row, correct for sample rows checked by hand.",
     "live_code": {
-     "required_skill": "extract_a_date_part",
+     "required_skill": "date_time_operations",
      "allowed_syntax": [
       "SELECT",
       "FROM",
@@ -8351,7 +8359,7 @@
     "objective": "Write a query that filters rows using a subquery in WHERE that compares against an aggregate value computed from another table.",
     "success": "The query returns exactly the rows that satisfy the comparison against the subquery's single value.",
     "live_code": {
-     "required_skill": "write_in_with_a_subquery",
+     "required_skill": "write_a_scalar_subquery_comparison",
      "allowed_syntax": [
       "SELECT",
       "FROM",

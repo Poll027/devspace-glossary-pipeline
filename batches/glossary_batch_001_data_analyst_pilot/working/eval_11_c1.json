@@ -1,0 +1,44 @@
+{
+  "chunk": "c1",
+  "evaluator_model": "us.anthropic.claude-opus-4-5-20251101-v1:0,us.anthropic.claude-opus-4-6-v1",
+  "verdict": "PASS",
+  "not_evaluated_due_to_errors": [],
+  "error_details": {},
+  "defects": [
+    {
+      "concept_id": "python.variables_assignment",
+      "severity": "ADVISORY",
+      "field": "practice_anchor.blocked_syntax",
+      "problem": "The blocked_syntax entry 'division and other operators beyond the single multiplication shown in the width * height example' partially overlaps with the later entry '+ - / // % ** (only the single * from the width * height example is allowed)'. This is redundant but not contradictory.",
+      "fix": "Remove the first entry 'division and other operators beyond the single multiplication shown in the width * height example' since the explicit operator list already covers it."
+    },
+    {
+      "concept_id": "python.logical_operators",
+      "severity": "ADVISORY",
+      "field": "practice_anchor.live_code.starter_state_intent",
+      "problem": "The starter state introduces 'a first-week flag' as a third condition variable, but teaching_notes say 'Keep is_late/is_far as the running example throughout -- don't introduce a third condition.' The practice anchor contradicts the teaching note.",
+      "fix": "Change starter_state_intent to: 'A few variables holding delivery_minutes and distance_km, plus is_late and is_far booleans derived from them.' Remove the first-week flag. Adjust the objective/success accordingly to use only is_late and is_far."
+    },
+    {
+      "concept_id": "python.logical_operators",
+      "severity": "ADVISORY",
+      "field": "practice_anchor.live_code.starter_state_intent",
+      "problem": "The starter_state_intent introduces 'a first-week flag' as a third condition variable, but the teaching_notes explicitly say 'Keep is_late/is_far as the running example throughout -- don't introduce a third condition.' The practice objective also mentions 'two or three comparisons' and the teaching text (tb6) does reference is_first_week, so this is not a hard contradiction, but the starter state intent directly conflicts with the teaching note constraint.",
+      "fix": "Change starter_state_intent to: 'A few variables holding delivery minutes and distance, used to derive is_late and is_far boolean values.'"
+    },
+    {
+      "concept_id": "python.sets",
+      "severity": "ADVISORY",
+      "field": "media.bridge_note.before",
+      "problem": "The bridge note says 'The membership check near the end is wrapped in a small snippet that prints yes; read it as 1 in first' \u2014 while this is accurate and helpful, it could more explicitly note that the clip uses an if-statement (a blocked concept) around the membership test, so the learner should focus on the 'in' expression itself rather than the surrounding control flow.",
+      "fix": "Consider: 'The membership check near the end uses an if-statement the course hasn't covered yet \u2014 focus on the expression 1 in first, which is the membership test.'"
+    },
+    {
+      "concept_id": "python.for_loops",
+      "severity": "ADVISORY",
+      "field": "practice_anchor.live_code.blocked_syntax",
+      "problem": "+= appears twice in blocked_syntax: once as '+=' and once as '+= and other augmented assignment'. Duplicate entry.",
+      "fix": "Remove the standalone '+=' entry, keeping only '+= and other augmented assignment'."
+    }
+  ]
+}
