@@ -1,7 +1,9 @@
 # 07_transcript_sync — script, no model
 
+YouTube blocks cloud IPs, so on the VM this goes through `yt_bridge.py`: videos already in the bank are handled offline; missing ones are posted as a job on the `yt-bridge` branch and a worker on a home-IP machine (`python3 00_GLOSSARY_PIPELINE_CORE/scripts/yt_bridge.py worker`) fetches them with `fetch_videos.py` and posts the result back. The run waits (up to 12 h; exit 4, `AWAITING MAC`). On a machine with a normal IP, `fetch_videos.py` can still be run directly.
+
 ```bash
-python3 00_GLOSSARY_PIPELINE_CORE/scripts/fetch_videos.py batches/<batch_id> 00_GLOSSARY_PIPELINE_CORE/video_bank
+python3 00_GLOSSARY_PIPELINE_CORE/scripts/yt_bridge.py transcripts batches/<batch_id> 00_GLOSSARY_PIPELINE_CORE/video_bank
 ```
 
 For every kept candidate not already in `video_bank/catalogue/`: fetches metadata with `yt-dlp` (creator chapters, thumbnail, embed flag, language, caption tracks) into `catalogue/<video_id>.json`, and the English transcript (creator-uploaded preferred, auto-captions otherwise) into `transcripts/<video_id>.json`. Never downloads video. Already-cached videos are skipped — a video is fetched once, ever.
