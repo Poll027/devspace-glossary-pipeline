@@ -129,6 +129,8 @@ def vm_transcripts(batch, bank):
             (batch / "transcript_sync_report.json").write_bytes(rep)
             print("[yt_bridge] transcript_sync_report.json written by the Mac run", flush=True)
             return 0
+        print("[yt_bridge] the Mac result has no sync report (its fetch crashed); not falling back to a fetch from this IP", flush=True)
+        return 5
     return subprocess.run([sys.executable, str(HERE / "fetch_videos.py"), str(batch), str(bank)]).returncode  # everything cached: offline, builds the report
 
 
