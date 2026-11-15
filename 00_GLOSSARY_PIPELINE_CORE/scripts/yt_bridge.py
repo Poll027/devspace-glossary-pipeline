@@ -95,8 +95,11 @@ def report_from(data):
 
 
 def wait_result(jid):
-    t0 = time.time()
+    t0, n = time.time(), 0
     while time.time() - t0 < WAIT_H * 3600:
+        n += 1
+        if n % 5 == 1:  # heartbeat: the supervisor's stall watchdog reads file activity, and a silent wait would be killed after 45 min
+            print(f"[yt_bridge] still waiting for the Mac worker ({(time.time() - t0) / 60:.0f} min)", flush=True)
         sync()
         f = CLONE / "results" / f"{jid}.tgz"
         if f.exists() and (CLONE / "results" / f"{jid}.done").exists():
