@@ -488,13 +488,9 @@ def git(c, msg, pull=False):
 def notify(c, subject, body):
     c.log(f"NOTIFY {subject}")
     (c.B / "working" / ("DRIVER_STOPPED.md" if "STOPPED" in subject else "DRIVER_DONE.md")).write_text(f"# {subject}\n\n{body}\n")
-    topic = os.environ.get("SNS_TOPIC_ARN")
-    if topic and not ("STOPPED" in subject and os.environ.get("SUPERVISED")):  # the supervisor sends the triaged stop email
-        try:
-            import boto3
-            boto3.client("sns", region_name=topic.split(":")[3]).publish(TopicArn=topic, Subject=subject[:100], Message=body[:20000])
-        except Exception as e:
-            c.log(f"SNS publish failed: {e}")
+    if not ("STOPPED" in subject and os.environ.get("SUPERVISED")):  # the supervisor sends the triaged stop message
+        from bedrock_llm import alert
+        alert(subject, body)
 
 
 def main():

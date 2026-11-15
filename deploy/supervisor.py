@@ -20,6 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "00_GLOSSARY_PIPELINE_CORE" / "scripts"))
 from bedrock_agent import Budget, BudgetExceeded, run_agent  # noqa: E402
+from bedrock_llm import alert  # noqa: E402
 from glm_generate import load_env  # noqa: E402
 
 STALL_WARN_MIN = float(os.environ.get("STALL_WARN_MIN", 25))
@@ -38,13 +39,7 @@ Be efficient: use at most about 8 tool calls (read the stop file first, then onl
 
 def notify(subject, body):
     print(f"[supervisor] {subject}\n{body[:1500]}", flush=True)
-    topic = os.environ.get("SNS_TOPIC_ARN")
-    if topic:
-        try:
-            import boto3
-            boto3.client("sns", region_name=topic.split(":")[3]).publish(TopicArn=topic, Subject=subject[:100], Message=body[:20000])
-        except Exception as e:
-            print(f"[supervisor] SNS failed: {e}", flush=True)
+    alert(subject, body)
 
 
 def last_activity(B):

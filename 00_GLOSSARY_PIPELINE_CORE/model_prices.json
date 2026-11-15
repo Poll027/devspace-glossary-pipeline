@@ -1,0 +1,89 @@
+{
+  "_note": "USD per million tokens, Global Standard, short-context rates, from the Azure Retail Prices API (eastus) on 2026-11-09. A model is priced by the longest key that appears in its deployment name (lower-cased). cache_read / cache_write are multipliers on the input rate. Long-context requests cost more (6.1-sol 4.0/15.0, astra 20.0/75.0): not modelled, our packets are well under that tier. The API listed no output meter for 6.1-terra: its 5.0 is an UNVERIFIED assumption. Global Flex tiers are about half price (6.1-sol 1.0/5.0) if a Flex deployment is ever used. Unknown models fall back to 'default' (the dearest rate) so a budget cap trips early. DeepSeek and Kimi rows are the Microsoft-billed Global meters from the same API (2026-11-11). A call served on the Flex tier is costed at half (bedrock_llm.price_usd).",
+  "default": {
+    "in": 10.0,
+    "out": 50.0,
+    "cache_read": 0.1,
+    "cache_write": 1.25
+  },
+  "models": {
+    "astra": {
+      "in": 10.0,
+      "out": 50.0,
+      "cache_read": 0.1,
+      "cache_write": 1.25
+    },
+    "6.1-sol": {
+      "in": 2.0,
+      "out": 10.0,
+      "cache_read": 0.05,
+      "cache_write": 1.25
+    },
+    "sol": {
+      "in": 2.0,
+      "out": 10.0,
+      "cache_read": 0.1,
+      "cache_write": 1.25
+    },
+    "6.1-terra": {
+      "in": 1.0,
+      "out": 5.0,
+      "cache_read": 0.05,
+      "cache_write": 1.25
+    },
+    "terra": {
+      "in": 1.0,
+      "out": 5.0,
+      "cache_read": 0.05,
+      "cache_write": 1.25
+    },
+    "luna": {
+      "in": 0.1,
+      "out": 0.5,
+      "cache_read": 0.1,
+      "cache_write": 1.25
+    },
+    "opus": {
+      "in": 5.0,
+      "out": 25.0,
+      "cache_read": 0.1,
+      "cache_write": 1.25
+    },
+    "sonnet": {
+      "in": 3.0,
+      "out": 15.0,
+      "cache_read": 0.1,
+      "cache_write": 1.25
+    },
+    "haiku": {
+      "in": 1.0,
+      "out": 5.0,
+      "cache_read": 0.1,
+      "cache_write": 1.25
+    },
+    "deepseek-v4.1-flash": {
+      "in": 0.3,
+      "out": 1.2,
+      "cache_read": 0.02,
+      "cache_write": 1.0
+    },
+    "deepseek-v4-flash": {
+      "in": 0.19,
+      "out": 0.51,
+      "cache_read": 0.147,
+      "cache_write": 1.0
+    },
+    "deepseek-v4-pro": {
+      "in": 1.74,
+      "out": 3.48,
+      "cache_read": 0.0833,
+      "cache_write": 1.0
+    },
+    "kimi-k2.6": {
+      "in": 0.95,
+      "out": 4.0,
+      "cache_read": 0.168,
+      "cache_write": 1.0
+    }
+  }
+}
