@@ -1,0 +1,286 @@
+
+        Middleware - FastAPI
+          Skip to content
+         Deploy on FastAPI Cloud 🚀
+         Follow @fastapi on X (Twitter) to stay updated
+         Follow FastAPI on LinkedIn to stay updated
+         Subscribe to the FastAPI and friends newsletter 🎉
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+            FastAPI
+              Middleware
+              en - English
+              de - Deutsch
+              es - español
+              fr - français
+              hi - हिन्दी
+              ja - 日本語
+              ko - 한국어
+              pt - português
+              ru - русский язык
+              tr - Türkçe
+              uk - українська мова
+              zh - 简体中文
+              zh-hant - 繁體中文
+    Search
+    fastapi/fastapi
+  FastAPI
+  Features
+  Learn
+  Reference
+  Resources
+  About
+  Release Notes
+    FastAPI
+    fastapi/fastapi
+  FastAPI
+  Features
+  Learn
+  Python Types Intro
+  Concurrency and async / await
+  Tutorial - User Guide
+  First Steps
+  Path Parameters
+  Query Parameters
+  Request Body
+  Query Parameters and String Validations
+  Path Parameters and Numeric Validations
+  Query Parameter Models
+  Body - Multiple Parameters
+  Body - Fields
+  Body - Nested Models
+  Declare Request Example Data
+  Extra Data Types
+  Cookie Parameters
+  Header Parameters
+  Cookie Parameter Models
+  Header Parameter Models
+  Response Model - Return Type
+  Extra Models
+  Response Status Code
+  Form Data
+  Form Models
+  Request Files
+  Request Forms and Files
+  Handling Errors
+  Path Operation Configuration
+  JSON Compatible Encoder
+  Body - Updates
+  Dependencies
+  Classes as Dependencies
+  Sub-dependencies
+  Dependencies in path operation decorators
+  Global Dependencies
+  Dependencies with yield
+  Security
+  Security - First Steps
+  Get Current User
+  Simple OAuth2 with Password and Bearer
+  OAuth2 with Password (and hashing), Bearer with JWT tokens
+  Middleware
+  Middleware
+      On this page
+        Create a middleware
+        Before and after the response
+        Multiple middleware execution order
+        Other middlewares
+  CORS (Cross-Origin Resource Sharing)
+  SQL (Relational) Databases
+  Bigger Applications - Multiple Files
+  Stream JSON Lines
+  Server-Sent Events (SSE)
+  Background Tasks
+  Metadata and Docs URLs
+  Frontend
+  Static Files
+  Testing
+  Debugging
+  Advanced User Guide
+  Stream Data
+  Path Operation Advanced Configuration
+  Additional Status Codes
+  Return a Response Directly
+  Custom Response - HTML, Stream, File, others
+  Additional Responses in OpenAPI
+  Response Cookies
+  Response Headers
+  Response - Change Status Code
+  Advanced Dependencies
+  Advanced Security
+  OAuth2 scopes
+  HTTP Basic Auth
+  Using the Request Directly
+  Using Dataclasses
+  Advanced Middleware
+  Sub Applications - Mounts
+  Behind a Proxy
+  Templates
+  WebSockets
+  Lifespan Events
+  OpenTelemetry
+  Testing WebSockets
+  Testing Events: lifespan and startup - shutdown
+  Testing Dependencies with Overrides
+  Async Tests
+  Settings and Environment Variables
+  OpenAPI Callbacks
+  OpenAPI Webhooks
+  Including WSGI - Flask, Django, others
+  Generating SDKs
+  Advanced Python Types
+  JSON with Bytes as Base64
+  Strict Content-Type Checking
+  FastAPI CLI
+  Editor Support
+  Develop with AI
+  Deployment
+  About FastAPI versions
+  FastAPI Cloud
+  About HTTPS
+  Run a Server Manually
+  Deployments Concepts
+  Deploy FastAPI on Cloud Providers
+  Server Workers - Uvicorn with Workers
+  FastAPI in Containers - Docker
+  How To - Recipes
+  General - How To - Recipes
+  Migrate from Pydantic v1 to Pydantic v2
+  GraphQL
+  Custom Request and APIRoute class
+  Conditional OpenAPI
+  Extending OpenAPI
+  Separate OpenAPI Schemas for Input and Output or Not
+  Custom Docs UI Static Assets (Self-Hosting)
+  Configure Swagger UI
+  Testing a Database
+  Use Old 403 Authentication Error Status Codes
+  Reference
+  FastAPI class
+  Request Parameters
+  Status Codes
+  UploadFile class
+  Exceptions - HTTPException and WebSocketException
+  Dependencies - Depends() and Security()
+  APIRouter class
+  Background Tasks - BackgroundTasks
+  Request class
+  WebSockets
+  HTTPConnection class
+  Response class
+  Custom Response Classes - File, HTML, Redirect, Streaming, etc.
+  Server-Sent Events - EventSourceResponse and ServerSentEvent
+  Middleware
+  OpenAPI
+  OpenAPI docs
+  OpenAPI models
+  Security Tools
+  Encoders - jsonable_encoder
+  Static Files - StaticFiles
+  Templating - Jinja2Templates
+  Test Client - TestClient
+  Resources
+  FastAPI People
+  Help
+  Contributing
+  Translations
+  Full Stack FastAPI Template
+  External Links
+  FastAPI and friends newsletter
+  About
+  Alternatives, Inspiration and Comparisons
+  History, Design and Future
+  Benchmarks
+  Repository Management
+  Release Notes
+      On this page
+        Create a middleware
+        Before and after the response
+        Multiple middleware execution order
+        Other middlewares
+    FastAPI
+    Learn
+    Tutorial - User Guide
+Middleware¶
+AI coding agents
+Use the official FastAPI skill for your installed version. Install it from your project directory:
+uvx library-skills
+See Develop with AI.
+You can add middleware to FastAPI applications.
+A "middleware" is a function that works with every request before it is processed by any specific path operation. And also with every response before returning it.
+It takes each request that comes to your application.
+It can then do something to that request or run any needed code.
+Then it passes the request to be processed by the rest of the application (by some path operation).
+It then takes the response generated by the application (by some path operation).
+It can do something to that response or run any needed code.
+Then it returns the response.
+Technical Details
+If you have dependencies with yield, the exit code will run after the middleware.
+If there were any background tasks (covered in the Background Tasks section, you will see it later), they will run after all the middleware.
+Create a middleware¶
+To create a middleware you use the decorator @app.middleware("http") on top of a function.
+The middleware function receives:
+The request.
+A function call_next that will receive the request as a parameter.
+This function will pass the request to the corresponding path operation.
+Then it returns the response generated by the corresponding path operation.
+You can then further modify the response before returning it.
+import time
+from fastapi import FastAPI, Request
+app = FastAPI()
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    start_time = time.perf_counter()
+    response = await call_next(request)
+    process_time = time.perf_counter() - start_time
+    response.headers["X-Process-Time"] = str(process_time)
+    return response
+Tip
+Keep in mind that custom proprietary headers can be added using the X- prefix.
+But if you have custom headers that you want a client in a browser to be able to see, you need to add them to your CORS configurations (CORS (Cross-Origin Resource Sharing)) using the parameter expose_headers documented in Starlette's CORS docs.
+Technical Details
+You could also use from starlette.requests import Request.
+FastAPI provides it as a convenience for you, the developer. But it comes directly from Starlette.
+Before and after the response¶
+You can add code to be run with the request,  before any path operation receives it.
+And also after the response is generated, before returning it.
+For example, you could add a custom header X-Process-Time containing the time in seconds that it took to process the request and generate a response:
+import time
+from fastapi import FastAPI, Request
+app = FastAPI()
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    start_time = time.perf_counter()
+    response = await call_next(request)
+    process_time = time.perf_counter() - start_time
+    response.headers["X-Process-Time"] = str(process_time)
+    return response
+Tip
+Here we use time.perf_counter() instead of time.time() because it can be more precise for these use cases. 🤓
+Multiple middleware execution order¶
+When you add multiple middlewares using either @app.middleware() decorator or app.add_middleware() method, each new middleware wraps the application, forming a stack. The last middleware added is the outermost, and the first is the innermost.
+On the request path, the outermost middleware runs first.
+On the response path, it runs last.
+For example:
+app.add_middleware(MiddlewareA)
+app.add_middleware(MiddlewareB)
+This results in the following execution order:
+Request: MiddlewareB → MiddlewareA → route
+Response: route → MiddlewareA → MiddlewareB
+This stacking behavior ensures that middlewares are executed in a predictable and controllable order.
+Other middlewares¶
+You can later read more about other middlewares in the Advanced User Guide: Advanced Middleware.
+You will read about how to handle CORS with a middleware in the next section.
+  Back to top
+                Previous
+                OAuth2 with Password (and hashing), Bearer with JWT tokens
+                Next
+                CORS (Cross-Origin Resource Sharing)
+        The FastAPI trademark is owned by @tiangolo and is registered in the US and across other regions
+    Made with
+        Zensical

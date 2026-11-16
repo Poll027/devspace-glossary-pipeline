@@ -1,0 +1,150 @@
+@70
+fa_bigger-applications#include-an-apirouter-with-a-custom-prefix-tags-responses-and-dependencies + fa_metadata#metadata-for-tags :: Provide tags to group public operations and put operations for one feature on its included APIRouter.
+fa_bigger-applications#include-an-apirouter-with-a-custom-prefix-tags-responses-and-dependencies :: A router inclusion prefix can provide an explicit version namespace, with the resulting public paths appearing in the generated OpenAPI contract.
+fa_first-steps#check-the-openapi-json + fa_testing#using-testclient :: Verify the intended namespace by inspecting the generated path entries and sending a request to the prefixed path; changing that path changes the externally used operation address.
+@71
+fa_handling-errors#override-request-validation-exceptions :: Register @app.exception_handler(RequestValidationError) to replace the default invalid-request response with a consistent intended validation envelope.
+fa_handling-errors#override-request-validation-exceptions :: Use exc.errors() entries, including their loc and type information, to build machine-readable input-error details rather than flattening all failures into an unexplained string.
+ow_REST_Security#error-handling + ow_Logging_Cheat#data-to-exclude :: Do not copy raw submitted secrets or internal details into a public validation response; choose safe fields explicitly when constructing its content.
+fa_handling-errors#override-request-validation-exceptions + fa_testing#using-testclient :: Send invalid path, query and body inputs and assert the declared validation status and envelope keys to verify that the registered handler governs each boundary consistently.
+@72
+ietf_rfc9700#2.1.1 :: Use the supplied authorization-code client flow with PKCE rather than substituting the resource-owner password grant, which current OAuth security guidance disallows.
+oauth_core#4.1.1 + ietf_rfc9700#2.1.1 :: Configure the supplied client with its registered client identifier, authorization and token endpoints and redirect URI, and initiate its authorization request with response_type=code, requested scope and a PKCE challenge.
+oauth_core#4.1.3 + ietf_rfc9700#2.1.1 :: Complete the client's redirect flow by exchanging the authorization code at the token endpoint with grant_type=authorization_code, the applicable client authentication and the matching PKCE verifier.
+oauth_core#7 + ietf_rfc9700#2.3 :: Use the resulting access token, intended for the API resource, as Authorization: Bearer token on protected API requests; the API acts as a resource server rather than the authorization endpoint.
+@73
+redis_cache_code#choose-a-ttl-that-matches-your-staleness-tolerance :: Choose a cache TTL from the tolerated staleness window: a shorter TTL refreshes sooner but causes more primary-store reads, while a longer TTL reduces reads and can serve older values longer.
+redis_cmd_api#redis.commands.core.BasicKeyCommands.set :: For a string cache entry, pass ex=seconds to Redis set(key, value, ex=seconds) to assign an expiry when writing it.
+redis_cache_code#invalidate-dont-try-to-keep-the-cache-in-sync :: After the primary record changes, delete its cache key so the next cache-aside read reloads it instead of serving the old copy.
+redis_cache_code#inspect-cached-entries-directly-in-redis + redis_cmd_api#redis.commands.core.BasicKeyCommands.ttl :: Inspect the key's TTL with Redis ttl(key), change the primary record and verify that invalidation makes the next read return the changed value.
+@74
+rfc_9110_http_semantics#15.3.2 + rfc_9110_http_semantics#15.3.5 :: Preserve the declared successful outcome: a creation response can use 201 with resource location metadata, while 204 must not contain response content.
+fa_additional-responses#additional-media-types-for-the-main-response :: Declare response metadata under responses={status: {"content": {media_type: ...}}} when an operation supports an additional response representation.
+fa_additional-responses#additional-media-types-for-the-main-response + fa_response-model#return-a-response-directly :: Return the intended Response subclass and media type for an alternative representation; documenting it does not automatically convert a returned object into that representation.
+rfc_9110_http_semantics#8.3 + fa_testing#using-testclient :: Verify the contract by checking status, Content-Type and content together for each declared representation, not merely by checking that the operation succeeded.
+@75
+fa_body-updates#partial-updates-with-patch :: A partial update changes only the fields supplied in the request, leaving the stored values of omitted fields unchanged.
+fa_body-updates#using-pydantics-exclude-unset-parameter :: Compute supplied changes with model_dump(exclude_unset=True), then apply those changes to the stored object rather than replacing it with the update model's defaults.
+fa_body-updates#using-pydantics-update-parameter + pd_serialization#excluding-and-including-fields-based-on-their-value :: model_copy(update=changes) provides a merge form for an already validated update; an explicitly supplied null remains a supplied change unless the contract rejects it.
+fa_testing#using-testclient + fa_body-updates#partial-updates-recap :: Test one supplied field and at least one omitted field, asserting that the supplied field changes and the omitted field retains its earlier value.
+@76
+jwt_usage#reading-the-claimset-without-validation :: JWT decoding without verification reveals claims but does not establish that the claims are trustworthy.
+jwt_api#jwt.decode :: Verify with jwt.decode(token, key, algorithms=[allowed_algorithm], issuer=expected_issuer, audience=expected_audience, options={"require": ["exp", "iss", "aud"]}); choose the allowed algorithm from trusted configuration, not from the token alone.
+jwt_usage#expiration-time-claim-exp + jwt_usage#not-before-time-claim-nbf + jwt_usage#requiring-presence-of-claims :: Expiration and not-before claims constrain token time validity; checks for a claim's value are distinct from requiring that the claim be present.
+jwt_usage#registered-claim-names + fa_security_oauth2-jwt#update-the-dependencies :: Treat a library verification exception as an invalid credential and reject the protected request rather than using its unverified claims.
+@77
+sa_select#the-where-clause + sa_select#order-by :: Build bounded results with select(Entity).where(predicate).order_by(order_columns).limit(page_size).offset(offset).
+sa_select#order-by + pg_indexes#indexes :: Choose a deterministic ordering with a unique tie-breaker when the primary sort value can repeat, so page boundaries do not depend on unspecified ordering among tied rows.
+sa_select#the-where-clause + sa_async#synopsis-orm :: Keep caller values in expression parameters, such as Entity.field == supplied_value, and execute the expression with await session.scalars(statement) rather than assembling SQL strings from the values.
+fa_query-params#defaults + fa_query-params#required-query-parameters + pd_fields#numeric-constraints :: Bound accepted page size and offset with declared numeric constraints and compute offset from the requested page contract instead of accepting an unbounded read.
+@78
+otel_signals#signals :: Metrics summarize numerical measurements over time, logs record discrete events, and traces connect spans representing operations within one request's execution.
+otel_instrument#creating-spans :: Obtain a tracer with trace.get_tracer(name) and use with tracer.start_as_current_span(operation_name) as span around an operation to create a scoped trace span.
+otel_instrument#add-attributes-to-a-span + otel_instrument#record-exceptions-in-spans :: Add relevant span attributes and record failures with span.record_exception(exc) and an error status so a trace distinguishes a failed operation from a successful one.
+ow_Logging_Cheat#event-attributes + prom_counter#counter + prom_histogram#histogram :: Choose an event log to explain an individual failure, request counters and durations to quantify frequency and latency, and a trace to locate the failing operation in its request.
+@79
+redis_prod#exception-handling :: Catch Redis connection and timeout exceptions at the cache boundary so the application can apply its declared cache-outage policy rather than letting an incidental cache exception choose the outcome.
+redis_cache_code#the-cache-aside-helper + redis_cache_aside#when-to-use-redis-cache-aside :: When the cache is only an acceleration layer and the primary store is available, the miss path can load and return the primary-store value without a successful cache read or write.
+redis_prod#timeouts :: Configure finite socket_connect_timeout and socket_timeout values on the Redis client so a failed cache does not cause unbounded connection or response waits.
+redis_prod#exception-handling + fa_testing#using-testclient :: Verify the policy with a controlled failing cache dependency, asserting the primary-store result or the declared failure outcome rather than assuming that a cache outage is equivalent to lost primary data.
+@80
+starlette_requests#body :: Read await request.body() to obtain the raw request bytes for signature verification before parsing or modifying the webhook body.
+ow_Webhook_Security#signature-verification :: Verify every delivery with the publisher's supported SDK or verification library against the raw bytes and endpoint signing secret, following that publisher's signing format rather than inventing a canonicalization.
+ow_Webhook_Security#signature-verification :: Reject missing or invalid signatures before processing the event, and do not disclose the verification secret or failure's internal details in the response.
+ow_Webhook_Security#security-testing :: Test a valid signed delivery and deliveries with a modified body or absent signature, checking that only the valid delivery reaches event processing.
+@81
+jwt_usage#retrieve-rsa-signing-keys-from-a-jwks-endpoint :: An OIDC provider's trusted JWKS endpoint publishes public verification keys; a token's kid selects a candidate key but is not itself proof of token validity.
+jwt_usage#retrieve-rsa-signing-keys-from-a-jwks-endpoint :: Create PyJWKClient(trusted_jwks_url), resolve a candidate with get_signing_key_from_jwt(token), and pass its key to jwt.decode with the configured algorithms, issuer, audience and required claims.
+ietf_rfc9700#2.3 + jwt_usage#audience-claim-aud :: Validate that an access token is issued for this API's intended audience; a token for a different resource or an identity token for a client is not interchangeable API authorization evidence.
+jwt_usage#retrieve-rsa-signing-keys-from-a-jwks-endpoint + jwt_usage#reading-headers-without-validation :: Obtain key material from the configured provider rather than a URL supplied in unverified token data, and still perform signature and claim validation after resolving a key.
+@82
+fa_security_oauth2-scopes#oauth2-scopes-and-openapi :: OAuth2 scopes express permissions requested or granted for protected operations; authentication alone does not establish that all operation permissions are present.
+fa_security_oauth2-scopes#use-securityscopes :: Declare Security(provider, scopes=[...]) on a protected operation and accept SecurityScopes in the provider to access the operation's required scopes.
+fa_security_oauth2-scopes#check-the-scopes :: Compare each required scope with the scopes in the verified token context and reject the request if a required scope is absent.
+fa_testing#using-testclient + fa_security_oauth2-scopes#check-the-scopes :: Test a verified token with the required scope and another without it, asserting that only the sufficiently scoped request succeeds.
+@83
+pytest_fixtures#teardown-cleanup-aka-fixture-finalization :: A yield fixture performs setup before yield and teardown afterward, making resource cleanup explicit for each test's scope.
+sa_test_tx#joining-a-session-into-an-external-transaction-such-as-for-test-suites :: For transaction-isolated database tests, open an outer connection transaction, bind the test session to that connection with join_transaction_mode="create_savepoint", and roll back the outer transaction during teardown.
+fa_testing-dependencies#use-the-app-dependency-overrides-attribute + fa_testing#using-testclient :: Override the application session provider with the test session provider, exercise a write through TestClient and read its resulting state through the same test database boundary.
+sa_test_tx#joining-a-session-into-an-external-transaction-such-as-for-test-suites + pytest_fixtures#teardown-cleanup-aka-fixture-finalization :: Close the test session and connection and restore overrides in teardown, verifying that a subsequent test does not inherit the first test's written state.
+@84
+docker_build#from + docker_build#workdir + docker_build#copy :: Define a Dockerfile from a chosen Python base image, set WORKDIR and copy the dependency declaration and application source into the image.
+fa_deployment_docker#create-the-dockerfile :: Install declared dependencies during the image build and specify an executable server command, such as CMD ["fastapi", "run", "app/main.py", "--port", "80"], without development reload.
+fa_deployment_docker#build-the-docker-image + fa_deployment_docker#start-the-docker-container :: Build with docker build -t image-name . and verify a container started with docker run -p host_port:container_port image-name by sending an HTTP request to the published port.
+fa_deployment_docker#create-the-dockerfile :: Copy dependency declarations before frequently changing application code when using separate install layers so Docker can reuse the dependency-install layer when those declarations are unchanged.
+@85
+sa_orm_related_objects#loader-strategies :: Lazy relationship access can emit additional SELECT statements; iterating parent entities and loading each parent's relationship separately can produce an N+1 query pattern.
+sa_orm_related_objects#selectin-load :: Add selectinload(Entity.relationship_attribute) through statement.options(...) to fetch a collection relationship for the selected parents with an additional batched query rather than one query per parent.
+sa_orm_related_objects#joined-load :: joinedload(...) is an alternative eager-loading strategy using a join; when loading a collection this way, apply Result.unique() as required to deduplicate parent entities.
+sa_orm_related_objects#loader-strategies + sa_dbapi_transactions#working-with-transactions-and-the-dbapi :: Compare emitted SQL before and after the loading change with engine SQL logging enabled, confirming both reduced relationship queries and unchanged returned entity data.
+@86
+ow_Webhook_Security#replay-attack-protection :: Verify an authenticated delivery timestamp against a tolerance window when the publisher's signing protocol includes one; an unsigned timestamp does not establish freshness.
+ow_Webhook_Security#idempotency-and-duplicate-events :: Use an authenticated publisher event identifier as the deduplication key and retain the deduplication record across application restarts for the required replay window.
+ow_Webhook_Security#idempotency-and-duplicate-events :: Record the event identifier atomically with its durable state changes in a transaction, backed by a uniqueness constraint, so concurrent deliveries cannot both apply the effect.
+ow_Webhook_Security#idempotency-and-duplicate-events :: Treat an already processed event as a successful duplicate acknowledgment without repeating its state change, and test duplicate and concurrent deliveries separately.
+@87
+kube_probes#define-readiness-probes :: If a dependency is required for serving traffic, a temporary failure of that dependency can make readiness fail without implying that the process needs restarting.
+redis_cache_aside#when-to-use-redis-cache-aside + redis_prod#exception-handling :: If a dependency is only an optional cache, the service can remain ready under its documented primary-store fallback policy; make the distinction between required and optional dependencies explicit.
+httpx_timeouts#fine-tuning-the-configuration + redis_prod#timeouts :: Bound dependency checks with finite client timeouts so determining readiness does not hang behind the failing dependency.
+kube_probes#define-readiness-probes + fa_testing#using-testclient :: Test readiness with a required dependency healthy and unavailable, and with an optional dependency unavailable, asserting the outcomes specified by that dependency policy.
+@88
+fa_testing#using-testclient + fa_security_first-steps#what-it-does :: Send protected HTTP requests with and without Authorization: Bearer credentials and assert the declared outcomes, exercising the route's real authentication dependency.
+jwt_usage#registered-claim-names + fa_security_oauth2-scopes#check-the-scopes :: Include valid, invalid-signature, expired and insufficient-scope token cases so tests distinguish credential validity from granted permission.
+fa_testing-dependencies#use-the-app-dependency-overrides-attribute :: Replace only external token or key acquisition when deterministic fixtures are needed; do not replace the validation or scope gate whose behavior the test claims to exercise.
+fa_testing#using-testclient + fa_response-model#response-model-parameter :: Assert both response status and public response content for an allowed request and confirm that denied requests do not expose the protected result.
+@89
+ow_0xa1-broken-object-level-authorization#how-to-prevent :: An endpoint taking an object identifier must check the caller's permission for that specific object; a valid identifier and authenticated caller do not establish ownership.
+ow_0xa1-broken-object-level-authorization#how-to-prevent + sa_select#the-where-clause :: Enforce the object boundary by selecting with both object identity and the authorized owner or tenant context, rather than trusting an owner identifier from caller-controlled input.
+ow_0xa1-broken-object-level-authorization#how-to-prevent + fa_testing#using-testclient :: Create distinct authorized contexts and verify that each can access its permitted object but cannot obtain or change the other context's object by substituting its identifier.
+@90
+stripe_webhooks#automatic-retries :: A publisher may retry a delivery that fails or is not acknowledged; successful acknowledgment and durable completion are distinct boundaries that the receiver must define.
+ow_Webhook_Security#idempotency-and-duplicate-events :: Acknowledge success only after the required state change or durable enqueue is committed, so a crash after acknowledgment does not silently lose accepted work.
+ow_Webhook_Security#idempotency-and-duplicate-events + stripe_webhooks#automatic-retries :: If durable acceptance fails, return the declared non-success outcome so the publisher's delivery policy can retry; if acceptance succeeded, a retry must not reapply the accepted effect.
+ow_Webhook_Security#security-testing + stripe_webhooks#automatic-retries :: Inject failure before durable acceptance and after acceptance but before acknowledgment, then redeliver and verify recovery and a single durable event effect.
+@91
+otel_instrument#creating-spans + ow_Logging_Cheat#event-attributes :: Maintain a per-request correlation identifier for related logs and use the active trace and span identifiers when associating a log event with its trace operation.
+ow_Logging_Cheat#event-attributes :: Carry the same interaction identifier through the related request events rather than forcing an observer to reconstruct the relationship from timestamps alone.
+otel_instrument#span-context :: Retrieve the active span context with trace.get_current_span().get_span_context() and attach its valid trace_id and span_id to the corresponding log event fields.
+ow_Logging_Cheat#verification + otel_instrument#creating-spans :: Send concurrent requests and inspect their records, checking that each request's identifier is consistent within its own events and does not become another request's context.
+@92
+tf_dev-prod-parity#the-twelve-factor-app :: Keep development, staging and production as similar as practical, including backing-service types and versions, to avoid finding environment-specific incompatibilities only in production.
+tf_build-release-run#the-twelve-factor-app :: Build produces an artifact, release combines it with configuration, and run executes the release; promote the same built artifact instead of independently reconstructing it for each environment.
+tf_config#the-twelve-factor-app :: Supply environment-specific configuration externally rather than embedding staging or production values in the application code or image.
+fa_deployment_docker#build-the-docker-image + tf_dev-prod-parity#the-twelve-factor-app :: Verify the built container and its dependency assumptions in the target-like staging environment before promoting that artifact with production configuration.
+@93
+fa_testing#using-testclient + fa_body#results :: Send raw malformed JSON with the intended JSON Content-Type and separately send well-formed JSON with invalid model fields, checking that neither reaches successful processing.
+fa_body#request-body-path-query-parameters + fa_testing#using-testclient :: Test absent required input, explicit null, wrong types and field-constraint failures as distinct boundary requests and assert the declared validation outcomes.
+starlette_middleware#requestbodylimitmiddleware + fa_request-forms-and-files#define-file-and-form-parameters :: For an upload boundary, send an oversized body and malformed or disallowed multipart input and assert the declared rejection rather than a successful upload outcome.
+fa_testing#using-testclient + fa_handling-errors#override-request-validation-exceptions :: Check status and the safe public error structure for each rejection, rather than counting any non-success response as correct boundary handling.
+@94
+ow_Webhook_Security#security-testing :: Exercise valid signature, changed body, missing signature and, when supported, stale authenticated timestamp cases against the webhook HTTP boundary.
+ow_Webhook_Security#idempotency-and-duplicate-events :: Deliver the same authenticated event twice and concurrently, verifying that the durable state change occurs once while duplicates receive the intended acknowledgment.
+ow_Webhook_Security#security-testing + stripe_webhooks#automatic-retries :: Inject processing or acceptance failure and redeliver under the publisher's retry contract, checking both the HTTP acknowledgment and final persisted state.
+ow_Webhook_Security#logging-and-monitoring :: Inspect the failure report for an identifiable event outcome without exposing webhook signing secrets or sensitive signature material.
+@95
+fa_behind-a-proxy#proxy-forwarded-headers :: A TLS-terminating proxy can communicate the original request scheme and client information in forwarded headers, but the application server should trust those headers only from configured proxy sources.
+fa_behind-a-proxy#enable-proxy-forwarded-headers :: Configure --forwarded-allow-ips with the trusted proxy addresses; allowing * trusts all senders and is appropriate only when network access is restricted to trusted proxies.
+fa_behind-a-proxy#proxy-with-a-stripped-path-prefix :: If a proxy strips an external path prefix before forwarding, configure root_path for that prefix so generated API URLs and documentation reflect the external address.
+fa_behind-a-proxy#check-the-responses + fa_behind-a-proxy#proxy-with-a-stripped-path-prefix :: Verify redirects and documentation through the public HTTPS proxy address, checking that their scheme and prefix match the externally visible URL rather than the backend's internal address.
+@96
+ow_0xa4-unrestricted-resource-consumption#how-to-prevent :: Limit request consumption with an explicit policy for request frequency and expensive resource use instead of leaving callers unrestricted.
+ow_0xa4-unrestricted-resource-consumption#how-to-prevent + ow_Webhook_Security#rate-limiting :: Select the caller or operation key, allowed count and time window, and configure a maintained limiter or trusted gateway to enforce the policy rather than implementing the limiting protocol in application handlers.
+ow_Webhook_Security#rate-limiting :: Return 429 Too Many Requests when the limit is exceeded and communicate Retry-After when the policy can provide a retry interval.
+fa_testing#using-testclient + ow_0xa4-unrestricted-resource-consumption#how-to-prevent :: Verify the configured boundary with requests inside and beyond the limit, checking rejection, the retry policy and that an independently keyed caller does not accidentally consume another caller's allowance.
+@97
+ow_0xa4-unrestricted-resource-consumption#how-to-prevent + uv_settings#resource-limits :: Bound concurrent work as well as request size and waiting time so overload cannot consume unlimited connections, tasks or memory.
+uv_settings#resource-limits :: Set Uvicorn --limit-concurrency n to bound concurrent connections or tasks; requests beyond that server limit receive 503.
+starlette_middleware#requestbodylimitmiddleware + httpx_timeouts#setting-and-disabling-timeouts :: Combine an actual body-byte limit with finite dependency timeouts to bound how much work one accepted request can retain.
+fa_testing#using-testclient + uv_settings#resource-limits :: Under controlled concurrent load, verify that excess work is rejected at the configured boundary and accepted work completes within its limits, rather than merely increasing queue capacity without a bound.
+@98
+ow_Logging_Cheat#event-attributes :: A dependency-failure event needs a recognizable dependency identity, operation, result, reason and interaction context so observers can distinguish it from a generic request failure.
+prom_counter#counter + otel_instrument#record-exceptions-in-spans :: Count dependency failures with a bounded outcome label and record the dependency exception on its operation span to expose frequency and the failing request location.
+kube_probes#define-readiness-probes + redis_prod#exception-handling :: Map an outage to its declared dependency policy: a required dependency can block readiness, while a cache with primary-store fallback can report degradation without denying traffic.
+fa_testing#using-testclient + ow_Logging_Cheat#verification :: Trigger a controlled dependency outage and verify the public outcome, readiness result and corresponding failure telemetry while checking that logs omit secrets and internal connection details.
+@99
+fa_testing#using-testclient + fa_testing-events#testing-events-lifespan-and-startup-shutdown :: Run the complete application lifecycle in a verification harness and send HTTP requests through the deployed or test-client boundary rather than only calling individual functions.
+fa_body#results + fa_response-model#response-model-parameter :: Verify accepted input and the public output projection together, including rejection of invalid input and absence of private fields in successful responses.
+fa_security_oauth2-scopes#check-the-scopes + ow_0xa1-broken-object-level-authorization#how-to-prevent :: Verify one permitted protected request and requests denied by invalid credentials, missing permission and disallowed object context so the complete route does not bypass an individual security gate.
+sa_test_tx#joining-a-session-into-an-external-transaction-such-as-for-test-suites + ow_Webhook_Security#idempotency-and-duplicate-events :: Inspect durable state after the main write and webhook paths, including a duplicate delivery and a controlled failure, to verify the declared persistence and single-effect contracts.
+kube_probes#define-readiness-probes + ow_Logging_Cheat#verification + otel_instrument#record-exceptions-in-spans :: Exercise an unavailable required dependency and inspect readiness, public failure behavior and correlated diagnostics to verify that a dependency outage is observable and handled according to policy.
+tf_build-release-run#the-twelve-factor-app + fa_behind-a-proxy#proxy-with-a-stripped-path-prefix :: Perform verification using the release artifact and intended proxy and configuration inputs, checking the externally visible routes and contract rather than assuming a local-only run establishes deployment behavior.

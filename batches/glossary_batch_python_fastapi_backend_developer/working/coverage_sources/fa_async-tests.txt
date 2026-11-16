@@ -1,0 +1,301 @@
+
+        Async Tests - FastAPI
+          Skip to content
+         Deploy on FastAPI Cloud 🚀
+         Follow @fastapi on X (Twitter) to stay updated
+         Follow FastAPI on LinkedIn to stay updated
+         Subscribe to the FastAPI and friends newsletter 🎉
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+            FastAPI
+              Async Tests
+              en - English
+              de - Deutsch
+              es - español
+              fr - français
+              hi - हिन्दी
+              ja - 日本語
+              ko - 한국어
+              pt - português
+              ru - русский язык
+              tr - Türkçe
+              uk - українська мова
+              zh - 简体中文
+              zh-hant - 繁體中文
+    Search
+    fastapi/fastapi
+  FastAPI
+  Features
+  Learn
+  Reference
+  Resources
+  About
+  Release Notes
+    FastAPI
+    fastapi/fastapi
+  FastAPI
+  Features
+  Learn
+  Python Types Intro
+  Concurrency and async / await
+  Tutorial - User Guide
+  First Steps
+  Path Parameters
+  Query Parameters
+  Request Body
+  Query Parameters and String Validations
+  Path Parameters and Numeric Validations
+  Query Parameter Models
+  Body - Multiple Parameters
+  Body - Fields
+  Body - Nested Models
+  Declare Request Example Data
+  Extra Data Types
+  Cookie Parameters
+  Header Parameters
+  Cookie Parameter Models
+  Header Parameter Models
+  Response Model - Return Type
+  Extra Models
+  Response Status Code
+  Form Data
+  Form Models
+  Request Files
+  Request Forms and Files
+  Handling Errors
+  Path Operation Configuration
+  JSON Compatible Encoder
+  Body - Updates
+  Dependencies
+  Classes as Dependencies
+  Sub-dependencies
+  Dependencies in path operation decorators
+  Global Dependencies
+  Dependencies with yield
+  Security
+  Security - First Steps
+  Get Current User
+  Simple OAuth2 with Password and Bearer
+  OAuth2 with Password (and hashing), Bearer with JWT tokens
+  Middleware
+  CORS (Cross-Origin Resource Sharing)
+  SQL (Relational) Databases
+  Bigger Applications - Multiple Files
+  Stream JSON Lines
+  Server-Sent Events (SSE)
+  Background Tasks
+  Metadata and Docs URLs
+  Frontend
+  Static Files
+  Testing
+  Debugging
+  Advanced User Guide
+  Stream Data
+  Path Operation Advanced Configuration
+  Additional Status Codes
+  Return a Response Directly
+  Custom Response - HTML, Stream, File, others
+  Additional Responses in OpenAPI
+  Response Cookies
+  Response Headers
+  Response - Change Status Code
+  Advanced Dependencies
+  Advanced Security
+  OAuth2 scopes
+  HTTP Basic Auth
+  Using the Request Directly
+  Using Dataclasses
+  Advanced Middleware
+  Sub Applications - Mounts
+  Behind a Proxy
+  Templates
+  WebSockets
+  Lifespan Events
+  OpenTelemetry
+  Testing WebSockets
+  Testing Events: lifespan and startup - shutdown
+  Testing Dependencies with Overrides
+  Async Tests
+  Async Tests
+      On this page
+        pytest.mark.anyio
+        HTTPX
+        Example
+        Run it
+        In Detail
+        Other Asynchronous Function Calls
+  Settings and Environment Variables
+  OpenAPI Callbacks
+  OpenAPI Webhooks
+  Including WSGI - Flask, Django, others
+  Generating SDKs
+  Advanced Python Types
+  JSON with Bytes as Base64
+  Strict Content-Type Checking
+  FastAPI CLI
+  Editor Support
+  Develop with AI
+  Deployment
+  About FastAPI versions
+  FastAPI Cloud
+  About HTTPS
+  Run a Server Manually
+  Deployments Concepts
+  Deploy FastAPI on Cloud Providers
+  Server Workers - Uvicorn with Workers
+  FastAPI in Containers - Docker
+  How To - Recipes
+  General - How To - Recipes
+  Migrate from Pydantic v1 to Pydantic v2
+  GraphQL
+  Custom Request and APIRoute class
+  Conditional OpenAPI
+  Extending OpenAPI
+  Separate OpenAPI Schemas for Input and Output or Not
+  Custom Docs UI Static Assets (Self-Hosting)
+  Configure Swagger UI
+  Testing a Database
+  Use Old 403 Authentication Error Status Codes
+  Reference
+  FastAPI class
+  Request Parameters
+  Status Codes
+  UploadFile class
+  Exceptions - HTTPException and WebSocketException
+  Dependencies - Depends() and Security()
+  APIRouter class
+  Background Tasks - BackgroundTasks
+  Request class
+  WebSockets
+  HTTPConnection class
+  Response class
+  Custom Response Classes - File, HTML, Redirect, Streaming, etc.
+  Server-Sent Events - EventSourceResponse and ServerSentEvent
+  Middleware
+  OpenAPI
+  OpenAPI docs
+  OpenAPI models
+  Security Tools
+  Encoders - jsonable_encoder
+  Static Files - StaticFiles
+  Templating - Jinja2Templates
+  Test Client - TestClient
+  Resources
+  FastAPI People
+  Help
+  Contributing
+  Translations
+  Full Stack FastAPI Template
+  External Links
+  FastAPI and friends newsletter
+  About
+  Alternatives, Inspiration and Comparisons
+  History, Design and Future
+  Benchmarks
+  Repository Management
+  Release Notes
+      On this page
+        pytest.mark.anyio
+        HTTPX
+        Example
+        Run it
+        In Detail
+        Other Asynchronous Function Calls
+    FastAPI
+    Learn
+    Advanced User Guide
+Async Tests¶
+AI coding agents
+Use the official FastAPI skill for your installed version. Install it from your project directory:
+uvx library-skills
+See Develop with AI.
+You have already seen how to test your FastAPI applications using the provided TestClient. Up to now, you have only seen how to write synchronous tests, without using async functions.
+Being able to use asynchronous functions in your tests could be useful, for example, when you're querying your database asynchronously. Imagine you want to test sending requests to your FastAPI application and then verify that your backend successfully wrote the correct data in the database, while using an async database library.
+Let's look at how we can make that work.
+pytest.mark.anyio¶
+If we want to call asynchronous functions in our tests, our test functions have to be asynchronous. AnyIO provides a neat plugin for this, that allows us to specify that some test functions are to be called asynchronously.
+HTTPX¶
+Even if your FastAPI application uses normal def functions instead of async def, it is still an async application underneath.
+The TestClient does some magic inside to call the asynchronous FastAPI application in your normal def test functions, using standard pytest. But that magic doesn't work anymore when we're using it inside asynchronous functions. By running our tests asynchronously, we can no longer use the TestClient inside our test functions.
+The TestClient is based on HTTPX, and luckily, we can use it directly to test the API.
+Example¶
+For a simple example, let's consider a file structure similar to the one described in Bigger Applications and Testing:
+.
+├── app
+│   ├── __init__.py
+│   ├── main.py
+│   └── test_main.py
+The file main.py would have:
+from fastapi import FastAPI
+app = FastAPI()
+@app.get("/")
+async def root():
+    return {"message": "Tomato"}
+The file test_main.py would have the tests for main.py, it could look like this now:
+import pytest
+from httpx import ASGITransport, AsyncClient
+from .main import app
+@pytest.mark.anyio
+async def test_root():
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as ac:
+        response = await ac.get("/")
+    assert response.status_code == 200
+    assert response.json() == {"message": "Tomato"}
+Run it¶
+You can run your tests as usual via:
+$ uv run pytest
+---> 100%
+In Detail¶
+The marker @pytest.mark.anyio tells pytest that this test function should be called asynchronously:
+import pytest
+from httpx import ASGITransport, AsyncClient
+from .main import app
+@pytest.mark.anyio
+async def test_root():
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as ac:
+        response = await ac.get("/")
+    assert response.status_code == 200
+    assert response.json() == {"message": "Tomato"}
+Tip
+Note that the test function is now async def instead of just def as before when using the TestClient.
+Then we can create an AsyncClient with the app, and send async requests to it, using await.
+import pytest
+from httpx import ASGITransport, AsyncClient
+from .main import app
+@pytest.mark.anyio
+async def test_root():
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as ac:
+        response = await ac.get("/")
+    assert response.status_code == 200
+    assert response.json() == {"message": "Tomato"}
+This is the equivalent to:
+response = client.get("/")
+...that we used to make our requests with the TestClient.
+Tip
+Note that we're using async/await with the new AsyncClient - the request is asynchronous.
+Warning
+If your application relies on lifespan events, the AsyncClient won't trigger these events. To ensure they are triggered, use LifespanManager from florimondmanca/asgi-lifespan.
+Other Asynchronous Function Calls¶
+As the testing function is now asynchronous, you can now also call (and await) other async functions apart from sending requests to your FastAPI application in your tests, exactly as you would call them anywhere else in your code.
+Tip
+If you encounter a RuntimeError: Task attached to a different loop when integrating asynchronous function calls in your tests (e.g. when using MongoDB's MotorClient), remember to instantiate objects that need an event loop only within async functions, e.g. an @app.on_event("startup") callback.
+  Back to top
+                Previous
+                Testing Dependencies with Overrides
+                Next
+                Settings and Environment Variables
+        The FastAPI trademark is owned by @tiangolo and is registered in the US and across other regions
+    Made with
+        Zensical

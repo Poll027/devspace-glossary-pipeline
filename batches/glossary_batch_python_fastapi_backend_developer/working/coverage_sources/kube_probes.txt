@@ -1,0 +1,1318 @@
+Configure Liveness, Readiness and Startup Probes | Kubernetes
+Kubernetes
+Documentation
+Kubernetes Blog
+Training
+Careers
+Partners
+Community
+Versions
+Release Information
+v1.37
+v1.36
+v1.35
+v1.34
+v1.33
+English
+中文 (Chinese)
+Français (French)
+Bahasa Indonesia (Indonesian)
+日本語 (Japanese)
+한국어 (Korean)
+Русский (Russian)
+বাংলা (Bengali)
+Deutsch (German)
+हिन्दी (Hindi)
+Italiano (Italian)
+فارسی (Persian)
+Polski (Polish)
+Português (Portuguese)
+Español (Spanish)
+Українська (Ukrainian)
+Tiếng Việt (Vietnamese)
+Light
+Dark
+Auto
+Configure Liveness, Readiness and Startup Probes
+English
+বাংলা (Bengali)
+中文 (Chinese)
+Français (French)
+Deutsch (German)
+हिन्दी (Hindi)
+Bahasa Indonesia (Indonesian)
+Italiano (Italian)
+日本語 (Japanese)
+한국어 (Korean)
+Polski (Polish)
+Português (Portuguese)
+Русский (Russian)
+Español (Spanish)
+Українська (Ukrainian)
+Tiếng Việt (Vietnamese)
+فارسی (Persian)
+Kubernetes Documentation
+Documentation
+Available Documentation Versions
+Getting started
+Learning environment
+Production environment
+Container Runtimes
+Installing Kubernetes with deployment tools
+Bootstrapping clusters with kubeadm
+Installing kubeadm
+Troubleshooting kubeadm
+Creating a cluster with kubeadm
+Customizing components with the kubeadm API
+Options for Highly Available Topology
+Creating Highly Available Clusters with kubeadm
+Set up a High Availability etcd Cluster with kubeadm
+Configuring each kubelet in your cluster using kubeadm
+Dual-stack support with kubeadm
+Turnkey Cloud Solutions
+Best practices
+Considerations for large clusters
+Running in multiple zones
+Validate node setup
+Enforcing Pod Security Standards
+PKI certificates and requirements
+Concepts
+Overview
+Kubernetes Components
+Objects In Kubernetes
+Kubernetes Object Management
+Object Names and IDs
+Labels and Selectors
+Namespaces
+Annotations
+Field Selectors
+Finalizers
+Owners and Dependents
+Recommended Labels
+Storage Versions
+The Kubernetes API
+The kubectl command-line tool
+Cluster Architecture
+Nodes
+Communication between Nodes and the Control Plane
+Controllers
+Leases
+Cloud Controller Manager
+About cgroup v2
+Kubernetes Self-Healing
+Garbage Collection
+Mixed Version Proxy
+Containers
+Images
+Container Environment
+Runtime Class
+Container Lifecycle Hooks
+Container Runtime Interface (CRI)
+Workloads
+Pods
+Pod Lifecycle
+Pod Conditions
+Init Containers
+Termination of Pods
+Sidecar Containers
+Ephemeral Containers
+Liveness, Readiness, and Startup Probes
+Disruptions
+Pod Hostname
+Pod Quality of Service Classes
+Scheduling Group
+Static Pods
+User Namespaces
+Downward API
+Advanced Pod Configuration
+Workload Management
+Deployments
+ReplicaSet
+StatefulSets
+DaemonSet
+Jobs
+Automatic Cleanup for Finished Jobs
+CronJob
+ReplicationController
+Managing Workloads
+Autoscaling Workloads
+Horizontal Pod Autoscaling
+Vertical Pod Autoscaling
+Workload API
+Pod Group Disruption and Priority
+PodGroup Scheduling Policies
+Topology-Aware Workload Scheduling
+Scheduling Building Block APIs and the workloadbuilder Library
+PodGroup API
+PodGroup Lifecycle
+CompositePodGroup API
+CompositePodGroup Lifecycle
+Services, Load Balancing, and Networking
+Service
+Ingress
+Ingress Controllers
+Gateway API
+EndpointSlices
+Network Policies
+DNS for Services and Pods
+IPv4/IPv6 dual-stack
+Topology Aware Routing
+Networking on Windows
+Service ClusterIP allocation
+Service Internal Traffic Policy
+Storage
+Volumes
+Persistent Volumes
+Projected Volumes
+Ephemeral Volumes
+Storage Classes
+Volume Attributes Classes
+Dynamic Volume Provisioning
+Volume Snapshots
+Volume Snapshot Classes
+CSI Volume Cloning
+Volume Populators and Data Sources
+Storage Capacity
+Node-specific Volume Limits
+Local ephemeral storage
+Volume Health Monitoring
+Windows Storage
+Configuration
+ConfigMaps
+Secrets
+Resource Management for Pods and Containers
+Organizing Cluster Access Using kubeconfig Files
+Resource Management for Windows nodes
+Security
+Cloud Native Security
+Pod Security Standards
+Pod Security Admission
+Service Accounts
+Pod Security Policies
+Security For Linux Nodes
+Security For Windows Nodes
+Controlling Access to the Kubernetes API
+Role Based Access Control Good Practices
+Good practices for Kubernetes Secrets
+Multi-tenancy
+Hardening Guide - Authentication Mechanisms
+Hardening Guide - Dynamic Resource Allocation
+Hardening Guide - Scheduler Configuration
+Kubernetes API Server Bypass Risks
+Linux kernel security constraints for Pods and containers
+Security Checklist
+Application Security Checklist
+Policies
+Limit Ranges
+Resource Quotas
+Process ID Limits And Reservations
+Scheduling, Preemption and Eviction
+Kubernetes Scheduler
+Running multiple schedulers
+Assigning Pods to Nodes
+Pod Overhead
+Pod Scheduling Readiness
+Pod Topology Spread Constraints
+Taints and Tolerations
+Scheduling Framework
+Gang Scheduling
+Scheduler Performance Tuning
+PodGroup Scheduling
+Resource Bin Packing
+Workload-Aware Preemption
+Topology-Aware Workload Scheduling
+Pod Priority and Preemption
+Node-pressure Eviction
+API-initiated Eviction
+Node Declared Features
+Resource Management
+Resource managers
+Dynamic Resource Allocation
+DRA API Objects
+How DRA Works
+Observability of Dynamic Resources
+DRA Features
+Device Taints and Tolerations
+Pod-level resource managers
+Cluster Administration
+Node Shutdowns
+Swap memory management
+Node Autoscaling
+Certificates
+Cluster Networking
+Observability
+Admission Webhook Good Practices
+Good practices for Dynamic Resource Allocation as a Cluster Admin
+Logging Architecture
+Compatibility Version For Kubernetes Control Plane Components
+Metrics For Kubernetes System Components
+Metrics for Kubernetes Object States
+System Logs
+Traces For Kubernetes System Components
+Proxies in Kubernetes
+API Priority and Fairness
+Installing Addons
+Coordinated Leader Election
+Windows in Kubernetes
+Windows containers in Kubernetes
+Guide for Running Windows Containers in Kubernetes
+Extending Kubernetes
+Compute, Storage, and Networking Extensions
+Network Plugins
+Device Plugins
+Extending the Kubernetes API
+Custom Resources
+Kubernetes API Aggregation Layer
+Operator pattern
+Tasks
+Install Tools
+Install and Set Up kubectl on Linux
+Install and Set Up kubectl on macOS
+Install and Set Up kubectl on Windows
+Administer a Cluster
+Administration with kubeadm
+Adding Linux worker nodes
+Adding Windows worker nodes
+Upgrading kubeadm clusters
+Upgrading Linux nodes
+Upgrading Windows nodes
+Certificate Management with kubeadm
+Reconfiguring a kubeadm cluster
+Changing The Kubernetes Package Repository
+Overprovision Node Capacity For A Cluster
+Migrating from dockershim
+Changing the Container Runtime on a Node from Docker Engine to containerd
+Find Out What Container Runtime is Used on a Node
+Troubleshooting CNI plugin-related errors
+Check whether dockershim removal affects you
+Migrating telemetry and security agents from dockershim
+Generate Certificates Manually
+Manage Memory, CPU, and API Resources
+Configure Default Memory Requests and Limits for a Namespace
+Configure Default CPU Requests and Limits for a Namespace
+Configure Minimum and Maximum Memory Constraints for a Namespace
+Configure Minimum and Maximum CPU Constraints for a Namespace
+Configure Memory and CPU Quotas for a Namespace
+Configure a Pod Quota for a Namespace
+Install a Network Policy Provider
+Use Antrea for NetworkPolicy
+Use Calico for NetworkPolicy
+Use Cilium for NetworkPolicy
+Use Kube-router for NetworkPolicy
+Shutting Down and Restarting Clusters
+Access Clusters Using the Kubernetes API
+Enable Or Disable Feature Gates
+Advertise Extended Resources for a Node
+Autoscale the DNS Service in a Cluster
+Change the Access Mode of a PersistentVolume to ReadWriteOncePod
+Change the default StorageClass
+Switching from Polling to CRI Event-based Updates to Container Status
+Change the Reclaim Policy of a PersistentVolume
+Cloud Controller Manager Administration
+Configure a kubelet image credential provider
+Configure Quotas for API Objects
+Control CPU Management Policies on the Node
+Control Memory Management Policies on a Node
+Control Topology Management Policies on a node
+Customizing DNS Service
+Debugging DNS Resolution
+Declare Network Policy
+Developing Cloud Controller Manager
+Enable Or Disable A Kubernetes API
+Encrypting Confidential Data at Rest
+Decrypt Confidential Data that is Already Encrypted at Rest
+Guaranteed Scheduling For Critical Add-On Pods
+IP Masquerade Agent User Guide
+Limit Storage Consumption
+Migrate Replicated Control Plane To Use Cloud Controller Manager
+Operating etcd clusters for Kubernetes
+Reserve Compute Resources for System Daemons
+Running Kubernetes Node Components as a Non-root User
+Safely Drain a Node
+Securing a Cluster
+Harden Dynamic Resource Allocation in Your Cluster
+Set Kubelet Parameters Via A Configuration File
+Share a Cluster with Namespaces
+Upgrade A Cluster
+Use Cascading Deletion in a Cluster
+Using a KMS provider for data encryption
+Using CoreDNS for Service Discovery
+Using NodeLocal DNSCache in Kubernetes Clusters
+Using sysctls in a Kubernetes Cluster
+Verify Signed Kubernetes Artifacts
+Configure Pods and Containers
+Assign Memory Resources to Containers and Pods
+Assign CPU Resources to Containers and Pods
+Assign Devices to Pods and Containers
+Set Up DRA in a Cluster
+Allocate Devices to Workloads with DRA
+Access DRA Device Metadata
+Assign Pod-level CPU and memory resources
+Configure GMSA for Windows Pods and containers
+Resize CPU and Memory Resources assigned to Containers
+Resize CPU and Memory Resources assigned to Pods
+Configure RunAsUserName for Windows pods and containers
+Create a Windows HostProcess Pod
+Configure Quality of Service for Pods
+Assign Extended Resources to a Container
+Configure a Pod to Use a Volume for Storage
+Configure a Pod to Use a Projected Volume for Storage
+Configure a Security Context for a Pod or Container
+Configure Service Accounts for Pods
+Pull an Image from a Private Registry
+Configure Liveness, Readiness and Startup Probes
+Assign Pods to Nodes
+Assign Pods to Nodes using Node Affinity
+Configure Pod Initialization
+Attach Handlers to Container Lifecycle Events
+Configure a Pod to Use a ConfigMap
+Share Process Namespace between Containers in a Pod
+Use a User Namespace With a Pod
+Use an Image Volume With a Pod
+Set Permissions on an emptyDir Volume
+Set Bind Mount Options on Volume Mounts
+Create static Pods
+Translate a Docker Compose File to Kubernetes Resources
+Enforce Pod Security Standards by Configuring the Built-in Admission Controller
+Enforce Pod Security Standards with Namespace Labels
+Migrate from PodSecurityPolicy to the Built-In PodSecurity Admission Controller
+Monitoring, Logging, and Debugging
+Logging in Kubernetes
+Monitoring in Kubernetes
+Troubleshooting Applications
+Debug Pods
+Debug Services
+Debug a StatefulSet
+Determine the Reason for Pod Failure
+Debug Init Containers
+Debug Running Pods
+Get a Shell to a Running Container
+Troubleshooting Clusters
+Troubleshooting kubectl
+Resource metrics pipeline
+Tools for Monitoring Resources
+Monitor Node Health
+Debugging Kubernetes nodes with crictl
+Troubleshooting Topology Management
+Auditing
+Debugging Kubernetes Nodes With Kubectl
+Developing and debugging services locally using telepresence
+Windows debugging tips
+Manage Kubernetes Objects
+Declarative Management of Kubernetes Objects Using Configuration Files
+Declarative Management of Kubernetes Objects Using Kustomize
+Managing Kubernetes Objects Using Imperative Commands
+Imperative Management of Kubernetes Objects Using Configuration Files
+Update API Objects in Place Using kubectl patch
+Migrate Kubernetes Objects Using Storage Version Migration
+Managing Secrets
+Managing Secrets using kubectl
+Managing Secrets using Configuration File
+Managing Secrets using Kustomize
+Inject Data Into Applications
+Define a Command and Arguments for a Container
+Define Dependent Environment Variables
+Define Environment Variables for a Container
+Define Environment Variable Values Using An Init Container
+Expose Pod Information to Containers Through Environment Variables
+Expose Pod Information to Containers Through Files
+Distribute Credentials Securely Using Secrets
+Run Applications
+Run a Stateless Application Using a Deployment
+Horizontal Manual Scaling for a Deployment
+Update a Deployment Without Downtime
+Run a Single-Instance Stateful Application
+Run a Replicated Stateful Application
+Scale a StatefulSet
+Delete a StatefulSet
+Force Delete StatefulSet Pods
+HorizontalPodAutoscaler Walkthrough
+Specifying a Disruption Budget for your Application
+Accessing the Kubernetes API from a Pod
+Run Jobs
+Running Automated Tasks with a CronJob
+Coarse Parallel Processing Using a Work Queue
+Fine Parallel Processing Using a Work Queue
+Indexed Job for Parallel Processing with Static Work Assignment
+Job with Pod-to-Pod Communication
+Parallel Processing using Expansions
+Handling retriable and non-retriable pod failures with Pod failure policy
+Access Applications in a Cluster
+Deploy and Access the Kubernetes Dashboard
+Accessing Clusters
+Configure Access to a Single Cluster
+Configure Access to Multiple Clusters
+Use Port Forwarding to Access Applications in a Cluster
+Use a Service to Access an Application in a Cluster
+Connect a Frontend to a Backend Using Services
+Create an External Load Balancer
+List All Container Images Running in a Cluster
+Communicate Between Containers in the Same Pod Using a Shared Volume
+Configure DNS for a Cluster
+Access Services Running on Clusters
+Extend Kubernetes
+Configure the Aggregation Layer
+Use Custom Resources
+Extend the Kubernetes API with CustomResourceDefinitions
+Versions in CustomResourceDefinitions
+Set up an Extension API Server
+Configure Multiple Schedulers
+Use an HTTP Proxy to Access the Kubernetes API
+Use a SOCKS5 Proxy to Access the Kubernetes API
+Set up Konnectivity service
+TLS
+Issue a Certificate for a Kubernetes API Client Using a CertificateSigningRequest
+Configure Certificate Rotation for the Kubelet
+Manage TLS Certificates in a Cluster
+Manual Rotation of CA Certificates
+Manage Cluster Daemons
+Building a Basic DaemonSet
+Perform a Rolling Update on a DaemonSet
+Perform a Rollback on a DaemonSet
+Running Pods on Only Some Nodes
+Networking
+Adding entries to Pod /etc/hosts with HostAliases
+Extend Service IP Ranges
+Kubernetes Default ServiceCIDR Reconfiguration
+Validate IPv4/IPv6 dual-stack
+Extend kubectl with plugins
+Manage HugePages
+Schedule GPUs
+Tutorials
+Hello Minikube
+Learn Kubernetes Basics
+Create a Cluster
+Using Minikube to Create a Cluster
+Deploy an App
+Using kubectl to Create a Deployment
+Explore Your App
+Viewing Pods and Nodes
+Expose Your App Publicly
+Using a Service to Expose Your App
+Scale Your App
+Running Multiple Instances of Your App
+Update Your App
+Performing a Rolling Update
+Configuration
+Updating Configuration via a ConfigMap
+Configuring Redis using a ConfigMap
+Adopting Sidecar Containers
+Configure a Pod to Use a PersistentVolume for Storage
+Security
+Apply Pod Security Standards at the Cluster Level
+Apply Pod Security Standards at the Namespace Level
+Restrict a Container's Access to Resources with AppArmor
+Restrict a Container's Syscalls with seccomp
+Stateless Applications
+Deploy a Release Using a Canary Deployment
+Exposing an External IP Address to Access an Application in a Cluster
+Example: Deploying PHP Guestbook application with Redis
+Stateful Applications
+StatefulSet Basics
+Example: Deploying WordPress and MySQL with Persistent Volumes
+Example: Deploying Cassandra with a StatefulSet
+Running ZooKeeper, A Distributed System Coordinator
+Cluster Management
+Running Kubelet in Standalone Mode
+Configuring swap memory on Kubernetes nodes
+Use Pod-Level Resources with kubelet Resource Managers
+Install Drivers and Allocate Devices with DRA
+Explore Validating and Mutating Admission Policies
+Namespaces Walkthrough
+Services
+Connecting Applications with Services
+Using Source IP
+Explore Termination Behavior for Pods And Their Endpoints
+Reference
+Glossary
+API Overview
+Declarative API Validation
+Kubernetes API Concepts
+Server-Side Apply
+Client Libraries
+Common Expression Language in Kubernetes
+Deprecated API Migration Guide
+Kubernetes API health endpoints
+API Access Control
+Authenticating
+Authenticating with Bootstrap Tokens
+Authorization
+Using RBAC Authorization
+Using Node Authorization
+Webhook Mode
+Using ABAC Authorization
+Admission Control
+Dynamic Admission Control
+Managing Service Accounts
+User Impersonation
+Certificates and Certificate Signing Requests
+Mapping PodSecurityPolicies to Pod Security Standards
+Kubelet authentication/authorization
+TLS bootstrapping
+Manifest-Based Admission Control
+Mutating Admission Policy
+Validating Admission Policy
+Kubernetes Deprecation Policy
+Well-Known Labels, Annotations and Taints
+Audit Annotations
+Kubernetes API
+API Groups
+Admissionregistration
+MutatingAdmissionPolicy
+MutatingAdmissionPolicyBinding
+MutatingWebhookConfiguration
+ValidatingAdmissionPolicy
+ValidatingAdmissionPolicyBinding
+ValidatingWebhookConfiguration
+Apiextensions
+CustomResourceDefinition
+Apiregistration
+APIService
+Apiserverinternal
+StorageVersion
+Apps
+ControllerRevision
+DaemonSet
+Deployment
+ReplicaSet
+StatefulSet
+Autoscaling
+HorizontalPodAutoscaler
+Batch
+CronJob
+Job
+Certificates
+CertificateSigningRequest
+ClusterTrustBundle
+PodCertificateRequest
+Coordination
+Lease
+LeaseCandidate
+Discovery
+EndpointSlice
+Events
+Event
+Core
+ComponentStatus
+ConfigMap
+Endpoints
+Event
+LimitRange
+Namespace
+Node
+PersistentVolume
+PersistentVolumeClaim
+Pod
+PodTemplate
+ReplicationController
+ResourceQuota
+Secret
+Service
+ServiceAccount
+Flowcontrol
+FlowSchema
+PriorityLevelConfiguration
+Lifecycle
+Eviction
+EvictionRequest
+Networking
+IPAddress
+Ingress
+IngressClass
+NetworkPolicy
+ServiceCIDR
+Node
+RuntimeClass
+Policy
+PodDisruptionBudget
+Rbac
+ClusterRole
+ClusterRoleBinding
+Role
+RoleBinding
+Resource
+DeviceClass
+DeviceTaintRule
+ResourceClaim
+ResourceClaimTemplate
+ResourcePoolStatusRequest
+ResourceSlice
+Scheduling
+CompositePodGroup
+PodGroup
+PriorityClass
+Workload
+Storage
+CSIDriver
+CSINode
+CSIStorageCapacity
+StorageClass
+VolumeAttachment
+VolumeAttributesClass
+Storagemigration
+StorageVersionMigration
+Instrumentation
+Service Level Indicator Metrics
+CRI Pod & Container Metrics
+Native Histograms
+Node metrics data
+Understand Pressure Stall Information (PSI) Metrics
+Kubernetes z-pages
+Kubernetes Metrics Reference
+Kubernetes Issues and Security
+Kubernetes Issue Tracker
+Kubernetes Security and Disclosure Information
+CVE feed
+Node Reference Information
+Kubelet Checkpoint API
+Linux Kernel Version Requirements
+Standard Device Attributes for Dynamic Resource Allocation
+Articles on dockershim Removal and on Using CRI-compatible Runtimes
+Kubelet Pods API
+Pod-level resource managers reference
+Node Labels Populated By The Kubelet
+Kubelet Sync Loop
+Local Files And Paths Used By The Kubelet
+Kubelet Configuration Directory Merging
+Kubelet Device Manager API Versions
+Kubelet Systemd Watchdog
+Node Status
+Seccomp and Kubernetes
+What Happens After A Node Restart
+Linux Node Swap Behaviors
+Networking Reference
+Protocols for Services
+Ports and Protocols
+Virtual IPs and Service Proxies
+Setup tools
+Kubeadm
+kubeadm init
+kubeadm join
+kubeadm upgrade
+kubeadm upgrade phases
+kubeadm config
+kubeadm reset
+kubeadm token
+kubeadm version
+kubeadm alpha
+kubeadm certs
+kubeadm init phase
+kubeadm join phase
+kubeadm kubeconfig
+kubeadm reset phase
+Implementation details
+Command line tool (kubectl)
+Introduction to kubectl
+kubectl Quick Reference
+kubectl reference
+kubectl
+kubectl annotate
+kubectl api-resources
+kubectl api-versions
+kubectl apply
+kubectl apply edit-last-applied
+kubectl apply set-last-applied
+kubectl apply view-last-applied
+kubectl attach
+kubectl auth
+kubectl auth can-i
+kubectl auth reconcile
+kubectl auth whoami
+kubectl autoscale
+kubectl certificate
+kubectl certificate approve
+kubectl certificate deny
+kubectl cluster-info
+kubectl cluster-info dump
+kubectl completion
+kubectl config
+kubectl config current-context
+kubectl config delete-cluster
+kubectl config delete-context
+kubectl config delete-user
+kubectl config get-clusters
+kubectl config get-contexts
+kubectl config get-users
+kubectl config rename-context
+kubectl config set
+kubectl config set-cluster
+kubectl config set-context
+kubectl config set-credentials
+kubectl config unset
+kubectl config use-context
+kubectl config view
+kubectl cordon
+kubectl cp
+kubectl create
+kubectl create clusterrole
+kubectl create clusterrolebinding
+kubectl create configmap
+kubectl create cronjob
+kubectl create deployment
+kubectl create ingress
+kubectl create job
+kubectl create namespace
+kubectl create poddisruptionbudget
+kubectl create priorityclass
+kubectl create quota
+kubectl create role
+kubectl create rolebinding
+kubectl create secret
+kubectl create secret docker-registry
+kubectl create secret generic
+kubectl create secret tls
+kubectl create service
+kubectl create service clusterip
+kubectl create service externalname
+kubectl create service loadbalancer
+kubectl create service nodeport
+kubectl create serviceaccount
+kubectl create token
+kubectl debug
+kubectl delete
+kubectl describe
+kubectl diff
+kubectl drain
+kubectl edit
+kubectl events
+kubectl exec
+kubectl explain
+kubectl expose
+kubectl get
+kubectl kuberc
+kubectl kuberc set
+kubectl kuberc view
+kubectl kustomize
+kubectl label
+kubectl logs
+kubectl options
+kubectl patch
+kubectl plugin
+kubectl plugin list
+kubectl port-forward
+kubectl proxy
+kubectl replace
+kubectl rollout
+kubectl rollout history
+kubectl rollout pause
+kubectl rollout restart
+kubectl rollout resume
+kubectl rollout status
+kubectl rollout undo
+kubectl run
+kubectl scale
+kubectl set
+kubectl set env
+kubectl set image
+kubectl set resources
+kubectl set selector
+kubectl set serviceaccount
+kubectl set subject
+kubectl taint
+kubectl top
+kubectl top node
+kubectl top pod
+kubectl uncordon
+kubectl version
+kubectl wait
+kubectl Commands
+kubectl
+JSONPath Support
+kubectl for Docker Users
+kubectl Usage Conventions
+Kubectl user preferences (kuberc)
+Encodings
+KYAML Reference
+Component tools
+Feature Gates
+Feature Gates (removed)
+kube-apiserver
+kube-controller-manager
+kube-proxy
+kube-scheduler
+kubelet
+Debug cluster
+Flow control
+Configuration APIs
+Client Authentication (v1)
+Client Authentication (v1beta1)
+Event Rate Limit Configuration (v1alpha1)
+Image Policy API (v1alpha1)
+kube-apiserver Admission (v1)
+kube-apiserver Audit Configuration (v1)
+kube-apiserver Configuration (v1)
+kube-apiserver Configuration (v1alpha1)
+kube-apiserver Configuration (v1beta1)
+kube-controller-manager Configuration (v1alpha1)
+kube-proxy Configuration (v1alpha1)
+kube-scheduler Configuration (v1)
+kubeadm Configuration (v1beta3)
+kubeadm Configuration (v1beta4)
+kubeconfig (v1)
+Kubelet Configuration (v1)
+Kubelet Configuration (v1alpha1)
+Kubelet Configuration (v1beta1)
+Kubelet CredentialProvider (v1)
+kuberc (v1alpha1)
+kuberc (v1beta1)
+WebhookAdmission Configuration (v1)
+External APIs
+Kubernetes Custom Metrics (v1beta2)
+Kubernetes External Metrics (v1beta1)
+Kubernetes Metrics (v1)
+Kubernetes Metrics (v1beta1)
+Kubelet APIs
+Kubelet Summary API (v1alpha1)
+Scheduling
+Scheduler Configuration
+Scheduling Policies
+Other Tools
+Contribute
+Contribute to Kubernetes Documentation
+Contributing to Kubernetes blogs
+Submitting articles to Kubernetes blogs
+Blog guidelines
+Blog article mirroring
+Post-release communications
+Helping as a blog writing buddy
+Suggesting content improvements
+Contributing new content
+Opening a pull request
+Previewing locally
+Documenting for a release
+Case studies
+Reviewing changes
+Reviewing pull requests
+For approvers and reviewers
+Localizing Kubernetes documentation
+Participating in SIG Docs
+Roles and responsibilities
+Issue Wranglers
+PR wranglers
+Documentation style overview
+Content guide
+Style guide
+Diagram guide
+Writing a new topic
+Page content types
+Content organization
+Custom Hugo Shortcodes
+Updating Reference Documentation
+Quickstart
+Release generation
+Contributing to the Upstream Kubernetes Code
+Generating Reference Documentation for the Kubernetes API
+Generating Reference Documentation for Configuration APIs
+Generating Reference Documentation for kubectl Commands
+Generating Reference Documentation for Metrics
+Generating Reference Pages for Kubernetes Components and Tools
+Advanced contributing
+Viewing Site Analytics
+Docs smoke test page
+ Edit this page
+ Create child page
+ Create an issue
+ Print entire section
+Before you begin
+Define a liveness command
+Define a liveness HTTP request
+Use HTTP/2 cleartext (h2c) with HTTP probes
+Define a TCP liveness probe
+Define a gRPC liveness probe
+Use TLS with gRPC probes
+Use a named port
+Protect slow starting containers with startup probes
+Define readiness probes
+What's next
+Kubernetes Documentation
+Tasks
+Configure Pods and Containers
+Configure Liveness, Readiness and Startup Probes
+Configure Liveness, Readiness and Startup Probes
+This page shows how to configure liveness, readiness and startup probes for
+containers.
+For more information about probes, see
+Liveness, Readiness and Startup Probes.
+Before you begin
+You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. It is recommended to run this tutorial on a cluster with at least two nodes that are not acting as control plane hosts. If you do not already have a
+cluster, you can create one by using
+minikube
+or you can use one of these Kubernetes playgrounds:
+iximiuz Labs
+Killercoda
+KodeKloud
+Define a liveness command
+Many applications running for long periods of time eventually transition to
+broken states, and cannot recover except by being restarted. Kubernetes provides
+liveness probes to detect and remedy such situations.
+In this exercise, you create a Pod that runs a container based on the
+registry.k8s.io/busybox:1.27.2 image. Here is the configuration file for the Pod:
+pods/probe/exec-liveness.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+  name: liveness-exec
+spec:
+  containers:
+  - name: liveness
+    image: registry.k8s.io/busybox:1.27.2
+    args:
+    - /bin/sh
+    - -c
+    - touch /tmp/healthy; sleep 30; rm -f /tmp/healthy; sleep 600
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5
+In the configuration file, you can see that the Pod has a single Container.
+The periodSeconds field specifies that the kubelet should perform a liveness
+probe every 5 seconds. The initialDelaySeconds field tells the kubelet that it
+should wait 5 seconds before performing the first probe. To perform a probe, the
+kubelet executes the command cat /tmp/healthy in the target container. If the
+command succeeds, it returns 0, and the kubelet considers the container to be alive and
+healthy. If the command returns a non-zero value, the kubelet kills the container
+and restarts it.
+When the container starts, it executes this command:
+/bin/sh -c "touch /tmp/healthy; sleep 30; rm -f /tmp/healthy; sleep 600"
+For the first 30 seconds of the container's life, there is a /tmp/healthy file.
+So during the first 30 seconds, the command cat /tmp/healthy returns a success
+code. After 30 seconds, cat /tmp/healthy returns a failure code.
+Create the Pod:
+kubectl apply -f https://k8s.io/examples/pods/probe/exec-liveness.yaml
+Within 30 seconds, view the Pod events:
+kubectl describe pod liveness-exec
+The output indicates that no liveness probes have failed yet:
+Type    Reason     Age   From               Message
+----    ------     ----  ----               -------
+Normal  Scheduled  11s   default-scheduler  Successfully assigned default/liveness-exec to node01
+Normal  Pulling    9s    kubelet, node01    Pulling image "registry.k8s.io/busybox:1.27.2"
+Normal  Pulled     7s    kubelet, node01    Successfully pulled image "registry.k8s.io/busybox:1.27.2"
+Normal  Created    7s    kubelet, node01    Created container liveness
+Normal  Started    7s    kubelet, node01    Started container liveness
+After 35 seconds, view the Pod events again:
+kubectl describe pod liveness-exec
+At the bottom of the output, there are messages indicating that the liveness
+probes have failed, and the failed containers have been killed and recreated.
+Type     Reason     Age                From               Message
+----     ------     ----               ----               -------
+Normal   Scheduled  57s                default-scheduler  Successfully assigned default/liveness-exec to node01
+Normal   Pulling    55s                kubelet, node01    Pulling image "registry.k8s.io/busybox:1.27.2"
+Normal   Pulled     53s                kubelet, node01    Successfully pulled image "registry.k8s.io/busybox:1.27.2"
+Normal   Created    53s                kubelet, node01    Created container liveness
+Normal   Started    53s                kubelet, node01    Started container liveness
+Warning  Unhealthy  10s (x3 over 20s)  kubelet, node01    Liveness probe failed: cat: can't open '/tmp/healthy': No such file or directory
+Normal   Killing    10s                kubelet, node01    Container liveness failed liveness probe, will be restarted
+Wait another 30 seconds, and verify that the container has been restarted:
+kubectl get pod liveness-exec
+The output shows that RESTARTS has been incremented. Note that the RESTARTS counter
+increments as soon as a failed container comes back to the running state:
+NAME            READY     STATUS    RESTARTS   AGE
+liveness-exec   1/1       Running   1          1m
+Define a liveness HTTP request
+Another kind of liveness probe uses an HTTP GET request. Here is the configuration
+file for a Pod that runs a container based on the registry.k8s.io/e2e-test-images/agnhost image.
+pods/probe/http-liveness.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+  name: liveness-http
+spec:
+  containers:
+  - name: liveness
+    image: registry.k8s.io/e2e-test-images/agnhost:2.40
+    args:
+    - liveness
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        httpHeaders:
+        - name: Custom-Header
+          value: Awesome
+      initialDelaySeconds: 3
+      periodSeconds: 3
+In the configuration file, you can see that the Pod has a single container.
+The periodSeconds field specifies that the kubelet should perform a liveness
+probe every 3 seconds. The initialDelaySeconds field tells the kubelet that it
+should wait 3 seconds before performing the first probe. To perform a probe, the
+kubelet sends an HTTP GET request to the server that is running in the container
+and listening on port 8080. If the handler for the server's /healthz path
+returns a success code, the kubelet considers the container to be alive and
+healthy. If the handler returns a failure code, the kubelet kills the container
+and restarts it.
+Any code greater than or equal to 200 and less than 400 indicates success. Any
+other code indicates failure.
+You can see the source code for the server in
+server.go.
+For the first 10 seconds that the container is alive, the /healthz handler
+returns a status of 200. After that, the handler returns a status of 500.
+http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+    duration := time.Now().Sub(started)
+    if duration.Seconds() > 10 {
+        w.WriteHeader(500)
+        w.Write([]byte(fmt.Sprintf("error: %v", duration.Seconds())))
+    } else {
+        w.WriteHeader(200)
+        w.Write([]byte("ok"))
+    }
+})
+The kubelet starts performing health checks 3 seconds after the container starts.
+So the first couple of health checks will succeed. But after 10 seconds, the health
+checks will fail, and the kubelet will kill and restart the container.
+To try the HTTP liveness check, create a Pod:
+kubectl apply -f https://k8s.io/examples/pods/probe/http-liveness.yaml
+After 10 seconds, view Pod events to verify that liveness probes have failed and
+the container has been restarted:
+kubectl describe pod liveness-http
+In releases after v1.13, local HTTP proxy environment variable settings do not
+affect the HTTP liveness probe.
+Use HTTP/2 cleartext (h2c) with HTTP probes
+Feature state:
+Alpha since Kubernetes v1.37; disabled by default
+More information about this feature
+To use this feature, you (or a cluster administrator) will need to enable the H2CContainerProbe feature gate for all relevant components in your cluster.
+See Enable Or Disable Feature Gates for more information.
+By default the kubelet sends HTTP/1.1 requests when executing an HTTP probe.
+If your application serves health endpoints only over HTTP/2 cleartext (h2c),
+you can add the protocol field to the httpGet field in the probe specification and
+specify a value of HTTP2. This requires the H2CContainerProbe
+feature gate to be
+enabled on both the kube-apiserver and the kubelet.
+pods/probe/h2c-liveness.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: h2c-app
+spec:
+  containers:
+  - name: app
+    image: registry.k8s.io/e2e-test-images/agnhost:2.64.0
+    command: ["/agnhost", "h2c-server", "--port=8080"]
+    ports:
+    - containerPort: 8080
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        protocol: HTTP2
+      initialDelaySeconds: 5
+      periodSeconds: 10
+When protocol is set to HTTP2, the kubelet connects using HTTP/2 cleartext
+(h2c) — HTTP/2 over plain TCP without TLS. The following configurations aren't
+supported:
+protocol: HTTP2 and scheme: HTTPS
+protocol: HTTP2 and a value in the host field
+If the feature gate is disabled, the API server removes the protocol
+field from new or updated Pods.
+Define a TCP liveness probe
+A third type of liveness probe uses a TCP socket. With this configuration, the
+kubelet will attempt to open a socket to your container on the specified port.
+If it can establish a connection, the container is considered healthy, if it
+can't it is considered a failure.
+pods/probe/tcp-liveness-readiness.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goproxy
+  labels:
+    app: goproxy
+spec:
+  containers:
+  - name: goproxy
+    image: registry.k8s.io/goproxy:0.1
+    ports:
+    - containerPort: 8080
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 15
+      periodSeconds: 10
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 15
+      periodSeconds: 10
+As you can see, configuration for a TCP check is quite similar to an HTTP check.
+This example uses both readiness and liveness probes. The kubelet will run the
+first liveness probe 15 seconds after the container starts. This will attempt to
+connect to the goproxy container on port 8080. If the liveness probe fails,
+the container will be restarted. The kubelet will continue to run this check
+every 10 seconds.
+In addition to the liveness probe, this configuration includes a readiness
+probe. The kubelet will run the first readiness probe 15 seconds after the
+container starts. Similar to the liveness probe, this will attempt to connect to
+the goproxy container on port 8080. If the probe succeeds, the Pod will be
+marked as ready and will receive traffic from services. If the readiness probe
+fails, the pod will be marked unready and will not receive traffic from any
+services.
+To try the TCP liveness check, create a Pod:
+kubectl apply -f https://k8s.io/examples/pods/probe/tcp-liveness-readiness.yaml
+After 15 seconds, view Pod events to verify that liveness probes:
+kubectl describe pod goproxy
+Define a gRPC liveness probe
+Feature state:
+Stable since Kubernetes v1.27
+If your application implements the
+gRPC Health Checking Protocol,
+this example shows how to configure Kubernetes to use it for application liveness checks.
+Similarly you can configure readiness and startup probes.
+Here is an example manifest:
+pods/probe/grpc-liveness.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: etcd-with-grpc
+spec:
+  containers:
+  - name: etcd
+    image: registry.k8s.io/etcd:3.5.1-0
+    command: [ "/usr/local/bin/etcd", "--data-dir",  "/var/lib/etcd", "--listen-client-urls", "http://0.0.0.0:2379", "--advertise-client-urls", "http://127.0.0.1:2379", "--log-level", "debug"]
+    ports:
+    - containerPort: 2379
+    livenessProbe:
+      grpc:
+        port: 2379
+      initialDelaySeconds: 10
+To try the gRPC liveness check, create a Pod using the command below.
+In the example below, the etcd pod is configured to use gRPC liveness probe.
+kubectl apply -f https://k8s.io/examples/pods/probe/grpc-liveness.yaml
+After 15 seconds, view Pod events to verify that the liveness check has not failed:
+kubectl describe pod etcd-with-grpc
+When using a gRPC probe, there are some technical details to be aware of:
+The probes run against the pod IP address or its hostname.
+Be sure to configure your gRPC endpoint to listen on the Pod's IP address.
+The probes connect over plaintext by default. See
+Use TLS with gRPC probes for how to enable TLS.
+There are no error codes for built-in probes. All errors are considered as probe failures.
+If ExecProbeTimeout feature gate is set to false, grpc-health-probe does not
+respect the timeoutSeconds setting (which defaults to 1s), while built-in probe would fail on timeout.
+Use TLS with gRPC probes
+Feature state:
+Alpha since Kubernetes v1.37; disabled by default
+More information about this feature
+To use this feature, you (or a cluster administrator) will need to enable the GRPCContainerProbeTLS feature gate for all relevant components in your cluster.
+See Enable Or Disable Feature Gates for more information.
+By default the kubelet connects to gRPC health endpoints over plaintext. If
+your application serves gRPC only over TLS, you can add the mode field to the
+grpc field in the probe specification and specify a value of TLS. This
+requires the GRPCContainerProbeTLS
+feature gate to
+be enabled on both the kube-apiserver and the kubelet.
+pods/probe/grpc-tls-liveness.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grpc-tls-app
+spec:
+  containers:
+  - name: app
+    image: registry.k8s.io/e2e-test-images/agnhost:2.40
+    command: ["/agnhost", "grpc-health-checking", "--port=8443"]
+    ports:
+    - containerPort: 8443
+    livenessProbe:
+      grpc:
+        port: 8443
+        mode: TLS
+      initialDelaySeconds: 5
+      periodSeconds: 10
+When mode is set to TLS, the kubelet connects over TLS with
+InsecureSkipVerify and does not verify the server certificate. This matches
+the behavior of HTTPS probes. Certificate verification is not supported.
+If the feature gate is disabled, the kube-apiserver removes the mode
+field from new or updated Pods.
+Use a named port
+You can use a named port
+for HTTP and TCP probes. gRPC probes do not support named ports.
+For example:
+ports:
+- name: liveness-port
+  containerPort: 8080
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: liveness-port
+Protect slow starting containers with startup probes
+Sometimes, you have to deal with applications that require additional startup
+time on their first initialization. In such cases, it can be tricky to set up
+liveness probe parameters without compromising the fast response to deadlocks
+that motivated such a probe. The solution is to set up a startup probe with the
+same command, HTTP or TCP check, with a failureThreshold * periodSeconds long
+enough to cover the worst case startup time.
+So, the previous example would become:
+ports:
+- name: liveness-port
+  containerPort: 8080
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: liveness-port
+  failureThreshold: 1
+  periodSeconds: 10
+startupProbe:
+  httpGet:
+    path: /healthz
+    port: liveness-port
+  failureThreshold: 30
+  periodSeconds: 10
+Thanks to the startup probe, the application will have a maximum of 5 minutes
+(30 * 10 = 300s) to finish its startup.
+Once the startup probe has succeeded once, the liveness probe takes over to
+provide a fast response to container deadlocks.
+If the startup probe never succeeds, the container is killed after 300s and
+subject to the pod's restartPolicy.
+Define readiness probes
+Sometimes, applications are temporarily unable to serve traffic.
+For example, an application might need to load large data or configuration
+files during startup, or depend on external services after startup.
+In such cases, you don't want to kill the application,
+but you don't want to send it requests either. Kubernetes provides
+readiness probes to detect and mitigate these situations. A pod with containers
+reporting that they are not ready does not receive traffic through Kubernetes
+Services.
+Note:Readiness probes run on the container during its whole lifecycle.
+Caution:The readiness and liveness probes do not depend on each other to succeed.
+If you want to wait before executing a readiness probe, you should use
+initialDelaySeconds or a startupProbe.
+Readiness probes are configured similarly to liveness probes. The only difference
+is that you use the readinessProbe field instead of the livenessProbe field.
+readinessProbe:
+  exec:
+    command:
+    - /bin/cat
+    - /tmp/healthy
+  initialDelaySeconds: 5
+  periodSeconds: 5
+Configuration for HTTP and TCP readiness probes also remains identical to
+liveness probes.
+Readiness and liveness probes can be used in parallel for the same container.
+Using both can ensure that traffic does not reach a container that is not ready
+for it, and that containers are restarted when they fail.
+What's next
+Learn more about
+Liveness, Readiness and Startup Probes.
+For the full specification of probe-related fields, see the API reference:
+Pod,
+Container,
+Probe
+Feedback
+Was this page helpful?Yes
+No
+Thanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it on
+Stack Overflow.
+Open an issue in the GitHub Repository if you want to
+report a problem
+or
+suggest an improvement.
+Last modified June 30, 2026 at 3:26 PM PST: KEP-5999: Add docs for HTTP/2 cleartext (h2c) support in container probes (alpha) (751b927b5a)
+© 2026 The Kubernetes Authors | Documentation Distributed under CC BY 4.0
+© 2026 Copyright © Kubernetes a Series of LF Projects, LLC. For website terms of use, trademark policy and other project policies please see https://lfprojects.org/policies/
+ICP license: 京ICP备17074266号-3

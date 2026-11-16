@@ -1,0 +1,151 @@
+@35
+fa_background-tasks#using-backgroundtasks :: Declare a BackgroundTasks handler parameter and call background_tasks.add_task(callable, *args, **kwargs) to schedule work after sending the response.
+fa_background-tasks#create-a-task-function :: A background task callable can be a normal def or async def function; FastAPI handles either form.
+fa_background-tasks#caveat + uv_behavior#graceful-process-shutdown :: BackgroundTasks runs in the application process, so work requiring durable delivery or survival beyond that process needs a separate execution design rather than relying on this in-process mechanism.
+@36
+fa_dependencies_sub-dependencies#second-dependency-dependable-and-dependant :: A provider can declare its own Annotated[Type, Depends(other_provider)] parameter, forming a dependency graph.
+fa_dependencies_sub-dependencies#use-the-dependency :: FastAPI resolves a provider's prerequisite inputs before calling that provider and supplies its result to the consuming operation.
+fa_dependencies_sub-dependencies#using-the-same-dependency-multiple-times :: A shared sub-dependency is normally executed only once per request, with its result reused by the dependants that need it.
+@37
+fa_middleware#multiple-middleware-execution-order :: The last middleware added is the outermost wrapper: requests traverse it first, while responses traverse it last.
+starlette_middleware#using-middleware :: Maintained middleware can be installed as middleware classes around the application rather than rewriting their protocol behavior in each handler.
+fa_cors#use-corsmiddleware + starlette_middleware#gzipmiddleware :: Add CORSMiddleware and GZipMiddleware with app.add_middleware(Class, ...) and trace the request in reverse addition order and the response in addition order.
+@38
+fa_deployment_manually#run-the-server-program :: Run the application with an ASGI server import string, such as uvicorn main:app --host 0.0.0.0 --port 8000, where main names the module and app names its application object.
+fa_deployment_manually#run-the-server-program :: --reload is useful during development but should not be enabled in production because it consumes resources and is less stable.
+uv_settings#production :: Uvicorn's --workers option starts multiple worker processes and is mutually exclusive with --reload; choose the worker count for the deployment rather than treating reload as process management.
+@39
+fa_body#create-your-data-model + fa_body#declare-it-as-a-parameter :: Define a BaseModel subclass and annotate a handler parameter with that model to bind a structured JSON request body.
+fa_body#results :: FastAPI reads the JSON body, converts compatible values, validates the declared model and passes the model instance to the handler.
+fa_body#request-body-path-query-parameters :: Path-declared parameters bind from the path, scalar parameters generally bind from the query, and model parameters bind from the body, so these inputs can coexist in one operation.
+@40
+fa_dependencies_dependencies-with-yield#a-database-dependency-with-yield :: A dependency with yield acquires a resource before yielding it and supplies that yielded value to the operation.
+fa_dependencies_dependencies-with-yield#a-dependency-with-yield-and-try :: Put resource release in a finally block surrounding yield so exit cleanup runs after successful use or an exception.
+fa_dependencies_dependencies-with-yield#early-exit-and-scope :: A yielding dependency defaults to request scope, ending after the response is sent; Depends(provider, scope="function") ends it after the handler finishes but before sending the response.
+fa_dependencies_dependencies-with-yield#always-raise-in-dependencies-with-yield-and-except :: If a yielding dependency catches an exception without intentionally handling it, re-raise it rather than silently concealing the failure from FastAPI.
+@41
+ow_Logging_Cheat#event-attributes :: A useful event log records when and where an event happened, its type and severity, and enough context to interpret the event's outcome.
+ow_Logging_Cheat#event-attributes :: For a failure, record consistently named fields for timestamp, application or code location, event type, severity, result status and reason rather than an unexplained free-text message.
+ow_Logging_Cheat#event-collection :: Use a standard, consistently structured logging format for event fields so log collection and analysis can interpret the records.
+@42
+ow_ssrf#application-layer :: When destinations are known, enforce a destination allowlist instead of allowing an untrusted value to choose an arbitrary outbound URL.
+ow_ssrf#case-2-application-can-send-requests-to-any-external-ip-address-or-domain-name :: A destination policy must reject private, loopback, link-local and other non-public addresses, including IPv6 equivalents, when access is intended only to public services.
+ow_Webhook_Security#ssrf-prevention-publisher-side :: Validate the resolved address actually used for the connection, not merely a hostname checked earlier, to avoid a DNS rebinding gap.
+ow_ssrf#application-layer + ow_Webhook_Security#ssrf-prevention-publisher-side :: Disable automatic redirects or apply the same destination checks to each redirect target so a permitted initial URL cannot redirect into a forbidden destination.
+@43
+fa_request-forms-and-files#define-file-and-form-parameters :: Declare form metadata with Annotated[Type, Form()] and an uploaded file with Annotated[UploadFile, File()] in the same multipart handler; multipart parsing requires python-multipart.
+fa_request-files#uploadfile :: UploadFile uses a spooled file rather than requiring the entire upload to be represented as bytes in memory, and exposes asynchronous read, seek and close methods.
+starlette_middleware#requestbodylimitmiddleware :: Apply RequestBodyLimitMiddleware with a finite max_body_size to count actual incoming body bytes, including multipart overhead, and return 413 when the limit is exceeded.
+starlette_requests#request-files :: Multipart parsing can separately bound file count, field count and part size with request.form(max_files=..., max_fields=..., max_part_size=...); these controls do not replace a total body limit.
+ow_Webhook_Security#input-validation + fa_request-files#uploadfile :: Reject disallowed content types and validate the supplied fields before processing, then close an UploadFile with await file.close() when finished with its resource.
+@44
+fa_cors#use-corsmiddleware :: Configure app.add_middleware(CORSMiddleware, allow_origins=[...], allow_methods=[...], allow_headers=[...], allow_credentials=...) with the origins, methods and headers the browser client actually needs.
+fa_cors#use-corsmiddleware :: CORSMiddleware defaults are restrictive: allowed methods default to GET and credentials default to false.
+fa_cors#use-corsmiddleware :: When allow_credentials=True, explicitly specify allowed origins, methods and headers rather than wildcard lists.
+ow_REST_Security#cors + ow_REST_Security#access-control :: CORS signals browser access permission; it does not replace access-control checks at API endpoints.
+@45
+fa_dependencies_sub-dependencies#using-the-same-dependency-multiple-times :: FastAPI normally caches a dependency's returned value within one request when multiple dependants declare the same dependency.
+fa_dependencies_sub-dependencies#using-the-same-dependency-multiple-times :: Set Depends(provider, use_cache=False) when that declaration needs a fresh execution instead of the cached result.
+fa_dependencies_sub-dependencies#using-the-same-dependency-multiple-times :: Verify request-local reuse by having two dependants receive the same provider result during one request and checking a fresh request independently; this cache is not application-wide storage.
+@46
+fa_testing#using-testclient :: Create TestClient(app), send an HTTP request with client.get(...) or another request method, and assert response.status_code and response.json() in a test_ function run by pytest.
+fa_testing-events#testing-events-lifespan-and-startup-shutdown :: Use with TestClient(app) as client when the test must execute application lifespan setup and teardown.
+fa_testing#using-testclient + fa_dependencies#declare-the-dependency-in-the-dependant :: Sending a request through TestClient exercises the application's route and dependency resolution rather than only calling the handler function directly.
+@47
+pd_fields#default-values + fa_body#request-body-path-query-parameters :: Requiredness depends on whether a declaration supplies a default, while nullability depends on whether its type admits None.
+pd_fields#default-values :: A nullable field without a default still requires presence; writing field: Type | None = None permits both omission and an explicit null.
+pydantic_models_docs#basic-model-usage + fa_testing#using-testclient :: Test absence, an explicit JSON null and a concrete value as separate requests and compare them with the field's declared default and nullable type.
+@48
+fa_first-steps#check-the-openapi-json :: FastAPI normally exposes the generated OpenAPI document at /openapi.json, describing the application's operations and data schemas.
+fa_body#results + fa_response-model#response-model-parameter :: Typed body declarations and response models contribute input and output schemas to the generated API contract.
+fa_first-steps#check-the-openapi-json :: Inspect the method entry under paths for an endpoint and follow its schema references into components to see the generated public input and output definitions.
+@49
+starlette_middleware#trustedhostmiddleware :: TrustedHostMiddleware validates the request Host against an allowed_hosts list and responds with 400 when the host is not allowed.
+starlette_middleware#trustedhostmiddleware :: Configure app.add_middleware(TrustedHostMiddleware, allowed_hosts=[...]) using domain names; *.example.com permits subdomains and ["*"] permits any host.
+starlette_middleware#trustedhostmiddleware :: www_redirect defaults to true and can redirect an allowed non-www host to its www counterpart, so account for it when verifying an allowlist's response.
+@50
+ow_Logging_Cheat#data-to-exclude :: Access tokens, passwords, primary secrets and sensitive personal data should usually not be recorded directly in logs; remove or mask them according to the logging policy.
+ow_Logging_Cheat#data-to-exclude :: Review diagnostic context as well as the main log message, because connection strings, session identifiers and other sensitive values can appear in supplemental fields.
+ow_Logging_Cheat#verification :: Exercise a failure with recognizable synthetic sensitive values, inspect the emitted records and confirm that the redaction policy removes the prohibited values while retaining the intended event fields.
+@51
+sa_async#using-asyncsession-with-concurrent-tasks :: AsyncSession is mutable transaction state and is not safe to share across concurrent tasks; use a separate session for each concurrent unit of work.
+sa_async#synopsis-orm :: Build an async_sessionmaker bound to an async engine and use async with session_factory() as session to obtain and close a session for the request's unit of work.
+sa_async#synopsis-orm + fa_dependencies_dependencies-with-yield#a-dependency-with-yield-and-try :: A request dependency can yield a session from its async context, leaving session cleanup to that context on both normal and exceptional exit.
+@52
+uv_behavior#graceful-process-shutdown :: Graceful server termination stops old processes accepting new connections and permits active responses and background tasks to finish within configured time limits.
+uv_settings#timeouts :: Configure --timeout-graceful-shutdown seconds as the maximum wait before Uvicorn starts terminating remaining requests.
+fa_events#lifespan-function + uv_behavior#graceful-process-shutdown :: Verify termination during an active request by observing whether its response completes within the limit and whether lifespan cleanup releases the application's shared resources.
+@53
+kube_probes#configure-liveness-readiness-and-startup-probes :: A failed liveness probe can cause a container restart, whereas a failed readiness probe removes its eligibility to receive service traffic without requiring a restart.
+kube_probes#define-readiness-probes :: Readiness can depend on temporary conditions such as required backend availability, even while the process is alive.
+kube_probes#define-a-liveness-http-request + kube_probes#define-readiness-probes :: Configure separate livenessProbe and readinessProbe HTTP checks with path, port, periodSeconds and failureThreshold that match the service's intended restart and traffic-eligibility contracts.
+kube_probes#define-a-liveness-http-request :: An HTTP probe regards response status codes from 200 through 399 as success; other codes are failure.
+@54
+fa_schema-extra-example#extra-json-schema-data-in-pydantic-models :: Set model_config = ConfigDict(json_schema_extra={"examples": [...]}) on a model to provide schema examples, or use Field(examples=[...]) for field-level examples.
+fa_schema-extra-example#body-with-openapi-examples :: Supply Body(openapi_examples={...}) for named request-body examples in the operation documentation.
+fa_path-operation-configuration#tags + fa_path-operation-configuration#summary-and-description :: Use tags, summary and description on a path operation decorator to describe and group the operation without changing its runtime behavior.
+fa_schema-extra-example#extra-json-schema-data-in-pydantic-models + pydantic_models_docs#validating-data :: Validate proposed examples with Model.model_validate(example) before including them so their content agrees with the executable model.
+@55
+fa_testing-dependencies#use-the-app-dependency-overrides-attribute :: app.dependency_overrides maps an original provider callable to a replacement callable that FastAPI uses when resolving that dependency in a test.
+fa_testing-dependencies#use-the-app-dependency-overrides-attribute :: Assign app.dependency_overrides[original] = replacement, send the test request and assert the replacement's observable behavior.
+fa_testing-dependencies#use-the-app-dependency-overrides-attribute :: Restore overrides after the test, such as by resetting app.dependency_overrides to an empty dictionary when no previous overrides existed, to avoid substitutions leaking into other tests.
+@56
+fa_header-params#declare-header-parameters :: Declare a request header with Annotated[Type, Header()] so the value is read from headers rather than interpreted as a query parameter.
+fa_header-params#automatic-conversion :: Header converts underscores in Python parameter names to hyphens by default, and header names are case-insensitive; use alias or convert_underscores=False to control the name mapping.
+fa_cookie-params#declare-cookie-parameters :: Declare Annotated[Type, Cookie()] to bind a cookie by name, using a default when its omission should be accepted.
+@57
+fa_handling-errors#override-request-validation-exceptions :: FastAPI raises RequestValidationError for invalid request data and handles it before normal operation logic receives that input.
+fa_testing#testing-extended-example + fa_handling-errors#override-request-validation-exceptions :: Assert the default invalid-input response status of 422 and inspect the JSON detail entries to identify the failed input location and error type.
+fa_handling-errors#requestvalidationerror-vs-validationerror :: Invalid request input is distinct from a model-validation failure in response or application code, which indicates a server-side bug rather than a client's invalid request.
+@58
+prom_counter#counter :: A Prometheus Counter records accumulated events with inc(), while a Histogram records observed durations with observe(seconds).
+prom_histogram#histogram + prom_counter#counter :: Register a request counter and a latency histogram with the maintained prometheus_client library, and increment the counter and observe elapsed duration when each request completes, including failures.
+prom_labels#labels :: Use labels from a small predefined set such as method, route template and outcome; a distinct label combination produces a distinct metric series, so raw user or resource identifiers are unsuitable request labels.
+prom_counter#counter + prom_histogram#histogram + fa_testing#using-testclient :: Verify instrumentation by recording metric values before and after controlled successful, failing and delayed HTTP requests, checking the event-count changes and the added duration observations against those known requests.
+@59
+pd_serialization#excluding-and-including-fields-based-on-their-value :: Pydantic tracks explicitly supplied fields in model_fields_set; model_dump(exclude_unset=True) excludes fields that were not supplied.
+fa_body-updates#using-pydantics-exclude-unset-parameter :: Extract a partial update with update = model.model_dump(exclude_unset=True) so defaults for omitted fields do not overwrite stored values.
+pd_serialization#excluding-and-including-fields-based-on-their-value :: Explicitly supplied None remains supplied under exclude_unset=True; exclude_none=True separately removes None-valued fields and can erase an intentional null update.
+@60
+fa_body#request-body-path-query-parameters + pd_fields#default-values :: Changing an omittable request field into a required field rejects requests that were previously accepted, so a schema review must compare requiredness as well as types.
+pydantic_models_docs#data-conversion + pd_fields#numeric-constraints + pd_fields#string-constraints :: Tightening a type or field constraint can invalidate previously accepted client input; test representative previously valid inputs against the revised model.
+fa_response-model#response-model-parameter + fa_first-steps#check-the-openapi-json :: Removing or changing a public response field or operation can change a client's documented expectations; compare the generated paths and response schemas with the previous contract before approving the change.
+@61
+sa_async#synopsis-orm + sa_select#the-select-sql-expression-construct :: Select mapped entities with await session.scalars(select(Entity).where(condition)) and inspect the resulting entity values rather than treating the result as an unbounded application-wide lookup.
+sa_async#orm-session-api-documentation + sa_orm_data_manipulation#getting-objects-by-primary-key :: Use await session.get(Entity, identity) for a primary-key lookup; it returns the identified entity or None when no row exists.
+sa_select#order-by-group-by-having-limit-offset :: Add .limit(n) when selecting a bounded number of rows, and explicitly handle an empty result or None as absence.
+@62
+sa_async#synopsis-orm + sa_test_tx#managing-transactions :: Use async with session.begin(): around related writes to commit on successful exit and roll back on exceptional exit.
+sa_dbapi_transactions#working-with-transactions-and-the-dbapi :: A commit makes transaction changes durable, while a rollback discards uncommitted changes; multiple related writes belong in one transaction when they must succeed or fail together.
+sa_session#flushing :: After a flush failure, explicitly roll back before reusing that session; a failed flush leaves its transactional state requiring recovery.
+@63
+fastapi_docs_tutorial#security-tools + ow_REST_Security#jwt :: Bearer extraction reads the credential from the Authorization header; extracting a string does not verify its signature, claims or authority.
+starlette_middleware#third-party-middleware + fastapi_docs_advanced#security :: Declare FastAPI's HTTPBearer as a dependency to obtain an HTTPAuthorizationCredentials value with scheme and credentials from Authorization: Bearer token.
+fastapi_docs_tutorial#security-tools :: With HTTPBearer's default auto_error behavior, missing or non-bearer credentials are rejected rather than supplied to the handler; verify absent and malformed headers as separate request cases.
+@64
+redis_cache_aside#when-to-use-redis-cache-aside :: Cache-aside keeps a cache in front of a primary store; the primary store remains the source of truth rather than the cache becoming authoritative storage.
+redis_cache_code#how-it-works :: On a read, get the cache key first; on a miss, load from the primary store, cache the result and return it to the caller.
+redis_cache_aside#when-to-use-redis-cache-aside :: Cache-aside is useful for read-heavy data where repeated reads can reuse a copy and the application's staleness requirements permit that reuse.
+redis_cache_code#how-it-works :: Construct the cache key from the identity and parameters of the represented result so requests for different results do not reuse the wrong cached value.
+@65
+al_tutorial#the-migration-environment :: Alembic maintains a migration environment and versioned revision scripts that describe schema changes through upgrade() and downgrade().
+al_autogenerate#auto-generating-migrations :: Generate a candidate revision with alembic revision --autogenerate -m "description", comparing the database schema with supplied target_metadata.
+al_autogenerate#auto-generating-migrations :: Autogeneration produces candidate changes that require manual review and correction; it does not reliably infer every schema intent such as table or column renames.
+al_tutorial#running-our-first-migration + al_tutorial#downgrading :: Apply revisions with alembic upgrade head and exercise alembic downgrade revision on a test database to verify a proposed reversal before using it operationally.
+@66
+pg_indexes#indexes :: An index can speed up access to selected rows but adds overhead, so choose it for a query workload rather than indexing every column automatically.
+pg_index_types#indexes-types-btree :: PostgreSQL B-tree indexes support equality and ordered comparisons, making them candidates for frequently filtered or ordered values.
+pg_indexes#indexes :: Propose CREATE INDEX name ON table (column) for a frequent lookup, accounting for extra storage and the cost of maintaining the index during writes.
+@67
+fa_response-model#add-an-output-model + sa_metadata#defining-table-metadata-with-the-orm :: A persistence model maps stored rows, while a public response model declares the fields clients receive; these are separate contracts even when they describe the same entity.
+fa_response-model#add-an-output-model :: Define separate public input and output BaseModel classes and use response_model=PublicOutput to prevent persistence-only or sensitive fields from automatically becoming API fields.
+pydantic_models_docs#arbitrary-class-instances :: Use model_config = ConfigDict(from_attributes=True) when a Pydantic public model should validate values from an object's attributes, rather than requiring its persistence class to be the public schema.
+@68
+fa_handling-errors#install-custom-exception-handlers :: Register @app.exception_handler(FailureClass) to translate a recognized internal failure into an intentional public HTTP response.
+rfc_9110_http_semantics#15.5.10 + pg_constraints#ddl-constraints-unique :: A write conflicting with an existing uniqueness rule can be represented as 409 when that is the API's declared conflict outcome, instead of exposing database exception text.
+sa_session#flushing + fa_handling-errors#install-custom-exception-handlers :: Recover a failed persistence transaction with rollback and translate the recognized failure at the API boundary rather than treating the failed session as usable or disclosing its internals.
+@69
+fa_handling-errors#install-custom-exception-handlers :: An exception handler receives the request and exception and can return JSONResponse(status_code=..., content=...) with a stable public error structure.
+fa_handling-errors#override-the-httpexception-error-handler :: Register the handler for Starlette's HTTPException when both FastAPI and Starlette HTTP exceptions should share the envelope.
+ow_REST_Security#error-handling :: Populate the public envelope with intended client-facing information, not internal stack traces or raw exception details.
+fa_handling-errors#override-the-httpexception-error-handler :: Preserve the recognized exception's status code and relevant headers when constructing the envelope so its body format does not change the underlying HTTP outcome.

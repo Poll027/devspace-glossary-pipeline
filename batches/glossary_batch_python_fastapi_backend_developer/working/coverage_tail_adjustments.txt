@@ -1,0 +1,103 @@
+@71
+ow_Webhook_Security#input-validation :: Define the webhook's accepted media type, event shape and required fields, and validate the incoming body against that contract before accepting its downstream work.
+stripe_webhooks#handle-events :: A webhook acknowledgment communicates the receiver's accepted delivery outcome; it is not evidence that all downstream business work has completed.
+stripe_webhooks#quickly-return-a-2xx-response :: Return the declared 2xx acknowledgment promptly after accepted delivery, and keep slow downstream work out of the acknowledgment path when the integration's contract allows deferred processing.
+fa_body#declare-it-as-a-parameter + fa_response-status-code#response-status-code :: Declare a typed input model on the webhook handler and status_code on its operation decorator, then verify accepted and invalid input against the intended acknowledgment contract.
+@72
+ow_Logging_Cheat#event-attributes :: Use a nonsensitive interaction identifier to connect records for one request chain rather than reconstructing the chain from timestamps alone.
+fa_header-params#declare-header-parameters + httpx_async#making-async-requests :: Bind the configured correlation header with Header(alias=header_name), keep or create a bounded nonsensitive identifier under the service policy, and send the same identifier with client.get(url, headers={header_name: identifier}).
+ow_Logging_Cheat#event-attributes :: Include the interaction identifier in the local events associated with that request; it provides correlation context, not proof of a caller's authority.
+fa_testing#using-testclient + ow_Logging_Cheat#verification :: Verify a local-to-outbound request chain by checking the received header and the related logs, including concurrent requests that must retain distinct correlation contexts.
+@73
+prom_query_basics#range-vector-selectors + prom_counter#counter :: Request rate measures request events per time interval, while error rate measures failure events per time interval; changing traffic alone can change the absolute error count.
+prom_query_functions#rate + prom_counter#counter :: Compute a request rate with rate(request_counter[window]) and a failure fraction with the failure rate divided by the request rate over the same window and label grouping.
+prom_histogram#histogram + prom_query_functions#histogram_quantile :: Duration observations measure latency independently of event frequency; inspect a histogram-derived latency quantile to distinguish slower responses from simply more requests.
+prom_labels#labels :: Partition the compared signals by bounded nonsensitive categories such as method, route template and outcome, not by raw caller or request identifiers.
+prom_query_functions#rate + prom_histogram#histogram :: Compare the same time windows and label groups for successful, failing and delayed samples, asking separately whether traffic increased, the failure fraction increased or the duration distribution worsened.
+@75
+ow_SQL_Injection_Prevention#defense-option-1-parameterized-queries :: Parameterized queries keep SQL structure separate from caller-controlled data instead of interpolating that data into executable SQL text.
+sa_select#the-where-clause :: Use a SQLAlchemy expression such as select(Entity).where(Entity.field == supplied_value) so the supplied value becomes a bound value rather than SQL syntax.
+sa_dbapi_transactions#sending-parameters :: For a supplied textual query, use text("... WHERE field = :value") with an execute parameter dictionary {"value": supplied_value}, not string formatting or concatenation of the input.
+ow_SQL_Injection_Prevention#defense-option-3-allow-list-input-validation :: Parameters represent data values, not arbitrary table names, column names or sort direction; map a requested structural choice through a defined allowlist when binding a value cannot express it.
+@76
+sa_async#synopsis-orm + sa_orm_data_manipulation#instances-of-classes-represent-rows :: Construct Entity(field=value, ...) with the supplied fields and call session.add(entity) to put a new entity into the pending insert state.
+sa_orm_data_manipulation#flushing + sa_async#orm-session-api-documentation :: await session.flush() emits the pending insert and assigns database-generated identity values back to the mapped entity when supported by its mapping and database.
+sa_async#synopsis-orm + sa_test_tx#managing-transactions :: Commit the successful creation with await session.commit() or a successfully exiting session.begin() context; a flush alone is not a commit.
+sa_async#orm-session-api-documentation + sa_orm_data_manipulation#getting-objects-by-primary-key :: Verify the persistent identity and stored fields with a primary-key lookup after successful commit, rather than checking only that a Python object was constructed.
+@77
+sa_async#orm-session-api-documentation + sa_orm_data_manipulation#getting-objects-by-primary-key :: Load the intended entity with await session.get(Entity, identity) and handle None as absence before attempting deletion.
+sa_async#orm-session-api-documentation + sa_orm_data_manipulation#deleting-orm-objects-using-the-unit-of-work-pattern :: await session.delete(entity) marks that persistent entity for removal, and flushing emits the row deletion.
+sa_test_tx#managing-transactions + sa_async#synopsis-orm :: Commit the successful deletion under the transaction contract and roll back a failed deletion instead of reporting an uncommitted removal as durable.
+sa_orm_data_manipulation#deleting-orm-objects-using-the-unit-of-work-pattern + sa_async#orm-session-api-documentation :: Verify deletion with a fresh primary-key lookup or independent session, asserting absence and that the intended identity, not another row, was removed.
+@78
+sa_orm_data_manipulation#updating-orm-objects-using-the-unit-of-work-pattern :: Assign new values to attributes of a loaded persistent entity; the session tracks those changes and emits an UPDATE when it flushes.
+fa_body-updates#using-pydantics-exclude-unset-parameter :: Obtain supplied changes with model_dump(exclude_unset=True) and assign only those permitted fields to the loaded entity so omitted values are preserved.
+sa_async#synopsis-orm + sa_test_tx#managing-transactions :: Commit the successful update under the transaction contract and roll back a failed update before further session use.
+sa_orm_data_manipulation#updating-orm-objects-using-the-unit-of-work-pattern + fa_testing#using-testclient :: Reload the committed entity and verify both the changed supplied fields and the unchanged omitted fields, rather than inspecting only the request model.
+@82
+tf_build-release-run#the-twelve-factor-app :: Build creates an executable artifact, release combines that artifact with deploy-specific configuration, and run starts processes from the selected release.
+tf_build-release-run#the-twelve-factor-app :: Releases have unique identifiers and are immutable; a new change produces a new release rather than mutating a running release.
+tf_build-release-run#the-twelve-factor-app :: Record the artifact and configuration for each release and define rollback by redeploying a known prior release with its intended configuration.
+al_autogenerate#auto-generating-migrations + tf_build-release-run#the-twelve-factor-app :: Check the prior release's compatibility with the current database schema before selecting it for rollback; replacing an application release does not itself reverse a database migration.
+@83
+fa_additional-responses#additional-response-with-model :: Declare known outcomes with responses={status: {"model": PublicModel, "description": ...}} alongside the main response_model and status_code.
+fa_additional-responses#additional-response-with-model :: A responses declaration documents additional outcomes but does not make the handler produce them; return the actual matching response or raise the corresponding expected exception.
+fa_path-operation-configuration#response-description :: Use response_description and outcome descriptions to explain what the successful and expected error bodies mean to clients.
+fa_first-steps#check-the-openapi-json + fa_testing#using-testclient :: Compare generated response status entries and schemas with HTTP tests of the real success and expected error cases so documentation does not claim a body or status the endpoint does not emit.
+@84
+ow_REST_Security#error-handling :: Unexpected internal failures should return generic public error information without stack traces, exception messages or implementation details.
+fa_handling-errors#install-custom-exception-handlers + rfc_9110_http_semantics#15.6.1 :: Register a fallback exception handler that returns a stable generic JSON response with 500 for an unexpected server condition while recording the exception internally.
+ow_Logging_Cheat#event-attributes + ow_Logging_Cheat#data-to-exclude :: Internal failure evidence should identify the event, code location and interaction context while omitting prohibited secrets and sensitive data.
+starlette_exceptions#errors-and-handled-exceptions :: Disable debug traceback responses in production because debug mode substitutes a traceback response for the configured 500 handler.
+fa_testing#using-testclient + ow_REST_Security#error-handling :: Exercise the fallback with TestClient(app, raise_server_exceptions=False), asserting the generic public response and inspecting the safe internal diagnostic record separately.
+@85
+httpx_exceptions#the-exception-hierarchy :: HTTPX distinguishes transport RequestError failures from HTTPStatusError raised for an unsuccessful HTTP status by response.raise_for_status().
+httpx_exceptions#the-exception-hierarchy :: Call response.raise_for_status() when status failures require translation and classify caught HTTPStatusError by exc.response.status_code, while catching RequestError for failures without a usable response.
+ow_0xaa-unsafe-consumption-of-apis#how-to-prevent :: Treat remote failures as inputs to an explicit local integration contract rather than blindly trusting or exposing a remote response as the local outcome.
+rfc_9110_http_semantics#15.6.3 + rfc_9110_http_semantics#15.6.5 :: When acting as a gateway, 502 denotes an invalid upstream response and 504 denotes an upstream timeout; select the local status or domain exception from the service's declared mapping rather than forwarding every upstream status unchanged.
+fa_testing#using-testclient + httpx_exceptions#the-exception-hierarchy :: Test one supplied upstream status failure and one transport failure, asserting the mapped local response or domain failure and absence of raw upstream internals.
+@87
+prom_query_functions#rate + prom_histogram#histogram :: Compare request rate, failure fraction and latency for the affected operation and time window before choosing a diagnostic boundary, distinguishing increased traffic from increased failures or longer waits.
+ow_Logging_Cheat#event-attributes :: Follow the affected interaction identifier through related local and outbound logs to locate the first recorded failure or delayed operation rather than assuming the endpoint's final error identifies its origin.
+httpx_timeouts#fine-tuning-the-configuration + sa_dbapi_transactions#working-with-transactions-and-the-dbapi :: Compare integration timeout evidence and emitted database work with the failing request's log context to distinguish an upstream wait from persistence work or a local input rejection.
+ow_Logging_Cheat#verification + fa_testing#using-testclient :: Reproduce the supplied failure with a controlled request, record the observed outcome and related evidence, and change the suspected boundary only after checking that the evidence supports that location.
+@88
+ow_0xa4-unrestricted-resource-consumption#how-to-prevent :: Apply finite limits to expensive untrusted operations, including input size, result count, operation duration and costly concurrent work rather than accepting unrestricted resource consumption.
+starlette_middleware#requestbodylimitmiddleware + pd_fields#numeric-constraints :: Enforce an actual body-byte limit with maintained middleware and constrain caller-selected batch or page sizes with Field bounds rather than trusting claimed sizes.
+httpx_timeouts#setting-and-disabling-timeouts + uv_settings#resource-limits :: Configure finite dependency timeouts and a supplied Uvicorn --limit-concurrency budget where the service policy needs to bound concurrent accepted work.
+fa_testing#using-testclient + starlette_middleware#requestbodylimitmiddleware :: Test an input within the supplied budget and one beyond it, asserting that excess work is rejected before the expensive operation and accepted work retains the intended contract.
+@91
+ietf_rfc9700#2.1.1 + ietf_rfc9700#2.4 :: Use the supplied established authorization-server client or test harness to obtain an actual issued access token through authorization code with PKCE where applicable; do not add a resource-owner password-grant endpoint.
+oauth_core#4.1.1 + oauth_core#4.1.3 + ietf_rfc9700#2.1.1 :: Configure the supplied client with its registered client identifier, authorization and token endpoints and redirect URI; complete the code redirect and the separate token POST with the matching PKCE verifier using that client.
+jwt_usage#retrieve-rsa-signing-keys-from-a-jwks-endpoint + jwt_api#jwt.decode :: Configure the existing verifier with the supplied issuer's trusted JWKS URL, expected issuer, allowed algorithms and API audience; resolve a signing key with PyJWKClient and require the intended claims during jwt.decode.
+fa_security_ref#fastapi.security.HTTPBearer + oauth_core#7 :: Send the issuer's issued access token to the protected endpoint as Authorization: Bearer token so the request executes the real bearer extraction and configured verifier.
+fa_testing#using-testclient + jwt_usage#audience-claim-aud + jwt_usage#registered-claim-names :: Execute an HTTP assertion accepting the valid issuer-issued token and another rejecting a tampered token or an issuer-issued token for the wrong API audience; keep authentication and verification dependencies active rather than overriding them or fabricating a locally valid token.
+@94
+ow_Webhook_Security#replay-attack-protection :: A replay freshness check uses a timestamp authenticated by the provider's signature; an unsigned request timestamp cannot establish the event's age.
+ow_Webhook_Security#replay-attack-protection :: After signature verification, parse the signed timestamp and reject an event outside the configured acceptance window, including timestamps unacceptably far in the future under the provider's policy.
+ow_Webhook_Security#replay-attack-protection :: Choose the acceptance window with the provider's signing and retry behavior in mind, because some publishers re-sign each delivery while others reuse a timestamp.
+ow_Webhook_Security#security-testing :: Test valid signatures for an in-window timestamp, an expired timestamp and an impermissibly future timestamp, verifying that authenticity alone does not make every signed event fresh.
+@95
+rfc_9110_http_semantics#9.2.2 :: Automatically repeating a non-idempotent request can duplicate effects; retry only when the method or application contract establishes idempotency or proves that the original request was not applied.
+rfc_9110_http_semantics#10.2.3 :: Retry-After can be an HTTP date or delay in seconds; incorporate a valid server-supplied delay into a retry policy rather than retrying immediately against that instruction.
+redis_prod#retries + py_asyncio#timeouts :: Configure a finite attempt count and finite total time budget, with a maintained client's bounded backoff where applicable, so repeated transient failures eventually stop.
+httpx_exceptions#the-exception-hierarchy + rfc_9110_http_semantics#9.2.2 :: Classify the supplied failure as retryable or terminal under the operation contract, recognizing that a timeout or lost response alone does not prove the remote operation had no effect.
+fa_testing#using-testclient + rfc_9110_http_semantics#9.2.2 :: Verify a transient failure followed by success and repeated failures exhausting the configured limit, and confirm that a non-idempotent operation without a retry-safe contract is not blindly repeated.
+@97
+fa_security_ref#fastapi.security.HTTPBearer :: Declare HTTPBearer for a deployed bearer-token scheme so the generated OpenAPI securitySchemes entry describes token presentation rather than implying that the API issues passwords or tokens.
+fa_security_ref#fastapi.security.OAuth2AuthorizationCodeBearer :: For an established authorization-code issuer contract, configure OAuth2AuthorizationCodeBearer(authorizationUrl=..., tokenUrl=..., scopes=...) with the actual supplied issuer endpoints and permission descriptions.
+ietf_rfc9700#2.1.1 + ietf_rfc9700#2.4 :: Describe the deployed authorization-code and PKCE acquisition contract where applicable, and do not present an OAuth2 password flow as production access guidance.
+fa_security_ref#fastapi.security.HTTPBearer + fa_security_oauth2-scopes#oauth2-scopes-and-openapi :: Attach the scheme and required scopes through the real operation dependencies so generated operation security requirements agree with the authority the endpoint accepts.
+fa_first-steps#check-the-openapi-json :: Inspect components.securitySchemes and each protected operation's security entry, checking issuer URLs, bearer presentation and required permissions against the deployed contract.
+@98
+fa_first-steps#check-the-openapi-json :: Retrieve /openapi.json and inspect the router's paths, parameters, request schemas, response schemas and security requirements as public contract artifacts.
+fa_body#results + fa_response-model#response-model-parameter :: Compare generated requiredness, types, constraints and output fields with executable input and output behavior to identify drift between documentation and the accepted or emitted contract.
+fa_additional-responses#additional-response-with-model + fa_testing#using-testclient :: Compare documented success and expected-error statuses with exercised HTTP outcomes, because an additional response declaration does not prove the handler actually emits that outcome.
+fa_schema-extra-example#extra-json-schema-data-in-pydantic-models + ow_Logging_Cheat#data-to-exclude :: Audit public examples and descriptions for secrets and sensitive personal data, and ensure examples validate against the model rather than publishing realistic private values.
+fa_security_ref#fastapi.security.OAuth2AuthorizationCodeBearer + ietf_rfc9700#2.4 :: Check that public security schemes and operation requirements describe the configured bearer and established issuer contract and do not introduce an undeployed password grant.
+@99
+fa_testing#using-testclient + fa_security_ref#fastapi.security.HTTPBearer :: Send requests through the real protected HTTP endpoint with absent, malformed and supplied bearer credentials, keeping the authentication and verification gates active.
+jwt_usage#registered-claim-names + jwt_api#jwt.decode :: Test invalid-signature, expired and contextually wrong tokens separately from a valid token, asserting credential rejection before protected output is returned.
+fa_security_oauth2-scopes#check-the-scopes :: Test an otherwise valid credential lacking the required permission separately from a valid sufficiently permitted credential to distinguish authentication from operation authorization.
+ow_0xa1-broken-object-level-authorization#how-to-prevent :: Test a valid caller against another caller's object identifier as a separate deny path from missing operation permission.
+fa_testing#using-testclient + fa_response-model#response-model-parameter :: Assert the declared status and safe body for each denial and the public projected result for the fully authorized request, not merely that some requests fail and one succeeds.

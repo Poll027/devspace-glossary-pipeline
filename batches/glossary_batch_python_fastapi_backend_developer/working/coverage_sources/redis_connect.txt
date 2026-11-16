@@ -1,0 +1,486 @@
+
+    Connect to the server | Docs
+{"categories":["docs","develop","stack","oss","rs","rc","oss","kubernetes","clients"],"description":"Connect your Python application to a Redis database","duplicateOf":"head:data-ai-metadata","location":"body","title":"Connect to the server","tableOfContents":{"sections":[]},"codeExamples":[]}
+              Redis Iris
+          Redis install
+          Data types
+      Tools
+      Community
+      Docs
+        Search
+      Login
+      Sign up
+        Open search
+        Open main menu
+          Redis Iris
+Redis install
+Data types
+Tools
+Community
+Docs
+Sign up
+          Login
+        Develop with Redis
+          Get started
+          What's new?
+          Quick starts
+          Client tools
+          Client APIs
+          redis-py (Python)
+        Connect
+        Async operations
+        Connect to AMR
+        Index and query documents
+        Index and query vectors
+        Vector set embeddings
+        Probabilistic data types
+        Pipelines/transactions
+        Scan iteration
+        Error handling
+        Geographic failover
+        Production usage
+        Observability
+        RedisVL (Python)
+          StackExchange.Redis (C#/.NET)
+          node-redis (JavaScript)
+          ioredis (JavaScript)
+          Jedis (Java)
+          Lettuce (Java)
+          go-redis (Go)
+          Predis (PHP)
+          redis-rs (Rust)
+          hiredis (C)
+          redis-rb (Ruby)
+        Object mapping
+        Client-side caching
+        Connection URLs
+        Pooling/multiplexing
+        Error handling
+        Geographic failover
+        Smart client handoffs
+        Observability
+          Coding patterns
+        Support & versioning
+          Using commands
+          Data types
+          Redis for AI and search
+          Programmability
+          Use cases
+          Pub/sub
+          Reference
+        Libraries and tools
+        Redis products
+        Commands
+    Download documentation
+          Download documentation
+          Choose the products and versions you want. Everything arrives as one
+          .tar.gz, with a directory per product.
+        Format
+              Markdown — one .md file per page
+              Markdown, single file — every page in one .md file
+              HTML — browse offline
+              JSON — one .json file per page
+              This page
+                  Download
+              Products
+              Version
+                    Develop with Redis
+                    Clients, data types, programmability, and Redis for AI. RedisVL is listed separately.
+                    Libraries and tools
+                    Client libraries, observability, and cloud integrations. Redis Data Integration is listed separately.
+                    RedisVL
+                      latest
+                        v0.31.0
+                        v0.30.0
+                        v0.29.0
+                        v0.28.0
+                        v0.27.2
+                        v0.27.1
+                        v0.27.0
+                        v0.26.0
+                        v0.25.1
+                        v0.25.0
+                        v0.24.0
+                        v0.23.0
+                        v0.22.0
+                        v0.20.1
+                        v0.20.0
+                        v0.19.0
+                        v0.18.2
+                        v0.18.1
+                        v0.18.0
+                        v0.17.1
+                        v0.17.0
+                        v0.16.0
+                        v0.15.0
+                        v0.14.0
+                        v0.13.2
+                        v0.13.0
+                        v0.12.1
+                        v0.12.0
+                        v0.11.1
+                        v0.11.0
+                        v0.10.0
+                        v0.9.1
+                        v0.9.0
+                        v0.8.2
+                        v0.8.1
+                        v0.8.0
+                        v0.7.0
+                        v0.6.0
+                    Redis Software
+                      latest
+                        v8.0
+                        v7.22
+                        v7.8
+                        v7.4
+                    Redis Cloud
+                    Redis for Kubernetes
+                      latest
+                        v8.2.0
+                        v8.0.18
+                        v8.0
+                        v7.22
+                        v7.8.6
+                        v7.8.4
+                        v7.4.6
+                    Redis Open Source
+                    Redis Iris context engine
+                    Redis Feature Form
+                    Redis Insight
+                    Redis Data Integration
+                      latest
+                        v2.0.0
+                        v1.19.1
+                    Glossary
+                    Command reference
+          Cancel
+          Download
+        Docs
+        Docs
+      →
+        Develop with Redis
+      →
+        Connect with Redis client API libraries
+      →
+        redis-py guide (Python)
+      →
+        Connect to the server
+          Connect to the server
+Connect your Python application to a Redis database
+  Basic connection
+Connect to localhost on port 6379, set a value in Redis, and retrieve it. All responses are returned as bytes in Python. To receive decoded strings, set decode_responses=True. For more connection options, see these examples.
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+Note:
+redis-py supports connection URLs through redis.from_url().
+A URL can set the host, port, credentials, database, and whether to use TLS,
+so you can use one instead of passing those options separately.
+Store and retrieve a simple string.
+r.set('foo', 'bar')
+# True
+r.get('foo')
+# bar
+Store and retrieve a dict.
+r.hset('user-session:123', mapping={
+    'name': 'John',
+    "surname": 'Smith',
+    "company": 'Redis',
+    "age": 29
+})
+# True
+r.hgetall('user-session:123')
+# {'surname': 'Smith', 'name': 'John', 'company': 'Redis', 'age': '29'}
+  Connect to a Redis cluster
+To connect to a Redis cluster, use RedisCluster.
+from redis.cluster import RedisCluster
+rc = RedisCluster(host='localhost', port=16379)
+print(rc.get_nodes())
+# [[host=127.0.0.1,port=16379,name=127.0.0.1:16379,server_type=primary,redis_connection=Redis<ConnectionPool<Connection<host=127.0.0.1,port=16379,db=0>>>], ...
+rc.set('foo', 'bar')
+# True
+rc.get('foo')
+# b'bar'
+For more information, see redis-py Clustering.
+  Connect to Redis Sentinel
+To connect through Redis Sentinel,
+create a Sentinel object with a list of Sentinel addresses. Then call master_for() with
+the name of the primary that the Sentinels monitor. The client asks the Sentinels for the
+current address of the primary.
+from redis.sentinel import Sentinel
+sentinel = Sentinel([('localhost', 26379), ('localhost', 26380), ('localhost', 26381)])
+r = sentinel.master_for('mymaster', decode_responses=True)
+r.set('foo', 'bar')
+# True
+r.get('foo')
+# bar
+The Sentinels and the data nodes have separate credentials. Pass the Sentinel credentials
+in sentinel_kwargs, and the credentials for the primary and replicas to master_for():
+from redis.sentinel import Sentinel
+sentinel = Sentinel(
+    [('localhost', 26379), ('localhost', 26380), ('localhost', 26381)],
+    sentinel_kwargs={'password': 'sentinel-secret'},  # use your Sentinel password
+)
+r = sentinel.master_for(
+    'mymaster',
+    username='default',  # use your Redis user
+    password='secret',  # use your Redis password
+    decode_responses=True,
+)
+If you set sentinel_kwargs, the Sentinel connections don't inherit socket_timeout or the
+other socket_* options, so add any that you need to sentinel_kwargs.
+To send read-only commands to a replica, use slave_for(). Replication is asynchronous, so
+a replica can return stale data.
+replica = sentinel.slave_for('mymaster', decode_responses=True)
+replica.get('foo')
+# bar
+redis-py doesn't listen for failover announcements from the Sentinels. After a failover,
+the client keeps using the old primary until Sentinel reconfigures it as a replica and it
+starts rejecting writes. Any writes that the old primary accepts during that time are lost.
+  Connect to your production Redis with TLS
+When you deploy your application, use TLS and follow the Redis security guidelines.
+import redis
+r = redis.Redis(
+    host="my-redis.cloud.redislabs.com", port=6379,
+    username="default", # use your Redis user. More info https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/
+    password="secret", # use your Redis password
+    ssl=True,
+    ssl_certfile="./redis_user.crt",
+    ssl_keyfile="./redis_user_private.key",
+    ssl_ca_certs="./redis_ca.pem",
+)
+r.set('foo', 'bar')
+# True
+r.get('foo')
+# b'bar'
+For more information, see redis-py TLS examples.
+  Connect using client-side caching
+Client-side caching is a technique to reduce network traffic between
+the client and server, resulting in better performance. See
+Client-side caching introduction
+for more information about how client-side caching works and how to use it effectively.
+To enable client-side caching, add some extra parameters when you connect
+to the server:
+protocol: (Required) You must pass a value of 3 here because
+client-side caching requires the RESP3
+protocol.
+cache_config: (Required) Pass cache_config=CacheConfig() here to enable client-side caching.
+The example below shows the simplest client-side caching connection to the default host and port,
+localhost:6379.
+All of the connection variants described above accept these parameters, so you can
+use client-side caching with a connection pool or a cluster connection in exactly the same way.
+Note:
+Client-side caching requires redis-py v5.1.0 or later.
+To maximize compatibility with all Redis products, client-side caching
+is supported by Redis v7.4 or later.
+The Redis server products support
+opt-in/opt-out mode
+and broadcasting mode
+for CSC, but these modes are not currently implemented by redis-py.
+import redis
+from redis.cache import CacheConfig
+r = redis.Redis(
+    protocol=3,
+    cache_config=CacheConfig(),
+    decode_responses=True
+)
+r.set("city", "New York")
+cityNameAttempt1 = r.get("city")    # Retrieved from Redis server and cached
+cityNameAttempt2 = r.get("city")    # Retrieved from cache
+You can see the cache working if you connect to the same Redis database
+with redis-cli and run the
+MONITOR command. If you run the
+code above with the cache_config line commented out, you should see
+the following in the CLI among the output from MONITOR:
+1723109720.268903 [...] "SET" "city" "New York"
+1723109720.269681 [...] "GET" "city"
+1723109720.270205 [...] "GET" "city"
+The server responds to both get("city") calls.
+If you run the code again with cache_config uncommented, you will see
+1723110248.712663 [...] "SET" "city" "New York"
+1723110248.713607 [...] "GET" "city"
+The first get("city") call contacted the server but the second
+call was satisfied by the cache.
+  Removing items from the cache
+You can remove individual keys from the cache with the
+delete_by_redis_keys() method. This removes all cached items associated
+with the keys, so all results from multi-key commands (such as
+MGET) and composite data structures
+(such as hashes) will be
+cleared at once. The example below shows the effect of removing a single
+key from the cache:
+r.hget("person:1", "name") # Read from the server
+r.hget("person:1", "name") # Read from the cache
+r.hget("person:2", "name") # Read from the server
+r.hget("person:2", "name") # Read from the cache
+cache = r.get_cache()
+cache.delete_by_redis_keys(["person:1"])
+r.hget("person:1", "name") # Read from the server
+r.hget("person:1", "name") # Read from the cache
+r.hget("person:2", "name") # Still read from the cache
+You can also clear all cached items using the flush()
+method:
+r.hget("person:1", "name") # Read from the server
+r.hget("person:1", "name") # Read from the cache
+r.hget("person:2", "name") # Read from the cache
+r.hget("person:2", "name") # Read from the cache
+cache = r.get_cache()
+cache.flush()
+r.hget("person:1", "name") # Read from the server
+r.hget("person:1", "name") # Read from the cache
+r.hget("person:2", "name") # Read from the server
+r.hget("person:2", "name") # Read from the cache
+The client will also flush the cache automatically
+if any connection (including one from a connection pool)
+is disconnected.
+  Connect with a connection pool
+For production usage, you should use a connection pool to manage
+connections rather than opening and closing connections individually.
+A connection pool maintains several open connections and reuses them
+efficiently. When you open a connection from a pool, the pool allocates
+one of its open connections. When you subsequently close the same connection,
+it is not actually closed but simply returned to the pool for reuse.
+This avoids the overhead of repeated connecting and disconnecting.
+See
+Connection pools and multiplexing
+for more information.
+Use the following code to connect with a connection pool:
+import redis
+pool = redis.ConnectionPool().from_url("redis://localhost")
+r1 = redis.Redis().from_pool(pool)
+r2 = redis.Redis().from_pool(pool)
+r3 = redis.Redis().from_pool(pool)
+r1.set("wind:1", "Hurricane")
+r2.set("wind:2", "Tornado")
+r3.set("wind:3", "Mistral")
+r1.close()
+r2.close()
+r3.close()
+pool.close()
+  Retrying connections
+A connection will sometimes fail because of a transient problem, such as a
+network outage or a server that is temporarily unavailable. In these cases,
+retrying the connection after a short delay will usually succeed. redis-py uses
+a simple retry strategy by default, but there are various ways you can customize
+this behavior to suit your use case. See
+Retries
+for more information about custom retry strategies, with example code.
+  Connect using Smart client handoffs (SCH)
+Smart client handoffs (SCH) is a feature of Redis Cloud and
+Redis Software servers that lets them actively notify clients
+about planned server maintenance shortly before it happens. This
+lets a client take action to avoid disruptions in service.
+See Smart client handoffs
+for more information about SCH.
+Note:
+Using SCH with redis-py requires v7.0.0 or later for
+standard routing, and v7.2.0 or later for
+OSS Cluster API connections.
+By default, redis-py always attempts to connect via SCH but falls back to
+a non-SCH connection if the server doesn't support it. However, you can configure SCH
+explicitly by passing a MaintNotificationsConfig object during the connection,
+as shown in the following example:
+import redis
+from redis.maint_notifications import MaintNotificationsConfig, EndpointType
+r = redis.Redis(
+    decode_responses=True,
+    protocol=3,
+    maint_notifications_config=MaintNotificationsConfig(
+        proactive_reconnect=True,
+        relaxed_timeout=10,
+        endpoint_type=EndpointType.EXTERNAL_IP
+    ),
+    ...
+)
+To disable SCH, pass enabled=False in the MaintNotificationsConfig object:
+r = redis.Redis(
+    maint_notifications_config=MaintNotificationsConfig(
+        enabled=False,
+    ),
+    ...
+)
+Note:
+SCH requires the RESP3
+protocol, so you must set protocol=3 explicitly when you connect.
+The MaintNotificationsConfig constructor accepts the following parameters:
+          Name
+          Type
+          Default
+          Description
+          enabled
+          bool
+          True
+          Whether or not to enable SCH.
+          proactive_reconnect
+          bool
+          True
+          Whether or not to automatically reconnect when a node is replaced.
+          endpoint_type
+          EndpointType
+          Auto-detect
+          The type of endpoint to use for the connection. The options are EndpointType.EXTERNAL_IP, EndpointType.INTERNAL_IP, EndpointType.EXTERNAL_FQDN, EndpointType.INTERNAL_FQDN, and EndpointType.NONE.
+          relaxed_timeout
+          int
+          20
+          The timeout (in seconds) to use while the server is performing maintenance. A value of -1 disables the relax timeout and just uses the normal timeout during maintenance.
+Note:
+Redis Cloud supports relaxed timeouts only (and not pre-handoffs) for SCH if you are using
+Google Cloud Private Service Connect
+or the OSS Cluster API with AWS PrivateLink
+(see Smart client handoffs for more information).
+To use relaxed timeouts with these connections, you should set endpoint_type=EndpointType.NONE
+when you connect. All other configurations have full support for both relaxed timeouts and pre-handoffs.
+      RATE THIS PAGE
+        ★
+        ★
+        ★
+        ★
+        ★
+      Back to top ↑
+        Submit
+    Edit this page
+    Create an issue
+    Download documentation
+    Ask AI to explain this page
+On this page
+Basic connection
+Connect to a Redis cluster
+Connect to Redis Sentinel
+Connect to your production Redis with TLS
+Connect using client-side caching
+Removing items from the cache
+Connect with a connection pool
+Retrying connections
+Connect using Smart client handoffs (SCH)
+        Trust
+        Privacy
+        Terms of use
+        Legal notices
+Compare
+          Redis vs Elasticache
+          Redis vs Memcached
+          Redis vs Memory Store
+          Redis vs. Open Source
+Company
+          Mission & valuesLeadership
+          Careers
+Partners
+          Amazon Web Services
+          Google Cloud
+          Microsoft Azure
+          All partners
+Support
+          Professional
+            servicesSupport
+      Trust
+      Privacy
+      Terms of use
+      Legal notices
+        All products
+        Redis Software
+        Redis Cloud
+        Redis Open Source
+        Redis Insight
+        Redis Enterprise for K8s
+        Redis Data Integration
+        Client Libraries
+      ESC

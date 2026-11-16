@@ -1,0 +1,261 @@
+
+        OpenAPI Webhooks - FastAPI
+          Skip to content
+         Deploy on FastAPI Cloud 🚀
+         Follow @fastapi on X (Twitter) to stay updated
+         Follow FastAPI on LinkedIn to stay updated
+         Subscribe to the FastAPI and friends newsletter 🎉
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+            FastAPI
+              OpenAPI Webhooks
+              en - English
+              de - Deutsch
+              es - español
+              fr - français
+              hi - हिन्दी
+              ja - 日本語
+              ko - 한국어
+              pt - português
+              ru - русский язык
+              tr - Türkçe
+              uk - українська мова
+              zh - 简体中文
+              zh-hant - 繁體中文
+    Search
+    fastapi/fastapi
+  FastAPI
+  Features
+  Learn
+  Reference
+  Resources
+  About
+  Release Notes
+    FastAPI
+    fastapi/fastapi
+  FastAPI
+  Features
+  Learn
+  Python Types Intro
+  Concurrency and async / await
+  Tutorial - User Guide
+  First Steps
+  Path Parameters
+  Query Parameters
+  Request Body
+  Query Parameters and String Validations
+  Path Parameters and Numeric Validations
+  Query Parameter Models
+  Body - Multiple Parameters
+  Body - Fields
+  Body - Nested Models
+  Declare Request Example Data
+  Extra Data Types
+  Cookie Parameters
+  Header Parameters
+  Cookie Parameter Models
+  Header Parameter Models
+  Response Model - Return Type
+  Extra Models
+  Response Status Code
+  Form Data
+  Form Models
+  Request Files
+  Request Forms and Files
+  Handling Errors
+  Path Operation Configuration
+  JSON Compatible Encoder
+  Body - Updates
+  Dependencies
+  Classes as Dependencies
+  Sub-dependencies
+  Dependencies in path operation decorators
+  Global Dependencies
+  Dependencies with yield
+  Security
+  Security - First Steps
+  Get Current User
+  Simple OAuth2 with Password and Bearer
+  OAuth2 with Password (and hashing), Bearer with JWT tokens
+  Middleware
+  CORS (Cross-Origin Resource Sharing)
+  SQL (Relational) Databases
+  Bigger Applications - Multiple Files
+  Stream JSON Lines
+  Server-Sent Events (SSE)
+  Background Tasks
+  Metadata and Docs URLs
+  Frontend
+  Static Files
+  Testing
+  Debugging
+  Advanced User Guide
+  Stream Data
+  Path Operation Advanced Configuration
+  Additional Status Codes
+  Return a Response Directly
+  Custom Response - HTML, Stream, File, others
+  Additional Responses in OpenAPI
+  Response Cookies
+  Response Headers
+  Response - Change Status Code
+  Advanced Dependencies
+  Advanced Security
+  OAuth2 scopes
+  HTTP Basic Auth
+  Using the Request Directly
+  Using Dataclasses
+  Advanced Middleware
+  Sub Applications - Mounts
+  Behind a Proxy
+  Templates
+  WebSockets
+  Lifespan Events
+  OpenTelemetry
+  Testing WebSockets
+  Testing Events: lifespan and startup - shutdown
+  Testing Dependencies with Overrides
+  Async Tests
+  Settings and Environment Variables
+  OpenAPI Callbacks
+  OpenAPI Webhooks
+  OpenAPI Webhooks
+      On this page
+        Webhooks steps
+        Documenting webhooks with FastAPI and OpenAPI
+        An app with webhooks
+        Check the docs
+  Including WSGI - Flask, Django, others
+  Generating SDKs
+  Advanced Python Types
+  JSON with Bytes as Base64
+  Strict Content-Type Checking
+  FastAPI CLI
+  Editor Support
+  Develop with AI
+  Deployment
+  About FastAPI versions
+  FastAPI Cloud
+  About HTTPS
+  Run a Server Manually
+  Deployments Concepts
+  Deploy FastAPI on Cloud Providers
+  Server Workers - Uvicorn with Workers
+  FastAPI in Containers - Docker
+  How To - Recipes
+  General - How To - Recipes
+  Migrate from Pydantic v1 to Pydantic v2
+  GraphQL
+  Custom Request and APIRoute class
+  Conditional OpenAPI
+  Extending OpenAPI
+  Separate OpenAPI Schemas for Input and Output or Not
+  Custom Docs UI Static Assets (Self-Hosting)
+  Configure Swagger UI
+  Testing a Database
+  Use Old 403 Authentication Error Status Codes
+  Reference
+  FastAPI class
+  Request Parameters
+  Status Codes
+  UploadFile class
+  Exceptions - HTTPException and WebSocketException
+  Dependencies - Depends() and Security()
+  APIRouter class
+  Background Tasks - BackgroundTasks
+  Request class
+  WebSockets
+  HTTPConnection class
+  Response class
+  Custom Response Classes - File, HTML, Redirect, Streaming, etc.
+  Server-Sent Events - EventSourceResponse and ServerSentEvent
+  Middleware
+  OpenAPI
+  OpenAPI docs
+  OpenAPI models
+  Security Tools
+  Encoders - jsonable_encoder
+  Static Files - StaticFiles
+  Templating - Jinja2Templates
+  Test Client - TestClient
+  Resources
+  FastAPI People
+  Help
+  Contributing
+  Translations
+  Full Stack FastAPI Template
+  External Links
+  FastAPI and friends newsletter
+  About
+  Alternatives, Inspiration and Comparisons
+  History, Design and Future
+  Benchmarks
+  Repository Management
+  Release Notes
+      On this page
+        Webhooks steps
+        Documenting webhooks with FastAPI and OpenAPI
+        An app with webhooks
+        Check the docs
+    FastAPI
+    Learn
+    Advanced User Guide
+OpenAPI Webhooks¶
+AI coding agents
+Use the official FastAPI skill for your installed version. Install it from your project directory:
+uvx library-skills
+See Develop with AI.
+There are cases where you want to tell your API users that your app could call their app (sending a request) with some data, normally to notify of some type of event.
+This means that instead of the normal process of your users sending requests to your API, it's your API (or your app) that could send requests to their system (to their API, their app).
+This is normally called a webhook.
+Webhooks steps¶
+The process normally is that you define in your code what is the message that you will send, the body of the request.
+You also define in some way at which moments your app will send those requests or events.
+And your users define in some way (for example in a web dashboard somewhere) the URL where your app should send those requests.
+All the logic about how to register the URLs for webhooks and the code to actually send those requests is up to you. You write it however you want to in your own code.
+Documenting webhooks with FastAPI and OpenAPI¶
+With FastAPI, using OpenAPI, you can define the names of these webhooks, the types of HTTP operations that your app can send (e.g. POST, PUT, etc.) and the request bodies that your app would send.
+This can make it a lot easier for your users to implement their APIs to receive your webhook requests, they might even be able to autogenerate some of their own API code.
+Note
+Webhooks are available in OpenAPI 3.1.0 and above, supported by FastAPI 0.99.0 and above.
+An app with webhooks¶
+When you create a FastAPI application, there is a webhooks attribute that you can use to define webhooks, the same way you would define path operations, for example with @app.webhooks.post().
+from datetime import datetime
+from fastapi import FastAPI
+from pydantic import BaseModel
+app = FastAPI()
+class Subscription(BaseModel):
+    username: str
+    monthly_fee: float
+    start_date: datetime
+@app.webhooks.post("new-subscription")
+def new_subscription(body: Subscription):
+    """
+    When a new user subscribes to your service we'll send you a POST request with this
+    data to the URL that you register for the event `new-subscription` in the dashboard.
+    """
+@app.get("/users/")
+def read_users():
+    return ["Rick", "Morty"]
+The webhooks that you define will end up in the OpenAPI schema and the automatic docs UI.
+Note
+The app.webhooks object is actually just an APIRouter, the same type you would use when structuring your app with multiple files.
+Notice that with webhooks you are actually not declaring a path (like /items/), the text you pass there is just an identifier of the webhook (the name of the event), for example in @app.webhooks.post("new-subscription"), the webhook name is new-subscription.
+This is because it is expected that your users would define the actual URL path where they want to receive the webhook request in some other way (e.g. a web dashboard).
+Check the docs¶
+Now you can start your app and go to http://127.0.0.1:8000/docs.
+You will see your docs have the normal path operations and now also some webhooks:
+  Back to top
+                Previous
+                OpenAPI Callbacks
+                Next
+                Including WSGI - Flask, Django, others
+        The FastAPI trademark is owned by @tiangolo and is registered in the US and across other regions
+    Made with
+        Zensical

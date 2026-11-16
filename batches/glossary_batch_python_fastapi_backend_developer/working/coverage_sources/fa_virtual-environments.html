@@ -1,0 +1,2456 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Stuff by tiangolo">
+      
+      
+      
+        <link rel="canonical" href="https://tiangolo.com/guides/virtual-environments/">
+      
+      
+        <link rel="prev" href="../environment-variables/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="zensical-0.0.51">
+    
+    
+      
+        <title>Virtual Environments - tiangolo's boring personal website</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.62c9b9cc.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/termynal.css">
+    
+      <link rel="stylesheet" href="../../css/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#virtual-environments" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="tiangolo&#x27;s boring personal website" class="md-header__button md-logo" aria-label="tiangolo's boring personal website" data-md-component="logo">
+      
+  <img src="../../img/favicon.png" alt="tiangolo's boring personal website">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            tiangolo's boring personal website
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Virtual Environments
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2C5.13 2 2 5.13 2 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7M6 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H6zm13-8h-2l-3.2 9h1.9l.7-2h3.2l.7 2h1.9zm-2.15 5.65L18 15l1.15 3.65z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/tiangolo/tiangolo.com" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/></svg>
+  </div>
+  <div class="md-source__repository">
+    tiangolo/tiangolo.com
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../open-source/" class="md-tabs__link">
+          
+  
+  Open Source
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ideas/" class="md-tabs__link">
+          
+  
+  Ideas
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="tiangolo&#x27;s boring personal website" class="md-nav__button md-logo" aria-label="tiangolo's boring personal website" data-md-component="logo">
+      
+  <img src="../../img/favicon.png" alt="tiangolo's boring personal website">
+
+    </a>
+    tiangolo's boring personal website
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/tiangolo/tiangolo.com" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/></svg>
+  </div>
+  <div class="md-source__repository">
+    tiangolo/tiangolo.com
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../open-source/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Open Source
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Projects
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../open-source/help/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Help
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../open-source/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Contributing
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../github-fastapi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  GitHub FastAPI
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../open-source/management-tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Management Tasks
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../ideas/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Ideas
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ideas/library-agent-skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Library Agent Skills
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Guides
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../environment-variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Environment Variables
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Virtual Environments
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Virtual Environments
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-short-version-use-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        The Short Version: Use <code>uv</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#virtual-environments-underneath" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Virtual Environments Underneath
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Create a Project
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Create a Virtual Environment
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#activate-the-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Activate the Virtual Environment
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#check-the-virtual-environment-is-active" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Check the Virtual Environment is Active
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrade-pip" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Upgrade <code>pip</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-gitignore" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Add <code>.gitignore</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Install Packages
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install Packages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-packages-to-pyprojecttoml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Add Packages to <code>pyproject.toml</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-from-requirementstxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Install from <code>requirements.txt</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-a-package-without-declaring-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Install a Package Without Declaring It
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-your-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Run Your Program
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-your-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Configure Your Editor
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deactivate-the-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Deactivate the Virtual Environment
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ready-to-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Ready to Work
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-virtual-environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Why Virtual Environments
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why Virtual Environments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        The Problem
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-uv-avoids-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        How <code>uv</code> Avoids the Problem
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-are-packages-installed" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Where are Packages Installed
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-virtual-environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        What are Virtual Environments
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-activating-a-virtual-environment-mean" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        What Does Activating a Virtual Environment Mean
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-a-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Checking a Virtual Environment
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-deactivate-a-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Why Deactivate a Virtual Environment
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Alternatives
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Conclusion
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-short-version-use-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        The Short Version: Use <code>uv</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#virtual-environments-underneath" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Virtual Environments Underneath
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Create a Project
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Create a Virtual Environment
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#activate-the-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Activate the Virtual Environment
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#check-the-virtual-environment-is-active" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Check the Virtual Environment is Active
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrade-pip" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Upgrade <code>pip</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-gitignore" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Add <code>.gitignore</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Install Packages
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install Packages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-packages-to-pyprojecttoml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Add Packages to <code>pyproject.toml</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-from-requirementstxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Install from <code>requirements.txt</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-a-package-without-declaring-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Install a Package Without Declaring It
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-your-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Run Your Program
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-your-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Configure Your Editor
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deactivate-the-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Deactivate the Virtual Environment
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ready-to-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Ready to Work
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-virtual-environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Why Virtual Environments
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why Virtual Environments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        The Problem
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-uv-avoids-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        How <code>uv</code> Avoids the Problem
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-are-packages-installed" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Where are Packages Installed
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-virtual-environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        What are Virtual Environments
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-activating-a-virtual-environment-mean" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        What Does Activating a Virtual Environment Mean
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-a-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Checking a Virtual Environment
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-deactivate-a-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Why Deactivate a Virtual Environment
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Alternatives
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Conclusion
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+  
+
+
+<h1 id="virtual-environments">Virtual Environments<a class="headerlink" href="#virtual-environments" title="Permanent link">&para;</a></h1>
+<p>These days, I recommend using <a href="https://github.com/astral-sh/uv">uv</a> to manage Python projects, packages, and virtual environments.</p>
+<p>It can create virtual environments, install packages, install Python versions, run tools, and manage full Python projects.</p>
+<p>Still, it is useful to understand what virtual environments are and how they work underneath.</p>
+<h2 id="the-short-version-use-uv">The Short Version: Use <code>uv</code><a class="headerlink" href="#the-short-version-use-uv" title="Permanent link">&para;</a></h2>
+<p>For a new project, you can let <code>uv</code> create and manage the project, its dependencies, and its virtual environment:</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><span class="gp">$ </span>uv<span class="w"> </span>init<span class="w"> </span>awesome-project<span class="w"> </span>--bare
+</span><span id="__span-0-2"><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>awesome-project
+</span><span id="__span-0-3"><span class="gp">$ </span>uv<span class="w"> </span>add<span class="w"> </span><span class="s2">&quot;fastapi[standard]&quot;</span>
+</span><span id="__span-0-4"><span class="gp">$ </span>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>main.py
+</span></code></pre></div>
+
+</div>
+
+<p>You don't need to create or activate the virtual environment yourself. <code>uv</code> creates a <code>.venv</code> for the project and makes sure it is up to date whenever you use <code>uv run</code>.</p>
+<p>The rest of this guide explains the lower-level concepts and commands. They are useful when debugging, working without <code>uv</code>, or understanding what <code>uv</code> manages for you.</p>
+<h2 id="virtual-environments-underneath">Virtual Environments Underneath<a class="headerlink" href="#virtual-environments-underneath" title="Permanent link">&para;</a></h2>
+<p>When you work on Python projects you should probably use a <strong>virtual environment</strong> (or a similar mechanism) to isolate the packages you install for each project.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you already know about virtual environments, how to create them and use them, you probably don't need to read this. 🤓</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>A <strong>virtual environment</strong> is different from an <strong>environment variable</strong>.</p>
+<p>An <strong>environment variable</strong> is a variable in the system that can be used by programs.</p>
+<p>A <strong>virtual environment</strong> is a directory with some files in it.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page will teach you how to use <strong>virtual environments</strong> and how they work.</p>
+<p>If you are ready to adopt a <strong>tool that manages everything</strong> for you (including installing Python), use <a href="https://github.com/astral-sh/uv">uv</a>.</p>
+</div>
+<h2 id="create-a-project">Create a Project<a class="headerlink" href="#create-a-project" title="Permanent link">&para;</a></h2>
+<p>First, create a directory for your project.</p>
+<p>What I normally do is create a directory named <code>code</code> inside my home directory.</p>
+<p>And inside of that, I create one directory per project.</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><span class="go">// Go to the home directory</span>
+</span><span id="__span-1-2"><span class="gp">$ </span><span class="nb">cd</span>
+</span><span id="__span-1-3"><span class="go">// Create a directory for all your code projects</span>
+</span><span id="__span-1-4"><span class="gp">$ </span>mkdir<span class="w"> </span>code
+</span><span id="__span-1-5"><span class="go">// Enter into that code directory</span>
+</span><span id="__span-1-6"><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>code
+</span><span id="__span-1-7"><span class="go">// Create a directory for this project</span>
+</span><span id="__span-1-8"><span class="gp">$ </span>mkdir<span class="w"> </span>awesome-project
+</span><span id="__span-1-9"><span class="go">// Enter into that project directory</span>
+</span><span id="__span-1-10"><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>awesome-project
+</span></code></pre></div>
+
+</div>
+
+<h2 id="create-a-virtual-environment">Create a Virtual Environment<a class="headerlink" href="#create-a-virtual-environment" title="Permanent link">&para;</a></h2>
+<p>When you start working on a Python project <strong>for the first time</strong>, create a virtual environment <strong><dfn title="there are other options, this is a simple guideline">inside your project</dfn></strong>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Using <code>uv</code> as a project manager</p>
+<p>If you use <code>uv</code> to manage the whole project, you don't need to create the virtual environment yourself.</p>
+<p>Initialize the project and add its dependencies:</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-2-1"><span class="gp">$ </span>uv<span class="w"> </span>init<span class="w"> </span>--bare
+</span><span id="__span-2-2"><span class="gp">$ </span>uv<span class="w"> </span>add<span class="w"> </span>httpx
+</span></code></pre></div>
+
+</div>
+
+<p><code>uv add</code> creates the project's <code>.venv</code> automatically and keeps it in sync with <code>pyproject.toml</code> and <code>uv.lock</code>.</p>
+<p>The commands below are for creating a virtual environment manually.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You only need to do this <strong>once per project</strong>, not every time you work.</p>
+</div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1"><code>venv</code></label><label for="__tabbed_1_2"><code>uv</code></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>To create a virtual environment, you can use the <code>venv</code> module that comes with Python.</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-3-1"><span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+</span></code></pre></div>
+
+</div>
+
+<details>
+<summary>What that command means</summary>
+<ul>
+<li><code>python</code>: use the program called <code>python</code></li>
+<li><code>-m</code>: call a module as a script, we'll tell it which module next</li>
+<li><code>venv</code>: use the module called <code>venv</code> that normally comes installed with Python</li>
+<li><code>.venv</code>: create the virtual environment in the new directory <code>.venv</code></li>
+</ul>
+</details>
+</div>
+<div class="tabbed-block">
+<p>If you have <a href="https://github.com/astral-sh/uv"><code>uv</code></a> installed, you can use it to create a virtual environment.</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-4-1"><span class="gp">$ </span>uv<span class="w"> </span>venv
+</span></code></pre></div>
+
+</div>
+
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>By default, <code>uv</code> will create a virtual environment in a directory called <code>.venv</code>.</p>
+<p>But you could customize it by passing an additional argument with a directory name.</p>
+</div>
+</div>
+</div>
+</div>
+<p>That command creates a new virtual environment in a directory called <code>.venv</code>.</p>
+<details>
+<summary><code>.venv</code> or other name</summary>
+<p>You could create the virtual environment in a different directory, but there's a convention of calling it <code>.venv</code>.</p>
+</details>
+<h2 id="activate-the-virtual-environment">Activate the Virtual Environment<a class="headerlink" href="#activate-the-virtual-environment" title="Permanent link">&para;</a></h2>
+<p>Activate the new virtual environment so that any Python command you run or package you install uses it.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Do this <strong>every time</strong> you start a <strong>new terminal session</strong> to work on the project.</p>
+</div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Linux, macOS</label><label for="__tabbed_2_2">Windows PowerShell</label><label for="__tabbed_2_3">Windows Bash</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-5-1"><span class="gp">$ </span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+</span></code></pre></div>
+
+</div>
+
+</div>
+<div class="tabbed-block">
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-6-1"><span class="gp">$ </span>.venv<span class="se">\S</span>cripts<span class="se">\A</span>ctivate.ps1
+</span></code></pre></div>
+
+</div>
+
+</div>
+<div class="tabbed-block">
+<p>Or if you use Bash for Windows (e.g. <a href="https://gitforwindows.org/">Git Bash</a>):</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-7-1"><span class="gp">$ </span><span class="nb">source</span><span class="w"> </span>.venv/Scripts/activate
+</span></code></pre></div>
+
+</div>
+
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Every time you install a <strong>new package</strong> in that environment, <strong>activate</strong> the environment again.</p>
+<p>This makes sure that if you use a <strong>terminal (<abbr title="command line interface">CLI</abbr>) program</strong> installed by that package, you use the one from your virtual environment and not any other that could be installed globally, probably with a different version than what you need.</p>
+</div>
+<h2 id="check-the-virtual-environment-is-active">Check the Virtual Environment is Active<a class="headerlink" href="#check-the-virtual-environment-is-active" title="Permanent link">&para;</a></h2>
+<p>Check that the virtual environment is active (the previous command worked).</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This is <strong>optional</strong>, but it's a good way to <strong>check</strong> that everything is working as expected and you are using the virtual environment you intended.</p>
+</div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Linux, macOS, Windows Bash</label><label for="__tabbed_3_2">Windows PowerShell</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-8-1"><span class="gp">$ </span>which<span class="w"> </span>python
+</span><span id="__span-8-2">
+</span><span id="__span-8-3"><span class="go">/home/user/code/awesome-project/.venv/bin/python</span>
+</span></code></pre></div>
+
+</div>
+
+<p>If it shows the <code>python</code> binary at <code>.venv/bin/python</code>, inside of your project (in this case <code>awesome-project</code>), then it worked. 🎉</p>
+</div>
+<div class="tabbed-block">
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-9-1"><span class="gp">$ </span>Get-Command<span class="w"> </span>python
+</span><span id="__span-9-2">
+</span><span id="__span-9-3"><span class="go">C:\Users\user\code\awesome-project\.venv\Scripts\python</span>
+</span></code></pre></div>
+
+</div>
+
+<p>If it shows the <code>python</code> binary at <code>.venv\Scripts\python</code>, inside of your project (in this case <code>awesome-project</code>), then it worked. 🎉</p>
+</div>
+</div>
+</div>
+<h2 id="upgrade-pip">Upgrade <code>pip</code><a class="headerlink" href="#upgrade-pip" title="Permanent link">&para;</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you use <a href="https://github.com/astral-sh/uv"><code>uv</code></a>, you would use it to install things instead of <code>pip</code>, so you don't need to upgrade <code>pip</code>. 😎</p>
+</div>
+<p>If you are using <code>pip</code> to install packages (it comes by default with Python), you should <strong>upgrade</strong> it to the latest version.</p>
+<p>Many exotic errors while installing a package are solved by just upgrading <code>pip</code> first.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You would normally do this <strong>once</strong>, right after you create the virtual environment.</p>
+</div>
+<p>Make sure the virtual environment is active (with the command above) and then run:</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-10-1"><span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+</span><span id="__span-10-2">
+</span><span id="__span-10-3"><span class="go">---&gt; 100%</span>
+</span></code></pre></div>
+
+</div>
+
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Sometimes, you might get a <strong><code>No module named pip</code></strong> error when trying to upgrade pip.</p>
+<p>If this happens, install and upgrade pip using the command below:</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-11-1"><span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>ensurepip<span class="w"> </span>--upgrade
+</span><span id="__span-11-2">
+</span><span id="__span-11-3"><span class="go">---&gt; 100%</span>
+</span></code></pre></div>
+
+</div>
+
+<p>This command will install pip if it is not already installed and also ensure that the installed version of pip is at least as recent as the one available in <code>ensurepip</code>.</p>
+</div>
+<h2 id="add-gitignore">Add <code>.gitignore</code><a class="headerlink" href="#add-gitignore" title="Permanent link">&para;</a></h2>
+<p>If you are using <strong>Git</strong> (you should), the files in <code>.venv</code> should be ignored by Git.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><a href="https://github.com/astral-sh/uv"><code>uv</code></a> and Python 3.13 or newer create a <code>.gitignore</code> file in the virtual environment for you, so in most cases you can skip this step. 😎</p>
+</div>
+<p>If you created the virtual environment with an older Python version or another tool, check if <code>.venv/.gitignore</code> exists. If it doesn't, create it once with:</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-12-1"><span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>.venv/.gitignore
+</span></code></pre></div>
+
+</div>
+
+<details>
+<summary>What that command means</summary>
+<ul>
+<li><code>echo "*"</code>: will "print" the text <code>*</code> in the terminal (the next part changes that a bit)</li>
+<li><code>&gt;</code>: anything printed to the terminal by the command to the left of <code>&gt;</code> should not be printed but instead written to the file that goes to the right of <code>&gt;</code></li>
+<li><code>.gitignore</code>: the name of the file where the text should be written</li>
+</ul>
+<p>And <code>*</code> for Git means "everything". So, it will ignore everything in the <code>.venv</code> directory.</p>
+<p>That command will create a file <code>.gitignore</code> with the content:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-13-1">*
+</span></code></pre></div>
+</details>
+<h2 id="install-packages">Install Packages<a class="headerlink" href="#install-packages" title="Permanent link">&para;</a></h2>
+<p>For a project, the recommended approach is to declare its dependencies in a <code>pyproject.toml</code> file and let <a href="https://docs.astral.sh/uv/"><code>uv</code></a> manage them.</p>
+<h3 id="add-packages-to-pyprojecttoml">Add Packages to <code>pyproject.toml</code><a class="headerlink" href="#add-packages-to-pyprojecttoml" title="Permanent link">&para;</a></h3>
+<p>Add the packages your project needs with <code>uv add</code>:</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-14-1"><span class="gp">$ </span>uv<span class="w"> </span>add<span class="w"> </span>httpx<span class="w"> </span>rich
+</span><span id="__span-14-2">
+</span><span id="__span-14-3"><span class="go">---&gt; 100%</span>
+</span></code></pre></div>
+
+</div>
+
+<p>This adds the dependencies to <code>pyproject.toml</code>, updates the <code>uv.lock</code> file with the exact resolved versions, and installs them in the project's virtual environment. You don't need to activate the environment first.</p>
+<details>
+<summary><code>pyproject.toml</code></summary>
+<p>A <code>pyproject.toml</code> with these dependencies could look like:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-15-1"><span class="k">[project]</span>
+</span><span id="__span-15-2"><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;awesome-project&quot;</span>
+</span><span id="__span-15-3"><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.1.0&quot;</span>
+</span><span id="__span-15-4"><span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-15-5"><span class="w">    </span><span class="s2">&quot;httpx&gt;=0.28.1&quot;</span><span class="p">,</span>
+</span><span id="__span-15-6"><span class="w">    </span><span class="s2">&quot;rich&gt;=13.7.1&quot;</span><span class="p">,</span>
+</span><span id="__span-15-7"><span class="p">]</span>
+</span></code></pre></div>
+<p>You normally don't need to edit the dependency list manually because <code>uv add</code> does it for you.</p>
+</details>
+<h3 id="install-from-requirementstxt">Install from <code>requirements.txt</code><a class="headerlink" href="#install-from-requirementstxt" title="Permanent link">&para;</a></h3>
+<p>Some existing projects use a <code>requirements.txt</code> file instead of <code>pyproject.toml</code>. If you are working with one of those projects, you can install its packages after activating the virtual environment.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1"><code>uv</code></label><label for="__tabbed_4_2"><code>pip</code></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-16-1"><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</span><span id="__span-16-2"><span class="go">---&gt; 100%</span>
+</span></code></pre></div>
+
+</div>
+
+</div>
+<div class="tabbed-block">
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-17-1"><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</span><span id="__span-17-2"><span class="go">---&gt; 100%</span>
+</span></code></pre></div>
+
+</div>
+
+</div>
+</div>
+</div>
+<details>
+<summary><code>requirements.txt</code></summary>
+<p>A <code>requirements.txt</code> with some packages could look like:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-18-1">httpx==0.28.1
+</span><span id="__span-18-2">rich==13.7.1
+</span></code></pre></div>
+</details>
+<h3 id="install-a-package-without-declaring-it">Install a Package Without Declaring It<a class="headerlink" href="#install-a-package-without-declaring-it" title="Permanent link">&para;</a></h3>
+<p>For quick experiments in an activated virtual environment, you can install a package without adding it to a project file:</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-19-1"><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>httpx
+</span><span id="__span-19-2"><span class="go">---&gt; 100%</span>
+</span></code></pre></div>
+
+</div>
+
+<p>For a real project, prefer <code>uv add</code> so the dependency is recorded in <code>pyproject.toml</code> and can be installed consistently elsewhere.</p>
+<h2 id="run-your-program">Run Your Program<a class="headerlink" href="#run-your-program" title="Permanent link">&para;</a></h2>
+<p>After you activated the virtual environment, you can run your program, and it will use the Python inside of your virtual environment with the packages you installed there.</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-20-1"><span class="gp">$ </span>python<span class="w"> </span>main.py
+</span><span id="__span-20-2">
+</span><span id="__span-20-3"><span class="go">Hello World</span>
+</span></code></pre></div>
+
+</div>
+
+<h2 id="configure-your-editor">Configure Your Editor<a class="headerlink" href="#configure-your-editor" title="Permanent link">&para;</a></h2>
+<p>You would probably use an editor, make sure you configure it to use the same virtual environment you created (it will probably autodetect it) so that you can get autocompletion and inline errors.</p>
+<p>For example:</p>
+<ul>
+<li><a href="https://code.visualstudio.com/docs/python/environments#_select-and-activate-an-environment">VS Code</a></li>
+<li><a href="https://www.jetbrains.com/help/pycharm/creating-virtual-environment.html">PyCharm</a></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You normally have to do this only <strong>once</strong>, when you create the virtual environment.</p>
+</div>
+<h2 id="deactivate-the-virtual-environment">Deactivate the Virtual Environment<a class="headerlink" href="#deactivate-the-virtual-environment" title="Permanent link">&para;</a></h2>
+<p>Once you are done working on your project you can <strong>deactivate</strong> the virtual environment.</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-21-1"><span class="gp">$ </span>deactivate
+</span></code></pre></div>
+
+</div>
+
+<p>This way, when you run <code>python</code> it won't try to run it from that virtual environment with the packages installed there.</p>
+<h2 id="ready-to-work">Ready to Work<a class="headerlink" href="#ready-to-work" title="Permanent link">&para;</a></h2>
+<p>Now you're ready to start working on your project.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Do you want to understand what all of that above is?</p>
+<p>Continue reading. 👇🤓</p>
+</div>
+<h2 id="why-virtual-environments">Why Virtual Environments<a class="headerlink" href="#why-virtual-environments" title="Permanent link">&para;</a></h2>
+<p>To work with Python projects you need Python and the packages your project depends on.</p>
+<p>The recommended approach is to use <a href="https://docs.astral.sh/uv/"><code>uv</code></a> for both:</p>
+<ul>
+<li>Let <code>uv</code> find or download a suitable Python version automatically.</li>
+<li>Declare and install project packages with <code>uv add</code>.</li>
+</ul>
+<p>You normally don't need to install Python separately. If you want to explicitly install or manage a specific Python version instead of using the default, you can optionally use <code>uv python install</code>.</p>
+<p><code>uv</code> creates and manages a virtual environment for each project, so its packages stay isolated automatically.</p>
+<p>To understand why that isolation matters, consider what can happen when using <code>pip</code> without a virtual environment.</p>
+<p><code>pip</code> installs packages into a Python environment, but it does not create or select a separate environment for each project. If you use it without first creating and activating a virtual environment, it could install packages into your <strong>global Python environment</strong> (the global installation of Python).</p>
+<h3 id="the-problem">The Problem<a class="headerlink" href="#the-problem" title="Permanent link">&para;</a></h3>
+<p>So, what's the problem with installing packages in the global Python environment?</p>
+<p>At some point, you will probably end up writing many different programs that depend on <strong>different packages</strong>. And some of these projects you work on will depend on <strong>different versions</strong> of the same package. 😱</p>
+<p>For example, you could create a project called <code>philosophers-stone</code>. This program depends on another package called <strong><code>harry</code>, using the version <code>1</code></strong>. So, you need to install <code>harry</code>.</p>
+<pre class="mermaid"><code>flowchart LR
+    stone(philosophers-stone) --&gt;|requires| harry-1[harry v1]</code></pre>
+<p>Then, at some point later, you create another project called <code>prisoner-of-azkaban</code>, and this project also depends on <code>harry</code>, but this project needs <strong><code>harry</code> version <code>3</code></strong>.</p>
+<pre class="mermaid"><code>flowchart LR
+    azkaban(prisoner-of-azkaban) --&gt; |requires| harry-3[harry v3]</code></pre>
+<p>But now the problem is, if you install the packages globally (in the global environment) instead of in a local <strong>virtual environment</strong>, you will have to choose which version of <code>harry</code> to install.</p>
+<p>If you used <code>pip</code> globally and wanted to run <code>philosophers-stone</code>, you would need to first install <code>harry</code> version <code>1</code>, for example with:</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-22-1"><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;harry==1&quot;</span>
+</span></code></pre></div>
+
+</div>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Don't run this command globally. It is here to illustrate the problem.</p>
+</div>
+<p>And then you would end up with <code>harry</code> version <code>1</code> installed in your global Python environment.</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph global[global env]
+        harry-1[harry v1]
+    end
+    subgraph stone-project[philosophers-stone project]
+        stone(philosophers-stone) --&gt;|requires| harry-1
+    end</code></pre>
+<p>But then if you want to run <code>prisoner-of-azkaban</code>, you will need to uninstall <code>harry</code> version <code>1</code> and install <code>harry</code> version <code>3</code> (or just installing version <code>3</code> would automatically uninstall version <code>1</code>).</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-23-1"><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;harry==3&quot;</span>
+</span></code></pre></div>
+
+</div>
+
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Again, this is an example of the problem, not the recommended workflow.</p>
+</div>
+<p>And then you would end up with <code>harry</code> version <code>3</code> installed in your global Python environment.</p>
+<p>And if you try to run <code>philosophers-stone</code> again, there's a chance it would <strong>not work</strong> because it needs <code>harry</code> version <code>1</code>.</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph global[global env]
+        harry-1[&lt;strike&gt;harry v1&lt;/strike&gt;]
+        style harry-1 fill:#ccc,stroke-dasharray: 5 5
+        harry-3[harry v3]
+    end
+    subgraph stone-project[philosophers-stone project]
+        stone(philosophers-stone) -.-x|⛔️| harry-1
+    end
+    subgraph azkaban-project[prisoner-of-azkaban project]
+        azkaban(prisoner-of-azkaban) --&gt; |requires| harry-3
+    end</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>It's very common for Python packages to try their best to <strong>avoid breaking changes</strong> in <strong>new versions</strong>, but it's better to be safe, and install newer versions intentionally and when you can run the tests to check everything is working correctly.</p>
+</div>
+<p>Now, imagine that with <strong>many</strong> other <strong>packages</strong> that all your <strong>projects depend on</strong>. That's very difficult to manage. And you would probably end up running some projects with <strong>incompatible versions</strong> of the packages, not knowing why something isn't working.</p>
+<p>Also, depending on your operating system (e.g. Linux, Windows, macOS), it could have come with Python already installed. And in that case it probably had some packages pre-installed with some specific versions <strong>needed by your system</strong>. If you install packages in the global Python environment, you could end up <strong>breaking</strong> some of the programs that came with your operating system.</p>
+<h3 id="how-uv-avoids-the-problem">How <code>uv</code> Avoids the Problem<a class="headerlink" href="#how-uv-avoids-the-problem" title="Permanent link">&para;</a></h3>
+<p>With <code>uv</code>, each project declares its own dependencies and gets its own virtual environment:</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-24-1"><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>philosophers-stone
+</span><span id="__span-24-2"><span class="gp">$ </span>uv<span class="w"> </span>init<span class="w"> </span>--bare
+</span><span id="__span-24-3"><span class="gp">$ </span>uv<span class="w"> </span>add<span class="w"> </span><span class="s2">&quot;harry==1&quot;</span>
+</span><span id="__span-24-4">
+</span><span id="__span-24-5"><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>../prisoner-of-azkaban
+</span><span id="__span-24-6"><span class="gp">$ </span>uv<span class="w"> </span>init<span class="w"> </span>--bare
+</span><span id="__span-24-7"><span class="gp">$ </span>uv<span class="w"> </span>add<span class="w"> </span><span class="s2">&quot;harry==3&quot;</span>
+</span></code></pre></div>
+
+</div>
+
+<p>Now each project has its own <code>.venv</code>, <code>pyproject.toml</code>, and <code>uv.lock</code>. The two versions of <code>harry</code> don't conflict with each other, and <code>uv run</code> uses the correct environment for whichever project you are in.</p>
+<h2 id="where-are-packages-installed">Where are Packages Installed<a class="headerlink" href="#where-are-packages-installed" title="Permanent link">&para;</a></h2>
+<p>When you install Python, it creates some directories with some files on your computer.</p>
+<p>Some of these directories contain all the packages you install.</p>
+<p>As a lower-level example, when you run <code>pip</code> without a virtual environment:</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-25-1"><span class="go">// Don&#39;t run this now, it&#39;s just an example 🤓</span>
+</span><span id="__span-25-2"><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>httpx
+</span><span id="__span-25-3"><span class="go">---&gt; 100%</span>
+</span></code></pre></div>
+
+</div>
+
+<p>That will download a compressed file with the HTTPX code, normally from <a href="https://pypi.org/project/httpx/">PyPI</a>.</p>
+<p>It will also <strong>download</strong> files for other packages that HTTPX depends on.</p>
+<p>Then it will <strong>extract</strong> all those files and put them in a directory on your computer.</p>
+<p>It can put those downloaded and extracted files in a directory that belongs to that Python installation. That's the <strong>global environment</strong>.</p>
+<p>When you use <code>uv add</code> in a project instead, <code>uv</code> installs the packages into that project's <code>.venv</code>, keeping them separate from the global environment and from other projects.</p>
+<h2 id="what-are-virtual-environments">What are Virtual Environments<a class="headerlink" href="#what-are-virtual-environments" title="Permanent link">&para;</a></h2>
+<p>The solution to the problems of having all the packages in the global environment is to use a <strong>virtual environment for each project</strong> you work on.</p>
+<p>A virtual environment is a <strong>directory</strong>, very similar to the global one, where you can install the packages for a project.</p>
+<p>This way, each project will have its own virtual environment (<code>.venv</code> directory) with its own packages.</p>
+<pre class="mermaid"><code>flowchart TB
+    subgraph stone-project[philosophers-stone project]
+        stone(philosophers-stone) ---&gt;|requires| harry-1
+        subgraph venv1[.venv]
+            harry-1[harry v1]
+        end
+    end
+    subgraph azkaban-project[prisoner-of-azkaban project]
+        azkaban(prisoner-of-azkaban) ---&gt;|requires| harry-3
+        subgraph venv2[.venv]
+            harry-3[harry v3]
+        end
+    end
+    stone-project ~~~ azkaban-project</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><code>uv</code> does this automatically for you.</p>
+</div>
+<h2 id="what-does-activating-a-virtual-environment-mean">What Does Activating a Virtual Environment Mean<a class="headerlink" href="#what-does-activating-a-virtual-environment-mean" title="Permanent link">&para;</a></h2>
+<p>When you activate a virtual environment, for example with:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Linux, macOS</label><label for="__tabbed_5_2">Windows PowerShell</label><label for="__tabbed_5_3">Windows Bash</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-26-1"><span class="gp">$ </span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+</span></code></pre></div>
+
+</div>
+
+</div>
+<div class="tabbed-block">
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-27-1"><span class="gp">$ </span>.venv<span class="se">\S</span>cripts<span class="se">\A</span>ctivate.ps1
+</span></code></pre></div>
+
+</div>
+
+</div>
+<div class="tabbed-block">
+<p>Or if you use Bash for Windows (e.g. <a href="https://gitforwindows.org/">Git Bash</a>):</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-28-1"><span class="gp">$ </span><span class="nb">source</span><span class="w"> </span>.venv/Scripts/activate
+</span></code></pre></div>
+
+</div>
+
+</div>
+</div>
+</div>
+<p>That command will create or modify some environment variables that will be available for the next commands.</p>
+<p>One of those variables is the <code>PATH</code> variable.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can learn more about the <code>PATH</code> environment variable in the <a data-preview="" href="../environment-variables/#path-environment-variable">Environment Variables</a> guide.</p>
+</div>
+<p>Activating a virtual environment adds its path <code>.venv/bin</code> (on Linux and macOS) or <code>.venv\Scripts</code> (on Windows) to the <code>PATH</code> environment variable.</p>
+<p>Let's say that before activating the environment, the <code>PATH</code> variable looked like this:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Linux, macOS</label><label for="__tabbed_6_2">Windows</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span id="__span-29-1">/usr/bin:/bin:/usr/sbin:/sbin
+</span></code></pre></div>
+<p>That means that the system would look for programs in:</p>
+<ul>
+<li><code>/usr/bin</code></li>
+<li><code>/bin</code></li>
+<li><code>/usr/sbin</code></li>
+<li><code>/sbin</code></li>
+</ul>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span id="__span-30-1">C:\Windows\System32
+</span></code></pre></div>
+<p>That means that the system would look for programs in:</p>
+<ul>
+<li><code>C:\Windows\System32</code></li>
+</ul>
+</div>
+</div>
+</div>
+<p>After activating the virtual environment, the <code>PATH</code> variable would look something like this:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Linux, macOS</label><label for="__tabbed_7_2">Windows</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span id="__span-31-1">/home/user/code/awesome-project/.venv/bin:/usr/bin:/bin:/usr/sbin:/sbin
+</span></code></pre></div>
+<p>That means that the system will now start looking first for programs in:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-32-1">/home/user/code/awesome-project/.venv/bin
+</span></code></pre></div>
+<p>before looking in the other directories.</p>
+<p>So, when you type <code>python</code> in the terminal, the system will find the Python program in</p>
+<div class="highlight"><pre><span></span><code><span id="__span-33-1">/home/user/code/awesome-project/.venv/bin/python
+</span></code></pre></div>
+<p>and use that one.</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span id="__span-34-1">C:\Users\user\code\awesome-project\.venv\Scripts;C:\Windows\System32
+</span></code></pre></div>
+<p>That means that the system will now start looking first for programs in:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-35-1">C:\Users\user\code\awesome-project\.venv\Scripts
+</span></code></pre></div>
+<p>before looking in the other directories.</p>
+<p>So, when you type <code>python</code> in the terminal, the system will find the Python program in</p>
+<div class="highlight"><pre><span></span><code><span id="__span-36-1">C:\Users\user\code\awesome-project\.venv\Scripts\python
+</span></code></pre></div>
+<p>and use that one.</p>
+</div>
+</div>
+</div>
+<p>An important detail is that it will put the virtual environment path at the <strong>beginning</strong> of the <code>PATH</code> variable. The system will find it <strong>before</strong> finding any other Python available. This way, when you run <code>python</code>, it will use the Python <strong>from the virtual environment</strong> instead of any other <code>python</code> (for example, Python from a global environment).</p>
+<p>Activating a virtual environment also changes a couple of other things, but this is one of the most important things it does.</p>
+<h2 id="checking-a-virtual-environment">Checking a Virtual Environment<a class="headerlink" href="#checking-a-virtual-environment" title="Permanent link">&para;</a></h2>
+<p>When you check if a virtual environment is active, for example with:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1">Linux, macOS, Windows Bash</label><label for="__tabbed_8_2">Windows PowerShell</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-37-1"><span class="gp">$ </span>which<span class="w"> </span>python
+</span><span id="__span-37-2">
+</span><span id="__span-37-3"><span class="go">/home/user/code/awesome-project/.venv/bin/python</span>
+</span></code></pre></div>
+
+</div>
+
+</div>
+<div class="tabbed-block">
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-38-1"><span class="gp">$ </span>Get-Command<span class="w"> </span>python
+</span><span id="__span-38-2">
+</span><span id="__span-38-3"><span class="go">C:\Users\user\code\awesome-project\.venv\Scripts\python</span>
+</span></code></pre></div>
+
+</div>
+
+</div>
+</div>
+</div>
+<p>That means that the <code>python</code> program that will be used is the one <strong>in the virtual environment</strong>.</p>
+<p>You use <code>which</code> in Linux and macOS and <code>Get-Command</code> in Windows PowerShell.</p>
+<p>The way that command works is that it will check the <code>PATH</code> environment variable, going through <strong>each path in order</strong>, looking for the program called <code>python</code>. Once it finds it, it will <strong>show you the path</strong> to that program.</p>
+<p>The most important part is that when you call <code>python</code>, that is the exact "<code>python</code>" that will be executed.</p>
+<p>So, you can confirm if you are in the correct virtual environment.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>It's easy to activate one virtual environment, get one Python, and then <strong>go to another project</strong>.</p>
+<p>And the second project <strong>wouldn't work</strong> because you are using the <strong>incorrect Python</strong>, from a virtual environment for another project.</p>
+<p>It's useful to be able to check what <code>python</code> is being used. 🤓</p>
+</div>
+<h2 id="why-deactivate-a-virtual-environment">Why Deactivate a Virtual Environment<a class="headerlink" href="#why-deactivate-a-virtual-environment" title="Permanent link">&para;</a></h2>
+<p>For example, you could be working on a project <code>philosophers-stone</code>, <strong>activate that virtual environment</strong>, install packages, and work with that environment.</p>
+<p>And then you want to work on <strong>another project</strong> <code>prisoner-of-azkaban</code>.</p>
+<p>You go to that project:</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-39-1"><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>~/code/prisoner-of-azkaban
+</span></code></pre></div>
+
+</div>
+
+<p>If you don't deactivate the virtual environment for <code>philosophers-stone</code>, when you run <code>python</code> in the terminal, it will try to use the Python from <code>philosophers-stone</code>.</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-40-1"><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>~/code/prisoner-of-azkaban
+</span><span id="__span-40-2">
+</span><span id="__span-40-3"><span class="gp">$ </span>python<span class="w"> </span>main.py
+</span><span id="__span-40-4">
+</span><span id="__span-40-5"><span class="go">// Error importing sirius, it&#39;s not installed 😱</span>
+</span><span id="__span-40-6"><span class="go">Traceback (most recent call last):</span>
+</span><span id="__span-40-7"><span class="go">    File &quot;main.py&quot;, line 1, in &lt;module&gt;</span>
+</span><span id="__span-40-8"><span class="go">        import sirius</span>
+</span></code></pre></div>
+
+</div>
+
+<p>But if you deactivate the virtual environment and activate the new one for <code>prisoner-of-azkaban</code>, then when you run <code>python</code>, it will use the Python from the virtual environment in <code>prisoner-of-azkaban</code>.</p>
+<div class="termy">
+
+<div class="highlight"><pre><span></span><code><span id="__span-41-1"><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>~/code/prisoner-of-azkaban
+</span><span id="__span-41-2">
+</span><span id="__span-41-3"><span class="go">// You don&#39;t need to be in the old directory to deactivate, you can do it wherever you are, even after going to the other project 😎</span>
+</span><span id="__span-41-4"><span class="gp">$ </span>deactivate
+</span><span id="__span-41-5">
+</span><span id="__span-41-6"><span class="go">// Activate the virtual environment in prisoner-of-azkaban/.venv 🚀</span>
+</span><span id="__span-41-7"><span class="gp">$ </span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+</span><span id="__span-41-8">
+</span><span id="__span-41-9"><span class="go">// Now when you run python, it will find the package sirius installed in this virtual environment ✨</span>
+</span><span id="__span-41-10"><span class="gp">$ </span>python<span class="w"> </span>main.py
+</span><span id="__span-41-11">
+</span><span id="__span-41-12"><span class="go">I solemnly swear 🐺</span>
+</span></code></pre></div>
+
+</div>
+
+<h2 id="alternatives">Alternatives<a class="headerlink" href="#alternatives" title="Permanent link">&para;</a></h2>
+<p>This is a simple guide to get you started and teach you how everything works <strong>underneath</strong>.</p>
+<p>There are many <strong>alternatives</strong> to managing virtual environments, package dependencies (requirements), and projects.</p>
+<p>Once you are ready and want to use a tool to <strong>manage the entire project</strong>, package dependencies, virtual environments, etc. I would suggest you use <a href="https://github.com/astral-sh/uv">uv</a>.</p>
+<p><code>uv</code> can do a lot of things, it can:</p>
+<ul>
+<li><strong>Install Python</strong> for you, including different versions.</li>
+<li>Manage the <strong>virtual environment</strong> for your projects.</li>
+<li>Install <strong>packages</strong>.</li>
+<li>Manage package <strong>dependencies and versions</strong> for your project.</li>
+<li>Make sure you have an <strong>exact</strong> set of packages and versions to install, including their dependencies, so that you can run your project in production exactly the same way as on your computer while developing. This is called <strong>locking</strong>.</li>
+<li>And many other things.</li>
+</ul>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<p>If you read and understood all this, now <strong>you know much more</strong> about virtual environments than many developers out there. 🤓</p>
+<p>Knowing these details will most probably be useful in the future when you are debugging something that seems complex, because you will know <strong>how it all works underneath</strong>. 😎</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../environment-variables/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Environment Variables">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Environment Variables
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/tiangolo" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/tiangolo" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M357.2 48h70.6L273.6 224.2 455 464H313L201.7 318.6 74.5 464H3.8l164.9-188.5L-5.2 48h145.6l100.5 132.9zm-24.8 373.8h39.1L119.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://bsky.app/profile/tiangolo.com" target="_blank" rel="noopener" title="bsky.app" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4.4 6.7.9 10 1.3M288 227.1c-26.1-50.7-97.1-145.2-163.1-191.8C61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3.5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9C220.6 589.1 265.1 437.8 288 361.1c22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4.4 6.7.9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7C566.9 194 576 75 576 58.4s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8C385.1 81.9 314.1 176.4 288 227.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/tiangolo" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="/cdn-cgi/l/email-protection#54203d353a333b383b143339353d387a373b39" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l208 156a48 48 0 0 0 57.6 0l208-156c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48zM0 196v188c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V196L313.6 344.8c-34.1 25.6-81.1 25.6-115.2 0z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["content.code.annotate","content.code.copy","content.footnote.tooltips","navigation.tabs","content.tabs.link","navigation.tabs.sticky","content.tooltips","navigation.footer","navigation.indexes","navigation.instant","navigation.instant.prefetch","navigation.instant.progress","navigation.path","navigation.top","navigation.tracking","search.highlight","search.share","search.suggest","toc.follow"],"search":"../../assets/javascripts/workers/search.b6b7e04f.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7f30b55.min.js"></script>
+      
+        <script src="../../js/termynal.js"></script>
+      
+        <script src="../../js/custom.js"></script>
+      
+    
+  <!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f07bf92e34044a6a8363f73f2db938cb"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>

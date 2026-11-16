@@ -1,0 +1,284 @@
+
+  starlette-prometheus/starlette_prometheus/middleware.py at master · perdy/starlette-prometheus · GitHub
+      Skip to content
+Navigation Menu
+Sign in
+Products
+Platform
+GitHubRepository hosting, code review, and collaboration
+CopilotAI coding agent for tasks, projects, and automated work
+Build & Ship
+ActionsCI/CD and automation
+Code QualityQuality analysis, fixes, and enforcement
+CodespacesCloud development environments
+Secure
+Code SecurityVulnerability detection and remediation
+Secret ProtectionSecret scanning and leak prevention
+All Features
+Developers
+Learn
+Documentation
+Training
+Certifications
+Build
+Build with Copilot
+Customize Copilot
+Integrations
+Explore
+Trending repos
+GitHub Sponsors
+Developer articles
+Changelog
+ChangelogYour source for the latest features, improvements, and fixes across GitHub products, all in one place.
+Businesses
+By Stage
+Enterprises
+Team
+Startups
+Nonprofits
+By Industry
+Healthcare
+Financial services
+Manufacturing
+Government
+See all industries
+Evaluate GitHub
+Why GitHub
+Customer Stories
+Business insights
+Trust Center
+Add-ons
+GitHub Advanced SecurityEnterprise-grade code security
+Copilot for businessEnterprise-grade AI features
+Premium SupportEnterprise-grade 24/7 support
+Resources
+Learn & Connect
+Documentation
+Resource center
+Blog
+Events & webinars
+Community Forum
+Customer Stories
+Integrations
+Support
+Customer support
+Training
+GitHub Status
+Company
+About
+Partners
+Changelog
+GitHub Universe
+GitHub UniverseThe event for developers, by developers — talks, workshops, and what’s next for GitHub.
+Pricing
+Search/
+Sign inSign up
+Appearance settings
+          You signed in with another tab or window. Reload to refresh your session.
+          You signed out in another tab or window. Reload to refresh your session.
+          You switched accounts on another tab or window. Reload to refresh your session.
+Dismiss alert
+{{ message }}
+perdy
+starlette-prometheus
+Repository navigation
+Code
+Issues12 (12)
+Pull requests5 (5)
+Actions
+Projects
+Security and quality
+Insights
+More items
+FilesExpand file tree
+master
+Breadcrumbs
+starlette-prometheus
+/starlette_prometheus
+/
+middleware.pyCopy path
+Blame
+More file actions
+Blame
+More file actions
+Latest commit
+HistoryHistory
+History
+80 lines (69 loc) · 3.1 KB
+master
+Breadcrumbs
+starlette-prometheus
+/starlette_prometheus
+/
+middleware.pyCopy pathTop
+File metadata and controls
+Code
+Blame
+80 lines (69 loc) · 3.1 KB
+Raw
+Copy raw file
+Download raw file
+Open symbols panel
+Edit and raw actions
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+import time
+from typing import Tuple
+from prometheus_client import Counter, Gauge, Histogram
+from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
+from starlette.requests import Request
+from starlette.responses import Response
+from starlette.routing import Match
+from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
+from starlette.types import ASGIApp
+REQUESTS = Counter(
+    "starlette_requests_total", "Total count of requests by method and path.", ["method", "path_template"]
+)
+RESPONSES = Counter(
+    "starlette_responses_total",
+    "Total count of responses by method, path and status codes.",
+    ["method", "path_template", "status_code"],
+)
+REQUESTS_PROCESSING_TIME = Histogram(
+    "starlette_requests_processing_time_seconds",
+    "Histogram of requests processing time by path (in seconds)",
+    ["method", "path_template"],
+)
+EXCEPTIONS = Counter(
+    "starlette_exceptions_total",
+    "Total count of exceptions raised by path and exception type",
+    ["method", "path_template", "exception_type"],
+)
+REQUESTS_IN_PROGRESS = Gauge(
+    "starlette_requests_in_progress",
+    "Gauge of requests by method and path currently being processed",
+    ["method", "path_template"],
+)
+class PrometheusMiddleware(BaseHTTPMiddleware):
+    def __init__(self, app: ASGIApp, filter_unhandled_paths: bool = False) -> None:
+        super().__init__(app)
+        self.filter_unhandled_paths = filter_unhandled_paths
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
+        method = request.method
+        path_template, is_handled_path = self.get_path_template(request)
+        if self._is_path_filtered(is_handled_path):
+            return await call_next(request)
+        REQUESTS_IN_PROGRESS.labels(method=method, path_template=path_template).inc()
+        REQUESTS.labels(method=method, path_template=path_template).inc()
+        before_time = time.perf_counter()
+        try:
+            response = await call_next(request)
+        except BaseException as e:
+            status_code = HTTP_500_INTERNAL_SERVER_ERROR
+            EXCEPTIONS.labels(method=method, path_template=path_template, exception_type=type(e).__name__).inc()
+            raise e from None
+        else:
+            status_code = response.status_code
+            after_time = time.perf_counter()
+            REQUESTS_PROCESSING_TIME.labels(method=method, path_template=path_template).observe(
+                after_time - before_time
+            )
+        finally:
+            RESPONSES.labels(method=method, path_template=path_template, status_code=status_code).inc()
+            REQUESTS_IN_PROGRESS.labels(method=method, path_template=path_template).dec()
+        return response
+    @staticmethod
+    def get_path_template(request: Request) -> Tuple[str, bool]:
+        for route in request.app.routes:
+            match, child_scope = route.matches(request.scope)
+            if match == Match.FULL:
+                return route.path, True
+        return request.url.path, False
+    def _is_path_filtered(self, is_handled_path: bool) -> bool:
+        return self.filter_unhandled_paths and not is_handled_path
+Footer
+        © 2026 GitHub, Inc.
+Footer navigation
+            Terms
+            Privacy
+              Security
+              Status
+            Community
+            Docs
+            Contact
+      Manage cookies
+        Do not share my personal information
+    You can’t perform that action at this time.

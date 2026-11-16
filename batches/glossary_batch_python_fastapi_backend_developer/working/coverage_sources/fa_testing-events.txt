@@ -1,0 +1,258 @@
+
+        Testing Events: lifespan and startup - shutdown - FastAPI
+          Skip to content
+         Deploy on FastAPI Cloud 🚀
+         Follow @fastapi on X (Twitter) to stay updated
+         Follow FastAPI on LinkedIn to stay updated
+         Subscribe to the FastAPI and friends newsletter 🎉
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+            FastAPI
+              Testing Events: lifespan and startup - shutdown
+              en - English
+              de - Deutsch
+              es - español
+              fr - français
+              hi - हिन्दी
+              ja - 日本語
+              ko - 한국어
+              pt - português
+              ru - русский язык
+              tr - Türkçe
+              uk - українська мова
+              zh - 简体中文
+              zh-hant - 繁體中文
+    Search
+    fastapi/fastapi
+  FastAPI
+  Features
+  Learn
+  Reference
+  Resources
+  About
+  Release Notes
+    FastAPI
+    fastapi/fastapi
+  FastAPI
+  Features
+  Learn
+  Python Types Intro
+  Concurrency and async / await
+  Tutorial - User Guide
+  First Steps
+  Path Parameters
+  Query Parameters
+  Request Body
+  Query Parameters and String Validations
+  Path Parameters and Numeric Validations
+  Query Parameter Models
+  Body - Multiple Parameters
+  Body - Fields
+  Body - Nested Models
+  Declare Request Example Data
+  Extra Data Types
+  Cookie Parameters
+  Header Parameters
+  Cookie Parameter Models
+  Header Parameter Models
+  Response Model - Return Type
+  Extra Models
+  Response Status Code
+  Form Data
+  Form Models
+  Request Files
+  Request Forms and Files
+  Handling Errors
+  Path Operation Configuration
+  JSON Compatible Encoder
+  Body - Updates
+  Dependencies
+  Classes as Dependencies
+  Sub-dependencies
+  Dependencies in path operation decorators
+  Global Dependencies
+  Dependencies with yield
+  Security
+  Security - First Steps
+  Get Current User
+  Simple OAuth2 with Password and Bearer
+  OAuth2 with Password (and hashing), Bearer with JWT tokens
+  Middleware
+  CORS (Cross-Origin Resource Sharing)
+  SQL (Relational) Databases
+  Bigger Applications - Multiple Files
+  Stream JSON Lines
+  Server-Sent Events (SSE)
+  Background Tasks
+  Metadata and Docs URLs
+  Frontend
+  Static Files
+  Testing
+  Debugging
+  Advanced User Guide
+  Stream Data
+  Path Operation Advanced Configuration
+  Additional Status Codes
+  Return a Response Directly
+  Custom Response - HTML, Stream, File, others
+  Additional Responses in OpenAPI
+  Response Cookies
+  Response Headers
+  Response - Change Status Code
+  Advanced Dependencies
+  Advanced Security
+  OAuth2 scopes
+  HTTP Basic Auth
+  Using the Request Directly
+  Using Dataclasses
+  Advanced Middleware
+  Sub Applications - Mounts
+  Behind a Proxy
+  Templates
+  WebSockets
+  Lifespan Events
+  OpenTelemetry
+  Testing WebSockets
+  Testing Events: lifespan and startup - shutdown
+  Testing Dependencies with Overrides
+  Async Tests
+  Settings and Environment Variables
+  OpenAPI Callbacks
+  OpenAPI Webhooks
+  Including WSGI - Flask, Django, others
+  Generating SDKs
+  Advanced Python Types
+  JSON with Bytes as Base64
+  Strict Content-Type Checking
+  FastAPI CLI
+  Editor Support
+  Develop with AI
+  Deployment
+  About FastAPI versions
+  FastAPI Cloud
+  About HTTPS
+  Run a Server Manually
+  Deployments Concepts
+  Deploy FastAPI on Cloud Providers
+  Server Workers - Uvicorn with Workers
+  FastAPI in Containers - Docker
+  How To - Recipes
+  General - How To - Recipes
+  Migrate from Pydantic v1 to Pydantic v2
+  GraphQL
+  Custom Request and APIRoute class
+  Conditional OpenAPI
+  Extending OpenAPI
+  Separate OpenAPI Schemas for Input and Output or Not
+  Custom Docs UI Static Assets (Self-Hosting)
+  Configure Swagger UI
+  Testing a Database
+  Use Old 403 Authentication Error Status Codes
+  Reference
+  FastAPI class
+  Request Parameters
+  Status Codes
+  UploadFile class
+  Exceptions - HTTPException and WebSocketException
+  Dependencies - Depends() and Security()
+  APIRouter class
+  Background Tasks - BackgroundTasks
+  Request class
+  WebSockets
+  HTTPConnection class
+  Response class
+  Custom Response Classes - File, HTML, Redirect, Streaming, etc.
+  Server-Sent Events - EventSourceResponse and ServerSentEvent
+  Middleware
+  OpenAPI
+  OpenAPI docs
+  OpenAPI models
+  Security Tools
+  Encoders - jsonable_encoder
+  Static Files - StaticFiles
+  Templating - Jinja2Templates
+  Test Client - TestClient
+  Resources
+  FastAPI People
+  Help
+  Contributing
+  Translations
+  Full Stack FastAPI Template
+  External Links
+  FastAPI and friends newsletter
+  About
+  Alternatives, Inspiration and Comparisons
+  History, Design and Future
+  Benchmarks
+  Repository Management
+  Release Notes
+    FastAPI
+    Learn
+    Advanced User Guide
+Testing Events: lifespan and startup - shutdown¶
+AI coding agents
+Use the official FastAPI skill for your installed version. Install it from your project directory:
+uvx library-skills
+See Develop with AI.
+When you need lifespan to run in your tests, you can use the TestClient with a with statement:
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+items = {}
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    items["foo"] = {"name": "Fighters"}
+    items["bar"] = {"name": "Tenders"}
+    yield
+    # clean up items
+    items.clear()
+app = FastAPI(lifespan=lifespan)
+@app.get("/items/{item_id}")
+async def read_items(item_id: str):
+    return items[item_id]
+def test_read_items():
+    # Before the lifespan starts, "items" is still empty
+    assert items == {}
+    with TestClient(app) as client:
+        # Inside the "with TestClient" block, the lifespan starts and items added
+        assert items == {"foo": {"name": "Fighters"}, "bar": {"name": "Tenders"}}
+        response = client.get("/items/foo")
+        assert response.status_code == 200
+        assert response.json() == {"name": "Fighters"}
+        # After the requests is done, the items are still there
+        assert items == {"foo": {"name": "Fighters"}, "bar": {"name": "Tenders"}}
+    # The end of the "with TestClient" block simulates terminating the app, so
+    # the lifespan ends and items are cleaned up
+    assert items == {}
+You can read more details about the "Running lifespan in tests in the official Starlette documentation site."
+For the deprecated startup and shutdown events, you can use the TestClient as follows:
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+app = FastAPI()
+items = {}
+@app.on_event("startup")
+async def startup_event():
+    items["foo"] = {"name": "Fighters"}
+    items["bar"] = {"name": "Tenders"}
+@app.get("/items/{item_id}")
+async def read_items(item_id: str):
+    return items[item_id]
+def test_read_items():
+    with TestClient(app) as client:
+        response = client.get("/items/foo")
+        assert response.status_code == 200
+        assert response.json() == {"name": "Fighters"}
+  Back to top
+                Previous
+                Testing WebSockets
+                Next
+                Testing Dependencies with Overrides
+        The FastAPI trademark is owned by @tiangolo and is registered in the US and across other regions
+    Made with
+        Zensical

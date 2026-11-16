@@ -1,0 +1,493 @@
+
+        Body - Nested Models - FastAPI
+          Skip to content
+         Deploy on FastAPI Cloud 🚀
+         Follow @fastapi on X (Twitter) to stay updated
+         Follow FastAPI on LinkedIn to stay updated
+         Subscribe to the FastAPI and friends newsletter 🎉
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+    sponsor
+            FastAPI
+              Body - Nested Models
+              en - English
+              de - Deutsch
+              es - español
+              fr - français
+              hi - हिन्दी
+              ja - 日本語
+              ko - 한국어
+              pt - português
+              ru - русский язык
+              tr - Türkçe
+              uk - українська мова
+              zh - 简体中文
+              zh-hant - 繁體中文
+    Search
+    fastapi/fastapi
+  FastAPI
+  Features
+  Learn
+  Reference
+  Resources
+  About
+  Release Notes
+    FastAPI
+    fastapi/fastapi
+  FastAPI
+  Features
+  Learn
+  Python Types Intro
+  Concurrency and async / await
+  Tutorial - User Guide
+  First Steps
+  Path Parameters
+  Query Parameters
+  Request Body
+  Query Parameters and String Validations
+  Path Parameters and Numeric Validations
+  Query Parameter Models
+  Body - Multiple Parameters
+  Body - Fields
+  Body - Nested Models
+  Body - Nested Models
+      On this page
+        List fields
+        List fields with type parameter
+        Declare a list with a type parameter
+        Set types
+        Nested Models
+        Define a submodel
+        Use the submodel as a type
+        Special types and validation
+        Attributes with lists of submodels
+        Deeply nested models
+        Bodies of pure lists
+        Editor support everywhere
+        Bodies of arbitrary dicts
+        Recap
+  Declare Request Example Data
+  Extra Data Types
+  Cookie Parameters
+  Header Parameters
+  Cookie Parameter Models
+  Header Parameter Models
+  Response Model - Return Type
+  Extra Models
+  Response Status Code
+  Form Data
+  Form Models
+  Request Files
+  Request Forms and Files
+  Handling Errors
+  Path Operation Configuration
+  JSON Compatible Encoder
+  Body - Updates
+  Dependencies
+  Classes as Dependencies
+  Sub-dependencies
+  Dependencies in path operation decorators
+  Global Dependencies
+  Dependencies with yield
+  Security
+  Security - First Steps
+  Get Current User
+  Simple OAuth2 with Password and Bearer
+  OAuth2 with Password (and hashing), Bearer with JWT tokens
+  Middleware
+  CORS (Cross-Origin Resource Sharing)
+  SQL (Relational) Databases
+  Bigger Applications - Multiple Files
+  Stream JSON Lines
+  Server-Sent Events (SSE)
+  Background Tasks
+  Metadata and Docs URLs
+  Frontend
+  Static Files
+  Testing
+  Debugging
+  Advanced User Guide
+  Stream Data
+  Path Operation Advanced Configuration
+  Additional Status Codes
+  Return a Response Directly
+  Custom Response - HTML, Stream, File, others
+  Additional Responses in OpenAPI
+  Response Cookies
+  Response Headers
+  Response - Change Status Code
+  Advanced Dependencies
+  Advanced Security
+  OAuth2 scopes
+  HTTP Basic Auth
+  Using the Request Directly
+  Using Dataclasses
+  Advanced Middleware
+  Sub Applications - Mounts
+  Behind a Proxy
+  Templates
+  WebSockets
+  Lifespan Events
+  OpenTelemetry
+  Testing WebSockets
+  Testing Events: lifespan and startup - shutdown
+  Testing Dependencies with Overrides
+  Async Tests
+  Settings and Environment Variables
+  OpenAPI Callbacks
+  OpenAPI Webhooks
+  Including WSGI - Flask, Django, others
+  Generating SDKs
+  Advanced Python Types
+  JSON with Bytes as Base64
+  Strict Content-Type Checking
+  FastAPI CLI
+  Editor Support
+  Develop with AI
+  Deployment
+  About FastAPI versions
+  FastAPI Cloud
+  About HTTPS
+  Run a Server Manually
+  Deployments Concepts
+  Deploy FastAPI on Cloud Providers
+  Server Workers - Uvicorn with Workers
+  FastAPI in Containers - Docker
+  How To - Recipes
+  General - How To - Recipes
+  Migrate from Pydantic v1 to Pydantic v2
+  GraphQL
+  Custom Request and APIRoute class
+  Conditional OpenAPI
+  Extending OpenAPI
+  Separate OpenAPI Schemas for Input and Output or Not
+  Custom Docs UI Static Assets (Self-Hosting)
+  Configure Swagger UI
+  Testing a Database
+  Use Old 403 Authentication Error Status Codes
+  Reference
+  FastAPI class
+  Request Parameters
+  Status Codes
+  UploadFile class
+  Exceptions - HTTPException and WebSocketException
+  Dependencies - Depends() and Security()
+  APIRouter class
+  Background Tasks - BackgroundTasks
+  Request class
+  WebSockets
+  HTTPConnection class
+  Response class
+  Custom Response Classes - File, HTML, Redirect, Streaming, etc.
+  Server-Sent Events - EventSourceResponse and ServerSentEvent
+  Middleware
+  OpenAPI
+  OpenAPI docs
+  OpenAPI models
+  Security Tools
+  Encoders - jsonable_encoder
+  Static Files - StaticFiles
+  Templating - Jinja2Templates
+  Test Client - TestClient
+  Resources
+  FastAPI People
+  Help
+  Contributing
+  Translations
+  Full Stack FastAPI Template
+  External Links
+  FastAPI and friends newsletter
+  About
+  Alternatives, Inspiration and Comparisons
+  History, Design and Future
+  Benchmarks
+  Repository Management
+  Release Notes
+      On this page
+        List fields
+        List fields with type parameter
+        Declare a list with a type parameter
+        Set types
+        Nested Models
+        Define a submodel
+        Use the submodel as a type
+        Special types and validation
+        Attributes with lists of submodels
+        Deeply nested models
+        Bodies of pure lists
+        Editor support everywhere
+        Bodies of arbitrary dicts
+        Recap
+    FastAPI
+    Learn
+    Tutorial - User Guide
+Body - Nested Models¶
+AI coding agents
+Use the official FastAPI skill for your installed version. Install it from your project directory:
+uvx library-skills
+See Develop with AI.
+With FastAPI, you can define, validate, document, and use arbitrarily deeply nested models (thanks to Pydantic).
+List fields¶
+You can define an attribute to be a subtype. For example, a Python list:
+from fastapi import FastAPI
+from pydantic import BaseModel
+app = FastAPI()
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+    tags: list = []
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item):
+    results = {"item_id": item_id, "item": item}
+    return results
+This will make tags be a list, although it doesn't declare the type of the elements of the list.
+List fields with type parameter¶
+But Python has a specific way to declare lists with internal types, or "type parameters":
+Declare a list with a type parameter¶
+To declare types that have type parameters (internal types), like list, dict, tuple,
+pass the internal type(s) as "type parameters" using square brackets: [ and ]
+my_list: list[str]
+That's all standard Python syntax for type declarations.
+Use that same standard syntax for model attributes with internal types.
+So, in our example, we can make tags be specifically a "list of strings":
+from fastapi import FastAPI
+from pydantic import BaseModel
+app = FastAPI()
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+    tags: list[str] = []
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item):
+    results = {"item_id": item_id, "item": item}
+    return results
+Set types¶
+But then we think about it, and realize that tags shouldn't repeat, they would probably be unique strings.
+And Python has a special data type for sets of unique items, the set.
+Then we can declare tags as a set of strings:
+from fastapi import FastAPI
+from pydantic import BaseModel
+app = FastAPI()
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+    tags: set[str] = set()
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item):
+    results = {"item_id": item_id, "item": item}
+    return results
+With this, even if you receive a request with duplicate data, it will be converted to a set of unique items.
+And whenever you output that data, even if the source had duplicates, it will be output as a set of unique items.
+And it will be annotated / documented accordingly too.
+Nested Models¶
+Each attribute of a Pydantic model has a type.
+But that type can itself be another Pydantic model.
+So, you can declare deeply nested JSON "objects" with specific attribute names, types and validations.
+All that, arbitrarily nested.
+Define a submodel¶
+For example, we can define an Image model:
+from fastapi import FastAPI
+from pydantic import BaseModel
+app = FastAPI()
+class Image(BaseModel):
+    url: str
+    name: str
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+    tags: set[str] = set()
+    image: Image | None = None
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item):
+    results = {"item_id": item_id, "item": item}
+    return results
+Use the submodel as a type¶
+And then we can use it as the type of an attribute:
+from fastapi import FastAPI
+from pydantic import BaseModel
+app = FastAPI()
+class Image(BaseModel):
+    url: str
+    name: str
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+    tags: set[str] = set()
+    image: Image | None = None
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item):
+    results = {"item_id": item_id, "item": item}
+    return results
+This would mean that FastAPI would expect a body similar to:
+{
+    "name": "Foo",
+    "description": "The pretender",
+    "price": 42.0,
+    "tax": 3.2,
+    "tags": ["rock", "metal", "bar"],
+    "image": {
+        "url": "http://example.com/baz.jpg",
+        "name": "The Foo live"
+    }
+}
+Again, doing just that declaration, with FastAPI you get:
+Editor support (completion, etc.), even for nested models
+Data conversion
+Data validation
+Automatic documentation
+Special types and validation¶
+Apart from normal singular types like str, int, float, etc. you can use more complex singular types that inherit from str.
+To see all the options you have, check out Pydantic's Type Overview. You will see some examples in the next chapter.
+For example, as in the Image model we have a url field, we can declare it to be an instance of Pydantic's HttpUrl instead of a str:
+from fastapi import FastAPI
+from pydantic import BaseModel, HttpUrl
+app = FastAPI()
+class Image(BaseModel):
+    url: HttpUrl
+    name: str
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+    tags: set[str] = set()
+    image: Image | None = None
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item):
+    results = {"item_id": item_id, "item": item}
+    return results
+The string will be checked to be a valid URL, and documented in JSON Schema / OpenAPI as such.
+Attributes with lists of submodels¶
+You can also use Pydantic models as subtypes of list, set, etc.:
+from fastapi import FastAPI
+from pydantic import BaseModel, HttpUrl
+app = FastAPI()
+class Image(BaseModel):
+    url: HttpUrl
+    name: str
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+    tags: set[str] = set()
+    images: list[Image] | None = None
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item):
+    results = {"item_id": item_id, "item": item}
+    return results
+This will expect (convert, validate, document, etc.) a JSON body like:
+{
+    "name": "Foo",
+    "description": "The pretender",
+    "price": 42.0,
+    "tax": 3.2,
+    "tags": [
+        "rock",
+        "metal",
+        "bar"
+    ],
+    "images": [
+        {
+            "url": "http://example.com/baz.jpg",
+            "name": "The Foo live"
+        },
+        {
+            "url": "http://example.com/dave.jpg",
+            "name": "The Baz"
+        }
+    ]
+}
+Note
+Notice how the images key now has a list of image objects.
+Deeply nested models¶
+You can define arbitrarily deeply nested models:
+from fastapi import FastAPI
+from pydantic import BaseModel, HttpUrl
+app = FastAPI()
+class Image(BaseModel):
+    url: HttpUrl
+    name: str
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+    tags: set[str] = set()
+    images: list[Image] | None = None
+class Offer(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    items: list[Item]
+@app.post("/offers/")
+async def create_offer(offer: Offer):
+    return offer
+Note
+Notice how Offer has a list of Items, which in turn have an optional list of Images
+Bodies of pure lists¶
+If the top level value of the JSON body you expect is a JSON array (a Python list), you can declare the type in the parameter of the function, the same as in Pydantic models:
+images: list[Image]
+as in:
+from fastapi import FastAPI
+from pydantic import BaseModel, HttpUrl
+app = FastAPI()
+class Image(BaseModel):
+    url: HttpUrl
+    name: str
+@app.post("/images/multiple/")
+async def create_multiple_images(images: list[Image]):
+    return images
+Editor support everywhere¶
+And you get editor support everywhere.
+Even for items inside of lists:
+You couldn't get this kind of editor support if you were working directly with dict instead of Pydantic models.
+But you don't have to worry about them either, incoming dicts are converted automatically and your output is converted automatically to JSON too.
+Bodies of arbitrary dicts¶
+You can also declare a body as a dict with keys of some type and values of some other type.
+This way, you don't have to know beforehand what the valid field/attribute names are (as would be the case with Pydantic models).
+This would be useful if you want to receive keys that you don't already know.
+Another useful case is when you want to have keys of another type (e.g., int).
+That's what we are going to see here.
+In this case, you would accept any dict as long as it has int keys with float values:
+from fastapi import FastAPI
+app = FastAPI()
+@app.post("/index-weights/")
+async def create_index_weights(weights: dict[int, float]):
+    return weights
+Tip
+Keep in mind that JSON only supports str as keys.
+But Pydantic has automatic data conversion.
+This means that, even though your API clients can only send strings as keys, as long as those strings contain pure integers, Pydantic will convert them and validate them.
+And the dict you receive as weights will actually have int keys and float values.
+Recap¶
+With FastAPI you have the maximum flexibility provided by Pydantic models, while keeping your code simple, short and elegant.
+But with all the benefits:
+Editor support (completion everywhere!)
+Data conversion (a.k.a. parsing / serialization)
+Data validation
+Schema documentation
+Automatic docs
+  Back to top
+                Previous
+                Body - Fields
+                Next
+                Declare Request Example Data
+        The FastAPI trademark is owned by @tiangolo and is registered in the US and across other regions
+    Made with
+        Zensical

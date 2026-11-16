@@ -1,0 +1,94 @@
+Labels | client_python
+Skip to main content
+Open NavigationClose Navigation
+client_python
+GitHub
+Toggle Dark/Light/Auto mode
+Toggle Dark/Light/Auto mode
+Toggle Dark/Light/Auto mode
+Back to homepage
+Close Menu Bar
+Open Menu Bar
+Navigation
+Instrumenting
+Counter
+Gauge
+Summary
+Histogram
+Info
+Enum
+Labels
+Exemplars
+Collector
+Custom Collectors
+Exporting
+HTTP/HTTPS
+Twisted
+WSGI
+ASGI
+Flask
+Django
+FastAPI + Gunicorn
+AIOHTTP
+Node exporter textfile collector
+Pushgateway
+Bridges
+Graphite
+Multiprocess Mode
+Parser
+Restricted registry
+Registry
+More
+Releases
+GitHub
+PyPi
+client_python
+/
+Instrumenting
+/
+Labels
+Edit page
+Labels
+Updated on
+Apr 9, 2026
+All metrics can have labels, allowing grouping of related time series.
+See the best practices on naming
+and labels.
+Taking a counter as an example:
+from prometheus_client import Counter
+c = Counter('my_requests_total', 'HTTP Failures', ['method', 'endpoint'])
+c.labels('get', '/').inc()
+c.labels('post', '/submit').inc()
+Labels can also be passed as keyword-arguments:
+from prometheus_client import Counter
+c = Counter('my_requests_total', 'HTTP Failures', ['method', 'endpoint'])
+c.labels(method='get', endpoint='/').inc()
+c.labels(method='post', endpoint='/submit').inc()
+Metrics with labels are not initialized when declared, because the client can’t
+know what values the label can have. It is recommended to initialize the label
+values by calling the .labels() method alone:
+from prometheus_client import Counter
+c = Counter('my_requests_total', 'HTTP Failures', ['method', 'endpoint'])
+c.labels('get', '/')
+c.labels('post', '/submit')
+Removing labelsets
+remove(*labelvalues)
+Remove a specific labelset from the metric. Values must be passed in the same
+order as labelnames were declared.
+c = Counter('my_requests_total', 'HTTP Failures', ['method', 'endpoint'])
+c.labels('get', '/').inc()
+c.remove('get', '/')
+remove_by_labels(labels)
+Remove all labelsets that partially match the given dict of label names and values.
+c.remove_by_labels({'method': 'get'})  # removes all labelsets where method='get'
+clear()
+Remove all labelsets from the metric at once.
+c.clear()
+gdoc_arrow_left_alt
+Enum
+Exemplars
+gdoc_arrow_right_alt
+Built with Hugo and
+Content licensed under
+Apache License 2.0
+Back to top

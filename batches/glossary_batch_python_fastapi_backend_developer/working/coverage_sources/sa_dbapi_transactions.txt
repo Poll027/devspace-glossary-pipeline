@@ -1,0 +1,440 @@
+
+    Working with Transactions and the DBAPI
+ —
+    SQLAlchemy 2.0 Documentation
+        The Database Toolkit for Python
+                    home
+                        features
+Philosophy Statement
+Feature Overview
+Testimonials
+                    news
+                        documentation
+Current Documentation (version 2.1)
+Documentation by Version
+                Version 2.1
+                Version 2.0
+                Version 1.4
+Talks and Tutorials
+Published content overview
+                        community
+Get Support
+Participate
+Develop
+Code of Conduct
+GitHub
+                        download
+Download
+Current Release Series (2.1)
+Maintenance Release (2.0)
+Development Access
+License
+Version Numbering
+Release Status
+        Release: 2.0.57
+            legacy version
+        | Release Date: November 3, 2026
+SQLAlchemy 2.0 Documentation
+SQLAlchemy 2.0 Documentation
+legacy version
+                Home
+                | Download this Documentation
+                  Search terms:
+            SQLAlchemy Unified Tutorial
+Establishing Connectivity - the Engine
+Working with Transactions and the DBAPI¶
+Getting a Connection
+Committing Changes
+Basics of Statement Execution
+Fetching Rows
+Sending Parameters
+Sending Multiple Parameters
+Executing with an ORM Session
+Working with Database Metadata
+Working with Data
+Data Manipulation with the ORM
+Working with ORM Related Objects
+Further Reading
+Project Versions
+2.0.57
+                Search terms:
+        Home
+        | Download this Documentation
+Previous:
+                Establishing Connectivity - the Engine
+Next:
+                Working with Database Metadata
+Up: Home
+SQLAlchemy Unified Tutorial
+On this page:
+Working with Transactions and the DBAPI
+Getting a Connection
+Committing Changes
+Basics of Statement Execution
+Fetching Rows
+Sending Parameters
+Sending Multiple Parameters
+Executing with an ORM Session
+SQLAlchemy 1.4 / 2.0 Tutorial
+This page is part of the SQLAlchemy Unified Tutorial.
+Previous: Establishing Connectivity - the Engine   |   Next: Working with Database Metadata
+Working with Transactions and the DBAPI¶
+With the Engine object ready to go, we can
+dive into the basic operation of an Engine and
+its primary endpoints, the Connection and
+Result. We’ll also introduce the ORM’s facade
+for these objects, known as the Session.
+Note to ORM readers
+When using the ORM, the Engine is managed by the
+Session.  The Session in modern SQLAlchemy
+emphasizes a transactional and SQL execution pattern that is largely
+identical to that of the Connection discussed below,
+so while this subsection is Core-centric, all of the concepts here
+are relevant to ORM use as well and is recommended for all ORM
+learners.   The execution pattern used by the Connection
+will be compared to the Session at the end
+of this section.
+As we have yet to introduce the SQLAlchemy Expression Language that is the
+primary feature of SQLAlchemy, we’ll use a simple construct within
+this package called the text() construct, to write
+SQL statements as textual SQL.   Rest assured that textual SQL is the
+exception rather than the rule in day-to-day SQLAlchemy use, but it’s
+always available.
+Getting a Connection¶
+The purpose of the Engine is to connect to the database by
+providing a Connection object.   When working with the Core
+directly, the Connection object is how all interaction with the
+database is done.   Because the Connection creates an open
+resource against the database, we want to limit our use of this object to a
+specific context. The best way to do that is with a Python context manager, also
+known as the with statement.
+Below we use a textual SQL statement to show “Hello World”.  Textual SQL is
+created with a construct called text() which we’ll discuss
+in more detail later:
+>>> from sqlalchemy import text
+>>> with engine.connect() as conn:
+...     result = conn.execute(text("select 'hello world'"))
+...     print(result.all())
+BEGIN (implicit)
+select 'hello world'
+[...] ()
+[('hello world',)]
+ROLLBACK
+In the example above, the context manager creates a database connection
+and executes the operation in a transaction. The default behavior of
+the Python DBAPI is that a transaction is always in progress; when the
+connection is released, a ROLLBACK is emitted to end the
+transaction.   The transaction is not committed automatically; if we want
+to commit data we need to call Connection.commit()
+as we’ll see in the next section.
+Tip
+“autocommit” mode is available for special cases.  The section
+Setting Transaction Isolation Levels including DBAPI Autocommit discusses this.
+The result of our SELECT was returned in an object called
+Result that will be discussed later. For the moment
+we’ll add that it’s best to use this object within the “connect” block,
+and to not use it outside of the scope of our connection.
+Committing Changes¶
+We just learned that the DBAPI connection doesn’t commit automatically.
+What if we want to commit some data?   We can change our example above to create a
+table, insert some data and then commit the transaction using
+the Connection.commit() method, inside the block
+where we have the Connection object:
+# "commit as you go"
+>>> with engine.connect() as conn:
+...     conn.execute(text("CREATE TABLE some_table (x int, y int)"))
+...     conn.execute(
+...         text("INSERT INTO some_table (x, y) VALUES (:x, :y)"),
+...         [{"x": 1, "y": 1}, {"x": 2, "y": 4}],
+...     )
+...     conn.commit()
+BEGIN (implicit)
+CREATE TABLE some_table (x int, y int)
+[...] ()
+<sqlalchemy.engine.cursor.CursorResult object at 0x...>
+INSERT INTO some_table (x, y) VALUES (?, ?)
+[...] [(1, 1), (2, 4)]
+<sqlalchemy.engine.cursor.CursorResult object at 0x...>
+COMMIT
+Above, we execute two SQL statements, a “CREATE TABLE” statement [1]
+and an “INSERT” statement that’s parameterized (we discuss the parameterization syntax
+later in Sending Multiple Parameters).
+To commit the work we’ve done in our block, we call the
+Connection.commit() method which commits the transaction. After
+this, we can continue to run more SQL statements and call Connection.commit()
+again for those statements.  SQLAlchemy refers to this style as commit as
+you go.
+There’s also another style to commit data. We can declare
+our “connect” block to be a transaction block up front.   To do this, we use the
+Engine.begin() method to get the connection, rather than the
+Engine.connect() method.  This method
+will manage the scope of the Connection and also
+enclose everything inside of a transaction with either a COMMIT at the end
+if the block was successful, or a ROLLBACK if an exception was raised.  This style
+is known as begin once:
+# "begin once"
+>>> with engine.begin() as conn:
+...     conn.execute(
+...         text("INSERT INTO some_table (x, y) VALUES (:x, :y)"),
+...         [{"x": 6, "y": 8}, {"x": 9, "y": 10}],
+...     )
+BEGIN (implicit)
+INSERT INTO some_table (x, y) VALUES (?, ?)
+[...] [(6, 8), (9, 10)]
+<sqlalchemy.engine.cursor.CursorResult object at 0x...>
+COMMIT
+You should mostly prefer the “begin once” style because it’s shorter and shows the
+intention of the entire block up front.   However, in this tutorial we’ll
+use “commit as you go” style as it’s more flexible for demonstration
+purposes.
+What’s “BEGIN (implicit)”?
+You might have noticed the log line “BEGIN (implicit)” at the start of a
+transaction block.  “implicit” here means that SQLAlchemy did not
+actually send any command to the database; it just considers this to be
+the start of the DBAPI’s implicit transaction.   You can register
+event hooks to intercept this event, for example.
+[1]
+DDL refers to the subset of SQL that instructs the database
+to create, modify, or remove schema-level constructs such as tables. DDL
+such as “CREATE TABLE” should be in a transaction block that
+ends with COMMIT, as many databases use transactional DDL such that the
+schema changes don’t take place until the transaction is committed. However,
+as we’ll see later, we usually let SQLAlchemy run DDL sequences for us as
+part of a higher level operation where we don’t generally need to worry
+about the COMMIT.
+Basics of Statement Execution¶
+We have seen a few examples that run SQL statements against a database, making
+use of a method called Connection.execute(), in conjunction with
+an object called text(), and returning an object called
+Result.  In this section we’ll illustrate more closely the
+mechanics and interactions of these components.
+Most of the content in this section applies equally well to modern ORM
+use when using the Session.execute() method, which works
+very similarly to that of Connection.execute(), including that
+ORM result rows are delivered using the same Result
+interface used by Core.
+Fetching Rows¶
+We’ll first illustrate the Result object more closely by
+making use of the rows we’ve inserted previously, running a textual SELECT
+statement on the table we’ve created:
+>>> with engine.connect() as conn:
+...     result = conn.execute(text("SELECT x, y FROM some_table"))
+...     for row in result:
+...         print(f"x: {row.x}  y: {row.y}")
+BEGIN (implicit)
+SELECT x, y FROM some_table
+[...] ()
+x: 1  y: 1
+x: 2  y: 4
+x: 6  y: 8
+x: 9  y: 10
+ROLLBACK
+Above, the “SELECT” string we executed selected all rows from our table.
+The object returned is called Result and represents an
+iterable object of result rows.
+Result has lots of methods for
+fetching and transforming rows, such as the Result.all()
+method illustrated previously, which returns a list of all Row
+objects.   It also implements the Python iterator interface so that we can
+iterate over the collection of Row objects directly.
+The Row objects themselves are intended to act like Python
+named tuples.
+Below we illustrate a variety of ways to access rows.
+Tuple Assignment - This is the most Python-idiomatic style, which is to assign variables
+to each row positionally as they are received:
+result = conn.execute(text("select x, y from some_table"))
+for x, y in result:
+    ...
+Integer Index - Tuples are Python sequences, so regular integer access is available too:
+result = conn.execute(text("select x, y from some_table"))
+for row in result:
+    x = row[0]
+Attribute Name - As these are Python named tuples, the tuples have dynamic attribute names
+matching the names of each column.  These names are normally the names that the
+SQL statement assigns to the columns in each row.  While they are usually
+fairly predictable and can also be controlled by labels, in less defined cases
+they may be subject to database-specific behaviors:
+result = conn.execute(text("select x, y from some_table"))
+for row in result:
+    y = row.y
+    # illustrate use with Python f-strings
+    print(f"Row: {row.x} {y}")
+Mapping Access - To receive rows as Python mapping objects, which is
+essentially a read-only version of Python’s interface to the common dict
+object, the Result may be transformed into a
+MappingResult object using the
+Result.mappings() modifier; this is a result object that yields
+dictionary-like RowMapping objects rather than
+Row objects:
+result = conn.execute(text("select x, y from some_table"))
+for dict_row in result.mappings():
+    x = dict_row["x"]
+    y = dict_row["y"]
+Sending Parameters¶
+SQL statements are usually accompanied by data that is to be passed with the
+statement itself, as we saw in the INSERT example previously. The
+Connection.execute() method therefore also accepts parameters,
+which are known as bound parameters.  A rudimentary example
+might be if we wanted to limit our SELECT statement only to rows that meet a
+certain criteria, such as rows where the “y” value were greater than a certain
+value that is passed in to a function.
+In order to achieve this such that the SQL statement can remain fixed and
+that the driver can properly sanitize the value, we add a WHERE criteria to
+our statement that names a new parameter called “y”; the text()
+construct accepts these using a colon format “:y”.   The actual value for
+“:y” is then passed as the second argument to
+Connection.execute() in the form of a dictionary:
+>>> with engine.connect() as conn:
+...     result = conn.execute(text("SELECT x, y FROM some_table WHERE y > :y"), {"y": 2})
+...     for row in result:
+...         print(f"x: {row.x}  y: {row.y}")
+BEGIN (implicit)
+SELECT x, y FROM some_table WHERE y > ?
+[...] (2,)
+x: 2  y: 4
+x: 6  y: 8
+x: 9  y: 10
+ROLLBACK
+In the logged SQL output, we can see that the bound parameter :y was
+converted into a question mark when it was sent to the SQLite database.
+This is because the SQLite database driver uses a format called “qmark parameter style”,
+which is one of six different formats allowed by the DBAPI specification.
+SQLAlchemy abstracts these formats into just one, which is the “named” format
+using a colon.
+Always use bound parameters
+As mentioned at the beginning of this section, textual SQL is not the usual
+way we work with SQLAlchemy.  However, when using textual SQL, a Python
+literal value, even non-strings like integers or dates, should never be
+stringified into SQL string directly; a parameter should always be
+used.  This is most famously known as how to avoid SQL injection attacks
+when the data is untrusted.  However it also allows the SQLAlchemy dialects
+and/or DBAPI to correctly handle the incoming input for the backend.
+Outside of plain textual SQL use cases, SQLAlchemy’s Core Expression API
+otherwise ensures that Python literal values are passed as bound parameters
+where appropriate.
+Sending Multiple Parameters¶
+In the example at Committing Changes, we executed an INSERT
+statement where it appeared that we were able to INSERT multiple rows into the
+database at once.  For DML statements such as “INSERT”,
+“UPDATE” and “DELETE”, we can send multiple parameter sets to the
+Connection.execute() method by passing a list of dictionaries
+instead of a single dictionary, which indicates that the single SQL statement
+should be invoked multiple times, once for each parameter set.  This style
+of execution is known as executemany:
+>>> with engine.connect() as conn:
+...     conn.execute(
+...         text("INSERT INTO some_table (x, y) VALUES (:x, :y)"),
+...         [{"x": 11, "y": 12}, {"x": 13, "y": 14}],
+...     )
+...     conn.commit()
+BEGIN (implicit)
+INSERT INTO some_table (x, y) VALUES (?, ?)
+[...] [(11, 12), (13, 14)]
+<sqlalchemy.engine.cursor.CursorResult object at 0x...>
+COMMIT
+The above operation is equivalent to running the given INSERT statement once
+for each parameter set, except that the operation will be optimized for
+better performance across many rows.
+A key behavioral difference between “execute” and “executemany” is that the
+latter doesn’t support returning of result rows, even if the statement includes
+the RETURNING clause. The one exception to this is when using a Core
+insert() construct, introduced later in this tutorial at
+Using INSERT Statements, which also indicates RETURNING using the
+Insert.returning() method.  In that case, SQLAlchemy makes use of
+special logic to reorganize the INSERT statement so that it can be invoked
+for many rows while still supporting RETURNING.
+See also
+executemany - in the Glossary, describes the
+DBAPI-level
+cursor.executemany()
+method that’s used for most “executemany” executions.
+“Insert Many Values” Behavior for INSERT statements - in Working with Engines and Connections, describes
+the specialized logic used by Insert.returning() to deliver
+result sets with “executemany” executions.
+Executing with an ORM Session¶
+As mentioned previously, most of the patterns and examples above apply to
+use with the ORM as well, so here we will introduce this usage so that
+as the tutorial proceeds, we will be able to illustrate each pattern in
+terms of Core and ORM use together.
+The fundamental transactional / database interactive object when using the
+ORM is called the Session.  In modern SQLAlchemy, this object
+is used in a manner very similar to that of the Connection,
+and in fact as the Session is used, it refers to a
+Connection internally which it uses to emit SQL.
+When the Session is used with non-ORM constructs, it
+passes through the SQL statements we give it and does not generally do things
+much differently from how the Connection does directly, so
+we can illustrate it here in terms of the simple textual SQL
+operations we’ve already learned.
+The Session has a few different creational patterns, but
+here we will illustrate the most basic one that tracks exactly with how
+the Connection is used which is to construct it within
+a context manager:
+>>> from sqlalchemy.orm import Session
+>>> stmt = text("SELECT x, y FROM some_table WHERE y > :y ORDER BY x, y")
+>>> with Session(engine) as session:
+...     result = session.execute(stmt, {"y": 6})
+...     for row in result:
+...         print(f"x: {row.x}  y: {row.y}")
+BEGIN (implicit)
+SELECT x, y FROM some_table WHERE y > ? ORDER BY x, y
+[...] (6,)
+x: 6  y: 8
+x: 9  y: 10
+x: 11  y: 12
+x: 13  y: 14
+ROLLBACK
+The example above can be compared to the example in the preceding section
+in Sending Parameters - we directly replace the call to
+with engine.connect() as conn with with Session(engine) as session,
+and then make use of the Session.execute() method just like we
+do with the Connection.execute() method.
+Also, like the Connection, the Session features
+“commit as you go” behavior using the Session.commit() method,
+illustrated below using a textual UPDATE statement to alter some of
+our data:
+>>> with Session(engine) as session:
+...     result = session.execute(
+...         text("UPDATE some_table SET y=:y WHERE x=:x"),
+...         [{"x": 9, "y": 11}, {"x": 13, "y": 15}],
+...     )
+...     session.commit()
+BEGIN (implicit)
+UPDATE some_table SET y=? WHERE x=?
+[...] [(11, 9), (15, 13)]
+COMMIT
+Above, we invoked an UPDATE statement using the bound-parameter, “executemany”
+style of execution introduced at Sending Multiple Parameters, ending
+the block with a “commit as you go” commit.
+Tip
+The Session doesn’t actually hold onto the
+Connection object after it ends the transaction.  It
+gets a new Connection from the Engine
+the next time it needs to execute SQL against the database.
+The Session obviously has a lot more tricks up its sleeve
+than that, however understanding that it has a Session.execute()
+method that’s used the same way as Connection.execute() will
+get us started with the examples that follow later.
+See also
+Basics of Using a Session - presents basic creational and usage patterns with
+the Session object.
+SQLAlchemy 1.4 / 2.0 Tutorial
+Next Tutorial Section: Working with Database Metadata
+        Previous:
+        Establishing Connectivity - the Engine
+        Next:
+        Working with Database Metadata
+        © Copyright 2007-2026, the SQLAlchemy authors and contributors.
+flambé! the dragon and The Alchemist image designs created and generously donated by Rotem Yaari.
+        Created using Sphinx 9.1.1.
+    Documentation last generated: Sun 15 Nov 2026 06:06:32 PM  EST
+Website content copyright © by SQLAlchemy authors and contributors.
+            SQLAlchemy and its documentation are licensed under the MIT license.
+SQLAlchemy is a trademark of Michael Bayer.  mike(&)zzzcomputing.com
+        All rights reserved. 
+Website generation by
+        zeekofile, with
+        huge thanks to the Blogofile
+        project.
+        Mastodon
+        Mastodon

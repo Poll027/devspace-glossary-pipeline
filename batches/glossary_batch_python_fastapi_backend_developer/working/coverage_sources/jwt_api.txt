@@ -1,0 +1,727 @@
+
+  API Reference — PyJWT 2.15.1 documentation
+            PyJWT
+Installation
+Usage Examples
+Frequently Asked Questions
+Digital Signature Algorithms
+API Reference
+encode()
+decode()
+decode_complete()
+PyJWT
+PyJWT.decode()
+PyJWT.decode_complete()
+PyJWT.encode()
+PyJWK
+PyJWK.algorithm_name
+PyJWK.Algorithm
+PyJWK.from_dict()
+PyJWK.from_json()
+PyJWK.key_id
+PyJWK.key_type
+PyJWK.public_key_use
+PyJWKSet
+PyJWKClient
+PyJWKClient.fetch_data()
+PyJWKClient.get_jwk_set()
+PyJWKClient.get_signing_key()
+PyJWKClient.get_signing_key_from_jwt()
+PyJWKClient.get_signing_keys()
+PyJWKClient.match_kid()
+PyJWS
+PyJWS.get_algorithm_by_name()
+PyJWS.get_algorithms()
+PyJWS.get_unverified_header()
+PyJWS.register_algorithm()
+PyJWS.unregister_algorithm()
+Algorithms
+Algorithm
+Algorithm.check_crypto_key_type()
+Algorithm.check_key_length()
+Algorithm.compute_hash_digest()
+Algorithm.from_jwk()
+Algorithm.prepare_key()
+Algorithm.sign()
+Algorithm.to_jwk()
+Algorithm.verify()
+AllowedPrivateKeys
+AllowedPublicKeys
+Types
+SigOptions
+SigOptions.enforce_minimum_key_length
+SigOptions.verify_signature
+Options
+Options.enforce_minimum_key_length
+Options.require
+Options.strict_aud
+Options.verify_aud
+Options.verify_exp
+Options.verify_iat
+Options.verify_iss
+Options.verify_jti
+Options.verify_nbf
+Options.verify_signature
+Options.verify_sub
+Warnings
+InsecureKeyLengthWarning
+RemovedInPyjwt3Warning
+Exceptions
+DecodeError
+DecodeError.add_note()
+DecodeError.with_traceback()
+ExpiredSignatureError
+ExpiredSignatureError.add_note()
+ExpiredSignatureError.with_traceback()
+ImmatureSignatureError
+ImmatureSignatureError.add_note()
+ImmatureSignatureError.with_traceback()
+InvalidAlgorithmError
+InvalidAlgorithmError.add_note()
+InvalidAlgorithmError.with_traceback()
+InvalidAudienceError
+InvalidAudienceError.add_note()
+InvalidAudienceError.with_traceback()
+InvalidIssuedAtError
+InvalidIssuedAtError.add_note()
+InvalidIssuedAtError.with_traceback()
+InvalidIssuerError
+InvalidIssuerError.add_note()
+InvalidIssuerError.with_traceback()
+InvalidJTIError
+InvalidJTIError.add_note()
+InvalidJTIError.with_traceback()
+InvalidKeyError
+InvalidKeyError.add_note()
+InvalidKeyError.with_traceback()
+InvalidSignatureError
+InvalidSignatureError.add_note()
+InvalidSignatureError.with_traceback()
+InvalidSubjectError
+InvalidSubjectError.add_note()
+InvalidSubjectError.with_traceback()
+InvalidTokenError
+InvalidTokenError.add_note()
+InvalidTokenError.with_traceback()
+MissingCryptographyError
+MissingCryptographyError.add_note()
+MissingCryptographyError.with_traceback()
+MissingRequiredClaimError
+MissingRequiredClaimError.add_note()
+MissingRequiredClaimError.with_traceback()
+PyJWKClientConnectionError
+PyJWKClientConnectionError.add_note()
+PyJWKClientConnectionError.with_traceback()
+PyJWKClientError
+PyJWKClientError.add_note()
+PyJWKClientError.with_traceback()
+PyJWKError
+PyJWKError.add_note()
+PyJWKError.with_traceback()
+PyJWKSetError
+PyJWKSetError.add_note()
+PyJWKSetError.with_traceback()
+PyJWTError
+PyJWTError.add_note()
+PyJWTError.with_traceback()
+Changelog
+          PyJWT
+API Reference
+             View page source
+API Reference
+jwt.encode(payload, key, algorithm='HS256', headers=None, json_encoder=None) → str
+Encode the payload as JSON Web Token.
+Parameters:
+payload (dict[str, Any]) – JWT claims, e.g. dict(iss=..., aud=..., sub=...)
+key (str or bytes or PyJWK or jwt.algorithms.AllowedPrivateKeys) – 
+a key suitable for the chosen algorithm:
+for asymmetric algorithms: PEM-formatted private key, a multiline string
+for symmetric algorithms: plain string, sufficiently long for security
+algorithm (str or None) – algorithm to sign the token with, e.g. "ES256".
+If headers includes alg, it will be preferred to this parameter.
+If key is a PyJWK object, by default the key algorithm will be used.
+headers (dict[str, Any] or None) – additional JWT header fields, e.g. dict(kid="my-key-id").
+json_encoder (json.JSONEncoder or None) – custom JSON encoder for payload and headers
+Return type:
+str
+Returns:
+a JSON Web Token
+Raises:
+TypeError – if payload is not a dict
+jwt.decode(jwt, key='', algorithms=None, options=None, audience=None, issuer=None, leeway=0) → dict[str, Any]
+Verify the jwt token signature and return the token claims.
+Parameters:
+jwt (str or bytes) – the token to be decoded
+key (str or bytes or PyJWK or jwt.algorithms.AllowedPublicKeys) – the key suitable for the allowed algorithm
+algorithms (Sequence[str] or None) – 
+allowed algorithms, e.g. ["ES256"]
+If key is a PyJWK object, allowed algorithms will default to the key algorithm.
+Warning
+Do not compute the algorithms parameter based on
+the alg from the token itself, or on any other data
+that an attacker may be able to influence, as that might
+expose you to various vulnerabilities (see RFC 8725 §2.1). Instead,
+either hard-code a fixed value for algorithms, or
+configure it in the same place you configure the
+key. Make sure not to mix symmetric and asymmetric
+algorithms that interpret the key in different ways
+(e.g. HS* and RS*).
+options (jwt.types.Options) – extended decoding and validation options
+Refer to jwt.types.Options for more information.
+audience (str or Iterable[str] or None) – optional, the value for verify_aud check
+subject (str or None) – optional, the value for verify_sub check
+issuer (str or Container[str] or None) – optional, the value for verify_iss check
+leeway (float or datetime.timedelta) – a time margin in seconds for the expiration check
+Return type:
+dict[str, Any]
+Returns:
+the JWT claims
+jwt.decode_complete(jwt, key='', algorithms=None, options=None, verify=None, detached_payload=None, audience=None, issuer=None, subject=None, leeway=0) → dict[str, Any]
+Identical to jwt.decode except for return value which is a dictionary containing the token header (JOSE Header),
+the token payload (JWT Payload), and token signature (JWT Signature) on the keys “header”, “payload”,
+and “signature” respectively.
+Parameters:
+jwt (str or bytes) – the token to be decoded
+key (str or bytes or PyJWK or jwt.algorithms.AllowedPublicKeys) – the key suitable for the allowed algorithm
+algorithms (Sequence[str] or None) – 
+allowed algorithms, e.g. ["ES256"]
+Warning
+Do not compute the algorithms parameter based on
+the alg from the token itself, or on any other data
+that an attacker may be able to influence, as that might
+expose you to various vulnerabilities (see RFC 8725 §2.1). Instead,
+either hard-code a fixed value for algorithms, or
+configure it in the same place you configure the
+key. Make sure not to mix symmetric and asymmetric
+algorithms that interpret the key in different ways
+(e.g. HS* and RS*).
+options (jwt.types.Options) – extended decoding and validation options
+Refer to jwt.types.Options for more information.
+audience (str or Iterable[str] or None) – optional, the value for verify_aud check
+issuer (str or Container[str] or None) – optional, the value for verify_iss check
+leeway (float or datetime.timedelta) – a time margin in seconds for the expiration check
+Return type:
+dict[str, Any]
+Returns:
+Decoded JWT with the JOSE Header on the key header, the JWS
+Payload on the key payload, and the JWS Signature on the key signature.
+class jwt.PyJWT(options: Options | None = None)
+decode(jwt: str | bytes, key: RSAPublicKey | EllipticCurvePublicKey | Ed25519PublicKey | Ed448PublicKey | PyJWK | str | bytes = '', algorithms: Sequence[str] | None = None, options: Options | None = None, verify: bool | None = None, detached_payload: bytes | None = None, audience: str | Iterable[str] | None = None, subject: str | None = None, issuer: str | Container[str] | None = None, leeway: float | timedelta = 0, **kwargs: Any) → dict[str, Any]
+Verify the jwt token signature and return the token claims.
+Parameters:
+jwt (str or bytes) – the token to be decoded
+key (str or bytes or PyJWK or jwt.algorithms.AllowedPublicKeys) – the key suitable for the allowed algorithm
+algorithms (Sequence[str] or None) – 
+allowed algorithms, e.g. ["ES256"]
+If key is a PyJWK object, allowed algorithms will default to the key algorithm.
+Warning
+Do not compute the algorithms parameter based on
+the alg from the token itself, or on any other data
+that an attacker may be able to influence, as that might
+expose you to various vulnerabilities (see RFC 8725 §2.1). Instead,
+either hard-code a fixed value for algorithms, or
+configure it in the same place you configure the
+key. Make sure not to mix symmetric and asymmetric
+algorithms that interpret the key in different ways
+(e.g. HS* and RS*).
+options (jwt.types.Options) – extended decoding and validation options
+Refer to jwt.types.Options for more information.
+audience (str or Iterable[str] or None) – optional, the value for verify_aud check
+subject (str or None) – optional, the value for verify_sub check
+issuer (str or Container[str] or None) – optional, the value for verify_iss check
+leeway (float or datetime.timedelta) – a time margin in seconds for the expiration check
+Return type:
+dict[str, Any]
+Returns:
+the JWT claims
+decode_complete(jwt: str | bytes, key: RSAPublicKey | EllipticCurvePublicKey | Ed25519PublicKey | Ed448PublicKey | PyJWK | str | bytes = '', algorithms: Sequence[str] | None = None, options: Options | None = None, verify: bool | None = None, detached_payload: bytes | None = None, audience: str | Iterable[str] | None = None, issuer: str | Container[str] | None = None, subject: str | None = None, leeway: float | timedelta = 0, **kwargs: Any) → dict[str, Any]
+Identical to jwt.decode except for return value which is a dictionary containing the token header (JOSE Header),
+the token payload (JWT Payload), and token signature (JWT Signature) on the keys “header”, “payload”,
+and “signature” respectively.
+Parameters:
+jwt (str or bytes) – the token to be decoded
+key (str or bytes or PyJWK or jwt.algorithms.AllowedPublicKeys) – the key suitable for the allowed algorithm
+algorithms (Sequence[str] or None) – 
+allowed algorithms, e.g. ["ES256"]
+Warning
+Do not compute the algorithms parameter based on
+the alg from the token itself, or on any other data
+that an attacker may be able to influence, as that might
+expose you to various vulnerabilities (see RFC 8725 §2.1). Instead,
+either hard-code a fixed value for algorithms, or
+configure it in the same place you configure the
+key. Make sure not to mix symmetric and asymmetric
+algorithms that interpret the key in different ways
+(e.g. HS* and RS*).
+options (jwt.types.Options) – extended decoding and validation options
+Refer to jwt.types.Options for more information.
+audience (str or Iterable[str] or None) – optional, the value for verify_aud check
+issuer (str or Container[str] or None) – optional, the value for verify_iss check
+leeway (float or datetime.timedelta) – a time margin in seconds for the expiration check
+Return type:
+dict[str, Any]
+Returns:
+Decoded JWT with the JOSE Header on the key header, the JWS
+Payload on the key payload, and the JWS Signature on the key signature.
+encode(payload: dict[str, ~typing.Any], key: ~cryptography.hazmat.primitives.asymmetric.rsa.RSAPrivateKey | ~cryptography.hazmat.primitives.asymmetric.ec.EllipticCurvePrivateKey | ~cryptography.hazmat.primitives.asymmetric.ed25519.Ed25519PrivateKey | ~cryptography.hazmat.primitives.asymmetric.ed448.Ed448PrivateKey | ~jwt.api_jwk.PyJWK | str | bytes, algorithm: str | None = <object object>, headers: dict[str, ~typing.Any] | None = None, json_encoder: type[~json.JSONEncoder] | None = None, sort_headers: bool = True) → str
+Encode the payload as JSON Web Token.
+Parameters:
+payload (dict[str, Any]) – JWT claims, e.g. dict(iss=..., aud=..., sub=...)
+key (str or bytes or PyJWK or jwt.algorithms.AllowedPrivateKeys) – 
+a key suitable for the chosen algorithm:
+for asymmetric algorithms: PEM-formatted private key, a multiline string
+for symmetric algorithms: plain string, sufficiently long for security
+algorithm (str or None) – algorithm to sign the token with, e.g. "ES256".
+If headers includes alg, it will be preferred to this parameter.
+If key is a PyJWK object, by default the key algorithm will be used.
+headers (dict[str, Any] or None) – additional JWT header fields, e.g. dict(kid="my-key-id").
+json_encoder (json.JSONEncoder or None) – custom JSON encoder for payload and headers
+Return type:
+str
+Returns:
+a JSON Web Token
+Raises:
+TypeError – if payload is not a dict
+class jwt.PyJWK(jwk_data: dict[str, Any], algorithm: str | None = None)
+A class that represents a JSON Web Key.
+Parameters:
+jwk_data (dict[str, Any]) – The decoded JWK data.
+algorithm (str or None) – The key algorithm. If not specified, the key’s alg will be used.
+Raises:
+InvalidKeyError – If the key type (kty) is not found or unsupported, or if the curve (crv) is not found or unsupported.
+MissingCryptographyError – If the algorithm requires cryptography to be installed and it is not available.
+PyJWKError – If unable to find an algorithm for the key.
+property algorithm_name
+Type:
+str
+The name of the algorithm used by the key.
+property Algorithm
+The Algorithm class associated with the key.
+static from_dict(obj: dict[str, Any], algorithm: str | None = None) → PyJWK
+Creates a PyJWK object from a JSON-like dictionary.
+Parameters:
+obj (dict[str, Any]) – The JWK data, as a dictionary
+algorithm (str or None) – The key algorithm. If not specified, the key’s alg will be used.
+Return type:
+PyJWK
+static from_json(data: str, algorithm: str | None = None) → PyJWK
+Create a PyJWK object from a JSON string.
+Implicitly calls PyJWK.from_dict().
+Parameters:
+data (str) – The JWK data, as a JSON string.
+algorithm (str or None) – The key algorithm.  If not specific, the key’s alg will be used.
+Return type:
+PyJWK
+property key_id: str | None
+The kid property from the JWK.
+Return type:
+str or None
+property key_type: str | None
+The kty property from the JWK.
+Return type:
+str or None
+property public_key_use: str | None
+The use property from the JWK.
+Return type:
+str or None
+class jwt.PyJWKSet(keys: list[dict[str, Any]])
+class jwt.PyJWKClient(uri: str, cache_keys: bool = False, max_cached_keys: int = 16, cache_jwk_set: bool = True, lifespan: float = 300, headers: dict[str, Any] | None = None, timeout: float = 30, ssl_context: SSLContext | None = None, cooldown_duration: float = 30)
+A client for retrieving signing keys from a JWKS endpoint.
+PyJWKClient uses a two-tier caching system to avoid unnecessary
+network requests:
+Tier 1 — JWK Set cache (enabled by default):
+Caches the entire JSON Web Key Set response from the endpoint.
+Controlled by:
+cache_jwk_set: Set to True (the default) to enable this
+cache. When enabled, the JWK Set is fetched from the network only
+when the cache is empty or expired.
+lifespan: Time in seconds before the cached JWK Set expires.
+Defaults to 300 (5 minutes). Must be greater than 0.
+Unknown key IDs can trigger one forced refresh after the cooldown
+period configured by cooldown_duration. Every successful fetch
+starts this cooldown, including the initial fetch and cache-expiry
+fetches. A newly rotated key may therefore wait for the cooldown
+period before it is fetched; set cooldown_duration to 0 to
+disable this behavior. The cooldown is bypassed when
+cache_jwk_set is False.
+Tier 2 — Signing key cache (disabled by default):
+Caches individual signing keys (looked up by kid) using an LRU
+cache with no time-based expiration. Keys are evicted only when
+the cache reaches its maximum size. Controlled by:
+cache_keys: Set to True to enable this cache.
+Defaults to False.
+max_cached_keys: Maximum number of signing keys to keep in
+the LRU cache. Defaults to 16.
+Parameters:
+uri (str) – The URL of the JWKS endpoint.
+cache_keys (bool) – Enable the per-key LRU cache (Tier 2).
+max_cached_keys (int) – Max entries in the signing key LRU cache.
+cache_jwk_set (bool) – Enable the JWK Set response cache (Tier 1).
+lifespan (float) – TTL in seconds for the JWK Set cache.
+headers (dict or None) – Optional HTTP headers to include in requests.
+timeout (float) – HTTP request timeout in seconds.
+ssl_context (ssl.SSLContext or None) – Optional SSL context for the request.
+cooldown_duration (float) – Minimum time in seconds between forced
+refreshes after an unknown key ID. Defaults to 30.
+fetch_data() → Any
+Fetch the JWK Set from the JWKS endpoint.
+Makes an HTTP request to the configured uri and returns the
+parsed JSON response. If the JWK Set cache is enabled, the
+response is stored in the cache.
+Returns:
+The parsed JWK Set as a dictionary.
+Raises:
+PyJWKClientConnectionError – If the HTTP request fails.
+PyJWKClientError – If the endpoint does not return a JSON
+object.
+PyJWKSetError – If the JWK Set cache is enabled and the
+response contains no usable keys.
+get_jwk_set(refresh: bool = False) → PyJWKSet
+Return the JWK Set, using the cache when available.
+Parameters:
+refresh (bool) – Force a fresh fetch from the endpoint, bypassing
+the cache.
+Returns:
+The JWK Set.
+Return type:
+PyJWKSet
+Raises:
+PyJWKClientError – If the endpoint does not return a JSON
+object.
+get_signing_key(kid: str) → PyJWK
+Return the signing key matching the given kid.
+If no match is found in the current JWK Set, the set is refreshed
+from the endpoint and the lookup is retried once when the refresh
+cooldown permits it.
+Parameters:
+kid (str) – The key ID to look up.
+Returns:
+The matching signing key.
+Return type:
+PyJWK
+Raises:
+PyJWKClientError – If no matching key is found after
+refreshing.
+get_signing_key_from_jwt(token: str | bytes) → PyJWK
+Return the signing key for a JWT by reading its kid header.
+Extracts the kid from the token’s unverified header and
+delegates to get_signing_key().
+Parameters:
+token (str or bytes) – The encoded JWT.
+Returns:
+The matching signing key.
+Return type:
+PyJWK
+get_signing_keys(refresh: bool = False) → list[PyJWK]
+Return all signing keys from the JWK Set.
+Filters the JWK Set to keys whose use is "sig" (or
+unspecified) and that have a kid.
+Parameters:
+refresh (bool) – Force a fresh fetch from the endpoint, bypassing
+the cache.
+Returns:
+A list of signing keys.
+Return type:
+list[PyJWK]
+Raises:
+PyJWKClientError – If no signing keys are found.
+static match_kid(signing_keys: list[PyJWK], kid: str) → PyJWK | None
+Find a key in signing_keys that matches kid.
+Parameters:
+signing_keys (list[PyJWK]) – The list of keys to search.
+kid (str) – The key ID to match.
+Returns:
+The matching key, or None if not found.
+Return type:
+PyJWK or None
+Note
+TODO: Finish documenting PyJWS class
+class jwt.api_jws.PyJWS(algorithms: Sequence[str] | None = None, options: SigOptions | None = None)
+get_algorithm_by_name(alg_name: str) → Algorithm
+For a given string name, return the matching Algorithm object.
+Example usage:
+>>> jws_obj = PyJWS()
+>>> jws_obj.get_algorithm_by_name(“RS256”)
+Parameters:
+alg_name (str) – The name of the algorithm to retrieve
+Return type:
+Algorithm
+get_algorithms() → list[str]
+Returns a list of supported values for the alg parameter.
+Return type:
+list[str]
+get_unverified_header(jwt: str | bytes) → dict[str, Any]
+Returns back the JWT header parameters as a dict
+Note: The signature is not verified so the header parameters
+should not be fully trusted until signature verification is complete
+register_algorithm(alg_id: str, alg_obj: Algorithm) → None
+Registers a new Algorithm for use when creating and verifying tokens.
+Parameters:
+alg_id (str) – the ID of the Algorithm
+alg_obj (Algorithm) – the Algorithm object
+unregister_algorithm(alg_id: str) → None
+Unregisters an Algorithm for use when creating and verifying tokens
+:param str alg_id: the ID of the Algorithm
+:raises KeyError: if algorithm is not registered.
+Algorithms
+class jwt.algorithms.Algorithm
+The interface for an algorithm used to sign and verify tokens.
+check_crypto_key_type(key: DHPublicKey | DSAPublicKey | RSAPublicKey | EllipticCurvePublicKey | Ed25519PublicKey | Ed448PublicKey | MLDSA44PublicKey | MLDSA65PublicKey | MLDSA87PublicKey | MLKEM768PublicKey | MLKEM1024PublicKey | X25519PublicKey | X448PublicKey | DHPrivateKey | Ed25519PrivateKey | Ed448PrivateKey | MLDSA44PrivateKey | MLDSA65PrivateKey | MLDSA87PrivateKey | MLKEM768PrivateKey | MLKEM1024PrivateKey | RSAPrivateKey | DSAPrivateKey | EllipticCurvePrivateKey | X25519PrivateKey | X448PrivateKey) → None
+Check that the key belongs to the right cryptographic family.
+Note that this method only works when cryptography is installed.
+Parameters:
+key (PublicKeyTypes | PrivateKeyTypes) – Potentially a cryptography key
+Raises:
+ValueError – if cryptography is not installed, or this method is called by a non-cryptography algorithm
+InvalidKeyError – if the key doesn’t match the expected key classes
+check_key_length(key: Any) → str | None
+Return a warning message if the key is below the minimum
+recommended length for this algorithm, or None if adequate.
+compute_hash_digest(bytestr: bytes) → bytes
+Compute a hash digest using the specified algorithm’s hash algorithm.
+If there is no hash algorithm, raises a NotImplementedError.
+abstractmethod static from_jwk(jwk: str | dict[str, Any]) → Any
+Deserializes a given key from JWK back into a key object
+abstractmethod prepare_key(key: Any) → Any
+Performs necessary validation and conversions on the key and returns
+the key value in the proper format for sign() and verify().
+abstractmethod sign(msg: bytes, key: Any) → bytes
+Returns a digital signature for the specified message
+using the specified key value.
+abstractmethod static to_jwk(key_obj: Any, as_dict: Literal[True]) → dict[str, Any]
+abstractmethod static to_jwk(key_obj: Any, as_dict: Literal[False] = False) → str
+Serializes a given key into a JWK
+abstractmethod verify(msg: bytes, key: Any, sig: bytes) → bool
+Verifies that the specified digital signature is valid
+for the specified message and key values.
+jwt.algorithms.AllowedPrivateKeys
+Type alias for allowed cryptography private keys (requires cryptography to be installed)
+alias of RSAPrivateKey | EllipticCurvePrivateKey | Ed25519PrivateKey | Ed448PrivateKey
+jwt.algorithms.AllowedPublicKeys
+Type alias for allowed cryptography public keys (requires cryptography to be installed)
+alias of RSAPublicKey | EllipticCurvePublicKey | Ed25519PublicKey | Ed448PublicKey
+Types
+class jwt.types.SigOptions
+Options for PyJWS class (TypedDict). Note that this is a smaller set of options than
+for jwt.decode().
+enforce_minimum_key_length: bool
+Default: False. Raise jwt.exceptions.InvalidKeyError instead of warning when keys are below minimum recommended length.
+verify_signature: bool
+verify the JWT cryptographic signature
+class jwt.types.Options
+Options for jwt.decode() and jwt.decode_complete() (TypedDict).
+Warning
+Some claims, such as exp, iat, jti, nbf, and sub,
+will only be verified if present. Please refer to the documentation below
+for which ones, and make sure to include them in the require param
+if you want to make sure that they are always present (and therefore always verified
+if verify_{claim} = True for that claim).
+enforce_minimum_key_length: bool
+Default: False. Raise jwt.exceptions.InvalidKeyError instead of warning when keys are below minimum recommended length.
+require: list[str]
+Default: []. List of claims that must be present.
+Example: require=["exp", "iat", "nbf"].
+Only verifies that the claims exists. Does not verify that the claims are valid.
+strict_aud: bool
+Default: False. (requires verify_aud=True) Check that the aud claim is a single value (not a list), and matches audience exactly.
+verify_aud: bool
+Default: verify_signature. Check that aud (audience) claim matches audience.
+verify_exp: bool
+Default: verify_signature. Check that exp (expiration) claim value is in the future (if present in payload).
+verify_iat: bool
+Default: verify_signature. Check that iat (issued at) claim value is an integer (if present in payload).
+verify_iss: bool
+Default: verify_signature. Check that iss (issuer) claim matches issuer.
+verify_jti: bool
+Default: verify_signature. Check that jti (JWT ID) claim is a string (if present in payload).
+verify_nbf: bool
+Default: verify_signature. Check that nbf (not before) claim value is in the past (if present in payload).
+verify_signature: bool
+Default: True. Verify the JWT cryptographic signature.
+verify_sub: bool
+Default: verify_signature. Check that sub (subject) claim is a string and matches subject (if present in payload).
+Warnings
+exception jwt.warnings.InsecureKeyLengthWarning
+Bases: UserWarning
+Warning emitted when a cryptographic key is shorter than the minimum
+recommended length. See Key Length Validation for details.
+exception jwt.warnings.RemovedInPyjwt3Warning
+Bases: DeprecationWarning
+Warning for features that will be removed in PyJWT 3.
+Exceptions
+exception jwt.exceptions.DecodeError
+Bases: InvalidTokenError
+Raised when a token cannot be decoded because it failed validation
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.ExpiredSignatureError
+Bases: InvalidTokenError
+Raised when a token’s exp claim indicates that it has expired
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.ImmatureSignatureError
+Bases: InvalidTokenError
+Raised when a token’s nbf or iat claims represent a time in the future
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.InvalidAlgorithmError
+Bases: InvalidTokenError
+Raised when the specified algorithm is not recognized by PyJWT
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.InvalidAudienceError
+Bases: InvalidTokenError
+Raised when a token’s aud claim does not match one of the expected
+audience values
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.InvalidIssuedAtError
+Bases: InvalidTokenError
+Raised when a token’s iat claim is non-numeric
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.InvalidIssuerError
+Bases: InvalidTokenError
+Raised when a token’s iss claim does not match the expected issuer
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.InvalidJTIError
+Bases: InvalidTokenError
+Raised when a token’s jti claim is not a string
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.InvalidKeyError
+Bases: PyJWTError
+Raised when the specified key is not in the proper format
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.InvalidSignatureError
+Bases: DecodeError
+Raised when a token’s signature doesn’t match the one provided as part of
+the token.
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.InvalidSubjectError
+Bases: InvalidTokenError
+Raised when a token’s sub claim is not a string or doesn’t match the expected subject
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.InvalidTokenError
+Bases: PyJWTError
+Base exception when decode() fails on a token
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.MissingCryptographyError
+Bases: PyJWKError
+Raised if the algorithm requires cryptography to be installed and it is not available.
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.MissingRequiredClaimError(claim: str)
+Bases: InvalidTokenError
+Raised when a claim that is required to be present is not contained
+in the claimset
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.PyJWKClientConnectionError
+Bases: PyJWKClientError
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.PyJWKClientError
+Bases: PyJWTError
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.PyJWKError
+Bases: PyJWTError
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.PyJWKSetError
+Bases: PyJWTError
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+exception jwt.exceptions.PyJWTError
+Bases: Exception
+Base class for all exceptions
+add_note()
+Exception.add_note(note) –
+add a note to the exception
+with_traceback()
+Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.
+         Previous
+        Next 
+© Copyright 2015-2022, José Padilla.
+  Built with Sphinx using a
+    theme
+    provided by Read the Docs.

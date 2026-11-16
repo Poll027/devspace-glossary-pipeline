@@ -1,0 +1,432 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="author" content="Florimond Manca" />
+
+    <title>
+  Introduction to ASGI: Emergence of an Async Python Web Ecosystem - Florimond Manca
+</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="https://florimond.dev/static/manifest.json" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="https://florimond.dev/static/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="https://florimond.dev/static/favicon.ico" />
+
+    <!-- Android colors -->
+    <meta name="theme-color" content="#59c6b6" />
+
+    <!-- Apple web app config -->
+    <link rel="apple-touch-icon" href="https://florimond.dev/static/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" href="https://florimond.dev/feed.rss" title="Florimond Manca - RSS Feed">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="https://florimond.dev/static/css/styles.css">
+
+    
+      <!-- Webmention (https://webmention.io) -->
+      <link rel="webmention" href="https://webmention.io/florimond.dev/webmention" />
+    
+
+    
+  
+  
+  
+    <meta name="description" content="If you were thinking Python had been getting locked into data science, think again! Python web development is back with an async spin, and it&#39;s exciting." >
+  
+    <meta itemprop="name" content="Introduction to ASGI: Emergence of an Async Python Web Ecosystem - Florimond Manca" >
+  
+    <meta itemprop="description" content="If you were thinking Python had been getting locked into data science, think again! Python web development is back with an async spin, and it&#39;s exciting." >
+  
+    <meta property="og:url" content="https://florimond.dev/en/posts/2019/08/introduction-to-asgi-async-python-web" >
+  
+    <meta property="og:type" content="article" >
+  
+    <meta property="og:title" content="Introduction to ASGI: Emergence of an Async Python Web Ecosystem - Florimond Manca" >
+  
+    <meta property="og:description" content="If you were thinking Python had been getting locked into data science, think again! Python web development is back with an async spin, and it&#39;s exciting." >
+  
+    <meta property="og:site_name" content="Florimond Manca" >
+  
+    <meta property="article:published_time" content="2019-00-11" >
+  
+    <meta property="article:tag" content="python" >
+  
+    <meta property="article:tag" content="webdev" >
+  
+    <meta property="article:tag" content="asgi" >
+  
+
+
+  </head>
+
+  <body>
+    
+  <nav class="f-navbar f-container f-cluster f-box f-print-hidden" style="--cluster-align: center; --cluster-gap: var(--w); --box-padding: var(--w)">
+    <a class="f-brand" href="https://florimond.dev/en/">
+      Florimond Manca
+    </a>
+
+    <ul class="f-cluster f-raw-list" role="list" style="--cluster-justify: center; --cluster-gap: 0">
+      
+        <li>
+          <a class="f-box" style="--box-padding: 0  calc(3 * var(--v))" href="https://florimond.dev/en/category/essays">
+            Essays
+          </a>
+        </li>
+      
+        <li>
+          <a class="f-box" style="--box-padding: 0  calc(3 * var(--v))" href="https://florimond.dev/en/category/retrospectives">
+            Retrospectives
+          </a>
+        </li>
+      
+        <li>
+          <a class="f-box" style="--box-padding: 0  calc(3 * var(--v))" href="https://florimond.dev/en/category/tutorials">
+            Tutorials
+          </a>
+        </li>
+      
+    </ul>
+
+    <ul class="f-cluster f-raw-list" role="list" style="--cluster-justify: center; --cluster-gap: 0">
+      
+        <li>
+          <a href="https://florimond.dev/en/">
+            EN
+          </a>
+          /&nbsp;
+        </li>
+      
+        <li>
+          <a href="https://florimond.dev/fr/">
+            FR
+          </a>
+          
+        </li>
+      
+    </ul>
+  </nav>
+
+
+    
+<main class="f-container f-box" style="--box-padding: calc(4 * var(--w)) 0"><article class="f-stack h-entry" style="--stack-gap: calc(6 * var(--w))">
+    <div class="f-stack" style="--stack-gap: calc(2 * var(--w))">
+      
+  <div class="f-cluster" style="--cluster-justify: space-between">
+    <div class="f-cluster f-text-sm" style="--cluster-gap: calc(3 * var(--v))">
+      <a href="https://florimond.dev/en/category/essays" class="f-text-muted p-category">
+        Essays
+      </a>
+
+      &bullet;
+
+      
+<div class="f-cluster" style="--cluster-gap: var(--w)">
+  <span aria-hidden="true">
+    🔖
+  </span>
+
+  <ul class="f-cluster f-raw-list" role="list">
+    
+    <li>
+      <a class="f-tag p-category" href="https://florimond.dev/en/tag/python">
+        python
+      </a>
+    </li>
+    
+    <li>
+      <a class="f-tag p-category" href="https://florimond.dev/en/tag/webdev">
+        webdev
+      </a>
+    </li>
+    
+    <li>
+      <a class="f-tag p-category" href="https://florimond.dev/en/tag/asgi">
+        asgi
+      </a>
+    </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+    
+      <a href="https://github.com/florimondmanca/www/blob/master/content/en/posts/2019/08/introduction-to-asgi-async-python-web.md" target="_blank" rel="no-referrer">
+        📝&nbsp;Edit
+      </a>
+    
+  </div>
+
+
+      <h1 class="p-name">
+        Introduction to ASGI: Emergence of an Async Python Web Ecosystem
+      </h1>
+
+      <p class="fr-text-muted f-text-bold p-summary">
+          If you were thinking Python had been getting locked into data science, think again! Python web development is back with an async spin, and it&#39;s exciting.
+        </p>
+
+      <p>
+        <a class="p-author h-card" href="https://florimond.dev/en/">Florimond Manca</a>,
+        <a href="https://florimond.dev/en/posts/2019/08/introduction-to-asgi-async-python-web" class="u-url">
+          <time class="dt-published" datetime="2019-08-11">
+            Aug 11, 2019
+          </time>
+        </a>
+      </p>
+    </div>
+
+    <div class="f-markdown e-content">
+      <p>There's a lot of exciting stuff happening in the Python web development ecosystem right now — one of the main drivers of this endeavour is <a href="https://asgi.readthedocs.io/en/latest/">ASGI</a>, the Asynchronous Server Gateway Interface.</p>
+<p>I already mentioned ASGI several times here, in particular when <a href="/blog/articles/2018/12/how-i-built-a-web-framework-and-became-an-open-source-maintainer">announcing Bocadillo</a> and <a href="/blog/articles/2019/07/introducing-tartiflette-starlette/">tartiflette-starlette</a>, but I never really took the time to write a thorough introduction about it. Well, here we are!</p>
+<p>This post is targeted at people interested in recent trends of Python web development. I want to take you on a guided tour about <strong>what ASGI is</strong> and <strong>what it means for modern Python web development</strong>.</p>
+<p>Before we begin, I'd like to announce that I recently created <a href="https://github.com/florimondmanca/awesome-asgi">awesome-asgi</a>, an <em>awesome list</em> to help folks keep track of the ever-expanding ASGI ecosystem. 🙌</p>
+<p><a href="https://github.com/florimondmanca/awesome-asgi"><img alt="Click to see the repo on GitHub." src="/static/img/awesome-asgi-preview.png" /></a></p>
+<p>You can watch releases to be notified of new entries to the list. 👀</p>
+<p>Alright, let's dive in!</p>
+<h2 id="it-all-started-with-asyncawait">It all started with async/await</h2>
+<p>Contrary to JavaScript or Go, Python is not a language that had asynchronous execution baked in from the start. For a long time, executing things concurrently in Python could only be achieved using multithreading or multiprocessing, or resorting to specialized networking libraries such as eventlet, gevent, or Twisted. (Back in 2008, Twisted already had APIs for asynchronous coroutines, e.g. in the form of <a href="http://blog.mekk.waw.pl/archives/14-Twisted-inlineCallbacks-and-deferredGenerator.html"><code>inlineCallbacks</code> and <code>deferredGenerator</code></a>.)</p>
+<p>But this all changed in Python 3.4+. Python 3.4 <a href="https://www.python.org/dev/peps/pep-3156">added <code>asyncio</code> to the standard library</a>, adding support for cooperative multitasking on top of generators and the <code>yield from</code> syntax.</p>
+<p>Later, the <code>async</code>/<code>await</code> syntax was <a href="https://www.python.org/dev/peps/pep-0492/">added in Python 3.5</a>. Thanks to this, we now had <strong>native coroutines</strong> independent of the underlying implementation, which opened the gold rush towards Python concurrency.</p>
+<p>And what a rush it was, indeed! Since 3.5 was released, the community has been literally <strong>async-ifying all the things</strong>. If you're curious, a lot of the resulting projects are now listed in <a href="https://github.com/aio-libs">aio-libs</a> and <a href="https://github.com/timofurrer/awesome-asyncio">awesome-asyncio</a>.</p>
+<p>Well, you guessed it — this also means that <strong>Python web servers and apps are moving towards async</strong>. In fact, all the cool kids are doing it! (<a href="https://github.com/django/deps/blob/master/accepted/0009-async.rst">Even Django</a>.)</p>
+<h2 id="an-overview-of-asgi">An overview of ASGI</h2>
+<p>Now, how does ASGI fit in all of this?</p>
+<p>From a 1000-foot perspective, ASGI can be thought of as the glue that allows Python asynchronous servers and applications to communicate with each other. It shares a lot of design ideas with <a href="https://www.python.org/dev/peps/pep-3333">WSGI</a>, and is often presented as its spiritual successor with async built-in.</p>
+<p>Here's what this mental model looks like in a diagram:</p>
+<p><figure class="f-image"><img alt="At a very high-level, ASGI is a communication interface between apps and servers." loading="lazy" src="/static/img/asgi-intro-highlevel.png" /><figcaption>At a very high-level, ASGI is a communication interface between apps and servers.</figcaption></figure></p>
+<p>But in reality, it's a bit more complex than that.</p>
+<p>To find out how ASGI really works, let's take a look at the <a href="https://asgi.readthedocs.io/en/latest/specs/main.html#overview">ASGI specification</a>:</p>
+<blockquote>
+<p>ASGI consists of two different components:</p>
+<ul>
+<li>A <em>protocol server</em>, which terminates sockets and translates them into connections and per-connection event messages.</li>
+<li>An <em>application</em>, which lives inside a <em>protocol server</em>, is instanciated once per connection, and handles event messages as they happen.</li>
+</ul>
+</blockquote>
+<p>So according to the spec, what ASGI really specifies is a <a href="https://asgi.readthedocs.io/en/latest/specs/www.html">message format</a> and how those messages should be exchanged between the application and the protocol server that runs it.</p>
+<p>We can now revise our diagram into a more detailed version:</p>
+<p><figure class="f-image"><img alt="How ASGI *really* works." loading="lazy" src="/static/img/asgi-intro-full.png" /><figcaption>How ASGI *really* works.</figcaption></figure></p>
+<p>There are many more interesting details to look at, obviously. For example, you can take a look at the <a href="https://asgi.readthedocs.io/en/latest/specs/www.html">HTTP and WebSocket specification</a>.</p>
+<p>Besides, although the spec focuses a lot on server-to-application communication, ASGI turns out to encompass <em>much more</em> than that.</p>
+<p>We'll get to this in a minute, but first…</p>
+<h2 id="asgi-basics">ASGI basics</h2>
+<p>Now that we've seen how ASGI fits in the Python web ecosystem, let's take a closer look at what it looks like in code.</p>
+<p>ASGI relies on the following mental model: when the client connects to the server, we instanciate an application. We then feed incoming bytes into the app and send back whatever bytes come out.</p>
+<p>"Feed into the app" here really means <em>call the app</em> as if it were a function, i.e. something that takes some input, and returns an output.</p>
+<p>And in fact, that's all an ASGI app is — a <em>callable</em>. The shape of this callable is, again, <a href="https://asgi.readthedocs.io/en/latest/specs/main.html#applications">defined by the ASGI spec</a>. Here's what it looks like:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">app</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
+    <span class="o">...</span>
+</code></pre></div>
+
+<p>The signature of this function is what the "I" in ASGI stands for: an interface which the application must implement for the server to be able to call it.</p>
+<p>Let's take a look at the 3 arguments:</p>
+<ul>
+<li><code>scope</code> is a dictionary that contains information about the incoming request. Its contents vary between <a href="https://asgi.readthedocs.io/en/latest/specs/www.html#connection-scope">HTTP</a> and <a href="https://asgi.readthedocs.io/en/latest/specs/www.html#id1">WebSocket</a> connections.</li>
+<li><code>receive</code> is an asynchronous function used to receive ASGI event messages.</li>
+<li><code>send</code> is an asynchronous function used to send ASGI event messages.</li>
+</ul>
+<p>In essence, these arguments allow you to <code>receive()</code> and <code>send()</code> data over a communication channel maintained by the protocol server, as well as know in what context (or <code>scope</code>) this channel was created.</p>
+<p>I don't know about you, but the overall look and shape of this interface fits my brain really well. Anyway, time for code samples.</p>
+<h2 id="show-me-the-code">Show me the code!</h2>
+<p>To get a more practical feel of what ASGI looks like, I created a minimal project which showcases a raw ASGI HTTP app served by <a href="https://www.uvicorn.org/">uvicorn</a> (a popular ASGI server):</p>
+<p><a href="https://glitch.com/edit/#!/asgi-hello-world"><img alt="Click to see and edit the code on Glitch." src="/static/img/asgi-intro-glitch.png" /></a></p>
+<p>Here, we use <code>send()</code> to send an HTTP response to the client: we send headers first, and then the response body.</p>
+<p>Now, with all these dictionaries and raw binary data, I'll admit that bare-metal ASGI isn't very convenient to work with.</p>
+<p>Luckily, there are higher-level options — and that's when I get to talk about <a href="https://www.starlette.io/">Starlette</a>.</p>
+<p>Starlette is truly a fantastic project, and IMO a foundational piece of the ASGI ecosystem.</p>
+<p>In a nutshell, it provides a toolbox of higher-level components such as requests and responses that you can use to abstract away some of the details of ASGI. Here, take a look at this Starlette "Hello, World!" app:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># app.py</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">PlainTextResponse</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">app</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;http&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">response</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Starlette does have everything you'd expect from an actual web framework — routing, middleware, etc. But I decided to show this stripped-down version to hint you at the real power of ASGI, which is…</p>
+<h2 id="turtles-all-the-way-down">Turtles all the way down</h2>
+<p>The interesting and downright <em>game-changing</em> bit about ASGI is the concept of "<a href="https://simonwillison.net/2019/Jun/23/datasette-asgi/">Turtles all the way down</a>". (This expression was coined originally (I think?) by Andrew Godwin, the person behind Django migrations, the <a href="https://www.youtube.com/watch?v=oMHrDy62kgE">Django async revamp</a>, and a fair bit of the ASGI story.)
+But what does it mean, exactly?</p>
+<p>Well, because ASGI is an abstraction which allows telling the context we are in, and to receive and send data <em>at any time</em>, there's this idea that ASGI can be used not only between servers and apps, but really <em>at any point in the stack</em>.</p>
+<p>For example, the Starlette <code>Response</code> object <em>is</em> an ASGI application itself. In fact, we can strip down the Starlette example app from earlier to <em>just this</em>:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># app.py</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>How <em>ridiculous</em> is that?! 😍</p>
+<p>But wait, there's more.</p>
+<p>The deeper consequence of "Turtles all the way down" is that we can build all sorts of applications, middleware, libraries and other projects, and ensure that they will be <strong>interoperable</strong> as long as they all implement the ASGI application interface.</p>
+<p>(Besides, from my own experience building <a href="https://bocadilloproject.github.io/">Bocadillo</a>, embracing the ASGI interface very often (if not <em>always</em>) results in much cleaner code.)</p>
+<p>For example, we can build a ASGI middleware (i.e. an app that wraps another app) to display the time a request took to be served:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># app.py</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<span class="k">class</span> <span class="nc">TimingMiddleware</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Took </span><span class="si">{</span><span class="n">end_time</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>To use it, we wrap it around an app…</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># app.py</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">PlainTextResponse</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">app</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">response</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">TimingMiddleware</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</code></pre></div>
+
+<p>…and it will magically <em>just work</em>.</p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>uvicorn<span class="w"> </span>app:app
+INFO:<span class="w"> </span>Started<span class="w"> </span>server<span class="w"> </span>process<span class="w"> </span><span class="o">[</span><span class="m">59405</span><span class="o">]</span>
+INFO:<span class="w"> </span>Waiting<span class="w"> </span><span class="k">for</span><span class="w"> </span>application<span class="w"> </span>startup.
+INFO:<span class="w"> </span>Uvicorn<span class="w"> </span>running<span class="w"> </span>on<span class="w"> </span>http://127.0.0.1:8000<span class="w"> </span><span class="o">(</span>Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </span>quit<span class="o">)</span>
+...
+INFO:<span class="w"> </span><span class="o">(</span><span class="s1">&#39;127.0.0.1&#39;</span>,<span class="w"> </span><span class="m">62718</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span><span class="s2">&quot;GET / HTTP/1.1&quot;</span><span class="w"> </span><span class="m">200</span>
+Took<span class="w"> </span><span class="m">1</span>.00<span class="w"> </span>seconds
+</code></pre></div>
+
+<p>The amazing bit about this is that <code>TimingMiddleware</code> can wrap <em>any</em> ASGI app. The inner app here is very basic, but it could be <em>a full-blown, real-life project</em> (think hundreds of API and WebSocket endpoints) — it doesn't matter, as long as it's ASGI-compatible.</p>
+<p>(There's a more production-ready version of such a timing middleware: <a href="https://github.com/steinnes/timing-asgi">timing-asgi</a>.)</p>
+<h2 id="why-should-i-care">Why should I care?</h2>
+<p>While I think interoperability is a strong selling point, there are many more advantages to using ASGI-based components for building Python web apps.</p>
+<ul>
+<li>Speed: the async nature of ASGI apps and servers make them <a href="https://www.techempower.com/benchmarks/#section=data-r18&amp;hw=ph&amp;test=fortune&amp;l=zijzen-f&amp;w=zik0zh-zik0zj-e7&amp;d=b">really fast</a> (for Python, at least) — we're talking about 60k-70k req/s (consider that Flask and Django only achieve 10-20k in a similar situation).</li>
+<li>Features: ASGI servers and frameworks gives you access to inherently concurrent features (WebSocket, Server-Sent Events, HTTP/2) that are impossible to implement using sync/WSGI.</li>
+<li>Stability: ASGI as a spec has been around for about 3 years now, and version 3.0 is considered very stable. Foundational parts of the ecosystem are stabilizing as a result.</li>
+</ul>
+<p>In terms of libraries and tooling, I don't think we can say we're there <em>just yet</em>. But thanks to a very active community, I have strong hopes that the ASGI ecosystem reaches feature parity with the traditional sync/WSGI ecosystem real soon.</p>
+<h2 id="where-can-i-find-asgi-compatible-components">Where can I find ASGI-compatible components?</h2>
+<p>In fact, more and more people are building and improving projects built around ASGI. This includes servers and web frameworks obviously, but also middleware and product-oriented applications such as <a href="https://github.com/simonw/datasette">Datasette</a>.</p>
+<p>Some of the non-web framework components that I got the most excited about are:</p>
+<ul>
+<li><a href="https://github.com/erm/mangum">Mangum</a>: ASGI support for AWS Lambda</li>
+<li><a href="https://github.com/simonw/datasette-auth-github">datasette-auth-github</a>: GitHub authentication for ASGI apps</li>
+<li><a href="https://github.com/tartiflette/tartiflette-starlette">tartiflette-starlette</a> (I wrote this one!): ASGI support for Tartiflette, an async GraphQL engine.</li>
+</ul>
+<p>While seeing the ecosystem flourish is great, I've personally been having a hard time keeping up with everything.</p>
+<p>That's why, as announced at the beginning of this article I created <a href="https://github.com/florimondmanca/awesome-asgi">awesome-asgi</a>. My hope is that it helps everyone keep up with all the awesome things that are happening in the ASGI space. (And seeing that it almost reached 100 stars in a few days, I have a feeling there was indeed a need to colocalize ASGI resources.)</p>
+<h2 id="wrapping-up">Wrapping up</h2>
+<p>While it might look like an implementation detail, I truly think that ASGI has laid down the foundations for a new era in Python web development.</p>
+<p>If you want to learn more about ASGI, take a look at the various <a href="https://github.com/florimondmanca/awesome-asgi#publications">publications</a> (articles and talks) listed in <code>awesome-asgi</code>. To get your hands dirty, try out any of the following projects:</p>
+<ul>
+<li><a href="https://www.uvicorn.org/">uvicorn</a>: ASGI server.</li>
+<li><a href="https://www.starlette.io/">Starlette</a>: ASGI framework.</li>
+<li><a href="https://www.encode.io/typesystem/">TypeSystem</a>: data validation and form rendering</li>
+<li><a href="https://www.encode.io/databases/">Databases</a>: async database library.</li>
+<li><a href="https://github.com/encode/orm">orm</a>: asynchronous ORM.</li>
+<li><a href="https://www.encode.io/httpx/">HTTPX</a>: async HTTP client w/ support for calling ASGI apps (useful as a test client).</li>
+</ul>
+<p>These projects were built and are maintained by Encode, which mostly means Tom Christie. There are open discussions on setting up an <a href="https://discuss.encode.io/t/setting-up-a-maintainence-team/721/9">Encode maintenance team</a>, so if you were looking for an opportunity to help advance an open source niche, there you go!</p>
+<p>Enjoy your ASGI journey. ❣️</p>
+    </div>
+
+    <div class="f-print-hidden">
+      
+  <script
+    defer
+    id="comments"
+    src="https://utteranc.es/client.js"
+    repo="florimondmanca/www"
+    issue-term="title"
+    label="comments"
+    theme="github-light"
+    crossorigin="anonymous"
+  ></script>
+
+    </div>
+  </article>
+</main>
+
+
+    
+  <footer class="f-print-hidden f-container f-box f-text-center f-stack" style="--box-padding: calc(6 * var(--w)) 0; --stack-gap: calc(2 * var(--w))">
+    <p>
+      <strong>
+        Links
+      </strong>
+    </p>
+
+    <ul class="f-cluster f-raw-list" role="list" style="--cluster-justify: center; --cluster-align: center; --cluster-gap: calc(2 * var(--w))">
+      
+        <li>
+          <a href="https://github.com/florimondmanca" title="GitHub (@florimondmanca)" rel="me">
+            GitHub
+          </a>
+        </li>
+      
+        <li>
+          <a href="https://fosstodon.org/@florimond" title="Mastodon (@florimond@fosstodon.org)" rel="me">
+            Mastodon
+          </a>
+        </li>
+      
+        <li>
+          <a href="https://www.linkedin.com/in/florimondmanca" title="LinkedIn (florimondmanca)" rel="me">
+            LinkedIn
+          </a>
+        </li>
+      
+        <li>
+          <a href="https://dev.to/florimondmanca" title="DEV (@florimondmanca)" rel="me">
+            DEV
+          </a>
+        </li>
+      
+    </ul>
+
+    <p>
+      © 2026 Florimond Manca&nbsp;&middot;&nbsp;
+      <a href="https://github.com/florimondmanca/www" target="_blank" rel="noreferrer">
+        Source code
+      </a>
+    </p>
+  </footer>
+
+
+    <!-- Scripts placed at the end of the document so the pages load faster -->
+
+    
+
+    <!-- EcoIndex rating - https://github.com/simonvdfr/ecoindex-light-js -->
+    <script src="https://florimond.dev/static/js/ecoindex.js" async defer></script>
+
+    <!-- htmx -->
+    <script src="https://florimond.dev/static/js/htmx.org@1.8.4/htmx.min.js" async defer></script>
+
+    <!-- Custom bits of JavaScript -->
+    <script src="https://florimond.dev/static/js/main.js" async defer></script>
+
+    
+  </body>
+</html>

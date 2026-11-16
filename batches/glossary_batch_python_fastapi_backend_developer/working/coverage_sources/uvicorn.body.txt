@@ -1,0 +1,97 @@
+
+Index
+An ASGI web server, for Python.
+Documentation: https://uvicorn.dev
+Source Code: https://www.github.com/Kludex/uvicorn
+Uvicorn is an ASGI web server implementation for Python.
+Until recently Python has lacked a minimal low-level server/application interface for
+async frameworks. The ASGI specification fills this gap,
+and means we're now able to start building a common set of tooling usable across all async frameworks.
+Uvicorn currently supports HTTP/1.1, HTTP/2 and WebSockets.
+Sponsorship¶
+Help us keep Uvicorn maintained and sustainable by becoming a sponsor.
+Current sponsors:
+Quickstart¶
+Uvicorn is available on PyPI so installation is as simple as:
+pipuv
+pip install uvicorn
+uv add uvicorn
+See the installation documentation for more information.
+Let's create a simple ASGI application to run with Uvicorn:
+main.py
+async def app(scope, receive, send):
+    assert scope['type'] == 'http'
+    await send({
+        'type': 'http.response.start',
+        'status': 200,
+        'headers': [
+            (b'content-type', b'text/plain'),
+            (b'content-length', b'13'),
+        ],
+    })
+    await send({
+        'type': 'http.response.body',
+        'body': b'Hello, world!',
+    })
+Then we can run it with Uvicorn:
+uvicorn main:app
+Usage¶
+The uvicorn command line tool is the easiest way to run your application.
+Command line options¶
+Run uvicorn --help to see the full set of command line options.
+For more information, see the settings documentation.
+Running programmatically¶
+There are several ways to run uvicorn directly from your application.
+uvicorn.run¶
+If you're looking for a programmatic equivalent of the uvicorn command line interface, use uvicorn.run():
+main.py
+import uvicorn
+async def app(scope, receive, send):
+    ...
+if __name__ == "__main__":
+    uvicorn.run("main:app", port=5000, log_level="info")
+Config and Server instances¶
+For more control over configuration and server lifecycle, use uvicorn.Config and uvicorn.Server:
+main.py
+import uvicorn
+async def app(scope, receive, send):
+    ...
+if __name__ == "__main__":
+    config = uvicorn.Config("main:app", port=5000, log_level="info")
+    server = uvicorn.Server(config)
+    server.run()
+If you'd like to run Uvicorn from an already running async environment, use uvicorn.Server.serve() instead:
+main.py
+import asyncio
+import uvicorn
+async def app(scope, receive, send):
+    ...
+async def main():
+    config = uvicorn.Config("main:app", port=5000, log_level="info")
+    server = uvicorn.Server(config)
+    await server.serve()
+if __name__ == "__main__":
+    asyncio.run(main())
+Running with Gunicorn¶
+Warning
+The uvicorn.workers module is deprecated and will be removed in a future release.
+You should use the uvicorn-worker package instead.
+python -m pip install uvicorn-worker
+Gunicorn is a mature, fully featured server and process manager.
+Uvicorn includes a Gunicorn worker class allowing you to run ASGI applications,
+with all of Uvicorn's performance benefits, while also giving you Gunicorn's
+fully-featured process management.
+This allows you to increase or decrease the number of worker processes on the
+fly, restart worker processes gracefully, or perform server upgrades without downtime.
+For production deployments we recommend using gunicorn with the uvicorn worker class.
+gunicorn example:app -w 4 -k uvicorn.workers.UvicornWorker
+For a PyPy compatible configuration use uvicorn.workers.UvicornH11Worker.
+For more information, see the deployment documentation.
+Application factories¶
+The --factory flag allows loading the application from a factory function, rather than an application instance directly. The factory will be called with no arguments and should return an ASGI application.
+main.py
+def create_app():
+    app = ...
+    return app
+uvicorn --factory main:create_app
+              

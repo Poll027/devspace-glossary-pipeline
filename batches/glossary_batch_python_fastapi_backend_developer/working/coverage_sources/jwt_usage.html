@@ -1,0 +1,660 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" />
+  <meta name="readthedocs-addons-api-version" content="1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage Examples &mdash; PyJWT 2.15.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/theme_overrides.css?v=b2884f7f" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=ae1beb53"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <script src="_static/js/versions.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Frequently Asked Questions" href="faq.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="pyjwt" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/usage.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyJWT
+          </a>
+              <div class="switch-menus">
+                <div class="version-switch"></div>
+                <div class="language-switch"></div>
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#encoding-decoding-tokens-with-hs256">Encoding &amp; Decoding Tokens with HS256</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#encoding-decoding-tokens-with-rs256-rsa">Encoding &amp; Decoding Tokens with RS256 (RSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#encoding-decoding-tokens-with-ps256-rsa">Encoding &amp; Decoding Tokens with PS256 (RSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#encoding-decoding-tokens-with-eddsa-ed25519">Encoding &amp; Decoding Tokens with EdDSA (Ed25519)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#encoding-decoding-tokens-with-es256-ecdsa">Encoding &amp; Decoding Tokens with ES256 (ECDSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specifying-additional-headers">Specifying Additional Headers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-the-claimset-without-validation">Reading the Claimset without Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-headers-without-validation">Reading Headers without Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#registered-claim-names">Registered Claim Names</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#expiration-time-claim-exp">Expiration Time Claim (exp)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#not-before-time-claim-nbf">Not Before Time Claim (nbf)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#issuer-claim-iss">Issuer Claim (iss)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#audience-claim-aud">Audience Claim (aud)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#issued-at-claim-iat">Issued At Claim (iat)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subject-claim-sub">Subject Claim (sub)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#jwt-id-claim-jti">JWT ID Claim (jti)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#key-length-validation">Key Length Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requiring-presence-of-claims">Requiring Presence of Claims</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#retrieve-rsa-signing-keys-from-a-jwks-endpoint">Retrieve RSA signing keys from a JWKS endpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oidc-login-flow">OIDC Login Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algorithms.html">Digital Signature Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyJWT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage Examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage-examples">
+<h1>Usage Examples<a class="headerlink" href="#usage-examples" title="Link to this heading"></a></h1>
+<section id="encoding-decoding-tokens-with-hs256">
+<h2>Encoding &amp; Decoding Tokens with HS256<a class="headerlink" href="#encoding-decoding-tokens-with-hs256" title="Link to this heading"></a></h2>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">jwt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="s2">"secret"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">},</span> <span class="n">key</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">"HS256"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoded</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="s2">"HS256"</span><span class="p">)</span>
+<span class="go">{'some': 'payload'}</span>
+</pre></div>
+</div>
+</section>
+<section id="encoding-decoding-tokens-with-rs256-rsa">
+<h2>Encoding &amp; Decoding Tokens with RS256 (RSA)<a class="headerlink" href="#encoding-decoding-tokens-with-rs256-rsa" title="Link to this heading"></a></h2>
+<p>RSA encoding and decoding require the <code class="docutils literal notranslate"><span class="pre">cryptography</span></code> module. See <a class="reference internal" href="installation.html#installation-cryptography"><span class="std std-ref">Cryptographic Dependencies (Optional)</span></a>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">jwt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">private_key</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">"-----BEGIN RSA PRIVATE KEY-----</span><span class="se">\n</span><span class="s2">MIIEpAIBAAKCAQEAwhvqCC+37A+UXgcvDl+7nbVjDI3QErdZBkI1VypVBMkKKWHM</span><span class="se">\n</span><span class="s2">NLMdHk0bIKL+1aDYTRRsCKBy9ZmSSX1pwQlO/3+gRs/MWG27gdRNtf57uLk1+lQI</span><span class="se">\n</span><span class="s2">6hBDozuyBR0YayQDIx6VsmpBn3Y8LS13p4pTBvirlsdX+jXrbOEaQphn0OdQo0WD</span><span class="se">\n</span><span class="s2">oOwwsPCNCKoIMbUOtUCowvjesFXlWkwG1zeMzlD1aDDS478PDZdckPjT96ICzqe4</span><span class="se">\n</span><span class="s2">O1Ok6fRGnor2UTmuPy0f1tI0F7Ol5DHAD6pZbkhB70aTBuWDGLDR0iLenzyQecmD</span><span class="se">\n</span><span class="s2">4aU19r1XC9AHsVbQzxHrP8FveZGlV/nJOBJwFwIDAQABAoIBAFCVFBA39yvJv/dV</span><span class="se">\n</span><span class="s2">FiTqe1HahnckvFe4w/2EKO65xTfKWiyZzBOotBLrQbLH1/FJ5+H/82WVboQlMATQ</span><span class="se">\n</span><span class="s2">SsH3olMRYbFj/NpNG8WnJGfEcQpb4Vu93UGGZP3z/1B+Jq/78E15Gf5KfFm91PeQ</span><span class="se">\n</span><span class="s2">Y5crJpLDU0CyGwTls4ms3aD98kNXuxhCGVbje5lCARizNKfm/+2qsnTYfKnAzN+n</span><span class="se">\n</span><span class="s2">nm0WCjcHmvGYO8kGHWbFWMWvIlkoZ5YubSX2raNeg+YdMJUHz2ej1ocfW0A8/tmL</span><span class="se">\n</span><span class="s2">wtFoBSuBe1Z2ykhX4t6mRHp0airhyc+MO0bIlW61vU/cPGPos16PoS7/V08S7ZED</span><span class="se">\n</span><span class="s2">X64rkyECgYEA4iqeJZqny/PjOcYRuVOHBU9nEbsr2VJIf34/I9hta/mRq8hPxOdD</span><span class="se">\n</span><span class="s2">/7ES/ZTZynTMnOdKht19Fi73Sf28NYE83y5WjGJV/JNj5uq2mLR7t2R0ZV8uK8tU</span><span class="se">\n</span><span class="s2">4RR6b2bHBbhVLXZ9gqWtu9bWtsxWOkG1bs0iONgD3k5oZCXp+IWuklECgYEA27bA</span><span class="se">\n</span><span class="s2">7UW+iBeB/2z4x1p/0wY+whBOtIUiZy6YCAOv/HtqppsUJM+W9GeaiMpPHlwDUWxr</span><span class="se">\n</span><span class="s2">4xr6GbJSHrspkMtkX5bL9e7+9zBguqG5SiQVIzuues9Jio3ZHG1N2aNrr87+wMiB</span><span class="se">\n</span><span class="s2">xX6Cyi0x1asmsmIBO7MdP/tSNB2ebr8qM6/6mecCgYBA82ZJfFm1+8uEuvo6E9/R</span><span class="se">\n</span><span class="s2">yZTbBbq5BaVmX9Y4MB50hM6t26/050mi87J1err1Jofgg5fmlVMn/MLtz92uK/hU</span><span class="se">\n</span><span class="s2">S9V1KYRyLc3h8gQQZLym1UWMG0KCNzmgDiZ/Oa/sV5y2mrG+xF/ZcwBkrNgSkO5O</span><span class="se">\n</span><span class="s2">7MBoPLkXrcLTCARiZ9nTkQKBgQCsaBGnnkzOObQWnIny1L7s9j+UxHseCEJguR0v</span><span class="se">\n</span><span class="s2">XMVh1+5uYc5CvGp1yj5nDGldJ1KrN+rIwMh0FYt+9dq99fwDTi8qAqoridi9Wl4t</span><span class="se">\n</span><span class="s2">IXc8uH5HfBT3FivBtLucBjJgOIuK90ttj8JNp30tbynkXCcfk4NmS23L21oRCQyy</span><span class="se">\n</span><span class="s2">lmqNDQKBgQDRvzEB26isJBr7/fwS0QbuIlgzEZ9T3ZkrGTFQNfUJZWcUllYI0ptv</span><span class="se">\n</span><span class="s2">y7ShHOqyvjsC3LPrKGyEjeufaM5J8EFrqwtx6UB/tkGJ2bmd1YwOWFHvfHgHCZLP</span><span class="se">\n</span><span class="s2">34ZNURCvxRV9ZojS1zmDRBJrSo7+/K0t28hXbiaTOjJA18XAyyWmGg==</span><span class="se">\n</span><span class="s2">-----END RSA PRIVATE KEY-----</span><span class="se">\n</span><span class="s2">"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">public_key</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">"-----BEGIN PUBLIC KEY-----</span><span class="se">\n</span><span class="s2">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwhvqCC+37A+UXgcvDl+7</span><span class="se">\n</span><span class="s2">nbVjDI3QErdZBkI1VypVBMkKKWHMNLMdHk0bIKL+1aDYTRRsCKBy9ZmSSX1pwQlO</span><span class="se">\n</span><span class="s2">/3+gRs/MWG27gdRNtf57uLk1+lQI6hBDozuyBR0YayQDIx6VsmpBn3Y8LS13p4pT</span><span class="se">\n</span><span class="s2">BvirlsdX+jXrbOEaQphn0OdQo0WDoOwwsPCNCKoIMbUOtUCowvjesFXlWkwG1zeM</span><span class="se">\n</span><span class="s2">zlD1aDDS478PDZdckPjT96ICzqe4O1Ok6fRGnor2UTmuPy0f1tI0F7Ol5DHAD6pZ</span><span class="se">\n</span><span class="s2">bkhB70aTBuWDGLDR0iLenzyQecmD4aU19r1XC9AHsVbQzxHrP8FveZGlV/nJOBJw</span><span class="se">\n</span><span class="s2">FwIDAQAB</span><span class="se">\n</span><span class="s2">-----END PUBLIC KEY-----</span><span class="se">\n</span><span class="s2">"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">},</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">"RS256"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoded</span><span class="p">,</span> <span class="n">public_key</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"RS256"</span><span class="p">])</span>
+<span class="go">{'some': 'payload'}</span>
+</pre></div>
+</div>
+<p>If your private key needs a passphrase, you need to pass in a <code class="docutils literal notranslate"><span class="pre">PrivateKey</span></code> object from <code class="docutils literal notranslate"><span class="pre">cryptography</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cryptography.hazmat.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">serialization</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cryptography.hazmat.backends</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_backend</span>
+
+<span class="n">pem_bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">"-----BEGIN RSA PRIVATE KEY-----</span><span class="se">\n</span><span class="s2">Proc-Type: 4,ENCRYPTED</span><span class="se">\n</span><span class="s2">DEK-Info: AES-128-CBC,C9C8F89EC68D15F26EB9B9695216C6DC</span><span class="se">\n</span><span class="s2">E3lvX0dYjDxC0DIDitwNj+mEvU48Cqlp9esIeVmfcFmM6KpuQEA4asg/19kldbRq</span><span class="se">\n</span><span class="s2">tOAYwmMuzz6GNYtX6sQXcStUE3pKMiMaTuP9WXzTc0boSYsGpGoQLtGv3h+0lkPu</span><span class="se">\n</span><span class="s2">TGaktEhIfplAYlmsS/twr9Jh9QZjEs3dEMwpuF8A/iDZFeIE2thZL0bo38VWorgZ</span><span class="se">\n</span><span class="s2">TCoOlC7qGtaeDvXXYrMvAUw3lN9A+DvxuPvbGqfqiHVBhxRcQEcR5p65lKP/V0WQ</span><span class="se">\n</span><span class="s2">De0AqCx1ghYGnExT7I4GLfr7Ux3F1UcVldPPsNeCTR/5YMOYDw7o5CZZ2TM39T33</span><span class="se">\n</span><span class="s2">DBwfRhDqKe4bMUQcvcD54S2tfW7tEekm6mx5JwzW11sd0Gprj2uggDTOj3ce2yzM</span><span class="se">\n</span><span class="s2">zl/dfbyFgh6v4jFeblIgvQ4VPg9nfCaRhatw5KXnfHBvmvdxlQ1Qp5P43ThXjI2a</span><span class="se">\n</span><span class="s2">jaJdm2lu1DLhf1OYGeQ0ytDDPzvhrZrdEJ8jbB3VCn4O/hvCtdsp7jVw2Djxmw2A</span><span class="se">\n</span><span class="s2">iRz2zlZJUlaytbi/DMpEVFwIzpuiDkpJ+ekzAsBbm/rGR/tjCEtHzVuoQNUWI93k</span><span class="se">\n</span><span class="s2">0FML+Zzb6AkBWYjBXDZtzwJpMdNr8Vvh3krZySbRzQstqL2PYuNoSZ8/1xnnVqTV</span><span class="se">\n</span><span class="s2">A0pDX7OS856AXQzQ1FRjjk/Jd0k6jGj8d7LzVgMnb8VknKvshlLmZDz8Sqa1coN4</span><span class="se">\n</span><span class="s2">0Z1VfiT0Hzlk0fkoGtRjhSc3MB6ZLg7vVlY5vb4bRrTX79s/p8Y/OecYnGC6qhTi</span><span class="se">\n</span><span class="s2">+VyJiMfwXyjFjIWYH8Y3G0QLkvOrTxLAY/3B2TU5wVSD7lfnPKOatMK1W0DHu5jp</span><span class="se">\n</span><span class="s2">G9PPTzK9ol3v6Pk0prYg1fiApb6CCBUeZBvCIbJCzYrL/yBV/xYlCwAekLNGz9Vj</span><span class="se">\n</span><span class="s2">NQUoiJqi27fOQi+ZXCrF7gYj8afo/xrg0tf7YqoOty8qfsozXzqwHKn+PcZOcqa5</span><span class="se">\n</span><span class="s2">5rIqjLOO2f6KO2dxBeZK6zmzg7K/8RjvsNkEuXffec/nwnC10OVoMbE4wyPmNUQi</span><span class="se">\n</span><span class="s2">dSuZ6xWBqiREjodLL+Ez/N1Qa52kuLSigrrSBTM2e42PWDV1sNW5V2wwlnolXFF6</span><span class="se">\n</span><span class="s2">2Xp74WaGdnwF4Afrm7AnaBxdmfjk/a+c2uzPkZkpVnxrW3l8afphhKpRoTLzqDPp</span><span class="se">\n</span><span class="s2">ZGc5Fx9UZsmX18B8D1OGbf4aVLUkoqPPHbccCI+wByoAgIoq+y2391fP/Db6fY9A</span><span class="se">\n</span><span class="s2">R4t2uuP2sNqDfYtzPYikePBXhYlldE1UHJ378g8pTiRHOI9BhuKIOIbVngPUYk4I</span><span class="se">\n</span><span class="s2">whYct2K84HjvR3iRnobK0UmmNOqtK0AtUqne+xaj1f3OwMZSvTUe7/jESgw1e1tn</span><span class="se">\n</span><span class="s2">ulKiWnKnmTSZkeTIp6itui2T7ewfNyitPtvnhoH1fBnMyUVACip0SLXp1fwQ7iCc</span><span class="se">\n</span><span class="s2">amPFFKo7p+C7P3l0ItegaMHywOSTBvK39DQTIpF9ml8VCQ+UyPOv/LnSJk1mbJN/</span><span class="se">\n</span><span class="s2">c2Hdoj5dMa6T7ysIwZGEissJ/MEP+dpRs7VmCjWrHCDHfeAIO0n32g4zbzlNc/OA</span><span class="se">\n</span><span class="s2">IdCXTvi4xUEn2n3JPt5Ba9qDUevaHSERlLxI+9a4ZaZeg4t+AzY0ur6+RWx+PaXB</span><span class="se">\n</span><span class="s2">-----END RSA PRIVATE KEY-----</span><span class="se">\n</span><span class="s2">"</span>
+<span class="n">passphrase</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">"abc123"</span>
+
+<span class="n">private_key</span> <span class="o">=</span> <span class="n">serialization</span><span class="o">.</span><span class="n">load_pem_private_key</span><span class="p">(</span>
+    <span class="n">pem_bytes</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">passphrase</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">default_backend</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">encoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">},</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">"RS256"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you are repeatedly encoding with the same private key, reusing the same
+<code class="docutils literal notranslate"><span class="pre">RSAPrivateKey</span></code> also has performance benefits because it avoids the
+CPU-intensive <code class="docutils literal notranslate"><span class="pre">RSA_check_key</span></code> primality test.</p>
+</section>
+<section id="encoding-decoding-tokens-with-ps256-rsa">
+<h2>Encoding &amp; Decoding Tokens with PS256 (RSA)<a class="headerlink" href="#encoding-decoding-tokens-with-ps256-rsa" title="Link to this heading"></a></h2>
+<p>RSA encoding and decoding require the <code class="docutils literal notranslate"><span class="pre">cryptography</span></code> module. See <a class="reference internal" href="installation.html#installation-cryptography"><span class="std std-ref">Cryptographic Dependencies (Optional)</span></a>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">jwt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">private_key</span> <span class="o">=</span> <span class="s2">"-----BEGIN RSA PRIVATE KEY-----</span><span class="se">\n</span><span class="s2">MIIEogIBAAKCAQEAuNhCS6bodtd+PvKqNj+tYZYqTNMDkf0rcptgHhecSsMP9Vay</span><span class="se">\n</span><span class="s2">+6NvJk1tC+IajPaE4yRJVY4jFqEt3A0MJ9sKe5mWDYFmzW/L6VzQvQ+0nrMc1YTE</span><span class="se">\n</span><span class="s2">DpOf7BQhlW5W0mDj5SwSR50Lxg/acb+SMWq6zmhuAoLRapH17K2RWONA2vr2frox</span><span class="se">\n</span><span class="s2">J6N9TGtrQHygDb0p9D6jPnXEe4y+zBuj6o0bCkJgCVNM+CU19xBepj5caetYV28/</span><span class="se">\n</span><span class="s2">49yl5XPi93n1ATU+7aGAKxuvjudODuHhF/UsZScMFSHeZW367eQldTB2w9uoIIzW</span><span class="se">\n</span><span class="s2">O46tKimr21zYifMimjwnBQ/PLDqc7HqY0Y/rLQIDAQABAoIBAAdu0CD7/Iu61/LE</span><span class="se">\n</span><span class="s2">DfV8fgZXOYA5WVgSLCBsVbh1Y+2FsStBFJVrLwRanLCbo6GuJWMqNGC3ryWGebJI</span><span class="se">\n</span><span class="s2">PAg7lfepEhBHodClAY1yvq9mOvHJa2Fn+KegEWWMMbAxQwCBW5NS6waXhBUE0i3n</span><span class="se">\n</span><span class="s2">cYOB3TKA9IYuqH52kW22VQqT/imlWEb28pJJT49YfggmOOtAkrKerokO53lAfrJA</span><span class="se">\n</span><span class="s2">tm8lYvxXnfnuYh7zI835RpZJ1PeaYrMqyAwT+StD9hPKGWGpN1gCJijjcK0aapvq</span><span class="se">\n</span><span class="s2">MLET/JxMxxcLsINOeLtGhMKawmET3J/esJTumOE2L77MFG83rlCPbsSfLdSAI2WD</span><span class="se">\n</span><span class="s2">Se3Q2ikCgYEA7JzmVrPh7G/oILLzIfk8GHFACRTtlE5SDEpFq+ARMprfcBXpkl+Q</span><span class="se">\n</span><span class="s2">aWqQ3vuSH7oiAQKlvo3We6XXohCMMDU2DyMaXiQMk73R83fMwbFnFcqFhbzx2zpm</span><span class="se">\n</span><span class="s2">j/neHIViEi/N69SHPxl+vnUTfeVZptibNGS+ch3Ubawt3wCaWr+IdAcCgYEAx/19</span><span class="se">\n</span><span class="s2">s5ryq2oTQCD5GfIqW73LAUly5RqENLvKHZ2z+mZ0pp7dc5449aDsHPLXLl1YC3mO</span><span class="se">\n</span><span class="s2">lZZk+8Jh5yrpHyljiIYwh/1y0WsbungMlH6lG9JigcN8R2Tk9hWT7DQL0fm0dYoQ</span><span class="se">\n</span><span class="s2">jkwr/gJv6PW0piLsR0vsQQpm/F/ucZolVPQIoisCgYA5XXzWznvax/LeYqRhuzxf</span><span class="se">\n</span><span class="s2">rK1axlEnYKmxwxwLJKLmwvejBB0B2Nt5Q1XmSdXOjWELH6oxfc/fYIDcEOj8ExqN</span><span class="se">\n</span><span class="s2">JvSQmGrYMvBA9+2TlEAq31Pp7boxbYJKK8k23vu87wwcvgUgPj0lTdsw7bcDpYZT</span><span class="se">\n</span><span class="s2">eI1Xu3WyNUlVxJ6nm8IoZwKBgG6YPjVekKg+htrF4Tt58fa95E+X4JPVsBrBZqou</span><span class="se">\n</span><span class="s2">FeN5WTTzUZ+odfNPxILVwC2BrTjbRgBvJPUcr6t4zWZQKxzKqHfrrt0kkDb0QHC2</span><span class="se">\n</span><span class="s2">AHR8ScFc65NHtl5n3F+ZAJhjsGn3qeQnN4TGsEBx8C6XzXY4BDSLnhweqOvlxJNQ</span><span class="se">\n</span><span class="s2">SJ31AoGAX/UN5xR6PlCgPw5HWfGd7+4sArkjA36DAXvrAgW/6/mxZZzoGA1swYdZ</span><span class="se">\n</span><span class="s2">q2uGp38UEKkxKTrhR4J6eR5DsLAfl/KQBbNC42vqZwe9YrS4hNQFR14GwlyJhdLx</span><span class="se">\n</span><span class="s2">KQD/JzHwNQN5+o+hy0lJavTw9NwAAb1ZzTgvq6fPwEG0b9hn0SI=</span><span class="se">\n</span><span class="s2">-----END RSA PRIVATE KEY-----</span><span class="se">\n</span><span class="s2">"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">public_key</span> <span class="o">=</span> <span class="s2">"-----BEGIN PUBLIC KEY-----</span><span class="se">\n</span><span class="s2">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuNhCS6bodtd+PvKqNj+t</span><span class="se">\n</span><span class="s2">YZYqTNMDkf0rcptgHhecSsMP9Vay+6NvJk1tC+IajPaE4yRJVY4jFqEt3A0MJ9sK</span><span class="se">\n</span><span class="s2">e5mWDYFmzW/L6VzQvQ+0nrMc1YTEDpOf7BQhlW5W0mDj5SwSR50Lxg/acb+SMWq6</span><span class="se">\n</span><span class="s2">zmhuAoLRapH17K2RWONA2vr2froxJ6N9TGtrQHygDb0p9D6jPnXEe4y+zBuj6o0b</span><span class="se">\n</span><span class="s2">CkJgCVNM+CU19xBepj5caetYV28/49yl5XPi93n1ATU+7aGAKxuvjudODuHhF/Us</span><span class="se">\n</span><span class="s2">ZScMFSHeZW367eQldTB2w9uoIIzWO46tKimr21zYifMimjwnBQ/PLDqc7HqY0Y/r</span><span class="se">\n</span><span class="s2">LQIDAQAB</span><span class="se">\n</span><span class="s2">-----END PUBLIC KEY-----</span><span class="se">\n</span><span class="s2">"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">},</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">"PS256"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoded</span><span class="p">,</span> <span class="n">public_key</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"PS256"</span><span class="p">])</span>
+<span class="go">{'some': 'payload'}</span>
+</pre></div>
+</div>
+</section>
+<section id="encoding-decoding-tokens-with-eddsa-ed25519">
+<h2>Encoding &amp; Decoding Tokens with EdDSA (Ed25519)<a class="headerlink" href="#encoding-decoding-tokens-with-eddsa-ed25519" title="Link to this heading"></a></h2>
+<p>EdDSA encoding and decoding require the <code class="docutils literal notranslate"><span class="pre">cryptography</span></code> module. See <a class="reference internal" href="installation.html#installation-cryptography"><span class="std std-ref">Cryptographic Dependencies (Optional)</span></a>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">jwt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">private_key</span> <span class="o">=</span> <span class="s2">"-----BEGIN PRIVATE KEY-----</span><span class="se">\n</span><span class="s2">MC4CAQAwBQYDK2VwBCIEIPtUxyxlhjOWetjIYmc98dmB2GxpeaMPP64qBhZmG13r</span><span class="se">\n</span><span class="s2">-----END PRIVATE KEY-----</span><span class="se">\n</span><span class="s2">"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">public_key</span> <span class="o">=</span> <span class="s2">"-----BEGIN PUBLIC KEY-----</span><span class="se">\n</span><span class="s2">MCowBQYDK2VwAyEA7p4c1IU6aA65FWn6YZ+Bya5dRbfd4P6d4a6H0u9+gCg=</span><span class="se">\n</span><span class="s2">-----END PUBLIC KEY-----</span><span class="se">\n</span><span class="s2">"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">},</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">"EdDSA"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoded</span><span class="p">,</span> <span class="n">public_key</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"EdDSA"</span><span class="p">])</span>
+<span class="go">{'some': 'payload'}</span>
+</pre></div>
+</div>
+</section>
+<section id="encoding-decoding-tokens-with-es256-ecdsa">
+<h2>Encoding &amp; Decoding Tokens with ES256 (ECDSA)<a class="headerlink" href="#encoding-decoding-tokens-with-es256-ecdsa" title="Link to this heading"></a></h2>
+<p>ECDSA encoding and decoding require the <code class="docutils literal notranslate"><span class="pre">cryptography</span></code> module. See <a class="reference internal" href="installation.html#installation-cryptography"><span class="std std-ref">Cryptographic Dependencies (Optional)</span></a>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">jwt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">private_key</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">"-----BEGIN EC PRIVATE KEY-----</span><span class="se">\n</span><span class="s2">MHcCAQEEIHAhM7P6HG3LgkDvgvfDeaMA6uELj+jEKWsSeOpS/SfYoAoGCCqGSM49</span><span class="se">\n</span><span class="s2">AwEHoUQDQgAEXHVxB7s5SR7I9cWwry/JkECIRekaCwG3uOLCYbw5gVzn4dRmwMyY</span><span class="se">\n</span><span class="s2">UJFcQWuFSfECRK+uQOOXD0YSEucBq0p5tA==</span><span class="se">\n</span><span class="s2">-----END EC PRIVATE KEY-----</span><span class="se">\n</span><span class="s2">"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">public_key</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">"-----BEGIN PUBLIC KEY-----</span><span class="se">\n</span><span class="s2">MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXHVxB7s5SR7I9cWwry/JkECIReka</span><span class="se">\n</span><span class="s2">CwG3uOLCYbw5gVzn4dRmwMyYUJFcQWuFSfECRK+uQOOXD0YSEucBq0p5tA==</span><span class="se">\n</span><span class="s2">-----END PUBLIC KEY-----</span><span class="se">\n</span><span class="s2">"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">},</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">"ES256"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoded</span><span class="p">,</span> <span class="n">public_key</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"ES256"</span><span class="p">])</span>
+<span class="go">{'some': 'payload'}</span>
+</pre></div>
+</div>
+</section>
+<section id="specifying-additional-headers">
+<h2>Specifying Additional Headers<a class="headerlink" href="#specifying-additional-headers" title="Link to this heading"></a></h2>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s2">"secret"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">algorithm</span><span class="o">=</span><span class="s2">"HS256"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"kid"</span><span class="p">:</span> <span class="s2">"230498151c214b788dd97f22b85410a5"</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">'eyJhbGciOiJIUzI1NiIsImtpZCI6IjIzMDQ5ODE1MWMyMTRiNzg4ZGQ5N2YyMmI4NTQxMGE1IiwidHlwIjoiSldUIn0.eyJzb21lIjoicGF5bG9hZCJ9.0n16c-shKKnw6gervyk1Dge35tvzbzQ_KCV3H3bgoJ0'</span>
+</pre></div>
+</div>
+<p>By default the <code class="docutils literal notranslate"><span class="pre">typ</span></code> is attaching to the headers. In case when you don’t need to pass this header to the token, you have to explicitly null it.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s2">"secret"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">algorithm</span><span class="o">=</span><span class="s2">"HS256"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"typ"</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">'eyJhbGciOiJIUzI1NiJ9.eyJzb21lIjoicGF5bG9hZCJ9...'</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-the-claimset-without-validation">
+<h2>Reading the Claimset without Validation<a class="headerlink" href="#reading-the-claimset-without-validation" title="Link to this heading"></a></h2>
+<p>If you wish to read the claimset of a JWT without performing validation of the
+signature or any of the registered claim names, you can set the
+<code class="docutils literal notranslate"><span class="pre">verify_signature</span></code> option to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<p>Note: It is generally ill-advised to use this functionality unless you
+clearly understand what you are doing. Without digital signature information,
+the integrity or authenticity of the claimset cannot be trusted.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoded</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">"verify_signature"</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+<span class="go">{'some': 'payload'}</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-headers-without-validation">
+<h2>Reading Headers without Validation<a class="headerlink" href="#reading-headers-without-validation" title="Link to this heading"></a></h2>
+<p>Some APIs require you to read a JWT header without validation. For example,
+in situations where the token issuer uses multiple keys and you have no
+way of knowing in advance which one of the issuer’s public keys or shared
+secrets to use for validation, the issuer may include an identifier for the
+key in the header.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">encoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s2">"secret"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">algorithm</span><span class="o">=</span><span class="s2">"HS256"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"kid"</span><span class="p">:</span> <span class="s2">"230498151c214b788dd97f22b85410a5"</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jwt</span><span class="o">.</span><span class="n">get_unverified_header</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+<span class="go">{'alg': 'HS256', 'kid': '230498151c214b788dd97f22b85410a5', 'typ': 'JWT'}</span>
+</pre></div>
+</div>
+</section>
+<section id="registered-claim-names">
+<h2>Registered Claim Names<a class="headerlink" href="#registered-claim-names" title="Link to this heading"></a></h2>
+<p>The JWT specification defines some registered claim names and defines
+how they should be used. PyJWT supports these registered claim names:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>“exp” (Expiration Time) Claim</p></li>
+<li><p>“nbf” (Not Before Time) Claim</p></li>
+<li><p>“iss” (Issuer) Claim</p></li>
+<li><p>“aud” (Audience) Claim</p></li>
+<li><p>“iat” (Issued At) Claim</p></li>
+<li><p>“sub” (Subject) Claim</p></li>
+<li><p>“jti” (JWT ID) Claim</p></li>
+</ul>
+</div></blockquote>
+<section id="expiration-time-claim-exp">
+<h3>Expiration Time Claim (exp)<a class="headerlink" href="#expiration-time-claim-exp" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>The “exp” (expiration time) claim identifies the expiration time on
+or after which the JWT MUST NOT be accepted for processing.  The
+processing of the “exp” claim requires that the current date/time
+MUST be before the expiration date/time listed in the “exp” claim.
+Implementers MAY provide for some small leeway, usually no more than
+a few minutes, to account for clock skew.  Its value MUST be a number
+containing a NumericDate value.  Use of this claim is OPTIONAL.</p>
+</div></blockquote>
+<p>You can pass the expiration time as a UTC UNIX timestamp (an int) or as a
+datetime, which will be converted into an int. For example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"exp"</span><span class="p">:</span> <span class="mi">1371720939</span><span class="p">},</span> <span class="s2">"secret"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"exp"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)},</span> <span class="s2">"secret"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Expiration time is automatically verified in <cite>jwt.decode()</cite> and raises
+<cite>jwt.ExpiredSignatureError</cite> if the expiration time is in the past:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">])</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">ExpiredSignatureError</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"expired"</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">expired</span>
+</pre></div>
+</div>
+<p>Expiration time will be compared to the current UTC time (as given by
+<cite>timegm(datetime.now(tz=timezone.utc).utctimetuple())</cite>), so be sure to use a UTC timestamp
+or datetime in encoding.</p>
+<p>You can turn off expiration time verification with the <cite>verify_exp</cite> parameter in the options argument.</p>
+<p>PyJWT also supports the leeway part of the expiration time definition, which
+means you can validate a expiration time which is in the past but not very far.
+For example, if you have a JWT payload with a expiration time set to 30 seconds
+after creation but you know that sometimes you will process it after 30 seconds,
+you can set a leeway of 5 seconds in order to have some margin:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timezone</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">"exp"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># JWT payload is now expired</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># But with some leeway, it will still validate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">,</span> <span class="n">leeway</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Instead of specifying the leeway as a number of seconds, a <cite>datetime.timedelta</cite>
+instance can be used. The last line in the example above is equivalent to:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">token</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">,</span> <span class="n">leeway</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="not-before-time-claim-nbf">
+<h3>Not Before Time Claim (nbf)<a class="headerlink" href="#not-before-time-claim-nbf" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>The “nbf” (not before) claim identifies the time before which the JWT
+MUST NOT be accepted for processing.  The processing of the “nbf”
+claim requires that the current date/time MUST be after or equal to
+the not-before date/time listed in the “nbf” claim.  Implementers MAY
+provide for some small leeway, usually no more than a few minutes, to
+account for clock skew.  Its value MUST be a number containing a
+NumericDate value.  Use of this claim is OPTIONAL.</p>
+</div></blockquote>
+<p>The <cite>nbf</cite> claim works similarly to the <cite>exp</cite> claim above.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"nbf"</span><span class="p">:</span> <span class="mi">1371720939</span><span class="p">},</span> <span class="s2">"secret"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"nbf"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)},</span> <span class="s2">"secret"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <cite>nbf</cite> claim also supports the leeway feature similar to the <cite>exp</cite> claim. This
+allows you to validate a “not before” time that is slightly in the future. Using
+leeway with the nbf claim can be particularly helpful in scenarios where clock
+synchronization between the token issuer and the validator is imprecise.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timezone</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">"nbf"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># JWT payload is not valid yet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># But with some leeway, it will still validate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">,</span> <span class="n">leeway</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="issuer-claim-iss">
+<h3>Issuer Claim (iss)<a class="headerlink" href="#issuer-claim-iss" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>The “iss” (issuer) claim identifies the principal that issued the
+JWT.  The processing of this claim is generally application specific.
+The “iss” value is a case-sensitive string containing a StringOrURI
+value.  Use of this claim is OPTIONAL.</p>
+</div></blockquote>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">,</span> <span class="s2">"iss"</span><span class="p">:</span> <span class="s2">"urn:foo"</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">,</span> <span class="n">issuer</span><span class="o">=</span><span class="s2">"urn:invalid"</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">])</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">InvalidIssuerError</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"invalid issuer"</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">invalid issuer</span>
+</pre></div>
+</div>
+<p>If the issuer claim is incorrect, <cite>jwt.InvalidIssuerError</cite> will be raised.</p>
+</section>
+<section id="audience-claim-aud">
+<h3>Audience Claim (aud)<a class="headerlink" href="#audience-claim-aud" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>The “aud” (audience) claim identifies the recipients that the JWT is
+intended for.  Each principal intended to process the JWT MUST
+identify itself with a value in the audience claim.  If the principal
+processing the claim does not identify itself with a value in the
+“aud” claim when this claim is present, then the JWT MUST be
+rejected.</p>
+</div></blockquote>
+<p>In the general case, the “aud” value is an array of case-
+sensitive strings, each containing a StringOrURI value.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">,</span> <span class="s2">"aud"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"urn:foo"</span><span class="p">,</span> <span class="s2">"urn:bar"</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">,</span> <span class="n">audience</span><span class="o">=</span><span class="s2">"urn:foo"</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">,</span> <span class="n">audience</span><span class="o">=</span><span class="s2">"urn:bar"</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>In the special case when the JWT has one audience, the “aud” value MAY be
+a single case-sensitive string containing a StringOrURI value.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">,</span> <span class="s2">"aud"</span><span class="p">:</span> <span class="s2">"urn:foo"</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">,</span> <span class="n">audience</span><span class="o">=</span><span class="s2">"urn:foo"</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>If multiple audiences are accepted, the <code class="docutils literal notranslate"><span class="pre">audience</span></code> parameter for
+<code class="docutils literal notranslate"><span class="pre">jwt.decode</span></code> can also be an iterable</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">,</span> <span class="s2">"aud"</span><span class="p">:</span> <span class="s2">"urn:foo"</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">token</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">,</span> <span class="n">audience</span><span class="o">=</span><span class="p">[</span><span class="s2">"urn:foo"</span><span class="p">,</span> <span class="s2">"urn:bar"</span><span class="p">],</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">,</span> <span class="n">audience</span><span class="o">=</span><span class="p">[</span><span class="s2">"urn:invalid"</span><span class="p">],</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">])</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">InvalidAudienceError</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"invalid audience"</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">invalid audience</span>
+</pre></div>
+</div>
+<p>The interpretation of audience values is generally application specific.
+Use of this claim is OPTIONAL.</p>
+<p>If the audience claim is incorrect, <cite>jwt.InvalidAudienceError</cite> will be raised.</p>
+</section>
+<section id="issued-at-claim-iat">
+<h3>Issued At Claim (iat)<a class="headerlink" href="#issued-at-claim-iat" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>The iat (issued at) claim identifies the time at which the JWT was issued.
+This claim can be used to determine the age of the JWT. Its value MUST be a
+number containing a NumericDate value. Use of this claim is OPTIONAL.</p>
+<p>If the <cite>iat</cite> claim is not a number, an <cite>jwt.InvalidIssuedAtError</cite> exception will be raised.</p>
+</div></blockquote>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"iat"</span><span class="p">:</span> <span class="mi">1371720939</span><span class="p">},</span> <span class="s2">"secret"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"iat"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)},</span> <span class="s2">"secret"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="subject-claim-sub">
+<h3>Subject Claim (sub)<a class="headerlink" href="#subject-claim-sub" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>The “sub” (subject) claim identifies the principal that is the subject of the JWT.
+The subject value MUST either be scoped to be locally unique in the context of the issuer or be globally unique.
+Use of this claim is OPTIONAL.</p>
+</div></blockquote>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">,</span> <span class="s2">"sub"</span><span class="p">:</span> <span class="s2">"1234567890"</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span><span class="p">[</span><span class="s2">"sub"</span><span class="p">]</span>
+<span class="go">'1234567890'</span>
+</pre></div>
+</div>
+<p>Think of the <cite>sub</cite> claim as the <strong>“who”</strong> of the JWT.
+It identifies the subject of the token — the user or entity that the token is about.
+The claims inside a JWT are essentially statements about this subject.</p>
+<p>For example, if you have a JWT for a logged-in user, the <cite>sub</cite> claim would typically be their unique user ID, like <cite>1234567890</cite>.
+This value needs to be unique within your application’s context so you can reliably identify who the token belongs to.
+While the <cite>sub</cite> claim is optional, it’s a fundamental part of most JWT-based authentication systems.</p>
+</section>
+<section id="jwt-id-claim-jti">
+<h3>JWT ID Claim (jti)<a class="headerlink" href="#jwt-id-claim-jti" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>The “jti” (JWT ID) claim provides a unique identifier for the JWT.
+The identifier value MUST be assigned in a manner that ensures that there is a negligible probability that the same value will be accidentally assigned to a different data object.
+If the application uses multiple issuers, collisions MUST be prevented among values produced by different issuers as well.
+The “jti” value is a case-sensitive string.
+Use of this claim is OPTIONAL.</p>
+</div></blockquote>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">,</span> <span class="s2">"jti"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">"secret"</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span><span class="p">[</span><span class="s2">"jti"</span><span class="p">]</span>
+<span class="go">'3fa85f64-5717-4562-b3fc-2c963f66afa6'</span>
+</pre></div>
+</div>
+<p>The <cite>jti</cite> claim is giving your JWT a unique identifier.
+Think of it like a serial number for the token.
+This ID must be assigned in a way that makes it virtually impossible for two different tokens to have the same <cite>jti</cite> value.
+A common practice is to use a Universally Unique Identifier (UUID).</p>
+<p>The <cite>jti</cite> claim is used to <strong>prevent replay attacks</strong>.
+A replay attack happens when a bad actor intercepts a valid token and uses it to make a request again.
+By storing the <cite>jti</cite> of every token you’ve already processed in a database or cache, you can check if a token has been used before.
+If a token with a previously-seen <cite>jti</cite> shows up, you can reject the request, stopping the attack.</p>
+</section>
+</section>
+<section id="key-length-validation">
+<span id="id1"></span><h2>Key Length Validation<a class="headerlink" href="#key-length-validation" title="Link to this heading"></a></h2>
+<p>PyJWT validates that cryptographic keys meet minimum recommended lengths.
+By default, a warning (<code class="docutils literal notranslate"><span class="pre">InsecureKeyLengthWarning</span></code>) is emitted when a key
+is too short. You can configure PyJWT to raise an <code class="docutils literal notranslate"><span class="pre">InvalidKeyError</span></code> instead.</p>
+<p>The minimum key lengths are:</p>
+<ul class="simple">
+<li><p><strong>HMAC</strong> (HS256, HS384, HS512): Key must be at least as long as the hash
+output (32, 48, or 64 bytes respectively), per <a class="reference external" href="https://www.rfc-editor.org/rfc/rfc7518#section-3.2">RFC 7518 Section 3.2</a>.</p></li>
+<li><p><strong>RSA</strong> (RS256, RS384, RS512, PS256, PS384, PS512): Key must be at least
+2048 bits, per <a class="reference external" href="https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final">NIST SP 800-131A</a>.</p></li>
+</ul>
+<p>By default, short keys produce an <code class="docutils literal notranslate"><span class="pre">InsecureKeyLengthWarning</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">jwt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">},</span> <span class="s2">"short"</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">"HS256"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To enforce minimum key lengths (raise <code class="docutils literal notranslate"><span class="pre">InvalidKeyError</span></code> on short keys),
+pass <code class="docutils literal notranslate"><span class="pre">enforce_minimum_key_length=True</span></code> in the options when creating a
+<code class="docutils literal notranslate"><span class="pre">PyJWT</span></code> or <code class="docutils literal notranslate"><span class="pre">PyJWS</span></code> instance:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">strict_jwt</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">PyJWT</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">"enforce_minimum_key_length"</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">strict_jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"some"</span><span class="p">:</span> <span class="s2">"payload"</span><span class="p">},</span> <span class="s2">"short"</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">"HS256"</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">InvalidKeyError</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"key too short"</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">key too short</span>
+</pre></div>
+</div>
+<p>To suppress the warning without enforcing, use Python’s standard
+<code class="docutils literal notranslate"><span class="pre">warnings</span></code> module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jwt</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">jwt</span><span class="o">.</span><span class="n">InsecureKeyLengthWarning</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="requiring-presence-of-claims">
+<h2>Requiring Presence of Claims<a class="headerlink" href="#requiring-presence-of-claims" title="Link to this heading"></a></h2>
+<p>If you wish to require one or more claims to be present in the claimset, you can set the <code class="docutils literal notranslate"><span class="pre">require</span></code> parameter to include these claims.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">"sub"</span><span class="p">:</span> <span class="s2">"1234567890"</span><span class="p">,</span> <span class="s2">"iat"</span><span class="p">:</span> <span class="mi">1371720939</span><span class="p">},</span> <span class="s2">"secret"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">token</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"secret"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">"require"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"exp"</span><span class="p">,</span> <span class="s2">"iss"</span><span class="p">,</span> <span class="s2">"sub"</span><span class="p">]},</span>
+<span class="gp">... </span>        <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">MissingRequiredClaimError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Token is missing the "exp" claim</span>
+</pre></div>
+</div>
+</section>
+<section id="retrieve-rsa-signing-keys-from-a-jwks-endpoint">
+<h2>Retrieve RSA signing keys from a JWKS endpoint<a class="headerlink" href="#retrieve-rsa-signing-keys-from-a-jwks-endpoint" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">PyJWKClient</span></code> fetches and manages JSON Web Key Sets (JWKS) from a remote
+endpoint. Identity providers such as Auth0, Okta, and any OpenID Connect server
+publish a JWKS endpoint containing the public keys used to sign JWTs. Instead
+of hard-coding public keys, you can point <code class="docutils literal notranslate"><span class="pre">PyJWKClient</span></code> at that URL and let
+it resolve the correct key for each token automatically.</p>
+<p>Pass the JWKS URL to create a client, then call
+<code class="docutils literal notranslate"><span class="pre">get_signing_key_from_jwt()</span></code> with a token to look up the matching key by its
+<code class="docutils literal notranslate"><span class="pre">kid</span></code> header claim:</p>
+<p>For RSA JWKs, <code class="docutils literal notranslate"><span class="pre">PyJWK</span></code> and <code class="docutils literal notranslate"><span class="pre">PyJWKClient</span></code> construct the verification key from
+the <code class="docutils literal notranslate"><span class="pre">n</span></code> and <code class="docutils literal notranslate"><span class="pre">e</span></code> members. They do not validate the certificate-related
+<code class="docutils literal notranslate"><span class="pre">x5c</span></code>, <code class="docutils literal notranslate"><span class="pre">x5t</span></code>, or <code class="docutils literal notranslate"><span class="pre">x5t#S256</span></code> members. If your application trusts or pins a
+certificate, verify that its public key matches the key used for JWT signature
+verification; do not infer that relationship from those JWK members alone.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">jwt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">jwt</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyJWKClient</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="s2">"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5FRTFRVVJCT1RNNE16STVSa0ZETlRZeE9UVTFNRGcyT0Rnd1EwVXpNVGsxUWpZeVJrUkZRdyJ9.eyJpc3MiOiJodHRwczovL2Rldi04N2V2eDlydS5hdXRoMC5jb20vIiwic3ViIjoiYVc0Q2NhNzl4UmVMV1V6MGFFMkg2a0QwTzNjWEJWdENAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vZXhwZW5zZXMtYXBpIiwiaWF0IjoxNTcyMDA2OTU0LCJleHAiOjE1NzIwMDY5NjQsImF6cCI6ImFXNENjYTc5eFJlTFdVejBhRTJINmtEME8zY1hCVnRDIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.PUxE7xn52aTCohGiWoSdMBZGiYAHwE5FYie0Y1qUT68IHSTXwXVd6hn02HTah6epvHHVKA2FqcFZ4GGv5VTHEvYpeggiiZMgbxFrmTEY0csL6VNkX1eaJGcuehwQCRBKRLL3zKmA5IKGy5GeUnIbpPHLHDxr-GXvgFzsdsyWlVQvPX2xjeaQ217r2PtxDeqjlf66UYl6oY6AqNS8DH3iryCvIfCcybRZkc_hdy-6ZMoKT6Piijvk_aXdm7-QQqKJFHLuEqrVSOuBqqiNfVrG27QzAPuPOxvfXTVLXL2jek5meH6n-VWgrBdoMFH93QEszEDowDAEhQPHVs0xj7SIzA"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">url</span> <span class="o">=</span> <span class="s2">"https://dev-87evx9ru.auth0.com/.well-known/jwks.json"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optional_custom_headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"User-agent"</span><span class="p">:</span> <span class="s2">"custom-user-agent"</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jwks_client</span> <span class="o">=</span> <span class="n">PyJWKClient</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">optional_custom_headers</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">signing_key</span> <span class="o">=</span> <span class="n">jwks_client</span><span class="o">.</span><span class="n">get_signing_key_from_jwt</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">token</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">signing_key</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">audience</span><span class="o">=</span><span class="s2">"https://expenses-api"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">"verify_exp"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"RS256"</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">{'iss': 'https://dev-87evx9ru.auth0.com/', 'sub': 'aW4Cca79xReLWUz0aE2H6kD0O3cXBVtC@clients', 'aud': 'https://expenses-api', 'iat': 1572006954, 'exp': 1572006964, 'azp': 'aW4Cca79xReLWUz0aE2H6kD0O3cXBVtC', 'gty': 'client-credentials'}</span>
+</pre></div>
+</div>
+<p>If the <code class="docutils literal notranslate"><span class="pre">kid</span></code> is not found in the current key set, <code class="docutils literal notranslate"><span class="pre">PyJWKClient</span></code>
+automatically refreshes the JWKS from the endpoint and retries before raising
+an error.</p>
+<p><code class="docutils literal notranslate"><span class="pre">PyJWKClient</span></code> also includes built-in caching to avoid unnecessary network
+requests. See <a class="reference internal" href="api.html#jwt.PyJWKClient" title="jwt.PyJWKClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyJWKClient</span></code></a> in the API reference for details on
+the caching parameters.</p>
+</section>
+<section id="oidc-login-flow">
+<h2>OIDC Login Flow<a class="headerlink" href="#oidc-login-flow" title="Link to this heading"></a></h2>
+<p>The following usage demonstrates an OIDC login flow using pyjwt. Further
+reading about the OIDC spec is recommended for implementers.</p>
+<p>In particular, this demonstrates validation of the <code class="docutils literal notranslate"><span class="pre">at_hash</span></code> claim.
+This claim relies on data from outside of the the JWT for validation. Methods
+are provided which support computation and validation of this claim, but it
+is not built into pyjwt.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jwt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="c1"># Part 1: setup</span>
+<span class="c1"># get the OIDC config and JWKs to use</span>
+
+<span class="c1"># in OIDC, you must know your client_id (this is the OAuth 2.0 client_id)</span>
+<span class="n">client_id</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="c1"># example of fetching data from your OIDC server</span>
+<span class="c1"># see: https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig</span>
+<span class="n">oidc_server</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">oidc_config</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"https://</span><span class="si">{</span><span class="n">oidc_server</span><span class="si">}</span><span class="s2">/.well-known/openid-configuration"</span>
+<span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">signing_algos</span> <span class="o">=</span> <span class="n">oidc_config</span><span class="p">[</span><span class="s2">"id_token_signing_alg_values_supported"</span><span class="p">]</span>
+
+<span class="c1"># setup a PyJWKClient to get the appropriate signing key</span>
+<span class="n">jwks_client</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">PyJWKClient</span><span class="p">(</span><span class="n">oidc_config</span><span class="p">[</span><span class="s2">"jwks_uri"</span><span class="p">])</span>
+
+<span class="c1"># Part 2: login / authorization</span>
+<span class="c1"># when a user completes an OIDC login flow, there will be a well-formed</span>
+<span class="c1"># response object to parse/handle</span>
+
+<span class="c1"># data from the login flow</span>
+<span class="c1"># see: https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse</span>
+<span class="n">token_response</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">id_token</span> <span class="o">=</span> <span class="n">token_response</span><span class="p">[</span><span class="s2">"id_token"</span><span class="p">]</span>
+<span class="n">access_token</span> <span class="o">=</span> <span class="n">token_response</span><span class="p">[</span><span class="s2">"access_token"</span><span class="p">]</span>
+
+<span class="c1"># Part 3: decode and validate at_hash</span>
+<span class="c1"># after the login is complete, the id_token needs to be decoded</span>
+<span class="c1"># this is the stage at which an OIDC client must verify the at_hash</span>
+
+<span class="c1"># get signing_key from id_token</span>
+<span class="n">signing_key</span> <span class="o">=</span> <span class="n">jwks_client</span><span class="o">.</span><span class="n">get_signing_key_from_jwt</span><span class="p">(</span><span class="n">id_token</span><span class="p">)</span>
+
+<span class="c1"># now, decode_complete to get payload + header</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode_complete</span><span class="p">(</span>
+    <span class="n">id_token</span><span class="p">,</span>
+    <span class="n">key</span><span class="o">=</span><span class="n">signing_key</span><span class="p">,</span>
+    <span class="n">audience</span><span class="o">=</span><span class="n">client_id</span><span class="p">,</span>
+    <span class="n">algorithms</span><span class="o">=</span><span class="n">signing_algos</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">payload</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"payload"</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">"header"</span><span class="p">]</span>
+
+<span class="c1"># get the pyjwt algorithm object</span>
+<span class="n">alg_obj</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">get_algorithm_by_name</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"alg"</span><span class="p">])</span>
+
+<span class="c1"># compute at_hash, then validate / assert</span>
+<span class="n">digest</span> <span class="o">=</span> <span class="n">alg_obj</span><span class="o">.</span><span class="n">compute_hash_digest</span><span class="p">(</span><span class="n">access_token</span><span class="p">)</span>
+<span class="n">at_hash</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span><span class="n">digest</span><span class="p">[:</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)])</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">"="</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">at_hash</span> <span class="o">==</span> <span class="n">payload</span><span class="p">[</span><span class="s2">"at_hash"</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="faq.html" class="btn btn-neutral float-right" title="Frequently Asked Questions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2022, José Padilla.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

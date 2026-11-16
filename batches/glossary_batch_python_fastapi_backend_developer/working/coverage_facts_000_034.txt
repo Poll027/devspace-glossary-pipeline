@@ -1,0 +1,158 @@
+@0
+fa_cors#origin :: A browser origin is the combination of scheme, host and port; a difference in any of these makes two URLs cross-origin.
+mdn_cors#functional-overview :: Browser same-origin restrictions limit a script's access to cross-origin responses unless the server permits that access through CORS.
+ow_REST_Security#access-control :: An API must check access at its endpoints independently of the browser's cross-origin restrictions.
+@1
+rfc_9110_http_semantics#9.2.1 :: A safe method has essentially read-only requested semantics; incidental effects such as logging do not make it unsafe.
+rfc_9110_http_semantics#9.2.2 :: A method is idempotent when multiple identical requests have the same intended server effect as one request, even if responses differ.
+rfc_9110_http_semantics#9.3.1 + rfc_9110_http_semantics#9.3.2 :: GET retrieves a selected representation and HEAD requests the same semantics without response content; both are safe and idempotent.
+rfc_9110_http_semantics#9.3.3 :: POST requests resource-specific processing of submitted content and is not generally idempotent.
+rfc_9110_http_semantics#9.3.4 + rfc_9110_http_semantics#9.3.5 :: PUT creates or replaces the target resource's state and DELETE removes its association with current functionality; both are idempotent but not safe.
+@2
+rfc_9110_http_semantics#8.3 :: Content-Type describes the media type of the associated representation, rather than the client's preferred response format.
+rfc_9110_http_semantics#12.5.1 :: Accept communicates acceptable response media types, with quality values expressing relative preference.
+ow_REST_Security#validate-content-types + rfc_9110_http_semantics#8.3 :: For a JSON exchange, send Content-Type: application/json for JSON content and Accept: application/json to request a JSON response, and inspect the response Content-Type separately.
+@3
+fastapi_docs_python_types#type-hints :: Annotate a function parameter with name: Type and its return value with -> Type; Python type hints alone do not enforce runtime validation.
+fastapi_docs_python_types#union :: Type | None permits None, while a default such as = None separately permits omitting a Python function argument.
+fastapi_docs_python_types#generic-types-with-type-parameters :: list[str], set[str], tuple[int, str] and dict[str, int] annotate a list of strings, a set of strings, a two-element integer/string tuple and a string-to-integer dictionary respectively.
+@4
+py_classes#class-definition-syntax :: A class statement creates a class whose methods define behavior, and calling the class creates an instance.
+py_classes#class-objects + py_classes#method-objects :: Define __init__(self, ...) to initialize an instance and assign self.attribute to store that instance's state; an instance method receives that instance as its first argument.
+py_classes#class-and-instance-variables :: Instance variables hold data specific to each instance, while class variables are shared by instances of the class.
+py_classes#class-and-instance-variables :: A mutable class variable can be shared unintentionally; initialize a fresh mutable value on self inside __init__ when instances need independent values.
+@5
+py_compound#the-with-statement :: Use with manager as resource: followed by an indented block to enter a managed resource scope.
+py_compound#the-with-statement :: If __enter__ returns successfully, the with statement calls __exit__ when the block exits normally or through an exception.
+py_compound#the-with-statement :: __exit__ receives exception details on exceptional exit and can suppress the exception by returning a true value; cleanup does not itself imply suppression.
+py_errors#predefined-clean-up-actions :: Using with open(...) as file closes the file after the block, including when an exception occurs.
+@6
+py_asyncio#coroutines + py_expressions#await-expression :: Calling an async def function produces a coroutine; awaiting it runs it and returns its result when it completes.
+py_asyncio#task-object :: An event loop uses cooperative scheduling, running one task at a time and allowing other tasks to run while a task waits on a pending future.
+py_data_model#coroutines + py_asyncio#task-object :: An await can complete without suspension when its awaited operation completes immediately; the presence of await alone does not establish a switch to another task.
+py_asyncio#task-object :: When a future awaited by a suspended task completes, execution of that task's coroutine resumes.
+py_asyncio#sleeping :: To trace suspension concretely, mark await asyncio.sleep(...) as a suspension point; sleep suspends the current task, including when its delay is zero.
+@7
+py_compound#function-definitions :: A decorator expression is evaluated when a function is defined, called with the function object, and its returned value is bound to the function name.
+py_compound#function-definitions :: @decorate above def function(...): applies decoration roughly like function = decorate(function).
+py_compound#function-definitions + py_controlflow#defining-functions :: A callable wrapper can be built by defining an inner function that calls the supplied function and returning that inner function from the decorator.
+py_compound#function-definitions :: With multiple decorators, the decorator nearest the function is applied first, so tracing decoration follows nested applications from the inside outward.
+@8
+py_venv#virtual-environments-and-packages :: A virtual environment has a particular Python installation and its own installed packages, allowing applications to use different dependency versions.
+py_venv#creating-virtual-environments :: Create an environment with python -m venv .venv and activate it with source .venv/bin/activate on Unix or .venv\Scripts\activate on Windows.
+py_venv#managing-packages-with-pip :: Use python -m pip install package within the environment to install a dependency, and python -m pip show package to inspect its installed version and location.
+fa_virtual-environments#check-the-virtual-environment-is-active :: Check which python on Unix or where python on Windows to confirm that the interpreter path belongs to the activated environment.
+@9
+asgi_intro#what-does-an-asgi-app-look-like :: An ASGI server handles the network connection and invokes an application callable through the ASGI interface.
+asgi_intro#what-does-an-asgi-app-look-like :: The application callable has the shape async def app(scope, receive, send), where scope describes the connection and receive and send exchange protocol events.
+asgi_intro#show-me-the-code :: Trace an HTTP exchange from the server invoking the application through input events to the application sending response headers followed by response body events.
+@10
+ow_Password_Storage#introduction :: Password storage should use password hashing rather than plaintext storage or reversible encryption.
+ow_Password_Storage#salting + ow_Password_Storage#using-work-factors :: Salts distinguish password hashes, while an adjustable work factor increases the cost of password guessing.
+fa_security_oauth2-jwt#hash-and-verify-the-passwords :: Create PasswordHash.recommended() from pwdlib, store the result of its hash(password) method, and verify a submitted password with verify(plain_password, stored_hash).
+@11
+sa_metadata#defining-table-metadata-with-the-orm :: A mapped class associates Python attributes with a database table's columns; inherit from DeclarativeBase and declare attributes with Mapped[Type] and mapped_column(...).
+sa_metadata#declaring-mapped-classes :: Declare a primary-key attribute with mapped_column(primary_key=True) to identify persistent rows.
+sa_metadata#declaring-mapped-classes :: __tablename__ gives the table name in a declarative mapped class, while mapped_column arguments and annotations describe column details.
+@12
+mdn_cors#preflighted-requests :: A browser preflights some cross-origin requests with OPTIONS to ask whether the intended method and headers are permitted before sending the actual request.
+fa_cors#cors-preflight-requests :: A CORS preflight includes Origin and Access-Control-Request-Method; Access-Control-Request-Headers identifies requested headers when applicable.
+mdn_cors#preflighted-requests :: Verify a preflight by sending the caller's Origin and intended method and headers, then comparing Access-Control-Allow-Origin, Access-Control-Allow-Methods and Access-Control-Allow-Headers with that request.
+mdn_cors#requests-with-credentials :: A credentialed cross-origin response requires an explicit allowed origin rather than * and Access-Control-Allow-Credentials: true.
+@13
+rfc_9110_http_semantics#15 :: HTTP status classes distinguish informational 1xx, successful 2xx, redirection 3xx, client error 4xx and server error 5xx outcomes.
+rfc_9110_http_semantics#15.3.1 + rfc_9110_http_semantics#15.3.2 + rfc_9110_http_semantics#15.3.5 :: Use 200 for a successful request, 201 when the request creates a resource, and 204 for successful completion with no response content.
+rfc_9110_http_semantics#15.5.1 + rfc_9110_http_semantics#15.5.2 + rfc_9110_http_semantics#15.5.4 + rfc_9110_http_semantics#15.5.5 + rfc_9110_http_semantics#15.5.10 :: 400 denotes a perceived client request error, 401 lacks valid authentication credentials, 403 refuses fulfillment, 404 does not find or disclose the target, and 409 conflicts with current resource state.
+rfc_9110_http_semantics#15.6.1 + rfc_9110_http_semantics#15.6.4 :: 500 denotes an unexpected server condition and 503 denotes temporary inability to handle the request, such as overload or maintenance.
+@14
+pydantic_models_docs#basic-model-usage :: Define a Pydantic model by subclassing BaseModel and declaring typed fields, then construct it with Model(field=value, ...) or validate data with Model.model_validate(data).
+pydantic_models_docs#data-conversion :: Pydantic validation can convert compatible inputs to declared types; its default validation is not a guarantee that input values already had those types.
+pydantic_models_docs#error-handling :: Inputs that cannot satisfy a model raise ValidationError with details about the failed fields.
+pydantic_models_docs#required-fields :: A field without a default is required; a declared default supplies its value when it is omitted.
+@15
+py_venv#managing-packages-with-pip :: python -m pip freeze reports installed packages and versions, and its output can be saved to requirements.txt for a dependency declaration.
+py_venv#managing-packages-with-pip :: Install declared dependencies in an environment with python -m pip install -r requirements.txt.
+py_venv#managing-packages-with-pip + tf_build-release-run#the-twelve-factor-app :: Reconstruct the environment from committed dependency declarations rather than relying on packages installed manually in another environment; the build stage obtains the declared dependencies.
+@16
+py_modules#packages :: Packages organize modules with qualified names such as package.module; regular packages contain an __init__.py file.
+py_modules#intra-package-references :: Import across a package with an absolute package-qualified import or a relative import using leading dots, whose meaning depends on the current package.
+py_modules#executing-modules-as-scripts :: Run a module in its package context with python -m package.module; its __name__ is then __main__.
+@17
+pg_constraints#ddl-constraints-not-null :: NOT NULL prevents a column from containing a null value, independently of whether the write came through an application.
+pg_constraints#ddl-constraints-unique :: UNIQUE rejects duplicate combinations in its constrained columns, with PostgreSQL treating nulls as distinct by default unless NULLS NOT DISTINCT is specified.
+pg_constraints#ddl-constraints-primary-keys :: PRIMARY KEY provides unique, non-null row identity and can contain more than one column.
+pg_constraints#ddl-constraints-fk :: FOREIGN KEY requires non-null referencing values to match referenced rows, preserving referential integrity.
+pg_constraints#ddl-constraints-check-constraints :: Declare CHECK (condition) to constrain values in a row; a check passes when its expression is true or null, so use NOT NULL separately when absence must be rejected.
+@18
+fa_events#lifespan :: A lifespan context manages initialization before the application takes requests and cleanup after it finishes handling requests.
+fa_events#lifespan-function :: Define an @asynccontextmanager async function with acquisition before yield and cleanup after yield, and pass it as FastAPI(lifespan=lifespan).
+fa_events#use-case :: Acquire a shared application-lifetime resource once in lifespan so request handlers can use it without repeating its startup work for each request.
+@19
+sa_orm_related_objects#relationship :: relationship() maps object navigation between mapped entities, alongside the foreign key columns that represent the association in the database.
+sa_metadata#declaring-mapped-classes + sa_orm_related_objects#relationship :: Declare the referencing column with mapped_column(ForeignKey("table.column")) and a related-object or collection attribute with relationship().
+sa_orm_related_objects#relationship :: Use back_populates on both relationship attributes to name each other and establish bidirectional in-Python association behavior.
+@20
+pd_fields#numeric-constraints :: Use Field(gt=..., ge=..., lt=..., le=..., multiple_of=...) to enforce exclusive bounds, inclusive bounds and divisibility on numeric values.
+pd_fields#string-constraints :: Use Field(min_length=..., max_length=..., pattern=...) to constrain a string's length and regular-expression match.
+fa_body-fields#declare-model-attributes :: Put Field(...) on a typed model attribute to apply its validation constraints when the model is constructed.
+@21
+pydantic_models_docs#nested-models :: A model field annotated with another BaseModel class composes that submodel's validation into the enclosing model.
+fa_body-nested-models#use-the-submodel-as-a-type + fa_body-nested-models#attributes-with-lists-of-submodels :: Declare a nested object with field: Submodel or a collection with field: list[Submodel] to validate the corresponding nested data.
+pydantic_models_docs#error-handling :: Validation errors locate failed nested fields with a path that can include field names and collection element indexes.
+@22
+rfc_9110_http_semantics#9.3.1 + fa_first-steps#path :: A URL path identifies a resource, and an HTTP method supplies the operation semantics rather than the path alone determining the action.
+fa_query-params#query-parameters + fa_path-params#path-parameters :: Model an item resource with a path parameter for its identifier and a collection resource without that item identifier.
+rfc_9110_http_semantics#9.3.1 + rfc_9110_http_semantics#9.3.3 + rfc_9110_http_semantics#9.3.4 + rfc_9110_http_semantics#9.3.5 :: Specify retrieval with GET, collection-specific creation processing with POST, target replacement with PUT and removal with DELETE, preserving each method's semantics.
+rfc_9110_http_semantics#15.3.2 + rfc_9110_http_semantics#15.5.5 :: A creation contract can use 201 with a Location identifying the created resource, while an absent item can use 404.
+@23
+fa_first-steps#define-a-path-operation-decorator :: Create a FastAPI instance and register a handler with @app.get("/path") or the corresponding decorator for another HTTP method.
+fa_first-steps#step-3-create-a-path-operation :: A path operation is the combination of an HTTP method and a path; handlers registered for different methods on the same path serve different operations.
+fa_path-params#order-matters :: Routes are evaluated in order, so declare a fixed path before a conflicting parameterized path to prevent the latter from capturing it.
+@24
+fa_settings#pydantic-settings :: Subclass BaseSettings from pydantic_settings and declare typed fields to load and validate external configuration.
+fa_settings#create-the-settings-object :: Construct Settings() to read environment variables and validate their types, with missing required settings or invalid values producing validation failures.
+fa_settings#reading-a-env-file :: Use SettingsConfigDict(env_file=".env") as model_config when a dotenv file should provide settings; environment variables take precedence over its values.
+fa_settings#settings-and-testing :: Supply configuration through a settings dependency so the settings input can be replaced without hard-coding it inside operation logic.
+@25
+httpx_async#making-async-requests :: Use httpx.AsyncClient and await client.get(...), client.post(...) or another request method for an asynchronous outbound call.
+httpx_async#opening-and-closing-clients :: Reuse a scoped AsyncClient instead of creating clients inside a hot loop to benefit from connection pooling.
+httpx_async#opening-and-closing-clients :: Close a client with async with httpx.AsyncClient() as client or await client.aclose() at the end of its owning scope.
+@26
+pd_validators#model-validators :: Use @model_validator(mode='after') on an instance method to check an invariant involving multiple already-validated fields.
+pd_validators#model-validators :: An after-model validator raises ValueError when its invariant fails and returns self when validation succeeds.
+pd_validators#field-validators :: Use @field_validator('field', mode='after') with a classmethod for a custom check on one validated field, returning the validated value when accepted.
+@27
+fa_handling-errors#use-httpexception :: Raise HTTPException(status_code=..., detail=...) to stop the operation and return a deliberate HTTP rejection rather than returning the exception object.
+fa_handling-errors#add-custom-headers :: HTTPException accepts headers for required response metadata, such as an authentication challenge.
+fa_handling-errors#the-resulting-response :: FastAPI's default HTTPException response contains the supplied detail under the JSON key detail.
+@28
+fastapi_docs_async#in-a-hurry :: Use async def and await for an I/O library with awaitable operations; use a normal def handler for a blocking I/O library.
+fastapi_docs_async#path-operation-functions :: FastAPI runs a normal def path operation in an external thread pool, whereas an async def path operation runs as asynchronous execution.
+fastapi_docs_async#other-utility-functions :: FastAPI does not automatically move ordinary utility functions called directly by a handler to a thread pool; a blocking call inside async def can block the event loop.
+@29
+fa_bigger-applications#apirouter :: Create an APIRouter for a feature's operations and register those operations on that router rather than requiring all handlers to live in the main module.
+fa_bigger-applications#include-the-apirouters-for-users-and-items :: Import feature routers and call app.include_router(router) to assemble their operations into the application.
+fa_bigger-applications#include-an-apirouter-with-a-custom-prefix-tags-responses-and-dependencies :: An include_router prefix adds to the included operations' paths, and tags, dependencies and responses can be supplied at inclusion.
+@30
+fa_path-params#path-parameters-with-types :: Put a name in the route path as {name} and declare name: Type in the handler to bind and convert that path value.
+fa_query-params#query-parameters :: Handler parameters not present in the path are interpreted as query parameters when they are ordinary scalar types.
+fa_query-params#defaults + fa_query-params#required-query-parameters :: A query parameter with a default may be omitted, while a parameter without a default is required; the type controls conversion of a supplied string.
+fa_path-params#data-validation :: A path value that cannot be converted to its declared type produces a validation error instead of invoking the handler with that unconverted value.
+@31
+fa_response-model#response-model-parameter :: Set response_model=PublicModel on the operation decorator to validate, serialize and filter the returned value to that public model.
+fa_response-model#add-an-output-model :: Define the output model without private fields so those fields are not returned merely because they exist on the internal object.
+fa_response-model#response-model-priority :: When both a return annotation and response_model are supplied, response_model takes priority for FastAPI's response processing.
+fa_response-model#return-a-response-directly :: Returning a Response object directly bypasses automatic response-model conversion and filtering, so the application is responsible for that content.
+@32
+fa_dependencies#declare-the-dependency-in-the-dependant :: Declare a handler input with Annotated[Type, Depends(provider)] to have FastAPI execute the provider and supply its returned value.
+fa_dependencies#declare-the-dependency-in-the-dependant :: Pass the provider callable to Depends rather than calling it in the declaration, so FastAPI can resolve its inputs.
+fa_dependencies#what-is-dependency-injection :: A dependency makes a handler's needed input explicit and can be reused by multiple operations for shared input-provision logic.
+@33
+httpx_timeouts#fine-tuning-the-configuration :: HTTPX distinguishes connect, read, write and pool timeouts; read and write limits bound waiting for individual chunks rather than a whole request's elapsed duration.
+httpx_timeouts#setting-and-disabling-timeouts :: Configure a finite timeout with httpx.AsyncClient(timeout=seconds) or a request's timeout= argument; timeout=None disables timeout enforcement.
+httpx_exceptions#the-exception-hierarchy :: HTTPX raises timeout exceptions such as ConnectTimeout, ReadTimeout, WriteTimeout and PoolTimeout when the corresponding wait exceeds its limit.
+py_asyncio#timeouts :: When the contract requires a total elapsed-time budget across asynchronous work, wrap the operation in async with asyncio.timeout(seconds); its cancellation is converted to TimeoutError outside the context.
+@34
+fa_dependencies#what-is-dependency-injection :: A dependency can extract reusable input-provision logic from individual operation handlers and expose the supplied value as a declared handler parameter.
+fa_handling-errors#use-httpexception + py_errors#user-defined-exceptions :: Keep protocol-specific HTTPException handling at the HTTP boundary and represent a separate application's failure with a custom exception class when it should not depend on HTTP.
+fa_bigger-applications#apirouter + fa_dependencies#simple-and-powerful :: Refactor shared logic into a callable and have feature handlers call it or receive it through a dependency, rather than duplicating that logic in each handler.
