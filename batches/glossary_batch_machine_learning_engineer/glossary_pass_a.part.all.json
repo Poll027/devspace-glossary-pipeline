@@ -3248,8 +3248,10 @@
           "id": "tb1",
           "purpose": "intro",
           "title": "Stop and Debug Training",
-          "content": "A validation quantity improves and then stalls. Early stopping is a predeclared controller over this sequence, not a decision to use whichever epoch happened to run last. Preserve the best checkpoint accepted under the declared minimum-improvement rule while training can still alter live parameters.",
-          "fact_ids": []
+          "content": "A validation quantity improves and then stalls. Early stopping is a predeclared controller over this sequence, not a decision to use whichever epoch happened to run last. Preserve the best checkpoint accepted under the declared minimum-improvement rule while training can still alter live parameters.\n\nSource for checkpoint reference versus copy: [PyTorch Saving and Loading Models — Save/Load state_dict (Recommended), best_model_state note](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html).",
+          "fact_ids": [
+            "f4"
+          ]
         },
         {
           "id": "tb2",
@@ -3266,7 +3268,7 @@
           "id": "tb3",
           "purpose": "mechanism",
           "title": "Apply and verify",
-          "content": "A state_dict refers to live parameter values, so preserve a best-epoch state with a deep copy or a saved state file before later updates alter the model. Do not use protected test observations to fit preprocessing, choose a model or tune its settings; doing so leaks information into the chosen system. Implement the controller as a while loop bounded by maximum epochs and the non-improvement rule; update best loss/checkpoint inside the improvement branch and use break when patience is exhausted.",
+          "content": "A state_dict refers to live parameter values, so preserve a best-epoch state with a deep copy or a saved state file before later updates alter the model. Do not use protected test observations to fit preprocessing, choose a model or tune its settings; doing so leaks information into the chosen system. Implement the controller as a while loop bounded by maximum epochs and the non-improvement rule; update best loss/checkpoint inside the improvement branch and use break when patience is exhausted.\n\nSource for checkpoint reference versus copy: [PyTorch Saving and Loading Models — Save/Load state_dict (Recommended), best_model_state note](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html).",
           "fact_ids": [
             "f4",
             "f5",
@@ -3277,7 +3279,7 @@
           "id": "tb4",
           "purpose": "example",
           "title": "A bounded work example",
-          "content": "Suppose minimized validation values are 0.50, 0.44, 0.43 and 0.45, with min_delta 0.02 and patience 2. The move from 0.50 to 0.44 is sufficient improvement and resets the counter. The value 0.43 does not satisfy 0.43 < 0.44−0.02, so the counter becomes one; 0.45 makes it two and exhausts patience. The lowest observed value is 0.43, but the best checkpoint accepted under min_delta is the one at 0.44. Retain the 0.44 checkpoint’s weights, preserving them by deep copy or a saved state file. Bound the while loop by maximum epochs as well as the non-improvement rule. Protected-test observations do not decide patience or checkpoint choice.\n\nTrace the controller's counter explicitly after every validation value. Reset only when the minimized quantity improves by more than min_delta, increment otherwise and stop when patience is exhausted or the epoch bound is reached. The fixture's small decrease from 0.44 to 0.43 is intentionally insufficient under the declared 0.02 rule. Save or deep-copy the 0.44 checkpoint’s weights when that qualifying improvement is accepted. This separates controller state from the live model state that later epochs can change. Restore that saved checkpoint for subsequent use rather than the last weights merely because they were the most recently trained.",
+          "content": "Suppose minimized validation values are 0.50, 0.44, 0.43 and 0.45, with min_delta 0.02 and patience 2. The move from 0.50 to 0.44 is sufficient improvement and resets the counter. The value 0.43 does not satisfy 0.43 < 0.44−0.02, so the counter becomes one; 0.45 makes it two and exhausts patience. The lowest observed value is 0.43, but the best checkpoint accepted under min_delta is the one at 0.44. Retain the 0.44 checkpoint’s weights, preserving them by deep copy or a saved state file. Bound the while loop by maximum epochs as well as the non-improvement rule. Protected-test observations do not decide patience or checkpoint choice.\n\nTrace the controller's counter explicitly after every validation value. Reset only when the minimized quantity improves by more than min_delta, increment otherwise and stop when patience is exhausted or the epoch bound is reached. The fixture's small decrease from 0.44 to 0.43 is intentionally insufficient under the declared 0.02 rule. Save or deep-copy the 0.44 checkpoint’s weights when that qualifying improvement is accepted. This separates controller state from the live model state that later epochs can change. Restore that saved checkpoint for subsequent use rather than the last weights merely because they were the most recently trained.\n\nSource for checkpoint reference versus copy: [PyTorch Saving and Loading Models — Save/Load state_dict (Recommended), best_model_state note](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html).",
           "fact_ids": [
             "f1",
             "f2",
@@ -3291,7 +3293,7 @@
           "id": "tb5",
           "purpose": "misconception",
           "title": "A distinction to keep",
-          "content": "A state_dict reference is not necessarily a frozen best-epoch snapshot. Later updates can alter live parameter values, and ‘slightly lower’ is not sufficient improvement when it fails the declared min_delta rule.",
+          "content": "A state_dict reference is not necessarily a frozen best-epoch snapshot. Later updates can alter live parameter values, and ‘slightly lower’ is not sufficient improvement when it fails the declared min_delta rule.\n\nSource for checkpoint reference versus copy: [PyTorch Saving and Loading Models — Save/Load state_dict (Recommended), best_model_state note](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html).",
           "fact_ids": [
             "f2",
             "f4"

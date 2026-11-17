@@ -4,7 +4,7 @@
     "schema_version": "1.0.0",
     "artifact_type": "coverage_briefs",
     "batch_id": "glossary_batch_machine_learning_engineer",
-    "generated_at": "2026-11-17T02:51:57.283242+00:00",
+    "generated_at": "2026-11-17T06:46:49.147693+00:00",
     "model": "none",
     "prompt_version": "03_coverage_brief@v1",
     "source_snapshot_id": "glossary_batch_machine_learning_engineer",
@@ -683,14 +683,14 @@
           },
           {
             "id": "f4",
-            "statement": "Compute the arithmetic mean with np.mean(numeric_values, axis=0), so each selected numeric feature column is summarized over rows.",
+            "statement": "Compute the arithmetic mean with np.mean(observed_training_values, axis=0), so each selected numeric feature column is summarized over rows.",
             "source_refs": [
               "numpy_user_guide#reference/generated/numpy.mean.html \u2014 Parameters; Notes"
             ]
           },
           {
             "id": "f5",
-            "statement": "Compute standard deviation with np.std(numeric_values, axis=0, ddof=0), which divides squared deviations by N before taking the square root; use ddof=1 only when the stated calculation requires the N\u22121 divisor.",
+            "statement": "Compute standard deviation with np.std(observed_training_values, axis=0, ddof=0), which divides squared deviations by N before taking the square root; use ddof=1 only when the stated calculation requires the N\u22121 divisor.",
             "source_refs": [
               "numpy_user_guide#reference/generated/numpy.std.html \u2014 Parameters; Notes"
             ]
@@ -700,6 +700,15 @@
             "statement": "Write assert predicate checks for the declared valid, boundary and failure cases; a false predicate raises AssertionError during ordinary non-optimized execution.",
             "source_refs": [
               "python_tutorial#../reference/simple_stmts.html \u2014 The assert statement"
+            ]
+          },
+          {
+            "id": "f7",
+            "statement": "For each feature, calculate training mean and spread from observed, nonmissing training values only; when missing values are represented by NaN, np.nanmean(X_train, axis=0) and np.nanstd(X_train, axis=0, ddof=0) ignore them, and for strategy=\"mean\" compare the resulting feature means with the fitted imputer statistics_ rather than computing ordinary np.mean/np.std on NaN-containing data.",
+            "source_refs": [
+              "numpy_user_guide#reference/generated/numpy.nanmean.html \u2014 Description; See also; Notes",
+              "numpy_user_guide#reference/generated/numpy.nanstd.html \u2014 Description; Parameters",
+              "scikit_learn_user_guide#modules/generated/sklearn.impute.SimpleImputer.html \u2014 Parameters: strategy; Attributes: statistics_"
             ]
           }
         ],
@@ -2498,7 +2507,7 @@
             "id": "f4",
             "statement": "A state_dict refers to live parameter values, so preserve a best-epoch state with a deep copy or a saved state file before later updates alter the model.",
             "source_refs": [
-              "pytorch_learn_basics#saveloadrun_tutorial.html \u2014 Saving and Loading Model Weights"
+              "pytorch_saving_loading_models#https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html \u2014 Save/Load state_dict (Recommended): best_model_state note"
             ]
           },
           {
@@ -6418,7 +6427,7 @@
           },
           {
             "id": "f7",
-            "statement": "Use gcloud compute instances describe INSTANCE --zone=ZONE to inspect the instance status and identity before and after the authorized lifecycle action.",
+            "statement": "Use gcloud compute instances describe INSTANCE --zone=ZONE to inspect instance status and identity for matching with the workload telemetry.",
             "source_refs": [
               "google_mlops_pipelines#https://docs.cloud.google.com/sdk/gcloud/reference/compute/instances/describe \u2014 DESCRIPTION; EXAMPLES"
             ]
@@ -6674,7 +6683,8 @@
             "id": "f5",
             "statement": "Stop only a verified retired container with docker container stop NAME, then remove that stopped retired container with docker container rm NAME.",
             "source_refs": [
-              "docker_docs#https://docs.docker.com/reference/cli/docker/container/stop/ \u2014 Description"
+              "docker_docs#https://docs.docker.com/reference/cli/docker/container/stop/ \u2014 Description",
+              "docker_docs#https://docs.docker.com/reference/cli/docker/container/rm/ \u2014 Description; Remove a container; Remove all stopped containers"
             ]
           },
           {
@@ -6707,9 +6717,11 @@
           },
           {
             "id": "f10",
-            "statement": "Use gcloud compute instances describe INSTANCE --zone=ZONE to inspect the instance status and identity before and after the authorized lifecycle action.",
+            "statement": "Before the deletion in f6, use gcloud compute instances describe INSTANCE --zone=ZONE to inspect status and identity against the verified exclusively retired inventory; afterward verify the deletion operation completed successfully and repeat describe for the same project, zone and instance to check expected absence, accepting only a not-found response for that instance as absence evidence, not authentication, permission or other failures.",
             "source_refs": [
-              "google_mlops_pipelines#https://docs.cloud.google.com/sdk/gcloud/reference/compute/instances/describe \u2014 DESCRIPTION; EXAMPLES"
+              "google_mlops_pipelines#https://docs.cloud.google.com/sdk/gcloud/reference/compute/instances/describe \u2014 DESCRIPTION; EXAMPLES",
+              "google_mlops_pipelines#https://cloud.google.com/compute/docs/instances/deleting-instance \u2014 Delete an instance: client-library examples (wait for operation completion and check errors)",
+              "google_mlops_pipelines#https://docs.cloud.google.com/compute/docs/reference/rest/v1/errors \u2014 RESOURCE_NOT_FOUND; PERMISSIONS_ERROR"
             ]
           }
         ],
