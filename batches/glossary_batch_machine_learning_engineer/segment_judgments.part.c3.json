@@ -1,0 +1,137 @@
+{
+  "metadata": {
+    "artifact_type": "segment_judgments",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_machine_learning_engineer",
+    "run_id": "glossary_batch_machine_learning_engineer",
+    "prompt_version": "09_segment_judge@v1",
+    "model": "gpt-6.1-sol",
+    "generated_at": "2026-11-17T04:15:32.938401+00:00",
+    "source_snapshot_id": "glossary_batch_machine_learning_engineer",
+    "parent_artifact_hashes": {
+      "segment_proposals.part.c3.json": "cbf8eb3611adfce96654f8618a385f26e6a5df401c881c418ecf41fea17b6759",
+      "coverage_briefs.json": "247562cbab53e2d516514f744978bbd360dc14c9f2c8bdef3942fc4f4f73e4f6",
+      "extracted_concepts.json": "a70b515826cfb3bff058a0c8de40ed3cae2ff686f3e30b2ad3772b92a3a21e4c"
+    }
+  },
+  "batch_id": "glossary_batch_machine_learning_engineer",
+  "judgments": [
+    {
+      "proposal_id": "prop_XswEBzNgIYc_neural_model_definition",
+      "verdict": "rejected_fact_mismatch",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 2,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read transcript 68\u2013312s and the catalogue (English, embeddable, creator captions, no chapters; thumbnail listed but no frames independently inspected). At 98.52\u2013132.80 the speaker starts a new explanation and builds a 10-by-5 input. At 133.60\u2013169.28 he identifies five input and three output features; the diagram callback is resolved locally as 'the number of outputs'. At 174.48\u2013216.84 he identifies the 3-by-5 weight matrix and three-value bias. At 245.78\u2013282.40 he applies the layer and prints a 10-by-3 result. These are useful annotated-code/slide cues, not evidence of a talking-head-only clip. No blocked concept is needed. BLOCKING coverage mismatch: the sole claimed f2 includes learned weights and bias, whereas this range only describes initialization and explicitly calls the parameters 'small random values' (230.72\u2013237.56); it never teaches their learned/trainable role. The official buildmodel tutorial, Model Parameters, explicitly says weights and biases are optimized during training. I therefore do not confirm the complete f2. No other required fact is taught completely in this range. Fix by finding a standalone clip that also identifies the parameters as learned/trainable, or revise the upstream fact/segment mapping to represent this narrower shape demonstration without claiming full f2. Tightening cannot add the missing teaching. The subsequent transpose explanation starts at 282.40 and was inspected but is not part of the proposal."
+    },
+    {
+      "proposal_id": "prop_DbeIqrwb_dE_autograd_gradients",
+      "verdict": "approved",
+      "final_start_seconds": 28,
+      "final_end_seconds": 397,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read transcript 0\u2013427s and catalogue chapters: setup 0\u201369, graph 69\u2013143, gradient calculation 143\u2013294, gradient requirements 294\u2013330, VJP 330\u2013492. Catalogue reports English captions and embeddability; thumbnail metadata supplies no independently verified frames. At 28.23 the speaker imports torch and creates randn(3); 54.60\u201376.08 introduces requires_grad=True. At 80.85\u2013130.89 x+2 is explained with an explicitly described computation graph. The forward/backward explanation at 144.58\u2013218.47 is local, not dependent on the deferred next video. At 223.44\u2013290.17 he builds 2*y*y, reduces it with mean, calls backward and prints x.grad. At 294.15\u2013330.91 he demonstrates the missing-requires-grad error. At 337.39\u2013397.09 he identifies the Jacobian-vector calculation as the chain rule and explains why the scalar output needs no backward argument. This supports f1, with narrated code execution and graph illustration providing visual value. BLOCKING proposed-coverage overclaim corrected here: f2's supplied scalar loss and trainable leaf-parameter inspection are not fully taught; this is a mathematical function of one illustrative x, not a loss over model parameters. Do not claim complete f2; use this as an f1 mechanism/demo supplement. The mean operation is ordinary already-available array mathematics, not a need to understand the blocked task-loss or optimizer concepts. Keep 28\u2013397: the slightly over-six-minute duration earns its length by retaining setup, the completed backward result, the error contrast, and the explicit chain-rule/scalar explanation. The non-scalar-backward example begins at 397.09 and is excluded."
+    },
+    {
+      "proposal_id": "prop_7q7E91pHoW4_task_loss_selection",
+      "verdict": "rejected_inaccurate",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 2,
+        "fact_coverage": 2,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read transcript 345\u2013640s and catalogue chapters: this lies within Cross Entropy Loss (194\u2013845), with English auto captions and embed availability. At 375.13\u2013400.22 the speaker starts a PyTorch criterion setup. At 411.14\u2013431.24 he correctly explains internal log-softmax plus NLL and not applying softmax to input logits. BLOCKING accuracy defect: at 431.24\u2013446.54 he states that Y 'must not be one hot encoded' and one 'should only put the correct class label', without restricting this assertion to the class-index target contract. Current approved CrossEntropyLoss documentation explicitly supports either class indices or floating class-probability targets of the same shape as logits; valid floating one-hot distributions are included. This 2020 blanket restriction is obsolete. At 459.29\u2013533.99 he creates class-zero targets and a one-by-three raw-score prediction, then a worse prediction. At 555.44\u2013610.70 he calls the criterion on both and shows the good prediction has lower loss; this does substantively teach f1. BLOCKING coverage overclaim: f2's long dtype, general target shape (N,), and valid target interval are not taught, so f2 is not confirmed. Narrated tensor edits, slide references, calls and execution suggest live-code/slides rather than a pure talking head, though frames were not directly inspected. No later concept is needed. A contiguous tightened cut cannot keep criterion setup and the complete demo while removing the inaccurate intervening target rule; a new accurate standalone source/range is needed. Merely label-matching this as a class-index example does not amend what the speaker says."
+    },
+    {
+      "proposal_id": "prop_oYRgpEmFQNQ_training_evaluation_modes",
+      "verdict": "approved",
+      "final_start_seconds": 143,
+      "final_end_seconds": 279,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 5,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read transcript 113\u2013309s and catalogue chapters, including Train mode and eval mode 144\u2013279. The spoken transition is at 143.65, so start 143 captures it better than the chapter's rounded 144. At 151.38\u2013175.98 he names model.train/model.eval and their effect on dropout/batch norm. At 178.75\u2013192.05 he explains noisy scoring when evaluation mode is forgotten. At 197.22\u2013231.57 he separates eval's layer behavior from torch.no_grad's graph recording and memory/time savings, explicitly saying 'Eval sets layer behaviour, no grad stops the graph.' At 232.97\u2013259.73 every epoch restores train mode and runs the forward/loss/zero-grad/backward/optimizer-step block. At 260.12\u2013271.55 a separate eval/no-grad/validation-loss block 'only reads a number'; together these teach forward-only validation and restoring train mode, f4, without an optimizer step in evaluation. The approved optimization/autograd sources support these distinctions. The referenced autograd, logits/loss and optimizer operations are in this concept's allowed knowledge; dropout/batch norm behavior is introduced locally as the concept itself, not an undeclared prerequisite. Code-block/operation narration supports annotated-code value, but thumbnail metadata is not direct frame verification. f5 assertions and the concrete f6 dropout masking/scaling fixture are absent and are not confirmed. The two-curve diagnosis starts at 279.10, so retain 143\u2013279 to avoid that extension. Catalogue reports English creator captions and reliable embeddability."
+    },
+    {
+      "proposal_id": "prop_9L9jEOwRrCg_weight_persistence",
+      "verdict": "rejected_inaccurate",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [
+        "f1",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 2,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 3,
+        "visual_teaching_value": 4,
+        "pacing": 3,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read transcript 149\u2013578s and catalogue chapters: Lazy Method 180\u2013320 and Recommended Method 320 onward; English captions and embed availability. At 179.91\u2013206.10 a small model and filename are introduced. At 206.10\u2013218.54 torch.save(model,file) writes the whole object; 262.56\u2013286.26 restores it with bare torch.load(file), then eval. BLOCKING modern-API accuracy defect: the whole-module reload is presented as immediately executable, but current approved saveloadrun documentation uses weights_only=False for this legacy pickle case, explicitly contrasting weights_only=True for weight loading. I also opened https://docs.pytorch.org/docs/2.15/generated/torch.load.html: its signature explicitly defaults weights_only=True and its parameter description restricts the loader to tensors, primitive types, dictionaries and allowlisted types. Under this weights-only default, this bare whole-model call fails for an ordinary custom Module. Do not publish this as an unchanged modern demo or silently assume an older environment; choose a current weights-only demo or explicitly version-bound source. At 320.31\u2013386.70 he switches to saving state_dict. At 390.14\u2013439.80 he constructs the matching model with six inputs, loads the mapping via load_state_dict(torch.load(file)), and calls eval. At 452.64\u2013491.22 he explicitly says no training occurred and visually compares the random initialized weight/bias tensors, then at 509.76\u2013548.20 shows state_dict's weight and bias entries. These teach the f1 persistence/compatible-architecture mechanism and f3, not f2's explicit weights_only=True, fixture predictions, assertions or quantitative comparisons. Saving untrained parameter state is a legitimate demonstration of the same persistence mechanism, not evidence of trained predictions. Code edits, script runs, explorer/file inspection and printed tensors support live-code visual value; no frames directly reviewed. No blocked device-placement lesson occurs before 548. The 369s duration is partly consumed by the obsolete whole-object alternative. Tightening to 320 would discard the only introduction of the model/filename used in the demo, leaving an unresolved setup dependency; select another self-contained accurate range rather than approving that cut. The checkpoint/optimizer extension beginning 548.20 is outside the proposal."
+    },
+    {
+      "proposal_id": "prop_sugvnHA7ElY_ml_training_script",
+      "verdict": "approved",
+      "final_start_seconds": 0,
+      "final_end_seconds": 298,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 2,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read transcript 0\u2013328s and catalogue chapters: Understanding __name__ 0\u2013103, importing 103\u2013204, guard 204\u2013305. Catalogue reports English auto captions, embeddability and a thumbnail; no direct frame verification. At 0.06\u201320.30 the topic is named and the initial guard is commented out for a controlled demonstration. At 24.03\u2013100.89 he prints __name__ and explains direct execution sets it to '__main__'. At 106.50\u2013171.73 the second module imports the first; its printed name changes to first_module. At 183.65\u2013204.83 the output distinguishes the imported module from the directly executed second module. At 204.83\u2013254.71 he reinstates the guard and a main function, then runs the first module directly. At 259.01\u2013298.62 he imports it from the second module and explains why the guarded main call and its output do not run. This completely supports f1 and needs neither later ML environment/versioning knowledge nor unseen prior code. Narrated editing, saving/running files and inspecting visible output provide live-code value despite the generic, non-ML example. The complete two-module comparison merits its 298s duration. The optional else example begins at 298.62 and is excluded by end 298, preserving the guard lesson without extending into a second variation. No f2\u2013f10 training/configuration/shell/repository claims are confirmed; partial concept coverage is appropriate for this narrowly labeled entry-point supplement."
+    }
+  ]
+}
