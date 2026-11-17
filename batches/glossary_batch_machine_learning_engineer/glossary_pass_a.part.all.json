@@ -111,10 +111,13 @@
           "id": "tb3",
           "purpose": "mechanism",
           "title": "Apply and verify",
-          "content": "Reject a violated input requirement with a conditional raise ValueError(message), rather than continuing with an invalid array. Write assert predicate checks for the declared valid, boundary and failure cases; a false predicate raises AssertionError during ordinary non-optimized execution.",
+          "content": "Define the validator with def, its name, parenthesized parameters and a colon. The indented lines form its body. Each if guard also ends with a colon; its further-indented raise ValueError(...) executes only when that guard is true, rejecting the input instead of continuing. Check rank before indexing the second axis. The return statement sends the accepted array back to the caller.\n\n```python\nimport numpy as np\n\ndef validate_input(fixture, feature_count, batch_count):\n    a = np.array(fixture)\n    if a.ndim != 2:\n        raise ValueError(\"expected batch and feature axes\")\n    if a.shape[1] != feature_count:\n        raise ValueError(\"wrong feature count\")\n    if a.shape[0] != batch_count:\n        raise ValueError(\"wrong batch count\")\n    return a\n\naccepted = validate_input([[2, 10], [4, 20], [6, 30]], 2, 3)\nassert accepted.shape == (3, 2)\n```\n\nHere fixture, feature_count and batch_count are parameters. The accepted call reaches return; validate_input([2, 10, 4, 20, 6, 30], 2, 3) instead enters the first guard and raises ValueError. Write assert predicate checks for declared valid, boundary and failure fixtures; a false predicate raises AssertionError during ordinary non-optimized execution.",
           "fact_ids": [
+            "f2",
+            "f3",
             "f4",
-            "f5"
+            "f5",
+            "f6"
           ]
         },
         {
@@ -259,12 +262,14 @@
           "id": "tb4",
           "purpose": "example",
           "title": "A bounded work example",
-          "content": "For the invented matrix [[2, 10], [4, 20], [6, 30]], subtract [1, 5]. The trailing feature lengths match, so the result is [[1, 5], [3, 15], [5, 25]], with shape (3, 2). Verify it against a list-comprehension reference using explicit tolerances. Now compare operands shaped (3, 1) and (1, 2): compatible broadcasting yields a (3, 2) result, not a (3, 1) result. If the contract expected one output per observation without an extra feature axis, compatibility alone would not make that result acceptable. Write the intended result shape beside the numerical reference, and check both instead of accepting an operation simply because it completed.\n\nWork through one output row to check meaning as well as compatibility. The first row [2, 10] minus the two feature references [1, 5] becomes [1, 5]. The same reference is then applied to each later observation. A reference operation should express that intended per-feature rule, not simply duplicate an accidental broadcast. For the (3, 1) and (1, 2) case, expanding three row positions against two column positions creates six outputs. That is why validating the output shape matters even when no exception was raised. The check ties the succinct operation to a concrete result rather than treating compact syntax as correctness.",
+          "content": "For the invented matrix [[2, 10], [4, 20], [6, 30]], subtract [1, 5]. The trailing feature lengths match, so the result is [[1, 5], [3, 15], [5, 25]], with shape (3, 2). Verify it against a list-comprehension reference using explicit tolerances. Now compare operands shaped (3, 1) and (1, 2): compatible broadcasting yields a (3, 2) result, not a (3, 1) result. If the contract expected one output per observation without an extra feature axis, compatibility alone would not make that result acceptable. Write the intended result shape beside the numerical reference, and check both instead of accepting an operation simply because it completed.\n\nWork through one output row to check meaning as well as compatibility. The first row [2, 10] minus the two feature references [1, 5] becomes [1, 5]. The same reference is then applied to each later observation. A reference operation should express that intended per-feature rule, not simply duplicate an accidental broadcast. For the (3, 1) and (1, 2) case, expanding three row positions against two column positions creates six outputs. That is why validating the output shape matters even when no exception was raised. The check ties the succinct operation to a concrete result rather than treating compact syntax as correctness.\n\nConstruct both references rather than just naming a row-wise check. Allocate a zero-filled output with np.zeros(output_shape, dtype=declared_dtype); this example declares shape (3, 2) and dtype float64. The for header ends with a colon and its assignment is indented. range stops before the row count, so i is 0, 1, then 2. input_array[i] selects row i and reference[i] assigns its transformed row.\n\n```python\nimport numpy as np\n\ninput_array = np.array([[2, 10], [4, 20], [6, 30]], dtype=np.float64)\nfeature_reference = np.array([1, 5], dtype=np.float64)\narray_result = input_array - feature_reference\nreference = np.zeros((3, 2), dtype=np.float64)\nfor i in range(input_array.shape[0]):\n    reference[i] = input_array[i] - feature_reference\nreference_list = [row - feature_reference for row in input_array]\ncomprehension_reference = np.array(reference_list)\nassert array_result.shape == (3, 2)\nnp.testing.assert_allclose(array_result, reference, rtol=1e-7, atol=1e-9)\nnp.testing.assert_allclose(array_result, comprehension_reference, rtol=1e-7, atol=1e-9)\n```\n\nThe comprehension follows [expression for item in sequence]: each row supplies the expression row - feature_reference, producing a new list, which np.array converts before comparison. The loop assigns [1, 5], [3, 15] and [5, 25] to rows 0, 1 and 2; the comprehension constructs those same rows. Both therefore agree with the vectorized result under the explicit tolerances.",
           "fact_ids": [
             "f1",
             "f2",
             "f3",
-            "f4"
+            "f4",
+            "f5",
+            "f6"
           ]
         },
         {
@@ -469,11 +474,12 @@
           "id": "tb3",
           "purpose": "mechanism",
           "title": "Apply and verify",
-          "content": "Return named readiness results as a dictionary from a parameterized inspection function, so callers can check the same fields. Compute the arithmetic mean with np.mean(numeric_values, axis=0), so each selected numeric feature column is summarized over rows. Compute standard deviation with np.std(numeric_values, axis=0, ddof=0), which divides squared deviations by N before taking the square root; use ddof=1 only when the stated calculation requires the N−1 divisor.",
+          "content": "Return named readiness results as a dictionary from a parameterized inspection function, so callers can check the same fields. Compute the arithmetic mean with np.mean(numeric_values, axis=0), so each selected numeric feature column is summarized over rows. Compute standard deviation with np.std(numeric_values, axis=0, ddof=0), which divides squared deviations by N before taking the square root; use ddof=1 only when the stated calculation requires the N−1 divisor.\n\nAn optional inspection setting uses name=default_value in the function signature. Omitting it at the call site uses that default; a keyword call name=value overrides it. For this numerical-summary example, use the standard-deviation divisor as the setting:\n\n```python\nimport numpy as np\n\ndef inspect_numeric(numeric_values, ddof=0):\n    return {\"mean\": np.mean(numeric_values, axis=0),\n            \"std\": np.std(numeric_values, axis=0, ddof=ddof)}\n\nvalues = np.array([[2, 10], [4, 20], [6, 30]])\npopulation_summary = inspect_numeric(values)\nsample_summary = inspect_numeric(numeric_values=values, ddof=1)\n```\n\nThe first call uses ddof=0: the first feature's standard deviation is sqrt(8/3), about 1.633. The second names both arguments and overrides ddof with 1: for a stated calculation requiring the N−1 divisor, that feature's result is sqrt(8/2)=2. The mean remains 4. Choose the override only when the stated calculation requires it.",
           "fact_ids": [
             "f4",
             "f5",
-            "f6"
+            "f6",
+            "f7"
           ]
         },
         {
@@ -2460,21 +2466,21 @@
           "id": "tb3",
           "purpose": "mechanism",
           "title": "Apply and verify",
-          "content": "Build the single record from the existing policy fields, preserving the supplied permitted identities, documented task limits and foreseeable misuse cases without extending the permission scope.",
+          "content": "Record any grant outside the existing policy’s permitted identity scope, and state only the limitations supported by the supplied evaluation. Do not extend permission scope or imply universal suitability.",
           "fact_ids": [
-            "f4"
+            "f1",
+            "f3"
           ]
         },
         {
           "id": "tb4",
           "purpose": "example",
           "title": "A bounded work example",
-          "content": "Suppose the supplied policy permits identity A but the inspected grant list also includes B. Record B as outside the permitted scope; do not add B to the policy to make the audit pass. If a sample image contains a literal credential, describe the handling limitation without copying that value. Include the documented task limits, foreseeable misuse cases and supported segment limitations from the supplied records. A better aggregate validation result does not justify wording that implies every segment is suitable. Build one record preserving the existing policy fields, so a reader can distinguish permitted use, an observed access mismatch and a supported evaluation limitation.\n\nUse policy language for permissions and evidence language for limitations. An observed grant mismatch is compared with the allowed identity set; it is not repaired by expanding that set in the documentation. A supported segment limitation belongs to the evaluation record and should be described at that scope. A credential-handling issue can be identified through the field or location concerned without reproducing the value. Preserve the task's foreseeable misuse cases and stated permitted use alongside the observed facts. This separation prevents the record from becoming either a new authorization policy or an unsupported claim of suitability.",
+          "content": "Suppose the supplied policy permits identity A but the inspected grant list also includes B. Record B as outside the permitted scope; do not add B to the policy to make the audit pass. If a sample image contains a literal credential, describe the handling limitation without copying that value. Include supported segment limitations from the supplied evaluation. A better aggregate validation result does not justify wording that implies every segment is suitable. Keep the existing permitted identity scope distinct from an observed access mismatch and a supported evaluation limitation.\n\nUse policy language for permissions and evidence language for limitations. An observed grant mismatch is compared with the allowed identity set; it is not repaired by expanding that set in the documentation. A supported segment limitation belongs to the evaluation record and should be described at that scope. A credential-handling issue can be identified through the field or location concerned without reproducing the value. This separation prevents the record from becoming either a new authorization policy or an unsupported claim of suitability.",
           "fact_ids": [
             "f1",
             "f2",
-            "f3",
-            "f4"
+            "f3"
           ]
         },
         {
@@ -2485,8 +2491,7 @@
           "fact_ids": [
             "f1",
             "f2",
-            "f3",
-            "f4"
+            "f3"
           ]
         }
       ],
@@ -2601,9 +2606,10 @@
           "id": "tb3",
           "purpose": "mechanism",
           "title": "Apply and verify",
-          "content": "Write assert predicate checks for the declared valid, boundary and failure cases; a false predicate raises AssertionError during ordinary non-optimized execution.",
+          "content": "Write assert predicate checks for the declared valid, boundary and failure cases; a false predicate raises AssertionError during ordinary non-optimized execution.\n\nMatrix multiplication is a different operation from elementwise multiplication. Use A @ B or torch.matmul(A, B). For two-dimensional inputs, (m, n) @ (n, p) produces (m, p): first check the matching inner dimensions A.shape[1] == B.shape[0], then check the output axes.\n\n```python\nimport torch\n\nA = torch.tensor([[2., 10.], [4., 20.], [6., 30.]])\nB = torch.tensor([[1.], [0.5]])\nassert A.shape[1] == B.shape[0]\nresult = A @ B\nassert result.shape == (3, 1)\nassert torch.matmul(A, B).shape == (3, 1)\n```\n\nHere (3, 2) @ (2, 1) gives (3, 1), with values [[7], [14], [21]]: the first output is 2×1 + 10×0.5. A weight fixture shaped (3, 1) would fail the inner-dimension check. A * B instead multiplies elements under elementwise broadcasting rules, not by summing these products; it is not a substitute for @.",
           "fact_ids": [
-            "f5"
+            "f5",
+            "f3"
           ]
         },
         {
@@ -2897,16 +2903,19 @@
           "id": "tb4",
           "purpose": "mechanism",
           "title": "Apply and verify",
-          "content": "For mean class-index cross-entropy without weighting, the derivative per sample logit is (softmax probability−one-hot target)/N, so output width, target identity and reduction affect the gradient reference.",
+          "content": "For the class-index cross-entropy fixture, assume unweighted mean reduction, no ignored examples and no label smoothing. N is the number of examples (rows) in logits of shape (N, C); C is the number of classes. Sum the per-example losses and divide by N. Each logit derivative is (softmax probability−one-hot target)/N.\n\nCompute sigmoid(z) = 1 / (1 + exp(−z)), where exp is the exponential function, for each binary logit's probability. For each row of C class logits, softmax gives p[c] = exp(z[c]) / sum_j exp(z[j]); the denominator sums over classes in that row, not over examples. torch.nn.Softmax(dim=1)(logits) performs this class-axis normalization for (N, C) logits. A one-hot target row places 1 at the target class index and 0 elsewhere. torch.nn.functional.one_hot(targets, num_classes=C) converts long indices of shape (N,) to rows of shape (N, C) for the manual gradient reference.",
           "fact_ids": [
-            "f7"
+            "f7",
+            "f8",
+            "f9",
+            "f10"
           ]
         },
         {
           "id": "tb5",
           "purpose": "example",
           "title": "A bounded work example",
-          "content": "For an unweighted mean squared-error fixture with outputs [2, 4] and targets [1, 2], the loss is (1²+2²)/2 = 2.5 and output derivatives are [1, 2]. For a binary-logit fixture with one logit 0 and target 1, sigmoid(0)=0.5, so the supplied mean-logit derivative is −0.5. For target 1, decreasing the logit increases loss, while increasing it decreases loss. For a class-index task with three classes, verify logits width 3 and long target indices in [0, 3); use the stated softmax-minus-one-hot reference with its sample-count reduction. These are distinct output contracts, not interchangeable wrappers around arbitrary tensors.\n\nKeep the mean-reduction factor visible in each reference. The two-element MSE fixture divides squared errors by two, while the one-element binary-logit fixture divides its sigmoid-minus-target derivative by one. A class-index cross-entropy reference subtracts the one-hot target from the softmax vector and divides by the sample count. Those equations support different target representations, so verify target dtype and axes before applying them. A positive-looking scalar loss is not proof of the right contract. Compare both value and derivative direction in the bounded fixture, retaining the supplied assumptions about unweighted mean reduction.",
+          "content": "For an unweighted mean squared-error fixture with outputs [2, 4] and targets [1, 2], the loss is (1²+2²)/2 = 2.5 and output derivatives are [1, 2]. For a binary-logit fixture with one logit 0 and target 1, sigmoid(0)=0.5, so the supplied mean-logit derivative is −0.5. For target 1, decreasing the logit increases loss, while increasing it decreases loss. For a class-index task with three classes, verify logits width 3 and long target indices in [0, 3); use the stated softmax-minus-one-hot reference with its sample-count reduction. These are distinct output contracts, not interchangeable wrappers around arbitrary tensors.\n\nKeep the mean-reduction factor visible in each reference. The two-element MSE fixture divides squared errors by two, while the one-element binary-logit fixture divides its sigmoid-minus-target derivative by one. A class-index cross-entropy reference subtracts the one-hot target from the softmax vector and divides by the sample count. Those equations support different target representations, so verify target dtype and axes before applying them. A positive-looking scalar loss is not proof of the right contract. Compare both value and derivative direction in the bounded fixture, retaining the supplied assumptions about unweighted mean reduction.\n\nTrace the probability constructions before subtracting targets. In the binary fixture, M=1 loss element, so sigmoid(0)=1/(1+exp(0))=1/2, and (0.5−1)/1=−0.5. For an unweighted, unsmoothed class-index fixture with no ignored examples, take two rows of three zero logits and target indices [1, 2]. N=2 examples and C=3 classes. Each row's exponential values are [1, 1, 1], with denominator 3, so both probability rows are [1/3, 1/3, 1/3]. The one-hot rows are [0, 1, 0] and [0, 0, 1]. Subtract and divide by N=2 to obtain gradients [1/6, −1/3, 1/6] and [1/6, 1/6, −1/3].\n\n```python\nimport torch\n\nlogits = torch.tensor([[0., 0., 0.], [0., 0., 0.]])\ntargets = torch.tensor([1, 2], dtype=torch.long)\nprobabilities = torch.nn.Softmax(dim=1)(logits)\none_hot = torch.nn.functional.one_hot(targets, num_classes=3)\nmanual_gradient = (probabilities - one_hot) / logits.shape[0]\n```\n\nThis code constructs the same rows used in the manual trace. The MSE reference instead divides by M, the number of output elements across all axes; here M=2 and 2×([2, 4]−[1, 2])/2=[1, 2]. The unweighted mean binary reference also divides by M, not by an assumed batch count. Keep these fixture conditions explicit rather than applying the class-index formula to weighted or smoothed losses.",
           "fact_ids": [
             "f1",
             "f2",
@@ -2914,7 +2923,10 @@
             "f4",
             "f5",
             "f6",
-            "f7"
+            "f7",
+            "f8",
+            "f9",
+            "f10"
           ]
         },
         {
@@ -5207,22 +5219,20 @@
           "id": "tb3",
           "purpose": "mechanism",
           "title": "Apply and verify",
-          "content": "Make one request with the authorized supplied credential and negative requests with missing or invalid credentials; verify allowed and denied responses under the existing platform policy. Inspect runtime logs to verify failures are visible without displaying the credential or protected request values. A Compose YAML document declares services by name; use indented mappings for service fields and lists or mappings in the forms required by the Compose specification.",
+          "content": "Make one request with the authorized supplied credential and negative requests with missing or invalid credentials; verify allowed and denied responses under the existing platform policy. Inspect runtime logs to verify failures are visible without displaying the credential or protected request values.",
           "fact_ids": [
             "f4",
-            "f5",
-            "f6"
+            "f5"
           ]
         },
         {
           "id": "tb4",
           "purpose": "mechanism",
           "title": "Apply and verify",
-          "content": "Set a service’s image to its immutable artifact reference, its ports to HOST:CONTAINER mappings, and its environment to the declared nonsecret key/value settings. Use docker compose -f CONFIG_PATH config to parse, resolve and validate the authored YAML before applying it; check its resolved fields against the intended runtime contract. Apply the declared local Compose deployment with docker compose -f CONFIG_PATH up -d and inspect the resulting containers.",
+          "content": "Keep the declared nonsecret authentication settings separate from the credential secret. Write the mapping/list configuration with yaml.safe_dump, reload it with yaml.safe_load, and inspect the required resolved fields before submitting it to the existing runtime.",
           "fact_ids": [
-            "f7",
-            "f8",
-            "f9"
+            "f3",
+            "f12"
           ]
         },
         {
@@ -5249,17 +5259,13 @@
           "id": "tb7",
           "purpose": "example",
           "title": "A bounded work example",
-          "content": "Use the supplied expected audience and permitted subject set. Deny a missing token, verify an offered token with the Google verifier and check its verified sub against that set. A valid token for an unpermitted subject is still denied. Catch the declared verification errors into the service harness's denied path before executing prediction. Configure the immutable image, ports and nonsecret authentication fields in parsed Compose YAML, with secrets supplied only through runtime references. Exercise authorized, missing, invalid and verified-but-unpermitted fixtures, inspecting response and captured logs. None of the denied fixtures should execute prediction or print the token; an unverified decode or changeable email is not the supplied identity contract.",
+          "content": "Use the supplied expected audience and permitted subject set. Deny a missing token, verify an offered token with the Google verifier and check its verified sub against that set. A valid token for an unpermitted subject is still denied. Catch the declared verification errors into the service harness's denied path before executing prediction. Keep the nonsecret authentication fields separate from secrets supplied through runtime references, and inspect the required configuration fields after safe loading. Exercise authorized, missing, invalid and verified-but-unpermitted fixtures, inspecting response and captured logs. None of the denied fixtures should execute prediction or print the token; an unverified decode or changeable email is not the supplied identity contract.",
           "fact_ids": [
             "f1",
             "f2",
             "f3",
             "f4",
             "f5",
-            "f6",
-            "f7",
-            "f8",
-            "f9",
             "f10",
             "f11",
             "f12",
