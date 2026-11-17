@@ -1,0 +1,192 @@
+{
+  "metadata": {
+    "artifact_type": "segment_proposals",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_machine_learning_engineer",
+    "run_id": "glossary_batch_machine_learning_engineer",
+    "prompt_version": "08_segment_detection@v1",
+    "model": "bedrock:gpt-6.1-sol",
+    "generated_at": "2026-11-17T04:37:18.064906+00:00",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "video_candidates.json": "0d96f156f585abfa836c9116237a38084e6f8fb876b58bdd23800c0d3afbdf94",
+      "coverage_briefs.json": "247562cbab53e2d516514f744978bbd360dc14c9f2c8bdef3942fc4f4f73e4f6",
+      "extracted_concepts.json": "a70b515826cfb3bff058a0c8de40ed3cae2ff686f3e30b2ad3772b92a3a21e4c"
+    }
+  },
+  "batch_id": "glossary_batch_machine_learning_engineer",
+  "proposals": [],
+  "rejected_videos": [
+    {
+      "video_id": "MeS304KD0Ys",
+      "concept_id": "mle.training_environment_record",
+      "reason": "The video explains why research and production pipelines should produce matching predictions, but does not teach recording a training environment or cover any required fact (f1\u2013f7). It contains no inspection of the repository revision, pinned dependencies, runtime identity or Python runtime details; no JSON manifest write/read workflow; and no independent comparison or mismatch rejection. Its deployment-focused discussion cannot supply a standalone segment for this concept."
+    },
+    {
+      "video_id": "JBzehHRMXjI",
+      "concept_id": "mle.training_environment_record",
+      "reason": "No clean standalone segment teaches the required training-environment provenance contract. The closest section, 133\u2013153 seconds, demonstrates pip freeze and reinstalling requirements.txt, but does not establish the required python -m pip freeze invocation or explicitly explain package==version output. It omits inspecting the actual Git revision, recording runtime identity and sys.version/sys.executable, writing and reading a JSON manifest with explicit UTF-8 handles, and independently validating the recorded values. At 153 seconds it also refers to Git instruction from part six. The 160\u2013168-second claim that deleting an environment means 'You never lose anything because requirements.txt' 'can rebuild it.' is technically overbroad: requirements.txt alone does not preserve the Python runtime, code revision, or arbitrary files in that folder. The video primarily teaches virtual-environment setup rather than recording and checking executable provenance."
+    },
+    {
+      "video_id": "l6oZJ8y9M1o",
+      "concept_id": "mle.experiment_reproduction",
+      "reason": "No clean standalone segment teaches reproduction of an identified experiment from recorded inputs. The demo launches a new MLflow pipeline with overridden tuning settings rather than retrieving and replaying a selected run's resolved state. It does not demonstrate recorded-commit checkout and HEAD verification, immutable dataset-generation retrieval and identity verification, clean-subprocess exit/output checks, or shell output capture and inspection. There is also an explicit technical error at 239\u2013255: the presenter describes an MLflow version constraint of 'above or equal to 2.1' as an exact version, leaves other dependencies unpinned, and then presents this setup as sufficient for reproducibility at 257\u2013277. This contradicts the pinned-environment requirement rather than merely omitting it. The longer execution explanation additionally teaches artifact handoffs between pipeline stages, a blocked concept for this path."
+    },
+    {
+      "video_id": "iIiPo4qv97o",
+      "concept_id": "mle.model_version_registration",
+      "reason": "No standalone segment teaches the required immutable-artifact registration contract. The UI registration walkthrough (352\u2013433) shows registration and a linked run but does not verify artifact identity. The API registration section (771\u2013868) depends on previously selected run IDs and an existing client, and describes register_model rather than the required create_model_version workflow. No section demonstrates generation-qualified download, pre-registration SHA-256 verification, version/hash tags with set_model_version_tag, get_model_version identity checks, or the authorized overwrite and re-retrieval acceptance test (f1\u2013f8). Client-import discussion alone does not establish f9's required method usage. Much of the remaining registry explanation teaches stage transitions and production-model use, outside this tile's allowed knowledge. These are coverage and prerequisite-safety failures; the transcript does not explicitly claim that registry-record immutability makes a mutable object key immutable."
+    },
+    {
+      "video_id": "bDflB17YUNc",
+      "concept_id": "mle.model_version_registration",
+      "reason": "No standalone segment covers the required verified, immutable-artifact registration contract. The registration demo at 1623\u20131712 uses mlflow.register_model with a runs URI and a run ID obtained during earlier setup; it does not resolve an immutable object generation, download that recorded generation, verify SHA-256 before registration, or preserve and re-check the generation and hash after an authorized overwrite. It also does not demonstrate the required MlflowClient create_registered_model/create_model_version, get_model_version, and set_model_version_tag workflow or a keyed registration verdict. Later searching and loading examples do not fill these gaps; extending into stage transitions, inference, preprocessing packaging, or deployment introduces blocked concepts. This is a coverage and standalone-context failure, not evidence that the video explicitly contradicts the immutable-artifact requirements."
+    },
+    {
+      "video_id": "lAAeJDcoHKY",
+      "concept_id": "mle.model_preprocessing_package",
+      "reason": "No clean standalone segment teaches the required model/preprocessor packaging contract. The video starts with an existing application and model artifact; it does not demonstrate saving and safely reloading a versioned fitted model/preprocessor package, preserving fitted preprocessing, pinning inference dependencies, or checking pre-save versus container-reloaded predictions. The Docker build walkthrough provides only partial coverage of image construction and tagging, depends on earlier repository and project-variable setup, and moves into registry configuration, cluster provisioning, and deployment outside this tile's allowed knowledge. It also contains a technical error: at 870\u2013898 and 1112\u20131119, it describes the Python base image as creating or representing a virtual environment, conflating container images with Python virtual environments. Chapter boundaries do not resolve these coverage, prerequisite, and accuracy problems."
+    },
+    {
+      "video_id": "MufPx3L7nXM",
+      "concept_id": "mle.protected_test_comparison",
+      "reason": "No standalone segment covers the required protected-test comparison. At 0\u201372 seconds the video explains reserving unseen data for final evaluation, but does not require freezing the selected candidate, fitted preprocessing and threshold or prohibit reselection using test results (f1). The baseline discussion at 455\u2013674 seconds gives an illustrative accuracy expectation, and the manual-model evaluation at 1230\u20131344 seconds computes accuracy on Y train, not selected-model and baseline predictions on the same protected-test cohort (f2). The video does not cover fixed deployment probabilities, error costs, operating requirements or reporting failure without test-set retuning (f3), binary FPR/FNR denominators and undefined empty-group rates (f4), or expected error cost (f5). Its training-set demonstration is not a final protected-test comparison; trimming cannot supply the missing required content."
+    },
+    {
+      "video_id": "I_yji3UC7UU",
+      "concept_id": "mle.bounded_managed_training",
+      "reason": "No standalone range adequately teaches the required bounded custom-training execution contract. The ephemeral-cluster explanation at 257\u2013337 describes resource creation and release but omits terminal-status confirmation. It also incorrectly describes the ECR download as the model at 277; ECR supplies the training container image. The estimator demonstration at 442\u2013543 uses the higher-level SageMaker SDK rather than the required boto3 CreateTrainingJob and DescribeTrainingJob calls, and does not show an authorized runtime bound, version-resolved inputs, container input/output paths, final artifact verification, or execution-record serialization. Extending the range cannot supply these missing facts and introduces blocked pipeline evaluation/deployment content at 412\u2013438 or resource-utilization monitoring at 543\u2013559. The video therefore cannot provide the intended contract-focused mini-lesson."
+    },
+    {
+      "video_id": "9GHxnttXxrA",
+      "concept_id": "mle.prediction_schema_validation",
+      "reason": "No clean standalone segment teaches the declared prediction-schema contract. The video validates blog-post fields using FastAPI/Pydantic, and its demonstrations depend on an API and schemas developed in earlier sections. It offers generic request/response-contract and rejection explanations, but does not cover explicit JSON decoding with json.loads, required/supplied key-set comparisons and conditional predicates, NumPy rank/feature-width/output-row checks, assert-based acceptance cases, or encoded-byte urllib requests with a timeout. Selecting the live demonstrations would also require FastAPI-specific setup not supplied by this path's prerequisites. These are coverage and prerequisite gaps, not a demonstrated factual contradiction."
+    },
+    {
+      "video_id": "M81pfi64eeM",
+      "concept_id": "mle.prediction_schema_validation",
+      "reason": "No clean standalone segment teaches the required prediction request/response contract. The video demonstrates generic Pydantic user and blog-post validation rather than prediction feature/output schemas. The manual-validation example checks individual argument types but does not compare required and supplied key sets. The video does not demonstrate explicit json.loads decoding before field checks, NumPy rank/feature-width/output-row validation, assert checks for valid/boundary/failure fixtures, or an encoded urllib POST with a timeout. Later constraint, JSON and strict-mode demonstrations depend on Pydantic models and configuration established earlier, so isolated cuts leave missing setup. Default Pydantic coercion is accurately disclosed but is not equivalent to the required declared-type conditional checks. Additionally, the video incorrectly calls Python's id a built-in keyword at 825 and 4436; it is a built-in function, not a keyword."
+    },
+    {
+      "video_id": "vieoHqt7pxo",
+      "concept_id": "mle.online_prediction_contract",
+      "reason": "No clean standalone segment teaches the declared bounded HTTP contract. The serving demo uses Flask and multipart image uploads, not BaseHTTPRequestHandler/do_POST, Content-Length/rfile reads, explicit UTF-8 JSON encoding, response-header/wfile handling, or HTTPServer/serve_forever. It also omits the required assert checks and http.server production-use caveat. The Flask chapter begins by copying previously prepared code and relies on earlier model and transformation helpers; it introduces blocked readiness/health-check behavior at 354\u2013389. The prediction-only subsection at 487\u2013592 depends on that earlier request and helper setup. The preprocessing example at 130\u2013263 demonstrates matching training transformations but does not implement online request serving."
+    },
+    {
+      "video_id": "vieoHqt7pxo",
+      "concept_id": "mle.deployment_verification",
+      "reason": "No clean standalone segment verifies the declared release contract on an existing runtime. The deployment chapter creates a Cloud Run service and introduces blocked authentication policy at 1122\u20131135. The remote prediction test at 1161\u20131184 depends on the previously constructed requests-based multipart test script and service URL; it does not provide a standalone fixture. The video does not teach the required docker run, container inspect, container logs, image/State/Health comparisons, bounded readiness and prediction timeouts, urllib.request JSON-byte requests, sensitive-evidence precautions, or valid/boundary/failure assert checks. Printing predictions for two images is insufficient to cover those verification facts."
+    },
+    {
+      "video_id": "Ai0INe_deqY",
+      "concept_id": "mle.online_prediction_contract",
+      "reason": "No clean segment covers the declared online prediction implementation. The video explains cloud deployment architecture using Flask and other frameworks, not the bounded standard-library HTTP fixture. It omits BaseHTTPRequestHandler/do_POST, body-length handling, JSON/schema checks, fitted preprocessing without request-time updates, response encoding and headers, assert checks, HTTPServer/serve_forever, and the http.server production limitation. The request/response illustration at 751\u2013798 does not establish f3: it mentions loading a model but never explains fitted preprocessing or prohibits fitting during requests, and it depends on the preceding EC2/S3 diagram. Broader ranges introduce out-of-scope infrastructure provisioning, CI/CD deployment, container orchestration, and retraining. There are also explicit factual errors: at 470\u2013499 CI/CD is expanded as continuous integration and continuous development, and at 698\u2013705 the video incorrectly claims a 1\u20132 GB model cannot be stored on an EC2 instance. These are accuracy problems, not merely coverage gaps."
+    },
+    {
+      "video_id": "Z9FtrRq0rc0",
+      "concept_id": "mle.bounded_batch_inference",
+      "reason": "No clean standalone segment teaches the required bounded-inference workflow. The fitted-transform discussion at 307\u2013369 supports reusing training-derived preprocessing state, but does not demonstrate applying a frozen preprocessing/model package to bounded chunks. The video omits a format-appropriate bounded reader, observation-key preservation and one-result-per-key checks, serialized-output decoding and alignment verification, assert predicates for valid/boundary/failure fixtures, and explicit with open handles with incremental output writes. The hands-on chapter depends on earlier SageMaker model construction and multi-model tuning setup; it reads and consolidates prediction files rather than demonstrating the declared bounded workflow. There are also factual mischaracterizations: at 230\u2013239 it presents JSON requests and responses as universal requirements, although Batch Transform supports other content types, and at 872\u2013883 it describes Batch Transform prediction results as a RESTful API response rather than distinguishing job-control API responses from prediction output written to S3."
+    },
+    {
+      "video_id": "qegqCzEerQA",
+      "concept_id": "mle.bounded_batch_inference",
+      "reason": "No clean standalone segment covers the required bounded-inference implementation. The notebook demonstrates a managed SageMaker Batch Transform job over 50 separate S3 JSON objects, not a format-appropriate bounded reader (f1), explicit application of fitted preprocessing/model to successive chunks without refitting (f2), verified one-result-per-eligible-observation-key alignment (f3), serialized-output schema and alignment checks (f4), assert predicates for valid, boundary and failure cases (f5), or explicit with open handles with write-before-next-read processing (f6). Inspecting one downloaded sentiment result at 814\u2013847 does not establish the required output checks and depends on earlier setup. The walkthrough also relies on untaught SageMaker deployment/container configuration and introduces blocked inference-mode selection and service telemetry. The earlier whiteboard overview supplies only generic offline-inference context, not the required implementation facts."
+    },
+    {
+      "video_id": "v7HNDXAaKXw",
+      "concept_id": "mle.model_service_readiness",
+      "reason": "No clean standalone range covers the required model-readiness facts. The video distinguishes liveness from readiness but implements database connectivity checks in an existing FastAPI/SQLModel service, not readiness gated on initialization of both a fitted model and its preprocessor. It does not demonstrate SageMaker /ping, do_GET, before/after HTTP-status and decoded-JSON assertions, or the required Docker run, inspect, and logs commands. The demo also depends on an earlier service, database session, and Compose configuration; at 356\u2013361 it explicitly reuses previous commands. There is a technical accuracy concern at 319\u2013336: it implies that combining Docker health checks with restart policies automatically removes traffic and restarts unhealthy containers. Docker restart policies alone do not restart containers merely because their health status becomes unhealthy, and traffic removal requires separately configured routing or orchestration behavior. The later clarification at 527\u2013531 that Compose only labels containers unhealthy does not resolve that earlier misleading claim."
+    },
+    {
+      "video_id": "2vQKuw-47sg",
+      "concept_id": "mle.model_service_readiness",
+      "reason": "No clean standalone segment teaches the required model-readiness contract. The FastAPI /health endpoint unconditionally returns success (31\u201338s), without checking model or preprocessor initialization; the failure demonstration instead requests a nonexistent endpoint (228\u2013270s). This is a coverage gap, not an implementation of readiness before admitting predictions. The video also contains a technical error: at 180\u2013190s it describes Docker start_period as how long to wait before trying a check, and repeats that interpretation at 220\u2013224s and 244\u2013250s. start_period is an initialization grace period during which failed checks do not count toward the retry threshold, not a delay before checks begin. The configuration demo therefore cannot safely supply f3 as presented. It also relies on Docker Compose configuration and an existing FastAPI project rather than the declared readiness fixture, and supplies no SageMaker /ping contract, docker inspect verification, do_GET implementation, decoded-state tests, required docker run command, container logs inspection, or assertion cases."
+    },
+    {
+      "video_id": "mKeXOCmQhjk",
+      "concept_id": "mle.deployment_configuration_code",
+      "reason": "No clean segment covers the required deployment contract. The actual content concerns Terraform AWS providers and provisioning a Bedrock application, not separating parameterized Compose runtime settings from an immutable model image digest. It does not teach any required fact: Docker Compose configuration, digest pinning and identity inspection, runtime secrets, replica/resource fields, Compose validation and reapplication, authorized Compute Engine lifecycle commands, configuration branching, or PyYAML serialization. The architecture and demo also depend on untaught Terraform, AWS IAM, CI/CD provisioning, Bedrock agents, knowledge bases, and OpenSearch administration rather than the supplied existing runtime. Additionally, the statements at 560\u2013567 and 1554\u20131562 that everything operates within the customer's VPC and data never leaves it are technically misleading: Bedrock is a managed AWS service, and private connectivity does not place its service-side processing inside the customer's VPC. Trimming cannot produce a standalone lesson for this concept."
+    },
+    {
+      "video_id": "FK-XAyw-QX0",
+      "concept_id": "mle.deployment_configuration_code",
+      "reason": "No clean segment covers the required deployment contract. The video demonstrates AWS ECS infrastructure managed with Terraform, not the supplied Docker Compose runtime. It does not teach immutable image digests, Compose service mappings or validation/application commands, runtime secret injection, resolved replica/resource bounds, image-identity comparison, Compute Engine lifecycle commands, configuration branching, reproducible teardown/reapplication, or PyYAML serialization. At 1257\u20131287, deployment is selected by a model name and depends on previously provisioned ECS infrastructure and Parameter Store values; this does not establish immutable artifact identity and requires untaught Terraform/AWS orchestration knowledge. The subsequent endpoint test and later sections also enter blocked release-verification, recovery, quality-gate, and security topics. General parameterization discussion is insufficient to claim any required fact."
+    },
+    {
+      "video_id": "mxUWDxq46g4",
+      "concept_id": "mle.deployment_verification",
+      "reason": "No clean standalone segment teaches verification against a declared release and runtime contract. The Docker run and browser test sequence (607\u2013699 seconds) depends on the application and fixture established earlier and shows only port mapping and an informal prediction change. It does not verify recorded image identity or container State/Health, inspect captured logs, demonstrate named-container and nonsecret environment settings, or perform bounded readiness/prediction calls and explicit acceptance assertions. The visible prediction discussion lacks a declared fixture with expected output shape and values, so it does not establish f10 either. Catalogue chapter boundaries do not match the transcript's actual topic transitions."
+    },
+    {
+      "video_id": "WZ7vS10KPAw",
+      "concept_id": "mle.deployment_verification",
+      "reason": "No standalone segment teaches verification of a model release on an existing runtime. The video surveys inference modes, deployment packaging, infrastructure and optimization. At 379\u2013400 seconds it mentions testing and validating containerized deployments, but provides no observed runtime checks or acceptance fixture. It does not demonstrate the required Docker run, inspect or logs commands; image identity, State or Health checks; bounded readiness and prediction calls; JSON encoding/decoding; or assertions against valid, boundary and failure cases. Other sections introduce blocked topics including authentication, telemetry, replica scaling, worker concurrency and inference batching. General deployment background cannot substitute for the required release-verification facts."
+    },
+    {
+      "video_id": "MY0TFMMm9B0",
+      "concept_id": "mle.prediction_authentication",
+      "reason": "No clean standalone segment fits this path's supplied prediction-service contract. The route-protection demos depend on a previous tutorial's JWT verifier, OAuth2 token extraction, database models and FastAPI dependencies whose setup is missing. The brief 401/403 explanation at 662\u2013689 seconds supports the general authentication-versus-authorization distinction, but does not establish the supplied prediction-action policy. Backend testing uses newly registered blog users rather than the supplied credential and does not test invalid tokens. The video omits the Google ID-token verifier, verified-sub allowlist and required exception handling, runtime secret/nonsecret configuration separation, Compose/PyYAML workflow, assertion checks and credential-safe runtime log inspection. Adapting its blog application would require untaught application-specific setup and substantial instruction outside the video."
+    },
+    {
+      "video_id": "Go4wYJJhR3k",
+      "concept_id": "mle.prediction_authentication",
+      "reason": "No clean standalone segment teaches authentication enforcement for the supplied protected prediction service. The video builds password-based registration and locally signed JWT login for an existing blog application, relying on prior-series models, routes and frontend setup. At 74\u201389 it distinguishes authentication from authorization, but defers authorization to the next tutorial; at 3312\u20133342 it explicitly confirms that the action endpoints remain unprotected. Its Google ID-token verifier, audience validation, permitted-subject policy and denied-before-prediction behavior are absent, as are authorized runtime-secret wiring, Compose/PyYAML configuration and validation, assertion checks, and credential-safe runtime-log inspection. The API tests exercise login and a current-user endpoint, not the supplied prediction action or its authorization policy. These are coverage and prerequisite-fit failures, not evidence that its intentionally unfinished application contradicts the required contract."
+    },
+    {
+      "video_id": "f4W_eEJC-20",
+      "concept_id": "mle.service_telemetry",
+      "reason": "No standalone range teaches the required prediction-service telemetry facts. The video explains Prometheus architecture and mentions application exceptions and request latency, but does not distinguish client-visible availability from infrastructure state, implement handler instrumentation or elapsed-time measurement, compute the required statistics and outcome fractions, or demonstrate the prescribed 300-attempt external probe and reconciliation of failures absent from handler records. The custom-application discussion at 618\u2013658 depends on the preceding exporter explanation and only introduces client libraries; it does not cover any required fact sufficiently. Other sections introduce out-of-scope resource monitoring and alerting. Proposing a range would substitute general monitoring background for the required service-measurement lesson."
+    },
+    {
+      "video_id": "h4Sl21AKiDg",
+      "concept_id": "mle.service_telemetry",
+      "reason": "No clean standalone segment covers the required prediction-service telemetry facts. The video names request counts, exceptions and request duration, but does not explain client-visible outcome accounting, perf_counter timing, handler instrumentation, windowed success/error fractions, NumPy statistics, or the prescribed 300-attempt probe and reconciliation of failures that never reach the handler. The application-monitoring section also includes resource utilization, a blocked concept. Prometheus configuration and PromQL sections rely on untaught tool-specific knowledge without supplying the required measurement workflow. There are explicit technical inaccuracies elsewhere: at 838\u2013845, Pushgateway is described as letting jobs push metrics directly to the Prometheus database, whereas Prometheus scrapes metrics exposed by Pushgateway; at 1260\u20131275, Kubernetes node monitoring is claimed to start without extra configuration, which is not generally true of deploying Prometheus alone."
+    },
+    {
+      "video_id": "brasMBAezJY",
+      "concept_id": "mle.prediction_load_test",
+      "reason": "No clean standalone segment covers the intended prediction-endpoint capacity assessment. The demonstration configures virtual-user website traffic and discusses request-duration percentiles, but does not measure successful completed throughput against offered load, apply predeclared success and tail-latency acceptance requirements, distinguish failures and timeouts from completed-response latency, or inspect backlog stability. It also lacks valid and malformed prediction JSON fixtures and the required Python calculations. The results section starts with configuration-dependent context, while including its setup introduces a HAR-to-JavaScript website workflow not established by the supplied prerequisites. These are coverage and prerequisite gaps, not an identified factual contradiction."
+    },
+    {
+      "video_id": "31lSQ2xyFCA",
+      "concept_id": "mle.prediction_load_test",
+      "reason": "No clean segment covers the required facts for this concept. The Locust demonstration configures simulated users and ramp-up, sends randomly selected valid payloads, and observes request-rate and response-time charts, but does not define a bounded measurement window, predeclared tail-latency/success/throughput acceptance criteria, or stable-backlog checks. It does not distinguish offered load from successful completed throughput or retain failures and timeouts in the required denominators. The Docker setup uses Compose rather than the required named-container commands, and the HTTP demo does not teach the specified urllib, JSON, NumPy, or assertion operations. Trimming cannot turn this generic load-testing walkthrough into a standalone lesson on the required sustainable-capacity objectives."
+    },
+    {
+      "video_id": "506QmPzU7MU",
+      "concept_id": "mle.inference_batching_decision",
+      "reason": "No transcript is available (transcript_available: false). Cannot verify fact coverage, prerequisite safety, standalone boundaries, or provide timestamped transcript evidence."
+    },
+    {
+      "video_id": "WXANoplSi6o",
+      "concept_id": "mle.inference_batching_decision",
+      "reason": "No transcript is available (transcript_available: false); cannot verify fact coverage, prerequisite safety, or standalone segment boundaries."
+    },
+    {
+      "video_id": "14sQh5yWDnU",
+      "concept_id": "mle.serving_worker_concurrency",
+      "reason": "No standalone range covers the required operational facts. The video explains Uvicorn/Gunicorn concurrency and shows Dockerfile worker flags, but does not author Compose YAML, configure an immutable image and declared ports/environment, validate with docker compose config, deploy and inspect containers, set and verify a YAML worker bound, inspect workers with docker container top during a load fixture, or demonstrate PyYAML safe_dump/safe_load (f1\u2013f6, f8). The advice at 267\u2013272 to monitor memory and CPU is not an observed concurrent-resource check during the same fixture (f7). There are also factual problems, not merely coverage gaps: at 188\u2013190 it recommends scaling by adding more async endpoints, which does not itself increase execution capacity; at 163\u2013165 it asserts that doubling workers doubles instance cost, which is not generally true. No clean segment satisfies this concept's declared runtime contract."
+    },
+    {
+      "video_id": "AssYTQTDWkQ",
+      "concept_id": "mle.serving_worker_concurrency",
+      "reason": "The supplied transcript contains only a generic introduction, music, and an outro; it provides no substantive explanation of worker concurrency and covers none of required facts f1\u2013f8. Despite the title, there is no transcript-supported standalone segment demonstrating Compose/YAML configuration, worker-limit validation, deployment, or process and resource checks during a load fixture."
+    },
+    {
+      "video_id": "I_KYnCvREzw",
+      "concept_id": "mle.serving_replica_scaling",
+      "reason": "No clean, technically accurate standalone segment for this path. At 737\u2013756, the demo incorrectly explains scale-out and scale-in cooldowns as durations for which the target threshold must be breached or unmet. Cooldowns govern behavior after scaling activities; they are not threshold evaluation windows. This is a factual error in the explanation supporting f3, not merely missing coverage. The scalable-target setup also depends on earlier endpoint variables and, at 633\u2013642, suggests that this endpoint-variant minimum could be zero without explaining the distinct inference-component configuration required for scale-to-zero. The earlier whiteboard ranges do not demonstrate the required configuration and substantially discuss blocked resource-utilization knowledge. Trimming the demo would leave missing setup or remove the policy explanation rather than produce a complete, prerequisite-safe lesson."
+    },
+    {
+      "video_id": "6_RA4qZ8bp0",
+      "concept_id": "mle.serving_replica_scaling",
+      "reason": "The video covers SageMaker scalable-target registration, but its target-tracking explanation contains material technical inaccuracies. At 1320\u20131324 it presents fewer than 63 requests per instance as a sufficient rule for removing an instance; target tracking does not use that universal scale-in threshold, since removal must not push the remaining capacity above the target. At 1341\u20131348 it describes the scale-out cooldown as an unconditional wait before considering another addition, omitting that a larger scale-out can occur during cooldown. These are incorrect policy mechanics, not merely missing coverage. A registration-only excerpt would avoid these statements but would not complete the demonstrated configuration and inspection: the explicit one-to-three bounds are confirmed only at 1401\u20131413, after the inaccurate explanation. The video also supplies no same-load comparison of success, p99 latency and completed successful throughput to validate the selected capacity. Reject on technical accuracy rather than presenting the full configuration demonstration as a safe standalone lesson."
+    },
+    {
+      "video_id": "B_-cMazKQmA",
+      "concept_id": "mle.model_release_rollback",
+      "reason": "No clean standalone segment satisfies this tile's rollback contract. The rollback demo at 2696\u20132947 relies on registry state established earlier, selects an archived/latest version or defaults to hardcoded version 1 (2722\u20132776, 2847\u20132884), and does not establish the target's previous approval or resolve its artifact identity as required by f1. This is an unsafe selection rule, not merely missing detail: archived/latest status does not prove previous approval. The claim at 434\u2013444 that the latest version number is generally in production is also technically incorrect; registry version numbering does not determine deployment status. The video demonstrates registry stage changes, not serving-container replacement, and omits the immutable image reference, runtime secrets, replacement readiness before retirement, container/log inspection, and bounded HTTP/JSON contract checks required by f2\u2013f12. Adjacent explanations teach blocked staged promotion (2164\u20132336) and production regression diagnosis/retraining (2949\u20132992). Trimming cannot supply the missing operational facts or repair the target-selection rule."
+    }
+  ]
+}
