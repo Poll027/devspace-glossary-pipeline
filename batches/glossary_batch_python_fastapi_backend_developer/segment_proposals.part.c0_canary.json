@@ -1,0 +1,47 @@
+{
+  "metadata": {
+    "artifact_type": "segment_proposals",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_python_fastapi_backend_developer",
+    "run_id": "glossary_batch_python_fastapi_backend_developer",
+    "prompt_version": "08_segment_detection@v1",
+    "model": "bedrock:gpt-6.1-sol",
+    "generated_at": "2026-11-17T02:27:12.736921+00:00",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "video_candidates.json": "639324255cf6b9848b20f186ce5ac5e12e3b3cbc31b3bb3b77623c4921456086",
+      "coverage_briefs.json": "29252d83f0bfa87f1a9cbd7417da43af1765f51c11fd7188c0983ed407515522",
+      "extracted_concepts.json": "67970e7e6c73ea02bfc2cf88112a2f469d0f28d312a5f81b28a86891c5015a72"
+    }
+  },
+  "batch_id": "glossary_batch_python_fastapi_backend_developer",
+  "proposals": [],
+  "rejected_videos": [
+    {
+      "video_id": "UaKZ4wKytcA",
+      "concept_id": "http.method_safety_idempotency",
+      "reason": "No clean, prerequisite-safe segment adequately teaches this concept. The HTTP explanation incorrectly justifies GET idempotency by claiming repeated retrieval always returns the same result (263\u2013272), contradicting f2's distinction between intended server effects and potentially differing responses. It also categorically concludes that POST is not idempotent (342\u2013347), rather than explaining that POST is not generally idempotent. Safety, incidental effects, and HEAD are omitted, and PUT's create-or-replace semantics are not established. The DELETE explanation correctly emphasizes server state but introduces a 404 response at 364, invoking blocked HTTP status-selection knowledge; trimming past that discussion leaves an explanation dependent on earlier context. The earlier Python demonstrations rely on untaught function and nested-call syntax and do not establish HTTP method semantics."
+    },
+    {
+      "video_id": "Vzw2k-nmBDM",
+      "concept_id": "http.method_safety_idempotency",
+      "reason": "Reject for technical inaccuracies and insufficient coverage of the required distinctions. At 226\u2013244, the video categorically claims that repeating a POST request will create multiple resources; POST is not generally idempotent, but duplicate creation is not inevitable. At 818\u2013826, the summary groups PATCH with methods that generally produce the same final result on repetition, although PATCH is not inherently idempotent. The video also omits HEAD entirely, does not distinguish safe requested semantics from incidental effects such as logging, and omits PUT's create semantics. The DELETE example at 552\u2013577 usefully distinguishes differing responses from unchanged final state, but no clean standalone range adequately teaches the required safety-and-idempotency distinctions."
+    },
+    {
+      "video_id": "QORvB-_mbZ0",
+      "concept_id": "python.backend_type_annotations",
+      "reason": "Reject for a factual contradiction of required fact f2. At 804\u2013845, the example correctly permits omission through output: bool = False, but at 846\u2013863 the creator incorrectly says Optional[bool] is needed to specify that the argument can be omitted. Optional[bool] permits None; the default independently permits omission. This is not merely a coverage gap. No clean range covers the intended required, nullable and collection annotations without this misleading explanation. The collection demonstrations also use Python 3.8-era typing aliases rather than the required built-in generic syntax, and do not demonstrate all the specific collection shapes in f3. Earlier function-annotation material offers partial coverage but cannot satisfy this concept's nullable-value objective."
+    },
+    {
+      "video_id": "79zeCq9raY0",
+      "concept_id": "python.backend_type_annotations",
+      "reason": "Insufficient required-fact coverage. The function explanation at 38\u201366 seconds demonstrates parameter and return annotations, but never explains that type hints alone do not enforce runtime validation, so it does not fully cover f1. The video does not teach nullable types versus argument defaults (f2) or parameterized collection annotations (f3). Extending through the intervening material introduces explicitly blocked classes and instances, beginning at 70 seconds. The later editor-warning demonstration does not establish the missing runtime-validation distinction. No suitable standalone range covers the intended facts."
+    },
+    {
+      "video_id": "8O5kX73OkIY",
+      "concept_id": "python.classes_and_instances",
+      "reason": "The video teaches class declarations, instance creation, and method calls, but no clean segment serves the required state-ownership objective. It never defines __init__ or assigns self.attribute to initialize instance state (f2), contrasts instance variables with shared class variables (f3), or demonstrates fresh mutable instance values instead of a shared mutable class variable (f4). Although it creates two objects, their methods print the same hard-coded configuration; it does not implement independent instance state. The later explanation of self also depends on code established earlier. The chapter titled 'Concept of Constructors' discusses calling Computer(), not implementing __init__. These are coverage and standalone-context gaps, not an identified factual contradiction."
+    }
+  ]
+}
