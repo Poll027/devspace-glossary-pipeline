@@ -1062,9 +1062,10 @@
           "id": "tb2",
           "purpose": "definition",
           "title": "The rule and its boundary",
-          "content": "Define a Pydantic model by subclassing BaseModel and declaring typed fields, then construct it with Model(field=value, ...) or validate data with Model.model_validate(data).",
+          "content": "Define a Pydantic model by subclassing BaseModel and declaring typed fields, then construct it with Model(field=value, ...) or validate data with Model.model_validate(data). In default non-strict validation, int accepts integer strings (such as '123') and finite floats with no fractional part, but rejects nonnumeric strings, fractional floats, nan and inf; float accepts integers and valid float strings (such as '3.141'); bool accepts booleans, numeric 0 or 1, and case-insensitive strings '0', 'off', 'f', 'false', 'n', 'no', '1', 'on', 't', 'true', 'y', 'yes', but rejects other numbers or strings; str accepts strings and UTF-8-decodable bytes or bytearray, but does not accept integers or floats unless coerce_numbers_to_str is enabled.",
           "fact_ids": [
-            "f1"
+            "f1",
+            "f2"
           ]
         },
         {
@@ -1787,7 +1788,7 @@
           "id": "tb5",
           "purpose": "walkthrough",
           "title": "Reason through an example",
-          "content": "Define a Settings class inheriting BaseSettings, with typed fields for the service's required configuration. Construct Settings() to read environment variables and validate them. Try one missing required setting and one value that cannot satisfy its declared type; both should fail validation rather than becoming unchecked application inputs. If a dotenv file is part of the setup, set model_config with SettingsConfigDict(env_file=\".env\"). When the same setting is supplied in the environment and the dotenv file, the environment value takes precedence. For an exercise, put different synthetic values in those two places and identify which one construction should use. This makes configuration source, priority and validation visible instead of relying on whatever value a developer happened to see in a local file.",
+          "content": "Define a Settings class inheriting BaseSettings, with typed fields for the service's required configuration. In the application lifespan function, construct settings = Settings() before the yield, so environment variables are read and validated before requests are served. Retain that validated settings instance for the application to use while serving requests, rather than constructing it for the first time inside an endpoint. Only proceed to the yield after construction succeeds. Try one missing required setting and one value that cannot satisfy its declared type; let either validation failure propagate and abort startup instead of waiting for the first request to fail. If a dotenv file is part of the setup, set model_config with SettingsConfigDict(env_file=\".env\"). When the same setting is supplied in the environment and the dotenv file, the environment value takes precedence. For an exercise, put different synthetic values in those two places and identify which one construction should use. This makes configuration source, priority and validation visible instead of relying on whatever value a developer happened to see in a local file.",
           "fact_ids": [
             "f1",
             "f2",
