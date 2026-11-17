@@ -150,6 +150,8 @@ def main():
         pairs = list(dict.fromkeys(cands.get(vid, [])))
         if not pairs:
             print(f"{vid}: no kept candidate concepts, skipping"); continue
+        if not (BANK / "catalogue" / f"{vid}.json").exists():  # the Mac fetch failed for it (no captions / fetch error): nothing to segment
+            print(f"{vid}: no catalogue entry (transcript fetch failed), skipping"); continue
         prompt = video_prompt(B, vid, pairs, C, briefs, pa, names, header)
         if a.dry_run:
             print(prompt[:3000], f"\n... [{len(prompt)} chars total, {len(pairs)} concepts]"); return
