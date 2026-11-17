@@ -1,0 +1,124 @@
+
+TILE 77
+FACT A Terraform plan describes proposed additions, updates, deletions and replacements based on configuration, state and observed infrastructure.
+REF terraform_language#../cli/commands/plan EVID when upgrading provider versions so that Terraform can populate state with any schema changes or additions. / terraform plan command reference | Terraform | HashiCorp Developer
+FACT Create a saved plan with terraform plan -out=PLAN_FILE and inspect it with terraform show PLAN_FILE; replacement includes destruction and creation, not merely an in-place update.
+REF terraform_language#../cli/commands/plan EVID terraform plan command reference | Terraform | HashiCorp Developer / By default, Terraform performs the following operations when it creates a plan:
+FACT Compare affected resource identities and every proposed action, including the mandatory deletion case, with the supplied scope and impact criteria and record accept or block with plan evidence; review does not require destructive execution.
+REF terraform_language#../cli/commands/plan EVID command alone does not actually carry out the proposed changes You can use this command to check whether the proposed changes match what / Each resource instance independently determines whether it needs to be refreshed, so refreshing one resource does not cause other resources that depend on it to be refreshed.
+
+TILE 83
+FACT A ConfigMap supplies nonconfidential configuration separately from the container image.
+REF kubernetes_overview#../../tasks/configure-pod-container/configure-pod-configmap/ EVID Define container environment variables using ConfigMap data / Define a container environment variable with data from a single ConfigMap
+FACT Reference a ConfigMap with envFrom.configMapRef or env.valueFrom.configMapKeyRef in the supplied Pod template.
+REF kubernetes_overview#../../tasks/configure-pod-container/configure-pod-configmap/ EVID pods/pod-configmap-env-var-valueFrom.yaml / kubectl create -f https://kubernetes.io/examples/pods/pod-configmap-env-var-valueFrom.yaml
+FACT Reference a Secret with env.valueFrom.secretKeyRef or a secret-backed volume and test the consuming workload without printing the secret values.
+REF kubernetes_overview#../configuration/secret/ EVID Use case: dotfiles in a secret volume / Use case: dotfiles in a secret volume
+FACT Secrets require access control and appropriate storage protection; base64 encoding is not encryption.
+REF kubernetes_overview#../configuration/secret/ EVID If you do not want to perform the base64 encoding, you can choose to use the / Therefore, one Pod does not have access to the Secrets of another Pod.
+
+TILE 84
+FACT A pipeline has stages containing actions that pass declared input and output artifacts between source, build and deployment operations.
+REF aws_codepipeline_user_guide#concepts-how-it-works.html EVID If a pipeline contains multiple source actions, all of them run again, even if / You can use the input transformer to pass pipeline variables.
+FACT Configure source output, CodeBuild input/output and CodeDeploy input artifact names so each action receives the intended revision’s output.
+REF aws_codepipeline_user_guide#welcome-introducing-artifacts.html EVID             artifact for the source action, the application source code files, is the output / When you create or edit an action, you designate the input and output artifact or
+FACT The CodePipeline service role requires trust for codepipeline.amazonaws.com and permissions for its actions and artifact access; this service role is not GitHub OIDC federation.
+REF aws_codepipeline_user_guide#pipelines-create-service-role.html EVID Create the CodePipeline service role - AWS CodePipeline / Create the CodePipeline service role - AWS CodePipeline
+FACT Verify action execution evidence carries the intended source revision through deployment and a failed action prevents normal progression to dependent actions.
+REF aws_codepipeline_user_guide#concepts-how-it-works.html EVID                             the commit that triggered the pipeline execution, the source action will /                             image tag that triggered the execution, the source action will always
+
+TILE 85
+FACT The same CloudFormation template can provision equivalent resource declarations in multiple approved target environments.
+REF aws_cloudformation_user_guide#Welcome.html#welcome-quickly-replicate-your-infrastructure EVID Instead, you can create a CloudFormation template or modify an existing one. / To reuse your template, describe your resources once and then provision the same
+FACT For each approved account/Region pair, assume its approved role, verify the caller account, and create the supplied stack with that session and explicit Region.
+REF aws_cli_user_guide#cli-configure-role.html EVID You can create a role in IAM with the permissions that you want users to assume by / You can simplify this by specifying unique role session names when users assume a role.
+FACT Inspect stack outputs and S3 bucket identity and location in every intended target and check the supplied unapproved targets received no stack.
+REF aws_cloudformation_user_guide#cfn-console-view-stack-data-resources.html EVID Displays outputs that were declared in the stack's template. / Get exported outputs from a deployed CloudFormation stack
+
+TILE 90
+FACT A published Lambda version is an immutable snapshot of function code and most configuration.
+REF aws_lambda_developer_guide#configuration-versions.html EVID When you publish a version, Lambda creates an immutable snapshot of your function's code and configuration. / Lambda publishes a new function version only if the code has never been published, or if
+FACT A Lambda alias points to a published version and can be updated to direct invocations to a different version.
+REF aws_lambda_developer_guide#configuration-aliases.html EVID Create an alias for a Lambda Event Function - AWS Lambda / Create an alias for a Lambda Event Function - AWS Lambda
+FACT Publish the tested version with publish-version, set the supplied alias with update-alias --function-version VERSION, test invocation through the alias and roll back by repointing it to the prior version.
+REF aws_lambda_developer_guide#configuration-aliases.html EVID     function version that you can update. / , choose a function version that you want the alias to point to.
+
+TILE 92
+FACT An EC2 blue/green deployment installs a revision on replacement instances before rerouting traffic from the original instances.
+REF aws_codedeploy_user_guide#deployments-create.html EVID Create an Amazon ECS blue/green deployment through CloudFormation /         installs application revisions you have already pushed to Amazon S3 or, if your deployment is to
+FACT Use the supplied blue/green deployment group, replacement fleet and load balancer configuration and verify lifecycle and health evidence before the approved traffic rerouting.
+REF aws_codedeploy_user_guide#deployment-groups-create-blue-green.html EVID Create a deployment group for an EC2/On-Premises blue/green deployment (console) - AWS CodeDeploy / Create a deployment group for an EC2/On-Premises blue/green deployment (console) - AWS CodeDeploy
+FACT Use the supplied rollback configuration or redeployment procedure and verify traffic and application behavior return to the known-good revision.
+REF aws_codedeploy_user_guide#deployments-rollback-and-redeploy.html EVID       known good version of an application revision is deployed. /               deploys the last known good application revision, application revision
+
+TILE 110
+FACT The S3 backend stores Terraform state in a specified bucket and key, separate from the configuration that declares managed resources.
+REF terraform_language#backend/s3 EVID Stores the state as a given key in a given bucket on / The Terraform state is written to the key
+FACT Provision the protected backend bucket with the supplied local-state bootstrap configuration before selecting it as the backend.
+REF terraform_language#backend/s3 EVID Stores the state as a given key in a given bucket on / This backend also supports state locking which can be enabled by setting the
+FACT Set terraform { backend "s3" { bucket = "BUCKET"; key = "KEY"; region = "REGION" } } using normal HCL line-separated arguments and the approved settings.
+REF terraform_language#backend/s3 EVID workspace), Terraform will need the following AWS IAM permissions on the target backend bucket: / Provide the S3 bucket name to Terraform in the S3 backend configuration
+FACT Run terraform init -migrate-state after changing the backend, approve the supplied migration and verify state is at the intended bucket/key.
+REF terraform_language#../cli/commands/init EVID run after writing a new Terraform configuration or cloning an existing configuration / terraform init command reference | Terraform | HashiCorp Developer
+
+TILE 111
+FACT By default Terraform destroys an object before creating its replacement; create_before_destroy requests the reverse order where supported.
+REF terraform_language#meta-arguments/lifecycle EVID By default, when Terraform must change a resource argument that cannot be updated in-place due to remote API limitations, Terraform destroys the existing object and then creates a new replacement object with the new configured arguments. / rule to instruct Terraform to create a replacement resource before destroying the current resource.
+FACT prevent_destroy rejects a plan that would destroy the protected resource while that lifecycle rule remains in its configuration.
+REF terraform_language#meta-arguments/lifecycle EVID , Terraform rejects plans that would destroy the infrastructure object associated with the resource and returns an error. / block accepts a rule that customizes how Terraform performs the lifecycle stages for each resource.
+FACT Set the supplied lifecycle argument in the resource block, introduce the controlled replacement-triggering change, and inspect the plan’s replacement order or prevention error before the approved permitted apply.
+REF terraform_language#meta-arguments/lifecycle EVID By default, when Terraform must change a resource argument that cannot be updated in-place due to remote API limitations, Terraform destroys the existing object and then creates a new replacement object with the new configured arguments. / block accepts a rule that customizes how Terraform performs the lifecycle stages for each resource.
+FACT Lifecycle settings constrain replacement mechanics but do not replace scope and impact approval.
+REF terraform_language#meta-arguments/lifecycle EVID Plain values, such as local values or input variables, do not have planned actions of their own, but you can treat them with a resource-like lifecycle by using them with the / Destroys resources that exist in the state but not in the configuration.
+
+TILE 116
+FACT A post-deployment validation action checks live application behavior rather than merely whether a deployment operation completed.
+REF aws_codepipeline_user_guide#actions-invoke-lambda-function.html EVID to add a stage after the deployment stage with the CodeDeploy action. / To deploy application versions with zero downtime in AWS Elastic Beanstalk with a Lambda
+FACT Run the supplied smoke-check action against the deployed endpoint and verify the expected response for the deployed revision.
+REF aws_codepipeline_user_guide#actions-invoke-lambda-function.html EVID // Check if the HTTP response has a 200 status / is a compute service that lets you run code
+FACT Report action success only on a passing check and failure otherwise so dependent release progression remains blocked on failed live behavior.
+REF aws_codepipeline_user_guide#actions-invoke-lambda-function.html EVID Returning success or failure results to CodePipeline in the /                         demonstration purposes, we are adding the Lambda function as the only action
+
+TILE 121
+FACT S3 backend access needs permissions for the selected state bucket and object key; state can contain sensitive values.
+REF terraform_language#backend/s3 EVID Stores the state as a given key in a given bucket on / This backend also supports state locking which can be enabled by setting the
+FACT Scope approved readers and writers to the required ListBucket prefix and GetObject/PutObject state object operations, with supplied locking permissions configured separately.
+REF terraform_language#backend/s3 EVID This backend also supports state locking which can be enabled by setting the / The S3 backend stores state data in an S3 object at the path set by the
+FACT Initialize the supplied backend, provision the separate exercise bucket through the approved identity, and test that an unapproved identity cannot read or overwrite state.
+REF terraform_language#backend/s3 EVID Stores the state as a given key in a given bucket on / This backend also supports state locking which can be enabled by setting the
+FACT State access isolation prevents unauthorized access; it is separate from the mechanism that coordinates concurrent authorized writers.
+REF terraform_language#backend/s3 EVID environment account role and access the Terraform state. / To isolate access to different environment accounts, use a separate EC2
+
+TILE 122
+FACT The S3 backend supports lock-file locking when use_lockfile = true; locking is opt-in.
+REF terraform_language#backend/s3 EVID This backend also supports state locking which can be enabled by setting the / State locking is an opt-in feature of the S3 backend.
+FACT Enable use_lockfile in the supplied backend configuration and provide the supplied GetObject, PutObject and DeleteObject permissions on the .tflock object.
+REF terraform_language#backend/s3 EVID The S3 backend stores state data in an S3 object at the path set by the / workspace), Terraform will need the following AWS IAM permissions on the target backend bucket:
+FACT During the controlled state-changing operation that holds the lock, attempt a competing operation and verify it cannot acquire the lock or change state; do not disable locking to bypass the test.
+REF terraform_language#backend/s3 EVID If state locking is enabled, the lock file ( / This backend also supports state locking which can be enabled by setting the
+FACT Locking coordinates concurrent state writers; it is not an authorization boundary against identities that can directly change state objects.
+REF terraform_language#backend/s3 EVID This backend also supports state locking which can be enabled by setting the / State locking is an opt-in feature of the S3 backend.
+
+TILE 123
+FACT A manual approval action stops pipeline progression until an authorized approver approves; rejection or expiration fails the action.
+REF aws_codepipeline_user_guide#approvals.html EVID             approval action to publish a message to an Amazon Simple Notification Service topic when the pipeline stops at / The pipeline stops when it reaches the approval action.
+FACT Place an approval action between staging and production with the supplied review link or revision context and authorized approver permissions.
+REF aws_codepipeline_user_guide#approvals.html EVID                     subscribed endpoints, with a link to review the approval action in the / Add a manual approval action to a stage - AWS CodePipeline
+FACT Verify the pipeline stops at approval and advances only after approval of the intended execution and revision.
+REF aws_codepipeline_user_guide#approvals.html EVID             approval action to publish a message to an Amazon Simple Notification Service topic when the pipeline stops at / The pipeline stops when it reaches the approval action.
+
+TILE 125
+FACT Recovery verification must test both restoration time against RTO and recoverable data loss against RPO.
+REF aws_wa_devops_guidance#ag.dlm.1-define-recovery-objectives-to-maintain-business-continuity.html EVID           loss is acceptable, and recovery time objectives (RTO) / Set recovery point objectives (RPO) indicating how much data
+FACT Using the supplied timestamps, measure elapsed time from the defined disruption start to passing service-readiness checks and compare it with RTO.
+REF aws_wa_devops_guidance#ag.dlm.1-define-recovery-objectives-to-maintain-business-continuity.html EVID           loss is acceptable, and recovery time objectives (RTO) /           capabilities that align with your RPO and RTO objectives.
+FACT Using the supplied recovery markers, measure the gap between the disruption point and the latest recovered data point and compare it with RPO; a running service alone does not prove either objective was met.
+REF aws_wa_devops_guidance#ag.dlm.1-define-recovery-objectives-to-maintain-business-continuity.html EVID Set recovery point objectives (RPO) indicating how much data /                 recovery objectives for downtime and data loss
+
+TILE 127
+FACT Recovery procedures include restoring service and directing clients to the recovered environment.
+REF aws_well_architected_framework#rel13-bp02.html EVID Teams implement inconsistent recovery procedures for workloads / REL13-BP02 Use defined recovery strategies to meet the recovery objectives - AWS Well-Architected Framework
+FACT Confirm the restored target’s supplied readiness checks pass, perform the approved DNS or application endpoint switch and verify clients reach the restored target.
+REF aws_well_architected_framework#rel13-bp02.html EVID Plot the target RTO against your cost /             unnecessary, costly switch.
+FACT For DNS cutover, account for cached answers and TTL when testing client convergence rather than assuming every client immediately uses the new endpoint.
+REF aws_well_architected_framework#../../../Route53/latest/DeveloperGuide/resource-record-sets-values-basic.html#rrsets-values-basic-ttl EVID However, if you specify a longer value for TTL, it takes longer for changes to the record (for example, a new IP address) to take effect. / When you create simple records, you specify the following values.
