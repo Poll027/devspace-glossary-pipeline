@@ -7,7 +7,7 @@
     "run_id": "glossary_batch_machine_learning_engineer",
     "prompt_version": "05_glossary_pass_a@v1",
     "model": "gpt-6.1-sol",
-    "generated_at": "2026-11-17T06:53:32.679440+00:00",
+    "generated_at": "2026-11-17T14:00:13.175129+00:00",
     "source_snapshot_id": "glossary_batch_machine_learning_engineer",
     "parent_artifact_hashes": {
       "batches/glossary_batch_machine_learning_engineer/coverage_briefs.json": "247562cbab53e2d516514f744978bbd360dc14c9f2c8bdef3942fc4f4f73e4f6",
@@ -3815,7 +3815,7 @@
           "id": "tb2",
           "purpose": "mechanism",
           "title": "The working rule",
-          "content": "For the bounded ViT image-classification adaptation, import torch, nn from torch, and AutoImageProcessor, ViTForImageClassification, TrainingArguments and Trainer from transformers. Load the supplied compatible checkpoint with ViTForImageClassification.from_pretrained(checkpoint). Retain its original label mapping for the pretrained baseline before replacing the task head. Load the matching processor with AutoImageProcessor.from_pretrained(checkpoint). Calling that processor on images with return_tensors=\"pt\" produces pixel_values; passing the resulting inputs as keyword arguments to the model yields logits through its .logits attribute. Use this same checkpoint processor for training and validation images rather than an unrelated representation. With the supplied preprocessed datasets and image collator, construct TrainingArguments with the declared output_dir, num_train_epochs, per_device_train_batch_size and learning_rate. Set eval_strategy=\"epoch\" and remove_unused_columns=False. Construct Trainer with model, args, train_dataset, eval_dataset=validation_dataset, data_collator and processing_class=processor. Its train method executes the bounded supervised adaptation.",
+          "content": "For the bounded ViT image-classification adaptation, use these explicit imports:\n\n```python\nimport torch\nfrom torch import nn\nfrom transformers import AutoImageProcessor, ViTForImageClassification, TrainingArguments, Trainer\n``` Load the supplied compatible checkpoint with ViTForImageClassification.from_pretrained(checkpoint). Retain its original label mapping for the pretrained baseline before replacing the task head. Load the matching processor with AutoImageProcessor.from_pretrained(checkpoint). Calling that processor on images with return_tensors=\"pt\" produces pixel_values; passing the resulting inputs as keyword arguments to the model yields logits through its .logits attribute. Use this same checkpoint processor for training and validation images rather than an unrelated representation. With the supplied preprocessed datasets and image collator, construct TrainingArguments with the declared output_dir, num_train_epochs, per_device_train_batch_size and learning_rate. Set eval_strategy=\"epoch\" and remove_unused_columns=False. Construct Trainer with model, args, train_dataset, eval_dataset=validation_dataset, data_collator and processing_class=processor. Its train method executes the bounded supervised adaptation.",
           "fact_ids": [
             "f1",
             "f2",
@@ -7225,7 +7225,7 @@
           "id": "tb7",
           "purpose": "example",
           "title": "A bounded work example",
-          "content": "Resolve the approved object generation and verify its bytes before invoking the supplied SageMaker pipeline with resolved parameters and ClientRequestToken. Retain the returned execution ARN together with trigger authorization and input identity. Wire the entry through existing event-bound build steps, fatal dependencies and approved step identity. Secret Manager versions are runtime references exposed only to needed steps. Inspect actual stage inputs against the approved snapshot rather than accepting the start request as consumption evidence. Replay accepted and rejected fixtures and check captured output for non-disclosure of credentials. Promotion remains separately authorized even when the retraining execution itself is permitted.",
+          "content": "Consider an illustrative invocation record with trigger authorization marked approved, the authorized build/step identity recorded, and approved input identified as object training-data, generation 17. Retrieve and verify that exact generation before invoking the supplied pipeline. The record retains the supplied pipeline name, actual snapshot parameters (object training-data, generation 17), ClientRequestToken and the returned PipelineExecutionArn; the execution identity is the returned value, not a guessed identifier.\n\nNow compare that record with the triggered execution\u2019s observed stage inputs. In the matching fixture, the training stage consumes object training-data, generation 17: the consumed identity matches the approved immutable input, so the input check accepts it. In the mismatching fixture, the request still names generation 17, but the observed training-stage input is generation 18: reject the input check and keep that gate failure fatal. An approved request is not proof that the approved generation was consumed.\n\nBoth fixtures use the existing event-bound build stages and required successful dependencies. Approved Secret Manager versions remain references exposed only to the needed step; neither the invocation record nor captured build output contains runtime credential values. Inspect the captured output to verify non-disclosure. Permission to execute retraining does not supply the separate authorization needed for promotion.",
           "fact_ids": [
             "f1",
             "f2",
@@ -7890,7 +7890,7 @@
           "id": "tb5",
           "purpose": "mechanism",
           "title": "Apply and verify",
-          "content": "Use gcloud compute instances describe INSTANCE --zone=ZONE to inspect the instance status and identity before and after the authorized lifecycle action.",
+          "content": "Before deleting the verified exclusively retired nonproduction instance, use gcloud compute instances describe INSTANCE --zone=ZONE in the approved project to inspect its status and identity against the verified retired inventory. After the authorized deletion, wait for the deletion operation to complete and check that it completed successfully without errors. Then repeat describe for the same project, zone and instance. Accept only a not-found response for that specific instance as evidence of absence; authentication, permission or other failures are inconclusive or failed verification, not proof that the instance is gone.",
           "fact_ids": [
             "f10"
           ]
@@ -7899,7 +7899,7 @@
           "id": "tb6",
           "purpose": "example",
           "title": "A bounded work example",
-          "content": "Compare actual container labels, identities, running/exit state and logs with the approved active/retired inventory and compute lifecycle. Stop and remove only a verified retired container. Delete only the exclusively retired nonproduction instance under the approved disk-preservation policy. Preserve active image references and required model/preprocessing artifacts, even if retired containers also used them. Afterward, verify the active release's readiness and bounded prediction and inspect that the approved retired resources are absent. Write one audit record of ownership, authorized actions, retained artifacts and credential non-disclosure checks. Keep runtime credentials out of cleanup code and captured logs.",
+          "content": "Compare actual container labels, identities, running/exit state and logs with the approved active/retired inventory and compute lifecycle. Stop and remove only a verified retired container. Before deleting the exclusively retired nonproduction instance, describe it in the approved project and zone and check its status and identity against the verified retired inventory. Delete only that instance under the approved disk-preservation policy, wait for the deletion operation to complete and check that it succeeded without errors. Repeat describe for the same project, zone and instance: only that instance's not-found response establishes absence; authentication, permission or other failures leave verification inconclusive or failed. Preserve active image references and required model/preprocessing artifacts, even if retired containers also used them. Afterward, verify the active release's readiness and bounded prediction and inspect that the approved retired resources are absent. Write one audit record of ownership, authorized actions, retained artifacts and credential non-disclosure checks. Keep runtime credentials out of cleanup code and captured logs.",
           "fact_ids": [
             "f1",
             "f2",
