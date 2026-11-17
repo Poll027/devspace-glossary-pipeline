@@ -1,7 +1,7 @@
 # STOPPED glossary_batch_python_fastapi_backend_developer
 
 command failed (1): /home/azureuser/env/bin/python /home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/glm_generate.py '/home/azureuser/roles/python_fastapi_backend_developer/glossary/batches/glossary_batch_python_fastapi_backend_developer' 'c1'
-JeznW_7DlB0: 1 proposals, 0 rejected
+JeznW_7DlB0: 0 proposals, 1 rejected
 xY__sjI5yVU: 0 proposals, 1 rejected
 -aKFBoZpiqA: 1 proposals, 0 rejected
 14z_Tf3p2Mw: 0 proposals, 1 rejected
@@ -32,4 +32,4 @@ Traceback (most recent call last):
 FileNotFoundError: [Errno 2] No such file or directory: '/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/video_bank/catalogue/CeQJepmYkjQ.json'
 
 
-Spend so far $7.32. Fix the cause, then rerun the same command (finished stages are skipped).
+Spend so far $7.45. Fix the cause, then rerun the same command (finished stages are skipped).
