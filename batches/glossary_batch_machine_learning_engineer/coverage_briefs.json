@@ -4,7 +4,7 @@
     "schema_version": "1.0.0",
     "artifact_type": "coverage_briefs",
     "batch_id": "glossary_batch_machine_learning_engineer",
-    "generated_at": "2026-11-17T06:46:49.147693+00:00",
+    "generated_at": "2026-11-17T18:18:02.006302+00:00",
     "model": "none",
     "prompt_version": "03_coverage_brief@v1",
     "source_snapshot_id": "glossary_batch_machine_learning_engineer",
@@ -76,9 +76,10 @@
         "required_facts": [
           {
             "id": "f1",
-            "statement": "Create an array from the supplied list or tuple fixture with import numpy as np and np.array(fixture); inspect its ndim, shape and dtype.",
+            "statement": "Import NumPy with import numpy as np, which binds the module to the name np; create an array from the supplied list or tuple fixture with np.array(fixture) and inspect its ndim, shape and dtype.",
             "source_refs": [
-              "numpy_user_guide#user/absolute_beginners.html \u2014 Attributes of an array; How to create a basic array"
+              "numpy_user_guide#user/absolute_beginners.html \u2014 Attributes of an array; How to create a basic array",
+              "numpy_user_guide#user/absolute_beginners.html \u2014 How to import NumPy"
             ]
           },
           {
@@ -97,9 +98,11 @@
           },
           {
             "id": "f4",
-            "statement": "Reject a violated input requirement with a conditional raise ValueError(message), rather than continuing with an invalid array.",
+            "statement": "Use an if guard with a colon and an indented raise ValueError(message) to reject a violated input requirement; the indented rejection executes when the guard is true, rather than continuing with an invalid array.",
             "source_refs": [
-              "python_tutorial#errors.html \u2014 Handling Exceptions; Raising Exceptions"
+              "python_tutorial#errors.html \u2014 Handling Exceptions; Raising Exceptions",
+              "python_tutorial#controlflow.html#if-statements \u2014 if Statements",
+              "python_tutorial#controlflow.html#default-argument-values \u2014 ask_ok example with if retries < 0: raise ValueError"
             ]
           },
           {
@@ -107,6 +110,13 @@
             "statement": "Write assert predicate checks for the declared valid, boundary and failure cases; a false predicate raises AssertionError during ordinary non-optimized execution.",
             "source_refs": [
               "python_tutorial#../reference/simple_stmts.html \u2014 The assert statement"
+            ]
+          },
+          {
+            "id": "f6",
+            "statement": "Define a validator with def followed by its name, parenthesized parameters and a colon; put its body on following indented lines, and use return value to send the accepted result back to the caller.",
+            "source_refs": [
+              "python_tutorial#controlflow.html#defining-functions \u2014 Defining Functions"
             ]
           }
         ],
@@ -197,6 +207,24 @@
             "statement": "Use np.testing.assert_allclose(array_result, reference_result, rtol=..., atol=...) to test agreement with the list-comprehension reference under explicit tolerances.",
             "source_refs": [
               "numpy_user_guide#reference/generated/numpy.testing.assert_allclose.html"
+            ]
+          },
+          {
+            "id": "f5",
+            "statement": "Construct an indexed reference output by allocating np.zeros(output_shape, dtype=declared_dtype), then using for i in range(input_array.shape[0]): with an indented assignment reference[i] = supplied_row_transform(input_array[i]); range stops before the row count, input_array[i] selects row i, and reference[i] assigns that row\u2019s result before the allclose comparison.",
+            "source_refs": [
+              "python_tutorial#controlflow.html#for-statements \u2014 for Statements",
+              "python_tutorial#controlflow.html#the-range-function \u2014 The range() Function",
+              "numpy_user_guide#user/absolute_beginners.html \u2014 How to create a basic array; Specifying your data type",
+              "numpy_user_guide#user/basics.indexing.html \u2014 Single element indexing; Assigning values to indexed arrays"
+            ]
+          },
+          {
+            "id": "f6",
+            "statement": "A list-comprehension reference uses [expression for item in sequence], producing a new list by evaluating the expression for each item; convert the resulting reference list with np.array before comparing it with the array expression.",
+            "source_refs": [
+              "python_tutorial#datastructures.html#list-comprehensions \u2014 List Comprehensions",
+              "numpy_user_guide#user/absolute_beginners.html \u2014 How to create a basic array"
             ]
           }
         ],
@@ -367,6 +395,14 @@
             "statement": "Compute standard deviation with np.std(numeric_values, axis=0, ddof=0), which divides squared deviations by N before taking the square root; use ddof=1 only when the stated calculation requires the N\u22121 divisor.",
             "source_refs": [
               "numpy_user_guide#reference/generated/numpy.std.html \u2014 Parameters; Notes"
+            ]
+          },
+          {
+            "id": "f7",
+            "statement": "A parameter written name=default_value in a function signature is optional at the call site: the tutorial\u2019s def parrot(voltage, state='a stiff', action='voom', type='Norwegian Blue'): can be called as parrot(1000) using its defaults or as parrot(voltage=1000000, action='VOOOOOM') overriding action by keyword; use the same default-parameter and name=value call syntax for optional inspection settings.",
+            "source_refs": [
+              "python_tutorial#controlflow.html#default-argument-values \u2014 Default Argument Values",
+              "python_tutorial#controlflow.html#keyword-arguments \u2014 Keyword Arguments"
             ]
           }
         ],
@@ -1894,7 +1930,9 @@
             "source_refs": [
               "google_mlops_pipelines#Data and model validation"
             ]
-          },
+          }
+        ],
+        "optional_enrichment": [
           {
             "id": "f4",
             "statement": "Build the single record from the existing policy fields, preserving the supplied permitted identities, documented task limits and foreseeable misuse cases without extending the permission scope.",
@@ -1903,7 +1941,6 @@
             ]
           }
         ],
-        "optional_enrichment": [],
         "misconceptions": [],
         "created_in_batch_id": "glossary_batch_machine_learning_engineer",
         "used_by_path_ids": [
@@ -1983,6 +2020,14 @@
             "statement": "Convert the feature and target tensors explicitly with tensor.to(dtype=declared_dtype), inspect tensor.shape and tensor.dtype, and verify row correspondence rather than relying on inferred types or deriving target representation from feature dtype.",
             "source_refs": [
               "pytorch_learn_basics#tensorqs_tutorial.html \u2014 Initializing a Tensor; Attributes of a Tensor; Operations on Tensors"
+            ]
+          },
+          {
+            "id": "f3",
+            "statement": "Use A @ B or torch.matmul(A, B) for matrix multiplication: for two-dimensional inputs, (m, n) @ (n, p) produces (m, p), so check A.shape[1] == B.shape[0] before multiplication and the output shape afterwards; A * B instead multiplies elements under the elementwise broadcasting rules.",
+            "source_refs": [
+              "pytorch_learn_basics#tensorqs_tutorial.html \u2014 Operations on Tensors: Arithmetic operations",
+              "pytorch_learn_basics#https://docs.pytorch.org/docs/2.15/generated/torch.matmul.html \u2014 dimensionality rules; matrix-matrix examples"
             ]
           },
           {
@@ -2202,7 +2247,7 @@
           },
           {
             "id": "f3",
-            "statement": "MSELoss takes input and target tensors of the same shape and, under mean reduction, averages their squared elementwise differences.",
+            "statement": "MSELoss takes input and target tensors of the same shape and, under mean reduction, sums squared elementwise differences and divides by M, the number of loss elements across all axes, not merely the number of examples.",
             "source_refs": [
               "pytorch_learn_basics#https://docs.pytorch.org/docs/2.15/generated/torch.nn.MSELoss.html \u2014 Formula; Shape"
             ]
@@ -2223,16 +2268,37 @@
           },
           {
             "id": "f6",
-            "statement": "For unweighted mean binary cross-entropy with logits over M elements, the logit derivative is (sigmoid(logit)\u2212target)/M; this distinguishes the probability representation from the raw logit.",
+            "statement": "For unweighted mean binary cross-entropy with logits over M loss elements across all axes, mean reduction divides the sum of element losses by M and the logit derivative is (sigmoid(logit)\u2212target)/M; this distinguishes the probability representation from the raw logit.",
             "source_refs": [
               "pytorch_learn_basics#https://docs.pytorch.org/docs/2.15/generated/torch.nn.BCEWithLogitsLoss.html \u2014 Formula; Shape"
             ]
           },
           {
             "id": "f7",
-            "statement": "For mean class-index cross-entropy without weighting, the derivative per sample logit is (softmax probability\u2212one-hot target)/N, so output width, target identity and reduction affect the gradient reference.",
+            "statement": "For the unweighted mean class-index cross-entropy fixture with logits of shape (N, C), no ignored examples and no label smoothing, N is the number of examples: sum the per-example losses and divide by N, and compute each logit derivative as (softmax probability\u2212one-hot target)/N.",
             "source_refs": [
               "pytorch_learn_basics#https://docs.pytorch.org/docs/2.15/generated/torch.nn.CrossEntropyLoss.html \u2014 Shape; Parameters; Examples"
+            ]
+          },
+          {
+            "id": "f8",
+            "statement": "Compute sigmoid(z) = 1 / (1 + exp(\u2212z)), where exp is the exponential function, to convert each binary logit z to the probability used in the binary gradient reference.",
+            "source_refs": [
+              "pytorch_learn_basics#https://docs.pytorch.org/docs/2.15/generated/torch.nn.Sigmoid.html \u2014 Sigmoid formula"
+            ]
+          },
+          {
+            "id": "f9",
+            "statement": "For each row of C class logits, compute softmax probability p[c] = exp(z[c]) / sum_j exp(z[j]), summing over that row\u2019s classes; torch.nn.Softmax(dim=1)(logits) performs this class-axis normalization for (N, C) logits.",
+            "source_refs": [
+              "pytorch_learn_basics#https://docs.pytorch.org/docs/2.15/generated/torch.nn.Softmax.html \u2014 Softmax formula; dim; Examples"
+            ]
+          },
+          {
+            "id": "f10",
+            "statement": "The one-hot target row has 1 at the target class index and 0 at each other class; torch.nn.functional.one_hot(targets, num_classes=C) converts long class-index targets of shape (N,) to these rows of shape (N, C) for the manual gradient reference.",
+            "source_refs": [
+              "pytorch_learn_basics#https://docs.pytorch.org/docs/2.15/generated/torch.nn.functional.one_hot.html \u2014 one_hot definition; Parameters"
             ]
           }
         ],
@@ -3434,7 +3500,7 @@
             "statement": "Run docker build -t IMAGE:TAG CONTEXT to build and tag the package image; CONTEXT must contain the Dockerfile (or select it with -f) and every source used by COPY, with needed files not excluded by .dockerignore; record the resulting immutable image identity as well as its tag.",
             "source_refs": [
               "docker_docs#https://docs.docker.com/reference/cli/docker/buildx/build/ \u2014 Usage; Specify a Dockerfile; Tag an image",
-              "docker_docs#docker-concepts/building-images/build-tag-and-publish-an-image \u2014 Build an image; Tag an image",
+              "docker_docs#https://docs.docker.com/get-started/docker-concepts/building-images/build-tag-and-publish-an-image/ \u2014 Building images; Tagging images; Try it out: Build an image",
               "docker_docs#https://docs.docker.com/build/concepts/context/ \u2014 Filesystem contexts; .dockerignore files"
             ]
           },
@@ -4224,34 +4290,6 @@
             ]
           },
           {
-            "id": "f6",
-            "statement": "A Compose YAML document declares services by name; use indented mappings for service fields and lists or mappings in the forms required by the Compose specification.",
-            "source_refs": [
-              "docker_docs#https://docs.docker.com/reference/compose-file/ \u2014 The Compose Specification"
-            ]
-          },
-          {
-            "id": "f7",
-            "statement": "Set a service\u2019s image to its immutable artifact reference, its ports to HOST:CONTAINER mappings, and its environment to the declared nonsecret key/value settings.",
-            "source_refs": [
-              "docker_docs#https://docs.docker.com/reference/compose-file/services/ \u2014 image; environment; ports; healthcheck; cpus; mem_limit"
-            ]
-          },
-          {
-            "id": "f8",
-            "statement": "Use docker compose -f CONFIG_PATH config to parse, resolve and validate the authored YAML before applying it; check its resolved fields against the intended runtime contract.",
-            "source_refs": [
-              "docker_docs#https://docs.docker.com/reference/cli/docker/compose/config/ \u2014 Description; Options"
-            ]
-          },
-          {
-            "id": "f9",
-            "statement": "Apply the declared local Compose deployment with docker compose -f CONFIG_PATH up -d and inspect the resulting containers.",
-            "source_refs": [
-              "docker_docs#https://docs.docker.com/reference/cli/docker/compose/up/ \u2014 Description"
-            ]
-          },
-          {
             "id": "f10",
             "statement": "For the supplied Google ID-token verifier contract, use from google.oauth2 import id_token and from google.auth.transport import requests; implement authorize_prediction(token, expected_audience, permitted_subjects) to reject a missing token, call claims = id_token.verify_oauth2_token(token, requests.Request(), audience=expected_audience), and return the verified claims only when claims[\"sub\"] is in the supplied permitted_subjects policy, otherwise raising PermissionError. Use the verified sub identity, not an unverified decode or a changeable email address.",
             "source_refs": [
@@ -4284,7 +4322,36 @@
             ]
           }
         ],
-        "optional_enrichment": [],
+        "optional_enrichment": [
+          {
+            "id": "f6",
+            "statement": "A Compose YAML document declares services by name; use indented mappings for service fields and lists or mappings in the forms required by the Compose specification.",
+            "source_refs": [
+              "docker_docs#https://docs.docker.com/reference/compose-file/ \u2014 The Compose Specification"
+            ]
+          },
+          {
+            "id": "f7",
+            "statement": "Set a service\u2019s image to its immutable artifact reference, its ports to HOST:CONTAINER mappings, and its environment to the declared nonsecret key/value settings.",
+            "source_refs": [
+              "docker_docs#https://docs.docker.com/reference/compose-file/services/ \u2014 image; environment; ports; healthcheck; cpus; mem_limit"
+            ]
+          },
+          {
+            "id": "f8",
+            "statement": "Use docker compose -f CONFIG_PATH config to parse, resolve and validate the authored YAML before applying it; check its resolved fields against the intended runtime contract.",
+            "source_refs": [
+              "docker_docs#https://docs.docker.com/reference/cli/docker/compose/config/ \u2014 Description; Options"
+            ]
+          },
+          {
+            "id": "f9",
+            "statement": "Apply the declared local Compose deployment with docker compose -f CONFIG_PATH up -d and inspect the resulting containers.",
+            "source_refs": [
+              "docker_docs#https://docs.docker.com/reference/cli/docker/compose/up/ \u2014 Description"
+            ]
+          }
+        ],
         "misconceptions": [],
         "created_in_batch_id": "glossary_batch_machine_learning_engineer",
         "used_by_path_ids": [
@@ -6676,7 +6743,12 @@
             "id": "f4",
             "statement": "Check captured commands and logs for secret values or sensitive data, with runtime-injected credentials kept out of cleanup code and printed output.",
             "source_refs": [
-              "docker_docs#https://docs.docker.com/reference/cli/docker/container/logs/ \u2014 Description"
+              "docker_docs#https://docs.docker.com/reference/compose-file/secrets/ \u2014 secrets",
+              "docker_docs#https://docs.docker.com/reference/build-checks/secrets-used-in-arg-or-env/ \u2014 Description",
+              "docker_docs#https://docs.docker.com/compose/how-tos/use-secrets/ \u2014 Manage secrets securely in Docker Compose (introductory paragraphs on environment-variable exposure and secrets printed in debug logs); Use secrets",
+              "docker_docs#https://docs.docker.com/engine/swarm/secrets/ \u2014 Example: Rotate a secret (command reads passwords from /run/secrets without exposing them on the command line or saving them in shell history)",
+              "google_mlops_pipelines#https://docs.cloud.google.com/secret-manager/docs/create-secret-quickstart \u2014 Create a secret and access a secret version / Python (WARNING: Do not print the secret in a production environment)",
+              "docker_docs#https://docs.docker.com/reference/cli/docker/container/logs/ \u2014 Description (stdout/stderr retrieval; --details can include environment variables and labels)"
             ]
           },
           {
