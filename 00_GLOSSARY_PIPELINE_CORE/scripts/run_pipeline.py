@@ -507,23 +507,28 @@ def apply_audit_repair(c):
     if rep.get("verdict") != "FAIL" or (mark.exists() and load(mark).get("report_hash") == h):
         return
     issues = [i for i in rep.get("issues", []) if i.get("severity") in ("BLOCKER", "HIGH")]
-    stage_of = {"coverage_briefs.json": "03_coverage_brief", "glossary_pass_a.json": "05_glossary_pass_a"}
-    bad = [i for i in issues if Path(i.get("artifact", "")).name not in stage_of]
+    def owner(i):  # which stage's artifact has to change: the facts (03) or the teaching text (05); a bundle/draft finding is a teaching-text finding
+        n = Path(i.get("artifact", "")).name.split(":")[0]
+        return "03" if n.startswith("coverage_briefs") else "05" if n.startswith(("glossary_pass_a", "path_glossary_bundle", "glossary_bundles_draft")) else None
+    bad = [i for i in issues if owner(i) is None]
     if bad:
-        raise Stuck("audit findings outside coverage_briefs / glossary_pass_a need a manual fix or a rerun from the stage that owns them:\n" + "\n".join(f"{i.get('artifact')}: {i.get('problem', '')[:200]}" for i in bad))
+        raise Stuck("audit findings outside coverage_briefs / glossary_pass_a / the bundle need a manual fix or a rerun from the stage that owns them:\n" + "\n".join(f"{i.get('artifact')}: {i.get('problem', '')[:200]}" for i in bad))
     ids = sorted({x for i in issues for x in i.get("concept_ids", [])})
     if not ids:
         return
     text = "\n".join(f"AUDIT {i['severity']} {','.join(i.get('concept_ids', []))}: {i['problem']}\nREQUIRED FIX: {i.get('required_fix', '')}" for i in issues)
     chunks = concept_chunks(c)
     c.log(f"audit repair: {len(issues)} blocking finding(s) on {ids}")
-    for sid, intro in (("03_coverage_brief", "Fix the facts and source references the audit names (add or replace source_refs only with approved sources in this batch's source pack). Change nothing else."),
-                       ("05_glossary_pass_a", "The coverage-brief facts for these concepts were just corrected as the audit finding requires. Update every teaching block and glossary statement that states or depends on a corrected fact, and its source references. Change nothing else.")):
+    steps = []
+    if any(owner(i) == "03" for i in issues):
+        steps.append(("03_coverage_brief", "Fix the facts and source references the audit names (add or replace source_refs only with approved sources in this batch's source pack). Change nothing else."))
+    steps.append(("05_glossary_pass_a", "Teach every required fact the audit says is missing or incomplete, and update any teaching block or glossary statement that states or depends on a corrected fact, with its source references. Change nothing else."))
+    for sid, intro in steps:
         for chunk, cids in chunks.items():
             mine = [x for x in ids if x in cids]
             if mine:
                 repair(c, sid, chunk, mine, [intro, text])
-    for sid in ("03_coverage_brief", "05_glossary_pass_a"):  # keep the repaired parts; redo their evaluation and the merge
+    for sid in [x[0] for x in steps]:  # keep the repaired parts; redo their evaluation and the merge
         for chunk in chunks:
             (c.B / "working" / f"state_{sid}_{chunk}.json").unlink(missing_ok=True)
         (c.B / c.artifact(sid)).unlink(missing_ok=True)
