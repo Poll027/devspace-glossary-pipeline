@@ -206,7 +206,7 @@ def main():
     parents = {f: sha(B / f) for f in ("glossary_pass_a.json", "selected_media.json", "coverage_briefs.json", "depth_classification.json", "extracted_concepts.json")}
     doc = {"metadata": {"artifact_type": "glossary_bundles_draft", "artifact_version": "1.0.0", "schema_version": "1.0.0", "batch_id": batch_id, "run_id": batch_id,
                         "prompt_version": f"{STAGE}@v1", "model": f"bedrock:{used_label()}", "generated_at": datetime.now(timezone.utc).isoformat(),
-                        "source_snapshot_id": "data_analytics.source_pack", "parent_artifact_hashes": parents},
+                        "source_snapshot_id": batch_id, "parent_artifact_hashes": parents},
            "batch_id": batch_id, "bundles": bundles}
     dest.write_text(json.dumps(doc, indent=2))
     order = {c: i for i, c in enumerate(ids)}

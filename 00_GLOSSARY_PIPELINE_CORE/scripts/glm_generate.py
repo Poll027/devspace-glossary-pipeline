@@ -178,7 +178,7 @@ def main():
     parents = {f: sha(B / f) for f in ("video_candidates.json", "coverage_briefs.json", "extracted_concepts.json")}
     doc = {"metadata": {"artifact_type": "segment_proposals", "artifact_version": "1.0.0", "schema_version": "1.0.0",
                         "batch_id": batch_id, "run_id": batch_id, "prompt_version": f"{STAGE}@v1", "model": f"bedrock:{used_label()}",
-                        "generated_at": datetime.now(timezone.utc).isoformat(), "source_snapshot_id": "data_analytics.source_pack",
+                        "generated_at": datetime.now(timezone.utc).isoformat(), "source_snapshot_id": batch_id,
                         "parent_artifact_hashes": parents},
            "batch_id": batch_id, "proposals": proposals, "rejected_videos": rejected}
     dest = B / f"segment_proposals.part.{a.chunk}.json"
