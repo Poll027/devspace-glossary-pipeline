@@ -1,0 +1,36 @@
+{"title": "This Is How You Do PROPER Exception Handling With FastAPI", "playable_in_embed": true, "chapters": [{"title": "Intro", "start_seconds": 0, "end_seconds": 49}, {"title": "Custom Exceptions", "start_seconds": 49, "end_seconds": 81}, {"title": "How to create custom exception classes", "start_seconds": 81, "end_seconds": 169}, {"title": "Exception handlers", "start_seconds": 169, "end_seconds": 303}, {"title": "Final Thoughts", "start_seconds": 303, "end_seconds": 338}, {"title": "Outro", "start_seconds": 338, "end_seconds": 369}], "thumbnail_urls": ["https://i.ytimg.com/vi_webp/7MHDDOrDx-w/maxresdefault.webp"]}
+FACTS [{"id": "f1", "statement": "An exception handler receives the request and exception and can return JSONResponse(status_code=..., content=...) with a stable public error structure.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/handling-errors/#install-custom-exception-handlers"]}, {"id": "f2", "statement": "Register the handler for Starlette's HTTPException when both FastAPI and Starlette HTTP exceptions should share the envelope.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/handling-errors/#override-the-httpexception-error-handler"]}, {"id": "f3", "statement": "Populate the public envelope with intended client-facing information, not internal stack traces or raw exception details.", "source_refs": ["owasp_api_security_top10_2023#https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html#error-handling"]}, {"id": "f4", "statement": "Preserve the recognized exception's status code and relevant headers when constructing the envelope so its body format does not change the underlying HTTP outcome.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/handling-errors/#override-the-httpexception-error-handler"]}]
+133.04-139.52 we know where the problem is. The reason to have this SkyPos API error at the top is that not only
+139.52-147.20 have we now defined a custom hierarchy for our API, we also provide a way of catching all errors
+147.20-153.44 related to the SkyPos domain. So if we have some code that interacts with the SkyPos API code, we
+153.44-159.12 could catch any SkyPos API error so that we're sure that if there is an issue we are catching
+159.12-165.36 it without having to catch any exception. Also, we might in the future add a second hierarchy with
+165.36-170.72 other types of errors and then we can handle those things separately. In FastAPI, when an exception
+170.72-176.48 is raised by default, FastAPI's default error handler takes care of it, but you can replace
+176.48-181.92 that by a custom error handler as well. This is the main file of my API where I also do things like
+181.92-186.80 adding the routers etc. So part of the main file is adding the routers like you see here, but another
+186.80-191.04 thing that I've done here is I've created a function createExceptionHandler that gets a
+191.04-198.16 status code and an initial detail and that handles particular types of exceptions. So in this case we
+198.16-205.60 expect a SkyPos API error and it's going to turn that into a JSON response by looking at things
+205.60-211.60 like the message. And then what you can do in FastAPI is add exception handlers for specific
+211.60-217.20 classes. So for each of these specific types of errors I add an exception handler like entity
+217.20-223.76 doesn't exist, invalid operation, etc. In the exception handling code I return a JSON response
+223.76-229.44 and I also use a logger. Now of course you have to be careful here that you're not returning any
+229.44-234.96 sensitive data so you might want to filter out things like passwords and email addresses. So now
+234.96-240.40 let's take a look at how this works. So here I have one of the routers. This is the router to get
+240.40-245.84 weather information. So there's the standard CRUD operations. So let's see what happens if we raise
+245.84-253.84 an error. So this getRequest I'm going to raise a service error that the service is unavailable.
+254.48-261.92 And that's the message and I can also give this a name like so. Let me save this and now let me go
+261.92-267.20 to the documentation. So this is one of the nice things about FastAPI that we get automatically a
+267.20-273.76 Swagger UI which is really nice. So let me go to the particular getRequest that's API v1 weather
+274.32-281.04 and then let's try that. So now I'm going to try this and then execute and now we're going to see
+281.04-286.88 that we get an error internal service error and there we have the detail service is unavailable.
+286.88-292.08 So that's the power of custom exceptions and the nice thing about the exception handler that I
+292.08-297.68 created is that it also logs the error. So if I go to my docker image that's currently running
+297.68-303.84 the service you can see that I get the error right here so I can also see it back in the logs. So
+303.84-308.96 overall if you spend a bit of time setting up your custom exceptions it's going to be a way better
+308.96-314.48 experience for the users of your API and it's not that hard to do as you've seen in this example.
+314.48-320.48 Now I've put all the example code in the examples repository so you can take a look and copy paste
+320.48-325.76 whatever you need. Finally when you use these types of custom exceptions make sure you remember
+325.76-331.52 that you create specific exceptions and not too generic ones. Specific is better because they
+331.52-336.24 give more precise information. You can add data to your exception so you can do something with

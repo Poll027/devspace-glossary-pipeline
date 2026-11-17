@@ -1,0 +1,110 @@
+{"title": "Dependency Injection Explained Like You\u2019re 5 (with FastAPI Examples)", "playable_in_embed": true, "chapters": [{"title": "Introduction to DI", "start_seconds": 0, "end_seconds": 20}, {"title": "What is dependency injection", "start_seconds": 20, "end_seconds": 56}, {"title": "Core concepts of DI", "start_seconds": 56, "end_seconds": 138}, {"title": "Why use dependency injection", "start_seconds": 138, "end_seconds": 289}, {"title": "Implementing DI in FastAPI", "start_seconds": 289, "end_seconds": 473}, {"title": "Advanced DI examples", "start_seconds": 473, "end_seconds": 802}], "thumbnail_urls": ["https://i.ytimg.com/vi_webp/f270BoTicMA/maxresdefault.webp"]}
+FACTS [{"id": "f1", "statement": "Declare a handler input with Annotated[Type, Depends(provider)] to have FastAPI execute the provider and supply its returned value.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/dependencies/#declare-the-dependency-in-the-dependant"]}, {"id": "f2", "statement": "Pass the provider callable to Depends rather than calling it in the declaration, so FastAPI can resolve its inputs.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/dependencies/#declare-the-dependency-in-the-dependant"]}, {"id": "f3", "statement": "A dependency makes a handler's needed input explicit and can be reused by multiple operations for shared input-provision logic.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/dependencies/#what-is-dependency-injection"]}]
+287.52-293.12 see it in action so I have this
+290.20-294.56 dependency injection file um or folder
+293.12-297.24 I'm going to go ahead and just create a
+294.56-300.20 quick main.py
+297.24-305.40 file and then I am going to create a
+300.20-307.16 quick virtual environment ah I messed
+305.40-310.92 up all
+307.16-313.24 right so now that we're creating this we
+310.92-315.84 don't really need anything I guess for
+313.24-318.00 this example I'm going to use fast API
+315.84-319.76 just so we can see dependency injection
+318.00-323.44 through the library itself so I can say
+319.76-327.32 pip install fast API and uvicorn
+323.44-332.04 all right so let's go ahead and just say
+327.32-333.64 from Fast API import fast AP API and
+332.04-335.76 Depends and then we're just going to
+333.64-337.84 leave it there and then we can say app
+335.76-340.40 equals fast API and now let's say we
+337.84-341.64 wanted to create a class of logger so
+340.40-343.96 we're going to create like a simple
+341.64-346.68 logging system we can see class logger
+343.96-348.48 def log self message of type string and
+346.68-351.04 then we can just print logging message
+348.48-354.08 of that message all right so now let's
+351.04-357.60 say we had a function or an API inpoint
+354.08-359.48 that is log SL message if we wanted to
+357.60-363.64 not use dependency injection we would
+359.48-366.60 have have to say app.get logmessage def
+363.64-368.68 log message messages of message of
+366.60-370.24 string and then we need to directly
+368.68-371.60 create the logger instance inside the
+370.24-374.72 router so then we could say logger
+371.60-378.04 equals logger and then logger.log
+374.72-381.52 message and then return that
+378.04-383.36 message so what's happening here is if
+381.52-386.36 we ran this application and we passed in
+383.36-389.96 a message we are instantiating this
+386.36-392.28 logger object right here and let's say
+389.96-394.44 we had this uh multiple different times
+392.28-395.96 like this might be a log message but
+394.44-397.04 let's say we had a bunch of different
+395.96-400.12 endpoints or a bunch of different
+397.04-402.28 functions that all needed to use logger
+400.12-405.92 but we would need to instantiate the
+402.28-408.16 object every single time when in reality
+405.92-410.60 we could just make this even easier for
+408.16-412.36 reusability so if we had this we' have
+410.60-415.04 to create it every single time right
+412.36-417.40 while here we can create a new
+415.04-421.16 dependency called git logger which just
+417.40-424.12 returns a new object of log
+421.16-426.16 so then what we could do here now is
+424.12-428.84 right here instead of saying hey we need
+426.16-431.52 to create this new logger object what we
+428.84-433.72 could do is just say logger is going to
+431.52-437.16 be of type logger and we're going to
+433.72-441.00 depend on that git
+437.16-442.40 logger and this depends is is means it's
+441.00-444.28 a dependency so it's part of our
+442.40-447.16 dependency injection for us to run this
+444.28-450.24 application or run this function we need
+447.16-453.32 this object logger which returns turns
+450.24-455.84 in an object of logger because we call
+453.32-459.32 logger inside the function itself we
+455.84-460.92 have a dependency on this logger object
+459.32-463.52 and we are injecting it into this
+460.92-465.32 function so we have a logger that we can
+463.52-467.68 use real quick if you have enjoyed the
+465.32-470.00 video please subscribe to be notified of
+467.68-473.28 upcoming videos and check out my
+470.00-476.20 bestselling fast API course linked below
+473.28-477.88 now if we wanted to go even further we
+476.20-479.84 can just we can just pass this in every
+477.88-481.56 function that needs a logger or can use
+479.84-482.88 type annotation which just makes it a
+481.56-485.04 little bit cleaner so we could say
+482.88-488.88 logger uncore dependency equals
+485.04-488.88 annotated logger depends get
+489.56-495.12 logger and this comes from the python um
+492.64-496.96 package of typing so we can just import
+495.12-499.16 that there and now instead of saying
+496.96-501.00 this long thing every single time we can
+499.16-503.04 just go ahead and add this logger
+501.00-506.04 dependency right
+503.04-507.60 here so we're saying every single time
+506.04-509.92 this application is run we're going to
+507.60-512.92 be using our logger dependency which
+509.92-515.24 uses a type hint of annotated and then
+512.92-517.08 we have our logger which means we're
+515.24-519.96 just returning this type of class from
+517.08-522.48 our depins so it adds a little bit more
+519.96-524.56 code up front but now we only have to
+522.48-527.92 say loger dependency so it's very clear
+524.56-529.80 what this is and we don't have to redo
+527.92-532.20 this or instantiate an object every
+529.80-534.20 single time it'll handle the dependency
+532.20-536.60 for us all right now let's just do it
+534.20-538.04 again so we have this let's create a new
+536.60-539.76 one so we're going to say this is going
+538.04-543.60 to be an email service so we can say
+539.76-543.60 class email service def send
+543.92-548.12 email where we pass in self recept it
+546.64-551.28 who we're going to be sending it to in
+548.12-551.28 the message then we
+551.64-557.92 just print sending email to both of the
+554.96-557.92 parameters that we're sending
+560.04-567.16 in all right so we have this email
+563.92-569.60 service again we would have to recreate

@@ -1,0 +1,171 @@
+{
+  "metadata": {
+    "artifact_type": "segment_judgments",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_python_fastapi_backend_developer",
+    "run_id": "glossary_batch_python_fastapi_backend_developer",
+    "prompt_version": "09_segment_judge@v1",
+    "model": "gpt-6.1-sol",
+    "generated_at": "2026-11-17T04:41:57.416512+00:00",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "segment_proposals.part.c3.json": "de6fc4cfdca7ad7098611f06fde3a093c137bb2a6c665dde37ce8c8d8db515eb",
+      "coverage_briefs.json": "29252d83f0bfa87f1a9cbd7417da43af1765f51c11fd7188c0983ed407515522",
+      "extracted_concepts.json": "67970e7e6c73ea02bfc2cf88112a2f469d0f28d312a5f81b28a86891c5015a72"
+    }
+  },
+  "batch_id": "glossary_batch_python_fastapi_backend_developer",
+  "judgments": [
+    {
+      "proposal_id": "prop_9gC3Ot0LoUQ_endpoint_integration_tests",
+      "verdict": "approved",
+      "final_start_seconds": 327,
+      "final_end_seconds": 429,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read creator captions 297.60-458.55 and catalogue chapters (API testing basics 48-444; database dependency injection follows). At 325.26-345.24 the narrator transitions from the application walkthrough to testing a simple GET route; 352.53-383.52 imports TestClient and the application and creates the client. At 383.52-404.52 he sends GET, asserts status 200 and JSON 'server is running'; 404.52-424.41 runs pytest, changes the response deliberately and observes failure. This directly supports f1 and agrees with FastAPI's testing documentation. The local import and route description supply enough context without watching the CRUD walkthrough; no blocked database operations are needed. Extend the start to 327 to include the testing question rather than its trailing clause, and end at 429 after restoring the response and returning to the test file, before database-backed endpoint discussion. Narrated file edits, save, and passing/failing runs support inferred live-code visual value; the thumbnail URL alone is not frame verification. Lifespan and dependency-resolution facts f2/f3 are not taught."
+    },
+    {
+      "proposal_id": "prop_9gC3Ot0LoUQ_database_state_isolation",
+      "verdict": "approved",
+      "final_start_seconds": 1385,
+      "final_end_seconds": 1461,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 1350.12-1488.24 and catalogue Operations layer chapter 1180-1457 (spoken outro actually begins around 1460). At 1385.16-1408.53 he restates the previous setup/teardown purpose: tables and test items, then introduces a pytest session fixture. At 1408.53-1426.35 he explains creating tables/items before yielding the session, closing it and dropping tables afterward. At 1437.81-1457.19 the session is passed into each test, including Create Item, and the conclusion completes at 1460.43. This teaches fixture finalization f1, consistent with pytest's yield-fixture documentation. Start at 1385 to omit the trailing operations-layer sentence; end at 1461 to retain the conclusion. Existing helper definitions are not reproduced, but their roles are explained locally and session ownership, writes and transaction concepts are already allowed for this late-path concept. References to an earlier override do not require seeing it to understand this fixture lifecycle. Annotated-code value is inferred from pointing out fixture and test code, not independently inspected frames. No external transaction/savepoint workflow, HTTP database-write test, or complete connection/override/order-independence verification is taught; do not claim f2-f4."
+    },
+    {
+      "proposal_id": "prop_T0JXFhJ7pM0_async_session_lifecycle",
+      "verdict": "approved",
+      "final_start_seconds": 216,
+      "final_end_seconds": 441,
+      "confirmed_fact_ids": [
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 180.80-473.60 and the engine (216), async sessions (323), and dependency (382) chapters. At 215.04-251.04 he introduces a typical synchronous database setup and replaces create_engine with create_async_engine. At 251.04-329.68 he explains the async driver requirement, psycopg support and a SQLite-driver aside. At 333.20-381.44 he imports async_sessionmaker, builds a factory from the async engine and renames it async_session_local. At 393.12-423.28 he uses async with the factory, yields the session, explains cleanup after the context and marks the dependency async. The Depends integration is explained at 423.28-442.40. This correctly demonstrates f2 against SQLAlchemy's asyncio synopsis. Use 216-441 to avoid the preceding transition and preserve the session-injection conclusion, excluding the init_db/transaction section. The 225-second duration is justified by engine/driver setup needed for the session demonstration; the SQLite aside is dispensable. Editing and documentation cues support inferred live-code value. No blocked transaction behavior is needed in the approved cut. Drop f3: yielding and normal context cleanup are shown, but exceptional-exit cleanup is not explained or exercised; f1 concurrent-session safety is also absent. The reported later run_sync claim is outside both this cut and its margin and is not imported into this approval."
+    },
+    {
+      "proposal_id": "prop_Qtn_mQeW7hc_dependency_overrides",
+      "verdict": "approved",
+      "final_start_seconds": 0,
+      "final_end_seconds": 199,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 3,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read the complete 0.40-202.64 transcript and the catalogue (no chapters; embeddable). Opening identifies dependency overrides and the one-route hello-world app and existing test. At 29.36-83.04 he builds a simple provider returning 'actual user', wires Depends and prints the value. At 95.52-111.68 pytest prints that actual value; 120.60-172.28 defines a mock provider and maps the original callable to the replacement in dependency_overrides. At 175.56-191.32 rerunning the endpoint test prints 'mock user'. This teaches f1 and matches FastAPI's override dictionary mechanism. Although the provider is called authenticate-user, it is only a string-returning example: bearer credentials or authorization are not required knowledge. Existing app/test context is introduced locally; narrated imports, centered code and test execution support inferred live-code value. End at 199 after the concluding override explanation, before the sign-off. It does not assert the replacement output (f2) or restore overrides (f3); those must remain text/other-media coverage, not confirmed video facts."
+    },
+    {
+      "proposal_id": "prop_VyoGAoxQhxM_partial_update_contracts",
+      "verdict": "approved",
+      "final_start_seconds": 710,
+      "final_end_seconds": 799,
+      "confirmed_fact_ids": [
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 674.72-832.96 and the PATCH chapter 639-956. At 709.60-742.32 a new thought says update only client-sent fields, not missing fields with None, and assigns update_data from post_data.model_dump(exclude_unset=True). At 739.28-753.12 post_data is explicitly identified as the request body. At 760.24-798.96 the title-only example explains how otherwise a default None content would erase stored content, and how exclude_unset retains only what was supplied. This directly teaches f2 and agrees with FastAPI body-update documentation; it does not require the earlier ORM route setup to follow extraction semantics. Start at 710 rather than the trailing 'dynamic approach'; end at 799 after the supplied-fields explanation, before dictionary iteration and setattr on the ORM post at 801.36-816.56, which would use blocked sqlalchemy.update_resource knowledge. Code-edit narration supports inferred live-code visual value. No model_fields_set or explicit-null/exclude_none distinction is taught, so f1/f3 are not confirmed. Later user-update material is not part of this cut."
+    },
+    {
+      "proposal_id": "prop_nlZBMPblJ3w_transaction_boundaries",
+      "verdict": "rejected_weak_visual",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 3,
+        "visual_teaching_value": 1,
+        "pacing": 2,
+        "boundary_quality": 3
+      },
+      "reasoning": "Read 0-174.88 and catalogue (no chapters; embeddable; thumbnail URL available but no frame-based evidence). At 12.40-31.92 the speaker defines a sequence of operations, at 73.20-97.28 says a transaction completes in full or not at all and explains BEGIN followed by COMMIT or ROLLBACK (commit changes or undo), and at 125.28-139.28 describes committed data surviving a crash. This supports the general atomicity/commit/rollback mental model in f2, consistent with SQLAlchemy's transaction tutorial. It does not teach a SQLAlchemy multi-write implementation, session.begin or flush recovery. No drawing, annotated slide or code-demo cues appear in the proposed introduction; the server-screen demo begins only at 139.28-148.80 and depends on unrelated cluster/recovery setup. With only talking-head-level evidence, the conceptual exception would require exceptionally clear explanation. This introduction instead wanders through tickets/payments and a generic ACID list, gives a vague 'restrictions' consistency explanation at 97.28-116.40 and muddled durability wording ('cannot be moved from your server'). It is not exceptional enough to justify weak visual value. Reject this cut; choose a clear signaled all-or-nothing diagram/example rather than extending into the unrelated server demonstration."
+    },
+    {
+      "proposal_id": "prop_MwwCiGFyU9w_redis_cache_aside",
+      "verdict": "approved",
+      "final_start_seconds": 105,
+      "final_end_seconds": 259,
+      "confirmed_fact_ids": [
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 2,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 70.32-291.48 and catalogue (only Introduction chapter 0-380; embeddable). At 104.12-139.24 he defines cache-aside as an application-controlled cache beside the database. At 139.24-171.80 the profile request checks Redis, misses and queries the database; at 174.12-197.88 it stores a copy in Redis then responds. At 203.96-227.40 the next request hits Redis and returns without the database query. This explicitly supports f2 and matches Redis's cache-aside Python documentation. Drop proposed f1: a copied database result is illustrated, but primary-store authority rather than cache authority is never explained. Repeated-read benefit is covered at 233.44-259.96, but staleness eligibility and key construction f3/f4 are not taught. Use 105-259: the cache-aside heading starts around 104, and the following change/freshness discussion begins around 260 with invalidation at 283.24; it is excluded, so blocked cache.freshness_policy is not needed. No drawing or screen cues establish actual visuals; catalogue thumbnail existence alone is not proof. Nevertheless approve under the conceptual talking-head exception: this unusually clear, locally introduced profile example explicitly labels miss and hit, walks every actor and step in order and contrasts first versus repeated requests. The low visual score records the uncertainty, not a claim of whiteboard footage. Sweeping speed language is illustrative, not a guarantee for every workload."
+    },
+    {
+      "proposal_id": "prop_i9RX03zFDHU_alembic_migrations",
+      "verdict": "rejected_fact_mismatch",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 2,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 3,
+        "pacing": 4,
+        "boundary_quality": 3
+      },
+      "reasoning": "Read 1375.44-1499.68 and catalogue Autogenerating migrations chapter 1207-1708. At 1409.52-1428.64 he reads documentation describing database-to-table-metadata comparison with the autogenerate option; 1427.36-1447.52 describes candidate migration files and developer review/modification before upgrade. At 1442.32-1468.88 he explains supplying Base.metadata in env.py, then resumes the earlier configured environment. The statements are correct against Alembic's autogeneration documentation and screen/documentation cues give plausible visual support; no prerequisite leak is established. However the sole claimed f3 includes the essential limitation that autogenerate cannot reliably infer schema intent such as table/column renames. The clip never teaches any detection limitation or rename/drop-add hazard, whereas the source explicitly warns autogenerate is not perfect and requires review/correction. Thus this is partial manual-review instruction, not a confirmed complete f3; neither command-with-message f2 nor any other full required fact is taught. Reject as fact mismatch rather than falsely marking f3 covered. A replacement range must explain a concrete detection limitation alongside candidate review, or revise the upstream fact/segment coverage design to represent this narrower teaching separately. Tightening to the documentation paragraph cannot supply the missing content."
+    }
+  ]
+}

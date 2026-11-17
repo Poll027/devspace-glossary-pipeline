@@ -1,0 +1,117 @@
+{"title": "Python FastAPI Tutorial (Part 3): Path Parameters - Validation and Error Handling", "playable_in_embed": true, "chapters": [{"title": "Introduction to URL parameters", "start_seconds": 0, "end_seconds": 84}, {"title": "Creating single post endpoint", "start_seconds": 84, "end_seconds": 415}, {"title": "Implementing error handling", "start_seconds": 415, "end_seconds": 630}, {"title": "Testing path validation", "start_seconds": 630, "end_seconds": 755}, {"title": "Building the UI template", "start_seconds": 755, "end_seconds": 1021}, {"title": "Making UI links clickable", "start_seconds": 1021, "end_seconds": 1291}, {"title": "Adding custom error pages", "start_seconds": 1291, "end_seconds": 1798}, {"title": "Handling validation errors", "start_seconds": 1798, "end_seconds": 2070}, {"title": "Review and next steps", "start_seconds": 2070, "end_seconds": 2216}], "thumbnail_urls": ["https://i.ytimg.com/vi_webp/WRjXIA5pMtk/maxresdefault.webp"]}
+FACTS [{"id": "f1", "statement": "Put a name in the route path as {name} and declare name: Type in the handler to bind and convert that path value.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/path-params/#path-parameters-with-types"]}, {"id": "f2", "statement": "Handler parameters not present in the path are interpreted as query parameters when they are ordinary scalar types.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/query-params/#query-parameters"]}, {"id": "f3", "statement": "A query parameter with a default may be omitted, while a parameter without a default is required; the type controls conversion of a supplied string.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/query-params/#defaults", "fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/query-params/#required-query-parameters"]}, {"id": "f4", "statement": "A path value that cannot be converted to its declared type produces a validation error instead of invoking the handler with that unconverted value.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/path-params/#data-validation"]}]
+52.16-58.24 our homepage rendering our list of post
+54.56-60.48 and we have a JSON a API endpoint at
+58.24-63.36 SLAPI/post
+60.48-65.84 that returns a full list of post. So let
+63.36-68.72 me go ahead and run this again. I'm
+65.84-72.88 using UV here. So I'm using uvun fast
+68.72-74.96 API dev main. Uh we'll start up our dev
+72.88-76.80 server. Uh make sure that that is
+74.96-79.60 running. So we can see our homepage
+76.80-82.96 here. And if we go to the API route, you
+79.60-85.68 can see that we are getting uh our JSON
+82.96-88.88 API data there. So now let's talk about
+85.68-91.92 path parameters. Uh so path parameters
+88.88-95.36 are a variable uh that are parts of the
+91.92-100.00 URL path. So, for example, instead of a
+95.36-103.76 route uh that looks like this slapi
+100.00-107.36 slpost, something like this would go to
+103.76-110.08 our uh all of our post resources here.
+107.36-113.68 Uh but we could use a URL parameter
+110.08-115.76 here. So I could say uh post-1
+113.68-119.44 or post-2
+115.76-122.56 and fast API can capture that value from
+119.44-124.72 the URL and pass it into our function as
+122.56-128.00 an argument. And the really nice thing
+124.72-130.56 is that fast API will validate that
+128.00-132.72 value for us automatically based on the
+130.56-135.12 type hint that we put into the function
+132.72-138.40 signature and then we can use this value
+135.12-141.76 here uh to grab a specific resource. Uh
+138.40-144.96 so let's create our first uh single post
+141.76-149.28 endpoint. So I'll add this right under
+144.96-151.20 our uh get post route here. So I'll use
+149.28-153.60 what we currently have as a starting
+151.20-157.44 point here. And I'm just going to start
+153.60-159.20 out with a very uh basic version here.
+157.44-163.04 So instead of get post, I'm going to
+159.20-166.48 call this get post. And now after post
+163.04-170.56 here, we can use these uh curly braces
+166.48-172.16 here and we can pass in the post ID. So
+170.56-173.92 I have a setting that automatically
+172.16-176.96 makes that an F string. I want to get
+173.92-179.04 rid of that. So this post ID here, this
+176.96-181.68 is what we are going to be capturing as
+179.04-184.32 our path parameter. Now in our function
+181.68-186.72 signature here, we can pass this in as
+184.32-189.20 an argument and we can use typeing here.
+186.72-191.60 So I can say that this is going to be an
+189.20-194.08 integer. And now we can use this to look
+191.60-196.08 up a certain post. So if you remember
+194.08-198.08 our current dummy data, we just have a
+196.08-200.64 list of dictionaries. So let me just
+198.08-204.24 loop over these dictionaries and uh
+200.64-206.16 match whatever ID uh is equal to uh
+204.24-208.88 here. Whenever I find a matching ID,
+206.16-213.44 I'll just return that post. So I'll just
+208.88-217.20 say for post inpost and then we'll say
+213.44-222.08 if uh post.get and we'll get the id
+217.20-226.08 here. and we'll say if that is equal to
+222.08-229.12 this post ID from the URL path then
+226.08-232.48 let's just go ahead and return that
+229.12-236.08 post. Now my uh editor is going to yell
+232.48-238.96 at me here until I do a return value
+236.08-242.96 here. Uh now if we don't find a post
+238.96-244.56 right now let's just return an error and
+242.96-246.72 uh this is just going to be an error
+244.56-248.56 message. We're going to see uh why this
+246.72-250.32 isn't the right way to do this here in
+248.56-253.52 just a second, but I'm just going to
+250.32-255.92 return uh an error of post not found.
+253.52-258.88 Whoops. And this needs to be for post in
+255.92-260.96 post right here. Okay. So again, let me
+258.88-263.60 explain what's going on here. So the
+260.96-265.52 post ID in the curly braces here uh
+263.60-268.00 inside of our route is our path
+265.52-270.32 parameter that tells fast API that this
+268.00-273.44 is part of the URL and that is a
+270.32-275.52 variable and whatever value is there
+273.44-278.32 should be captured and passed into our
+275.52-281.20 function. Then in our function signature
+278.32-283.36 we have post id with a type hint of
+281.20-285.84 integer. That type hint is really
+283.36-288.64 important because fast API uses it to
+285.84-292.00 automatically validate the input. So if
+288.64-294.40 someone tries to access forward slap API
+292.00-297.28 slashposthello
+294.40-300.64 then fast API will return a validation
+297.28-302.00 error because hello is not an integer
+300.64-305.20 and then we're just looping over those
+302.00-307.76 post uh comparing those to the ID of
+305.20-309.84 each dictionary. Uh if we find one we'll
+307.76-311.60 return that post. If not we'll return
+309.84-313.04 this error. But again this isn't really
+311.60-315.28 the right way to handle this and I'll
+313.04-317.68 show you why in just a second. But let
+315.28-319.36 me save this for now. Let me make sure
+317.68-322.72 we're still running our development
+319.36-326.16 server. And we are. So let's go back to
+322.72-328.88 the browser here. And now let's go to
+326.16-330.48 our API post here. And now instead of
+328.88-333.44 returning all of these, I'm going to do
+330.48-336.56 a forward slash one. And we can see that
+333.44-340.48 now we are just getting our post with an
+336.56-342.16 ID of one. So if I go to forward slash2,
+340.48-344.88 then we can see that now we're getting
+342.16-347.12 our post with an ID of two. Now, if I go
+344.88-351.36 to a post that doesn't exist, so for
+347.12-354.08 example, let's go to uh for slash99.
+351.36-356.80 If I go there, then we can see that we
+354.08-359.20 get our error message here. But here's
+356.80-362.16 the problem with this. So, if I go back
+359.20-365.60 to our development server, if I take a
+362.16-368.96 look at our output here, uh then we can
+365.60-372.96 see whenever I went to get that post of
+368.96-375.92 99, we have a 200 response here. So we
+372.96-378.16 would expect a 200 for uh getting the

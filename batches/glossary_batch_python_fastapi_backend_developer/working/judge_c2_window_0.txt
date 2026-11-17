@@ -1,0 +1,143 @@
+{"title": "pydantic-settings - Modern, Type-Safe Configuration for Python Apps", "playable_in_embed": true, "chapters": [{"title": "Intro to Pydantic-Settings", "start_seconds": 0, "end_seconds": 127}, {"title": "Creating Settings class", "start_seconds": 127, "end_seconds": 345}, {"title": "Using complex types in settings", "start_seconds": 345, "end_seconds": 590}, {"title": "Reading from dotenv file .env", "start_seconds": 590, "end_seconds": 847}, {"title": "Pydantic Network types", "start_seconds": 847, "end_seconds": 1129}], "thumbnail_urls": ["https://i.ytimg.com/vi_webp/FcWdzqCpj5c/maxresdefault.webp"]}
+FACTS [{"id": "f1", "statement": "Subclass BaseSettings from pydantic_settings and declare typed fields to load and validate external configuration.", "source_refs": ["fastapi_docs_advanced#https://fastapi.tiangolo.com/advanced/settings/#pydantic-settings"]}, {"id": "f2", "statement": "Construct Settings() to read environment variables and validate their types, with missing required settings or invalid values producing validation failures.", "source_refs": ["fastapi_docs_advanced#https://fastapi.tiangolo.com/advanced/settings/#create-the-settings-object"]}, {"id": "f3", "statement": "Use SettingsConfigDict(env_file=\".env\") as model_config when a dotenv file should provide settings; environment variables take precedence over its values.", "source_refs": ["fastapi_docs_advanced#https://fastapi.tiangolo.com/advanced/settings/#reading-a-env-file"]}]
+94.24-98.92 configurations. For example, maybe
+95.88-100.96 secret keys or database credentials, API
+98.92-103.04 keys and so on. And you don't want to
+100.96-105.28 hardcode them into the application.
+103.04-107.24 These are often read from the operating
+105.28-108.88 system environment. So, an environment
+107.24-111.16 variable is something that lives outside
+108.88-113.88 of the code base in the operating system
+111.16-115.84 and it can be read in by Python and also
+113.88-117.48 by other programs as well. Now, any
+115.84-119.24 environment variable that you do read in
+117.48-120.76 is going to be a string by default.
+119.24-123.36 Pydantic settings will give us the
+120.76-125.00 opportunity to create some proper typing
+123.36-127.52 around these variables. So, let's get
+125.00-130.00 started and see how to do this. Now, in
+127.52-131.60 a Fast API or any project really, what I
+130.00-133.84 typically do is create something like a
+131.60-135.64 config.py file and we can create the
+133.84-137.28 basic configurations in here. In a
+135.64-139.20 larger project, you can actually create
+137.28-141.28 multiple potential settings files, but
+139.20-143.28 let's stick with one for this video. If
+141.28-145.36 we go to the usage section for Pydantic
+143.28-148.28 settings, what we need to do is create a
+145.36-150.32 model that inherits from base settings.
+148.28-152.28 And if we do that, the model initializer
+150.32-154.40 will attempt to determine the values of
+152.28-156.36 any fields are not passed as keyword
+154.40-158.40 arguments by reading from the
+156.36-160.56 environment. That's the key point of
+158.40-162.64 Pydantic settings. It tries to read any
+160.56-164.48 fields are not set from the operating
+162.64-167.00 system's environment. And what it allows
+164.48-169.64 you to do is create clearly defined type
+167.00-171.00 hinted application configuration classes
+169.64-173.20 and also automatically read
+171.00-175.76 modifications to the configuration from
+173.20-177.36 environment variables and also override
+175.76-179.80 these settings when you need to, for
+177.36-181.88 example, in unit tests. Now, notice the
+179.80-184.00 example below. We are creating a
+181.88-186.00 settings class here that inherits from a
+184.00-188.00 base settings. So, let's do that just
+186.00-189.40 now to start with. From Pydantic
+188.00-191.36 settings, we're going to import the base
+189.40-193.52 settings class and we'll create our own
+191.36-195.36 class here called settings and that will
+193.52-197.56 inherit from that. Now, let's start by
+195.36-199.20 creating a single configuration here and
+197.56-201.36 this is going to be a simple string for
+199.20-203.44 now that we're going to call app name
+201.36-205.68 and notice the type hinting here. We are
+203.44-207.24 type hinting this as a string and we can
+205.68-209.92 give it a default value as well. For
+207.24-211.68 example, settings demo project. So,
+209.92-213.88 that's another useful feature. These
+211.68-215.52 variables can have default values, but
+213.88-217.28 they can be overridden by the
+215.52-219.00 environment if necessary. So, let's take
+217.28-221.52 a look at that just now. Now, I'm going
+219.00-223.68 to go to main.py and what we can do from
+221.52-225.76 our config module is import this class
+223.68-228.04 that we've set up called settings. And
+225.76-229.68 then underneath the Fast API application
+228.04-231.40 object, let's create a variable called
+229.68-233.12 settings and we're going to instantiate
+231.40-234.88 that settings object that we just
+233.12-236.88 created. And once you have the settings
+234.88-239.16 object, what you can do is basically use
+236.88-240.88 that in your FastAPI route handlers. For
+239.16-242.48 example, we could print the settings to
+240.88-244.12 the terminal here. And as well as that,
+242.48-246.16 we can access, of course, individual
+244.12-248.60 properties or fields on that, such as
+246.16-250.48 the app name. Now, this app name is what
+248.60-252.80 we defined on the class, as you can see
+250.48-254.36 here. So, let's now run this and see
+252.80-256.60 what this looks like with these print
+254.36-258.16 statements. So, we now have the FastAPI
+256.60-259.72 server running, and I'm going to visit
+258.16-261.76 this endpoint here. And we're going to
+259.72-263.84 see what's printed to the terminal. And
+261.76-266.04 notice we get the string representation
+263.84-267.80 of the settings object, and we can see
+266.04-269.92 the app name is set to the default
+267.80-271.72 value, settings demo project. And we
+269.92-273.72 also see that printed out below when we
+271.72-275.88 access the field. Now, if we wanted to
+273.72-278.08 override this, we could do so. The value
+275.88-280.12 we provided here is just a default, but
+278.08-281.48 it can be overridden. For example, we
+280.12-283.68 could override that when we actually
+281.48-285.76 instantiate the settings class by
+283.68-287.32 setting the app name here. But, more
+285.76-289.48 typically, we would do that using the
+287.32-291.40 environment. So, let's see an example of
+289.48-294.08 that, and I've stopped the server. If we
+291.40-296.32 rerun the FastAPI command, but this time
+294.08-298.24 we set an environment variable as part
+296.32-300.60 of that command. For example, here we're
+298.24-304.12 setting the app name to new name, and
+300.60-305.92 then we run UVicorn FastAPI dev main.py.
+304.12-307.92 Let's see what happens now when we start
+305.92-309.76 this server using that command. And
+307.92-311.56 that's temporarily for one command
+309.76-313.16 setting the app name environment
+311.56-315.08 variable. And when we go to that
+313.16-317.12 endpoint, notice the app name has
+315.08-319.24 changed. It's no longer using this
+317.12-321.16 default value, and instead, it's read
+319.24-323.00 that in from the environment. So,
+321.16-324.88 Pydantic settings will automatically
+323.00-327.08 read these values from the environment.
+324.88-328.76 That is super useful in many deployment
+327.08-330.40 scenarios, and it's also useful for
+328.76-331.92 having different settings for different
+330.40-334.24 environments. For example, you'll have
+331.92-336.12 development or staging, production,
+334.24-337.44 testing settings, and so on. These are
+336.12-338.80 going to be different in different
+337.44-340.68 environments, [clears throat] so this
+338.80-342.36 gives you a flexible and easy way to
+340.68-344.96 read them in. But, it still gives you
+342.36-346.60 the opportunity to set default values.
+344.96-348.60 And you can also use all of the normal
+346.60-350.44 tools and features that come with normal
+348.60-352.08 Pydantic models. And we're going to take
+350.44-353.84 this opportunity to show some of these
+352.08-355.72 cool types that we can use in the
+353.84-357.72 settings class. So, what I'm going to do
+355.72-359.36 is bring in some more imports at the top
+357.72-360.72 here, and we're going to use these in
+359.36-363.36 the class. For example, using the
+360.72-365.80 pathlib.Path object. And we also have
+363.36-368.00 some types from Pydantic itself, secret
+365.80-370.04 string, email string, and the field
+368.00-371.64 function. So, in our settings class, we
+370.04-373.64 can go down here and we're going to add
+371.64-375.68 some more configuration. Now, we can use
+373.64-377.48 path objects, for example, so let's set

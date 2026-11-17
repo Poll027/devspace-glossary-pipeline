@@ -1,0 +1,122 @@
+{"title": "Pydantic Tutorial EP6 - Pydantic Settings & Environment Variables", "playable_in_embed": true, "chapters": [{"title": "Introduction to settings", "start_seconds": 0, "end_seconds": 38}, {"title": "Environment variables", "start_seconds": 38, "end_seconds": 86}, {"title": "Creating the settings class", "start_seconds": 86, "end_seconds": 201}, {"title": "Loading configuration", "start_seconds": 201, "end_seconds": 235}, {"title": "Using env files", "start_seconds": 235, "end_seconds": 356}, {"title": "Precedence and conclusion", "start_seconds": 356, "end_seconds": 437}], "thumbnail_urls": ["https://i.ytimg.com/vi/ZqPiHAECp68/maxresdefault.jpg"]}
+FACTS [{"id": "f1", "statement": "Subclass BaseSettings from pydantic_settings and declare typed fields to load and validate external configuration.", "source_refs": ["fastapi_docs_advanced#https://fastapi.tiangolo.com/advanced/settings/#pydantic-settings"]}, {"id": "f2", "statement": "Construct Settings() to read environment variables and validate their types, with missing required settings or invalid values producing validation failures.", "source_refs": ["fastapi_docs_advanced#https://fastapi.tiangolo.com/advanced/settings/#create-the-settings-object"]}, {"id": "f3", "statement": "Use SettingsConfigDict(env_file=\".env\") as model_config when a dotenv file should provide settings; environment variables take precedence over its values.", "source_refs": ["fastapi_docs_advanced#https://fastapi.tiangolo.com/advanced/settings/#reading-a-env-file"]}]
+0.24-3.36 Hey guys and welcome to this session
+1.92-6.72 where we're going to be taking a look at
+3.36-8.88 how to use Piantic settings. Now we
+6.72-11.28 generally use these on bigger apps where
+8.88-14.16 we need some kind of configuration to
+11.28-15.60 get the app up and running. So in a work
+14.16-17.44 environment this might be things like
+15.60-19.92 what port numbers could be things like
+17.44-21.28 usernames, passwords, etc. There's a
+19.92-23.44 number of different things your app
+21.28-25.44 might need to get running and using
+23.44-27.04 Pantic settings can be a nice
+25.44-28.96 straightforward way to get these
+27.04-31.76 effectively set up and passed into your
+28.96-33.52 app. Now, there's a few things to note
+31.76-35.52 before we do this. First of all, you got
+33.52-37.04 to do pip install pyantic settings. So,
+35.52-38.96 if you haven't done so, make sure you've
+37.04-42.00 got that done already. And then under
+38.96-44.08 the hood, this uses. So, if we run pip
+42.00-47.36 list, there we go. See, it's installed
+44.08-49.28 pyantic. And then there we are. Python.n
+47.36-51.20 here. Now, this is a package which
+49.28-52.88 effectively is just there to handle
+51.20-54.72 things from your environment. So,
+52.88-57.04 pedantic basically uses this under the
+54.72-58.80 hood to do all that lifting for you. And
+57.04-61.44 the order of precedence for having
+58.80-62.96 environment variables is quite important
+61.44-64.24 as well because you might have an end
+62.96-66.00 file. So you might have something like
+64.24-67.20 this. You might be exporting some
+66.00-69.76 environment variables. You might be
+67.20-71.84 doing something like this elsewhere. And
+69.76-73.76 you got to be careful as to what order
+71.84-76.24 these are basically taken into the app.
+73.76-78.00 So the order padantic uses is they can
+76.24-80.24 explicitly be passed in when you create
+78.00-81.68 the instance. They either come from the
+80.24-83.68 environment and then if they're not
+81.68-85.60 there, they then come from an end file.
+83.68-88.00 So we'll try and demonstrate this as we
+85.60-90.96 move along. Now I've got from podantic
+88.00-93.12 settings import base settings and it's a
+90.96-95.52 little bit similar to how you set up a
+93.12-97.60 normal base model except Rob's going to
+95.52-99.28 be inheriting from this instead. So what
+97.60-101.36 you want to do is define a new class.
+99.28-103.44 Let's call it settings. And this is
+101.36-105.44 going to inherit from base settings
+103.44-107.44 here. And now what I'm going to be doing
+105.44-110.16 is basically setting up of this mark
+107.44-111.52 here. So I've got app name, environment,
+110.16-112.96 app version. They're all going to be
+111.52-115.76 strings just to keep it on the safe
+112.96-117.92 side. Uh, so I'll do app name here. It's
+115.76-120.64 going to be string. I've then got
+117.92-123.44 environment and app version. Here we go.
+120.64-125.68 So environment is a string and then app
+123.44-127.76 version here. And then basically just
+125.68-130.16 before we go any further, these are just
+127.76-132.80 sort of the lower well lowerase versions
+130.16-134.80 of these here. So when I export these
+132.80-136.48 later on, just make sure these match up.
+134.80-138.64 They haven't got to be in all upper caps
+136.48-140.96 here. And now let's go ahead and create
+138.64-144.96 an instance. So let's go ahead and say
+140.96-147.28 settings is equal to sorry settings like
+144.96-150.72 this here and then let's go ahead and
+147.28-152.56 just print off settings like this. Okay,
+150.72-154.40 let's clear our screen. Let's hit run.
+152.56-156.80 Okay, and hitting run straight away we
+154.40-158.48 have three errors. We have basically
+156.80-160.16 this telling me that it doesn't like app
+158.48-162.56 name, doesn't like environment, doesn't
+160.16-165.04 like app version. The reason why those
+162.56-166.96 are all happening right now is because
+165.04-168.24 they don't exist. all in terms of it
+166.96-169.60 being passed in, they haven't been
+168.24-171.68 passed in. They're not in my
+169.60-173.68 environment, and I've also not set up
+171.68-176.08 the mechanism for it to use an end file
+173.68-178.32 yet. So, if you try and initialize this
+176.08-179.76 without these in an appropriate place,
+178.32-181.44 you're going to be given some kind of
+179.76-184.64 error. Let me just show you one thing
+181.44-186.64 real quick. Say I was just to pass in um
+184.64-188.88 app name as a string like this. This
+186.64-190.48 will complain for the latter two. Yes.
+188.88-192.96 So, we get environment and app version
+190.48-195.04 here. It's not happy at them because
+192.96-197.12 they've not been passed into my settings
+195.04-199.68 instance anywhere. So, let's go ahead
+197.12-202.64 and try it first of all from the context
+199.68-204.40 of this here. So, what I've got is a
+202.64-206.00 simple shell script. And when this shell
+204.40-208.00 scripts run, it's simply going to put
+206.00-210.16 these into my environment. So, if I just
+208.00-212.40 quickly run this, I'll do source export
+210.16-214.72 vase here. These now exist in my
+212.40-217.52 environment, which is good. And then if
+214.72-219.68 I then go ahead and run settings, there
+217.52-221.52 we go. It's the app name as my app.
+219.68-223.68 environment is testing and that version
+221.52-225.52 is 1.1.1.1.
+223.68-227.36 There we are. Just like this. The same
+225.52-228.88 validation as I've done in the previous
+227.36-230.24 videos are going to work just the same.
+228.88-231.68 So you do want to do that. You can
+230.24-233.60 import the validators. Then you can go
+231.68-235.84 ahead and then do this validation down
+233.60-238.48 here. Now let's take it a step further
+235.84-241.68 and then inside this if I do class
+238.48-243.68 config sorry make it into this nice tile
+241.68-245.52 case like this here. I make sure that
+243.68-247.36 definitely isn't n. There we go. That's
+245.52-250.96 better. And then what happens here? If
+247.36-253.44 we say en file is equal to as a string
+250.96-256.72 env. If you add this, we're now adding
+253.44-258.88 the ability for our settings class to be

@@ -1,0 +1,51 @@
+{"title": "Python FastAPI Tutorial (Part 7): Sync vs Async - Converting Your App to Asynchronous", "playable_in_embed": true, "chapters": [{"title": "Introduction to async", "start_seconds": 0, "end_seconds": 63}, {"title": "Async and FastAPI basics", "start_seconds": 63, "end_seconds": 285}, {"title": "Installing dependencies", "start_seconds": 285, "end_seconds": 347}, {"title": "Updating database config", "start_seconds": 347, "end_seconds": 506}, {"title": "Updating main imports", "start_seconds": 506, "end_seconds": 643}, {"title": "Implementing lifespan", "start_seconds": 643, "end_seconds": 784}, {"title": "Understanding eager loading", "start_seconds": 784, "end_seconds": 884}, {"title": "Converting API routes", "start_seconds": 884, "end_seconds": 1354}, {"title": "Updating exception handlers", "start_seconds": 1354, "end_seconds": 1485}, {"title": "Testing the application", "start_seconds": 1485, "end_seconds": 1633}, {"title": "Conclusion and recap", "start_seconds": 1633, "end_seconds": 1930}], "thumbnail_urls": ["https://i.ytimg.com/vi/2JPDt-Jp6fM/maxresdefault.jpg"]}
+FACTS [{"id": "f1", "statement": "Use async def and await for an I/O library with awaitable operations; use a normal def handler for a blocking I/O library.", "source_refs": ["fastapi_docs_async#https://fastapi.tiangolo.com/async/#in-a-hurry"]}, {"id": "f2", "statement": "FastAPI runs a normal def path operation in an external thread pool, whereas an async def path operation runs as asynchronous execution.", "source_refs": ["fastapi_docs_async#https://fastapi.tiangolo.com/async/#path-operation-functions"]}, {"id": "f3", "statement": "FastAPI does not automatically move ordinary utility functions called directly by a handler to a thread pool; a blocking call inside async def can block the event loop.", "source_refs": ["fastapi_docs_async#https://fastapi.tiangolo.com/async/#other-utility-functions"]}]
+161.44-165.60 those would be things like heavy
+162.88-168.80 calculations, image processing, data
+165.60-171.12 crunching. These keep the CPU busy doing
+168.80-172.64 actual work. So there's no waiting
+171.12-175.52 actually involved there. So there's
+172.64-177.60 nothing for async to optimize. So async
+175.52-179.92 isn't always faster. That's a common
+177.60-182.00 misconception. Uh for simple fast
+179.92-184.88 queries, you might not see much benefit.
+182.00-187.12 The overhead of the async machinery can
+184.88-188.96 even slow things down slightly. Now the
+187.12-190.72 real benefits show up when you have a
+188.96-193.44 concurrent load, meaning lots of
+190.72-195.92 requests happening at the same time. So
+193.44-199.44 now let's talk about how fast API
+195.92-201.60 handles sync versus async because this
+199.44-204.56 is actually pretty interesting. So let
+201.60-206.56 me go back to the main py file here and
+204.56-209.76 go down to some of our routes. Now when
+206.56-212.40 you define a route with just defaf so
+209.76-214.16 it's just a regular function fast API
+212.40-216.16 automatically runs it in a separate
+214.16-217.92 thread pool. So this prevents the
+216.16-221.04 function from blocking the main event
+217.92-223.36 loop. So even with a regular defaf
+221.04-225.92 function here other requests can still
+223.36-228.16 be processed and this is automatic and
+225.92-232.24 it works really well. Now if you define
+228.16-235.44 a route with async defaf uh then fast
+232.24-238.00 API runs it directly in the main event
+235.44-240.80 loop. So this is more efficient but it
+238.00-243.36 means that you must await for any IO
+240.80-245.60 operations. If you do blocking IO
+243.36-247.76 without a wait, then you'll block the
+245.60-251.28 entire event loop, and that's worse than
+247.76-253.76 just using a regular defaf function. So,
+251.28-256.80 both approaches work. Using regular
+253.76-259.84 defaf uh routes isn't wrong or slow.
+256.80-261.68 Fast API handles them intelligently. You
+259.84-264.00 should choose based on what your
+261.68-266.08 specific route does. And if you do use
+264.00-268.64 async, just be sure you're using it
+266.08-271.20 correctly. So, that's why I started out
+268.64-274.16 this series using synchronous routes.
+271.20-275.76 But fast API does synchronous well and
+274.16-277.84 we have a lot of places in our code
+275.76-279.44 where it's going to be useful. Pretty
+277.84-282.32 much every route in our current
+279.44-284.40 application uses a database. So let's

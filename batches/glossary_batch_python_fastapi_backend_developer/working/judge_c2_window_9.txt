@@ -1,0 +1,45 @@
+{"title": "Python FastAPI Tutorial (Part 14): Password Reset - Email, Tokens, and Background Tasks", "playable_in_embed": true, "chapters": [{"title": "Introduction to password reset", "start_seconds": 0, "end_seconds": 68}, {"title": "Security best practices", "start_seconds": 68, "end_seconds": 105}, {"title": "Installing dependencies", "start_seconds": 105, "end_seconds": 164}, {"title": "Configuring email settings", "start_seconds": 164, "end_seconds": 322}, {"title": "Setting up Mailtrap sandbox", "start_seconds": 322, "end_seconds": 508}, {"title": "Implementing email utilities", "start_seconds": 508, "end_seconds": 876}, {"title": "Creating HTML templates", "start_seconds": 876, "end_seconds": 930}, {"title": "Database model setup", "start_seconds": 930, "end_seconds": 1212}, {"title": "Token generation and hashing", "start_seconds": 1212, "end_seconds": 1440}, {"title": "Defining request schemas", "start_seconds": 1440, "end_seconds": 1563}, {"title": "Implementing API endpoints", "start_seconds": 1563, "end_seconds": 2263}, {"title": "Backend testing", "start_seconds": 2263, "end_seconds": 2634}, {"title": "Front-end integration", "start_seconds": 2634, "end_seconds": 3535}], "thumbnail_urls": ["https://i.ytimg.com/vi/4HxjBvZMAg8/maxresdefault.jpg"]}
+FACTS [{"id": "f1", "statement": "Declare a BackgroundTasks handler parameter and call background_tasks.add_task(callable, *args, **kwargs) to schedule work after sending the response.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/background-tasks/#using-backgroundtasks"]}, {"id": "f2", "statement": "A background task callable can be a normal def or async def function; FastAPI handles either form.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/background-tasks/#create-a-task-function"]}, {"id": "f3", "statement": "BackgroundTasks work runs in the application process and cannot guarantee survival or delivery when that process fails.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/background-tasks/#caveat"]}]
+1478.00-1484.12 forgot password request. That is for the
+1481.08-1487.36 forgot password endpoint. It just needs
+1484.12-1489.84 an email. So, then we have reset
+1487.36-1491.96 password request. This is for when the
+1489.84-1495.24 user clicks the link and submits their
+1491.96-1498.68 new password. It needs the token from
+1495.24-1501.36 the URL and the new password. And then,
+1498.68-1504.00 we have change password request. This is
+1501.36-1506.44 for logged-in users who want to change
+1504.00-1508.76 their password. So, it needs the current
+1506.44-1511.40 password for verification and the new
+1508.76-1514.36 password. Okay, so now we're ready to
+1511.40-1516.56 add our API endpoints, but just before
+1514.36-1519.48 that, let me explain FastAPI's
+1516.56-1521.92 background task feature. So, sending
+1519.48-1523.76 emails takes time. There's a lot of back
+1521.92-1526.12 and forth between our server and the
+1523.76-1528.48 email server, and we don't want the user
+1526.12-1531.08 sitting there waiting for all of that.
+1528.48-1532.72 We want to return a response immediately
+1531.08-1535.40 and let the email send in the
+1532.72-1538.28 background. And FastAPI's background
+1535.40-1541.32 task lets us do that. So, we return a
+1538.28-1543.64 response to the client, and then FastAPI
+1541.32-1546.12 runs the task after the response is
+1543.64-1549.12 sent. If the server crashes, then any
+1546.12-1551.24 pending background task are lost. So,
+1549.12-1554.16 for something critical, you'd want to
+1551.24-1556.52 use some a task queue like Celery, but
+1554.16-1558.76 for password reset emails, this is
+1556.52-1561.00 perfectly fine. The user can always
+1558.76-1563.64 request another one. So, let's go ahead
+1561.00-1565.72 and implement these endpoints. So, first
+1563.64-1568.04 let's implement our forgot password
+1565.72-1570.84 endpoint, and this
+1568.04-1573.72 uh is going to be in the users router.
+1570.84-1576.48 So, here within routers, I'll open up uh
+1573.72-1578.48 users here. So, first I need to add some
+1576.48-1581.24 imports here at the top. So, I'm going
+1578.48-1585.04 to update the datetime import here to
+1581.24-1589.32 include UTC and datetime. So, we will
+1585.04-1592.76 include UCT here and also datetime. We
+1589.32-1596.36 are going to add background task to our

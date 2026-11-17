@@ -1,0 +1,46 @@
+{"title": "How to Prevent SSRF Vulnerabilities (Server-Side Request Forgery)", "playable_in_embed": true, "chapters": [{"title": "What is SSRF", "start_seconds": 0, "end_seconds": 28}, {"title": "What are SSRF apps", "start_seconds": 28, "end_seconds": 60}, {"title": "How to prevent SSRF vulnerabilities", "start_seconds": 60, "end_seconds": 248}], "thumbnail_urls": ["https://i.ytimg.com/vi_webp/PQngw-cqVy4/maxresdefault.webp"]}
+FACTS [{"id": "f1", "statement": "When destinations are known, enforce a destination allowlist instead of allowing an untrusted value to choose an arbitrary outbound URL.", "source_refs": ["owasp_api_security_top10_2023#https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html#application-layer"]}, {"id": "f2", "statement": "A destination policy must reject private, loopback, link-local and other non-public addresses, including IPv6 equivalents, when access is intended only to public services.", "source_refs": ["owasp_api_security_top10_2023#https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html#case-2-application-can-send-requests-to-any-external-ip-address-or-domain-name"]}, {"id": "f3", "statement": "Validate the resolved address actually used for the connection, not merely a hostname checked earlier, to avoid a DNS rebinding gap.", "source_refs": ["owasp_api_security_top10_2023#https://cheatsheetseries.owasp.org/cheatsheets/Webhook_Security_Cheat_Sheet.html#ssrf-prevention-publisher-side"]}, {"id": "f4", "statement": "Disable automatic redirects or apply the same destination checks to each redirect target so a permitted initial URL cannot redirect into a forbidden destination.", "source_refs": ["owasp_api_security_top10_2023#https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html#application-layer", "owasp_api_security_top10_2023#https://cheatsheetseries.owasp.org/cheatsheets/Webhook_Security_Cheat_Sheet.html#ssrf-prevention-publisher-side"]}]
+28.16-33.04 an attacker might be able to read
+29.68-35.36 sensitive files make internal api calls
+33.04-38.16 and access internal services like admin
+35.36-40.32 panels and databases
+38.16-41.52 ssr apps happen when servers need to
+40.32-45.12 send requests to
+41.52-47.28 obtain external resources for example
+45.12-48.96 when you post a link on twitter it will
+47.28-51.28 need to fetch an image from that
+48.96-53.52 external site to create a thumbnail
+51.28-55.52 this is normal behavior but if the
+53.52-58.40 server does not stop users from
+55.52-60.48 accessing internal resources ssr
+58.40-62.64 vulnerabilities occur
+60.48-65.12 to prevent ssr apps you will need to
+62.64-67.04 validate the user supplied url
+65.12-68.64 depending on the external resources you
+67.04-70.96 are trying to fetch using that
+68.64-73.12 endpoint you can either implement a
+70.96-74.56 whitelist or blacklist to filter the
+73.12-77.20 urls
+74.56-78.56 first you can check if the url belongs
+77.20-80.80 to an approved whitelist
+78.56-82.32 if you know where you need to fetch your
+80.80-84.16 resources from
+82.32-86.48 for example if you're only fetching
+84.16-89.12 images from a particular server
+86.48-91.28 you can limit requests to that ip
+89.12-93.36 address or that host name
+91.28-95.52 on the other hand if you need to allow
+93.36-96.64 users to fetch resources from arbitrary
+95.52-98.72 locations
+96.64-100.88 you need to use a blacklist to restrict
+98.72-104.72 access to internal
+100.88-107.20 to sensitive internal resources
+104.72-108.24 and whether you're using a whitelist or
+107.20-110.16 a blacklist
+108.24-111.52 here are some tips to help you implement
+110.16-113.84 them correctly
+111.52-115.68 first if you are using a wireless make
+113.84-117.68 sure that you fix open redirect
+115.68-119.12 vulnerabilities within the whitelisted
+117.68-121.20 domains
+119.12-122.96 if attackers find an open redirect

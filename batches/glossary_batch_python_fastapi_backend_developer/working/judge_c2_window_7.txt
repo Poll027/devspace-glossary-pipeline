@@ -1,0 +1,58 @@
+{"title": "Python FastAPI Tutorial (Part 8): Routers - Organizing Routes into Modules with APIRouter", "playable_in_embed": true, "chapters": [{"title": "Introduction", "start_seconds": 0, "end_seconds": 6}, {"title": "The problem with main.py", "start_seconds": 6, "end_seconds": 46}, {"title": "Introducing API routers", "start_seconds": 46, "end_seconds": 97}, {"title": "Project structure setup", "start_seconds": 97, "end_seconds": 177}, {"title": "Creating the user router", "start_seconds": 177, "end_seconds": 512}, {"title": "Creating the post router", "start_seconds": 512, "end_seconds": 628}, {"title": "Integrating routers in main.py", "start_seconds": 628, "end_seconds": 840}, {"title": "Final main.py structure", "start_seconds": 840, "end_seconds": 902}, {"title": "Testing the API", "start_seconds": 902, "end_seconds": 1016}, {"title": "Benefits of routers", "start_seconds": 1016, "end_seconds": 1125}, {"title": "Conclusion", "start_seconds": 1125, "end_seconds": 1213}], "thumbnail_urls": ["https://i.ytimg.com/vi_webp/NkgIHa6KtHg/maxresdefault.webp"]}
+FACTS [{"id": "f1", "statement": "Create an APIRouter for a feature's operations and register those operations on that router rather than requiring all handlers to live in the main module.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/bigger-applications/#apirouter"]}, {"id": "f2", "statement": "Import feature routers and call app.include_router(router) to assemble their operations into the application.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/bigger-applications/#include-the-apirouters-for-users-and-items"]}, {"id": "f3", "statement": "An include_router prefix adds to the included operations' paths, and tags, dependencies and responses can be supplied at inclusion.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/bigger-applications/#include-an-apirouter-with-a-custom-prefix-tags-responses-and-dependencies"]}]
+33.12-37.76 organize before adding more complexity.
+35.68-39.28 So let's go ahead and get started here.
+37.76-42.56 So let me show you what I'm talking
+39.28-45.12 about. So we have our main.py file open
+42.56-47.28 here. And if I scroll through this, then
+45.12-49.76 you can see that this is already super
+47.28-52.88 long. So, we've got our imports, we've
+49.76-55.20 got our lifespan, we have our app setup,
+52.88-58.16 we have our template routes, we have our
+55.20-60.16 user routes, we have our API routes and
+58.16-62.32 exception handlers, all of that mixed
+60.16-64.64 together. Now, all of this works, but if
+62.32-66.88 we keep adding features, then this file
+64.64-68.64 would become a nightmare to maintain.
+66.88-71.84 So, in this video, we're going to
+68.64-73.84 reorganize using API routers. Now, if
+71.84-77.04 you've ever used Flask, this is similar
+73.84-79.68 to blueprints. So, we'll create a router
+77.04-82.56 directory and then move our user routes
+79.68-86.00 into one file, move our post routes into
+82.56-88.16 another, and then update main. py to
+86.00-90.40 include those. And when we're done,
+88.16-93.12 everything works exactly the same from
+90.40-95.44 the outside. So, the same URLs, same
+93.12-98.24 functionality. We're just improving the
+95.44-102.00 internal organization here. So, what is
+98.24-104.88 an API router? So, it's fast API's tool
+102.00-106.96 for organizing routes into modules. So
+104.88-108.96 instead of defining all of our routes on
+106.96-111.44 the main app object, we're going to
+108.96-114.00 define them on a router and then include
+111.44-116.48 that router in our app. So the basic
+114.00-119.12 pattern is pretty simple. In a separate
+116.48-121.60 file, we create a router with router
+119.12-124.00 equals API router. And then we define
+121.60-127.36 the routes using router.get and
+124.00-130.32 router.post instead of app.get and
+127.36-133.04 app.post like we have here. Then in our
+130.32-135.12 main file, we use app.incclude include
+133.04-137.28 router to connect it and that's going to
+135.12-139.68 give us a lot of flexibility and we can
+137.28-142.40 apply common prefixes to a group of
+139.68-144.56 routes, apply tags for documentation and
+142.40-146.16 keep related code together. Okay, so
+144.56-148.16 let's go ahead and get started and
+146.16-150.08 organize everything that we have here.
+148.16-152.40 So I'm going to create a new directory
+150.08-155.20 in my project directory here. And I'm
+152.40-158.00 going to call this routers. And within
+155.20-161.80 routers I am going to create this file
+158.00-161.80 that is double_anitouble_.py.
+163.04-167.76 And that file will make this a proper
+165.52-170.32 Python package. Now that's just going to
+167.76-172.32 remain empty. No code is needed there.
+170.32-174.72 It's not strictly required in modern
+172.32-176.96 Python, but it helps tools like liners

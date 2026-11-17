@@ -1,0 +1,378 @@
+{
+  "metadata": {
+    "artifact_type": "segment_proposals",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_python_fastapi_backend_developer",
+    "run_id": "glossary_batch_python_fastapi_backend_developer",
+    "prompt_version": "08_segment_detection@v1",
+    "model": "bedrock:gpt-6.1-sol",
+    "generated_at": "2026-11-17T04:40:16.303809+00:00",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "video_candidates.json": "639324255cf6b9848b20f186ce5ac5e12e3b3cbc31b3bb3b77623c4921456086",
+      "coverage_briefs.json": "29252d83f0bfa87f1a9cbd7417da43af1765f51c11fd7188c0983ed407515522",
+      "extracted_concepts.json": "67970e7e6c73ea02bfc2cf88112a2f469d0f28d312a5f81b28a86891c5015a72"
+    }
+  },
+  "batch_id": "glossary_batch_python_fastapi_backend_developer",
+  "proposals": [
+    {
+      "proposal_id": "prop_9gC3Ot0LoUQ_endpoint_integration_tests",
+      "concept_id": "fastapi.endpoint_integration_tests",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "9gC3Ot0LoUQ",
+      "start_seconds": 328,
+      "end_seconds": 428,
+      "label": "Test a FastAPI endpoint through HTTP and check its status and JSON response",
+      "role": "live_code_demo",
+      "covered_fact_ids": [
+        "f1"
+      ],
+      "visual_mode": "live_code",
+      "chapter_aligned": false,
+      "transcript_evidence": "that the status code is 200. And that the JSON data is the string",
+      "issues": [
+        "Visual mode is inferred from narrated imports, code edits, file saving, and pytest execution; the screen was not independently reviewed.",
+        "The opening briefly refers to the previously shown application, but immediately identifies the root GET endpoint and builds its test. The application itself is imported rather than recreated inside this range.",
+        "Does not cover f2: no context-managed TestClient or explanation of lifespan setup and teardown.",
+        "Does not fully cover f3: the HTTP request is demonstrated, but dependency resolution is not explained or exercised explicitly.",
+        "Ends at the actual 428-second transition into database-backed endpoint testing, after the passing test, intentional failure, and restoration of the endpoint."
+      ]
+    },
+    {
+      "proposal_id": "prop_9gC3Ot0LoUQ_database_state_isolation",
+      "concept_id": "testing.database_state_isolation",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "9gC3Ot0LoUQ",
+      "start_seconds": 1382,
+      "end_seconds": 1460,
+      "label": "Use a yield fixture to set up and clean up a test database session",
+      "role": "worked_example",
+      "covered_fact_ids": [
+        "f1"
+      ],
+      "visual_mode": "annotated_code",
+      "chapter_aligned": false,
+      "transcript_evidence": "session and drop the tables. So basically, what I'm doing here",
+      "issues": [
+        "Visual mode is inferred from the creator pointing out existing fixture and test code, rather than visibly verified.",
+        "The opening compares against an earlier setup/teardown implementation, but restates that implementation and explains the fixture's setup, yield, and cleanup locally.",
+        "The fixture uses existing table and test-item definitions; their full code setup is outside the range. Judge should verify that the visible code is understandable without the earlier operations-layer walkthrough.",
+        "Does not cover f2: isolation uses table creation and dropping, not an outer connection transaction with join_transaction_mode=\"create_savepoint\" and rollback.",
+        "Does not cover f3: this example tests database operations directly, not a write through TestClient with an overridden application session provider.",
+        "Does not fully cover f4: session closing is explained, but connection closing, override restoration, and a subsequent-test noninheritance check are not demonstrated.",
+        "This is supplemental fixture instruction, not a complete lesson satisfying the required database-isolation workflow.",
+        "The 1460-second boundary retains the concluding setup/teardown explanation and stops before repository promotion."
+      ]
+    },
+    {
+      "proposal_id": "prop_T0JXFhJ7pM0_async_session_lifecycle",
+      "concept_id": "sqlalchemy.async_session_lifecycle",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "T0JXFhJ7pM0",
+      "start_seconds": 215,
+      "end_seconds": 440,
+      "label": "Build an async PostgreSQL session factory and yield a request session with automatic cleanup",
+      "role": "live_code_demo",
+      "covered_fact_ids": [
+        "f2",
+        "f3"
+      ],
+      "visual_mode": "live_code",
+      "chapter_aligned": false,
+      "transcript_evidence": "going to yield that session within the",
+      "issues": [
+        "Visual mode is inferred from repeated VS Code editing, documentation browsing, and on-screen code references; no frames were supplied.",
+        "The start at 215 seconds includes the trailing filename from the preceding transition before introducing the synchronous setup. It is near, but not exactly at, the creator's 216-second engine chapter boundary. The existing database.py setup is explained during the range, but standalone visual clarity needs review.",
+        "The range does not cover f1: mutable session state, unsafe sharing across concurrent tasks, and separate sessions for concurrent units of work are not explained.",
+        "For f3, the dependency yields within an async context manager and the narrator explicitly promises safe cleanup when that block finishes. Exceptional exit is not explicitly discussed.",
+        "The range lasts 225 seconds because it includes the async engine and PostgreSQL driver setup needed to make the session factory demonstration self-contained. The SQLite driver aside adds some nonessential material.",
+        "The end boundary is the actual 440-second caption beginning the transition back to database.py. The next section introduces database initialization and transaction-related material; it is excluded.",
+        "The video contains a factual error outside this range: at 518\u2013523 seconds, the narrator says run_sync runs the synchronous function in a separate thread. SQLAlchemy AsyncConnection.run_sync uses a greenlet in the event-loop thread, not a separate worker thread. This is an accuracy defect, not a coverage omission, and may warrant rejection of the whole video under the quality rules."
+      ]
+    },
+    {
+      "proposal_id": "prop_Qtn_mQeW7hc_dependency_overrides",
+      "concept_id": "fastapi.dependency_overrides",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "Qtn_mQeW7hc",
+      "start_seconds": 0,
+      "end_seconds": 198,
+      "label": "Replace an endpoint dependency with a mock provider in a FastAPI test",
+      "role": "live_code_demo",
+      "covered_fact_ids": [
+        "f1"
+      ],
+      "visual_mode": "live_code",
+      "chapter_aligned": false,
+      "transcript_evidence": "can see that it printed mock user",
+      "issues": [
+        "Visual mode is inferred from narrated code edits, imports, pytest execution, and the reference to centering content on screen; visuals were not independently reviewed.",
+        "Partial coverage of f2: the creator maps the original provider to a mock and runs the endpoint test, but the transcript demonstrates replacement behavior through printed output rather than an explicit assertion of that behavior.",
+        "Missing f3: no restoration or clearing of app.dependency_overrides is demonstrated. The substitution is left installed, so this clip alone does not teach isolated override-and-restore testing.",
+        "The existing endpoint and test are introduced rather than built from scratch. Endpoint integration testing is allowed knowledge, but their complete code cannot be verified from the transcript.",
+        "The provider is named as an authentication function but merely returns a user string; no bearer-token extraction or authorization mechanism is taught.",
+        "No creator chapters are available. The opening establishes the subject and dependency setup; the range includes brief closing commentary to avoid clipping the completed demonstration."
+      ]
+    },
+    {
+      "proposal_id": "prop_VyoGAoxQhxM_partial_update_contracts",
+      "concept_id": "pydantic.partial_update_contracts",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "VyoGAoxQhxM",
+      "start_seconds": 709,
+      "end_seconds": 798,
+      "label": "Extract only supplied PATCH fields without overwriting omitted values",
+      "role": "worked_example",
+      "covered_fact_ids": [
+        "f2"
+      ],
+      "visual_mode": "live_code",
+      "chapter_aligned": false,
+      "transcript_evidence": "exclude unset equal to true, we only get",
+      "issues": [
+        "Visual mode is inferred from the narrated model_dump code edits; no frames were supplied for verification.",
+        "This is a focused extraction example, not a complete lesson covering all required facts. It does not name model_fields_set or demonstrate explicit None versus exclude_none=True.",
+        "The start is a spoken transition within the PATCH chapter. The request model was created earlier, but the selected explanation identifies post data as the request body and explains the omitted-field default locally.",
+        "The end is the actual timestamp of the next thought, where the creator moves from extraction into dictionary iteration and ORM attribute assignment, which is blocked for this concept.",
+        "Outside this range, the user-update explanation at 1495\u20131506 incorrectly equates a value being not None with the field having been supplied. That contradicts presence-versus-value semantics and would discard an intentional null update. The proposed extraction range does not make that error; the judge should consider the video's broader reliability."
+      ]
+    },
+    {
+      "proposal_id": "prop_nlZBMPblJ3w_transaction_boundaries",
+      "concept_id": "sqlalchemy.transaction_boundaries",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "nlZBMPblJ3w",
+      "start_seconds": 12,
+      "end_seconds": 142,
+      "label": "Why related writes need an all-or-nothing transaction",
+      "role": "mental_model",
+      "covered_fact_ids": [
+        "f2"
+      ],
+      "visual_mode": "talking_head_only",
+      "chapter_aligned": false,
+      "transcript_evidence": "A transaction either completed in full",
+      "issues": [
+        "Partial coverage only: the range explains transaction atomicity, commit versus undo, and durability, but does not teach async with session.begin() (f1) or session recovery after a failed flush (f3).",
+        "Related operations succeeding or failing together are explained generally; there is no completed multi-write worked example.",
+        "Visual mode is a low-confidence inference. No thumbnail or explicit visual-teaching cues are supplied for this introductory range; whiteboard drawing cannot be established.",
+        "Includes brief consistency and isolation explanations beyond the immediate objective.",
+        "The durability wording is imprecise in the supplied auto-captions, although the surrounding explanation describes committed data surviving a server crash.",
+        "The end uses the actual 142-second server-demo transition, retaining the complete preceding durability explanation. The subsequent SQL and server-tool demonstrations are excluded because they depend on setup and syntax not established by the allowed knowledge."
+      ]
+    },
+    {
+      "proposal_id": "prop_MwwCiGFyU9w_redis_cache_aside",
+      "concept_id": "cache.redis_cache_aside",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "MwwCiGFyU9w",
+      "start_seconds": 104,
+      "end_seconds": 259,
+      "label": "Trace a Redis cache miss, populate the cache, and serve a cache hit",
+      "role": "worked_example",
+      "covered_fact_ids": [
+        "f1",
+        "f2"
+      ],
+      "visual_mode": "talking_head_only",
+      "chapter_aligned": false,
+      "transcript_evidence": "the back-end stores a copy of that data",
+      "issues": [
+        "Visual mode is a conservative inference, not verified: the supplied transcript contains no explicit drawing or screen cues, and no thumbnail is supplied. Whiteboard teaching value cannot be established.",
+        "f1 is supported by retrieving the profile from the database and storing a copy in Redis, but database authority and cache disposability are not explicitly stated.",
+        "Repeated-read benefits support part of f3, but cache eligibility based on acceptable staleness is not explained; f3 is not claimed.",
+        "f4 is absent: the segment does not explain constructing keys from result identity and parameters.",
+        "This is a conceptual request trace, not a FastAPI or Redis implementation demo.",
+        "The range ends at the 259-second transition, before the data-change discussion at 264 seconds and cache invalidation at 283 seconds, avoiding the blocked freshness-policy topic."
+      ]
+    },
+    {
+      "proposal_id": "prop_i9RX03zFDHU_alembic_migrations",
+      "concept_id": "database.alembic_migrations",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "i9RX03zFDHU",
+      "start_seconds": 1409,
+      "end_seconds": 1468,
+      "label": "Alembic autogeneration produces candidate migrations for manual review",
+      "role": "mental_model",
+      "covered_fact_ids": [
+        "f3"
+      ],
+      "visual_mode": "screen_demo",
+      "chapter_aligned": false,
+      "transcript_evidence": "then review and modify those by hand and",
+      "issues": [
+        "Visual mode is inferred from the creator reading Alembic documentation and referring to example configuration code on screen; visuals were not independently inspected.",
+        "Partial coverage of f3: explains candidate migrations and manual review/modification, but does not explain limitations such as table or column rename detection.",
+        "Explains database-to-metadata comparison and the autogenerate option, but does not cover the complete command with a description message; f2 is therefore not claimed.",
+        "Does not cover f1, f4, or f5. In particular, the video contains no rename/drop-and-add review or warning that reversing a dropped column cannot restore its data.",
+        "This is a standalone conceptual explanation, not the requested reversible-migration verification demonstration. Later live-code portions depend on the previously configured environment and database.",
+        "The start is a documentation-reading thought boundary rather than a creator chapter boundary. The end uses the actual 1468 caption timestamp, before the demonstration resumes with imports into the existing env.py."
+      ]
+    }
+  ],
+  "rejected_videos": [
+    {
+      "video_id": "9gC3Ot0LoUQ",
+      "concept_id": "fastapi.dependency_overrides",
+      "reason": "No clean prerequisite-safe standalone replacement-and-restoration example exists for this path. The override assignment at 850\u2013902 depends on the in-memory SQLite engine, pool configuration, and testing session constructed earlier. Extending through the request and result at 902\u2013975 introduces blocked database creation and test-state setup/teardown. Override restoration is never demonstrated, so f3 is absent. The video does explain the callable mapping, but isolating that explanation leaves unresolved code setup and does not complete the intended test workflow."
+    },
+    {
+      "video_id": "9gC3Ot0LoUQ",
+      "concept_id": "testing.api_authentication_authorization",
+      "reason": "The video does not cover authentication or authorization tests. Its requests target unprotected item and root endpoints; it demonstrates no bearer credentials, token verification failures, permission checks, cross-object denial, or declared security-denial response assertions."
+    },
+    {
+      "video_id": "86hiib_OA4c",
+      "concept_id": "fastapi.openapi_generation",
+      "reason": "No standalone range adequately covers the required generation facts. The response-model discussion at 30\u201351 seconds links response classes to generated output, but does not demonstrate typed request-body schemas, retrieval of /openapi.json, or following an endpoint's schema references into components. Extending the range introduces blocked contract metadata at 72 seconds and later webhook and retry topics, rather than completing the required explanation."
+    },
+    {
+      "video_id": "86hiib_OA4c",
+      "concept_id": "fastapi.openapi_contract_inspection",
+      "reason": "The video demonstrates OpenAPI customization and SDK generation, not public-contract auditing. It does not retrieve and inspect /openapi.json, compare generated schemas or documented statuses with executable behavior, audit examples for sensitive data, or verify security schemes against the deployed issuer contract. No clean segment covers the intended inspection facts."
+    },
+    {
+      "video_id": "Lw-zLopB3o0",
+      "concept_id": "fastapi.openapi_generation",
+      "reason": "No standalone range covers the required generation workflow. At 529\u2013594, the video demonstrates /docs and output schemas inferred from return annotations, but never retrieves /openapi.json, demonstrates typed request bodies and response models contributing input/output schemas, or follows paths-method schema references into components. This is a coverage gap, not a complete lesson on the required facts. Additionally, at 414\u2013419 the video incorrectly says the returned string has 'no Json data'; FastAPI's default JSON response can contain a JSON string scalar, not only key-value objects."
+    },
+    {
+      "video_id": "Lw-zLopB3o0",
+      "concept_id": "fastapi.openapi_contract_inspection",
+      "reason": "The video introduces Swagger UI rather than auditing generated public contracts. It does not retrieve /openapi.json, inspect router request/response schemas and security requirements, compare documented contracts and statuses with exercised behavior, audit sensitive examples, or verify the deployed bearer/issuer contract. The return-type mismatch demonstration at 468\u2013506 is not a documentation-drift review. No clean segment teaches the required inspection objective. Additionally, at 414\u2013419 the video incorrectly says the returned string has 'no Json data'; a JSON string scalar is valid JSON and is serialized by FastAPI's default JSON response."
+    },
+    {
+      "video_id": "epV3BPAMPtM",
+      "concept_id": "observability.log_redaction",
+      "reason": "No clean standalone segment serves the required failure-redaction verification objective. The toy pipeline masks email and phone patterns, but does not demonstrate credential redaction, review sensitive supplemental diagnostic fields, or exercise a failure with recognizable synthetic secrets and inspect the emitted records. The masking and persistence sections also depend on earlier snippets. There is a technical error at 215\u2013224: after defining coverage as masked count divided by detected count, the video suggests loosening detection patterns to fix low coverage; that does not establish that already-detected values are successfully masked. At 289\u2013321, domain-based exemptions leave entire email addresses untouched without establishing that those addresses are nonsensitive under the logging policy; a trusted domain alone is not sufficient justification. The introductory mental model is relevant but cannot supply the requested verification demonstration."
+    },
+    {
+      "video_id": "abUaM6iuElU",
+      "concept_id": "deployment.graceful_shutdown_verification",
+      "reason": "No clean segment covers this objective. The video teaches HTTP connection closure and recycling, not bounded FastAPI/Uvicorn process termination or shutdown verification. The explanation at 306\u2013366 mentions finishing existing requests and stopping further requests, but does not establish that terminating processes stop accepting new connections, allow background tasks to finish, or enforce configured time limits (f1). No range teaches --timeout-graceful-shutdown (f2), demonstrates termination during an active request, or verifies response completion and lifespan cleanup of shared resources (f3). Later sections rely on untaught HTTP connection-pool and HTTP/2 stream/GOAWAY mechanics. There is also a technical error at 1067\u20131077: the speaker calls GOAWAY a setting frame, although GOAWAY and SETTINGS are distinct HTTP/2 frame types. Connection recycling must not be presented as application lifespan cleanup."
+    },
+    {
+      "video_id": "l_1GAJd88yY",
+      "concept_id": "deployment.graceful_shutdown_verification",
+      "reason": "No clean standalone segment supports the verification objective. At 106\u2013134 seconds, the video discusses stopping new connections and bounded cleanup, but does not verify termination during an active request. At 341\u2013356 seconds, it mentions Uvicorn's graceful-shutdown timeout but incorrectly describes it as allowing at most 10 seconds for shutdown overall; this timeout bounds waiting for remaining requests/tasks, not subsequent lifespan cleanup. The tests discussed at 138\u2013164 seconds only check resource creation and closure, not response completion during termination (f3). The video also repeatedly makes a substantive technical error: at 79\u2013102, 265\u2013276, and 404\u2013409 seconds it claims context-manager cleanup after yield automatically runs when startup fails. Failure before yield does not execute post-yield cleanup; acquired resources require appropriately scoped try/finally or equivalent cleanup management. These accuracy problems and the missing active-request verification make the video unsuitable for this concept."
+    },
+    {
+      "video_id": "2vQKuw-47sg",
+      "concept_id": "deployment.health_readiness",
+      "reason": "No clean segment teaches the required probe contracts. This video demonstrates a single Docker Compose healthcheck, not separate Kubernetes livenessProbe and readinessProbe checks. It does not explain restart versus traffic-removal effects (f1), readiness depending on required backend availability (f2), the required separate HTTP probe configuration (f3), or the full HTTP 200\u2013399 success rule (f4). Its running-but-unhealthy example does not establish readiness or traffic eligibility. The demo also relies on Dockerfile, Docker Compose, and Docker healthcheck knowledge absent from the allowed prerequisites. Additionally, at 183\u2013185 seconds it incorrectly describes start_period as how long Docker waits before trying the check; start_period is a startup grace period for failure accounting, not a delay before checks begin. The same misconception recurs at 222\u2013224 and 247\u2013250 seconds."
+    },
+    {
+      "video_id": "c9dcFmyizJU",
+      "concept_id": "deployment.health_readiness",
+      "reason": "No clean segment covers the required probe-contract facts. The video demonstrates stacking FastAPI route decorators so several health endpoint paths share one handler. It does not explain liveness failure causing restarts versus readiness failure removing traffic eligibility (f1), readiness depending on temporary backend availability (f2), separate livenessProbe/readinessProbe configuration with path, port, periodSeconds and failureThreshold (f3), or HTTP probe success codes 200\u2013399 (f4). Its Kubernetes reference at 79 seconds is tentative and supplies none of these facts. The demonstration is materially off-topic for designing distinct survival and traffic-eligibility contracts."
+    },
+    {
+      "video_id": "tIm211GU5uM",
+      "concept_id": "fastapi.contract_examples_metadata",
+      "reason": "Reject for technical inaccuracy and incomplete coverage of this objective. At 1496\u20131525 the presenter annotates item_id as an integer but proposes 40.88 as its example, then explicitly calls it valid at 1529\u20131532. This contradicts the requirement that examples agree with the executable model; it is not merely an omitted validation step. The transcript never demonstrates Model.model_validate(example) (f4) or operation-level tags, summary and description on a path operation decorator (f3); the summary and description discussed at 1981\u20131988 belong to individual examples, not the operation. Although isolated portions explain model/field examples and Body(openapi_examples=...), no clean standalone range serves the requested operation-documentation objective without these substantive gaps and accuracy concerns."
+    },
+    {
+      "video_id": "k5WTeOI39NE",
+      "concept_id": "fastapi.header_cookie_binding",
+      "reason": "No clean segment meets the required facts accurately. The demonstrations use legacy default-value Header(...) and Cookie(...) declarations rather than the required Annotated forms (f1, f3). Although the underscore-to-hyphen conversion and convert_underscores=False demonstration is useful, at 210\u2013227 seconds the creator incorrectly attributes capitalization of header names to FastAPI's Header object; header names are case-insensitive, not capitalized as part of Header's name conversion (f2). Trimming this misleading explanation would remove the coherent explanation connecting the default mapping to its override. Cookie omission defaults are shown, but that partial coverage does not resolve the declaration gaps or factual error."
+    },
+    {
+      "video_id": "J1o5AWsMBqU",
+      "concept_id": "fastapi.header_cookie_binding",
+      "reason": "No clean standalone range adequately teaches the required facts within this path's allowed knowledge. At 70\u201397, the video explains legacy default-value declarations and underscore-to-hyphen mapping, but does not teach Annotated[Type, Header()] or Annotated[Type, Cookie()], case-insensitive header names, alias, or convert_underscores=False. Legacy declarations are supported syntax, not a factual contradiction. The code walkthrough at 99\u2013145 omits an explicit cookie default and transitions within the caption at 133 into response-cookie setting, an untaught operation outside this objective; trimming there would interrupt the cookie explanation. The request-resolution section introduces blocked request-validation error behavior at 165\u2013174. Later sections introduce security schemes or repeat these coverage gaps."
+    },
+    {
+      "video_id": "WWzl53ObYvo",
+      "concept_id": "observability.verified_request_metrics",
+      "reason": "No clean segment covers the required instrumentation-and-verification objective. The video manually increments a prometheus_client counter inside a handler and sets a random-number gauge (96\u2013158), rather than configuring maintained request-boundary instrumentation. It does not demonstrate starlette_prometheus.PrometheusMiddleware, filter_unhandled_paths=True, or the required metrics route wiring (f1\u2013f2). Its endpoint label example does not explain bounded method, matched-route and status labels or unmatched-path filtering (f3). The demo verifies only successful-request counter increments and random-number gauge values (199\u2013244); it does not exercise expected-error and delayed responses, verify response counters or duration observations (f4), or explain the middleware's exception-versus-duration measurement boundary (f5). This is an objective mismatch and coverage gap, not evidence that manual custom metrics are inherently technically incorrect."
+    },
+    {
+      "video_id": "ADwC9qQhaBA",
+      "concept_id": "observability.verified_request_metrics",
+      "reason": "No clean standalone segment covers the required instrumentation and verification objective. The code walkthrough at 333\u2013395 uses pre-existing FastAPI instrumentation without demonstrating the required starlette_prometheus imports, PrometheusMiddleware configuration with filter_unhandled_paths=True, or metrics route. The subsequent Grafana workflow shows repeated successful requests and a request-total graph, but does not verify response-counter changes, controlled expected-error and delayed responses, completed-response duration observations, bounded nonsensitive labels, or the middleware's exception measurement boundary. The tutorial explicitly depends on a previous Prometheus video at 97\u2013107, and the walkthrough relies on preconfigured Docker, Prometheus and Grafana infrastructure outside the supplied allowed knowledge. Much of the content concerns blocked signal interpretation and service diagnosis rather than instrumentation correctness. Additionally, at 272\u2013280 it incorrectly states that logs, traces and metrics are all stored inside Prometheus; this is a technical error, not merely a coverage gap."
+    },
+    {
+      "video_id": "VyoGAoxQhxM",
+      "concept_id": "sqlalchemy.delete_resource",
+      "reason": "No clean standalone range meets this path's deletion objective. The post-delete implementation begins by copying an earlier GET endpoint without explaining its entity lookup, uses synchronous db.delete rather than await session.get/await session.delete, and does not explain flush or failed-deletion rollback. The complete implementation-and-verification range also includes blocked object-authorization discussion at 1060\u20131075; ending before it would omit verification at 1109\u20131128. The user-delete alternative explicitly depends on earlier cascade configuration. The synchronous calls are not inherently incorrect, but they do not teach the required asynchronous deletion contract."
+    },
+    {
+      "video_id": "VyoGAoxQhxM",
+      "concept_id": "sqlalchemy.update_resource",
+      "reason": "No clean standalone ORM-update mini-lesson exists for this objective. The PUT and PATCH implementations copy previously established routes and rely on an existing persistent post and earlier schemas without locally explaining the lookup/setup. The focused extraction explanation at 709\u2013798 is independently useful, but extending it into ORM assignment relies on that earlier setup. The demonstrations use synchronous operations, omit flush and failed-update rollback, and inspect response data rather than verifying changed and preserved fields through an independent-session reload. Additionally, the user-update alternative at 1495\u20131506 incorrectly equates not None with supplied presence, so it cannot preserve intentional null updates."
+    },
+    {
+      "video_id": "Oy2NpxfV9ok",
+      "concept_id": "sqlalchemy.transaction_boundaries",
+      "reason": "Technical-accuracy rejection: at 26 seconds the video states, \"All intermediate states within a single transaction are not visible to other transactions,\" as a universal transaction property. This is false for isolation levels permitting dirty reads; the later PostgreSQL READ COMMITTED qualification does not make the introductory claim universally correct. The banking explanation at 42\u2013135 seconds offers a useful partial mental model for f2, but the video never teaches async with session.begin() and its successful/exceptional exit behavior (f1), or the explicit rollback required before reusing a SQLAlchemy session after a flush failure (f3). The practical demonstration also relies on raw SQL and a previously prepared table rather than the allowed SQLAlchemy session knowledge."
+    },
+    {
+      "video_id": "MY0TFMMm9B0",
+      "concept_id": "auth.bearer_dependency",
+      "reason": "No clean standalone segment covers this objective. At 164\u2013180, bearer extraction is an existing OAuth2 scheme from the previous tutorial, not a newly declared HTTPBearer dependency. The video does not demonstrate HTTPAuthorizationCredentials, its scheme and credentials fields, default auto_error behavior, or separate absent and malformed Authorization-header checks. The dependency walkthrough at 299\u2013363 relies on a previously implemented JWT-verification function, which is blocked for this concept, and does not separate extraction from verification sufficiently for the required lesson."
+    },
+    {
+      "video_id": "MY0TFMMm9B0",
+      "concept_id": "auth.endpoint_permissions",
+      "reason": "The video teaches authentication and object ownership rather than endpoint scopes or permissions. It never demonstrates OAuth2 scopes, Security(provider, scopes=[...]), SecurityScopes, comparison against verified token scopes, or sufficiently scoped versus insufficiently scoped tests. The authorization examples beginning at 574 and 856 enforce object ownership, and the test beginning at 1104 checks another user's post; these rely on blocked auth.object_authorization. The brief suggestion at 963\u2013970 to add admin-role dependencies does not explain or implement an operation-permission check. No clean segment serves the required objective."
+    },
+    {
+      "video_id": "9mx6LojqNCQ",
+      "concept_id": "auth.bearer_dependency",
+      "reason": "No clean standalone range covers the extraction objective. The 59\u2013338 material introduces an HTTPBearer subclass and injects it into existing book routes, but relies on earlier application code and a previously implemented token-issuing login workflow. It does not demonstrate Annotated[HTTPAuthorizationCredentials, Depends(HTTPBearer())]. The source walkthrough at 382\u2013422 explains header splitting and demonstrates absent credentials, but depends on the earlier setup and does not separately verify a malformed or non-bearer Authorization header. The auto_error discussion at 450\u2013494 is embedded in subclass customization. The later scheme/credentials demonstration depends on that customization, prints the bearer token despite the path's log-redaction prerequisite, and transitions into blocked JWT verification at 651. Trimming these sections cannot produce a complete, prerequisite-safe worked case."
+    },
+    {
+      "video_id": "9mx6LojqNCQ",
+      "concept_id": "fastapi.production_security_documentation",
+      "reason": "The video covers runtime bearer extraction and custom JWT checks, not documentation of a deployed authentication contract. It does not inspect components.securitySchemes or operation security entries, configure OAuth2AuthorizationCodeBearer with actual issuer endpoints and scopes, explain authorization-code/PKCE acquisition, or reconcile documented permissions with operation dependencies. Its request-client demonstration uses tokens from an earlier local login implementation rather than documenting an established authorization-server contract. No standalone segment covers the required documentation facts."
+    },
+    {
+      "video_id": "8LDwAX3iH1Q",
+      "concept_id": "cache.redis_cache_aside",
+      "reason": "Technical accuracy concern: at 947\u2013957 the creator claims cache deletion is \"always correct\" and that concurrent updates cannot leave a wrong cached copy. A concurrent cache-miss read can fetch an older database value and populate the cache after an update has committed and deleted the key. At 877, the claim that TTL is the longest time users may see old data similarly omits delayed stale repopulation. No clean standalone implementation range avoids the path's prerequisite problems: 691\u2013773 relies on previously defined key and cache helpers and introduces TTL from blocked freshness policy; extending backward includes Redis failure handling from blocked safe failure policy at 653\u2013668. The clean introductory analogy at 212\u2013278 supports cache eligibility but does not teach Redis retrieval implementation or result-identity/parameter key construction. The key discussion at 625\u2013649 covers type and ID, not parameter-dependent results."
+    },
+    {
+      "video_id": "e8NnDz8uT7o",
+      "concept_id": "database.alembic_migrations",
+      "reason": "No clean standalone segment meets the intended reversible-migration review objective. The video demonstrates adding a likes column and inspecting its upgrade/downgrade script, but never reviews a drop-and-add pair as a possible rename, explains that dropping a column destroys its data, or exercises a downgrade on a test database (required facts f4\u2013f5). Its review guidance also contradicts f3: at 1538\u20131543 it says learners need not inspect generated files and can simply run the commands. There is a separate factual error at 2701\u20132723: it claims Alembic autogeneration does not detect column type changes by default, whereas compare_type defaults to true in Alembic 1.12 and later. Trimming that later error would not supply the missing safety instruction or reversal verification."
+    },
+    {
+      "video_id": "Jemuod4wKWo",
+      "concept_id": "database.service_query_indexes",
+      "reason": "The video explains generic index lookup mechanics but does not teach basic index selection for actual service queries. No standalone range covers a complete required fact: it omits write and storage overhead and workload-based selection (f1), PostgreSQL B-tree support for equality and ordered comparisons (f2), and CREATE INDEX syntax with maintenance costs (f3). The final section warns against always adding indexes but never explains the tradeoffs. The lookup discussion also introduces untaught multi-version concurrency control at timestamp 278. Embed and transcript availability are acceptable, but no clean segment serves the requested objective."
+    },
+    {
+      "video_id": "UENlberEwrk",
+      "concept_id": "fastapi.domain_error_translation",
+      "reason": "No clean segment covers the required domain/persistence failure translation. The transcript teaches raising HTTPException directly for a missing document (59\u201390), automatic request validation, structured error details, and general status selection. It never demonstrates registering @app.exception_handler(FailureClass) (f1), translating a uniqueness conflict into a declared 409 outcome without exposing database text (f2), or rolling back a failed persistence transaction before boundary translation (f3). The structured-error discussion at 121\u2013152 also extends into the blocked public-error-envelope topic. These are coverage and scope gaps, not evidence of a factual contradiction."
+    },
+    {
+      "video_id": "agdEz7QT-zk",
+      "concept_id": "fastapi.public_error_envelopes",
+      "reason": "No clean standalone range meets this concept's required contract. The custom-exception example (0\u2013680s) demonstrates a request/exception handler returning JSONResponse and registration for a domain exception, but never teaches registration for Starlette's HTTPException, preservation of recognized exception status codes and relevant headers, or a stable public envelope independent of internal exception classes. The next topic begins at 680s and explicitly introduces unexpected-error handling at 696s, which is blocked knowledge for this path. That section also contains a substantive technical error: it assigns 404 to the generic unexpected-error handler at 868s and confirms that result at 1050s, incorrectly treating an unexpected server failure as a not-found outcome. This is an accuracy problem, not merely missing coverage."
+    },
+    {
+      "video_id": "41NOoEz3Tzc",
+      "concept_id": "integration.webhook_contracts",
+      "reason": "No clean standalone segment covers the required acceptance and acknowledgement contract. The explanation at 1651\u20131695 discusses incoming formats but does not define required fields or validation before acceptance (f1). The demos do not distinguish accepted delivery from completed downstream work (f2) or teach prompt acknowledgement with deferred slow work where permitted (f3): at 3772\u20133779 the handler responds after posting to Discord, and at 8125\u20138135 the Twilio function explicitly waits for message sending before completing. These platform-specific examples are not inherently incorrect, but do not teach the required acknowledgement model. The 204 response mentioned at 5030 is not accompanied by that model. No FastAPI typed input model, operation status_code, or accepted-versus-invalid input verification is demonstrated (f4). The implementation ranges also rely on untaught JavaScript, Express, Node promises, and provider-specific serverless setup, with substantial earlier-context dependencies."
+    },
+    {
+      "video_id": "yc-gp3PFHEI",
+      "concept_id": "integration.webhook_contracts",
+      "reason": "No clean segment teaches the required incoming webhook acceptance and acknowledgment contract. The video implements outbound webhook delivery and subscription registration, not a receiving handler. Its payload construction does not establish receiver-side media-type acceptance, required-field validation, or invalid-input behavior (f1). It does not distinguish delivery acknowledgment from completed downstream work (f2), demonstrate prompt declared 2xx acknowledgment with deferred receiver processing (f3), or implement and test a typed webhook input handler with an explicit status_code (f4). The test receiver is shown receiving data, but its contract is not explained. The production discussion concerns decoupling outbound delivery and introduces later topics such as retries and authentication; it cannot supply the missing receiver-side lesson."
+    },
+    {
+      "video_id": "1RLFSOwpf88",
+      "concept_id": "observability.request_correlation",
+      "reason": "No clean segment teaches request correlation across services. The video demonstrates basic logging, centralized log shipping, middleware logging of request paths and methods, and response processing time. It does not introduce an interaction identifier, bind a configured correlation header, preserve or create a bounded nonsensitive identifier, propagate it through an outbound HTTP call, include it in related local events, distinguish correlation from caller authority, or verify distinct contexts under concurrent requests. Centralizing logs is not cross-service request correlation. The closing slow-request diagnosis also enters blocked evidence-based service diagnosis."
+    },
+    {
+      "video_id": "YWRin-GFMlA",
+      "concept_id": "observability.request_correlation",
+      "reason": "No standalone range teaches the target objective: carrying the same correlation identifier through an outbound service call and verifying cross-service correlation. The explanation at 550\u2013712 covers local request logging and concurrent-context isolation; the middleware walkthrough at 812\u2013864 extracts or generates an identifier and returns it in response headers. Neither demonstrates Header(alias=header_name), bounded nonsensitive identifier handling, client.get(url, headers={header_name: identifier}), or verification using downstream received headers and related logs under concurrency. Response-header propagation is not outbound-request propagation. The video also omits the distinction between correlation context and caller authority. These are coverage gaps, not demonstrated factual contradictions."
+    }
+  ]
+}

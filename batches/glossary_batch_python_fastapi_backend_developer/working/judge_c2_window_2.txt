@@ -1,0 +1,80 @@
+{"title": "HTTPX Tutorial - A next-generation HTTP client for Python", "playable_in_embed": true, "chapters": [{"title": "Introduction", "start_seconds": 0, "end_seconds": 47}, {"title": "Installation & Features", "start_seconds": 47, "end_seconds": 145}, {"title": "Basic Usage", "start_seconds": 145, "end_seconds": 235}, {"title": "Advanced Usage with Client", "start_seconds": 235, "end_seconds": 327}, {"title": "Async API", "start_seconds": 327, "end_seconds": 380}, {"title": "Web App Testing", "start_seconds": 380, "end_seconds": 453}, {"title": "Speed Tests", "start_seconds": 453, "end_seconds": 661}], "thumbnail_urls": ["https://i.ytimg.com/vi_webp/qAh5dDODJ5k/maxresdefault.webp"]}
+FACTS [{"id": "f1", "statement": "Use httpx.AsyncClient and await client.get(...), client.post(...) or another request method for an asynchronous outbound call.", "source_refs": ["fastapi_docs_advanced#https://www.python-httpx.org/async/#making-async-requests"]}, {"id": "f2", "statement": "Reuse a scoped AsyncClient instead of creating clients inside a hot loop to benefit from connection pooling.", "source_refs": ["fastapi_docs_advanced#https://www.python-httpx.org/async/#opening-and-closing-clients"]}, {"id": "f3", "statement": "Close a client with async with httpx.AsyncClient() as client or await client.aclose() at the end of its owning scope.", "source_refs": ["fastapi_docs_advanced#https://www.python-httpx.org/async/#opening-and-closing-clients"]}]
+201.36-206.58 dictionary here then we can send custom
+203.76-209.76 headers by using the headers parameter
+206.58-212.28 we can send Json encoded data with the
+209.76-215.04 Json parameters all these are the same
+212.28-218.28 in requests then we can easily access
+215.04-220.26 cookies by saying RS a response dot
+218.28-222.96 cookies and then access this like a
+220.26-225.84 dictionary or we can send authentication
+222.96-228.54 parameters by using the auth parameter
+225.84-231.18 or we can easily set a timeout so the
+228.54-233.40 default is 5 but we can also set timeout
+231.18-235.56 for example to one so again all of this
+233.40-238.80 is quite similar to requests now let's
+235.56-240.62 talk about Advanced usage with the httpx
+238.80-242.82 client which is similar to
+240.62-245.34 requests.session so in the examples
+242.82-248.84 we've seen before with the top level API
+245.34-251.46 for example httpx.get or dot post
+248.84-254.40 httpx has to establish a new connection
+251.46-256.68 for every single request and if we have
+254.40-258.90 lots of requests then this quickly can
+256.68-261.54 become inefficient so a better way to
+258.90-264.84 handle this is by using a client which
+261.54-266.64 uses HTTP connection pooling and this
+264.84-268.86 can bring significant performance
+266.64-271.56 improvements compared to using the top
+268.86-274.08 level API and it's actually quite simple
+271.56-277.32 to use this so use this as context
+274.08-279.66 manager and say with httpx client as
+277.32-281.76 client and then we can use the same
+279.66-285.48 functions with it as with the top level
+281.76-288.36 API so we can say client dot get or we
+285.48-290.40 can say client.post we can also use the
+288.36-292.68 same parameters for example sent the
+290.40-294.54 headers and then the response is also
+292.68-296.94 the same so we can access the same
+294.54-299.70 attributes like status code or Json for
+296.94-302.28 example yeah so usually for example in
+299.70-305.34 side here we can have a for loop with
+302.28-307.20 over 100 requests and then use the
+305.34-308.84 client and this is much more efficient
+307.20-311.64 than saying
+308.84-313.26 httpx.get each time and what's also
+311.64-316.08 pretty cool is that we can share
+313.26-318.36 configuration across requests for
+316.08-320.70 example we can pass the headers argument
+318.36-323.22 in here and then each time we send the
+320.70-325.74 request it has the headers so we don't
+323.22-327.96 have to do this every single time so
+325.74-330.60 yeah this is how to work with the client
+327.96-333.00 now let's learn how to use the async API
+330.60-335.40 so we've just seen the normal client and
+333.00-339.06 in a similar way we can use the async
+335.40-341.82 client so here we say async with httpx
+339.06-343.86 async client as client and then on the
+341.82-346.74 client we can use the same functions for
+343.86-349.20 example client get or client post and
+346.74-351.06 here of course we have to await this to
+349.20-353.40 get the actual response and then we can
+351.06-355.44 print this and to run this for example
+353.40-357.96 we can wrap this in an async Dev
+355.44-361.02 function and then for example say async
+357.96-363.54 IO run and then the main function and if
+361.02-365.94 we run this we get the response so this
+363.54-367.98 is how to do it in an async way so we do
+365.94-369.78 a speed comparison between the ace and
+367.98-371.46 client and the normal client in a moment
+369.78-373.68 and then I also show you a best practice
+371.46-376.02 how you get the maximum performance with
+373.68-378.08 an async client but before I want to
+376.02-381.30 show you one more feature how we can use
+378.08-384.42 httpx to test web applications so with
+381.30-386.52 httpx we can call directly into python
+384.42-389.58 web apps and this is especially helpful
+386.52-391.86 for testing for example with a flask app
+389.58-394.08 we can do this here we have our app and
+391.86-396.60 then we defined one route which returns
+394.08-398.40 hello world and now to test this we

@@ -1,0 +1,73 @@
+{"title": "Python FastAPI Tutorial (Part 3): Path Parameters - Validation and Error Handling", "playable_in_embed": true, "chapters": [{"title": "Introduction to URL parameters", "start_seconds": 0, "end_seconds": 84}, {"title": "Creating single post endpoint", "start_seconds": 84, "end_seconds": 415}, {"title": "Implementing error handling", "start_seconds": 415, "end_seconds": 630}, {"title": "Testing path validation", "start_seconds": 630, "end_seconds": 755}, {"title": "Building the UI template", "start_seconds": 755, "end_seconds": 1021}, {"title": "Making UI links clickable", "start_seconds": 1021, "end_seconds": 1291}, {"title": "Adding custom error pages", "start_seconds": 1291, "end_seconds": 1798}, {"title": "Handling validation errors", "start_seconds": 1798, "end_seconds": 2070}, {"title": "Review and next steps", "start_seconds": 2070, "end_seconds": 2216}], "thumbnail_urls": ["https://i.ytimg.com/vi_webp/WRjXIA5pMtk/maxresdefault.webp"]}
+FACTS [{"id": "f1", "statement": "FastAPI raises RequestValidationError for invalid request data and handles it before normal operation logic receives that input.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/handling-errors/#override-request-validation-exceptions"]}, {"id": "f2", "statement": "Assert the default invalid-input response status of 422 and inspect the JSON detail entries to identify the failed input location and error type.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/path-params/#data-validation", "fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/handling-errors/#override-request-validation-exceptions"]}, {"id": "f3", "statement": "Invalid request input is distinct from a model-validation failure in response or application code, which indicates a server-side bug rather than a client's invalid request.", "source_refs": ["fastapi_docs_tutorial#https://fastapi.tiangolo.com/tutorial/handling-errors/#override-request-validation-exceptions"]}]
+593.36-600.00 and refresh uh for our post 99 here. If
+598.08-602.16 I run that, then we can see that it
+600.00-605.04 looks pretty similar. It still just says
+602.16-606.96 uh you know, detail post not found. So
+605.04-609.44 it looks like we're just getting kind of
+606.96-613.44 a similar error message. But if I go
+609.44-615.76 back here uh to our dev server then we
+613.44-618.08 can see that now whenever we go to get
+615.76-619.92 that route we are getting that 404
+618.08-622.48 status code. So if you want to have a
+619.92-624.08 reliable API uh then you want to return
+622.48-626.88 the correct status codes. That way
+624.08-629.12 clients can detect that and correctly
+626.88-632.24 you know handle it however they want to
+629.12-634.48 uh their way. So now let's test
+632.24-637.36 validation uh because this is one of the
+634.48-639.36 big benefits of path parameters with
+637.36-642.56 type hints. So we can see that we type
+639.36-646.40 hinted this as an integer here. So if I
+642.56-649.36 go back to our page so whenever we go to
+646.40-653.52 uh post 99 it doesn't exist. That's
+649.36-655.12 still an integer. But if I go to post uh
+653.52-658.16 slashhello
+655.12-660.40 and go here then we can see that we get
+658.16-664.16 this long uh detailed error message
+660.40-666.64 here. So this is actually a 422 response
+664.16-669.68 with a message explaining exactly what
+666.64-672.00 went wrong. Uh it says that the input
+669.68-674.56 should be a valid integer unable to
+672.00-677.20 parse string as an integer. So this is
+674.56-679.04 automatic validation from our typins. We
+677.20-681.44 didn't have to write any code to handle
+679.04-684.48 this. And if I go back to the dev server
+681.44-686.72 here, we can see that we did get a 422
+684.48-689.52 response there. Uh so it's nice that
+686.72-692.00 that is just built in for us just by us
+689.52-694.40 telling fast API that we're expecting an
+692.00-696.72 integer. And another nice thing is that
+694.40-699.04 this shows up automatically in the docs
+696.72-701.52 as well. So if I go back to our docs
+699.04-705.12 here and reload this, then we can see
+701.52-708.00 that we get our uh new route here in our
+705.12-710.00 documentation. And if I expand this uh
+708.00-713.84 then we can see that it's telling us
+710.00-716.56 that post ID is an integer. So if I go
+713.84-719.36 to try it out then I can do all the same
+716.56-721.84 things here. I can try to get post ID of
+719.36-726.08 one. Execute that we can see the
+721.84-728.32 response body there. If I go to post 99
+726.08-730.88 execute that we can see that we get post
+728.32-735.68 not found and that we get a 404 status
+730.88-739.12 code. And let's do post hello. execute
+735.68-741.68 that in our docs and we can see that uh
+739.12-744.32 it's telling us well actually it looks
+741.68-747.04 like it's not even uh letting us because
+744.32-749.12 it says it must be an integer here. So
+747.04-751.92 that's a nice benefit of using path
+749.12-753.84 parameters and typins. Uh the docs are
+751.92-756.08 generated automatically and you can test
+753.84-759.12 it right here in the browser. All right.
+756.08-761.84 So now we have our single post API
+759.12-764.72 endpoint. Uh now we also want a single
+761.84-768.48 post for the browser as well. Uh right
+764.72-771.28 now our homepage lists all of the post
+768.48-773.92 but there's no individual post page like
+771.28-776.64 you know post one. So let's go ahead and
+773.92-780.00 build that next. So first we need a
+776.64-782.80 template for a single post page. So if I
+780.00-785.92 go back to the code here uh I actually
+782.80-788.40 already have a finished version already
+785.92-790.64 here in my project and I've called this
