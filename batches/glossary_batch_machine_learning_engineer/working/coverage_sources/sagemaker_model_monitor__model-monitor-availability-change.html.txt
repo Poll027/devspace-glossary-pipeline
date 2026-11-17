@@ -1,0 +1,295 @@
+
+    Amazon SageMaker Model Monitor availability change - Amazon SageMaker AI 
+View a markdown version of this page
+Amazon SageMaker Model Monitor availability change - Amazon SageMaker AI
+DocumentationAmazon SageMakerDeveloper Guide
+Open-source SageMaker AI monitoring solutions + Amazon QuickSight + Amazon CloudWatchReplacing Amazon SageMaker Model Monitor with open-source solutions, QuickSight, and CloudWatch
+Amazon SageMaker Model Monitor availability change
+Note
+Amazon SageMaker Model Monitor is no longer open to new customers.
+            Existing customers can continue to use the service as normal. AWS continues to invest in security and availability improvements for
+             Model Monitor, but we do not plan to introduce new features.
+Open-source SageMaker AI monitoring solutions + Amazon QuickSight + Amazon CloudWatch
+The combination of the open-source Amazon SageMaker AI monitoring solutions, Amazon QuickSight governance dashboards, and Amazon CloudWatch serves as a
+      replacement for Amazon SageMaker Model Monitor.
+The open-source Amazon SageMaker AI monitoring solutions
+      (published in the aws-samples GitHub organization) provide a highly scalable and
+      customizable foundation for comprehensive data and model quality monitoring. They are built on
+      AWS managed services (Amazon SageMaker AI, Amazon Athena, AWS Lambda, Amazon EventBridge,
+      Amazon SQS, Amazon SNS, Amazon QuickSight) combined with open-source ML tooling (SageMaker AI
+      MLflow Apps and Evidently AI). The solutions run entirely within your AWS account and scale
+      from low-volume batch workloads to high-throughput real-time endpoints. They cover batch
+      inference, real-time endpoints, LLM evaluation, and GPU resource observability, and you adapt
+      them to your own datasets, models, and drift thresholds.
+Inference monitoring with Amazon QuickSight adds a
+      governance layer above your production inference pipelines for real-time and predictive
+      monitoring. It continuously tracks prediction and data quality metrics, handles delayed ground
+      truth, and visualizes drift and model-performance trends in executive dashboards. This
+      solution combines SageMaker AI MLflow Apps and Evidently AI for statistical drift analysis
+      with an Athena Iceberg data lake, EventBridge-triggered Lambda for scheduled analysis, SNS
+      alerting, and QuickSight dashboards.
+Amazon CloudWatch provides system-level and
+      inference-level monitoring with enhanced metrics for SageMaker endpoints, including invocation
+      latency, model errors, CPU/GPU utilization, and custom metrics with anomaly detection
+      alarms.
+Replacing Amazon SageMaker Model Monitor with open-source solutions, QuickSight, and CloudWatch
+This section guides you through replacing your existing Amazon SageMaker Model Monitor
+      deployment using the open-source Amazon SageMaker AI monitoring solutions (SageMaker AI MLflow
+      Apps + Evidently AI), Amazon QuickSight governance dashboards, and Amazon CloudWatch. This
+      solution supports equivalent and expanded functionality for data quality monitoring, model
+      quality monitoring, bias drift detection, feature attribution drift detection, and system
+      performance monitoring for models deployed on Amazon SageMaker AI.
+Removing Model Monitor
+Discontinue Model Monitor for new monitoring schedules
+If your workflow includes creating monitoring schedules using the
+          DefaultModelMonitor, ModelQualityMonitor,
+          ModelBiasMonitor, or ModelExplainabilityMonitor classes from the
+          SageMaker Python SDK, or the CreateMonitoringSchedule API, transition to the
+          alternatives described in the Configuring Replacements section below.
+Delete existing monitoring schedules
+Monitoring schedules spin up Processing Job instances (example:
+          ml.m5.xlarge) on a recurring schedule. Deleting them helps eliminate ongoing
+          compute costs.
+Using the SageMaker Python SDK:
+import sagemaker
+from sagemaker.model_monitor import DefaultModelMonitor
+session = sagemaker.Session()
+# List all monitoring schedules
+schedules = session.sagemaker_client.list_monitoring_schedules()
+# Delete each schedule
+for schedule in schedules['MonitoringScheduleSummaries']:
+    schedule_name = schedule['MonitoringScheduleName']
+    print(f"Deleting monitoring schedule: {schedule_name}")
+    session.sagemaker_client.delete_monitoring_schedule(
+        MonitoringScheduleName=schedule_name
+    )
+Using the AWS CLI:
+# List all monitoring schedules
+aws sagemaker list-monitoring-schedules
+# Delete a specific monitoring schedule
+aws sagemaker delete-monitoring-schedule \
+    --monitoring-schedule-name "my-data-quality-monitor"
+Note
+Deleting a monitoring schedule also stops the schedule if it has not already been
+            stopped. This does not delete the job execution history of the monitoring schedule.
+Configuring replacements
+Choosing a monitoring solution
+The open-source Amazon SageMaker AI monitoring solutions repository provides seven
+          production-ready monitoring solutions built on SageMaker AI MLflow Apps and Evidently AI.
+          Select the one that matches your inference pattern and operational needs. All of them are
+          open-source, run inside your AWS account, and are designed to be customized for your
+          datasets, models, and drift thresholds.
+                Solution
+                Inference type
+                Deployment
+                Monitoring focus
+                Best for
+                Predictive ML Batch Monitoring Pipeline
+                Batch Transform
+                2 notebooks (experiment + SageMaker Pipeline)
+                Data + model quality drift
+                Periodic batch predictions
+                Predictive ML Endpoint Monitoring
+                Real-time endpoint (Data Capture)
+                Notebook + CDK Lambda
+                Data + model quality drift
+                Real-time endpoints scaled with CDK
+                Real-Time Inference Monitoring with Evidently AI + SNS
+                Real-time endpoint (Data Capture)
+                Workshop notebook (referral)
+                Data + model quality drift
+                Lightweight email alerting on an existing endpoint
+                Real-Time Inference Monitoring with QuickSight Dashboards
+                Real-time endpoint
+                Notebooks + scripts (Athena Iceberg lake)
+                Drift + performance + delayed ground truth
+                Production governance dashboards (see meta-monitoring below)
+                LLM Inference Monitoring
+                Real-time endpoint (Data Capture)
+                CDK (Step Functions + Lambda)
+                Generative AI evaluations (safety, relevance, fluency, etc.)
+                LLM safety and quality monitoring
+                SageMaker Resource Observability with Grafana
+                Real-time endpoint
+                Single notebook (Amazon Managed Grafana)
+                GPU/CPU/memory + cost
+                Multi-model cost and capacity optimization
+                LLM Quality Observability with Grafana
+                Real-time endpoint
+                Notebook (Managed Grafana + CloudWatch)
+                Safety, relevance, tone, composite quality
+                LLM output quality regression detection
+Getting started with the monitoring solutions
+The recommended starting points for replacing Model Monitor's data and model quality
+          monitoring are the Predictive ML Batch Monitoring Pipeline
+          (for batch/Batch Transform workloads) and the Predictive ML Endpoint
+          Monitoring solution (for real-time endpoints). Both use the UCI Bank Marketing
+          dataset out of the box, so you can run them end to end before adapting them to your own
+          model.
+Predictive ML Batch Monitoring Pipeline (two
+          notebooks, run in sequence):
+Experimentation
+              (predictive_ml_experimentation_data_model_monitoring_evidently.ipynb):
+              trains an XGBoost model with MLflow tracking, runs Batch Transform inference, then
+              runs Evidently DataDriftPreset, ClassificationPreset, and
+              DataSummaryPreset, logging all metrics and HTML/JSON reports to your
+              MLflow App.
+Pipeline automation
+              (batch_monitoring_pipeline.ipynb): operationalizes the workflow into a
+              SageMaker Pipeline with a TransformStep and Evidently
+              ProcessingSteps, an SNS topic for alerts, and an EventBridge schedule.
+              In Section 2, set baseline_s3_uri, production_s3_uri,
+              mlflow_app_name, mlflow_experiment_name (match Notebook 1),
+              notification_email, and schedule_expression (for example,
+              rate(1 day)). Confirm the SNS email subscription before the first run.
+              Drift thresholds live in scripts/monitoring_processor.py (default: alert
+              when more than 30% of features drift).
+Predictive ML Endpoint Monitoring (notebook, then
+          optional CDK for scale): Open
+          ml_experimentation_with_data_model_monitoring_evidently_realtime.ipynb, set
+          mlflow_app_name in Section 2, and run Sections 1-8. This trains the model,
+          deploys a real-time endpoint with Data Capture, and runs Evidently
+          DataDriftPreset against the baseline and ClassificationPreset
+          against ground truth.
+To scale, deploy the two Docker-based Lambda functions (data drift and model quality)
+          with CDK. From cdk/, run npm install, export the variables
+          printed in Section 9 (ENDPOINT_NAME, BUCKET,
+          PREFIX, BASELINE_KEY, CAPTURE_PREFIX,
+          GROUND_TRUTH_KEY, MLFLOW_TRACKING_URI,
+          MLFLOW_EXPERIMENT, FEATURE_COLUMNS, optional
+          SNS_TOPIC_ARN), then run bash scripts/deploy.sh (runs
+          cdk bootstrap automatically).
+Enable S3 EventBridge notifications on the bucket and add S3 triggers: data drift on
+          s3:ObjectCreated:* under ${PREFIX}/data-capture/, model quality
+          under ${PREFIX}/data/ground_truth/.
+aws s3api put-bucket-notification-configuration \
+  --bucket <your-sagemaker-bucket> \
+  --notification-configuration '{"EventBridgeConfiguration": {}}'
+The model quality Lambda alerts via SNS when a metric falls below its threshold
+          (defaults: F1 0.70, Accuracy 0.80, ROC AUC 0.75; override with
+          THRESHOLD_F1, THRESHOLD_ACCURACY,
+          THRESHOLD_ROC_AUC).
+The model quality Lambda alerts via SNS when a metric falls below its threshold
+          (defaults: F1 0.70, Accuracy 0.80, ROC AUC 0.75; override with
+          THRESHOLD_F1, THRESHOLD_ACCURACY,
+          THRESHOLD_ROC_AUC).
+For a lightweight alternative on an existing endpoint, the Real-Time Inference Monitoring with Evidently AI + SNS solution adds a
+          single FrameworkProcessor Processing step (EvidentlyMonitoring)
+          plus an EventBridge Scheduler and SNS topic, with no data lake or dashboard. It is a
+          referral to Section 8 of Notebook 06 in the amazon-sagemaker-from-idea-to-production workshop. Alerts
+          fire when drifted_columns_share exceeds DriftThreshold
+          (default 0.05) or when configured CriticalFeatures
+          drift.
+Replacing data quality monitoring
+Model Monitor's data quality monitoring detects statistical drift in input features by
+        comparing live inference data against a training data baseline. It computes statistics
+        (mean, standard deviation, min, max, unique count) and checks constraints (data type,
+        completeness, value ranges) using a Deequ-based engine running on scheduled Processing
+        Jobs.
+Option 1: Open-source solutions with Evidently AI
+The monitoring solutions use Evidently AI's DataDriftPreset to detect
+          feature drift, computing PSI (Population Stability Index) and KS statistics for every
+          feature. The training baseline is read as the reference dataset and recent inference data
+          as the current dataset. The batch and endpoint solutions additionally run
+          DataSummaryPreset to surface data quality issues (missing values, outliers,
+          integrity checks), closely matching Model Monitor's constraint checks. Drift scores are
+          compared against configurable thresholds, logged to a SageMaker AI MLflow App alongside
+          training metrics, and surfaced as interactive HTML reports.
+This replacement is highly scalable and fully customizable:
+Scalable: Compute scales to zero when idle.
+              EventBridge-triggered Lambda runs drift analysis on a schedule, and Athena Iceberg
+              table partitioning keeps scan costs low as data volume grows. High-volume deployments
+              scale linearly with no reserved capacity.
+Customizable: You control the drift presets,
+              per-feature thresholds, lookback windows, and schedule via a central
+              config.yaml. You can add domain-specific drift tests beyond PSI (for
+              example, business KPIs such as approval-rate shifts).
+Unified lineage: Drift metrics are co-located
+              with training metrics in the same SageMaker AI MLflow App, giving complete model
+              lineage and drift trend analysis.
+Refer to the open-source Amazon SageMaker AI monitoring solutions for detailed setup steps.
+          The QuickSight-based real-time solution is described in the Inference Meta-Monitoring
+          section below.
+Option 2: Amazon CloudWatch custom metrics + anomaly detection
+For lightweight data quality monitoring without the full monitoring pipeline, publish
+          custom metrics to CloudWatch and use anomaly detection alarms. Refer to Using CloudWatch anomaly detection for detailed steps.
+Replacing model quality monitoring
+Model Monitor's model quality monitoring tracks prediction accuracy by merging ground
+        truth labels from S3 with endpoint predictions and computing metrics (accuracy, precision,
+        recall, F1, AUC, RMSE, MAE) on a schedule.
+Option 1: Open-source solutions with Evidently AI
+The monitoring solutions use Evidently AI's ClassificationPreset to
+          compute ROC-AUC, precision, recall, F1, and the confusion matrix whenever ground truth is
+          available. The solutions include a pattern for reconciling delayed ground truth with
+          predictions by inference ID, which addresses the real-world label latency that makes model
+          quality monitoring difficult.
+Option 2: CloudWatch custom metrics
+Publish model quality metrics to CloudWatch when ground truth becomes available.
+Replacing bias drift monitoring
+Model Monitor's bias drift monitoring detects changes in fairness metrics over time by
+        comparing live predictions against a bias baseline across protected attributes.
+Segment-sliced metrics with Evidently AI, logged to MLflow and QuickSight
+Track bias by computing performance and outcome metrics per protected-attribute
+          segment (for example, by gender, age_band, or
+          region) and comparing them to the training baseline. The same Evidently
+          ClassificationPreset used for model quality is run per segment, and the
+          resulting per-segment metrics (selection rate, true/false positive rates, precision/recall)
+          are logged to the SageMaker AI MLflow App and surfaced in the QuickSight governance
+          dashboard.
+Define your own fairness thresholds (for example, maximum acceptable gap in selection
+          rate or true positive rate between segments) and alert via Amazon SNS when a gap crosses
+          the threshold, using the same EventBridge + Lambda pattern as the data and model quality
+          monitors. Because everything is open-source and runs in your account, you control which
+          attributes are monitored and which fairness definitions apply.
+Inference meta-monitoring with Amazon QuickSight (real-time and predictive monitoring)
+Predictive models can silently degrade in production. Fraud handlers start seeing
+        false-positive spikes, loan officers see applications that should have been flagged, and
+        planners end up with excess inventory from overestimated demand. Meta-monitoring gives teams
+        continuous feedback on production model performance and alerts them as soon as model quality
+        or data drift appears, so they can upgrade models proactively.
+This solution combines AWS managed services (Amazon SageMaker AI, Amazon Athena, AWS
+        Lambda, Amazon SQS, Amazon SNS, Amazon EventBridge, Amazon QuickSight) with open-source ML
+        tooling (SageMaker AI MLflow Apps, Evidently AI) to create a production-ready monitoring
+        system. In the monitoring solutions repository it is the Real-Time
+        Inference Monitoring with QuickSight Dashboards solution; the complete reference
+        implementation lives at sample-mlops-bestpractices and uses a credit card fraud detection model
+        (XGBoost) as the worked example. It implements an 11-step architecture spanning a training
+        pipeline, inference monitoring, and a governance dashboard, with three guided notebooks
+        driving the workflow.
+Prerequisites:
+A SageMaker AI domain with an MLflow tracking server.
+A SageMaker execution role with permissions for S3, Athena, Lambda, SQS, SNS, and
+            EventBridge (the repo includes the exact inline IAM policies and
+            create_or_update_sagemaker_role /
+            create_lambda_role helpers).
+An S3 bucket for data storage.
+Python 3.12+ and the uv package manager (for the script/CLI path); a
+            QuickSight Enterprise subscription for the governance dashboard.
+Choose a setup path:
+Option A (recommended for new users): If you do not
+        have a SageMaker domain, deploy the CloudFormation template in
+        cloudformation/. It provisions the SageMaker domain, user profile, JupyterLab
+        space, MLflow tracking server, S3 bucket, and supporting VPC, auto-clones the repo, and
+        writes a populated .env on first launch.
+Option B (existing domains): If you already have a
+        SageMaker domain with an MLflow tracking server, clone the repo in JupyterLab and populate
+        .env manually.
+Setup
+Set up training to prepare for monitoring. You can drive everything from the three
+          notebooks in SageMaker Studio, or use the equivalent CLI commands (each notebook cell maps
+          to a python main.py ... command for CI/CD). If you run the sample end to end,
+          you do not need to edit config.yaml; populating .env and using
+          the defaults works. If you already have a model deployed, adapt the training pipeline to
+          your own steps and ensure the inference endpoint pushes prediction records to Amazon
+          SQS.
+ Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+Data and model quality monitoring
+Model Monitoring
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

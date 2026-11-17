@@ -1,0 +1,19 @@
+
+# Model quality
+**Note**  
+Amazon SageMaker Model Monitor is no longer open to new customers. Existing customers can continue to use the service as normal. AWS continues to invest in security and availability improvements for Model Monitor, but we do not plan to introduce new features. For more information, see [Amazon SageMaker Model Monitor availability change](model-monitor-availability-change.md). 
+Model quality monitoring jobs monitor the performance of a model by comparing the predictions that the model makes with the actual Ground Truth labels that the model attempts to predict. To do this, model quality monitoring merges data that is captured from real-time or batch inference with actual labels that you store in an Amazon S3 bucket, and then compares the predictions with the actual labels.
+To measure model quality, model monitor uses metrics that depend on the ML problem type. For example, if your model is for a regression problem, one of the metrics evaluated is mean square error (mse). For information about all of the metrics used for the different ML problem types, see [Model quality metrics and Amazon CloudWatch monitoring](model-monitor-model-quality-metrics.md). 
+Model quality monitoring follows the same steps as data quality monitoring, but adds the additional step of merging the actual labels from Amazon S3 with the predictions captured from the real-time inference endpoint or batch transform job. To monitor model quality, follow these steps:
++ Enable data capture. This captures inference input and output from a real-time inference endpoint or batch transform job and stores the data in Amazon S3. For more information, see [Data capture](model-monitor-data-capture.md).
++ Create a baseline. In this step, you run a baseline job that compares predictions from the model with Ground Truth labels in a baseline dataset. The baseline job automatically creates baseline statistical rules and constraints that define thresholds against which the model performance is evaluated. For more information, see [Create a model quality baseline](model-monitor-model-quality-baseline.md).
++ Define and schedule model quality monitoring jobs. For specific information and code samples of model quality monitoring jobs, see [Schedule model quality monitoring jobs](model-monitor-model-quality-schedule.md). For general information about monitoring jobs, see [Schedule monitoring jobs](model-monitor-scheduling.md).
++ Ingest Ground Truth labels that model monitor merges with captured prediction data from a real-time inference endpoint or batch transform job. For more information, see [Ingest Ground Truth labels and merge them with predictions](model-monitor-model-quality-merge.md).
++ Integrate model quality monitoring with Amazon CloudWatch. For more information, see [Monitoring model quality metrics with CloudWatch](model-monitor-model-quality-metrics.md#model-monitor-model-quality-cw).
++ Interpret the results of a monitoring job. For more information, see [Interpret results](model-monitor-interpreting-results.md).
++ Use SageMaker Studio to enable model quality monitoring and visualize results. For more information, see [Visualize results for real-time endpoints in Amazon SageMaker Studio](model-monitor-interpreting-visualize-results.md).
+**Topics**
++ [Create a model quality baseline](model-monitor-model-quality-baseline.md)
++ [Schedule model quality monitoring jobs](model-monitor-model-quality-schedule.md)
++ [Ingest Ground Truth labels and merge them with predictions](model-monitor-model-quality-merge.md)
++ [Model quality metrics and Amazon CloudWatch monitoring](model-monitor-model-quality-metrics.md)

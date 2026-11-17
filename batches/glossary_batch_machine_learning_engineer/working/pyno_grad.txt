@@ -1,0 +1,3326 @@
+
+ 
+
+ 
+ 
+ 
+ 
+ 
+ Automatic Differentiation with torch.autograd — PyTorch Tutorials 2.15.0+cu132 documentation 
+ 
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+   
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ DOCUMENTATION_OPTIONS.pagename = 'beginner/basics/autogradqs_tutorial'; 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  if (window.location.hostname === 'docs.pytorch.org' || window.location.hostname === 'docs-preview.pytorch.org') {
+    const script = document.createElement('script');
+    script.src = 'https://cmp.osano.com/16A0DbT9yDNIaQkvZ/31b1b91a-e0b6-47ea-bde2-7f2bd13dbe5c/osano.js?variant=one';
+    document.head.appendChild(script);
+  }
+ 
+ 
+  // Cookie banner for non-LF projects
+  document.addEventListener('DOMContentLoaded', function () {
+    // Hide cookie banner on local environments and LF owned docs
+    if (window.location.hostname === 'localhost' ||
+      window.location.hostname === '0.0.0.0' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname === 'docs.pytorch.org' ||
+      window.location.hostname === 'docs-preview.pytorch.org' ||
+      window.location.hostname.startsWith('192.168.')) {
+      const banner = document.querySelector('.cookie-banner-wrapper');
+      if (banner) {
+        banner.style.display = 'none';
+      }
+    }
+  });
+ 
+ 
+ 
+  :root {
+    --header-height: 0px !important;
+    --header-height-desktop: 0px !important;
+  }
+  /* Ensure proper mobile layout when LF header is hidden */
+  @media (max-width: 960px) {
+    .bd-header {
+      top: 0 !important;
+      position: sticky !important;
+      z-index: 1020 !important;
+    }
+    .bd-main {
+      padding-top: 0 !important;
+      margin-top: 0 !important;
+    }
+    .bd-article-container {
+      padding-top: 0 !important;
+    }
+    .header-article__inner {
+      padding-top: 1rem !important;
+    }
+
+  }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ (function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    j.onload = function () {
+      window.dispatchEvent(new Event('gtm_loaded'));
+      console.log('GTM loaded successfully');
+    };
+  })(window, document, 'script', 'dataLayer', 'GTM-T8XT4PS');
+ 
+ 
+ 
+ 
+  !function (f, b, e, v, n, t, s) {
+    if (f.fbq) return; n = f.fbq = function () {
+      n.callMethod ?
+        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+    n.queue = []; t = b.createElement(e); t.async = !0;
+    t.src = v; s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+  }(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '243028289693773');
+  fbq('track', 'PageView');
+ 
+ 
+  document.documentElement.setAttribute('data-version', 'v2.15.0+cu132');
+ 
+ 
+ 
+ 
+ 
+  function gtag() {
+    window.dataLayer.push(arguments);
+  }
+ 
+ 
+ 
+ 
+  // Define repository configuration for tutorial buttons using existing html_context variables
+  // Only injected when tutorial buttons are shown AND github variables are defined
+  // If either condition is false, JavaScript will fallback to default PyTorch tutorial links
+  window.repoConfig = {
+    github_repo: "pytorch/tutorials",
+    github_branch: "main",
+    colab_repo: "pytorch/tutorials",
+    colab_branch: ""
+  };
+ 
+ 
+ 
+  document.addEventListener('DOMContentLoaded', function () {
+    const SCROLL_DURATION = 150; // Fixed duration in ms regardless of distance
+    let lockedTargetId = null; // Lock the TOC to this target until user scrolls manually
+    let isUpdatingToc = false; // Guard against infinite loops
+
+    function smoothScrollTo(targetY, duration, onComplete) {
+      const startY = window.pageYOffset;
+      const difference = targetY - startY;
+      const startTime = performance.now();
+
+      function step(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // Ease-out cubic for smooth deceleration
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        window.scrollTo(0, startY + difference * easeOut);
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else if (onComplete) {
+          onComplete();
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function updateTocHighlight(targetId) {
+      if (isUpdatingToc) return; // Prevent infinite loop
+      isUpdatingToc = true;
+
+      // Find the TOC link that points to this target
+      const tocNav = document.querySelector('.bd-toc-nav');
+      if (!tocNav) {
+        isUpdatingToc = false;
+        return;
+      }
+
+      // Remove active class from all TOC items
+      tocNav.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        link.parentElement.classList.remove('active');
+      });
+
+      // Add active class to the matching link and all its ancestor TOC items
+      const matchingLink = tocNav.querySelector(`a[href="#${CSS.escape(targetId)}"]`);
+      if (matchingLink) {
+        matchingLink.classList.add('active');
+        matchingLink.parentElement.classList.add('active');
+
+        // Walk up the DOM to activate parent TOC entries (e.g. h2 parent of h3)
+        let ancestor = matchingLink.parentElement.parentElement;
+        while (ancestor && ancestor !== tocNav) {
+          if (ancestor.classList.contains('toc-entry')) {
+            ancestor.classList.add('active');
+            const parentLink = ancestor.querySelector(':scope > a.nav-link');
+            if (parentLink) {
+              parentLink.classList.add('active');
+            }
+          }
+          ancestor = ancestor.parentElement;
+        }
+      }
+
+      // Use setTimeout to reset the guard after the current call stack
+      setTimeout(function() {
+        isUpdatingToc = false;
+      }, 0);
+    }
+
+    // Watch for ScrollSpy trying to change the active state and override it
+    const tocNav = document.querySelector('.bd-toc-nav');
+    if (tocNav) {
+      const observer = new MutationObserver(function(mutations) {
+        if (lockedTargetId && !isUpdatingToc) {
+          // Force our target to stay highlighted
+          updateTocHighlight(lockedTargetId);
+        }
+      });
+      observer.observe(tocNav, {
+        attributes: true,
+        attributeFilter: ['class'],
+        subtree: true
+      });
+    }
+
+    // Release the lock when user scrolls manually (not programmatically)
+    window.addEventListener('wheel', function() {
+      lockedTargetId = null;
+    });
+    window.addEventListener('touchmove', function() {
+      lockedTargetId = null;
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href').substring(1);
+        if (!targetId) return; // Skip empty hash links
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+          e.preventDefault();
+
+          // Lock the TOC to this target
+          lockedTargetId = targetId;
+
+          const headerHeight =
+            (document.querySelector('.header-holder') ? document.querySelector('.header-holder').offsetHeight : 0) +
+            (document.querySelector('.bd-header') ? document.querySelector('.bd-header').offsetHeight : 0) + 20;
+
+          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+
+          // Update TOC highlight immediately
+          updateTocHighlight(targetId);
+
+          smoothScrollTo(targetPosition, SCROLL_DURATION, function() {
+            // Keep it highlighted after scroll
+            updateTocHighlight(targetId);
+          });
+
+          // Update URL hash without scrolling
+          history.pushState(null, null, '#' + targetId);
+        }
+      });
+    });
+  });
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Skip to main content 
+ 
+ 
+ Back to top 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Ctrl + K 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ document.write(`<img src="../../_static/img/logo-white.svg" class="logo__image only-dark" alt="PyTorch Tutorials - Home"/>`); 
+ 
+ 
+ 
+ 
+ 
+ 
+ document.write(`<img src="../../_static/img/logo-white.svg" class="logo__image only-dark" alt="PyTorch Tutorials - Home"/>`); 
+ 
+ 
+ 
+ v2.15.0+cu132 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+              Intro
+             
+ 
+ 
+ 
+ 
+                  Learn the Basics
+                 
+ 
+ 
+ 
+                  Introduction to PyTorch - YouTube Series
+                 
+ 
+ 
+ 
+                  Deep Learning with PyTorch: A 60 Minute Blitz
+                 
+ 
+ 
+ 
+                  Learning PyTorch with Examples
+                 
+ 
+ 
+ 
+                  What is torch.nn really?
+                 
+ 
+ 
+ 
+                  Understanding requires_grad, retain_grad, Leaf, and Non-leaf Tensors
+                 
+ 
+ 
+ 
+                  NLP from Scratch
+                 
+ 
+ 
+ 
+                  Visualizing Models, Data, and Training with TensorBoard
+                 
+ 
+ 
+ 
+                  A guide on good usage of non_blocking and pin_memory() in PyTorch
+                 
+ 
+ 
+ 
+                  Data Loading Optimization in PyTorch
+                 
+ 
+ 
+ 
+                  Visualizing Gradients
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Compilers
+             
+ 
+ 
+ 
+ 
+                  Introduction to torch.compile
+                 
+ 
+ 
+ 
+                  torch.compile End-to-End Tutorial
+                 
+ 
+ 
+ 
+                  Compiled Autograd: Capturing a larger backward graph for torch.compile
+                 
+ 
+ 
+ 
+                  Inductor CPU backend debugging and profiling
+                 
+ 
+ 
+ 
+                  Dynamic Compilation Control with torch.compiler.set_stance
+                 
+ 
+ 
+ 
+                  Demonstration of torch.export flow, common challenges and the solutions to address them
+                 
+ 
+ 
+ 
+                  (beta) Compiling the optimizer with torch.compile
+                 
+ 
+ 
+ 
+                  (beta) Running the compiled optimizer with an LR Scheduler
+                 
+ 
+ 
+ 
+                  Using Variable Length Attention in PyTorch
+                 
+ 
+ 
+ 
+                  Using User-Defined Triton Kernels with torch.compile
+                 
+ 
+ 
+ 
+                  Compile Time Caching in torch.compile
+                 
+ 
+ 
+ 
+                  Reducing torch.compile cold start compilation time with regional compilation
+                 
+ 
+ 
+ 
+                  torch.export Tutorial
+                 
+ 
+ 
+ 
+                  torch.export AOTInductor Tutorial for Python runtime (Beta)
+                 
+ 
+ 
+ 
+                  Demonstration of torch.export flow, common challenges and the solutions to address them
+                 
+ 
+ 
+ 
+                  Introduction to ONNX
+                 
+ 
+ 
+ 
+                  Export a PyTorch model to ONNX
+                 
+ 
+ 
+ 
+                  Extending the ONNX Exporter Operator Support
+                 
+ 
+ 
+ 
+                  Export a model with control flow to ONNX
+                 
+ 
+ 
+ 
+                  Building a Convolution/Batch Norm fuser with torch.compile
+                 
+ 
+ 
+ 
+                  (beta) Building a Simple CPU Performance Profiler with FX
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Domains
+             
+ 
+ 
+ 
+ 
+                  TorchVision Object Detection Finetuning Tutorial
+                 
+ 
+ 
+ 
+                  Transfer Learning for Computer Vision Tutorial
+                 
+ 
+ 
+ 
+                  Adversarial Example Generation
+                 
+ 
+ 
+ 
+                  DCGAN Tutorial
+                 
+ 
+ 
+ 
+                  Spatial Transformer Networks Tutorial
+                 
+ 
+ 
+ 
+                  Reinforcement Learning (DQN) Tutorial
+                 
+ 
+ 
+ 
+                  Reinforcement Learning (PPO) with TorchRL Tutorial
+                 
+ 
+ 
+ 
+                  Train a Mario-playing RL Agent
+                 
+ 
+ 
+ 
+                  Pendulum: Writing your environment and transforms with TorchRL
+                 
+ 
+ 
+ 
+                  Introduction to TorchRec
+                 
+ 
+ 
+ 
+                  Exploring TorchRec sharding
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Distributed
+             
+ 
+ 
+ 
+ 
+                  PyTorch Distributed Overview
+                 
+ 
+ 
+ 
+                  Distributed Data Parallel in PyTorch - Video Tutorials
+                 
+ 
+ 
+ 
+                  Getting Started with Distributed Data Parallel
+                 
+ 
+ 
+ 
+                  Writing Distributed Applications with PyTorch
+                 
+ 
+ 
+ 
+                  Getting Started with Fully Sharded Data Parallel (FSDP2)
+                 
+ 
+ 
+ 
+                  Introduction to Libuv TCPStore Backend
+                 
+ 
+ 
+ 
+                  Large Scale Transformer model training with Tensor Parallel (TP)
+                 
+ 
+ 
+ 
+                  Introduction to Distributed Pipeline Parallelism
+                 
+ 
+ 
+ 
+                  Customize Process Group Backends Using Cpp Extensions
+                 
+ 
+ 
+ 
+                  Interactive Distributed Applications with Monarch
+                 
+ 
+ 
+ 
+                  Debugging Hangs with Flight Recorder Using TorchComms and Debug Server
+                 
+ 
+ 
+ 
+                  Distributed Training with Uneven Inputs Using the Join Context Manager
+                 
+ 
+ 
+ 
+                  Distributed training at scale with PyTorch and Ray Train
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Deep Dive
+             
+ 
+ 
+ 
+ 
+                  Profiling your PyTorch Module
+                 
+ 
+ 
+ 
+                  CUDA Graph Kernel Annotations and Profiling
+                 
+ 
+ 
+ 
+                  Parametrizations Tutorial
+                 
+ 
+ 
+ 
+                  Pruning Tutorial
+                 
+ 
+ 
+ 
+                  Inductor CPU backend debugging and profiling
+                 
+ 
+ 
+ 
+                  (Beta) Implementing High-Performance Transformers with Scaled Dot Product Attention (SDPA)
+                 
+ 
+ 
+ 
+                  Knowledge Distillation Tutorial
+                 
+ 
+ 
+ 
+                  Channels Last Memory Format in PyTorch
+                 
+ 
+ 
+ 
+                  Forward-mode Automatic Differentiation (Beta)
+                 
+ 
+ 
+ 
+                  Jacobians, Hessians, hvp, vhp, and more: composing function transforms
+                 
+ 
+ 
+ 
+                  Model ensembling
+                 
+ 
+ 
+ 
+                  Per-sample-gradients
+                 
+ 
+ 
+ 
+                  Using the PyTorch C++ Frontend
+                 
+ 
+ 
+ 
+                  Autograd in C++ Frontend
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Extension
+             
+ 
+ 
+ 
+ 
+                  PyTorch Custom Operators
+                 
+ 
+ 
+ 
+                  Double Backward with Custom Functions
+                 
+ 
+ 
+ 
+                  Fusing Convolution and Batch Norm using Custom Function
+                 
+ 
+ 
+ 
+                  Registering a Dispatched Operator in C++
+                 
+ 
+ 
+ 
+                  Extending dispatcher for a new backend in C++
+                 
+ 
+ 
+ 
+                  Facilitating New Backend Integration by PrivateUse1
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Ecosystem
+             
+ 
+ 
+ 
+ 
+                  Hyperparameter tuning using Ray Tune
+                 
+ 
+ 
+ 
+                  Serve PyTorch models at scale with Ray Serve
+                 
+ 
+ 
+ 
+                  Multi-Objective NAS with Ax
+                 
+ 
+ 
+ 
+                  Real Time Inference on Raspberry Pi 4 and 5 (40 fps!)
+                 
+ 
+ 
+ 
+                  Mosaic: Memory Profiling for PyTorch
+                 
+ 
+ 
+ 
+                  Distributed training at scale with PyTorch and Ray Train
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+            More
+           
+ 
+ 
+ 
+ 
+                Recipes
+               
+ 
+ 
+ 
+                Unstable
+               
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Go to 
+ pytorch.org  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Ctrl + K 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  document.addEventListener('DOMContentLoaded', function() {
+  // Define the search callback
+  const myWebSearchStartingCallback = (gname, query) => {
+    if (typeof dataLayer !== 'undefined' && query) {
+      window.dataLayer = window.dataLayer || [];
+      dataLayer.push({
+        'event': 'google_search',
+        'search_term': query,
+        'event_category': 'Search',
+        'event_label': 'Google Search'
+      });
+    }
+    return '';
+  };
+
+  // Set up the GCSE search callbacks
+  window.__gcse || (window.__gcse = {});
+  window.__gcse.searchCallbacks = {
+    web: { starting: myWebSearchStartingCallback }
+  };
+
+  if (window.location.pathname.includes('/search.html')) {
+    document.body.classList.add('search-page');
+  }
+
+  // Function to reinitialize Google CSE
+  function reinitializeGoogleSearch() {
+    if (window.__gcse && window.__gcse.initializationCallback) {
+      window.__gcse.initializationCallback();
+    }
+  }
+
+  // Execute Google CSE search programmatically from our custom input
+  function executeGoogleSearch(query) {
+    if (!query) return;
+
+    // Close mobile sidebar if open, so results overlay is visible
+    var sidebar = document.querySelector('.bd-sidebar-primary');
+    if (sidebar && sidebar.classList.contains('show')) {
+      var closeBtn = sidebar.querySelector('[data-bs-dismiss="offcanvas"]');
+      if (closeBtn) closeBtn.click();
+      // Also try Bootstrap's offcanvas API
+      try {
+        var offcanvas = bootstrap.Offcanvas.getInstance(sidebar);
+        if (offcanvas) offcanvas.hide();
+      } catch(e) {}
+    }
+
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (element) {
+      element.execute(query);
+    }
+  }
+
+  // Wire up our custom Google search input
+  var googleSearchForm = document.getElementById('google-search-form');
+  var googleSearchInput = document.getElementById('google-search-input');
+
+  if (googleSearchForm) {
+    googleSearchForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var query = googleSearchInput ? googleSearchInput.value : '';
+      executeGoogleSearch(query);
+    });
+  }
+
+  var suggestDebounce;
+  var activeSuggestionIndex = -1;
+
+  if (googleSearchInput) {
+    // Trigger search on Enter key
+    googleSearchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        hideSuggestions();
+        executeGoogleSearch(this.value);
+      } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        navigateSuggestions(e.key === 'ArrowDown' ? 1 : -1);
+      } else if (e.key === 'Escape') {
+        hideSuggestions();
+      }
+    });
+
+    googleSearchInput.addEventListener('input', function() {
+      clearTimeout(suggestDebounce);
+      var query = this.value.trim();
+      activeSuggestionIndex = -1;
+      if (query.length < 2) {
+        hideSuggestions();
+        return;
+      }
+      suggestDebounce = setTimeout(function() {
+        fetchGoogleSuggestions(query);
+      }, 200);
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#google-search')) {
+        hideSuggestions();
+      }
+    });
+  }
+
+  // Filter and clean suggestions: keep only PyTorch-related, strip prefix
+  function cleanSuggestions(rawList) {
+    return rawList.map(function(s) {
+      var text = typeof s === 'string' ? s : s[0];
+      return text;
+    }).filter(function(text) {
+      return /pytorch/i.test(text);
+    }).map(function(text) {
+      return text.replace(/^pytorch\s*/i, '');
+    }).filter(function(s) {
+      return s.length > 0;
+    });
+  }
+
+  // Fetch suggestions from Google suggest API, scoped to PyTorch
+  function fetchGoogleSuggestions(query) {
+    var scopedQuery = 'pytorch ' + query;
+    fetch('https://suggestqueries.google.com/complete/search?client=firefox&q=' + encodeURIComponent(scopedQuery))
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data[1] && data[1].length) {
+          var cleaned = cleanSuggestions(data[1]);
+          cleaned.length ? showSuggestions(cleaned) : hideSuggestions();
+        } else {
+          hideSuggestions();
+        }
+      })
+      .catch(function() {
+        fetchGoogleSuggestionsJSONP(scopedQuery);
+      });
+  }
+
+  function fetchGoogleSuggestionsJSONP(scopedQuery) {
+    var script = document.getElementById('gcse-suggest-script');
+    if (script) script.remove();
+
+    window.__gcseSuggestCallback = function(data) {
+      if (data && data[1] && data[1].length) {
+        var cleaned = cleanSuggestions(data[1]);
+        cleaned.length ? showSuggestions(cleaned) : hideSuggestions();
+      } else {
+        hideSuggestions();
+      }
+    };
+
+    script = document.createElement('script');
+    script.id = 'gcse-suggest-script';
+    script.src = 'https://clients1.google.com/complete/search?client=hp&q=' + encodeURIComponent(scopedQuery) + '&callback=__gcseSuggestCallback';
+    script.onerror = function() { hideSuggestions(); };
+    document.head.appendChild(script);
+  }
+
+  function stripHtml(str) {
+    var tmp = document.createElement('div');
+    tmp.innerHTML = str;
+    return tmp.textContent || tmp.innerText || '';
+  }
+
+  function showSuggestions(suggestions) {
+    var container = document.getElementById('google-search-suggestions');
+    if (!container || !suggestions.length) { hideSuggestions(); return; }
+
+    container.innerHTML = '';
+    suggestions.forEach(function(rawText, index) {
+      var text = stripHtml(rawText);
+      var item = document.createElement('div');
+      item.className = 'google-suggest-item';
+      item.textContent = text;
+      item.setAttribute('data-index', index);
+      item.addEventListener('click', function() {
+        googleSearchInput.value = text;
+        hideSuggestions();
+        executeGoogleSearch(text);
+      });
+      item.addEventListener('mouseenter', function() {
+        activeSuggestionIndex = index;
+        highlightSuggestion();
+      });
+      container.appendChild(item);
+    });
+    container.style.display = 'block';
+    activeSuggestionIndex = -1;
+  }
+
+  function hideSuggestions() {
+    var container = document.getElementById('google-search-suggestions');
+    if (container) {
+      container.style.display = 'none';
+      container.innerHTML = '';
+    }
+    activeSuggestionIndex = -1;
+    // Clean up JSONP script
+    var script = document.getElementById('gcse-suggest-script');
+    if (script) script.remove();
+  }
+
+  function navigateSuggestions(direction) {
+    var items = document.querySelectorAll('#google-search-suggestions .google-suggest-item');
+    if (!items.length) return;
+
+    activeSuggestionIndex += direction;
+    if (activeSuggestionIndex >= items.length) activeSuggestionIndex = 0;
+    if (activeSuggestionIndex < 0) activeSuggestionIndex = items.length - 1;
+
+    highlightSuggestion();
+    googleSearchInput.value = items[activeSuggestionIndex].textContent;
+  }
+
+  function highlightSuggestion() {
+    var items = document.querySelectorAll('#google-search-suggestions .google-suggest-item');
+    items.forEach(function(item, i) {
+      item.classList.toggle('active', i === activeSuggestionIndex);
+    });
+  }
+
+  // Function to handle search toggle
+  function handleSearchToggle(toggle, sphinxSearch, googleSearch) {
+    if (!toggle || !sphinxSearch || !googleSearch) return;
+
+    // TODO: We've had reports that the google programmable search is returning stale documentation,
+    //       Simple reproduction is to turn google search on and search for multinomial which will
+    //       result in returning 1.8.1 documentation.
+    //       We should turn this back on when we resolve that bug.
+    const shouldDefaultToGoogle = false;
+    const savedPreference = localStorage.getItem('searchPreference');
+
+    // Set initial state
+    if (savedPreference === 'google' || (savedPreference === null && shouldDefaultToGoogle)) {
+      toggle.checked = true;
+      sphinxSearch.style.display = 'none';
+      googleSearch.style.display = 'block';
+      if (savedPreference === null) {
+        localStorage.setItem('searchPreference', 'google');
+      }
+      reinitializeGoogleSearch();
+    } else {
+      toggle.checked = false;
+      sphinxSearch.style.display = 'block';
+      googleSearch.style.display = 'none';
+    }
+
+    // Update tooltip
+    updateTooltip(toggle.checked);
+
+    // Skip if already initialized
+    if (toggle.hasAttribute('data-initialized')) return;
+    toggle.setAttribute('data-initialized', 'true');
+
+    toggle.addEventListener('change', function() {
+      if (this.checked) {
+        sphinxSearch.style.display = 'none';
+        googleSearch.style.display = 'block';
+        localStorage.setItem('searchPreference', 'google');
+        reinitializeGoogleSearch();
+        trackSearchEngineSwitch('Google');
+        // Focus our custom input when switching to Google
+        if (googleSearchInput) googleSearchInput.focus();
+      } else {
+        sphinxSearch.style.display = 'block';
+        googleSearch.style.display = 'none';
+        localStorage.setItem('searchPreference', 'sphinx');
+        trackSearchEngineSwitch('Sphinx');
+      }
+
+      updateTooltip(this.checked);
+      updateMobileSearch();
+    });
+  }
+
+  // Update tooltip based on toggle state
+  function updateTooltip(isChecked) {
+    const tooltipElement = document.querySelector('.search-toggle-container');
+    if (!tooltipElement) return;
+
+    tooltipElement.setAttribute('data-bs-title', isChecked ? 'Google Search On' : 'Google Search Off');
+
+    if (bootstrap && bootstrap.Tooltip) {
+      const tooltipInstance = bootstrap.Tooltip.getInstance(tooltipElement);
+      if (tooltipInstance) tooltipInstance.dispose();
+      new bootstrap.Tooltip(tooltipElement);
+    }
+  }
+
+  // Track search engine switch
+  function trackSearchEngineSwitch(engine) {
+    if (typeof dataLayer !== 'undefined') {
+      window.dataLayer = window.dataLayer || [];
+      dataLayer.push({
+        'event': 'search_engine_switch',
+        'event_category': 'Search',
+        'event_label': engine
+      });
+    }
+  }
+
+  // Function to update mobile search based on current toggle state
+  function updateMobileSearch() {
+    const toggle = document.getElementById('search-toggle');
+    if (!toggle) return;
+
+    const mobileSearchContainer = document.querySelector('.sidebar-header-items__end .navbar-item .search-container-wrapper');
+    if (!mobileSearchContainer) return;
+
+    const mobileSphinxSearch = mobileSearchContainer.querySelector('#sphinx-search');
+    const mobileGoogleSearch = mobileSearchContainer.querySelector('#google-search');
+
+    if (mobileSphinxSearch && mobileGoogleSearch) {
+      mobileSphinxSearch.style.display = toggle.checked ? 'none' : 'block';
+      mobileGoogleSearch.style.display = toggle.checked ? 'block' : 'none';
+
+      if (toggle.checked) {
+        reinitializeGoogleSearch();
+      }
+    }
+  }
+
+  // Initialize desktop search toggle
+  const toggle = document.getElementById('search-toggle');
+  const sphinxSearch = document.getElementById('sphinx-search');
+  const googleSearch = document.getElementById('google-search');
+  handleSearchToggle(toggle, sphinxSearch, googleSearch);
+
+  // Fix for scroll jump issue - improved approach
+  function setupSearchInputHandlers(input) {
+    if (input.hasAttribute('data-scroll-fixed')) return;
+    input.setAttribute('data-scroll-fixed', 'true');
+
+    let lastScrollPosition = 0;
+    let isTyping = false;
+    let scrollTimeout;
+
+    input.addEventListener('keydown', () => {
+      lastScrollPosition = window.scrollY;
+      isTyping = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => { isTyping = false; }, 100);
+    });
+
+    function maintainScroll() {
+      if (document.activeElement === input && isTyping) {
+        window.scrollTo(0, lastScrollPosition);
+        requestAnimationFrame(maintainScroll);
+      }
+    }
+
+    input.addEventListener('focus', () => {
+      lastScrollPosition = window.scrollY;
+    });
+
+    input.addEventListener('input', () => {
+      isTyping = true;
+      window.scrollTo(0, lastScrollPosition);
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => { isTyping = false; }, 100);
+      requestAnimationFrame(maintainScroll);
+    });
+  }
+
+  function applyToSearchInputs() {
+    document.querySelectorAll('.search-container input').forEach(setupSearchInputHandlers);
+  }
+
+  applyToSearchInputs();
+
+  const searchObserver = new MutationObserver(applyToSearchInputs);
+  searchObserver.observe(document.body, { childList: true, subtree: true });
+
+  // Watch for mobile menu creation
+  const mobileMenuObserver = new MutationObserver(function(mutations) {
+    for (const mutation of mutations) {
+      if (!mutation.addedNodes.length) continue;
+
+      const mobileSearchContainer = document.querySelector('.sidebar-header-items__end .navbar-item .search-container-wrapper');
+      if (!mobileSearchContainer) continue;
+
+      const mobileToggle = mobileSearchContainer.querySelector('#search-toggle');
+      if (mobileToggle && toggle) {
+        mobileToggle.checked = toggle.checked;
+        updateMobileSearch();
+
+        if (!mobileToggle.hasAttribute('data-initialized')) {
+          mobileToggle.setAttribute('data-initialized', 'true');
+          mobileToggle.addEventListener('change', function() {
+            toggle.checked = this.checked;
+            toggle.dispatchEvent(new Event('change'));
+          });
+        }
+      }
+
+      // Wire up mobile Google search input
+      var mobileGoogleInput = mobileSearchContainer.querySelector('#google-search-input');
+      if (mobileGoogleInput && !mobileGoogleInput.hasAttribute('data-mobile-wired')) {
+        mobileGoogleInput.setAttribute('data-mobile-wired', 'true');
+
+        var mobileForm = mobileSearchContainer.querySelector('#google-search-form');
+        if (mobileForm) {
+          mobileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            executeGoogleSearch(mobileGoogleInput.value);
+          });
+        }
+
+        mobileGoogleInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            executeGoogleSearch(this.value);
+          }
+        });
+
+        mobileGoogleInput.addEventListener('input', function() {
+          clearTimeout(suggestDebounce);
+          var query = this.value.trim();
+          activeSuggestionIndex = -1;
+          if (query.length < 2) return;
+          suggestDebounce = setTimeout(function() {
+            // Mobile uses the same search execution but no suggestions dropdown
+            // (suggestions dropdown is complex on mobile; just support Enter to search)
+          }, 200);
+        });
+      }
+    }
+  });
+
+  mobileMenuObserver.observe(document.body, { childList: true, subtree: true });
+
+  // Ensure Google CSE is properly loaded
+  if (window.__gcse) {
+    window.__gcse.callback = function() {
+      if (toggle && toggle.checked) {
+        reinitializeGoogleSearch();
+      }
+    };
+  } else {
+    window.__gcse = {
+      callback: function() {
+        if (toggle && toggle.checked) {
+          reinitializeGoogleSearch();
+        }
+      }
+    };
+  }
+});
+ 
+ 
+ 
+ 
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+ 
+ 
+ 
+ 
+ X 
+ 
+ 
+ 
+ GitHub 
+ 
+ 
+ 
+ Discourse 
+ 
+ 
+ 
+ PyPi 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ v2.15.0+cu132 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+              Intro
+             
+ 
+ 
+ 
+ 
+                  Learn the Basics
+                 
+ 
+ 
+ 
+                  Introduction to PyTorch - YouTube Series
+                 
+ 
+ 
+ 
+                  Deep Learning with PyTorch: A 60 Minute Blitz
+                 
+ 
+ 
+ 
+                  Learning PyTorch with Examples
+                 
+ 
+ 
+ 
+                  What is torch.nn really?
+                 
+ 
+ 
+ 
+                  Understanding requires_grad, retain_grad, Leaf, and Non-leaf Tensors
+                 
+ 
+ 
+ 
+                  NLP from Scratch
+                 
+ 
+ 
+ 
+                  Visualizing Models, Data, and Training with TensorBoard
+                 
+ 
+ 
+ 
+                  A guide on good usage of non_blocking and pin_memory() in PyTorch
+                 
+ 
+ 
+ 
+                  Data Loading Optimization in PyTorch
+                 
+ 
+ 
+ 
+                  Visualizing Gradients
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Compilers
+             
+ 
+ 
+ 
+ 
+                  Introduction to torch.compile
+                 
+ 
+ 
+ 
+                  torch.compile End-to-End Tutorial
+                 
+ 
+ 
+ 
+                  Compiled Autograd: Capturing a larger backward graph for torch.compile
+                 
+ 
+ 
+ 
+                  Inductor CPU backend debugging and profiling
+                 
+ 
+ 
+ 
+                  Dynamic Compilation Control with torch.compiler.set_stance
+                 
+ 
+ 
+ 
+                  Demonstration of torch.export flow, common challenges and the solutions to address them
+                 
+ 
+ 
+ 
+                  (beta) Compiling the optimizer with torch.compile
+                 
+ 
+ 
+ 
+                  (beta) Running the compiled optimizer with an LR Scheduler
+                 
+ 
+ 
+ 
+                  Using Variable Length Attention in PyTorch
+                 
+ 
+ 
+ 
+                  Using User-Defined Triton Kernels with torch.compile
+                 
+ 
+ 
+ 
+                  Compile Time Caching in torch.compile
+                 
+ 
+ 
+ 
+                  Reducing torch.compile cold start compilation time with regional compilation
+                 
+ 
+ 
+ 
+                  torch.export Tutorial
+                 
+ 
+ 
+ 
+                  torch.export AOTInductor Tutorial for Python runtime (Beta)
+                 
+ 
+ 
+ 
+                  Demonstration of torch.export flow, common challenges and the solutions to address them
+                 
+ 
+ 
+ 
+                  Introduction to ONNX
+                 
+ 
+ 
+ 
+                  Export a PyTorch model to ONNX
+                 
+ 
+ 
+ 
+                  Extending the ONNX Exporter Operator Support
+                 
+ 
+ 
+ 
+                  Export a model with control flow to ONNX
+                 
+ 
+ 
+ 
+                  Building a Convolution/Batch Norm fuser with torch.compile
+                 
+ 
+ 
+ 
+                  (beta) Building a Simple CPU Performance Profiler with FX
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Domains
+             
+ 
+ 
+ 
+ 
+                  TorchVision Object Detection Finetuning Tutorial
+                 
+ 
+ 
+ 
+                  Transfer Learning for Computer Vision Tutorial
+                 
+ 
+ 
+ 
+                  Adversarial Example Generation
+                 
+ 
+ 
+ 
+                  DCGAN Tutorial
+                 
+ 
+ 
+ 
+                  Spatial Transformer Networks Tutorial
+                 
+ 
+ 
+ 
+                  Reinforcement Learning (DQN) Tutorial
+                 
+ 
+ 
+ 
+                  Reinforcement Learning (PPO) with TorchRL Tutorial
+                 
+ 
+ 
+ 
+                  Train a Mario-playing RL Agent
+                 
+ 
+ 
+ 
+                  Pendulum: Writing your environment and transforms with TorchRL
+                 
+ 
+ 
+ 
+                  Introduction to TorchRec
+                 
+ 
+ 
+ 
+                  Exploring TorchRec sharding
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Distributed
+             
+ 
+ 
+ 
+ 
+                  PyTorch Distributed Overview
+                 
+ 
+ 
+ 
+                  Distributed Data Parallel in PyTorch - Video Tutorials
+                 
+ 
+ 
+ 
+                  Getting Started with Distributed Data Parallel
+                 
+ 
+ 
+ 
+                  Writing Distributed Applications with PyTorch
+                 
+ 
+ 
+ 
+                  Getting Started with Fully Sharded Data Parallel (FSDP2)
+                 
+ 
+ 
+ 
+                  Introduction to Libuv TCPStore Backend
+                 
+ 
+ 
+ 
+                  Large Scale Transformer model training with Tensor Parallel (TP)
+                 
+ 
+ 
+ 
+                  Introduction to Distributed Pipeline Parallelism
+                 
+ 
+ 
+ 
+                  Customize Process Group Backends Using Cpp Extensions
+                 
+ 
+ 
+ 
+                  Interactive Distributed Applications with Monarch
+                 
+ 
+ 
+ 
+                  Debugging Hangs with Flight Recorder Using TorchComms and Debug Server
+                 
+ 
+ 
+ 
+                  Distributed Training with Uneven Inputs Using the Join Context Manager
+                 
+ 
+ 
+ 
+                  Distributed training at scale with PyTorch and Ray Train
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Deep Dive
+             
+ 
+ 
+ 
+ 
+                  Profiling your PyTorch Module
+                 
+ 
+ 
+ 
+                  CUDA Graph Kernel Annotations and Profiling
+                 
+ 
+ 
+ 
+                  Parametrizations Tutorial
+                 
+ 
+ 
+ 
+                  Pruning Tutorial
+                 
+ 
+ 
+ 
+                  Inductor CPU backend debugging and profiling
+                 
+ 
+ 
+ 
+                  (Beta) Implementing High-Performance Transformers with Scaled Dot Product Attention (SDPA)
+                 
+ 
+ 
+ 
+                  Knowledge Distillation Tutorial
+                 
+ 
+ 
+ 
+                  Channels Last Memory Format in PyTorch
+                 
+ 
+ 
+ 
+                  Forward-mode Automatic Differentiation (Beta)
+                 
+ 
+ 
+ 
+                  Jacobians, Hessians, hvp, vhp, and more: composing function transforms
+                 
+ 
+ 
+ 
+                  Model ensembling
+                 
+ 
+ 
+ 
+                  Per-sample-gradients
+                 
+ 
+ 
+ 
+                  Using the PyTorch C++ Frontend
+                 
+ 
+ 
+ 
+                  Autograd in C++ Frontend
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Extension
+             
+ 
+ 
+ 
+ 
+                  PyTorch Custom Operators
+                 
+ 
+ 
+ 
+                  Double Backward with Custom Functions
+                 
+ 
+ 
+ 
+                  Fusing Convolution and Batch Norm using Custom Function
+                 
+ 
+ 
+ 
+                  Registering a Dispatched Operator in C++
+                 
+ 
+ 
+ 
+                  Extending dispatcher for a new backend in C++
+                 
+ 
+ 
+ 
+                  Facilitating New Backend Integration by PrivateUse1
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Ecosystem
+             
+ 
+ 
+ 
+ 
+                  Hyperparameter tuning using Ray Tune
+                 
+ 
+ 
+ 
+                  Serve PyTorch models at scale with Ray Serve
+                 
+ 
+ 
+ 
+                  Multi-Objective NAS with Ax
+                 
+ 
+ 
+ 
+                  Real Time Inference on Raspberry Pi 4 and 5 (40 fps!)
+                 
+ 
+ 
+ 
+                  Mosaic: Memory Profiling for PyTorch
+                 
+ 
+ 
+ 
+                  Distributed training at scale with PyTorch and Ray Train
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Recipes
+             
+ 
+ 
+ 
+ 
+                  Defining a Neural Network in PyTorch
+                 
+ 
+ 
+ 
+                  (beta) Using TORCH_LOGS python API with torch.compile
+                 
+ 
+ 
+ 
+                  What is a state_dict in PyTorch
+                 
+ 
+ 
+ 
+                  Warmstarting model using parameters from a different model in PyTorch
+                 
+ 
+ 
+ 
+                  Zeroing out gradients in PyTorch
+                 
+ 
+ 
+ 
+                  PyTorch Profiler
+                 
+ 
+ 
+ 
+                  Model Interpretability using Captum
+                 
+ 
+ 
+ 
+                  How to use TensorBoard with PyTorch
+                 
+ 
+ 
+ 
+                  Automatic Mixed Precision
+                 
+ 
+ 
+ 
+                  Performance Tuning Guide
+                 
+ 
+ 
+ 
+                  (beta) Compiling the optimizer with torch.compile
+                 
+ 
+ 
+ 
+                  Timer quick start
+                 
+ 
+ 
+ 
+                  Shard Optimizer States with ZeroRedundancyOptimizer
+                 
+ 
+ 
+ 
+                  Getting Started with CommDebugMode
+                 
+ 
+ 
+ 
+                  Demonstration of torch.export flow, common challenges and the solutions to address them
+                 
+ 
+ 
+ 
+                  SyntaxError
+                 
+ 
+ 
+ 
+                  Tips for Loading an nn.Module from a Checkpoint
+                 
+ 
+ 
+ 
+                  Reasoning about Shapes in PyTorch
+                 
+ 
+ 
+ 
+                  Extension points in nn.Module for load_state_dict and tensor subclasses
+                 
+ 
+ 
+ 
+                  torch.export AOTInductor Tutorial for Python runtime (Beta)
+                 
+ 
+ 
+ 
+                  How to use TensorBoard with PyTorch
+                 
+ 
+ 
+ 
+                  (beta) Utilizing Torch Function modes with torch.compile
+                 
+ 
+ 
+ 
+                  (beta) Running the compiled optimizer with an LR Scheduler
+                 
+ 
+ 
+ 
+                  Explicit horizontal fusion with foreach_map and torch.compile
+                 
+ 
+ 
+ 
+                  Using User-Defined Triton Kernels with torch.compile
+                 
+ 
+ 
+ 
+                  Compile Time Caching in torch.compile
+                 
+ 
+ 
+ 
+                  Compile Time Caching Configuration
+                 
+ 
+ 
+ 
+                  Reducing torch.compile cold start compilation time with regional compilation
+                 
+ 
+ 
+ 
+                  Reducing AoT cold start compilation time with regional compilation
+                 
+ 
+ 
+ 
+                  Ease-of-use quantization for PyTorch with Intel® Neural Compressor
+                 
+ 
+ 
+ 
+                  Getting Started with DeviceMesh
+                 
+ 
+ 
+ 
+                  Getting Started with Distributed Checkpoint (DCP)
+                 
+ 
+ 
+ 
+                  Asynchronous Saving with Distributed Checkpoint (DCP)
+                 
+ 
+ 
+ 
+                  DebugMode: Recording Dispatched Operations and Numerical Debugging
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+              Unstable
+             
+ 
+ 
+ 
+ 
+                  Introduction to Context Parallel
+                 
+ 
+ 
+ 
+                  Flight Recorder for Debugging Stuck Jobs
+                 
+ 
+ 
+ 
+                  TorchInductor C++ Wrapper Tutorial
+                 
+ 
+ 
+ 
+                  How to use torch.compile on Windows CPU/XPU
+                 
+ 
+ 
+ 
+                  torch.vmap
+                 
+ 
+ 
+ 
+                  Getting Started with Nested Tensors
+                 
+ 
+ 
+ 
+                  MaskedTensor Overview
+                 
+ 
+ 
+ 
+                  MaskedTensor Sparsity
+                 
+ 
+ 
+ 
+                  MaskedTensor Advanced Semantics
+                 
+ 
+ 
+ 
+                  Efficiently writing “sparse” semantics for Adagrad with MaskedTensor
+                 
+ 
+ 
+ 
+                  Autoloading Out-of-Tree Extension
+                 
+ 
+ 
+ 
+                  Using Max-Autotune Compilation on CPU for Better Performance
+                 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Go to 
+ pytorch.org  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Ctrl + K 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  document.addEventListener('DOMContentLoaded', function() {
+  // Define the search callback
+  const myWebSearchStartingCallback = (gname, query) => {
+    if (typeof dataLayer !== 'undefined' && query) {
+      window.dataLayer = window.dataLayer || [];
+      dataLayer.push({
+        'event': 'google_search',
+        'search_term': query,
+        'event_category': 'Search',
+        'event_label': 'Google Search'
+      });
+    }
+    return '';
+  };
+
+  // Set up the GCSE search callbacks
+  window.__gcse || (window.__gcse = {});
+  window.__gcse.searchCallbacks = {
+    web: { starting: myWebSearchStartingCallback }
+  };
+
+  if (window.location.pathname.includes('/search.html')) {
+    document.body.classList.add('search-page');
+  }
+
+  // Function to reinitialize Google CSE
+  function reinitializeGoogleSearch() {
+    if (window.__gcse && window.__gcse.initializationCallback) {
+      window.__gcse.initializationCallback();
+    }
+  }
+
+  // Execute Google CSE search programmatically from our custom input
+  function executeGoogleSearch(query) {
+    if (!query) return;
+
+    // Close mobile sidebar if open, so results overlay is visible
+    var sidebar = document.querySelector('.bd-sidebar-primary');
+    if (sidebar && sidebar.classList.contains('show')) {
+      var closeBtn = sidebar.querySelector('[data-bs-dismiss="offcanvas"]');
+      if (closeBtn) closeBtn.click();
+      // Also try Bootstrap's offcanvas API
+      try {
+        var offcanvas = bootstrap.Offcanvas.getInstance(sidebar);
+        if (offcanvas) offcanvas.hide();
+      } catch(e) {}
+    }
+
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (element) {
+      element.execute(query);
+    }
+  }
+
+  // Wire up our custom Google search input
+  var googleSearchForm = document.getElementById('google-search-form');
+  var googleSearchInput = document.getElementById('google-search-input');
+
+  if (googleSearchForm) {
+    googleSearchForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var query = googleSearchInput ? googleSearchInput.value : '';
+      executeGoogleSearch(query);
+    });
+  }
+
+  var suggestDebounce;
+  var activeSuggestionIndex = -1;
+
+  if (googleSearchInput) {
+    // Trigger search on Enter key
+    googleSearchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        hideSuggestions();
+        executeGoogleSearch(this.value);
+      } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        navigateSuggestions(e.key === 'ArrowDown' ? 1 : -1);
+      } else if (e.key === 'Escape') {
+        hideSuggestions();
+      }
+    });
+
+    googleSearchInput.addEventListener('input', function() {
+      clearTimeout(suggestDebounce);
+      var query = this.value.trim();
+      activeSuggestionIndex = -1;
+      if (query.length < 2) {
+        hideSuggestions();
+        return;
+      }
+      suggestDebounce = setTimeout(function() {
+        fetchGoogleSuggestions(query);
+      }, 200);
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#google-search')) {
+        hideSuggestions();
+      }
+    });
+  }
+
+  // Filter and clean suggestions: keep only PyTorch-related, strip prefix
+  function cleanSuggestions(rawList) {
+    return rawList.map(function(s) {
+      var text = typeof s === 'string' ? s : s[0];
+      return text;
+    }).filter(function(text) {
+      return /pytorch/i.test(text);
+    }).map(function(text) {
+      return text.replace(/^pytorch\s*/i, '');
+    }).filter(function(s) {
+      return s.length > 0;
+    });
+  }
+
+  // Fetch suggestions from Google suggest API, scoped to PyTorch
+  function fetchGoogleSuggestions(query) {
+    var scopedQuery = 'pytorch ' + query;
+    fetch('https://suggestqueries.google.com/complete/search?client=firefox&q=' + encodeURIComponent(scopedQuery))
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data[1] && data[1].length) {
+          var cleaned = cleanSuggestions(data[1]);
+          cleaned.length ? showSuggestions(cleaned) : hideSuggestions();
+        } else {
+          hideSuggestions();
+        }
+      })
+      .catch(function() {
+        fetchGoogleSuggestionsJSONP(scopedQuery);
+      });
+  }
+
+  function fetchGoogleSuggestionsJSONP(scopedQuery) {
+    var script = document.getElementById('gcse-suggest-script');
+    if (script) script.remove();
+
+    window.__gcseSuggestCallback = function(data) {
+      if (data && data[1] && data[1].length) {
+        var cleaned = cleanSuggestions(data[1]);
+        cleaned.length ? showSuggestions(cleaned) : hideSuggestions();
+      } else {
+        hideSuggestions();
+      }
+    };
+
+    script = document.createElement('script');
+    script.id = 'gcse-suggest-script';
+    script.src = 'https://clients1.google.com/complete/search?client=hp&q=' + encodeURIComponent(scopedQuery) + '&callback=__gcseSuggestCallback';
+    script.onerror = function() { hideSuggestions(); };
+    document.head.appendChild(script);
+  }
+
+  function stripHtml(str) {
+    var tmp = document.createElement('div');
+    tmp.innerHTML = str;
+    return tmp.textContent || tmp.innerText || '';
+  }
+
+  function showSuggestions(suggestions) {
+    var container = document.getElementById('google-search-suggestions');
+    if (!container || !suggestions.length) { hideSuggestions(); return; }
+
+    container.innerHTML = '';
+    suggestions.forEach(function(rawText, index) {
+      var text = stripHtml(rawText);
+      var item = document.createElement('div');
+      item.className = 'google-suggest-item';
+      item.textContent = text;
+      item.setAttribute('data-index', index);
+      item.addEventListener('click', function() {
+        googleSearchInput.value = text;
+        hideSuggestions();
+        executeGoogleSearch(text);
+      });
+      item.addEventListener('mouseenter', function() {
+        activeSuggestionIndex = index;
+        highlightSuggestion();
+      });
+      container.appendChild(item);
+    });
+    container.style.display = 'block';
+    activeSuggestionIndex = -1;
+  }
+
+  function hideSuggestions() {
+    var container = document.getElementById('google-search-suggestions');
+    if (container) {
+      container.style.display = 'none';
+      container.innerHTML = '';
+    }
+    activeSuggestionIndex = -1;
+    // Clean up JSONP script
+    var script = document.getElementById('gcse-suggest-script');
+    if (script) script.remove();
+  }
+
+  function navigateSuggestions(direction) {
+    var items = document.querySelectorAll('#google-search-suggestions .google-suggest-item');
+    if (!items.length) return;
+
+    activeSuggestionIndex += direction;
+    if (activeSuggestionIndex >= items.length) activeSuggestionIndex = 0;
+    if (activeSuggestionIndex < 0) activeSuggestionIndex = items.length - 1;
+
+    highlightSuggestion();
+    googleSearchInput.value = items[activeSuggestionIndex].textContent;
+  }
+
+  function highlightSuggestion() {
+    var items = document.querySelectorAll('#google-search-suggestions .google-suggest-item');
+    items.forEach(function(item, i) {
+      item.classList.toggle('active', i === activeSuggestionIndex);
+    });
+  }
+
+  // Function to handle search toggle
+  function handleSearchToggle(toggle, sphinxSearch, googleSearch) {
+    if (!toggle || !sphinxSearch || !googleSearch) return;
+
+    // TODO: We've had reports that the google programmable search is returning stale documentation,
+    //       Simple reproduction is to turn google search on and search for multinomial which will
+    //       result in returning 1.8.1 documentation.
+    //       We should turn this back on when we resolve that bug.
+    const shouldDefaultToGoogle = false;
+    const savedPreference = localStorage.getItem('searchPreference');
+
+    // Set initial state
+    if (savedPreference === 'google' || (savedPreference === null && shouldDefaultToGoogle)) {
+      toggle.checked = true;
+      sphinxSearch.style.display = 'none';
+      googleSearch.style.display = 'block';
+      if (savedPreference === null) {
+        localStorage.setItem('searchPreference', 'google');
+      }
+      reinitializeGoogleSearch();
+    } else {
+      toggle.checked = false;
+      sphinxSearch.style.display = 'block';
+      googleSearch.style.display = 'none';
+    }
+
+    // Update tooltip
+    updateTooltip(toggle.checked);
+
+    // Skip if already initialized
+    if (toggle.hasAttribute('data-initialized')) return;
+    toggle.setAttribute('data-initialized', 'true');
+
+    toggle.addEventListener('change', function() {
+      if (this.checked) {
+        sphinxSearch.style.display = 'none';
+        googleSearch.style.display = 'block';
+        localStorage.setItem('searchPreference', 'google');
+        reinitializeGoogleSearch();
+        trackSearchEngineSwitch('Google');
+        // Focus our custom input when switching to Google
+        if (googleSearchInput) googleSearchInput.focus();
+      } else {
+        sphinxSearch.style.display = 'block';
+        googleSearch.style.display = 'none';
+        localStorage.setItem('searchPreference', 'sphinx');
+        trackSearchEngineSwitch('Sphinx');
+      }
+
+      updateTooltip(this.checked);
+      updateMobileSearch();
+    });
+  }
+
+  // Update tooltip based on toggle state
+  function updateTooltip(isChecked) {
+    const tooltipElement = document.querySelector('.search-toggle-container');
+    if (!tooltipElement) return;
+
+    tooltipElement.setAttribute('data-bs-title', isChecked ? 'Google Search On' : 'Google Search Off');
+
+    if (bootstrap && bootstrap.Tooltip) {
+      const tooltipInstance = bootstrap.Tooltip.getInstance(tooltipElement);
+      if (tooltipInstance) tooltipInstance.dispose();
+      new bootstrap.Tooltip(tooltipElement);
+    }
+  }
+
+  // Track search engine switch
+  function trackSearchEngineSwitch(engine) {
+    if (typeof dataLayer !== 'undefined') {
+      window.dataLayer = window.dataLayer || [];
+      dataLayer.push({
+        'event': 'search_engine_switch',
+        'event_category': 'Search',
+        'event_label': engine
+      });
+    }
+  }
+
+  // Function to update mobile search based on current toggle state
+  function updateMobileSearch() {
+    const toggle = document.getElementById('search-toggle');
+    if (!toggle) return;
+
+    const mobileSearchContainer = document.querySelector('.sidebar-header-items__end .navbar-item .search-container-wrapper');
+    if (!mobileSearchContainer) return;
+
+    const mobileSphinxSearch = mobileSearchContainer.querySelector('#sphinx-search');
+    const mobileGoogleSearch = mobileSearchContainer.querySelector('#google-search');
+
+    if (mobileSphinxSearch && mobileGoogleSearch) {
+      mobileSphinxSearch.style.display = toggle.checked ? 'none' : 'block';
+      mobileGoogleSearch.style.display = toggle.checked ? 'block' : 'none';
+
+      if (toggle.checked) {
+        reinitializeGoogleSearch();
+      }
+    }
+  }
+
+  // Initialize desktop search toggle
+  const toggle = document.getElementById('search-toggle');
+  const sphinxSearch = document.getElementById('sphinx-search');
+  const googleSearch = document.getElementById('google-search');
+  handleSearchToggle(toggle, sphinxSearch, googleSearch);
+
+  // Fix for scroll jump issue - improved approach
+  function setupSearchInputHandlers(input) {
+    if (input.hasAttribute('data-scroll-fixed')) return;
+    input.setAttribute('data-scroll-fixed', 'true');
+
+    let lastScrollPosition = 0;
+    let isTyping = false;
+    let scrollTimeout;
+
+    input.addEventListener('keydown', () => {
+      lastScrollPosition = window.scrollY;
+      isTyping = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => { isTyping = false; }, 100);
+    });
+
+    function maintainScroll() {
+      if (document.activeElement === input && isTyping) {
+        window.scrollTo(0, lastScrollPosition);
+        requestAnimationFrame(maintainScroll);
+      }
+    }
+
+    input.addEventListener('focus', () => {
+      lastScrollPosition = window.scrollY;
+    });
+
+    input.addEventListener('input', () => {
+      isTyping = true;
+      window.scrollTo(0, lastScrollPosition);
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => { isTyping = false; }, 100);
+      requestAnimationFrame(maintainScroll);
+    });
+  }
+
+  function applyToSearchInputs() {
+    document.querySelectorAll('.search-container input').forEach(setupSearchInputHandlers);
+  }
+
+  applyToSearchInputs();
+
+  const searchObserver = new MutationObserver(applyToSearchInputs);
+  searchObserver.observe(document.body, { childList: true, subtree: true });
+
+  // Watch for mobile menu creation
+  const mobileMenuObserver = new MutationObserver(function(mutations) {
+    for (const mutation of mutations) {
+      if (!mutation.addedNodes.length) continue;
+
+      const mobileSearchContainer = document.querySelector('.sidebar-header-items__end .navbar-item .search-container-wrapper');
+      if (!mobileSearchContainer) continue;
+
+      const mobileToggle = mobileSearchContainer.querySelector('#search-toggle');
+      if (mobileToggle && toggle) {
+        mobileToggle.checked = toggle.checked;
+        updateMobileSearch();
+
+        if (!mobileToggle.hasAttribute('data-initialized')) {
+          mobileToggle.setAttribute('data-initialized', 'true');
+          mobileToggle.addEventListener('change', function() {
+            toggle.checked = this.checked;
+            toggle.dispatchEvent(new Event('change'));
+          });
+        }
+      }
+
+      // Wire up mobile Google search input
+      var mobileGoogleInput = mobileSearchContainer.querySelector('#google-search-input');
+      if (mobileGoogleInput && !mobileGoogleInput.hasAttribute('data-mobile-wired')) {
+        mobileGoogleInput.setAttribute('data-mobile-wired', 'true');
+
+        var mobileForm = mobileSearchContainer.querySelector('#google-search-form');
+        if (mobileForm) {
+          mobileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            executeGoogleSearch(mobileGoogleInput.value);
+          });
+        }
+
+        mobileGoogleInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            executeGoogleSearch(this.value);
+          }
+        });
+
+        mobileGoogleInput.addEventListener('input', function() {
+          clearTimeout(suggestDebounce);
+          var query = this.value.trim();
+          activeSuggestionIndex = -1;
+          if (query.length < 2) return;
+          suggestDebounce = setTimeout(function() {
+            // Mobile uses the same search execution but no suggestions dropdown
+            // (suggestions dropdown is complex on mobile; just support Enter to search)
+          }, 200);
+        });
+      }
+    }
+  });
+
+  mobileMenuObserver.observe(document.body, { childList: true, subtree: true });
+
+  // Ensure Google CSE is properly loaded
+  if (window.__gcse) {
+    window.__gcse.callback = function() {
+      if (toggle && toggle.checked) {
+        reinitializeGoogleSearch();
+      }
+    };
+  } else {
+    window.__gcse = {
+      callback: function() {
+        if (toggle && toggle.checked) {
+          reinitializeGoogleSearch();
+        }
+      }
+    };
+  }
+});
+ 
+ 
+ 
+ 
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+ 
+ 
+ 
+ 
+ X 
+ 
+ 
+ 
+ GitHub 
+ 
+ 
+ 
+ Discourse 
+ 
+ 
+ 
+ PyPi 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Section Navigation 
+ Getting Started with PyTorch 
+ 
+ Learn the Basics 
+ Quickstart 
+ Tensors 
+ Datasets & DataLoaders 
+ Transforms 
+ Build the Neural Network 
+ Automatic Differentiation with  torch.autograd 
+ Optimizing Model Parameters 
+ Save and Load the Model 
+ 
+ 
+ Introduction to PyTorch - YouTube Series 
+ Introduction to PyTorch 
+ Introduction to PyTorch Tensors 
+ The Fundamentals of Autograd 
+ Building Models with PyTorch 
+ PyTorch TensorBoard Support 
+ Training with PyTorch 
+ Model Understanding with Captum 
+ 
+ 
+ 
+ Learning PyTorch 
+ 
+ Deep Learning with PyTorch: A 60 Minute Blitz 
+ Tensors 
+ A Gentle Introduction to  torch.autograd 
+ Neural Networks 
+ Training a Classifier 
+ 
+ 
+ Learning PyTorch with Examples 
+ Warm-up: numpy 
+ PyTorch: Tensors 
+ PyTorch: Tensors and autograd 
+ PyTorch: Defining New autograd Functions 
+ PyTorch: nn 
+ PyTorch: optim 
+ PyTorch: Custom nn Modules 
+ PyTorch: Control Flow + Weight Sharing 
+ 
+ 
+ What is  torch.nn   really ? 
+ Understanding requires_grad, retain_grad, Leaf, and Non-leaf Tensors 
+ NLP from Scratch 
+ Visualizing Models, Data, and Training with TensorBoard 
+ A guide on good usage of  non_blocking  and  pin_memory()  in PyTorch 
+ Data Loading Optimization in PyTorch 
+ Visualizing Gradients 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Intro 
+ Learn the Basics 
+ Automatic... 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    Rate this Page
+     
+ ★ 
+ ★ 
+ ★ 
+ ★ 
+ ★ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ torch.autograd ">
+       
+ 
+ 
+ 
+    if ((window.location.href.indexOf("/unstable/") != -1) && (window.location.href.indexOf("/unstable/unstable_index") < 1)) {
+      var div = '<div class="prototype-banner"><i class="fa fa-flask" aria-hidden="true"></i> <strong>Unstable feature:</strong> Not typically available in binary distributions like PyPI. Early stage for feedback and testing.</div>'
+      document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById("pytorch-article").insertAdjacentHTML('afterBegin', div);
+      });
+    }
+   
+ 
+ beginner/basics/autogradqs_tutorial 
+ 
+ 
+ 
+ Run in Google Colab 
+ Colab 
+ 
+ 
+ 
+ 
+ 
+ Download Notebook 
+ Notebook 
+ 
+ 
+ 
+ 
+ 
+ View on GitHub 
+ GitHub 
+ 
+ 
+ 
+ 
+ 
+ 
+ Note 
+ Go to the end 
+to download the full example code. 
+ 
+ Learn the Basics  ||
+ Quickstart  ||
+ Tensors  ||
+ Datasets & DataLoaders  ||
+ Transforms  ||
+ Build Model  ||
+ Autograd  ||
+ Optimization  ||
+ Save & Load Model 
+ 
+ Automatic Differentiation with  torch.autograd # Created On: Feb 10, 2021 | Last Updated: Jan 16, 2024 | Last Verified: Nov 05, 2024 
+ When training neural networks, the most frequently used algorithm is
+ back propagation . In this algorithm, parameters (model weights) are
+adjusted according to the  gradient  of the loss function with respect
+to the given parameter. 
+ To compute those gradients, PyTorch has a built-in differentiation engine
+called  torch.autograd . It supports automatic computation of gradient for any
+computational graph. 
+ Consider the simplest one-layer neural network, with input  x ,
+parameters  w  and  b , and some loss function. It can be defined in
+PyTorch in the following manner: 
+ import   torch 
+
+ x   =   torch . ones ( 5 )    # input tensor 
+ y   =   torch . zeros ( 3 )    # expected output 
+ w   =   torch . randn ( 5 ,   3 ,   requires_grad = True ) 
+ b   =   torch . randn ( 3 ,   requires_grad = True ) 
+ z   =   torch . matmul ( x ,   w ) + b 
+ loss   =   torch . nn . functional . binary_cross_entropy_with_logits ( z ,   y ) 
+ 
+ 
+ 
+ Tensors, Functions and Computational graph # 
+ This code defines the following  computational graph : 
+ 
+ 
+ 
+ In this network,  w  and  b  are  parameters , which we need to
+optimize. Thus, we need to be able to compute the gradients of loss
+function with respect to those variables. In order to do that, we set
+the  requires_grad  property of those tensors. 
+ 
+ Note 
+ You can set the value of  requires_grad  when creating a
+tensor, or later by using  x.requires_grad_(True)  method. 
+ 
+ A function that we apply to tensors to construct computational graph is
+in fact an object of class  Function . This object knows how to
+compute the function in the  forward  direction, and also how to compute
+its derivative during the  backward propagation  step. A reference to
+the backward propagation function is stored in  grad_fn  property of a
+tensor. You can find more information of  Function   in the
+documentation . 
+ print ( f "Gradient function for z =  { z . grad_fn } " ) 
+ print ( f "Gradient function for loss =  { loss . grad_fn } " ) 
+ 
+ 
+ Gradient function for z = <AddBackward0 object at 0x7fefb7d328c0>
+Gradient function for loss = <BinaryCrossEntropyWithLogitsBackward0 object at 0x7fefb7d32620>
+ 
+ 
+ 
+ 
+ Computing Gradients # 
+ To optimize weights of parameters in the neural network, we need to
+compute the derivatives of our loss function with respect to parameters,
+namely, we need  \(\frac{\partial loss}{\partial w}\)  and
+ \(\frac{\partial loss}{\partial b}\)  under some fixed values of
+ x  and  y . To compute those derivatives, we call
+ loss.backward() , and then retrieve the values from  w.grad  and
+ b.grad : 
+ loss . backward () 
+ print ( w . grad ) 
+ print ( b . grad ) 
+ 
+ 
+ tensor([[0.0089, 0.2207, 0.1268],
+        [0.0089, 0.2207, 0.1268],
+        [0.0089, 0.2207, 0.1268],
+        [0.0089, 0.2207, 0.1268],
+        [0.0089, 0.2207, 0.1268]])
+tensor([0.0089, 0.2207, 0.1268])
+ 
+ 
+ 
+ Note 
+ 
+ We can only obtain the  grad  properties for the leaf
+nodes of the computational graph, which have  requires_grad  property
+set to  True . For all other nodes in our graph, gradients will not be
+available. 
+ We can only perform gradient calculations using
+ backward  once on a given graph, for performance reasons. If we need
+to do several  backward  calls on the same graph, we need to pass
+ retain_graph=True  to the  backward  call. 
+ 
+ 
+ 
+ 
+ Disabling Gradient Tracking # 
+ By default, all tensors with  requires_grad=True  are tracking their
+computational history and support gradient computation. However, there
+are some cases when we do not need to do that, for example, when we have
+trained the model and just want to apply it to some input data, i.e. we
+only want to do  forward  computations through the network. We can stop
+tracking computations by surrounding our computation code with
+ torch.no_grad()  block: 
+ z   =   torch . matmul ( x ,   w ) + b 
+ print ( z . requires_grad ) 
+
+ with   torch . no_grad (): 
+     z   =   torch . matmul ( x ,   w ) + b 
+ print ( z . requires_grad ) 
+ 
+ 
+ True
+False
+ 
+ 
+ Another way to achieve the same result is to use the  detach()  method
+on the tensor: 
+ z   =   torch . matmul ( x ,   w ) + b 
+ z_det   =   z . detach () 
+ print ( z_det . requires_grad ) 
+ 
+ 
+ False
+ 
+ 
+ 
+ There are reasons you might want to disable gradient tracking: 
+ To mark some parameters in your neural network as  frozen parameters . 
+ To  speed up computations  when you are only doing forward pass, because computations on tensors that do
+not track gradients would be more efficient. 
+ 
+ 
+ 
+ 
+ 
+ More on Computational Graphs # 
+ Conceptually, autograd keeps a record of data (tensors) and all executed
+operations (along with the resulting new tensors) in a directed acyclic
+graph (DAG) consisting of
+ Function 
+objects. In this DAG, leaves are the input tensors, roots are the output
+tensors. By tracing this graph from roots to leaves, you can
+automatically compute the gradients using the chain rule. 
+ In a forward pass, autograd does two things simultaneously: 
+ 
+ run the requested operation to compute a resulting tensor 
+ maintain the operation’s  gradient function  in the DAG. 
+ 
+ The backward pass kicks off when  .backward()  is called on the DAG
+root.  autograd  then: 
+ 
+ computes the gradients from each  .grad_fn , 
+ accumulates them in the respective tensor’s  .grad  attribute 
+ using the chain rule, propagates all the way to the leaf tensors. 
+ 
+ 
+ Note 
+ DAGs are dynamic in PyTorch 
+An important thing to note is that the graph is recreated from scratch; after each
+ .backward()  call, autograd starts populating a new graph. This is
+exactly what allows you to use control flow statements in your model;
+you can change the shape, size and operations at every iteration if
+needed. 
+ 
+ 
+ 
+ Optional Reading: Tensor Gradients and Jacobian Products # 
+ In many cases, we have a scalar loss function, and we need to compute
+the gradient with respect to some parameters. However, there are cases
+when the output function is an arbitrary tensor. In this case, PyTorch
+allows you to compute so-called  Jacobian product , and not the actual
+gradient. 
+ For a vector function  \(\vec{y}=f(\vec{x})\) , where
+ \(\vec{x}=\langle x_1,\dots,x_n\rangle\)  and
+ \(\vec{y}=\langle y_1,\dots,y_m\rangle\) , a gradient of
+ \(\vec{y}\)  with respect to  \(\vec{x}\)  is given by  Jacobian
+matrix : 
+ 
+\[J=\left(\begin{array}{ccc}
+   \frac{\partial y_{1}}{\partial x_{1}} & \cdots & \frac{\partial y_{1}}{\partial x_{n}}\\
+   \vdots & \ddots & \vdots\\
+   \frac{\partial y_{m}}{\partial x_{1}} & \cdots & \frac{\partial y_{m}}{\partial x_{n}}
+   \end{array}\right)\] 
+ Instead of computing the Jacobian matrix itself, PyTorch allows you to
+compute  Jacobian Product   \(v^T\cdot J\)  for a given input vector
+ \(v=(v_1 \dots v_m)\) . This is achieved by calling  backward  with
+ \(v\)  as an argument. The size of  \(v\)  should be the same as
+the size of the original tensor, with respect to which we want to
+compute the product: 
+ inp   =   torch . eye ( 4 ,   5 ,   requires_grad = True ) 
+ out   =   ( inp + 1 ) . pow ( 2 ) . t () 
+ out . backward ( torch . ones_like ( out ),   retain_graph = True ) 
+ print ( f "First call \n { inp . grad } " ) 
+ out . backward ( torch . ones_like ( out ),   retain_graph = True ) 
+ print ( f " \n Second call \n { inp . grad } " ) 
+ inp . grad . zero_ () 
+ out . backward ( torch . ones_like ( out ),   retain_graph = True ) 
+ print ( f " \n Call after zeroing gradients \n { inp . grad } " ) 
+ 
+ 
+ First call
+tensor([[4., 2., 2., 2., 2.],
+        [2., 4., 2., 2., 2.],
+        [2., 2., 4., 2., 2.],
+        [2., 2., 2., 4., 2.]])
+
+Second call
+tensor([[8., 4., 4., 4., 4.],
+        [4., 8., 4., 4., 4.],
+        [4., 4., 8., 4., 4.],
+        [4., 4., 4., 8., 4.]])
+
+Call after zeroing gradients
+tensor([[4., 2., 2., 2., 2.],
+        [2., 4., 2., 2., 2.],
+        [2., 2., 4., 2., 2.],
+        [2., 2., 2., 4., 2.]])
+ 
+ 
+ Notice that when we call  backward  for the second time with the same
+argument, the value of the gradient is different. This happens because
+when doing  backward  propagation, PyTorch  accumulates the
+gradients , i.e. the value of computed gradients is added to the
+ grad  property of all leaf nodes of computational graph. If you want
+to compute the proper gradients, you need to zero out the  grad 
+property before. In real-life training an  optimizer  helps us to do
+this. 
+ 
+ Note 
+ Previously we were calling  backward()  function without
+parameters. This is essentially equivalent to calling
+ backward(torch.tensor(1.0)) , which is a useful way to compute the
+gradients in case of a scalar-valued function, such as loss during
+neural network training. 
+ 
+ 
+ 
+ Further Reading # 
+ 
+ Autograd Mechanics 
+ 
+ Total running time of the script:  (0 minutes 0.138 seconds) 
+ 
+ 
+ Download   Jupyter   notebook:   autogradqs_tutorial.ipynb 
+ 
+ 
+ Download   Python   source   code:   autogradqs_tutorial.py 
+ 
+ 
+ Download   zipped:   autogradqs_tutorial.zip 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    Rate this Page
+     
+ ★ 
+ ★ 
+ ★ 
+ ★ 
+ ★ 
+ 
+ 
+ 
+ Send Feedback
+     
+ 
+ 
+ 
+ 
+ 
+ 
+ previous 
+ Build the Neural Network 
+ 
+ 
+ 
+ 
+ next 
+ Optimizing Model Parameters 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    Built with the  PyData Sphinx Theme  0.15.4.
+   
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ previous 
+ Build the Neural Network 
+ 
+ 
+ 
+ 
+ next 
+ Optimizing Model Parameters 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  On this page
+   
+ 
+ 
+ Tensors, Functions and Computational graph 
+ Computing Gradients 
+ Disabling Gradient Tracking 
+ More on Computational Graphs 
+ Optional Reading: Tensor Gradients and Jacobian Products 
+ Further Reading 
+ 
+ 
+ 
+ 
+ 
+ PyTorch Libraries 
+ 
+ ExecuTorch 
+ Helion 
+ torchao 
+ kineto 
+ torchtitan 
+ TorchRL 
+ torchvision 
+ torchaudio 
+ tensordict 
+ PyTorch on XLA Devices 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Docs 
+ Access comprehensive developer documentation for PyTorch 
+ View Docs 
+ 
+ 
+ Tutorials 
+ Get in-depth tutorials for beginners and advanced developers 
+ View Tutorials 
+ 
+ 
+ Resources 
+ Find development resources and get your questions answered 
+ View Resources 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Stay in touch  for updates, event info, and
+        the latest news 
+ 
+ 
+        hbspt.forms.create({
+          region: "na1",
+          portalId: "8112310",
+          formId: "2fb2231c-000b-4ec5-88a0-1ab242549c9e"
+        });
+       
+ By submitting this form, I consent to receive marketing emails from the LF and its
+        projects regarding their events, training, research, developments, and related announcements. I understand that
+        I can unsubscribe at any time using the links in the footers of the emails I receive.  Privacy Policy . 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+          © PyTorch. Copyright © The Linux Foundation®. All rights reserved. The Linux Foundation has registered
+          trademarks and uses trademarks. For more information, including terms of use, privacy policy, and trademark
+          usage, please see our  Policies  page.  Trademark Usage .  Privacy Policy .
+         
+ 
+ 
+ 
+ 
+ 
+ 
+ To analyze traffic and optimize your experience, we serve cookies on this site. By clicking or navigating, you agree to allow our usage of cookies. As the current maintainers of this site, Facebook’s Cookies Policy applies. Learn more, including about available controls:  Cookies Policy . 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    
+      © Copyright 2024, PyTorch.
+       
+ 
+ 
+ 
+ 
+    Created using  Sphinx  7.2.6.
+     
+ 
+ 
+ 
+ 
+ 
+ 
+  Built with the  PyData Sphinx Theme  0.15.4.
+ 
+ 
+ 
+ 
+ 
+    {
+       "@context": "https://schema.org",
+       "@type": "Article",
+       "name": "Automatic Differentiation with torch.autograd",
+       "headline": "Automatic Differentiation with torch.autograd",
+       "description": "PyTorch Documentation. Explore PyTorch, an open-source machine learning library that accelerates the path from research prototyping to production deployment.",
+       "url": "/beginner/basics/autogradqs_tutorial.html",
+       "articleBody": "Note Go to the end to download the full example code. Learn the Basics || Quickstart || Tensors || Datasets \u0026 DataLoaders || Transforms || Build Model || Autograd || Optimization || Save \u0026 Load Model Automatic Differentiation with torch.autograd# When training neural networks, the most frequently used algorithm is back propagation. In this algorithm, parameters (model weights) are adjusted according to the gradient of the loss function with respect to the given parameter. To compute those gradients, PyTorch has a built-in differentiation engine called torch.autograd. It supports automatic computation of gradient for any computational graph. Consider the simplest one-layer neural network, with input x, parameters w and b, and some loss function. It can be defined in PyTorch in the following manner: import torch x = torch.ones(5) # input tensor y = torch.zeros(3) # expected output w = torch.randn(5, 3, requires_grad=True) b = torch.randn(3, requires_grad=True) z = torch.matmul(x, w)+b loss = torch.nn.functional.binary_cross_entropy_with_logits(z, y) Tensors, Functions and Computational graph# This code defines the following computational graph: In this network, w and b are parameters, which we need to optimize. Thus, we need to be able to compute the gradients of loss function with respect to those variables. In order to do that, we set the requires_grad property of those tensors. Note You can set the value of requires_grad when creating a tensor, or later by using x.requires_grad_(True) method. A function that we apply to tensors to construct computational graph is in fact an object of class Function. This object knows how to compute the function in the forward direction, and also how to compute its derivative during the backward propagation step. A reference to the backward propagation function is stored in grad_fn property of a tensor. You can find more information of Function in the documentation. print(f\"Gradient function for z = {z.grad_fn}\") print(f\"Gradient function for loss = {loss.grad_fn}\") Gradient function for z = \u003cAddBackward0 object at 0x7fefb7d328c0\u003e Gradient function for loss = \u003cBinaryCrossEntropyWithLogitsBackward0 object at 0x7fefb7d32620\u003e Computing Gradients# To optimize weights of parameters in the neural network, we need to compute the derivatives of our loss function with respect to parameters, namely, we need \\(\\frac{\\partial loss}{\\partial w}\\) and \\(\\frac{\\partial loss}{\\partial b}\\) under some fixed values of x and y. To compute those derivatives, we call loss.backward(), and then retrieve the values from w.grad and b.grad: loss.backward() print(w.grad) print(b.grad) tensor([[0.0089, 0.2207, 0.1268], [0.0089, 0.2207, 0.1268], [0.0089, 0.2207, 0.1268], [0.0089, 0.2207, 0.1268], [0.0089, 0.2207, 0.1268]]) tensor([0.0089, 0.2207, 0.1268]) Note We can only obtain the grad properties for the leaf nodes of the computational graph, which have requires_grad property set to True. For all other nodes in our graph, gradients will not be available. We can only perform gradient calculations using backward once on a given graph, for performance reasons. If we need to do several backward calls on the same graph, we need to pass retain_graph=True to the backward call. Disabling Gradient Tracking# By default, all tensors with requires_grad=True are tracking their computational history and support gradient computation. However, there are some cases when we do not need to do that, for example, when we have trained the model and just want to apply it to some input data, i.e. we only want to do forward computations through the network. We can stop tracking computations by surrounding our computation code with torch.no_grad() block: z = torch.matmul(x, w)+b print(z.requires_grad) with torch.no_grad(): z = torch.matmul(x, w)+b print(z.requires_grad) True False Another way to achieve the same result is to use the detach() method on the tensor: z = torch.matmul(x, w)+b z_det = z.detach() print(z_det.requires_grad) False There are reasons you might want to disable gradient tracking: To mark some parameters in your neural network as frozen parameters. To speed up computations when you are only doing forward pass, because computations on tensors that do not track gradients would be more efficient. More on Computational Graphs# Conceptually, autograd keeps a record of data (tensors) and all executed operations (along with the resulting new tensors) in a directed acyclic graph (DAG) consisting of Function objects. In this DAG, leaves are the input tensors, roots are the output tensors. By tracing this graph from roots to leaves, you can automatically compute the gradients using the chain rule. In a forward pass, autograd does two things simultaneously: run the requested operation to compute a resulting tensor maintain the operation\u2019s gradient function in the DAG. The backward pass kicks off when .backward() is called on the DAG root. autograd then: computes the gradients from each .grad_fn, accumulates them in the respective tensor\u2019s .grad attribute using the chain rule, propagates all the way to the leaf tensors. Note DAGs are dynamic in PyTorch An important thing to note is that the graph is recreated from scratch; after each .backward() call, autograd starts populating a new graph. This is exactly what allows you to use control flow statements in your model; you can change the shape, size and operations at every iteration if needed. Optional Reading: Tensor Gradients and Jacobian Products# In many cases, we have a scalar loss function, and we need to compute the gradient with respect to some parameters. However, there are cases when the output function is an arbitrary tensor. In this case, PyTorch allows you to compute so-called Jacobian product, and not the actual gradient. For a vector function \\(\\vec{y}=f(\\vec{x})\\), where \\(\\vec{x}=\\langle x_1,\\dots,x_n\\rangle\\) and \\(\\vec{y}=\\langle y_1,\\dots,y_m\\rangle\\), a gradient of \\(\\vec{y}\\) with respect to \\(\\vec{x}\\) is given by Jacobian matrix: \\[J=\\left(\\begin{array}{ccc} \\frac{\\partial y_{1}}{\\partial x_{1}} \u0026 \\cdots \u0026 \\frac{\\partial y_{1}}{\\partial x_{n}}\\\\ \\vdots \u0026 \\ddots \u0026 \\vdots\\\\ \\frac{\\partial y_{m}}{\\partial x_{1}} \u0026 \\cdots \u0026 \\frac{\\partial y_{m}}{\\partial x_{n}} \\end{array}\\right)\\] Instead of computing the Jacobian matrix itself, PyTorch allows you to compute Jacobian Product \\(v^T\\cdot J\\) for a given input vector \\(v=(v_1 \\dots v_m)\\). This is achieved by calling backward with \\(v\\) as an argument. The size of \\(v\\) should be the same as the size of the original tensor, with respect to which we want to compute the product: inp = torch.eye(4, 5, requires_grad=True) out = (inp+1).pow(2).t() out.backward(torch.ones_like(out), retain_graph=True) print(f\"First call\\n{inp.grad}\") out.backward(torch.ones_like(out), retain_graph=True) print(f\"\\nSecond call\\n{inp.grad}\") inp.grad.zero_() out.backward(torch.ones_like(out), retain_graph=True) print(f\"\\nCall after zeroing gradients\\n{inp.grad}\") First call tensor([[4., 2., 2., 2., 2.], [2., 4., 2., 2., 2.], [2., 2., 4., 2., 2.], [2., 2., 2., 4., 2.]]) Second call tensor([[8., 4., 4., 4., 4.], [4., 8., 4., 4., 4.], [4., 4., 8., 4., 4.], [4., 4., 4., 8., 4.]]) Call after zeroing gradients tensor([[4., 2., 2., 2., 2.], [2., 4., 2., 2., 2.], [2., 2., 4., 2., 2.], [2., 2., 2., 4., 2.]]) Notice that when we call backward for the second time with the same argument, the value of the gradient is different. This happens because when doing backward propagation, PyTorch accumulates the gradients, i.e. the value of computed gradients is added to the grad property of all leaf nodes of computational graph. If you want to compute the proper gradients, you need to zero out the grad property before. In real-life training an optimizer helps us to do this. Note Previously we were calling backward() function without parameters. This is essentially equivalent to calling backward(torch.tensor(1.0)), which is a useful way to compute the gradients in case of a scalar-valued function, such as loss during neural network training. Further Reading# Autograd Mechanics Total running time of the script: (0 minutes 0.138 seconds) Download Jupyter notebook: autogradqs_tutorial.ipynb Download Python source code: autogradqs_tutorial.py Download zipped: autogradqs_tutorial.zip",
+       "author": {
+         "@type": "Organization",
+         "name": "PyTorch Contributors",
+         "url": "https://pytorch.org"
+       },
+       "image": "https://pytorch.org/docs/stable/_static/img/pytorch_seo.png",
+       "mainEntityOfPage": {
+         "@type": "WebPage",
+         "@id": "/beginner/basics/autogradqs_tutorial.html"
+       },
+       "datePublished": "2023-01-01T00:00:00Z",
+       "dateModified": "2023-01-01T00:00:00Z"
+     }
+  
+ 
+    // Tutorials Call to action event tracking
+    $("[data-behavior='call-to-action-event']").on('click', function () {
+      fbq('trackCustom', "Download", {
+        tutorialTitle: $('h1:first').text(),
+        downloadLink: this.href,
+        tutorialLink: window.location.href,
+        downloadTitle: $(this).attr("data-response")
+      });
+      if (typeof gtag === 'function') {
+        gtag('event', 'click', {
+          'event_category': $(this).attr("data-response"),
+          'event_label': $("h1").first().text(),
+          'tutorial_link': window.location.href
+        });
+      }
+    });
+   
+ (function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5bb6cfd3c7fd66f',t:'MTc5NDg4MzgwMw=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5bb6cfd3c7fd66f',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})(); 

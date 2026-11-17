@@ -1,0 +1,3763 @@
+
+ mlflow
+ Main Docs
+ API Documentation
+ 3.18.0
+ Home
+Python API
+mlflow
+MLflow Tracing APIs
+MLflow Logged Model APIs
+mlflow.ag2
+mlflow.agno
+mlflow.anthropic
+mlflow.artifacts
+mlflow.autogen
+mlflow.bedrock
+mlflow.catboost
+mlflow.client
+mlflow.config
+mlflow.crewai
+mlflow.data
+mlflow.deployments
+mlflow.dspy
+mlflow.entities
+mlflow.environment_variables
+mlflow.gateway
+mlflow.gemini
+mlflow.genai
+mlflow.groq
+mlflow.h2o
+mlflow.haystack
+mlflow.johnsnowlabs
+mlflow.keras
+mlflow.langchain
+mlflow.lightgbm
+mlflow.litellm
+mlflow.llama_index
+mlflow.metrics
+mlflow.mistral
+mlflow.models
+mlflow.onnx
+mlflow.openai
+mlflow.paddle
+mlflow.pmdarima
+mlflow.projects
+mlflow.prophet
+mlflow.pydantic_ai
+mlflow.pyfunc
+mlflow.pyspark.ml
+mlflow.pytorch
+mlflow.sagemaker
+mlflow.sentence_transformers
+mlflow.server
+mlflow.shap
+mlflow.sklearn
+mlflow.smolagents
+mlflow.spacy
+mlflow.spark
+mlflow.statsmodels
+mlflow.strands
+mlflow.system_metrics
+mlflow.tensorflow
+mlflow.tracing
+mlflow.transformers
+mlflow.types
+mlflow.typesafe
+mlflow.utils
+mlflow.webhooks
+mlflow.xgboost
+Log Levels
+TypeScript API
+Command-Line Interface
+MLflow Authentication Python API
+MLflow Authentication REST API
+R API
+Java API
+REST API
+ Contribute
+Documentation 
+Python API 
+mlflow
+mlflow 
+The mlflow module provides a high-level “fluent” API for starting and managing MLflow runs.
+For example:
+import mlflow
+mlflow.start_run()
+mlflow.log_param("my", "param")
+mlflow.log_metric("score", 100)
+mlflow.end_run()
+You can also use the context manager syntax like this:
+with mlflow.start_run() as run:
+ mlflow.log_param("my", "param")
+ mlflow.log_metric("score", 100)
+which automatically terminates the run at the end of the with block.
+The fluent tracking API is not currently threadsafe. Any concurrent callers to the tracking API must
+implement mutual exclusion manually.
+For a lower level API, see the mlflow.client module.
+class mlflow.ActiveModel(logged_model: LoggedModel, set_by_user: bool)[source] 
+Wrapper around mlflow.entities.LoggedModel to enable using Python with syntax.
+class mlflow.ActiveRun(run)[source] 
+Wrapper around mlflow.entities.Run to enable using Python with syntax.
+class mlflow.Image(image: Union[numpy.ndarray, PIL.Image.Image, str, list[typing.Any]])[source] 
+mlflow.Image is an image media object that provides a lightweight option
+for handling images in MLflow.
+The image can be a numpy array, a PIL image, or a file path to an image. The image is
+stored as a PIL image and can be logged to MLflow using mlflow.log_image or
+mlflow.log_table.
+Parameters
+image – Image can be a numpy array, a PIL image, or a file path to an image.
+Example 
+import mlflow
+import numpy as np
+from PIL import Image
+# Create an image as a numpy array
+image = np.zeros((100, 100, 3), dtype=np.uint8)
+image[:, :50] = [255, 128, 0]
+# Create an Image object
+image_obj = mlflow.Image(image)
+# Convert the Image object to a list of pixel values
+pixel_values = image_obj.to_list()
+resize(size: tuple[int, int])[source] 
+Resize the image to the specified size.
+Parameters
+size – Size to resize the image to.
+Returns
+A copy of the resized image object.
+save(path: str)[source] 
+Save the image to a file.
+Parameters
+path – File path to save the image.
+to_array()[source] 
+Convert the image to a numpy array.
+Returns
+Numpy array of pixel values.
+to_list()[source] 
+Convert the image to a list of pixel values.
+Returns
+List of pixel values.
+to_pil()[source] 
+Convert the image to a PIL image.
+Returns
+PIL image.
+exception mlflow.MlflowException(message: str, error_code: int = 1, sqlstate: Optional[str] = None, error_class: Optional[str] = None, **kwargs)[source] 
+Generic exception thrown to surface failure information about external-facing operations.
+The error message associated with this exception may be exposed to clients in HTTP responses
+for debugging purposes. If the error text is sensitive, raise a generic Exception object
+instead.
+get_http_status_code()[source] 
+classmethod invalid_parameter_value(message: str, sqlstate: Optional[str] = None, error_class: Optional[str] = None, **kwargs)[source] 
+Constructs an MlflowException object with the INVALID_PARAMETER_VALUE error code.
+Parameters
+message – The message describing the error that occurred. This will be included in the
+exception’s serialized JSON representation.
+sqlstate – A 5-character SQLSTATE code for error classification.
+error_class – A descriptive error class name.
+kwargs – Additional key-value pairs to include in the serialized JSON representation
+of the MlflowException.
+serialize_as_json()[source] 
+mlflow.active_run() → ActiveRun | None[source] 
+Get the currently active Run, or None if no such run exists.
+Attention
+This API is thread-local and returns only the active run in the current thread.
+If your application is multi-threaded and a run is started in a different thread,
+this API will not retrieve that run.
+Note: You cannot access currently-active run attributes
+(parameters, metrics, etc.) through the run returned by mlflow.active_run. In order
+to access such attributes, use the mlflow.client.MlflowClient as follows:
+Example 
+import mlflow
+mlflow.start_run()
+run = mlflow.active_run()
+print(f"Active run_id: {run.info.run_id}")
+mlflow.end_run()
+Output 
+Active run_id: 6f252757005748708cd3aad75d1ff462
+mlflow.autolog(log_input_examples: bool = False, log_model_signatures: bool = True, log_models: bool = True, log_datasets: bool = True, log_traces: bool = True, disable: bool = False, exclusive: bool = False, disable_for_unsupported_versions: bool = False, silent: bool = False, extra_tags: dict[str, str] | None = None, exclude_flavors: list[str] | None = None) → None[source] 
+Enables (or disables) and configures autologging for all supported integrations.
+The parameters are passed to any autologging integrations that support them.
+See the tracking docs for a list of supported autologging
+integrations.
+Note that framework-specific configurations set at any point will take precedence over
+any configurations set by this function. For example:
+import mlflow
+mlflow.autolog(log_models=False, exclusive=True)
+import sklearn
+would enable autologging for sklearn with log_models=False and exclusive=True,
+but
+import mlflow
+mlflow.autolog(log_models=False, exclusive=True)
+import sklearn
+mlflow.sklearn.autolog(log_models=True)
+would enable autologging for sklearn with log_models=True and exclusive=False,
+the latter resulting from the default value for exclusive in mlflow.sklearn.autolog;
+other framework autolog functions (e.g. mlflow.tensorflow.autolog) would use the
+configurations set by mlflow.autolog (in this instance, log_models=False, exclusive=True),
+until they are explicitly called by the user.
+Parameters
+log_input_examples – If True, input examples from training datasets are collected and
+logged along with model artifacts during training. If False,
+input examples are not logged.
+Note: Input examples are MLflow model attributes
+and are only collected if log_models is also True.
+log_model_signatures – If True,
+ModelSignatures
+describing model inputs and outputs are collected and logged along
+with model artifacts during training. If False, signatures are
+not logged. Note: Model signatures are MLflow model attributes
+and are only collected if log_models is also True.
+log_models – If True, trained models are logged as MLflow model artifacts.
+If False, trained models are not logged.
+Input examples and model signatures, which are attributes of MLflow models,
+are also omitted when log_models is False.
+log_datasets – If True, dataset information is logged to MLflow Tracking.
+If False, dataset information is not logged.
+log_traces – If True, traces are collected for integrations.
+If False, no trace is collected.
+disable – If True, disables all supported autologging integrations. If False,
+enables all supported autologging integrations.
+exclusive – If True, autologged content is not logged to user-created fluent runs.
+If False, autologged content is logged to the active fluent run,
+which may be user-created.
+disable_for_unsupported_versions – If True, disable autologging for versions of
+all integration libraries that have not been tested against this version
+of the MLflow client or are incompatible.
+silent – If True, suppress all event logs and warnings from MLflow during autologging
+setup and training execution. If False, show all events and warnings during
+autologging setup and training execution.
+extra_tags – A dictionary of extra tags to set on each managed run created by autologging.
+exclude_flavors – A list of flavor names that are excluded from the auto-logging.
+e.g. tensorflow, pyspark.ml
+Example 
+import numpy as np
+import mlflow.sklearn
+from mlflow import MlflowClient
+from sklearn.linear_model import LinearRegression
+def print_auto_logged_info(r):
+ tags = {k: v for k, v in r.data.tags.items() if not k.startswith("mlflow.")}
+ artifacts = [f.path for f in MlflowClient().list_artifacts(r.info.run_id, "model")]
+ print(f"run_id: {r.info.run_id}")
+ print(f"artifacts: {artifacts}")
+ print(f"params: {r.data.params}")
+ print(f"metrics: {r.data.metrics}")
+ print(f"tags: {tags}")
+# prepare training data
+X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
+y = np.dot(X, np.array([1, 2])) + 3
+# Auto log all the parameters, metrics, and artifacts
+mlflow.autolog()
+model = LinearRegression()
+with mlflow.start_run() as run:
+ model.fit(X, y)
+# fetch the auto logged parameters and metrics for ended run
+print_auto_logged_info(mlflow.get_run(run_id=run.info.run_id))
+Output 
+run_id: fd10a17d028c47399a55ab8741721ef7
+artifacts: ['model/MLmodel', 'model/conda.yaml', 'model/model.pkl']
+params: {'copy_X': 'True',
+ 'normalize': 'False',
+ 'fit_intercept': 'True',
+ 'n_jobs': 'None'}
+metrics: {'training_score': 1.0,
+ 'training_root_mean_squared_error': 4.440892098500626e-16,
+ 'training_r2_score': 1.0,
+ 'training_mean_absolute_error': 2.220446049250313e-16,
+ 'training_mean_squared_error': 1.9721522630525295e-31}
+tags: {'estimator_class': 'sklearn.linear_model._base.LinearRegression',
+ 'estimator_name': 'LinearRegression'}
+mlflow.context(metadata: dict[str, str] | None = None, tags: dict[str, str] | None = None, enabled: bool | None = None, session_id: str | list[str] | None = None, user: str | None = None) → Generator[None, None, None][source] 
+A context manager that injects metadata and/or tags into any trace created
+within its scope, without creating a wrapper span. It can also be used to
+selectively disable tracing within the scope.
+This is useful when you need to attach trace-level information (e.g. session
+IDs) to traces produced by code you don’t control like auto-instrumented libraries,
+or when you want to suppress tracing for a specific code block without affecting
+the global tracing state.
+import mlflow
+# Enable auto-tracing for LangChain
+mlflow.langchain.autolog()
+with mlflow.tracing.context(
+ session_id="session-123",
+ user="user-456",
+ tags={"project": "my-project"},
+):
+ # Any trace created inside this block will carry the metadata and tags.
+ agent.invoke("What is the capital of France?")
+# Disable tracing within a specific block
+with mlflow.tracing.context(enabled=False):
+ # No traces will be created inside this block.
+ agent.invoke("This call will not be traced")
+The context manager can be nested to combine multiple sets of metadata and tags. When same key
+is specified in multiple levels, the value from the inner level takes precedence.
+import mlflow
+with mlflow.tracing.context(metadata={"foo": "bar", "baz": "qux"}):
+ with mlflow.tracing.context(metadata={"foo": "baz", "qux": "quux"}):
+ my_func()
+# Trace created by my_func will have metadata={"foo": "baz", "baz": "qux", "qux": "quux"}
+Parameters
+metadata – Key-value pairs to inject into the trace’s request_metadata
+(immutable after trace creation).
+tags – Key-value pairs to inject into the trace’s tags.
+enabled – Whether tracing is enabled within the scope. If False, all
+tracing calls within the scope will return NoOpSpan without creating
+any traces. If None (default), the value is inherited from the outer
+scope. This does not affect the global tracing state set by
+mlflow.tracing.disable().
+session_id – Session ID to associate with traces created in this scope.
+Internally stored as metadata under the mlflow.trace.session key. Pass a list
+of strings to identify the session at multiple hierarchy levels, outermost first,
+e.g. session_id=["trip-2", "ep-2"]; it is stored as a JSON array string,
+which counts toward the 250-character session ID limit.
+user – User identifier to associate with traces created in this scope.
+Internally stored as metadata under the mlflow.trace.user key.
+mlflow.create_experiment(name: str, artifact_location: Optional[str] = None, tags: Optional[dict[str, typing.Any]] = None, trace_location: Optional[UnityCatalog] = None) → str[source] 
+Create an experiment.
+Parameters
+name – The experiment name, must be a non-empty unique string.
+artifact_location – The location to store run artifacts. If not provided, the server picks
+an appropriate default.
+tags – An optional dictionary of string keys and values to set as tags on the experiment.
+trace_location – Optional UC trace location to link to the experiment. Must be an instance
+of mlflow.entities.trace_location.UnityCatalog(...). If table_prefix is not
+set, it defaults to the experiment ID. Note: call mlflow.set_experiment afterward
+to activate the experiment and sync the trace provider.
+Returns
+String ID of the created experiment.
+Example 
+import mlflow
+from pathlib import Path
+# Create an experiment name, which must be unique and case sensitive
+experiment_id = mlflow.create_experiment(
+ "Social NLP Experiments",
+ artifact_location=Path.cwd().joinpath("mlruns").as_uri(),
+ tags={"version": "v1", "priority": "P1"},
+)
+experiment = mlflow.get_experiment(experiment_id)
+print(f"Name: {experiment.name}")
+print(f"Experiment_id: {experiment.experiment_id}")
+print(f"Artifact Location: {experiment.artifact_location}")
+print(f"Tags: {experiment.tags}")
+print(f"Lifecycle_stage: {experiment.lifecycle_stage}")
+print(f"Creation timestamp: {experiment.creation_time}")
+Output 
+Name: Social NLP Experiments
+Experiment_id: 1
+Artifact Location: file:///.../mlruns
+Tags: {'version': 'v1', 'priority': 'P1'}
+Lifecycle_stage: active
+Creation timestamp: 1662004217511
+mlflow.create_workspace(name: str, description: Optional[str] = None, default_artifact_root: Optional[str] = None, trace_archival_config: Optional[TraceArchivalConfig] = None) → Workspace[source] 
+Create a new workspace.
+Parameters
+name – The workspace name (lowercase alphanumeric with optional internal hyphens).
+description – Optional description of the workspace.
+default_artifact_root – Optional artifact root URI; falls back to server default.
+trace_archival_config – Optional archival settings; leave fields as None to omit them.
+Returns
+The newly created workspace.
+Raises
+MlflowException – If the name is invalid, already exists, or no artifact root available.
+mlflow.delete_experiment(experiment_id: str) → None[source] 
+Delete an experiment from the backend store.
+Parameters
+experiment_id – The string-ified experiment ID returned from create_experiment.
+Example 
+import mlflow
+experiment_id = mlflow.create_experiment("New Experiment")
+mlflow.delete_experiment(experiment_id)
+# Examine the deleted experiment details.
+experiment = mlflow.get_experiment(experiment_id)
+print(f"Name: {experiment.name}")
+print(f"Artifact Location: {experiment.artifact_location}")
+print(f"Lifecycle_stage: {experiment.lifecycle_stage}")
+print(f"Last Updated timestamp: {experiment.last_update_time}")
+Output 
+Name: New Experiment
+Artifact Location: file:///.../mlruns/2
+Lifecycle_stage: deleted
+Last Updated timestamp: 1662004217511
+mlflow.delete_experiment_tag(key: str) → None[source] 
+Delete a tag from the current experiment.
+Parameters
+key – Name of the tag to be deleted.
+Example 
+import mlflow
+exp = mlflow.set_experiment("test-delete-tag")
+mlflow.set_experiment_tag("release.version", "1.0")
+mlflow.delete_experiment_tag("release.version")
+exp = mlflow.get_experiment(exp.experiment_id)
+assert "release.version" not in exp.tags
+mlflow.delete_run(run_id: str) → None[source] 
+Deletes a run with the given ID.
+Parameters
+run_id – Unique identifier for the run to delete.
+Example 
+import mlflow
+with mlflow.start_run() as run:
+ mlflow.log_param("p", 0)
+run_id = run.info.run_id
+mlflow.delete_run(run_id)
+lifecycle_stage = mlflow.get_run(run_id).info.lifecycle_stage
+print(f"run_id: {run_id}; lifecycle_stage: {lifecycle_stage}")
+Output 
+run_id: 45f4af3e6fd349e58579b27fcb0b8277; lifecycle_stage: deleted
+mlflow.delete_tag(key: str) → None[source] 
+Delete a tag from a run. This is irreversible. If no run is active, this method
+will create a new active run.
+Parameters
+key – Name of the tag
+Example 
+import mlflow
+tags = {"engineering": "ML Platform", "engineering_remote": "ML Platform"}
+with mlflow.start_run() as run:
+ mlflow.set_tags(tags)
+with mlflow.start_run(run_id=run.info.run_id):
+ mlflow.delete_tag("engineering_remote")
+mlflow.delete_trace_tag(trace_id: str, key: str) → None[source] 
+Note
+Parameter request_id is deprecated. Use trace_id instead.
+Delete a tag on the trace with the given trace ID.
+The trace can be an active one or the one that has already ended and recorded in the
+backend. Below is an example of deleting a tag on an active trace. You can replace the
+trace_id parameter to delete a tag on an already ended trace.
+import mlflow
+with mlflow.start_span("my_span") as span:
+ mlflow.set_trace_tag(span.trace_id, "key", "value")
+ mlflow.delete_trace_tag(span.trace_id, "key")
+Parameters
+trace_id – The ID of the trace to delete the tag from.
+key – The string key of the tag. Must be at most 250 characters long, otherwise
+it will be truncated when stored.
+mlflow.delete_workspace(name: str, *, mode: str = WorkspaceDeletionMode.RESTRICT) → None[source] 
+Delete an existing workspace.
+Parameters
+name – Name of the workspace to delete.
+mode – Deletion mode. One of SET_DEFAULT, CASCADE, or RESTRICT.
+mlflow.disable_system_metrics_logging()[source] 
+Disable system metrics logging globally.
+Calling this function will disable system metrics logging globally, but users can still opt in
+system metrics logging for individual runs by mlflow.start_run(log_system_metrics=True).
+mlflow.doctor(mask_envs=False)[source] 
+Prints out useful information for debugging issues with MLflow.
+Parameters
+mask_envs – If True, mask the MLflow environment variable values
+(e.g. “MLFLOW_ENV_VAR”: “***”) in the output to prevent leaking sensitive
+information.
+Warning
+This API should only be used for debugging purposes.
+The output may contain sensitive information such as a database URI containing a password.
+Example 
+import mlflow
+with mlflow.start_run():
+ mlflow.doctor()
+Output 
+System information: Linux #58~20.04.1-Ubuntu SMP Thu Oct 13 13:09:46 UTC 2022
+Python version: 3.8.13
+MLflow version: 2.0.1
+MLflow module location: /usr/local/lib/python3.8/site-packages/mlflow/__init__.py
+Tracking URI: sqlite:///mlflow.db
+Registry URI: sqlite:///mlflow.db
+MLflow environment variables:
+ MLFLOW_TRACKING_URI: sqlite:///mlflow.db
+MLflow dependencies:
+ Flask: 2.2.2
+ Jinja2: 3.0.3
+ alembic: 1.8.1
+ click: 8.1.3
+ cloudpickle: 2.2.0
+ databricks-cli: 0.17.4.dev0
+ docker: 6.0.0
+ entrypoints: 0.4
+ gitpython: 3.1.29
+ gunicorn: 20.1.0
+ importlib-metadata: 5.0.0
+ markdown: 3.4.1
+ matplotlib: 3.6.1
+ numpy: 1.23.4
+ packaging: 21.3
+ pandas: 1.5.1
+ protobuf: 3.19.6
+ pyarrow: 9.0.0
+ pytz: 2022.6
+ pyyaml: 6.0
+ querystring-parser: 1.2.4
+ requests: 2.28.1
+ scikit-learn: 1.1.3
+ scipy: 1.9.3
+ shap: 0.41.0
+ sqlalchemy: 1.4.42
+ sqlparse: 0.4.3
+mlflow.enable_system_metrics_logging()[source] 
+Enable system metrics logging globally.
+Calling this function will enable system metrics logging globally, but users can still opt out
+system metrics logging for individual runs by mlflow.start_run(log_system_metrics=False).
+mlflow.end_run(status: str = 'FINISHED') → None[source] 
+End an active MLflow run (if there is one).
+Example 
+import mlflow
+# Start run and get status
+mlflow.start_run()
+run = mlflow.active_run()
+print(f"run_id: {run.info.run_id}; status: {run.info.status}")
+# End run and get status
+mlflow.end_run()
+run = mlflow.get_run(run.info.run_id)
+print(f"run_id: {run.info.run_id}; status: {run.info.status}")
+print("--")
+# Check for any active runs
+print(f"Active run: {mlflow.active_run()}")
+Output 
+run_id: b47ee4563368419880b44ad8535f6371; status: RUNNING
+run_id: b47ee4563368419880b44ad8535f6371; status: FINISHED
+--
+Active run: None
+mlflow.evaluate(model=None, data=None, *, model_type=None, targets=None, predictions=None, dataset_path=None, feature_names=None, evaluators=None, evaluator_config=None, extra_metrics=None, custom_artifacts=None, env_manager='local', model_config=None, inference_params=None, model_id=None, _called_from_genai_evaluate=False)[source] 
+Evaluate the model performance on given data and selected metrics.
+This function evaluates a PyFunc model or custom callable on the specified dataset using
+specified evaluators, and logs resulting metrics & artifacts to MLflow tracking server.
+Users can also skip setting model and put the model outputs in data directly for
+evaluation. For detailed information, please read
+the Model Evaluation documentation.
+Default Evaluator behavior:
+The default evaluator, which can be invoked with evaluators="default" or
+evaluators=None, supports model types listed below. For each pre-defined model type, the
+default evaluator evaluates your model on a selected set of metrics and generate artifacts
+like plots. Please find more details below.
+For both the "regressor" and "classifier" model types, the default evaluator
+generates model summary plots and feature importance plots using
+SHAP.
+For regressor models, the default evaluator additionally logs:
+metrics: example_count, mean_absolute_error, mean_squared_error,
+root_mean_squared_error, sum_on_target, mean_on_target, r2_score, max_error,
+mean_absolute_percentage_error.
+For binary classifiers, the default evaluator additionally logs:
+metrics: true_negatives, false_positives, false_negatives, true_positives, recall,
+precision, f1_score, accuracy_score, example_count, log_loss, roc_auc,
+precision_recall_auc.
+artifacts: lift curve plot, precision-recall plot, ROC plot.
+For multiclass classifiers, the default evaluator additionally logs:
+metrics: accuracy_score, example_count, f1_score_micro, f1_score_macro, log_loss
+artifacts: A CSV file for “per_class_metrics” (per-class metrics includes
+true_negatives/false_positives/false_negatives/true_positives/recall/precision/roc_auc,
+precision_recall_auc), precision-recall merged curves plot, ROC merged curves plot.
+For question-answering models, the default evaluator logs:
+metrics: exact_match, token_count, toxicity (requires evaluate,
+torch, flesch_kincaid_grade_level (requires textstat) and ari_grade_level.
+artifacts: A JSON file containing the inputs, outputs, targets (if the targets
+argument is supplied), and per-row metrics of the model in tabular format.
+For text-summarization models, the default evaluator logs:
+metrics: token_count, ROUGE (requires evaluate, nltk, and
+rouge_score to be installed), toxicity (requires evaluate, torch,
+transformers), ari_grade_level (requires textstat),
+flesch_kincaid_grade_level (requires textstat).
+artifacts: A JSON file containing the inputs, outputs, targets (if the targets
+argument is supplied), and per-row metrics of the model in the tabular format.
+For text models, the default evaluator logs:
+metrics: token_count, toxicity (requires evaluate, torch,
+transformers), ari_grade_level (requires textstat),
+flesch_kincaid_grade_level (requires textstat).
+artifacts: A JSON file containing the inputs, outputs, targets (if the targets
+argument is supplied), and per-row metrics of the model in tabular format.
+For retriever models, the default evaluator logs:
+metrics: precision_at_k(k),
+recall_at_k(k) and
+ndcg_at_k(k) - all have a default value of
+retriever_k = 3.
+artifacts: A JSON file containing the inputs, outputs, targets, and per-row metrics
+of the model in tabular format.
+For sklearn models, the default evaluator additionally logs the model’s evaluation criterion
+(e.g. mean accuracy for a classifier) computed by model.score method.
+The metrics/artifacts listed above are logged to the active MLflow run.
+If no active run exists, a new MLflow run is created for logging these metrics and
+artifacts.
+Additionally, information about the specified dataset - hash, name (if specified), path
+(if specified), and the UUID of the model that evaluated it - is logged to the
+mlflow.datasets tag.
+The available evaluator_config options for the default evaluator include:
+log_model_explainability: A boolean value specifying whether or not to log model
+explainability insights, default value is True.
+log_explainer: If True, log the explainer used to compute model explainability
+insights as a model. Default value is False.
+explainability_algorithm: A string to specify the SHAP Explainer algorithm for model
+explainability. Supported algorithm includes: ‘exact’, ‘permutation’, ‘partition’,
+‘kernel’.
+If not set, shap.Explainer is used with the “auto” algorithm, which chooses the best
+Explainer based on the model.
+explainability_nsamples: The number of sample rows to use for computing model
+explainability insights. Default value is 2000.
+explainability_kernel_link: The kernel link function used by shap kernel explainer.
+Available values are “identity” and “logit”. Default value is “identity”.
+max_classes_for_multiclass_roc_pr:
+For multiclass classification tasks, the maximum number of classes for which to log
+the per-class ROC curve and Precision-Recall curve. If the number of classes is
+larger than the configured maximum, these curves are not logged.
+metric_prefix: An optional prefix to prepend to the name of each metric and artifact
+produced during evaluation.
+log_metrics_with_dataset_info: A boolean value specifying whether or not to include
+information about the evaluation dataset in the name of each metric logged to MLflow
+Tracking during evaluation, default value is True.
+pos_label: If specified, the positive label to use when computing classification
+metrics such as precision, recall, f1, etc. for binary classification models. For
+multiclass classification and regression models, this parameter will be ignored.
+average: The averaging method to use when computing classification metrics such as
+precision, recall, f1, etc. for multiclass classification models
+(default: 'weighted'). For binary classification and regression models, this
+parameter will be ignored.
+sample_weights: Weights for each sample to apply when computing model performance
+metrics.
+col_mapping: A dictionary mapping column names in the input dataset or output
+predictions to column names used when invoking the evaluation functions.
+retriever_k: A parameter used when model_type="retriever" as the number of
+top-ranked retrieved documents to use when computing the built-in metric
+precision_at_k(k),
+recall_at_k(k) and
+ndcg_at_k(k). Default value is 3. For all other
+model types, this parameter will be ignored.
+Limitations of evaluation dataset:
+For classification tasks, dataset labels are used to infer the total number of classes.
+For binary classification tasks, the negative label value must be 0 or -1 or False, and
+the positive label value must be 1 or True.
+Limitations of metrics/artifacts computation:
+For classification tasks, some metric and artifact computations require the model to
+output class probabilities. Currently, for scikit-learn models, the default evaluator
+calls the predict_proba method on the underlying model to obtain probabilities. For
+other model types, the default evaluator does not compute metrics/artifacts that require
+probability outputs.
+Limitations of default evaluator logging model explainability insights:
+The shap.Explainer auto algorithm uses the Linear explainer for linear models
+and the Tree explainer for tree models. Because SHAP’s Linear and Tree
+explainers do not support multi-class classification, the default evaluator falls back to
+using the Exact or Permutation explainers for multi-class classification tasks.
+Logging model explainability insights is not currently supported for PySpark models.
+The evaluation dataset label values must be numeric or boolean, all feature values
+must be numeric, and each feature column must only contain scalar values.
+Limitations when environment restoration is enabled:
+When environment restoration is enabled for the evaluated model (i.e. a non-local
+env_manager is specified), the model is loaded as a client that invokes a MLflow
+Model Scoring Server process in an independent Python environment with the model’s
+training time dependencies installed. As such, methods like predict_proba (for
+probability outputs) or score (computes the evaluation criterian for sklearn models)
+of the model become inaccessible and the default evaluator does not compute metrics or
+artifacts that require those methods.
+Because the model is an MLflow Model Server process, SHAP explanations are slower to
+compute. As such, model explainaibility is disabled when a non-local env_manager
+specified, unless the evaluator_config option log_model_explainability is
+explicitly set to True.
+Parameters
+model – 
+Optional. If specified, it should be one of the following:
+A pyfunc model instance
+A URI referring to a pyfunc model
+A URI referring to an MLflow Deployments endpoint e.g. "endpoints:/my-chat"
+A callable function: This function should be able to take in model input and
+return predictions. It should follow the signature of the
+predict method. Here’s an example
+of a valid function:
+model = mlflow.pyfunc.load_model(model_uri)
+def fn(model_input):
+ return model.predict(model_input)
+If omitted, it indicates a static dataset will be used for evaluation instead of a
+model. In this case, the data argument must be a Pandas DataFrame or an mlflow
+PandasDataset that contains model outputs, and the predictions argument must be the
+name of the column in data that contains model outputs.
+data – 
+One of the
+following:
+A numpy array or list of evaluation features, excluding labels.
+A Pandas DataFrame containing evaluation features, labels, and optionally model
+outputs. Model outputs are required to be provided when model is unspecified.
+If feature_names argument not specified, all columns except for the label
+column and predictions column are regarded as feature columns. Otherwise,
+only column names present in feature_names are regarded as feature columns.
+A Spark DataFrame containing evaluation features and labels. If
+feature_names argument not specified, all columns except for the label
+column are regarded as feature columns. Otherwise, only column names present in
+feature_names are regarded as feature columns. Only the first 10000 rows in
+the Spark DataFrame will be used as evaluation data.
+A mlflow.data.dataset.Dataset instance containing evaluation
+features, labels, and optionally model outputs. Model outputs are only supported
+with a PandasDataset. Model outputs are required when model is unspecified, and
+should be specified via the predictions property of the PandasDataset.
+model_type – 
+(Optional) A string describing the model type. The default evaluator
+supports the following model types:
+'classifier'
+'regressor'
+'question-answering'
+'text-summarization'
+'text'
+'retriever'
+If no model_type is specified, then you must provide a list of
+metrics to compute via the extra_metrics param.
+Note
+'question-answering', 'text-summarization', 'text', and
+'retriever' are experimental and may be changed or removed in a
+future release.
+targets – If data is a numpy array or list, a numpy array or list of evaluation
+labels. If data is a DataFrame, the string name of a column from data
+that contains evaluation labels. Required for classifier and regressor models,
+but optional for question-answering, text-summarization, and text models. If
+data is a mlflow.data.dataset.Dataset that defines targets,
+then targets is optional.
+predictions – 
+Optional. The name of the column that contains model outputs.
+When model is specified and outputs multiple columns, predictions can be used
+to specify the name of the column that will be used to store model outputs for
+evaluation.
+When model is not specified and data is a pandas dataframe,
+predictions can be used to specify the name of the column in data that
+contains model outputs.
+Example usage of predictions 
+# Evaluate a model that outputs multiple columns
+data = pd.DataFrame({"question": ["foo"]})
+def model(inputs):
+ return pd.DataFrame({"answer": ["bar"], "source": ["baz"]})
+results = evaluate(
+ model=model,
+ data=data,
+ predictions="answer",
+ # other arguments if needed
+)
+# Evaluate a static dataset
+data = pd.DataFrame({"question": ["foo"], "answer": ["bar"], "source": ["baz"]})
+results = evaluate(
+ data=data,
+ predictions="answer",
+ # other arguments if needed
+)
+dataset_path – (Optional) The path where the data is stored. Must not contain double
+quotes ("). If specified, the path is logged to the mlflow.datasets
+tag for lineage tracking purposes.
+feature_names – (Optional) A list. If the data argument is a numpy array or list,
+feature_names is a list of the feature names for each feature. If
+feature_names=None, then the feature_names are generated using the
+format feature_{feature_index}. If the data argument is a Pandas
+DataFrame or a Spark DataFrame, feature_names is a list of the names
+of the feature columns in the DataFrame. If feature_names=None, then
+all columns except the label column and the predictions column are
+regarded as feature columns.
+evaluators – The name of the evaluator to use for model evaluation, or a list of
+evaluator names. If unspecified, all evaluators capable of evaluating the
+specified model on the specified dataset are used. The default evaluator
+can be referred to by the name "default". To see all available
+evaluators, call mlflow.models.list_evaluators().
+evaluator_config – A dictionary of additional configurations to supply to the evaluator.
+If multiple evaluators are specified, each configuration should be
+supplied as a nested dictionary whose key is the evaluator name.
+extra_metrics – 
+(Optional) A list of EvaluationMetric
+objects. These metrics are computed in addition to the default metrics associated with
+pre-defined model_type, and setting model_type=None will only compute the metrics
+specified in extra_metrics. See the mlflow.metrics module for more information about
+the builtin metrics and how to define extra metrics.
+Example usage of extra metrics 
+import mlflow
+import numpy as np
+def root_mean_squared_error(eval_df, _builtin_metrics):
+ return np.sqrt((np.abs(eval_df["prediction"] - eval_df["target"]) ** 2).mean())
+rmse_metric = mlflow.models.make_metric(
+ eval_fn=root_mean_squared_error,
+ greater_is_better=False,
+)
+mlflow.evaluate(..., extra_metrics=[rmse_metric])
+custom_artifacts – 
+(Optional) A list of custom artifact functions with the following signature:
+def custom_artifact(
+ eval_df: Union[pandas.Dataframe, pyspark.sql.DataFrame],
+ builtin_metrics: Dict[str, float],
+ artifacts_dir: str,
+) -> Dict[str, Any]:
+ """
+ Args:
+ eval_df:
+ A Pandas or Spark DataFrame containing ``prediction`` and ``target``
+ column. The ``prediction`` column contains the predictions made by the
+ model. The ``target`` column contains the corresponding labels to the
+ predictions made on that row.
+ builtin_metrics:
+ A dictionary containing the metrics calculated by the default evaluator.
+ The keys are the names of the metrics and the values are the scalar
+ values of the metrics. Refer to the DefaultEvaluator behavior section
+ for what metrics will be returned based on the type of model (i.e.
+ classifier or regressor).
+ artifacts_dir:
+ A temporary directory path that can be used by the custom artifacts
+ function to temporarily store produced artifacts. The directory will be
+ deleted after the artifacts are logged.
+ Returns:
+ A dictionary that maps artifact names to artifact objects
+ (e.g. a Matplotlib Figure) or to artifact paths within ``artifacts_dir``.
+ """
+ ...
+Object types that artifacts can be represented as:
+A string uri representing the file path to the artifact. MLflow will infer the
+type of the artifact based on the file extension.
+A string representation of a JSON object. This will be saved as a .json artifact.
+Pandas DataFrame. This will be resolved as a CSV artifact.
+Numpy array. This will be saved as a .npy artifact.
+Matplotlib Figure. This will be saved as an image artifact. Note that
+matplotlib.pyplot.savefig is called behind the scene with default
+configurations.
+To customize, either save the figure with the desired configurations and return
+its file path or define customizations through environment variables in
+matplotlib.rcParams.
+Other objects will be attempted to be pickled with the default protocol.
+Example usage of custom artifacts 
+import mlflow
+import matplotlib.pyplot as plt
+def scatter_plot(eval_df, builtin_metrics, artifacts_dir):
+ plt.scatter(eval_df["prediction"], eval_df["target"])
+ plt.xlabel("Targets")
+ plt.ylabel("Predictions")
+ plt.title("Targets vs. Predictions")
+ plt.savefig(os.path.join(artifacts_dir, "example.png"))
+ plt.close()
+ return {"pred_target_scatter": os.path.join(artifacts_dir, "example.png")}
+def pred_sample(eval_df, _builtin_metrics, _artifacts_dir):
+ return {"pred_sample": pred_sample.head(10)}
+mlflow.evaluate(..., custom_artifacts=[scatter_plot, pred_sample])
+env_manager – 
+Specify an environment manager to load the candidate model in
+isolated Python environments and restore their
+dependencies. Default value is local, and the following values are
+supported:
+virtualenv: (Recommended) Use virtualenv to restore the python
+environment that was used to train the model.
+conda: Use Conda to restore the software environment that was used
+to train the model.
+local: Use the current Python environment for model inference, which
+may differ from the environment used to train the model and may lead to
+errors or invalid predictions.
+model_config – the model configuration to use for loading the model with pyfunc. Inspect
+the model’s pyfunc flavor to know which keys are supported for your
+specific model. If not indicated, the default model configuration
+from the model is used (if any).
+inference_params – (Optional) A dictionary of inference parameters to be passed to the model
+when making predictions, such as {"max_tokens": 100}. This is only used when
+the model is an MLflow Deployments endpoint URI e.g. "endpoints:/my-chat"
+model_id – (Optional) The ID of the MLflow LoggedModel or Model Version to which the
+evaluation results (e.g. metrics and traces) will be linked. If model_id is not
+specified but model is specified, the ID from model will be used.
+_called_from_genai_evaluate – (Optional) Only used internally.
+Returns
+An mlflow.models.EvaluationResult instance containing
+metrics of evaluating the model with the given dataset.
+mlflow.flush_artifact_async_logging() → None[source] 
+Flush all pending artifact async logging.
+mlflow.flush_async_logging() → None[source] 
+Flush all pending async logging.
+mlflow.flush_trace_async_logging(terminate=False) → None[source] 
+Flush all pending trace async logging.
+Parameters
+terminate – If True, shut down the logging threads after flushing.
+mlflow.get_active_model_id() → str | None[source] 
+Get the active model ID. If no active model is set with set_active_model(), the
+default active model is set using model ID from the environment variable
+MLFLOW_ACTIVE_MODEL_ID or the legacy environment variable _MLFLOW_ACTIVE_MODEL_ID.
+If neither is set, return None. Note that this function only get the active model ID from the
+current thread.
+Returns
+The active model ID if set, otherwise None.
+mlflow.get_active_trace_id() → str | None[source] 
+Get the active trace ID in the current process.
+This function is thread-safe.
+Example:
+import mlflow
+@mlflow.trace
+def f():
+ trace_id = mlflow.get_active_trace_id()
+ print(trace_id)
+f()
+Returns
+The ID of the current active trace if exists, otherwise None.
+mlflow.get_artifact_uri(artifact_path: Optional[str] = None) → str[source] 
+Get the absolute URI of the specified artifact in the currently active run.
+If path is not specified, the artifact root URI of the currently active
+run will be returned; calls to log_artifact and log_artifacts write
+artifact(s) to subdirectories of the artifact root URI.
+If no run is active, this method will create a new active run.
+Parameters
+artifact_path – The run-relative artifact path for which to obtain an absolute URI.
+For example, “path/to/artifact”. If unspecified, the artifact root URI
+for the currently active run will be returned.
+Returns
+An absolute URI referring to the specified artifact or the currently active run’s
+artifact root. For example, if an artifact path is provided and the currently active
+run uses an S3-backed store, this may be a uri of the form
+s3://<bucket_name>/path/to/artifact/root/path/to/artifact. If an artifact path
+is not provided and the currently active run uses an S3-backed store, this may be a
+URI of the form s3://<bucket_name>/path/to/artifact/root.
+Example 
+import tempfile
+import mlflow
+features = "rooms, zipcode, median_price, school_rating, transport"
+with tempfile.NamedTemporaryFile("w") as tmp_file:
+ tmp_file.write(features)
+ tmp_file.flush()
+ # Log the artifact in a directory "features" under the root artifact_uri/features
+ with mlflow.start_run():
+ mlflow.log_artifact(tmp_file.name, artifact_path="features")
+ # Fetch the artifact uri root directory
+ artifact_uri = mlflow.get_artifact_uri()
+ print(f"Artifact uri: {artifact_uri}")
+ # Fetch a specific artifact uri
+ artifact_uri = mlflow.get_artifact_uri(artifact_path="features/features.txt")
+ print(f"Artifact uri: {artifact_uri}")
+Output 
+Artifact uri: file:///.../0/a46a80f1c9644bd8f4e5dd5553fffce/artifacts
+Artifact uri: file:///.../0/a46a80f1c9644bd8f4e5dd5553fffce/artifacts/features/features.txt
+mlflow.get_assessment(trace_id: str, assessment_id: str) → Assessment[source] 
+Get an assessment entity from the backend store.
+Parameters
+trace_id – The ID of the trace.
+assessment_id – The ID of the assessment to get.
+Returns
+The Assessment object.
+Return type
+Assessment
+mlflow.get_experiment(experiment_id: str) → Experiment[source] 
+Retrieve an experiment by experiment_id from the backend store
+Parameters
+experiment_id – The string-ified experiment ID returned from create_experiment.
+Returns
+mlflow.entities.Experiment
+Example 
+import mlflow
+experiment = mlflow.get_experiment("0")
+print(f"Name: {experiment.name}")
+print(f"Artifact Location: {experiment.artifact_location}")
+print(f"Tags: {experiment.tags}")
+print(f"Lifecycle_stage: {experiment.lifecycle_stage}")
+print(f"Creation timestamp: {experiment.creation_time}")
+Output 
+Name: Default
+Artifact Location: file:///.../mlruns/0
+Tags: {}
+Lifecycle_stage: active
+Creation timestamp: 1662004217511
+mlflow.get_experiment_by_name(name: str) → Experiment | None[source] 
+Retrieve an experiment by experiment name from the backend store
+Parameters
+name – The case sensitive experiment name.
+Returns
+An instance of mlflow.entities.Experiment
+if an experiment with the specified name exists, otherwise None.
+Example 
+import mlflow
+# Case sensitive name
+experiment = mlflow.get_experiment_by_name("Default")
+print(f"Experiment_id: {experiment.experiment_id}")
+print(f"Artifact Location: {experiment.artifact_location}")
+print(f"Tags: {experiment.tags}")
+print(f"Lifecycle_stage: {experiment.lifecycle_stage}")
+print(f"Creation timestamp: {experiment.creation_time}")
+Output 
+Experiment_id: 0
+Artifact Location: file:///.../mlruns/0
+Tags: {}
+Lifecycle_stage: active
+Creation timestamp: 1662004217511
+mlflow.get_parent_run(run_id: str) → Run | None[source] 
+Gets the parent run for the given run id if one exists.
+Parameters
+run_id – Unique identifier for the child run.
+Returns
+A single mlflow.entities.Run object, if the parent run exists. Otherwise,
+returns None.
+Example 
+import mlflow
+# Create nested runs
+with mlflow.start_run():
+ with mlflow.start_run(nested=True) as child_run:
+ child_run_id = child_run.info.run_id
+parent_run = mlflow.get_parent_run(child_run_id)
+print(f"child_run_id: {child_run_id}")
+print(f"parent_run_id: {parent_run.info.run_id}")
+Output 
+child_run_id: 7d175204675e40328e46d9a6a5a7ee6a
+parent_run_id: 8979459433a24a52ab3be87a229a9cdf
+mlflow.get_registry_uri() → str[source] 
+Get the current registry URI. If none has been specified, defaults to the tracking URI.
+Returns
+The registry URI.
+# Get the current model registry uri
+mr_uri = mlflow.get_registry_uri()
+print(f"Current model registry uri: {mr_uri}")
+# Get the current tracking uri
+tracking_uri = mlflow.get_tracking_uri()
+print(f"Current tracking uri: {tracking_uri}")
+# They should be the same
+assert mr_uri == tracking_uri
+Current model registry uri: file:///.../mlruns
+Current tracking uri: file:///.../mlruns
+mlflow.get_run(run_id: str) → Run[source] 
+Fetch the run from backend store. The resulting Run contains a collection of run metadata –
+RunInfo as well as a collection of run parameters, tags, and metrics – RunData. It also
+contains a collection of run inputs (experimental), including information about datasets used by
+the run – RunInputs. In the case where multiple metrics with the same key are logged for the
+run, the RunData contains the most recently logged value at the largest step for each metric.
+Parameters
+run_id – Unique identifier for the run.
+Returns
+A single Run object, if the run exists. Otherwise, raises an exception.
+Example 
+import mlflow
+with mlflow.start_run() as run:
+ mlflow.log_param("p", 0)
+run_id = run.info.run_id
+print(f"run_id: {run_id}; lifecycle_stage: {mlflow.get_run(run_id).info.lifecycle_stage}")
+Output 
+run_id: 7472befefc754e388e8e922824a0cca5; lifecycle_stage: active
+mlflow.get_tracking_uri() → str[source] 
+Get the current tracking URI. This may not correspond to the tracking URI of
+the currently active run, since the tracking URI can be updated via set_tracking_uri.
+Returns
+The tracking URI.
+import mlflow
+# Get the current tracking uri
+tracking_uri = mlflow.get_tracking_uri()
+print(f"Current tracking uri: {tracking_uri}")
+Current tracking uri: sqlite:///mlflow.db
+mlflow.get_workspace(name: str) → Workspace[source] 
+Return metadata for the specified workspace.
+mlflow.import_checkpoints(checkpoint_path: str, source_run_id: Optional[str] = None, model_prefix: Optional[str] = None, overwrite_checkpoints: bool = False) → list[LoggedModel][source] 
+Create external models for all top-level files and directories under the specified
+checkpoint path.
+This API only supports Databricks runtime currently.
+Parameters
+checkpoint_path – Path that contains the checkpoints.
+Only Databricks Unity Catalog Volume path is supported for now.
+It must follows the
+“/Volumes/<catalog_identifier>/<schema_identifier>/<volume_identifier>/<path_to_checkpoints_directory>”
+format specified https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-volumes#volume-naming-and-reference.
+Note: Each path must be isolated from other models and runs.
+source_run_id – ID of the MLflow source run that these checkpoints were trained with.
+If not provided, uses the current active run if available.
+model_prefix – String prefix to prepend to the name of each external model created from
+each checkpoint. If not provided, no prefix is applied.
+overwrite_checkpoints – If True and existing models are found with the same name in the
+associated experiment, they will be deleted and recreated to point to the latest
+checkpoint. Defaults to False.
+Returns
+List of imported models. If ‘overwrite_checkpoints’ is True, the list only contains
+new created models, otherwise the list contains new created models for the new model
+names and existing models for the existing model names.
+Example:
+import mlflow
+# Optionally start a run so `source_run_id` can be inferred
+with mlflow.start_run() as run:
+ # ... training code that writes checkpoints to a UC Volume ...
+ logged_models = mlflow.import_checkpoints(
+ checkpoint_path=(
+ "/Volumes/mycatalog/myschema/myvolume/mytrainingmodel/trainingrun1/checkpoints"
+ ),
+ # You can omit `source_run_id` if there is an active run.
+ # source_run_id=run.info.run_id,
+ model_prefix="my_model_",
+ overwrite_checkpoints=True,
+ )
+mlflow.is_tracking_uri_set()[source] 
+Returns True if the tracking URI has been set, False otherwise.
+mlflow.last_active_run() → Run | None[source] 
+Gets the most recent active run.
+Examples:
+To retrieve the most recent autologged run: 
+import mlflow
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_diabetes
+from sklearn.ensemble import RandomForestRegressor
+mlflow.autolog()
+db = load_diabetes()
+X_train, X_test, y_train, y_test = train_test_split(db.data, db.target)
+# Create and train models.
+rf = RandomForestRegressor(n_estimators=100, max_depth=6, max_features=3)
+rf.fit(X_train, y_train)
+# Use the model to make predictions on the test dataset.
+predictions = rf.predict(X_test)
+autolog_run = mlflow.last_active_run()
+To get the most recently active run that ended: 
+import mlflow
+mlflow.start_run()
+mlflow.end_run()
+run = mlflow.last_active_run()
+To retrieve the currently active run: 
+import mlflow
+mlflow.start_run()
+run = mlflow.last_active_run()
+mlflow.end_run()
+Returns
+The active run (this is equivalent to mlflow.active_run()) if one exists.
+Otherwise, the last run started from the current Python process that reached
+a terminal status (i.e. FINISHED, FAILED, or KILLED).
+mlflow.list_workspaces() → list[Workspace][source] 
+Return the list of workspaces available to the current user.
+mlflow.load_table(artifact_file: str, run_ids: list[str] | None = None, extra_columns: list[str] | None = None) → pandas.DataFrame[source] 
+Load a table from MLflow Tracking as a pandas.DataFrame. The table is loaded from the
+specified artifact_file in the specified run_ids. The extra_columns are columns that
+are not in the table but are augmented with run information and added to the DataFrame.
+Parameters
+artifact_file – The run-relative artifact file path in posixpath format to which
+table to load (e.g. “dir/file.json”).
+run_ids – Optional list of run_ids to load the table from. If no run_ids are specified,
+the table is loaded from all runs in the current experiment.
+extra_columns – Optional list of extra columns to add to the returned DataFrame
+For example, if extra_columns=[“run_id”], then the returned DataFrame
+will have a column named run_id.
+Returns
+pandas.DataFrame containing the loaded table if the artifact exists
+or else throw a MlflowException.
+Example with passing run_ids 
+import mlflow
+table_dict = {
+ "inputs": ["What is MLflow?", "What is Databricks?"],
+ "outputs": ["MLflow is ...", "Databricks is ..."],
+ "toxicity": [0.0, 0.0],
+}
+with mlflow.start_run() as run:
+ # Log the dictionary as a table
+ mlflow.log_table(data=table_dict, artifact_file="qabot_eval_results.json")
+ run_id = run.info.run_id
+loaded_table = mlflow.load_table(
+ artifact_file="qabot_eval_results.json",
+ run_ids=[run_id],
+ # Append a column containing the associated run ID for each row
+ extra_columns=["run_id"],
+)
+Example with passing no run_ids 
+# Loads the table with the specified name for all runs in the given
+# experiment and joins them together
+import mlflow
+table_dict = {
+ "inputs": ["What is MLflow?", "What is Databricks?"],
+ "outputs": ["MLflow is ...", "Databricks is ..."],
+ "toxicity": [0.0, 0.0],
+}
+with mlflow.start_run():
+ # Log the dictionary as a table
+ mlflow.log_table(data=table_dict, artifact_file="qabot_eval_results.json")
+loaded_table = mlflow.load_table(
+ "qabot_eval_results.json",
+ # Append the run ID and the parent run ID to the table
+ extra_columns=["run_id"],
+)
+mlflow.log_artifact(local_path: str, artifact_path: Optional[str] = None, run_id: Optional[str] = None) → None[source] 
+Log a local file or directory as an artifact of the currently active run. If no run is
+active, this method will create a new active run.
+Parameters
+local_path – Path to the file to write.
+artifact_path – If provided, the directory in artifact_uri to write to.
+run_id – If specified, log the artifact to the specified run. If not specified, log the
+artifact to the currently active run.
+Example 
+import tempfile
+from pathlib import Path
+import mlflow
+# Create a features.txt artifact file
+features = "rooms, zipcode, median_price, school_rating, transport"
+with tempfile.TemporaryDirectory() as tmp_dir:
+ path = Path(tmp_dir, "features.txt")
+ path.write_text(features)
+ # With artifact_path=None write features.txt under
+ # root artifact_uri/artifacts directory
+ with mlflow.start_run():
+ mlflow.log_artifact(path)
+mlflow.log_artifacts(local_dir: str, artifact_path: Optional[str] = None, run_id: Optional[str] = None) → None[source] 
+Log all the contents of a local directory as artifacts of the run. If no run is active,
+this method will create a new active run.
+Parameters
+local_dir – Path to the directory of files to write.
+artifact_path – If provided, the directory in artifact_uri to write to.
+run_id – If specified, log the artifacts to the specified run. If not specified, log the
+artifacts to the currently active run.
+Example 
+import json
+import tempfile
+from pathlib import Path
+import mlflow
+# Create some files to preserve as artifacts
+features = "rooms, zipcode, median_price, school_rating, transport"
+data = {"state": "TX", "Available": 25, "Type": "Detached"}
+with tempfile.TemporaryDirectory() as tmp_dir:
+ tmp_dir = Path(tmp_dir)
+ with (tmp_dir / "data.json").open("w") as f:
+ json.dump(data, f, indent=2)
+ with (tmp_dir / "features.json").open("w") as f:
+ f.write(features)
+ # Write all files in `tmp_dir` to root artifact_uri/states
+ with mlflow.start_run():
+ mlflow.log_artifacts(tmp_dir, artifact_path="states")
+mlflow.log_dict(dictionary: dict[str, typing.Any], artifact_file: str, run_id: Optional[str] = None) → None[source] 
+Log a JSON/YAML-serializable object (e.g. dict) as an artifact. The serialization
+format (JSON or YAML) is automatically inferred from the extension of artifact_file.
+If the file extension doesn’t exist or match any of [“.json”, “.yml”, “.yaml”],
+JSON format is used.
+Parameters
+dictionary – Dictionary to log.
+artifact_file – The run-relative artifact file path in posixpath format to which
+the dictionary is saved (e.g. “dir/data.json”).
+run_id – If specified, log the dictionary to the specified run. If not specified, log the
+dictionary to the currently active run.
+Example 
+import mlflow
+dictionary = {"k": "v"}
+with mlflow.start_run():
+ # Log a dictionary as a JSON file under the run's root artifact directory
+ mlflow.log_dict(dictionary, "data.json")
+ # Log a dictionary as a YAML file in a subdirectory of the run's root artifact directory
+ mlflow.log_dict(dictionary, "dir/data.yml")
+ # If the file extension doesn't exist or match any of [".json", ".yaml", ".yml"],
+ # JSON format is used.
+ mlflow.log_dict(dictionary, "data")
+ mlflow.log_dict(dictionary, "data.txt")
+mlflow.log_figure(figure: Union[matplotlib.figure.Figure, plotly.graph_objects.Figure], artifact_file: str, *, save_kwargs: dict[str, typing.Any] | None = None) → None[source] 
+Log a figure as an artifact. The following figure objects are supported:
+matplotlib.figure.Figure
+plotly.graph_objects.Figure
+Parameters
+figure – Figure to log.
+artifact_file – The run-relative artifact file path in posixpath format to which
+the figure is saved (e.g. “dir/file.png”).
+save_kwargs – Additional keyword arguments passed to the method that saves the figure.
+Matplotlib Example 
+import mlflow
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.plot([0, 1], [2, 3])
+with mlflow.start_run():
+ mlflow.log_figure(fig, "figure.png")
+Plotly Example 
+import mlflow
+from plotly import graph_objects as go
+fig = go.Figure(go.Scatter(x=[0, 1], y=[2, 3]))
+with mlflow.start_run():
+ mlflow.log_figure(fig, "figure.html")
+mlflow.log_image(image: Union[numpy.ndarray, PIL.Image.Image, mlflow.Image], artifact_file: str | None = None, key: str | None = None, step: int | None = None, timestamp: int | None = None, synchronous: bool | None = False) → None[source] 
+Logs an image in MLflow, supporting two use cases:
+Time-stepped image logging:
+Ideal for tracking changes or progressions through iterative processes (e.g.,
+during model training phases).
+Usage: log_image(image, key=key, step=step, timestamp=timestamp)
+Artifact file image logging:
+Best suited for static image logging where the image is saved directly as a file
+artifact.
+Usage: log_image(image, artifact_file)
+The following image formats are supported:
+numpy.ndarray
+PIL.Image.Image
+mlflow.Image: An MLflow wrapper around PIL image for convenient image logging.
+Numpy array support
+data types:
+bool (useful for logging image masks)
+integer [0, 255]
+unsigned integer [0, 255]
+float [0.0, 1.0]
+Warning
+Out-of-range integer values will raise ValueError.
+Out-of-range float values will auto-scale with min/max and warn.
+shape (H: height, W: width):
+H x W (Grayscale)
+H x W x 1 (Grayscale)
+H x W x 3 (an RGB channel order is assumed)
+H x W x 4 (an RGBA channel order is assumed)
+Parameters
+image – The image object to be logged.
+artifact_file – Specifies the path, in POSIX format, where the image
+will be stored as an artifact relative to the run’s root directory (for
+example, “dir/image.png”). This parameter is kept for backward compatibility
+and should not be used together with key, step, or timestamp.
+key – Image name for time-stepped image logging. This string may only contain
+alphanumerics, underscores (_), dashes (-), periods (.), spaces ( ), and
+slashes (/).
+step – Integer training step (iteration) at which the image was saved.
+Defaults to 0.
+timestamp – Time when this image was saved. Defaults to the current system time.
+synchronous – Experimental If True, blocks until the image is logged successfully.
+Time-stepped image logging numpy example 
+import mlflow
+import numpy as np
+image = np.random.randint(0, 256, size=(100, 100, 3), dtype=np.uint8)
+with mlflow.start_run():
+ mlflow.log_image(image, key="dogs", step=3)
+Time-stepped image logging pillow example 
+import mlflow
+from PIL import Image
+image = Image.new("RGB", (100, 100))
+with mlflow.start_run():
+ mlflow.log_image(image, key="dogs", step=3)
+Time-stepped image logging with mlflow.Image example 
+import mlflow
+from PIL import Image
+# If you have a preexisting saved image
+Image.new("RGB", (100, 100)).save("image.png")
+image = mlflow.Image("image.png")
+with mlflow.start_run() as run:
+ mlflow.log_image(run.info.run_id, image, key="dogs", step=3)
+Legacy artifact file image logging numpy example 
+import mlflow
+import numpy as np
+image = np.random.randint(0, 256, size=(100, 100, 3), dtype=np.uint8)
+with mlflow.start_run():
+ mlflow.log_image(image, "image.png")
+Legacy artifact file image logging pillow example 
+import mlflow
+from PIL import Image
+image = Image.new("RGB", (100, 100))
+with mlflow.start_run():
+ mlflow.log_image(image, "image.png")
+mlflow.log_input(dataset: Optional[mlflow.data.dataset.Dataset] = None, context: Optional[str] = None, tags: Optional[dict[str, str]] = None, model: Optional[LoggedModelInput] = None) → None[source] 
+Log a dataset used in the current run.
+Parameters
+dataset – mlflow.data.dataset.Dataset object to be logged.
+context – Context in which the dataset is used. For example: “training”, “testing”.
+This will be set as an input tag with key mlflow.data.context.
+tags – Tags to be associated with the dataset. Dictionary of tag_key -> tag_value.
+model – A mlflow.entities.LoggedModelInput instance to log as input to
+the run.
+Example 
+import numpy as np
+import mlflow
+array = np.asarray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+dataset = mlflow.data.from_numpy(array, source="data.csv")
+# Log an input dataset used for training
+with mlflow.start_run():
+ mlflow.log_input(dataset, context="training")
+mlflow.log_inputs(datasets: Optional[list[typing.Optional[mlflow.data.dataset.Dataset]]] = None, contexts: Optional[list[str | None]] = None, tags_list: Optional[list[dict[str, str] | None]] = None, models: Optional[list[LoggedModelInput | None]] = None) → None[source] 
+Log a batch of datasets used in the current run.
+The lists of datasets, contexts, tags_list must have the same length.
+The entries in these lists can be None, which represents empty value to the
+corresponding input.
+Parameters
+datasets – List of mlflow.data.dataset.Dataset object to be logged.
+contexts – List of context in which the dataset is used. For example: “training”, “testing”.
+This will be set as an input tag with key mlflow.data.context.
+tags_list – List of tags to be associated with the dataset. Dictionary of
+tag_key -> tag_value.
+models – List of mlflow.entities.LoggedModelInput instance to log as input
+to the run. Currently only Databricks managed MLflow supports this argument.
+Example 
+import numpy as np
+import mlflow
+array = np.asarray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+dataset = mlflow.data.from_numpy(array, source="data.csv")
+array2 = np.asarray([[-1, 2, 3], [-4, 5, 6]])
+dataset2 = mlflow.data.from_numpy(array2, source="data2.csv")
+# Log 2 input datasets used for training and test,
+# the training dataset has no tag.
+# the test dataset has tags `{"my_tag": "tag_value"}`.
+with mlflow.start_run():
+ mlflow.log_inputs(
+ [dataset, dataset2],
+ contexts=["training", "test"],
+ tags_list=[None, {"my_tag": "tag_value"}],
+ models=None,
+ )
+mlflow.log_issue(*, trace_id: str, issue_id: str, issue_name: Optional[str] = None, source: Optional[AssessmentSource] = None, run_id: Optional[str] = None, rationale: Optional[str] = None, metadata: Optional[dict[str, str]] = None, span_id: Optional[str] = None, evidence: Optional[Union[IssueEvidence, dict[str, typing.Any]]] = None) → Assessment[source] 
+Logs an issue reference to a Trace. This links a trace to a discovered issue.
+This API only takes keyword arguments.
+Parameters
+trace_id – The ID of the trace.
+issue_id – The ID of the issue to reference.
+issue_name – The name of the issue. If not provided, the issue name will be fetched
+using the issue ID.
+source – The source represents how this issue was detected on the trace, for example,
+human review or automatic AI scan. Must be an instance of
+AssessmentSource. If not provided, defaults to
+LLM_JUDGE source type.
+run_id – The ID of the run that detect the issue on the given trace.
+rationale – The rationale / justification for the issue reference.
+metadata – Additional metadata for the issue reference.
+span_id – The ID of the span associated with the issue, if it needs to be
+associated with a specific span in the trace. Defaults to the evidence’s
+primary span when evidence names one.
+evidence – Optional IssueEvidence (or its dictionary form)
+explaining the issue on this trace as an ordered walkthrough of its spans. Its
+summary is stored as the reference’s rationale and its steps as versioned
+metadata, so clients that predate structured evidence still read the summary.
+Every cited span must belong to the trace.
+Returns
+The created issue reference assessment.
+Return type
+Assessment
+Examples
+import mlflow
+from mlflow.entities import AssessmentSource, AssessmentSourceType
+# Log an issue reference to link a trace to a discovered issue
+issue_ref = mlflow.log_issue(
+ trace_id="tr-1234567890abcdef",
+ issue_id="iss-abcdef123456",
+ source=AssessmentSource(
+ source_type=AssessmentSourceType.LLM_JUDGE, source_id="issue-discovery-agent"
+ ),
+ run_id="run-123",
+ rationale="Response time exceeded 2 seconds threshold",
+)
+mlflow.log_metric(key: str, value: float, step: Optional[int] = None, synchronous: Optional[bool] = None, timestamp: Optional[int] = None, run_id: Optional[str] = None, model_id: Optional[str] = None, dataset: Optional[Union[mlflow.data.dataset.Dataset, Dataset]] = None) → mlflow.utils.async_logging.run_operations.RunOperations | None[source] 
+Log a metric under the current run. If no run is active, this method will create
+a new active run.
+Parameters
+key – Metric name. This string may only contain alphanumerics, underscores (_),
+dashes (-), periods (.), spaces ( ), and slashes (/).
+All backend stores will support keys up to length 250, but some may
+support larger keys.
+value – Metric value. Note that some special values such as +/- Infinity may be
+replaced by other values depending on the store. For example, the
+SQLAlchemy store replaces +/- Infinity with max / min float values.
+All backend stores will support values up to length 5000, but some
+may support larger values.
+step – Metric step. Defaults to zero if unspecified.
+synchronous – Experimental If True, blocks until the metric is logged
+successfully. If False, logs the metric asynchronously and
+returns a future representing the logging operation. If None, read from environment
+variable MLFLOW_ENABLE_ASYNC_LOGGING, which defaults to False if not set.
+timestamp – Time when this metric was calculated. Defaults to the current system time.
+run_id – If specified, log the metric to the specified run. If not specified, log the metric
+to the currently active run.
+model_id – The ID of the model associated with the metric. If not specified, use the current
+active model ID set by mlflow.set_active_model(). If no active model exists,
+the models IDs associated with the specified or active run will be used.
+dataset – The dataset associated with the metric.
+Returns
+When synchronous=True, returns None.
+When synchronous=False, returns RunOperations that represents future for
+logging operation.
+Example 
+import mlflow
+# Log a metric
+with mlflow.start_run():
+ mlflow.log_metric("mse", 2500.00)
+# Log a metric in async fashion.
+with mlflow.start_run():
+ mlflow.log_metric("mse", 2500.00, synchronous=False)
+mlflow.log_metrics(metrics: dict[str, float], step: Optional[int] = None, synchronous: Optional[bool] = None, run_id: Optional[str] = None, timestamp: Optional[int] = None, model_id: Optional[str] = None, dataset: Optional[Union[mlflow.data.dataset.Dataset, Dataset]] = None) → mlflow.utils.async_logging.run_operations.RunOperations | None[source] 
+Log multiple metrics for the current run. If no run is active, this method will create a new
+active run.
+Parameters
+metrics – Dictionary of metric_name: String -> value: Float. Note that some special
+values such as +/- Infinity may be replaced by other values depending on
+the store. For example, sql based store may replace +/- Infinity with
+max / min float values.
+step – A single integer step at which to log the specified
+Metrics. If unspecified, each metric is logged at step zero.
+synchronous – Experimental If True, blocks until the metrics are logged
+successfully. If False, logs the metrics asynchronously and
+returns a future representing the logging operation. If None, read from environment
+variable MLFLOW_ENABLE_ASYNC_LOGGING, which defaults to False if not set.
+run_id – Run ID. If specified, log metrics to the specified run. If not specified, log
+metrics to the currently active run.
+timestamp – Time when these metrics were calculated. Defaults to the current system time.
+model_id – The ID of the model associated with the metric. If not specified, use the current
+active model ID set by mlflow.set_active_model(). If no active model
+exists, the models IDs associated with the specified or active run will be used.
+dataset – The dataset associated with the metrics.
+Returns
+When synchronous=True, returns None. When synchronous=False, returns an
+mlflow.utils.async_logging.run_operations.RunOperations instance that
+represents future for logging operation.
+Example 
+import mlflow
+metrics = {"mse": 2500.00, "rmse": 50.00}
+# Log a batch of metrics
+with mlflow.start_run():
+ mlflow.log_metrics(metrics)
+# Log a batch of metrics in async fashion.
+with mlflow.start_run():
+ mlflow.log_metrics(metrics, synchronous=False)
+mlflow.log_outputs(models: Optional[list[LoggedModelOutput]] = None)[source] 
+Log outputs, such as models, to the active run. If there is no active run, a new run will be
+created.
+Parameters
+models – List of mlflow.entities.LoggedModelOutput instances to log
+as outputs to the run.
+Returns
+None.
+mlflow.log_param(key: str, value: Any, synchronous: Optional[bool] = None) → Any[source] 
+Log a parameter (e.g. model hyperparameter) under the current run. If no run is active,
+this method will create a new active run.
+Parameters
+key – Parameter name. This string may only contain alphanumerics, underscores (_), dashes
+(-), periods (.), spaces ( ), and slashes (/). All backend stores support keys up to
+length 250, but some may support larger keys.
+value – Parameter value, but will be string-ified if not. All built-in backend stores support
+values up to length 6000, but some may support larger values.
+synchronous – Experimental If True, blocks until the parameter is logged successfully. If
+False, logs the parameter asynchronously and returns a future representing the logging
+operation. If None, read from environment variable MLFLOW_ENABLE_ASYNC_LOGGING,
+which defaults to False if not set.
+Returns
+When synchronous=True, returns parameter value. When synchronous=False, returns an
+mlflow.utils.async_logging.run_operations.RunOperations instance that represents
+future for logging operation.
+Example 
+import mlflow
+with mlflow.start_run():
+ value = mlflow.log_param("learning_rate", 0.01)
+ assert value == 0.01
+ value = mlflow.log_param("learning_rate", 0.02, synchronous=False)
+mlflow.log_params(params: dict[str, typing.Any], synchronous: Optional[bool] = None, run_id: Optional[str] = None) → mlflow.utils.async_logging.run_operations.RunOperations | None[source] 
+Log a batch of params for the current run. If no run is active, this method will create a
+new active run.
+Parameters
+params – Dictionary of param_name: String -> value: (String, but will be string-ified if
+not)
+synchronous – Experimental If True, blocks until the parameters are logged
+successfully. If False, logs the parameters asynchronously and
+returns a future representing the logging operation. If None, read from environment
+variable MLFLOW_ENABLE_ASYNC_LOGGING, which defaults to False if not set.
+run_id – Run ID. If specified, log params to the specified run. If not specified, log
+params to the currently active run.
+Returns
+When synchronous=True, returns None. When synchronous=False, returns an
+mlflow.utils.async_logging.run_operations.RunOperations instance that
+represents future for logging operation.
+Example 
+import mlflow
+params = {"learning_rate": 0.01, "n_estimators": 10}
+# Log a batch of parameters
+with mlflow.start_run():
+ mlflow.log_params(params)
+# Log a batch of parameters in async fashion.
+with mlflow.start_run():
+ mlflow.log_params(params, synchronous=False)
+mlflow.log_stream(stream: io.BufferedIOBase | io.RawIOBase, artifact_file: str, run_id: Optional[str] = None) → None[source] 
+Log a binary file-like object (e.g., io.BytesIO) as an artifact.
+Parameters
+stream – A binary file-like object supporting .read() method (e.g., io.BytesIO).
+artifact_file – The run-relative artifact file path in posixpath format to which
+the stream content is saved (e.g. “dir/file.bin”).
+run_id – If specified, log the artifact to the specified run. If not specified, log the
+artifact to the currently active run.
+Example 
+import io
+import mlflow
+with mlflow.start_run():
+ # Log a BytesIO stream
+ bytes_stream = io.BytesIO(b"binary content")
+ mlflow.log_stream(bytes_stream, "binary_file.bin")
+mlflow.log_table(data: Union[dict[str, typing.Any], pandas.DataFrame], artifact_file: str, run_id: str | None = None) → None[source] 
+Log a table to MLflow Tracking as a JSON artifact. If the artifact_file already exists
+in the run, the data would be appended to the existing artifact_file.
+Parameters
+data – Dictionary or pandas.DataFrame to log.
+artifact_file – The run-relative artifact file path in posixpath format to which
+the table is saved (e.g. “dir/file.json”).
+run_id – If specified, log the table to the specified run. If not specified, log the
+table to the currently active run.
+Dictionary Example 
+import mlflow
+table_dict = {
+ "inputs": ["What is MLflow?", "What is Databricks?"],
+ "outputs": ["MLflow is ...", "Databricks is ..."],
+ "toxicity": [0.0, 0.0],
+}
+with mlflow.start_run():
+ # Log the dictionary as a table
+ mlflow.log_table(data=table_dict, artifact_file="qabot_eval_results.json")
+Pandas DF Example 
+import mlflow
+import pandas as pd
+table_dict = {
+ "inputs": ["What is MLflow?", "What is Databricks?"],
+ "outputs": ["MLflow is ...", "Databricks is ..."],
+ "toxicity": [0.0, 0.0],
+}
+df = pd.DataFrame.from_dict(table_dict)
+with mlflow.start_run():
+ # Log the df as a table
+ mlflow.log_table(data=df, artifact_file="qabot_eval_results.json")
+mlflow.log_text(text: str, artifact_file: str, run_id: Optional[str] = None) → None[source] 
+Log text as an artifact.
+Parameters
+text – String containing text to log.
+artifact_file – The run-relative artifact file path in posixpath format to which
+the text is saved (e.g. “dir/file.txt”).
+run_id – If specified, log the artifact to the specified run. If not specified, log the
+artifact to the currently active run.
+Example 
+import mlflow
+with mlflow.start_run():
+ # Log text to a file under the run's root artifact directory
+ mlflow.log_text("text1", "file1.txt")
+ # Log text in a subdirectory of the run's root artifact directory
+ mlflow.log_text("text2", "dir/file2.txt")
+ # Log HTML text
+ mlflow.log_text("<h1>header</h1>", "index.html")
+mlflow.log_trace(name: str = 'Task', request: Optional[Any] = None, response: Optional[Any] = None, intermediate_outputs: dict[str, typing.Any] | None = None, attributes: dict[str, typing.Any] | None = None, tags: dict[str, str] | None = None, start_time_ms: int | None = None, execution_time_ms: int | None = None) → str[source] 
+Warning
+mlflow.tracing.fluent.log_trace is deprecated since 3.6.0. This method will be removed in a future release.
+Create a trace with a single root span.
+This API is useful when you want to log an arbitrary (request, response) pair
+without structured OpenTelemetry spans. The trace is linked to the active experiment.
+Parameters
+name – The name of the trace (and the root span). Default to “Task”.
+request – Input data for the entire trace. This is also set on the root span of the trace.
+response – Output data for the entire trace. This is also set on the root span of the trace.
+intermediate_outputs – A dictionary of intermediate outputs produced by the model or agent
+while handling the request. Keys are the names of the outputs,
+and values are the outputs themselves. Values must be JSON-serializable.
+attributes – A dictionary of attributes to set on the root span of the trace.
+tags – A dictionary of tags to set on the trace.
+start_time_ms – The start time of the trace in milliseconds since the UNIX epoch.
+When not specified, current time is used for start and end time of the trace.
+execution_time_ms – The execution time of the trace in milliseconds since the UNIX epoch.
+Returns
+The ID of the logged trace.
+Example:
+import time
+import mlflow
+trace_id = mlflow.log_trace(
+ request="Does mlflow support tracing?",
+ response="Yes",
+ intermediate_outputs={
+ "retrieved_documents": ["mlflow documentation"],
+ "system_prompt": ["answer the question with yes or no"],
+ },
+ start_time_ms=int(time.time() * 1000),
+ execution_time_ms=5129,
+)
+trace = mlflow.get_trace(trace_id, flush=True)
+print(trace.data.intermediate_outputs)
+mlflow.login(backend: str = 'databricks', interactive: bool = True) → None[source] 
+Configure MLflow server authentication and connect MLflow to tracking server.
+This method provides a simple way to connect MLflow to its tracking server. Currently only
+Databricks tracking server is supported. Users will be prompted to enter the credentials if no
+existing Databricks profile is found, and the credentials will be saved to ~/.databrickscfg.
+Parameters
+backend – string, the backend of the tracking server. Currently only “databricks” is
+supported.
+interactive – bool, controls request for user input on missing credentials. If true, user
+input will be requested if no credentials are found, otherwise an exception will be
+raised if no credentials are found.
+Note
+When credentials resolve from ~/.databrickscfg (rather than from environment
+variables, OIDC, the Azure CLI, or another unified-auth source), this function uses
+the DEFAULT profile, or the profile named by the DATABRICKS_CONFIG_PROFILE
+environment variable. If you have multiple named profiles, for example one created
+by databricks auth login (which names the profile after the workspace host, not
+DEFAULT), set DATABRICKS_CONFIG_PROFILE=<name> before calling this function,
+or call mlflow.set_tracking_uri("databricks://<name>") explicitly.
+Example 
+import mlflow
+mlflow.login()
+with mlflow.start_run():
+ mlflow.log_param("p", 0)
+mlflow.override_feedback(*, trace_id: str, assessment_id: str, value: float | int | str | bool | dict[str, float | int | str | bool] | list[float | int | str | bool], rationale: Optional[str] = None, source: Optional[AssessmentSource] = None, metadata: Optional[dict[str, typing.Any]] = None) → Assessment[source] 
+Overrides an existing feedback assessment with a new assessment. This API
+logs a new assessment with the overrides field set to the provided assessment ID.
+The original assessment will be marked as invalid, but will otherwise be unchanged.
+This is useful when you want to correct an assessment generated by an LLM judge,
+but want to preserve the original assessment for future judge fine-tuning.
+If you want to mutate an assessment in-place, use update_assessment() instead.
+Parameters
+trace_id – The ID of the trace.
+assessment_id – The ID of the assessment to override.
+value – The new value of the assessment.
+rationale – The rationale of the new assessment.
+source – The source of the new assessment.
+metadata – Additional metadata for the new assessment.
+Returns
+The created assessment.
+Return type
+Assessment
+Examples
+import mlflow
+from mlflow.entities import AssessmentSource, AssessmentSourceType
+# First, log an initial LLM-generated feedback as a simulation
+llm_feedback = mlflow.log_feedback(
+ trace_id="tr-1234567890abcdef",
+ name="relevance",
+ value=0.6,
+ source=AssessmentSource(
+ source_type=AssessmentSourceType.LLM_JUDGE, source_id="gpt-4"
+ ),
+ rationale="Response partially addresses the question",
+)
+# Later, a human reviewer disagrees and wants to override
+corrected_assessment = mlflow.override_feedback(
+ trace_id="tr-1234567890abcdef",
+ assessment_id=llm_feedback.assessment_id,
+ value=0.9,
+ rationale="Response fully addresses the question with good examples",
+ source=AssessmentSource(
+ source_type=AssessmentSourceType.HUMAN, source_id="expert_reviewer@company.com"
+ ),
+ metadata={
+ "override_reason": "LLM underestimated relevance",
+ "review_date": "2024-01-15",
+ "confidence": "high",
+ },
+)
+mlflow.register_model(model_uri, name, await_registration_for=300, *, tags: dict[str, typing.Any] | None = None, env_pack: Optional[Union[Literal['databricks_model_serving'], mlflow.utils.env_pack.EnvPackConfig]] = None) → ModelVersion[source] 
+Create a new model version in model registry for the model files specified by model_uri.
+Note that this method assumes the model registry backend URI is the same as that of the
+tracking backend.
+Parameters
+model_uri – 
+URI referring to the MLmodel directory. Supported URI schemes include:
+runs:/ URIs (e.g., runs:/<run_id>/<artifact_path>) to register a model
+from a specific run. The run ID is recorded with the model version.
+models:/ URIs, which support two forms:
+models:/<model_name>/<version> to promote an existing registered
+model version. The source run lineage is preserved when the
+referenced model version has an associated source run.
+models:/<model_id> to create a new registered model version from a logged
+model (for example, one returned by log_model). The source
+run lineage is preserved.
+Local filesystem paths for registering locally-persisted MLflow models that were
+previously saved using save_model.
+name – Name of the registered model under which to create a new model version. If a
+registered model with the given name does not exist, it will be created
+automatically.
+await_registration_for – Number of seconds to wait for the model version to finish
+being created and is in READY status. By default, the function
+waits for five minutes. Specify 0 or None to skip waiting.
+tags – A dictionary of key-value pairs that are converted into
+mlflow.entities.model_registry.ModelVersionTag objects.
+env_pack – 
+Either a string or an EnvPackConfig. If specified,
+the model dependencies are optionally first installed into the current Python
+environment, and then the complete environment will be packaged and included
+in the registered model artifacts. If the string shortcut “databricks_model_serving” is
+used, then model dependencies will be installed in the current environment. This is
+useful when deploying the model to a serving environment like Databricks Model Serving.
+On ARM client images, this parameter is ignored with a warning and the model is
+registered without a packed environment.
+Note
+Experimental: This parameter may change or be removed in a future
+release without warning.
+Returns
+Single mlflow.entities.model_registry.ModelVersion object created by
+backend.
+Example 
+import mlflow.sklearn
+from mlflow.models import infer_signature
+from sklearn.datasets import make_regression
+from sklearn.ensemble import RandomForestRegressor
+mlflow.set_tracking_uri("sqlite:////tmp/mlruns.db")
+params = {"n_estimators": 3, "random_state": 42}
+X, y = make_regression(n_features=4, n_informative=2, random_state=0, shuffle=False)
+# Log MLflow entities
+with mlflow.start_run() as run:
+ rfr = RandomForestRegressor(**params).fit(X, y)
+ signature = infer_signature(X, rfr.predict(X))
+ mlflow.log_params(params)
+ mlflow.sklearn.log_model(
+ rfr,
+ name="sklearn-model",
+ signature=signature,
+ skops_trusted_types=["sklearn.tree._tree.Tree"],
+ )
+model_uri = f"runs:/{run.info.run_id}/sklearn-model"
+mv = mlflow.register_model(model_uri, "RandomForestRegressionModel")
+print(f"Name: {mv.name}")
+print(f"Version: {mv.version}")
+Output 
+Name: RandomForestRegressionModel
+Version: 1
+mlflow.restore_experiment(experiment_id: str) → None[source] 
+Restore a deleted experiment unless permanently deleted.
+Parameters
+experiment_id – The string-ified experiment ID returned from create_experiment.
+Example 
+import mlflow
+experiment_id = mlflow.create_experiment("New Experiment")
+mlflow.delete_experiment(experiment_id)
+# Examine the deleted experiment details.
+experiment = mlflow.get_experiment(experiment_id)
+print(f"Name: {experiment.name}")
+print(f"Artifact Location: {experiment.artifact_location}")
+print(f"Lifecycle_stage: {experiment.lifecycle_stage}")
+print(f"Last Updated timestamp: {experiment.last_update_time}")
+print("--")
+# Restore the experiment and examine the details.
+mlflow.restore_experiment(experiment_id)
+experiment = mlflow.get_experiment(experiment_id)
+print(f"Name: {experiment.name}")
+print(f"Artifact Location: {experiment.artifact_location}")
+print(f"Lifecycle_stage: {experiment.lifecycle_stage}")
+print(f"Last Updated timestamp: {experiment.last_update_time}")
+Output 
+Name: New Experiment
+Artifact Location: file:///.../mlruns/2
+Lifecycle_stage: deleted
+Last Updated timestamp: 1662004217511
+--
+Name: New Experiment
+Artifact Location: file:///.../mlruns/2
+Lifecycle_stage: active
+Last Updated timestamp: 1662004217512
+mlflow.restore_run(run_id: str) → None[source] 
+Restores a deleted run with the given ID.
+Parameters
+run_id – Unique identifier for the run to restore.
+Example 
+import mlflow
+with mlflow.start_run() as run:
+ mlflow.log_param("p", 0)
+run_id = run.info.run_id
+mlflow.delete_run(run_id)
+lifecycle_stage = mlflow.get_run(run_id).info.lifecycle_stage
+print(f"run_id: {run_id}; lifecycle_stage: {lifecycle_stage}")
+mlflow.restore_run(run_id)
+lifecycle_stage = mlflow.get_run(run_id).info.lifecycle_stage
+print(f"run_id: {run_id}; lifecycle_stage: {lifecycle_stage}")
+Output 
+run_id: 45f4af3e6fd349e58579b27fcb0b8277; lifecycle_stage: deleted
+run_id: 45f4af3e6fd349e58579b27fcb0b8277; lifecycle_stage: active
+mlflow.run(uri, entry_point='main', version=None, parameters=None, docker_args=None, experiment_name=None, experiment_id=None, backend='local', backend_config=None, storage_dir=None, synchronous=True, run_id=None, run_name=None, env_manager=None, build_image=False, docker_auth=None)[source] 
+Run an MLflow project. The project can be local or stored at a Git URI.
+MLflow provides built-in support for running projects locally or remotely on a Databricks or
+Kubernetes cluster. You can also run projects against other targets by installing an appropriate
+third-party plugin. See Community Plugins for more
+information.
+For information on using this method in chained workflows, see Building Multistep Workflows.
+Raises
+mlflow.exceptions.ExecutionException – is unsuccessful.
+Parameters
+uri – URI of project to run. A local filesystem path
+or a Git repository URI (e.g. https://github.com/mlflow/mlflow-example)
+pointing to a project directory containing an MLproject file.
+entry_point – Entry point to run within the project. If no entry point with the specified
+name is found, runs the project file entry_point as a script,
+using “python” to run .py files and the default shell (specified by
+environment variable $SHELL) to run .sh files.
+version – For Git-based projects, either a commit hash or a branch name.
+parameters – Parameters (dictionary) for the entry point command.
+docker_args – Arguments (dictionary) for the docker command.
+experiment_name – Name of experiment under which to launch the run.
+experiment_id – ID of experiment under which to launch the run.
+backend – Execution backend for the run: MLflow provides built-in support for “local”,
+“databricks”, and “kubernetes” (experimental) backends. If running against
+Databricks, will run against a Databricks workspace determined as follows:
+if a Databricks tracking URI of the form databricks://profile has been set
+(e.g. by setting the MLFLOW_TRACKING_URI environment variable), will run
+against the workspace specified by <profile>. Otherwise, runs against the
+workspace specified by the default Databricks CLI profile.
+backend_config – A dictionary, or a path to a JSON file (must end in ‘.json’), which will
+be passed as config to the backend. The exact content which should be
+provided is different for each execution backend and is documented
+at https://www.mlflow.org/docs/latest/projects.html.
+storage_dir – Used only if backend is “local”. MLflow downloads artifacts from
+distributed URIs passed to parameters of type path to subdirectories of
+storage_dir.
+synchronous – Whether to block while waiting for a run to complete. Defaults to True.
+Note that if synchronous is False and backend is “local”, this
+method will return, but the current process will block when exiting until
+the local run completes. If the current process is interrupted, any
+asynchronous runs launched via this method will be terminated. If
+synchronous is True and the run fails, the current process will
+error out as well.
+run_id – Note: this argument is used internally by the MLflow project APIs and should
+not be specified. If specified, the run ID will be used instead of
+creating a new run.
+run_name – The name to give the MLflow Run associated with the project execution.
+If None, the MLflow Run name is left unset.
+env_manager – 
+Specify an environment manager to create a new environment for the run and
+install project dependencies within that environment. The following values
+are supported:
+local: use the local environment
+virtualenv: use virtualenv (and pyenv for Python version management)
+uv: use uv
+conda: use conda
+If unspecified, MLflow automatically determines the environment manager to
+use by inspecting files in the project directory. For example, if
+python_env.yaml is present, virtualenv will be used.
+build_image – Whether to build a new docker image of the project or to reuse an existing
+image. Default: False (reuse an existing image)
+docker_auth – A dictionary representing information to authenticate with a Docker
+registry. See docker.client.DockerClient.login
+for available options.
+Returns
+mlflow.projects.SubmittedRun exposing information (e.g. run ID)
+about the launched run.
+Example 
+import mlflow
+project_uri = "https://github.com/mlflow/mlflow-example"
+params = {"alpha": 0.5, "l1_ratio": 0.01}
+# Run MLflow project and create a reproducible conda environment
+# on a local host
+mlflow.run(project_uri, parameters=params)
+Output 
+...
+...
+Elasticnet model (alpha=0.500000, l1_ratio=0.010000):
+RMSE: 0.788347345611717
+MAE: 0.6155576449938276
+R2: 0.19729662005412607
+... mlflow.projects: === Run (ID '6a5109febe5e4a549461e149590d0a7c') succeeded ===
+mlflow.search_experiments(view_type: int = 1, max_results: Optional[int] = None, filter_string: Optional[str] = None, order_by: Optional[list[str]] = None) → list[Experiment][source] 
+Search for experiments that match the specified search query.
+Parameters
+view_type – One of enum values ACTIVE_ONLY, DELETED_ONLY, or ALL
+defined in mlflow.entities.ViewType.
+max_results – If passed, specifies the maximum number of experiments desired. If not
+passed, all experiments will be returned.
+filter_string – 
+Filter query string (e.g., "name = 'my_experiment'"), defaults to
+searching for all experiments. The following identifiers, comparators, and logical
+operators are supported.
+Identifiers
+name: Experiment name
+creation_time: Experiment creation time
+last_update_time: Experiment last update time
+tags.<tag_key>: Experiment tag. If tag_key contains
+spaces, it must be wrapped with backticks (e.g., "tags.`extra key`").
+Comparators for string attributes and tags
+=: Equal to
+!=: Not equal to
+LIKE: Case-sensitive pattern match
+ILIKE: Case-insensitive pattern match
+Comparators for numeric attributes
+=: Equal to
+!=: Not equal to
+<: Less than
+<=: Less than or equal to
+>: Greater than
+>=: Greater than or equal to
+Logical operators
+AND: Combines two sub-queries and returns True if both of them are True.
+order_by – 
+List of columns to order by. The order_by column can contain an optional
+DESC or ASC value (e.g., "name DESC"). The default ordering is ASC,
+so "name" is equivalent to "name ASC". If unspecified, defaults to
+["last_update_time DESC"], which lists experiments updated most recently first.
+The following fields are supported:
+experiment_id: Experiment ID
+name: Experiment name
+creation_time: Experiment creation time
+last_update_time: Experiment last update time
+Returns
+A list of Experiment objects.
+Example 
+import mlflow
+def assert_experiment_names_equal(experiments, expected_names):
+ actual_names = [e.name for e in experiments if e.name != "Default"]
+ assert actual_names == expected_names, (actual_names, expected_names)
+mlflow.set_tracking_uri("sqlite:///:memory:")
+# Create experiments
+for name, tags in [
+ ("a", None),
+ ("b", None),
+ ("ab", {"k": "v"}),
+ ("bb", {"k": "V"}),
+]:
+ mlflow.create_experiment(name, tags=tags)
+# Search for experiments with name "a"
+experiments = mlflow.search_experiments(filter_string="name = 'a'")
+assert_experiment_names_equal(experiments, ["a"])
+# Search for experiments with name starting with "a"
+experiments = mlflow.search_experiments(filter_string="name LIKE 'a%'")
+assert_experiment_names_equal(experiments, ["ab", "a"])
+# Search for experiments with tag key "k" and value ending with "v" or "V"
+experiments = mlflow.search_experiments(filter_string="tags.k ILIKE '%v'")
+assert_experiment_names_equal(experiments, ["bb", "ab"])
+# Search for experiments with name ending with "b" and tag {"k": "v"}
+experiments = mlflow.search_experiments(filter_string="name LIKE '%b' AND tags.k = 'v'")
+assert_experiment_names_equal(experiments, ["ab"])
+# Sort experiments by name in ascending order
+experiments = mlflow.search_experiments(order_by=["name"])
+assert_experiment_names_equal(experiments, ["a", "ab", "b", "bb"])
+# Sort experiments by ID in descending order
+experiments = mlflow.search_experiments(order_by=["experiment_id DESC"])
+assert_experiment_names_equal(experiments, ["bb", "ab", "b", "a"])
+mlflow.search_model_versions(max_results: Optional[int] = None, filter_string: Optional[str] = None, order_by: Optional[list[str]] = None) → list[ModelVersion][source] 
+Search for model versions that satisfy the filter criteria.
+Parameters
+max_results – If passed, specifies the maximum number of models desired. If not
+passed, all models will be returned.
+filter_string – 
+Filter query string
+(e.g., "name = 'a_model_name' and tag.key = 'value1'"),
+defaults to searching for all model versions. The following identifiers, comparators,
+and logical operators are supported.
+Identifiers
+name: model name.
+source_path: model version source path.
+run_id: The id of the mlflow run that generates the model version.
+tags.<tag_key>: model version tag. If tag_key contains spaces, it must be
+wrapped with backticks (e.g., "tags.`extra key`").
+Comparators
+=: Equal to.
+!=: Not equal to.
+LIKE: Case-sensitive pattern match.
+ILIKE: Case-insensitive pattern match.
+IN: In a value list. Only run_id identifier supports IN comparator.
+Logical operators
+AND: Combines two sub-queries and returns True if both of them are True.
+order_by – List of column names with ASC|DESC annotation, to be used for ordering
+matching search results.
+Returns
+A list of mlflow.entities.model_registry.ModelVersion objects
+that satisfy the search expressions.
+Example 
+import mlflow
+from sklearn.linear_model import LogisticRegression
+for _ in range(2):
+ with mlflow.start_run():
+ mlflow.sklearn.log_model(
+ LogisticRegression(),
+ name="Cordoba",
+ registered_model_name="CordobaWeatherForecastModel",
+ )
+# Get all versions of the model filtered by name
+filter_string = "name = 'CordobaWeatherForecastModel'"
+results = mlflow.search_model_versions(filter_string=filter_string)
+print("-" * 80)
+for res in results:
+ print(f"name={res.name}; run_id={res.run_id}; version={res.version}")
+# Get the version of the model filtered by run_id
+filter_string = "run_id = 'ae9a606a12834c04a8ef1006d0cff779'"
+results = mlflow.search_model_versions(filter_string=filter_string)
+print("-" * 80)
+for res in results:
+ print(f"name={res.name}; run_id={res.run_id}; version={res.version}")
+Output 
+--------------------------------------------------------------------------------
+name=CordobaWeatherForecastModel; run_id=ae9a606a12834c04a8ef1006d0cff779; version=2
+name=CordobaWeatherForecastModel; run_id=d8f028b5fedf4faf8e458f7693dfa7ce; version=1
+--------------------------------------------------------------------------------
+name=CordobaWeatherForecastModel; run_id=ae9a606a12834c04a8ef1006d0cff779; version=2
+mlflow.search_registered_models(max_results: Optional[int] = None, filter_string: Optional[str] = None, order_by: Optional[list[str]] = None) → list[RegisteredModel][source] 
+Search for registered models that satisfy the filter criteria.
+Parameters
+max_results – If passed, specifies the maximum number of models desired. If not
+passed, all models will be returned.
+filter_string – 
+Filter query string (e.g., “name = ‘a_model_name’ and tag.key = ‘value1’”),
+defaults to searching for all registered models. The following identifiers, comparators,
+and logical operators are supported.
+Identifiers
+”name”: registered model name.
+”tags.<tag_key>”: registered model tag. If “tag_key” contains spaces, it must be
+wrapped with backticks (e.g., “tags.`extra key`”).
+Comparators
+”=”: Equal to.
+”!=”: Not equal to.
+”LIKE”: Case-sensitive pattern match.
+”ILIKE”: Case-insensitive pattern match.
+Logical operators
+”AND”: Combines two sub-queries and returns True if both of them are True.
+order_by – List of column names with ASC|DESC annotation, to be used for ordering
+matching search results.
+Returns
+A list of mlflow.entities.model_registry.RegisteredModel objects
+that satisfy the search expressions.
+Example 
+import mlflow
+from sklearn.linear_model import LogisticRegression
+with mlflow.start_run():
+ mlflow.sklearn.log_model(
+ LogisticRegression(),
+ name="Cordoba",
+ registered_model_name="CordobaWeatherForecastModel",
+ )
+ mlflow.sklearn.log_model(
+ LogisticRegression(),
+ name="Boston",
+ registered_model_name="BostonWeatherForecastModel",
+ )
+# Get search results filtered by the registered model name
+filter_string = "name = 'CordobaWeatherForecastModel'"
+results = mlflow.search_registered_models(filter_string=filter_string)
+print("-" * 80)
+for res in results:
+ for mv in res.latest_versions:
+ print(f"name={mv.name}; run_id={mv.run_id}; version={mv.version}")
+# Get search results filtered by the registered model name that matches
+# prefix pattern
+filter_string = "name LIKE 'Boston%'"
+results = mlflow.search_registered_models(filter_string=filter_string)
+print("-" * 80)
+for res in results:
+ for mv in res.latest_versions:
+ print(f"name={mv.name}; run_id={mv.run_id}; version={mv.version}")
+# Get all registered models and order them by ascending order of the names
+results = mlflow.search_registered_models(order_by=["name ASC"])
+print("-" * 80)
+for res in results:
+ for mv in res.latest_versions:
+ print(f"name={mv.name}; run_id={mv.run_id}; version={mv.version}")
+Output 
+--------------------------------------------------------------------------------
+name=CordobaWeatherForecastModel; run_id=248c66a666744b4887bdeb2f9cf7f1c6; version=1
+--------------------------------------------------------------------------------
+name=BostonWeatherForecastModel; run_id=248c66a666744b4887bdeb2f9cf7f1c6; version=1
+--------------------------------------------------------------------------------
+name=BostonWeatherForecastModel; run_id=248c66a666744b4887bdeb2f9cf7f1c6; version=1
+name=CordobaWeatherForecastModel; run_id=248c66a666744b4887bdeb2f9cf7f1c6; version=1
+mlflow.search_runs(experiment_ids: list[str] | None = None, filter_string: str = '', run_view_type: int = 1, max_results: int = 100000, order_by: list[str] | None = None, output_format: Literal['pandas', 'list'] = 'pandas', search_all_experiments: bool = False, experiment_names: list[str] | None = None) → list[Run] | pandas.DataFrame[source] 
+Search for Runs that fit the specified criteria.
+Parameters
+experiment_ids – List of experiment IDs. Search can work with experiment IDs or
+experiment names, but not both in the same call. Values other than
+None or [] will result in error if experiment_names is
+also not None or []. None will default to the active
+experiment if experiment_names is None or [].
+filter_string – Filter query string, defaults to searching all runs.
+run_view_type – one of enum values ACTIVE_ONLY, DELETED_ONLY, or ALL runs
+defined in mlflow.entities.ViewType.
+max_results – The maximum number of runs to put in the dataframe. Default is 100,000
+to avoid causing out-of-memory issues on the user’s machine.
+order_by – List of columns to order by (e.g., “metrics.rmse”). The order_by column
+can contain an optional DESC or ASC value. The default is ASC.
+The default ordering is to sort by start_time DESC, then run_id.
+output_format – The output format to be returned. If pandas, a pandas.DataFrame
+is returned and, if list, a list of mlflow.entities.Run
+is returned.
+search_all_experiments – Boolean specifying whether all experiments should be searched.
+Only honored if experiment_ids is [] or None.
+experiment_names – List of experiment names. Search can work with experiment IDs or
+experiment names, but not both in the same call. Values other
+than None or [] will result in error if experiment_ids
+is also not None or []. None will default to the active
+experiment if experiment_ids is None or [].
+Returns
+a list of mlflow.entities.Run. If
+output_format is pandas: pandas.DataFrame of runs, where each metric,
+parameter, and tag is expanded into its own column named metrics.*, params.*, or
+tags.* respectively. For runs that don’t have a particular metric, parameter, or tag,
+the value for the corresponding column is (NumPy) Nan, None, or None
+respectively.
+Return type
+If output_format is list
+Example 
+import mlflow
+# Create an experiment and log two runs under it
+experiment_name = "Social NLP Experiments"
+experiment_id = mlflow.create_experiment(experiment_name)
+with mlflow.start_run(experiment_id=experiment_id):
+ mlflow.log_metric("m", 1.55)
+ mlflow.set_tag("s.release", "1.1.0-RC")
+with mlflow.start_run(experiment_id=experiment_id):
+ mlflow.log_metric("m", 2.50)
+ mlflow.set_tag("s.release", "1.2.0-GA")
+# Search for all the runs in the experiment with the given experiment ID
+df = mlflow.search_runs([experiment_id], order_by=["metrics.m DESC"])
+print(df[["metrics.m", "tags.s.release", "run_id"]])
+print("--")
+# Search the experiment_id using a filter_string with tag
+# that has a case insensitive pattern
+filter_string = "tags.s.release ILIKE '%rc%'"
+df = mlflow.search_runs([experiment_id], filter_string=filter_string)
+print(df[["metrics.m", "tags.s.release", "run_id"]])
+print("--")
+# Search for all the runs in the experiment with the given experiment name
+df = mlflow.search_runs(experiment_names=[experiment_name], order_by=["metrics.m DESC"])
+print(df[["metrics.m", "tags.s.release", "run_id"]])
+Output 
+ metrics.m tags.s.release run_id
+0 2.50 1.2.0-GA 147eed886ab44633902cc8e19b2267e2
+1 1.55 1.1.0-RC 5cc7feaf532f496f885ad7750809c4d4
+--
+ metrics.m tags.s.release run_id
+0 1.55 1.1.0-RC 5cc7feaf532f496f885ad7750809c4d4
+--
+ metrics.m tags.s.release run_id
+0 2.50 1.2.0-GA 147eed886ab44633902cc8e19b2267e2
+1 1.55 1.1.0-RC 5cc7feaf532f496f885ad7750809c4d4
+mlflow.search_sessions(max_results: int = 100, run_id: Optional[str] = None, model_id: Optional[str] = None, include_spans: bool = True, locations: Optional[list[str]] = None) → list[Session][source] 
+Return complete sessions that match the given search criteria.
+A session is a collection of traces that share the same session ID, typically representing
+a multi-turn conversation or a series of related interactions. This API retrieves complete
+sessions by first identifying unique session IDs from traces, then fetching all traces
+belonging to each session in parallel.
+Parameters
+max_results – Maximum number of sessions to return. Default is 100.
+run_id – A run id to scope the search. When a trace is created under an active run,
+it will be associated with the run and you can filter on the run id to retrieve
+traces.
+model_id – If specified, search traces associated with the given model ID.
+include_spans – If True, include spans in the returned traces. Otherwise, only
+the trace metadata is returned. Default is True.
+locations – A list of locations to search over. To search over experiments, provide
+a list of experiment IDs. To search over UC tables on databricks, provide
+a list of locations in the format
+<catalog_name>.<schema_name>[.<table_prefix>].
+If not provided, the search will be performed across the current active experiment.
+Returns
+A list of Session objects, where each session
+contains Trace objects that share the same
+session ID. Sessions are ordered by the timestamp of their first trace (most recent first).
+Each Session object provides convenient access via session.id and supports
+iteration with for trace in session.
+Basic usage - search sessions in an experiment 
+import mlflow
+# Get all sessions from the current experiment
+sessions = mlflow.search_sessions()
+# Each session provides convenient access to ID and traces
+for session in sessions:
+ print(f"Session {session.id} has {len(session)} traces")
+ for trace in session:
+ print(f" Trace: {trace.info.trace_id}")
+Use sessions with evaluation 
+import mlflow
+# Get sessions for evaluation
+sessions = mlflow.search_sessions(
+ locations=["experiment_id"],
+ max_results=50,
+)
+# Flatten sessions for evaluation if needed
+all_traces = [trace for session in sessions for trace in session]
+mlflow.genai.evaluate(data=all_traces)
+mlflow.set_experiment(experiment_name: Optional[str] = None, experiment_id: Optional[str] = None, trace_location: Optional[UnityCatalog] = None) → Experiment[source] 
+Set the given experiment as the active experiment. The experiment must either be specified by
+name via experiment_name or by ID via experiment_id. The experiment name and ID cannot
+both be specified.
+Note
+If the experiment being set by name does not exist, a new experiment will be
+created with the given name. After the experiment has been created, it will be set
+as the active experiment. On certain platforms, such as Databricks, the experiment name
+must be an absolute path, e.g. "/Users/<username>/my-experiment".
+Parameters
+experiment_name – Case sensitive name of the experiment to be activated.
+experiment_id – ID of the experiment to be activated. If an experiment with this ID
+does not exist, an exception is thrown.
+trace_location – Optional UC trace location used to configure the experiment-derived
+tracing destination. Must be an instance of
+mlflow.entities.trace_location.UnityCatalog(...).
+Returns
+An instance of mlflow.entities.Experiment representing the new active
+experiment.
+Example 
+import mlflow
+# Set an experiment name, which must be unique and case-sensitive.
+experiment = mlflow.set_experiment("Social NLP Experiments")
+# Get Experiment Details
+print(f"Experiment_id: {experiment.experiment_id}")
+print(f"Artifact Location: {experiment.artifact_location}")
+print(f"Tags: {experiment.tags}")
+print(f"Lifecycle_stage: {experiment.lifecycle_stage}")
+Output 
+Experiment_id: 1
+Artifact Location: file:///.../mlruns/1
+Tags: {}
+Lifecycle_stage: active
+mlflow.set_experiment_tag(key: str, value: Any) → None[source] 
+Set a tag on the current experiment. Value is converted to a string.
+Parameters
+key – Tag name. This string may only contain alphanumerics, underscores (_), dashes (-),
+periods (.), spaces ( ), and slashes (/). All backend stores will support keys up to
+length 250, but some may support larger keys.
+value – Tag value, but will be string-ified if not. All backend stores will support values
+up to length 5000, but some may support larger values.
+Example 
+import mlflow
+with mlflow.start_run():
+ mlflow.set_experiment_tag("release.version", "2.2.0")
+mlflow.set_experiment_tags(tags: dict[str, typing.Any]) → None[source] 
+Set tags for the current active experiment.
+Parameters
+tags – Dictionary containing tag names and corresponding values.
+Example 
+import mlflow
+tags = {
+ "engineering": "ML Platform",
+ "release.candidate": "RC1",
+ "release.version": "2.2.0",
+}
+# Set a batch of tags
+with mlflow.start_run():
+ mlflow.set_experiment_tags(tags)
+mlflow.set_model_version_tag(name: str, version: Optional[str] = None, key: Optional[str] = None, value: Optional[Any] = None) → None[source] 
+Set a tag for the model version.
+Parameters
+name – Registered model name.
+version – Registered model version.
+key – Tag key to log. key is required.
+value – Tag value to log. value is required.
+mlflow.set_registry_uri(uri: str) → None[source] 
+Set the registry server URI. This method is especially useful if you have a registry server
+that’s different from the tracking server.
+Parameters
+uri – An empty string, or a local file path, prefixed with file:/. Data is stored
+locally at the provided file (or ./mlruns if empty). An HTTP URI like
+https://my-tracking-server:5000 or http://my-oss-uc-server:8080. A Databricks
+workspace, provided as the string “databricks” or, to use a Databricks CLI
+profile,
+“databricks://<profileName>”.
+Example 
+import mlflow
+# Set model registry uri, fetch the set uri, and compare
+# it with the tracking uri. They should be different
+mlflow.set_registry_uri("sqlite:////tmp/registry.db")
+mr_uri = mlflow.get_registry_uri()
+print(f"Current registry uri: {mr_uri}")
+tracking_uri = mlflow.get_tracking_uri()
+print(f"Current tracking uri: {tracking_uri}")
+# They should be different
+assert tracking_uri != mr_uri
+Output 
+Current registry uri: sqlite:////tmp/registry.db
+Current tracking uri: file:///.../mlruns
+mlflow.set_system_metrics_node_id(node_id)[source] 
+Set the system metrics node id.
+node_id is the identifier of the machine where the metrics are collected. This is useful in
+multi-node (distributed training) setup.
+mlflow.set_system_metrics_samples_before_logging(samples)[source] 
+Set the number of samples before logging system metrics.
+Every time samples samples have been collected, the system metrics will be logged to mlflow.
+By default samples=1.
+mlflow.set_system_metrics_sampling_interval(interval)[source] 
+Set the system metrics sampling interval.
+Every interval seconds, the system metrics will be collected. By default interval=10.
+mlflow.set_tag(key: str, value: Any, synchronous: Optional[bool] = None) → mlflow.utils.async_logging.run_operations.RunOperations | None[source] 
+Set a tag under the current run. If no run is active, this method will create a new active
+run.
+Parameters
+key – Tag name. This string may only contain alphanumerics, underscores (_), dashes (-),
+periods (.), spaces ( ), and slashes (/). All backend stores will support keys up to
+length 250, but some may support larger keys.
+value – Tag value, but will be string-ified if not. All backend stores will support values
+up to length 5000, but some may support larger values.
+synchronous – Experimental If True, blocks until the tag is logged successfully. If False,
+logs the tag asynchronously and returns a future representing the logging operation.
+If None, read from environment variable MLFLOW_ENABLE_ASYNC_LOGGING, which
+defaults to False if not set.
+Returns
+When synchronous=True, returns None. When synchronous=False, returns an
+mlflow.utils.async_logging.run_operations.RunOperations instance that
+represents future for logging operation.
+Example 
+import mlflow
+# Set a tag.
+with mlflow.start_run():
+ mlflow.set_tag("release.version", "2.2.0")
+# Set a tag in async fashion.
+with mlflow.start_run():
+ mlflow.set_tag("release.version", "2.2.1", synchronous=False)
+mlflow.set_tags(tags: dict[str, typing.Any], synchronous: Optional[bool] = None) → mlflow.utils.async_logging.run_operations.RunOperations | None[source] 
+Log a batch of tags for the current run. If no run is active, this method will create a
+new active run.
+Parameters
+tags – Dictionary of tag_name: String -> value: (String, but will be string-ified if
+not)
+synchronous – Experimental If True, blocks until tags are logged successfully. If False,
+logs tags asynchronously and returns a future representing the logging operation.
+If None, read from environment variable MLFLOW_ENABLE_ASYNC_LOGGING, which
+defaults to False if not set.
+Returns
+When synchronous=True, returns None. When synchronous=False, returns an
+mlflow.utils.async_logging.run_operations.RunOperations instance that
+represents future for logging operation.
+Example 
+import mlflow
+tags = {
+ "engineering": "ML Platform",
+ "release.candidate": "RC1",
+ "release.version": "2.2.0",
+}
+# Set a batch of tags
+with mlflow.start_run():
+ mlflow.set_tags(tags)
+# Set a batch of tags in async fashion.
+with mlflow.start_run():
+ mlflow.set_tags(tags, synchronous=False)
+mlflow.set_trace_tag(trace_id: str, key: str, value: str)[source] 
+Note
+Parameter request_id is deprecated. Use trace_id instead.
+Set a tag on the trace with the given trace ID.
+The trace can be an active one or the one that has already ended and recorded in the
+backend. Below is an example of setting a tag on an active trace. You can replace the
+trace_id parameter to set a tag on an already ended trace.
+import mlflow
+with mlflow.start_span(name="span") as span:
+ mlflow.set_trace_tag(span.trace_id, "key", "value")
+Parameters
+trace_id – The ID of the trace to set the tag on.
+key – The string key of the tag. Must be at most 250 characters long, otherwise
+it will be truncated when stored.
+value – The string value of the tag. Must be at most 250 characters long, otherwise
+it will be truncated when stored.
+mlflow.set_tracking_uri(uri: str | pathlib.Path) → None[source] 
+Set the tracking server URI. This does not affect the
+currently active run (if one exists), but takes effect for successive runs.
+Parameters
+uri – 
+An empty string, or a local file path, prefixed with file:/. Data is stored
+locally at the provided file (or ./mlruns if empty).
+An HTTP URI like https://my-tracking-server:5000.
+A Databricks workspace, provided as the string “databricks” or, to use a Databricks
+CLI profile,
+“databricks://<profileName>”.
+A pathlib.Path instance
+Example 
+import mlflow
+mlflow.set_tracking_uri("file:///tmp/my_tracking")
+tracking_uri = mlflow.get_tracking_uri()
+print(f"Current tracking uri: {tracking_uri}")
+Output 
+Current tracking uri: file:///tmp/my_tracking
+mlflow.set_workspace(workspace: str | None) → None[source] 
+Set the active workspace for subsequent MLflow operations.
+mlflow.start_run(run_id: Optional[str] = None, experiment_id: Optional[str] = None, run_name: Optional[str] = None, nested: bool = False, parent_run_id: Optional[str] = None, tags: Optional[dict[str, typing.Any]] = None, description: Optional[str] = None, log_system_metrics: Optional[bool] = None) → ActiveRun[source] 
+Start a new MLflow run, setting it as the active run under which metrics and parameters
+will be logged. The return value can be used as a context manager within a with block;
+otherwise, you must call end_run() to terminate the current run.
+If you pass a run_id or the MLFLOW_RUN_ID environment variable is set,
+start_run attempts to resume a run with the specified run ID and
+other parameters are ignored. run_id takes precedence over MLFLOW_RUN_ID.
+If resuming an existing run, the run status is set to RunStatus.RUNNING.
+MLflow sets a variety of default tags on the run, as defined in
+MLflow system tags.
+Parameters
+run_id – If specified, get the run with the specified UUID and log parameters
+and metrics under that run. The run’s end time is unset and its status
+is set to running, but the run’s other attributes (source_version,
+source_type, etc.) are not changed.
+experiment_id – ID of the experiment under which to create the current run (applicable
+only when run_id is not specified). If experiment_id argument
+is unspecified, will look for valid experiment in the following order:
+activated using set_experiment, MLFLOW_EXPERIMENT_NAME
+environment variable, MLFLOW_EXPERIMENT_ID environment variable,
+or the default experiment as defined by the tracking server.
+run_name – Name of new run, should be a non-empty string. Used only when run_id is
+unspecified. If a new run is created and run_name is not specified,
+a random name will be generated for the run.
+nested – Controls whether run is nested in parent run. True creates a nested run.
+parent_run_id – If specified, the current run will be nested under the run with
+the specified UUID. The parent run must be in the ACTIVE state.
+tags – An optional dictionary of string keys and values to set as tags on the run.
+If a run is being resumed, these tags are set on the resumed run. If a new run is
+being created, these tags are set on the new run.
+description – An optional string that populates the description box of the run.
+If a run is being resumed, the description is set on the resumed run.
+If a new run is being created, the description is set on the new run.
+log_system_metrics – bool, defaults to None. If True, system metrics will be logged
+to MLflow, e.g., cpu/gpu utilization. If None, we will check environment variable
+MLFLOW_ENABLE_SYSTEM_METRICS_LOGGING to determine whether to log system metrics.
+System metrics logging is an experimental feature in MLflow 2.8 and subject to change.
+Returns
+mlflow.ActiveRun object that acts as a context manager wrapping the
+run’s state.
+Example 
+import mlflow
+# Create nested runs
+experiment_id = mlflow.create_experiment("experiment1")
+with mlflow.start_run(
+ run_name="PARENT_RUN",
+ experiment_id=experiment_id,
+ tags={"version": "v1", "priority": "P1"},
+ description="parent",
+) as parent_run:
+ mlflow.log_param("parent", "yes")
+ with mlflow.start_run(
+ run_name="CHILD_RUN",
+ experiment_id=experiment_id,
+ description="child",
+ nested=True,
+ ) as child_run:
+ mlflow.log_param("child", "yes")
+print("parent run:")
+print(f"run_id: {parent_run.info.run_id}")
+print("description: {}".format(parent_run.data.tags.get("mlflow.note.content")))
+print("version tag value: {}".format(parent_run.data.tags.get("version")))
+print("priority tag value: {}".format(parent_run.data.tags.get("priority")))
+print("--")
+# Search all child runs with a parent id
+query = f"tags.mlflow.parentRunId = '{parent_run.info.run_id}'"
+results = mlflow.search_runs(experiment_ids=[experiment_id], filter_string=query)
+print("child runs:")
+print(results[["run_id", "params.child", "tags.mlflow.runName"]])
+# Create a nested run under the existing parent run
+with mlflow.start_run(
+ run_name="NEW_CHILD_RUN",
+ experiment_id=experiment_id,
+ description="new child",
+ parent_run_id=parent_run.info.run_id,
+) as child_run:
+ mlflow.log_param("new-child", "yes")
+Output 
+parent run:
+run_id: 8979459433a24a52ab3be87a229a9cdf
+description: starting a parent for experiment 7
+version tag value: v1
+priority tag value: P1
+--
+child runs:
+ run_id params.child tags.mlflow.runName
+0 7d175204675e40328e46d9a6a5a7ee6a yes CHILD_RUN
+mlflow.test(fn: Optional[Callable[[~ _P], mlflow.pytest.decorator._R]] = None) → Callable[[~_P], mlflow.pytest.decorator._R][source] 
+Note
+Experimental: This function may change or be removed in a future release without warning.
+Mark a test function for the MLflow pytest plugin.
+Supports both bare @mlflow.test and @mlflow.test(). Raises at test
+time if the plugin is not enabled, instead of silently running the test
+without MLflow run/trace management.
+mlflow.update_current_trace(tags: Optional[dict[str, str]] = None, metadata: Optional[dict[str, str]] = None, client_request_id: Optional[str] = None, request_preview: Optional[str] = None, response_preview: Optional[str] = None, state: Optional[Union[TraceState, str]] = None, model_id: Optional[str] = None, session_id: Optional[Union[str, list[str]]] = None, user: Optional[str] = None)[source] 
+Update the current active trace with the given options.
+Parameters
+tags – A dictionary of tags to update the trace with Tags are designed for mutable values,
+that can be updated after the trace is created via MLflow UI or API.
+metadata – A dictionary of metadata to update the trace with. Metadata cannot be updated
+once the trace is logged. It is suitable for recording immutable values like the
+git hash of the application version that produced the trace.
+client_request_id – Client supplied request ID to associate with the trace. This is
+useful for linking the trace back to a specific request in your application or
+external system. If None, the client request ID is not updated.
+request_preview – A preview of the request to be shown in the Trace list view in the UI.
+By default, MLflow will truncate the trace request naively by limiting the length.
+This parameter allows you to specify a custom preview string.
+response_preview – A preview of the response to be shown in the Trace list view in the UI.
+By default, MLflow will truncate the trace response naively by limiting the length.
+This parameter allows you to specify a custom preview string.
+state – The state to set on the trace. Can be a TraceState enum value or string.
+Only “OK” and “ERROR” are allowed. This overrides the overall trace state without
+affecting the status of the current span.
+model_id – The ID of the model to associate with the trace. If not set, the active
+model ID is associated with the trace.
+session_id – Session ID to associate with the trace. Stored as metadata under the
+mlflow.trace.session key. Pass a list of strings to identify the session at
+multiple hierarchy levels, outermost first, e.g.
+mlflow.update_current_trace(session_id=["trip-2", "ep-2"]); it is stored as a
+JSON array string, which counts toward the 250-character session ID limit.
+user – User identifier to associate with the trace. Stored as metadata under the
+mlflow.trace.user key.
+Example
+You can use this function either within a function decorated with @mlflow.trace or
+within the scope of the with mlflow.start_span context manager. If there is no active
+trace found, this function will raise an exception.
+Using within a function decorated with @mlflow.trace:
+@mlflow.trace
+def my_func(x):
+ mlflow.update_current_trace(tags={"fruit": "apple"}, client_request_id="req-12345")
+ return x + 1
+Using within the with mlflow.start_span context manager:
+with mlflow.start_span("span"):
+ mlflow.update_current_trace(tags={"fruit": "apple"}, client_request_id="req-12345")
+Updating user, session, and source information of the trace:
+mlflow.update_current_trace(
+ session_id="session-4f855da00427",
+ user="user-id-cc156f29bcfb",
+ metadata={
+ "mlflow.source.name": "inference.py",
+ "mlflow.source.git.commit": "1234567890",
+ "mlflow.source.git.repoURL": "https://github.com/mlflow/mlflow",
+ },
+)
+Updating request preview:
+import mlflow
+import openai
+@mlflow.trace
+def predict(messages: list[dict]) -> str:
+ # Customize the request preview to show the first and last messages
+ custom_preview = f"{messages[0]['content'][:10]} ... {messages[-1]['content'][:10]}"
+ mlflow.update_current_trace(request_preview=custom_preview)
+ # Call the model
+ response = openai.chat.completions.create(
+ model="o4-mini",
+ messages=messages,
+ )
+ return response.choices[0].message.content
+messages = [
+ {"role": "user", "content": "Hi, how are you?"},
+ {"role": "assistant", "content": "I'm good, thank you!"},
+ {"role": "user", "content": "What's your name?"},
+ # ... (long message history)
+ {"role": "assistant", "content": "Bye!"},
+]
+predict(messages)
+# The request preview rendered in the UI will be:
+# "Hi, how are you? ... Bye!"
+mlflow.update_workspace(name: str, description: Optional[str] = None, default_artifact_root: Optional[str] = None, trace_archival_config: Optional[TraceArchivalConfig] = None) → Workspace[source] 
+Update metadata for an existing workspace.
+Parameters
+name – The name of the workspace to update.
+description – New description, or None to leave unchanged.
+default_artifact_root – New artifact root URI, empty string to clear, or None.
+trace_archival_config – Optional archival settings; use "" to clear, None to keep.
+Returns
+The updated workspace.
+Raises
+MlflowException – If the workspace does not exist or no artifact root available.
+mlflow.validate_evaluation_results(validation_thresholds: dict[str, mlflow.models.evaluation.validation.MetricThreshold], candidate_result: mlflow.models.evaluation.base.EvaluationResult, baseline_result: Optional[mlflow.models.evaluation.base.EvaluationResult] = None)[source] 
+Validate the evaluation result from one model (candidate) against another
+model (baseline). If the candidate results do not meet the validation
+thresholds, an ModelValidationFailedException will be raised.
+Note
+This API is a replacement for the deprecated model validation
+functionality in the mlflow.evaluate() API.
+Parameters
+validation_thresholds – A dictionary of metric name to
+mlflow.models.MetricThreshold used for model validation.
+Each metric name must either be the name of a builtin metric or the
+name of a metric defined in the extra_metrics parameter.
+candidate_result – The evaluation result of the candidate model.
+Returned by the mlflow.evaluate() API.
+baseline_result – The evaluation result of the baseline model.
+Returned by the mlflow.evaluate() API.
+If set to None, the candidate model result will be
+compared against the threshold values directly.
+Code Example:
+Example of Model Validation 
+import mlflow
+from mlflow.models import MetricThreshold
+thresholds = {
+ "accuracy_score": MetricThreshold(
+ # accuracy should be >=0.8
+ threshold=0.8,
+ # accuracy should be at least 5 percent greater than baseline model accuracy
+ min_absolute_change=0.05,
+ # accuracy should be at least 0.05 greater than baseline model accuracy
+ min_relative_change=0.05,
+ greater_is_better=True,
+ ),
+}
+# Get evaluation results for the candidate model
+candidate_result = mlflow.evaluate(
+ model="<YOUR_CANDIDATE_MODEL_URI>",
+ data=eval_dataset,
+ targets="ground_truth",
+ model_type="classifier",
+)
+# Get evaluation results for the baseline model
+baseline_result = mlflow.evaluate(
+ model="<YOUR_BASELINE_MODEL_URI>",
+ data=eval_dataset,
+ targets="ground_truth",
+ model_type="classifier",
+)
+# Validate the results
+mlflow.validate_evaluation_results(
+ thresholds,
+ candidate_result,
+ baseline_result,
+)
+See the Model Validation documentation for more details.
+MLflow Tracing APIs 
+The mlflow module provides a set of high-level APIs for MLflow Tracing. For the detailed
+guidance on how to use these tracing APIs, please refer to the Tracing Fluent APIs Guide.
+mlflow.trace(func: Callable[[~ _P], mlflow.tracing.fluent._R], name: str | None = None, span_type: str = SpanType.UNKNOWN, attributes: dict[str, typing.Any] | None = None, output_reducer: Optional[Callable[[list[typing.Any]], Any]] = None, trace_destination: mlflow.entities.trace_location.TraceLocationBase | None = None, sampling_ratio_override: float | None = None, log_level: SpanLogLevel | str | None = None, links: list[Link] | None = None, description: str | None = None) → Callable[[~_P], mlflow.tracing.fluent._R][source] 
+mlflow.trace(func: None = None, name: str | None = None, span_type: str = SpanType.UNKNOWN, attributes: dict[str, typing.Any] | None = None, output_reducer: Optional[Callable[[list[typing.Any]], Any]] = None, trace_destination: mlflow.entities.trace_location.TraceLocationBase | None = None, sampling_ratio_override: float | None = None, log_level: SpanLogLevel | str | None = None, links: list[Link] | None = None, description: str | None = None) → Callable[[Callable[[~_P], mlflow.tracing.fluent._R]], Callable[[~_P], mlflow.tracing.fluent._R]]
+A decorator that creates a new span for the decorated function.
+When you decorate a function with this @mlflow.trace() decorator,
+a span will be created for the scope of the decorated function. The span will automatically
+capture the input and output of the function. When it is applied to a method, it doesn’t
+capture the self argument. Any exception raised within the function will set the span
+status to ERROR and detailed information such as exception message and stacktrace
+will be recorded to the attributes field of the span.
+For example, the following code will yield a span with the name "my_function",
+capturing the input arguments x and y, and the output of the function.
+import mlflow
+@mlflow.trace
+def my_function(x, y):
+ return x + y
+This is equivalent to doing the following using the mlflow.start_span() context
+manager, but requires less boilerplate code.
+import mlflow
+def my_function(x, y):
+ return x + y
+with mlflow.start_span("my_function") as span:
+ x = 1
+ y = 2
+ span.set_inputs({"x": x, "y": y})
+ result = my_function(x, y)
+ span.set_outputs({"output": result})
+The @mlflow.trace decorator currently support the following types of functions:
+Supported Function Types 
+Function Type
+Supported
+Sync
+✅
+Async
+✅ (>= 2.16.0)
+Generator
+✅ (>= 2.20.2)
+Async Generator
+✅ (>= 2.20.2)
+ClassMethod
+✅ (>= 3.0.0)
+StaticMethod
+✅ (>= 3.0.0)
+For more examples of using the @mlflow.trace decorator, including streaming/async
+handling, see the MLflow Tracing documentation.
+Tip
+The @mlflow.trace decorator is useful when you want to trace a function defined by
+yourself. However, you may also want to trace a function in external libraries. In
+such case, you can use this mlflow.trace() function to directly wrap the function,
+instead of using as the decorator. This will create the exact same span as the
+one created by the decorator i.e. captures information from the function call.
+import math
+import mlflow
+mlflow.trace(math.factorial)(5)
+Parameters
+func – The function to be decorated. Must not be provided when using as a decorator.
+name – The name of the span. If not provided, the name of the function will be used.
+span_type – The type of the span. Can be either a string or a
+SpanType enum value.
+attributes – A dictionary of attributes to set on the span.
+output_reducer – A function that reduces the outputs of the generator function into a
+single value to be set as the span output.
+trace_destination – The destination to log the trace to, such as MLflow Experiment. If
+not provided, the destination will be an active MLflow experiment or an destination
+set by the mlflow.tracing.set_destination() function. This parameter
+should only be used for root span and setting this for non-root spans will be
+ignored with a warning.
+sampling_ratio_override – The sampling ratio override for this specific function. Must be
+between 0.0 and 1.0. If provided, this overrides the global
+MLFLOW_TRACE_SAMPLING_RATIO setting. A value of 1.0 means all traces are sampled,
+0.5 means 50% are sampled, and 0.0 means no traces are sampled. If not provided (None),
+the global sampling ratio is used. Note: This only applies to root spans; nested calls
+always trace if the parent is traced.
+log_level – Optional severity level to attach to the span. Accepts a
+SpanLogLevel or its name
+(e.g. "INFO", "DEBUG"). If not provided, the span level is
+resolved from the span type at end time.
+links – A list of Link objects to associate with the span.
+description – An optional human-readable description of the span.
+mlflow.start_span(name: str = 'span', span_type: str | None = 'UNKNOWN', attributes: dict[str, typing.Any] | None = None, trace_destination: mlflow.entities.trace_location.TraceLocationBase | None = None, log_level: SpanLogLevel | str | None = None, run_id: str | None = None, links: list[Link] | None = None, description: str | None = None) → Generator[LiveSpan, None, None][source] 
+Context manager to create a new span and start it as the current span in the context.
+This context manager automatically manages the span lifecycle and parent-child relationships.
+The span will be ended when the context manager exits. Any exception raised within the
+context manager will set the span status to ERROR, and detailed information such as
+exception message and stacktrace will be recorded to the attributes field of the span.
+New spans can be created within the context manager, then they will be assigned as child
+spans.
+import mlflow
+with mlflow.start_span("my_span") as span:
+ x = 1
+ y = 2
+ span.set_inputs({"x": x, "y": y})
+ z = x + y
+ span.set_outputs(z)
+ span.set_attribute("key", "value")
+ # do something
+When this context manager is used in the top-level scope, i.e. not within another span context,
+the span will be treated as a root span. The root span doesn’t have a parent reference and
+the entire trace will be logged when the root span is ended.
+Tip
+If you want more explicit control over the trace lifecycle, you can use
+the mlflow.start_span_no_context() API. It provides lower
+level to start spans and control the parent-child relationships explicitly.
+However, it is generally recommended to use this context manager as long as it satisfies
+your requirements, because it requires less boilerplate code and is less error-prone.
+Note
+The context manager doesn’t propagate the span context across threads by default. see
+Multi Threading
+for how to propagate the span context across threads.
+Parameters
+name – The name of the span.
+span_type – The type of the span. Can be either a string or
+a SpanType enum value
+attributes – A dictionary of attributes to set on the span.
+trace_destination – The destination to log the trace to, such as MLflow Experiment. If
+not provided, the destination will be an active MLflow experiment or an destination
+set by the mlflow.tracing.set_destination() function. This parameter
+should only be used for root span and setting this for non-root spans will be
+ignored with a warning.
+log_level – Optional severity level to attach to the span. Accepts a
+SpanLogLevel or its name
+(e.g. "INFO", "DEBUG"). If not provided, the span level is
+resolved from the span type at end time.
+run_id – The ID of the MLflow run to associate with the trace. This parameter is
+only applied when creating a root span. If provided without an explicit
+trace_destination, the trace will be logged to the run’s experiment. If an
+active MLflow run is already set via mlflow.start_run(), this parameter takes
+precedence over the active run.
+links – A list of Link objects to associate with
+the span.
+description – An optional human-readable description of the span.
+Returns
+Yields an mlflow.entities.Span that represents the created span.
+mlflow.start_span_no_context(name: str, span_type: str = 'UNKNOWN', parent_span: Optional[LiveSpan] = None, inputs: Optional[Any] = None, attributes: Optional[dict[str, str]] = None, tags: Optional[dict[str, str]] = None, metadata: Optional[dict[str, str]] = None, experiment_id: Optional[str] = None, start_time_ns: Optional[int] = None, log_level: Optional[Union[SpanLogLevel, str]] = None, links: Optional[list[Link]] = None, description: Optional[str] = None) → LiveSpan[source] 
+Start a span without attaching it to the global tracing context.
+This is useful when you want to create a span without automatically linking
+with a parent span and instead manually manage the parent-child relationships.
+The span started with this function must be ended manually using the
+end() method of the span object.
+Parameters
+name – The name of the span.
+span_type – The type of the span. Can be either a string or
+a SpanType enum value
+parent_span – The parent span to link with. If None, the span will be treated as a root span.
+inputs – The input data for the span.
+attributes – A dictionary of attributes to set on the span.
+tags – A dictionary of tags to set on the trace.
+metadata – A dictionary of metadata to set on the trace.
+experiment_id – The experiment ID to associate with the trace. If not provided,
+the current active experiment will be used.
+start_time_ns – The start time of the span in nanoseconds. If not provided,
+the current time will be used.
+log_level – Optional severity level to attach to the span. Accepts a
+SpanLogLevel or its name
+(e.g. "INFO", "DEBUG"). If not provided, the span level is
+resolved from the span type at end time.
+links – A list of Link objects to associate with
+the span.
+description – An optional human-readable description of the span.
+Returns
+A mlflow.entities.Span that represents the created span.
+Example
+import mlflow
+root_span = mlflow.start_span_no_context("my_trace")
+# Create a child span
+child_span = mlflow.start_span_no_context(
+ "child_span",
+ # Manually specify the parent span
+ parent_span=root_span,
+)
+# Do something...
+child_span.end()
+root_span.end()
+mlflow.get_trace(trace_id: str, silent: bool = False, flush: bool = False) → Trace | None[source] 
+Note
+Parameter request_id is deprecated. Use trace_id instead.
+Get a trace by the given request ID if it exists.
+This function retrieves the trace from the in-memory buffer first, and if it doesn’t exist,
+it fetches the trace from the tracking store. If the trace is not found in the tracking store,
+it returns None.
+Parameters
+trace_id – The ID of the trace.
+silent – If True, suppress the warning message when the trace is not found. The API will
+return None without any warning. Default to False.
+flush – If True and the trace is not found, flush any pending async trace writes and
+retry. Useful in tests or scripts where async logging may not have completed.
+Default to False.
+import mlflow
+with mlflow.start_span(name="span") as span:
+ span.set_attribute("key", "value")
+trace = mlflow.get_trace(span.trace_id)
+print(trace)
+Returns
+A mlflow.entities.Trace objects with the given request ID.
+mlflow.search_traces(experiment_ids: list[str] | None = None, filter_string: str | None = None, max_results: int | None = None, order_by: list[str] | None = None, extract_fields: list[str] | None = None, run_id: str | None = None, return_type: Literal['pandas', 'list'] | None = None, model_id: str | None = None, sql_warehouse_id: str | None = None, include_spans: bool = True, locations: list[str] | None = None, flush: bool = False) → 'pandas.DataFrame' | list[Trace][source] 
+Note
+Parameter experiment_ids is deprecated. Use locations instead.
+Return traces that match the given list of search expressions within the experiments.
+Note
+If expected number of search results is large, consider using the
+MlflowClient.search_traces API directly to paginate through the results. This
+function returns all results in memory and may not be suitable for large result sets.
+Parameters
+experiment_ids – List of experiment ids to scope the search.
+filter_string – A search filter string.
+max_results – Maximum number of traces desired. If None, all traces matching the search
+expressions will be returned.
+order_by – List of order_by clauses.
+extract_fields – 
+Deprecated since version 3.6.0: This parameter is deprecated and will be removed in a future version.
+Specify fields to extract from traces using the format
+"span_name.[inputs|outputs].field_name" or "span_name.[inputs|outputs]".
+Note
+This parameter is only supported when the return type is set to “pandas”.
+For instance, "predict.outputs.result" retrieves the output "result" field from
+a span named "predict", while "predict.outputs" fetches the entire outputs
+dictionary, including keys "result" and "explanation".
+By default, no fields are extracted into the DataFrame columns. When multiple
+fields are specified, each is extracted as its own column. If an invalid field
+string is provided, the function silently returns without adding that field’s column.
+The supported fields are limited to "inputs" and "outputs" of spans. If the
+span name or field name contains a dot it must be enclosed in backticks. For example:
+# span name contains a dot
+extract_fields = ["`span.name`.inputs.field"]
+# field name contains a dot
+extract_fields = ["span.inputs.`field.name`"]
+# span name and field name contain a dot
+extract_fields = ["`span.name`.inputs.`field.name`"]
+run_id – A run id to scope the search. When a trace is created under an active run,
+it will be associated with the run and you can filter on the run id to retrieve the
+trace. See the example below for how to filter traces by run id.
+return_type – 
+The type of the return value. The following return types are supported. If
+the pandas library is installed, the default return type is “pandas”. Otherwise, the
+default return type is “list”.
+”pandas”: Returns a Pandas DataFrame containing information about traces
+where each row represents a single trace and each column represents a field of the
+trace e.g. trace_id, spans, etc.
+”list”: Returns a list of Trace objects.
+model_id – If specified, search traces associated with the given model ID.
+sql_warehouse_id – DEPRECATED. Use the MLFLOW_TRACING_SQL_WAREHOUSE_ID environment
+variable instead. The ID of the SQL warehouse to use for
+searching traces in inference tables or UC tables. Only used in Databricks.
+include_spans – If True, include spans in the returned traces. Otherwise, only
+the trace metadata is returned, e.g., trace ID, start time, end time, etc,
+without any spans. Default to True.
+locations – A list of locations to search over. To search over experiments, provide
+a list of experiment IDs. To search over UC tables on databricks, provide
+a list of locations in the format
+<catalog_name>.<schema_name>[.<table_prefix>].
+If not provided, the search will be performed across the current active experiment.
+flush – If True, flush any pending async trace writes before searching. Useful
+in tests or scripts to ensure all traces are visible. Default to False.
+Returns
+Traces that satisfy the search expressions. Either as a list of
+Trace objects or as a Pandas DataFrame,
+depending on the value of the return_type parameter.
+Search traces with extract_fields 
+import mlflow
+with mlflow.start_span(name="span1") as span:
+ span.set_inputs({"a": 1, "b": 2})
+ span.set_outputs({"c": 3, "d": 4})
+mlflow.search_traces(
+ extract_fields=["span1.inputs", "span1.outputs", "span1.outputs.c"],
+ return_type="pandas",
+)
+Search traces with extract_fields and non-dictionary span inputs and outputs 
+import mlflow
+with mlflow.start_span(name="non_dict_span") as span:
+ span.set_inputs(["a", "b"])
+ span.set_outputs([1, 2, 3])
+mlflow.search_traces(
+ extract_fields=["non_dict_span.inputs", "non_dict_span.outputs"],
+)
+Search traces by run ID and return as a list of Trace objects 
+import mlflow
+@mlflow.trace
+def traced_func(x):
+ return x + 1
+with mlflow.start_run() as run:
+ traced_func(1)
+mlflow.search_traces(run_id=run.info.run_id, return_type="list")
+mlflow.get_current_active_span() → LiveSpan | None[source] 
+Get the current active span in the global context.
+Attention
+This only works when the span is created with fluent APIs like @mlflow.trace or
+with mlflow.start_span. If a span is created with the
+mlflow.start_span_no_context APIs, it won’t be
+attached to the global context so this function will not return it.
+import mlflow
+@mlflow.trace
+def f():
+ span = mlflow.get_current_active_span()
+ span.set_attribute("key", "value")
+ return 0
+f()
+Returns
+The current active span if exists, otherwise None.
+mlflow.get_last_active_trace_id(thread_local: bool = False) → str | None[source] 
+Get the LAST active trace in the same process if exists.
+Warning
+This function is not thread-safe by default, returns the last active trace in
+the same process. If you want to get the last active trace in the current thread,
+set the thread_local parameter to True.
+Parameters
+thread_local – If True, returns the last active trace in the current thread. Otherwise,
+returns the last active trace in the same process. Default is False.
+Returns
+The ID of the last active trace if exists, otherwise None.
+import mlflow
+@mlflow.trace
+def f():
+ pass
+f()
+trace_id = mlflow.get_last_active_trace_id()
+# Set a tag on the trace
+mlflow.set_trace_tag(trace_id, "key", "value")
+# Get the full trace object
+trace = mlflow.get_trace(trace_id)
+mlflow.add_trace(trace: Trace | dict[str, typing.Any], target: Optional[LiveSpan] = None)[source] 
+Add a completed trace object into another trace.
+This is particularly useful when you call a remote service instrumented by
+MLflow Tracing. By using this function, you can merge the trace from the remote
+service into the current active local trace, so that you can see the full
+trace including what happens inside the remote service call.
+The following example demonstrates how to use this function to merge a trace from a remote
+service to the current active trace in the function.
+@mlflow.trace(name="predict")
+def predict(input):
+ # Call a remote service that returns a trace in the response
+ resp = requests.get("https://your-service-endpoint", ...)
+ # Extract the trace from the response
+ trace_json = resp.json().get("trace")
+ # Use the remote trace as a part of the current active trace.
+ # It will be merged under the span "predict" and exported together when it is ended.
+ mlflow.add_trace(trace_json)
+If you have a specific target span to merge the trace under, you can pass the target span
+def predict(input):
+ # Create a local span
+ with mlflow.start_span(name="predict") as span:
+ resp = requests.get("https://your-service-endpoint", ...)
+ trace_json = resp.json().get("trace")
+ # Merge the remote trace under the span created above
+ mlflow.add_trace(trace_json, target=span)
+Parameters
+trace – 
+A Trace object or a dictionary representation
+of the trace. The trace must be already completed i.e. no further updates should
+be made to it. Otherwise, this function will raise an exception.
+target – 
+The target span to merge the given trace.
+If provided, the trace will be merged under the target span.
+If not provided, the trace will be merged under the current active span.
+If not provided and there is no active span, a new span named “Remote Trace <…>”
+will be created and the trace will be merged under it.
+mlflow.log_assessment(trace_id: str, assessment: Assessment) → Assessment[source] 
+Logs an assessment to a Trace. The assessment can be an expectation or a feedback.
+Expectation: A label that represents the expected value for a particular operation.
+For example, an expected answer for a user question from a chatbot.
+Feedback: A label that represents the feedback on the quality of the operation.
+Feedback can come from different sources, such as human judges, heuristic scorers,
+or LLM-as-a-Judge.
+The following code annotates a trace with a feedback provided by LLM-as-a-Judge.
+import mlflow
+from mlflow.entities import Feedback
+feedback = Feedback(
+ name="faithfulness",
+ value=0.9,
+ rationale="The model is faithful to the input.",
+ metadata={"model": "gpt-4o-mini"},
+)
+mlflow.log_assessment(trace_id="1234", assessment=feedback)
+The following code annotates a trace with human-provided ground truth with source information.
+When the source is not provided, the default source is set to “default” with type “HUMAN”
+import mlflow
+from mlflow.entities import AssessmentSource, AssessmentSourceType, Expectation
+# Specify the annotator information as a source.
+source = AssessmentSource(
+ source_type=AssessmentSourceType.HUMAN,
+ source_id="john@example.com",
+)
+expectation = Expectation(
+ name="expected_answer",
+ value=42,
+ source=source,
+)
+mlflow.log_assessment(trace_id="1234", assessment=expectation)
+The expectation value can be any JSON-serializable value. For example, you may
+record the full LLM message as the expectation value.
+import mlflow
+from mlflow.entities.assessment import Expectation
+expectation = Expectation(
+ name="expected_message",
+ # Full LLM message including expected tool calls
+ value={
+ "role": "assistant",
+ "content": "The answer is 42.",
+ "tool_calls": [
+ {
+ "id": "1234",
+ "type": "function",
+ "function": {"name": "add", "arguments": "40 + 2"},
+ }
+ ],
+ },
+)
+mlflow.log_assessment(trace_id="1234", assessment=expectation)
+You can also log an error information during the feedback generation process. To do so,
+provide an instance of AssessmentError to the error
+parameter, and leave the value parameter as None.
+import mlflow
+from mlflow.entities import AssessmentError, Feedback
+error = AssessmentError(
+ error_code="RATE_LIMIT_EXCEEDED",
+ error_message="Rate limit for the judge exceeded.",
+)
+feedback = Feedback(
+ trace_id="1234",
+ name="faithfulness",
+ error=error,
+)
+mlflow.log_assessment(trace_id="1234", assessment=feedback)
+mlflow.log_expectation(*, trace_id: str, name: str, value: Any, source: Optional[AssessmentSource] = None, metadata: Optional[dict[str, typing.Any]] = None, span_id: Optional[str] = None) → Assessment[source] 
+Logs an expectation (e.g. ground truth label) to a Trace. This API only takes keyword arguments.
+Parameters
+trace_id – The ID of the trace.
+name – The name of the expectation assessment e.g., “expected_answer
+value – The value of the expectation. It can be any JSON-serializable value.
+source – The source of the expectation assessment. Must be an instance of
+AssessmentSource. If not provided,
+default to HUMAN source type.
+metadata – Additional metadata for the expectation.
+span_id – The ID of the span associated with the expectation, if it needs be
+associated with a specific span in the trace.
+Returns
+The created expectation assessment.
+Return type
+Assessment
+Examples
+import mlflow
+from mlflow.entities import AssessmentSource, AssessmentSourceType
+# Log simple expected answer
+expectation = mlflow.log_expectation(
+ trace_id="tr-1234567890abcdef",
+ name="expected_answer",
+ value="The capital of France is Paris.",
+ source=AssessmentSource(
+ source_type=AssessmentSourceType.HUMAN, source_id="annotator@company.com"
+ ),
+ metadata={"question_type": "factual", "difficulty": "easy"},
+)
+# Log expected classification label
+mlflow.log_expectation(
+ trace_id="tr-1234567890abcdef",
+ name="expected_category",
+ value="positive",
+ source=AssessmentSource(
+ source_type=AssessmentSourceType.HUMAN, source_id="data_labeler_001"
+ ),
+ metadata={"labeling_session": "batch_01", "confidence": 0.95},
+)
+mlflow.log_feedback(*, trace_id: str, name: str = 'feedback', value: Optional[Union[float, int, str, bool, dict[str, float | int | str | bool], list[float | int | str | bool]]] = None, source: Optional[AssessmentSource] = None, error: Optional[Union[Exception, AssessmentError]] = None, rationale: Optional[str] = None, metadata: Optional[dict[str, typing.Any]] = None, span_id: Optional[str] = None) → Assessment[source] 
+Logs feedback to a Trace. This API only takes keyword arguments.
+Parameters
+trace_id – The ID of the trace.
+name – The name of the feedback assessment e.g., “faithfulness”. Defaults to
+“feedback” if not provided.
+value – The value of the feedback. Can be None, or one of the following types:
+- float
+- int
+- str
+- bool
+- list of values of the same types as above
+- dict with string keys and values of the same types as above
+source – The source of the feedback assessment. Must be an instance of
+AssessmentSource. If not provided, defaults to
+CODE source type
+error – An error object representing any issues encountered while computing the
+feedback, e.g., a timeout error from an LLM judge. Accepts an exception
+object, or an AssessmentError object. Either
+this or value must be provided.
+rationale – The rationale / justification for the feedback.
+metadata – Additional metadata for the feedback.
+span_id – The ID of the span associated with the feedback, if it needs be
+associated with a specific span in the trace.
+Returns
+The created feedback assessment.
+Return type
+Assessment
+Examples
+import mlflow
+from mlflow.entities import AssessmentSource, AssessmentSourceType
+# Log simple feedback score
+feedback = mlflow.log_feedback(
+ trace_id="tr-1234567890abcdef",
+ name="relevance",
+ value=0.9,
+ source=AssessmentSource(
+ source_type=AssessmentSourceType.LLM_JUDGE, source_id="gpt-4"
+ ),
+ rationale="Response directly addresses the user's question",
+)
+# Log detailed feedback with structured data
+mlflow.log_feedback(
+ trace_id="tr-1234567890abcdef",
+ name="quality_metrics",
+ value={"accuracy": 0.95, "completeness": 0.88, "clarity": 0.92, "overall": 0.92},
+ source=AssessmentSource(
+ source_type=AssessmentSourceType.HUMAN, source_id="expert_evaluator"
+ ),
+ rationale="High accuracy and clarity, slightly incomplete coverage",
+)
+mlflow.update_assessment(trace_id: str, assessment_id: str, assessment: Assessment) → Assessment[source] 
+Updates an existing expectation (ground truth) in a Trace.
+Parameters
+trace_id – The ID of the trace.
+assessment_id – The ID of the expectation or feedback assessment to update.
+assessment – The updated assessment.
+Returns
+The updated feedback or expectation assessment.
+Return type
+Assessment
+Example:
+The following code updates an existing expectation with a new value.
+To update other fields, provide the corresponding parameters.
+import mlflow
+from mlflow.entities import Expectation, ExpectationValue
+# Create an expectation with value 42.
+response = mlflow.log_assessment(
+ trace_id="1234",
+ assessment=Expectation(name="expected_answer", value=42),
+)
+assessment_id = response.assessment_id
+# Update the expectation with a new value 43.
+mlflow.update_assessment(
+ trace_id="1234",
+ assessment_id=assessment.assessment_id,
+ assessment=Expectation(name="expected_answer", value=43),
+)
+mlflow.delete_assessment(trace_id: str, assessment_id: str)[source] 
+Deletes an assessment associated with a trace.
+Parameters
+trace_id – The ID of the trace.
+assessment_id – The ID of the assessment to delete.
+mlflow.tracing.configure(span_processors: list[typing.Callable[[ForwardRef('LiveSpan')], NoneType]] | None = None) → mlflow.tracing.config.TracingConfigContext[source]
+Configure MLflow tracing. Can be used as function or context manager.
+Only updates explicitly provided arguments, leaving others unchanged.
+Parameters
+span_processors – List of functions to process spans before export.
+This is helpful for filtering/masking particular attributes from the span to
+prevent sensitive data from being logged or for reducing the size of the span.
+Each function must accept a single argument of type LiveSpan and should not
+return any value. When multiple functions are provided, they are applied
+sequentially in the order they are provided.
+Returns
+Context manager for temporary configuration changes.
+When used as a function, the configuration changes persist.
+When used as a context manager, changes are reverted on exit.
+Return type
+TracingConfigContext
+Examples
+def pii_filter(span):
+ """Example PII filter that masks sensitive data in span attributes."""
+ # Mask sensitive inputs
+ if inputs := span.inputs:
+ for key, value in inputs.items():
+ if "password" in key.lower() or "token" in key.lower():
+ span.set_inputs({**inputs, key: "[REDACTED]"})
+ # Mask sensitive outputs
+ if outputs := span.outputs:
+ if isinstance(outputs, dict):
+ for key in outputs:
+ if "secret" in key.lower():
+ outputs[key] = "[REDACTED]"
+ span.set_outputs(outputs)
+ # Mask sensitive attributes
+ for attr_key in list(span.attributes.keys()):
+ if "api_key" in attr_key.lower():
+ span.set_attribute(attr_key, "[REDACTED]")
+# Permanent configuration change
+mlflow.tracing.configure(span_processors=[pii_filter])
+# Temporary configuration change
+with mlflow.tracing.configure(span_processors=[pii_filter]):
+ # PII filtering enabled only in this block
+ pass
+mlflow.tracing.context(metadata: dict[str, str] | None = None, tags: dict[str, str] | None = None, enabled: bool | None = None, session_id: str | list[str] | None = None, user: str | None = None) → Generator[None, None, None][source]
+A context manager that injects metadata and/or tags into any trace created
+within its scope, without creating a wrapper span. It can also be used to
+selectively disable tracing within the scope.
+This is useful when you need to attach trace-level information (e.g. session
+IDs) to traces produced by code you don’t control like auto-instrumented libraries,
+or when you want to suppress tracing for a specific code block without affecting
+the global tracing state.
+import mlflow
+# Enable auto-tracing for LangChain
+mlflow.langchain.autolog()
+with mlflow.tracing.context(
+ session_id="session-123",
+ user="user-456",
+ tags={"project": "my-project"},
+):
+ # Any trace created inside this block will carry the metadata and tags.
+ agent.invoke("What is the capital of France?")
+# Disable tracing within a specific block
+with mlflow.tracing.context(enabled=False):
+ # No traces will be created inside this block.
+ agent.invoke("This call will not be traced")
+The context manager can be nested to combine multiple sets of metadata and tags. When same key
+is specified in multiple levels, the value from the inner level takes precedence.
+import mlflow
+with mlflow.tracing.context(metadata={"foo": "bar", "baz": "qux"}):
+ with mlflow.tracing.context(metadata={"foo": "baz", "qux": "quux"}):
+ my_func()
+# Trace created by my_func will have metadata={"foo": "baz", "baz": "qux", "qux": "quux"}
+Parameters
+metadata – Key-value pairs to inject into the trace’s request_metadata
+(immutable after trace creation).
+tags – Key-value pairs to inject into the trace’s tags.
+enabled – Whether tracing is enabled within the scope. If False, all
+tracing calls within the scope will return NoOpSpan without creating
+any traces. If None (default), the value is inherited from the outer
+scope. This does not affect the global tracing state set by
+mlflow.tracing.disable().
+session_id – Session ID to associate with traces created in this scope.
+Internally stored as metadata under the mlflow.trace.session key. Pass a list
+of strings to identify the session at multiple hierarchy levels, outermost first,
+e.g. session_id=["trip-2", "ep-2"]; it is stored as a JSON array string,
+which counts toward the 250-character session ID limit.
+user – User identifier to associate with traces created in this scope.
+Internally stored as metadata under the mlflow.trace.user key.
+mlflow.tracing.disable()[source]
+Disable tracing.
+Note
+This function sets up OpenTelemetry to use
+NoOpTracerProvider
+and effectively disables all tracing operations.
+Example:
+import mlflow
+@mlflow.trace
+def f():
+ return 0
+# Tracing is enabled by default
+f()
+assert len(mlflow.search_traces(flush=True)) == 1
+# Disable tracing
+mlflow.tracing.disable()
+f()
+assert len(mlflow.search_traces(flush=True)) == 1
+mlflow.tracing.disable_notebook_display()[source]
+Disables displaying the MLflow Trace UI in notebook output cells.
+Call mlflow.tracing.enable_notebook_display() to re-enable display.
+mlflow.tracing.enable()[source]
+Enable tracing.
+Example:
+import mlflow
+@mlflow.trace
+def f():
+ return 0
+# Tracing is enabled by default
+f()
+assert len(mlflow.search_traces(flush=True)) == 1
+# Disable tracing
+mlflow.tracing.disable()
+f()
+assert len(mlflow.search_traces(flush=True)) == 1
+# Re-enable tracing
+mlflow.tracing.enable()
+f()
+assert len(mlflow.search_traces(flush=True)) == 2
+mlflow.tracing.enable_notebook_display()[source]
+Enables the MLflow Trace UI in notebook output cells. The display is on
+by default, and the Trace UI will show up when any of the following operations
+are executed:
+On trace completion (i.e. whenever a trace is exported)
+When calling the mlflow.search_traces() fluent API
+When calling the mlflow.client.MlflowClient.get_trace()
+or mlflow.client.MlflowClient.search_traces() client APIs
+To disable, please call mlflow.tracing.disable_notebook_display().
+mlflow.tracing.get_bridged_tracer_provider() → opentelemetry.sdk.trace.TracerProvider[source]
+Return the OpenTelemetry TracerProvider that MLflow uses to generate traces.
+This is intended for bridging pure-OpenTelemetry instrumentation libraries into MLflow’s
+tracing pipeline. Many OpenTelemetry instrumentors accept a tracer_provider= argument
+(e.g. SomeInstrumentor().instrument(tracer_provider=...)); passing the provider returned
+by this function makes the spans they create flow through MLflow’s span processors, so they
+receive the correct trace ID and are exported to the configured MLflow destination.
+In the default isolated tracer provider mode
+(MLFLOW_USE_DEFAULT_TRACER_PROVIDER=True) this returns MLflow’s isolated provider, so
+the bridged spans do not depend on the process-global OpenTelemetry provider pipeline and
+the isolation of unrelated OpenTelemetry instrumentation is preserved. In unified mode
+(MLFLOW_USE_DEFAULT_TRACER_PROVIDER=False) this returns the shared global provider.
+Note
+This bridges where spans are exported. For the bridged spans to nest under an active
+@mlflow.trace / mlflow.start_span span, the instrumentor must also read MLflow’s
+active span as the parent. Instrumentors that read the process-global OpenTelemetry
+context can be enabled to do so by setting
+MLFLOW_TRACE_PROPAGATE_TO_OTEL_CONTEXT=True.
+Returns
+The TracerProvider instance used by MLflow, initializing it if necessary.
+mlflow.tracing.get_tracing_context_headers_for_http_request() → dict[str, str][source]
+Get the http request headers that hold information of the tracing context.
+The trace context is serialized as the traceparent header which is defined
+in the W3C TraceContext specification.
+For details, you can refer to
+https://opentelemetry.io/docs/concepts/context-propagation/
+and
+https://www.w3.org/TR/trace-context/#traceparent-header
+Returns
+The http request headers that hold information of the tracing context.
+Example (client code):
+import mlflow
+from mlflow.tracing import get_tracing_context_headers_for_http_request
+with mlflow.start_span("client-root") as client_span:
+ # Get the headers that hold information of the tracing context,
+ # and send request to remote agent with the headers
+ headers = get_tracing_context_headers_for_http_request()
+ resp = requests.post(f"{base_url}/remote_agent_handler", headers=headers)
+Example (server handler code):
+import mlflow
+from flask import Flask, request
+from mlflow.tracing import set_tracing_context_from_http_request_headers
+app = Flask(__name__)
+@app.post("/agent-handler")
+def handle():
+ headers = dict(request.headers)
+ with set_tracing_context_from_http_request_headers(headers):
+ with mlflow.start_span("server-handler") as span:
+ # call agent ...
+ span.set_attribute("key", "value")
+mlflow.tracing.reset()[source]
+Reset the flags that indicates whether the MLflow tracer provider has been initialized.
+This ensures that the tracer provider is re-initialized when next tracing
+operation is performed.
+mlflow.tracing.set_databricks_monitoring_sql_warehouse_id(sql_warehouse_id: str, experiment_id: Optional[str] = None) → None[source]
+Set the SQL warehouse ID used for Databricks production monitoring on traces logged to the given
+MLflow experiment. This only has an effect for experiments with UC schema as trace location.
+Parameters
+sql_warehouse_id – The SQL warehouse ID to use for monitoring.
+experiment_id – The MLflow experiment ID. If not provided, the current active experiment
+will be used.
+mlflow.tracing.set_destination(destination: mlflow.entities.trace_location.TraceLocationBase, *, context_local: bool = False)[source]
+Set a custom span location to which MLflow will export the traces.
+A destination specified by this function will take precedence over
+other configurations, such as tracking URI, OTLP environment variables.
+Parameters
+destination – 
+A trace location object that specifies the location of the trace data.
+Currently, the following locations are supported:
+MlflowExperimentLocation: Logs traces to
+an MLflow experiment.
+context_local – If False (default), the destination is set globally. If True, the destination
+is isolated per async task or thread, providing isolation in concurrent applications.
+Example
+Logging traces to MLflow Experiment:
+from mlflow.entities.trace_location import MlflowExperimentLocation
+mlflow.tracing.set_destination(MlflowExperimentLocation(experiment_id="123"))
+Note: This has the same effect as setting the active MLflow experiment via the
+MLFLOW_EXPERIMENT_ID environment variable or the mlflow.set_experiment API,
+but with narrower scope.
+Isolate the destination between async tasks or threads:
+from mlflow.tracing.destination import MlflowExperimentLocation
+mlflow.tracing.set_destination(
+ MlflowExperimentLocation(experiment_id="123"),
+ context_local=True,
+)
+The destination set with the context_local flag will only be effective within the
+current async task or thread. This is particularly useful when you want to send traces
+to different destinations from a multi-tenant application.
+** Reset the destination:**
+mlflow.tracing.reset()
+mlflow.tracing.set_experiment_trace_location(location: UCSchemaLocation, experiment_id: Optional[str] = None, sql_warehouse_id: Optional[str] = None) → UCSchemaLocation[source]
+Configure the storage location for traces of an experiment.
+Unity Catalog tables for storing trace data will be created in the specified schema.
+When tracing is enabled, all traces for the specified experiment will be
+stored in the provided Unity Catalog schema.
+Note
+If the experiment is already linked to a storage location, this will raise an error.
+Use mlflow.tracing.unset_experiment_trace_location to remove the existing storage
+location first and then set a new one.
+Parameters
+location – The storage location for experiment traces in Unity Catalog.
+experiment_id – The MLflow experiment ID to set the storage location for.
+If not specified, the current active experiment will be used.
+sql_warehouse_id – SQL warehouse ID for creating views and querying.
+If not specified, uses the value from MLFLOW_TRACING_SQL_WAREHOUSE_ID,
+fallback to the default SQL warehouse if the environment variable is not set.
+Returns
+The UCSchemaLocation object representing the configured storage location, including
+the table names of the spans and logs tables.
+Example
+import mlflow
+from mlflow.entities import UCSchemaLocation
+location = UCSchemaLocation(catalog_name="my_catalog", schema_name="my_schema")
+result = mlflow.tracing.set_experiment_trace_location(
+ location=location,
+ experiment_id="12345",
+)
+print(result.full_otel_spans_table_name) # my_catalog.my_schema.otel_spans_table
+@mlflow.trace
+def add(x):
+ return x + 1
+add(1) # this writes the trace to the storage location set above
+mlflow.tracing.set_span_chat_tools(span: LiveSpan, tools: list[ChatTool])[source]
+Set the mlflow.chat.tools attribute on the specified span. This
+attribute is used in the UI, and also by downstream applications that
+consume trace data, such as MLflow evaluate.
+Parameters
+span – The LiveSpan to add the attribute to
+tools – A list of standardized chat tool definitions (refer to the
+spec
+for details)
+Example:
+import mlflow
+from mlflow.tracing import set_span_chat_tools
+tools = [
+ {
+ "type": "function",
+ "function": {
+ "name": "add",
+ "description": "Add two numbers",
+ "parameters": {
+ "type": "object",
+ "properties": {
+ "a": {"type": "number"},
+ "b": {"type": "number"},
+ },
+ "required": ["a", "b"],
+ },
+ },
+ }
+]
+@mlflow.trace
+def f():
+ span = mlflow.get_current_active_span()
+ set_span_chat_tools(span, tools)
+ return 0
+f()
+mlflow.tracing.set_tracing_context_from_http_request_headers(headers: dict[str, str])[source]
+Context manager to extract the trace context from the http request headers
+and set the extracted trace context as the current trace context within the
+scope of this context manager.
+The trace context must be serialized as the ‘traceparent’ header which is defined
+in the W3C TraceContext specification, please see
+mlflow.tracing.get_tracing_context_headers_for_http_request()
+for how to get the http request headers.
+Parameters
+headers – The http request headers to extract the trace context from.
+Example (client code):
+import mlflow
+from mlflow.tracing import get_tracing_context_headers_for_http_request
+with mlflow.start_span("client-root") as client_span:
+ # Get the headers that hold information of the tracing context,
+ # and send request to remote agent with the headers
+ headers = get_tracing_context_headers_for_http_request()
+ resp = requests.post(f"{base_url}/remote_agent_handler", headers=headers)
+Example (server handler code):
+import mlflow
+from flask import Flask, request
+from mlflow.tracing import set_tracing_context_from_http_request_headers
+app = Flask(__name__)
+@app.post("/agent-handler")
+def handle():
+ headers = dict(request.headers)
+ with set_tracing_context_from_http_request_headers(headers):
+ with mlflow.start_span("server-handler") as span:
+ # call agent ...
+ span.set_attribute("key", "value")
+mlflow.tracing.unset_experiment_trace_location(location: UCSchemaLocation, experiment_id: Optional[str] = None) → None[source]
+Unset the storage location for traces of an experiment.
+This function removes the experiment storage location configuration,
+including the view and the experiment tag.
+Parameters
+location – The storage location to unset.
+experiment_id – The MLflow experiment ID to unset the storage location for. If not provided,
+the current active experiment will be used.
+Example
+import mlflow
+from mlflow.entities import UCSchemaLocation
+mlflow.tracing.unset_experiment_trace_location(
+ location=UCSchemaLocation(catalog_name="my_catalog", schema_name="my_schema"),
+ experiment_id="12345",
+)
+MLflow Logged Model APIs 
+The mlflow module provides a set of high-level APIs to interact with MLflow Logged Models.
+mlflow.clear_active_model() → None[source] 
+Clear the active model. This will clear the active model previously set by
+mlflow.set_active_model() or via the MLFLOW_ACTIVE_MODEL_ID environment variable
+or the _MLFLOW_ACTIVE_MODEL_ID legacy environment variable.
+from current thread. To temporarily switch
+the active model, use with mlflow.set_active_model(...) instead.
+Example 
+import mlflow
+# Set the active model by name
+mlflow.set_active_model(name="my_model")
+# Clear the active model
+mlflow.clear_active_model()
+# Check that the active model is None
+assert mlflow.get_active_model_id() is None
+# If you want to temporarily set the active model,
+# use `set_active_model` as a context manager instead
+with mlflow.set_active_model(name="my_model") as active_model:
+ assert mlflow.get_active_model_id() == active_model.model_id
+assert mlflow.get_active_model_id() is None
+mlflow.create_external_model(name: Optional[str] = None, source_run_id: Optional[str] = None, tags: Optional[dict[str, str]] = None, params: Optional[dict[str, str]] = None, model_type: Optional[str] = None, experiment_id: Optional[str] = None) → LoggedModel[source] 
+Create a new LoggedModel whose artifacts are stored outside of MLflow. This is useful for
+tracking parameters and performance data (metrics, traces etc.) for a model, application, or
+generative AI agent that is not packaged using the MLflow Model format.
+Parameters
+name – The name of the model. If not specified, a random name will be generated.
+source_run_id – The ID of the run that the model is associated with. If unspecified and a
+run is active, the active run ID will be used.
+tags – A dictionary of string keys and values to set as tags on the model.
+params – A dictionary of string keys and values to set as parameters on the model.
+model_type – The type of the model. This is a user-defined string that can be used to
+search and compare related models. For example, setting model_type="agent"
+enables you to easily search for this model and compare it to other models of
+type "agent" in the future.
+experiment_id – The experiment ID of the experiment to which the model belongs.
+Returns
+A new mlflow.entities.LoggedModel object with status READY.
+mlflow.delete_logged_model_tag(model_id: str, key: str) → None[source] 
+Delete a tag from the specified logged model.
+Parameters
+model_id – ID of the model.
+key – Tag key to delete.
+Example:
+import mlflow
+class DummyModel(mlflow.pyfunc.PythonModel):
+ def predict(self, context, model_input: list[str]) -> list[str]:
+ return model_input
+model_info = mlflow.pyfunc.log_model(name="model", python_model=DummyModel())
+mlflow.set_logged_model_tags(model_info.model_id, {"key": "value"})
+model = mlflow.get_logged_model(model_info.model_id)
+assert model.tags["key"] == "value"
+mlflow.delete_logged_model_tag(model_info.model_id, "key")
+model = mlflow.get_logged_model(model_info.model_id)
+assert "key" not in model.tags
+mlflow.finalize_logged_model(model_id: str, status: Union[Literal['READY', 'FAILED'], LoggedModelStatus]) → LoggedModel[source] 
+Finalize a model by updating its status.
+Parameters
+model_id – ID of the model to finalize.
+status – Final status to set on the model.
+Returns
+The updated model.
+Example:
+import mlflow
+from mlflow.entities import LoggedModelStatus
+model = mlflow.initialize_logged_model(name="model")
+logged_model = mlflow.finalize_logged_model(
+ model_id=model.model_id,
+ status=LoggedModelStatus.READY,
+)
+assert logged_model.status == LoggedModelStatus.READY
+mlflow.get_logged_model(model_id: str) → LoggedModel[source] 
+Get a logged model by ID.
+Parameters
+model_id – The ID of the logged model.
+Returns
+The logged model.
+Example:
+import mlflow
+class DummyModel(mlflow.pyfunc.PythonModel):
+ def predict(self, context, model_input: list[str]) -> list[str]:
+ return model_input
+model_info = mlflow.pyfunc.log_model(name="model", python_model=DummyModel())
+logged_model = mlflow.get_logged_model(model_id=model_info.model_id)
+assert logged_model.model_id == model_info.model_id
+mlflow.initialize_logged_model(name: Optional[str] = None, source_run_id: Optional[str] = None, tags: Optional[dict[str, str]] = None, params: Optional[dict[str, str]] = None, model_type: Optional[str] = None, experiment_id: Optional[str] = None) → LoggedModel[source] 
+Initialize a LoggedModel. Creates a LoggedModel with status PENDING and no artifacts. You
+must add artifacts to the model and finalize it to the READY state, for example by calling
+a flavor-specific log_model() method such as mlflow.pyfunc.log_model().
+Parameters
+name – The name of the model. If not specified, a random name will be generated.
+source_run_id – The ID of the run that the model is associated with. If unspecified and a
+run is active, the active run ID will be used.
+tags – A dictionary of string keys and values to set as tags on the model.
+params – A dictionary of string keys and values to set as parameters on the model.
+model_type – The type of the model.
+experiment_id – The experiment ID of the experiment to which the model belongs.
+Returns
+A new mlflow.entities.LoggedModel object with status PENDING.
+mlflow.last_logged_model() → LoggedModel | None[source] 
+Fetches the most recent logged model in the current session.
+If no model has been logged, None is returned.
+Returns
+The logged model.
+Example 
+import mlflow
+class DummyModel(mlflow.pyfunc.PythonModel):
+ def predict(self, context, model_input: list[str]) -> list[str]:
+ return model_input
+model_info = mlflow.pyfunc.log_model(name="model", python_model=DummyModel())
+last_model = mlflow.last_logged_model()
+assert last_model.model_id == model_info.model_id
+mlflow.search_logged_models(experiment_ids: list[str] | None = None, filter_string: str | None = None, datasets: list[dict[str, str]] | None = None, max_results: int | None = None, order_by: list[dict[str, typing.Any]] | None = None, output_format: Literal['pandas'] = 'pandas') → pandas.DataFrame[source] 
+mlflow.search_logged_models(experiment_ids: list[str] | None = None, filter_string: str | None = None, datasets: list[dict[str, str]] | None = None, max_results: int | None = None, order_by: list[dict[str, typing.Any]] | None = None, output_format: Literal['list'] = 'list') → list[LoggedModel]
+Search for logged models that match the specified search criteria.
+Parameters
+experiment_ids – List of experiment IDs to search for logged models. If not specified,
+the active experiment will be used.
+filter_string – 
+A SQL-like filter string to parse. The filter string syntax supports:
+Entity specification:
+attributes: attribute_name (default if no prefix is specified)
+metrics: metrics.metric_name
+parameters: params.param_name
+tags: tags.tag_name
+Comparison operators:
+For numeric entities (metrics and numeric attributes): <, <=, >, >=, =, !=
+For string entities (params, tags, string attributes): =, !=, IN, NOT IN
+Multiple conditions can be joined with ‘AND’
+String values must be enclosed in single quotes
+Example filter strings:
+creation_time > 100
+metrics.rmse > 0.5 AND params.model_type = ‘rf’
+tags.release IN (‘v1.0’, ‘v1.1’)
+params.optimizer != ‘adam’ AND metrics.accuracy >= 0.9
+datasets – 
+List of dictionaries to specify datasets on which to apply metrics filters
+For example, a filter string with metrics.accuracy > 0.9 and dataset with name
+“test_dataset” means we will return all logged models with accuracy > 0.9 on the
+test_dataset. Metric values from ANY dataset matching the criteria are considered.
+If no datasets are specified, then metrics across all datasets are considered in
+the filter. The following fields are supported:
+dataset_name (str):
+Required. Name of the dataset.
+dataset_digest (str):
+Optional. Digest of the dataset.
+max_results – The maximum number of logged models to return.
+order_by – 
+List of dictionaries to specify the ordering of the search results. The following
+fields are supported:
+field_name (str):
+Required. Name of the field to order by, e.g. “metrics.accuracy”.
+ascending (bool):
+Optional. Whether the order is ascending or not.
+dataset_name (str):
+Optional. If field_name refers to a metric, this field
+specifies the name of the dataset associated with the metric. Only metrics
+associated with the specified dataset name will be considered for ordering.
+This field may only be set if field_name refers to a metric.
+dataset_digest (str):
+Optional. If field_name refers to a metric, this field
+specifies the digest of the dataset associated with the metric. Only metrics
+associated with the specified dataset name and digest will be considered for
+ordering. This field may only be set if dataset_name is also set.
+output_format – The output format of the search results. Supported values are ‘pandas’
+and ‘list’.
+Returns
+The search results in the specified output format.
+Example:
+import mlflow
+class DummyModel(mlflow.pyfunc.PythonModel):
+ def predict(self, context, model_input: list[str]) -> list[str]:
+ return model_input
+model_info = mlflow.pyfunc.log_model(name="model", python_model=DummyModel())
+another_model_info = mlflow.pyfunc.log_model(
+ name="another_model", python_model=DummyModel()
+)
+models = mlflow.search_logged_models(output_format="list")
+assert [m.name for m in models] == ["another_model", "model"]
+models = mlflow.search_logged_models(
+ filter_string="name = 'another_model'", output_format="list"
+)
+assert [m.name for m in models] == ["another_model"]
+models = mlflow.search_logged_models(
+ order_by=[{"field_name": "creation_time", "ascending": True}], output_format="list"
+)
+assert [m.name for m in models] == ["model", "another_model"]
+mlflow.set_active_model(*, name: Optional[str] = None, model_id: Optional[str] = None) → ActiveModel[source] 
+Set the active model with the specified name or model ID, and it will be used for linking
+traces that are generated during the lifecycle of the model. The return value can be used as
+a context manager within a with block; otherwise, you must call set_active_model()
+to update active model.
+Parameters
+name – The name of the mlflow.entities.LoggedModel to set as active.
+If a LoggedModel with the name does not exist, it will be created under the current
+experiment. If multiple LoggedModels with the name exist, the latest one will be
+set as active.
+model_id – The ID of the mlflow.entities.LoggedModel to set as active.
+If no LoggedModel with the ID exists, an exception will be raised.
+Returns
+mlflow.ActiveModel object that acts as a context manager wrapping the
+LoggedModel’s state.
+Example 
+import mlflow
+# Set the active model by name
+mlflow.set_active_model(name="my_model")
+# Set the active model by model ID
+model = mlflow.create_external_model(name="test_model")
+mlflow.set_active_model(model_id=model.model_id)
+# Use the active model in a context manager
+with mlflow.set_active_model(name="new_model"):
+ print(mlflow.get_active_model_id())
+# Traces are automatically linked to the active model
+mlflow.set_active_model(name="my_model")
+@mlflow.trace
+def predict(model_input):
+ return model_input
+predict("abc")
+traces = mlflow.search_traces(
+ model_id=mlflow.get_active_model_id(), return_type="list", flush=True
+)
+assert len(traces) == 1
+mlflow.set_logged_model_tags(model_id: str, tags: dict[str, typing.Any]) → None[source] 
+Set tags on the specified logged model.
+Parameters
+model_id – ID of the model.
+tags – Tags to set on the model.
+Returns
+None
+Example:
+import mlflow
+class DummyModel(mlflow.pyfunc.PythonModel):
+ def predict(self, context, model_input: list[str]) -> list[str]:
+ return model_input
+model_info = mlflow.pyfunc.log_model(name="model", python_model=DummyModel())
+mlflow.set_logged_model_tags(model_info.model_id, {"key": "value"})
+model = mlflow.get_logged_model(model_info.model_id)
+assert model.tags["key"] == "value"
+mlflow.log_model_params(params: dict[str, str], model_id: Optional[str] = None) → None[source] 
+Log params to the specified logged model.
+Parameters
+params – Params to log on the model.
+model_id – ID of the model. If not specified, use the current active model ID.
+Returns
+None
+Example:
+import mlflow
+class DummyModel(mlflow.pyfunc.PythonModel):
+ def predict(self, context, model_input: list[str]) -> list[str]:
+ return model_input
+model_info = mlflow.pyfunc.log_model(name="model", python_model=DummyModel())
+mlflow.log_model_params(params={"param": "value"}, model_id=model_info.model_id)
+ Previous
+ Next 
+ © MLflow Project, a Series of LF Projects, LLC. All rights reserved.

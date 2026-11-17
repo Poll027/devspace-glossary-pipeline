@@ -1,0 +1,166 @@
+
+		Fine-tuning · Hugging Face
+ Hugging Face 
+ Search models, datasets, users... Ctrl K  
+ Models
+ Datasets
+ Spaces
+ Buckets
+ Docs
+ Enterprise 
+Pricing 
+Website 
+ Tasks 
+ HuggingChat 
+ Collections 
+ Languages 
+ Organizations  
+Community 
+ Blog 
+ Posts 
+ Daily Papers 
+ Hardware 
+ Learn 
+ Discord 
+ Forum 
+ GitHub  
+Solutions 
+ Team & Enterprise 
+ Hugging Face PRO 
+ Enterprise Support 
+ Inference Providers 
+ Inference Endpoints 
+ Storage Buckets    
+Log In 
+Sign Up    
+Transformers documentation 
+Fine-tuning   
+Transformers  🏡 View all docsAWS Trainium & InferentiaAccelerateBitsandbytesCLIChat UIDataset viewerDatasetsDeploying on AWSDiffusersGoogle CloudGoogle TPUsGradioHubHub Python LibraryHuggingface.jsInference Endpoints (dedicated)Inference ProvidersKernelsLeRobotLeaderboardsLightevalMicrosoft AzureOpenEnvOptimumPEFTReachy MiniSafetensorsSentence TransformersTRLTasksText Embeddings InferenceTokenizersTrackioTransformersTransformers.jsXetsmolagentstimm  
+Search documentation  
+mainv5.23.0v5.22.2v5.21.1v5.20.2v5.19.0v5.17.0v5.15.1v5.14.0v5.13.1v5.12.0v5.11.0v5.10.4v5.9.0v5.8.1v5.7.0v5.6.2v5.5.4v5.4.0v5.3.0v5.2.0v5.1.0v5.0.0v4.57.6v4.56.2v4.55.4v4.53.3v4.52.3v4.51.3v4.50.0v4.49.0v4.48.2v4.47.1v4.46.3v4.45.2v4.44.2v4.43.4v4.42.4v4.41.2v4.40.2v4.39.3v4.38.2v4.37.2v4.36.1v4.35.2v4.34.1v4.33.3v4.32.1v4.31.0v4.30.0v4.29.1v4.28.1v4.27.2v4.26.1v4.25.1v4.24.0v4.23.1v4.22.2v4.21.3v4.20.1v4.19.4v4.18.0v4.17.0v4.16.2v4.15.0v4.14.1v4.13.0v4.12.5v4.11.3v4.10.1v4.9.2v4.8.2v4.7.0v4.6.0v4.5.1v4.4.2v4.3.3v4.2.2v4.1.1v4.0.1v3.5.1v3.4.0v3.3.1v3.2.0v3.1.0v3.0.2v2.11.0v2.10.0v2.9.1v2.8.0v2.7.0v2.6.0v2.5.1v2.4.1v2.3.0v2.2.2v2.1.1v2.0.0v1.2.0v1.1.0v1.0.0doc-builder-html ARENESFRIDJAKOPTRUTRVIZH 
+Get started  
+TransformersInstallationQuickstart
+Base classes  
+Models  
+Preprocessors  
+Inference  
+Pipeline API  
+Generate API  
+Optimization  
+Chat with models  
+Serving  
+Training  
+Get started  
+Trainer overviewFine-tuning
+Customization  Parameter-efficient fine-tuning
+Performance  
+Distributed training  
+Hardware  
+Quantization  
+Ecosystem integrations  
+Resources  
+API   
+Join the Hugging Face community 
+and get access to the augmented documentation experience 
+Collaborate on models, datasets and Spaces 
+Faster examples with accelerated inference 
+Switch between documentation themes 
+Sign Up 
+to get started 
+ Copy page   
+ Fine-tuning 
+Fine-tuning continues training a large pretrained model on a smaller dataset specific to a task or domain. For example, fine-tuning on a dataset of coding examples helps the model get better at coding. Fine-tuning is identical to pretraining except you don’t start with random weights. It also requires far less compute, data, and time. 
+The tutorial below walks through fine-tuning a large language model with Trainer. 
+ Agent prompt  Copy 
+Help the user plan a fine-tuning run for their task. Before proposing a configuration, identify the task, pretrained model and revision, dataset fields, evaluation data, Transformers version, hardware, and available memory. Use this tutorial to check the data preparation, model loading, and Trainer setup that apply to their case. Do not assume the example dataset or model fits a different task. 
+Ask for missing details that could change the model, preprocessing, or training setup. State any assumptions. 
+Keep evaluation examples separate from training data. Select a model and tokenizer for the task, prepare the model’s expected inputs and labels, and choose a data collator that matches those inputs. 
+Set TrainingArguments to fit the user’s hardware and goals. Configure evaluation and checkpoint saving when the user needs them. Run a small test before a full training job, and check that the model receives the expected inputs, the loss is finite, and evaluation completes. 
+Do not start a full training run or upload artifacts unless the user asks. Report the proposed configuration, evidence from any test, expected resource tradeoffs, and anything you could not verify.   
+Log in to your Hugging Face account with your user token to push your fine-tuned model to the Hub. 
+ Copied 
+from huggingface_hub import login
+login() 
+ Tokenization 
+Load a dataset and tokenize the text column the model trains on (horoscope in the dataset below).  
+The tokenizer creates the model inputs, input_ids and attention_mask. The model’s forward method only accepts input_ids and attention_mask, so set remove_columns to drop columns like horoscope after tokenization. 
+Set truncation=True and a max_length to truncate longer sequences to a specified maximum length. 
+Use the train_test_split method to create a test split for evaluating the model. 
+ Copied 
+from datasets import load_dataset
+from transformers import AutoTokenizer, DataCollatorForLanguageModeling
+model_name = "Qwen/Qwen3-0.6B"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+dataset = load_dataset("karthiksagarn/astro_horoscope", split="train")
+def tokenize(batch):
+    return tokenizer(
+        batch["horoscope"],
+        truncation=True,
+        max_length=512,
+    )
+dataset = dataset.map(tokenize, batched=True, remove_columns=dataset.column_names)
+dataset = dataset.train_test_split(test_size=0.1) 
+A data collator assembles dataset samples into batches for the model to process. DataCollatorForLanguageModeling dynamically pads each batch to the longest sequence in that batch rather than padding every sequence in the dataset to the same length. This saves compute and memory by avoiding computing unnecessary padding tokens. 
+Set mlm=False to avoid randomly masking tokens. 
+ Copied 
+data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False) 
+ Loading a model 
+Load a pretrained checkpoint to fine-tune (see the Loading models guide for more details about loading models). 
+Set dtype="auto" to load the weights in their saved dtype. Without it, PyTorch loads weights in torch.float32, which doubles memory usage if the weights are originally torch.bfloat16. 
+ Copied 
+from transformers import AutoModelForCausalLM, TrainingArguments, Trainer
+model_name = "Qwen/Qwen3-0.6B"
+model = AutoModelForCausalLM.from_pretrained(model_name, dtype="auto") 
+ Training configuration 
+TrainingArguments provides all the options for customizing a training run. Only the most common arguments are covered here. Everything else has reasonable defaults or is only relevant to specific scenarios like distributed training. See the TrainingArguments API docs for a complete list of arguments. 
+training duration
+training optimizations
+evaluation and checkpointing
+logging 
+num_train_epochs and per_device_train_batch_size control training duration and batch size. learning_rate sets the initial learning rate for the optimizer. 
+Set bf16=True for fast mixed precision training if your hardware supports it (Ampere+ GPUs). Otherwise, fall back to fp16=True on older hardware. 
+gradient_accumulation_steps simulates a larger effective batch size by accumulating gradients over multiple forward passes before updating weights. 
+gradient_checkpointing trades compute for memory by recomputing intermediate activations during the backward pass instead of storing them. For a compromise between memory and speed, see partial checkpointing. 
+When gradient_checkpointing=True, set gradient_checkpointing_kwargs={"offload": True} to keep saved activations in pinned host memory and reduce GPU memory usage for long sequences. See offloading the saved activations for the trade-off. 
+Set train_sampling_strategy="group_by_length" to batch examples with similar lengths and reduce padding. See group samples by length for processor-based multimodal datasets and precomputed lengths. 
+eval_strategy and save_strategy determine when to evaluate a model during training and when to save a checkpoint. 
+load_best_model_at_end loads the best checkpoint when training finishes. It requires eval_strategy to be set. 
+logging_steps controls how frequently to update and return loss during training. 
+ Copied 
+training_args = TrainingArguments(
+    output_dir="qwen3-finetuned",
+    num_train_epochs=3,
+    per_device_train_batch_size=2,
+    gradient_accumulation_steps=8,
+    gradient_checkpointing=True,
+    gradient_checkpointing_kwargs={"every_n_layers": 4},
+    bf16=True,
+    learning_rate=2e-5,
+    logging_steps=10,
+    eval_strategy="epoch",
+    save_strategy="epoch",
+    load_best_model_at_end=True,
+) 
+ Training 
+Create a Trainer instance with all the necessary components, then call train() to begin. 
+ Copied 
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=dataset["train"],
+    eval_dataset=dataset["test"],
+    processing_class=tokenizer,
+    data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False),
+)
+trainer.train()
+trainer.push_to_hub() 
+push_to_hub() uploads the fine-tuned weights, generation config, tokenizer, and model config to the Hub. 
+ Next steps 
+Read the Trainer features guide for minimal working examples of common Trainer features like custom loss functions, memory-efficient evaluation, checkpointing, and more. 
+Read the Subclassing Trainer methods guide to learn how to subclass Trainer methods to support new and custom functionalities. 
+Read the Callbacks guide to learn how to hook into training events for logging, early stopping, and other custom behavior. 
+Read the Data collators guide to learn how to customize how samples are assembled into batches. 
+Run a training script on a rented GPU with Hugging Face Jobs. 
+Browse notebooks or the Resources > Task Recipes section for additional training examples on different text, audio, vision, and multimodal tasks.  Update on GitHub 
+←Trainer overview Subclassing Trainer methods→ 
+Fine-tuningTokenizationLoading a modelTraining configurationTrainingNext steps 

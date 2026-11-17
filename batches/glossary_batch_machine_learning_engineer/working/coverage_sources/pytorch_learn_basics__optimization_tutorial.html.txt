@@ -1,0 +1,684 @@
+
+Optimizing Model Parameters — PyTorch Tutorials 2.15.0+cu132 documentation
+Skip to main content
+Back to top
+Ctrl+K
+v2.15.0+cu132
+              Intro
+                  Learn the Basics
+                  Introduction to PyTorch - YouTube Series
+                  Deep Learning with PyTorch: A 60 Minute Blitz
+                  Learning PyTorch with Examples
+                  What is torch.nn really?
+                  Understanding requires_grad, retain_grad, Leaf, and Non-leaf Tensors
+                  NLP from Scratch
+                  Visualizing Models, Data, and Training with TensorBoard
+                  A guide on good usage of non_blocking and pin_memory() in PyTorch
+                  Data Loading Optimization in PyTorch
+                  Visualizing Gradients
+              Compilers
+                  Introduction to torch.compile
+                  torch.compile End-to-End Tutorial
+                  Compiled Autograd: Capturing a larger backward graph for torch.compile
+                  Inductor CPU backend debugging and profiling
+                  Dynamic Compilation Control with torch.compiler.set_stance
+                  Demonstration of torch.export flow, common challenges and the solutions to address them
+                  (beta) Compiling the optimizer with torch.compile
+                  (beta) Running the compiled optimizer with an LR Scheduler
+                  Using Variable Length Attention in PyTorch
+                  Using User-Defined Triton Kernels with torch.compile
+                  Compile Time Caching in torch.compile
+                  Reducing torch.compile cold start compilation time with regional compilation
+                  torch.export Tutorial
+                  torch.export AOTInductor Tutorial for Python runtime (Beta)
+                  Demonstration of torch.export flow, common challenges and the solutions to address them
+                  Introduction to ONNX
+                  Export a PyTorch model to ONNX
+                  Extending the ONNX Exporter Operator Support
+                  Export a model with control flow to ONNX
+                  Building a Convolution/Batch Norm fuser with torch.compile
+                  (beta) Building a Simple CPU Performance Profiler with FX
+              Domains
+                  TorchVision Object Detection Finetuning Tutorial
+                  Transfer Learning for Computer Vision Tutorial
+                  Adversarial Example Generation
+                  DCGAN Tutorial
+                  Spatial Transformer Networks Tutorial
+                  Reinforcement Learning (DQN) Tutorial
+                  Reinforcement Learning (PPO) with TorchRL Tutorial
+                  Train a Mario-playing RL Agent
+                  Pendulum: Writing your environment and transforms with TorchRL
+                  Introduction to TorchRec
+                  Exploring TorchRec sharding
+              Distributed
+                  PyTorch Distributed Overview
+                  Distributed Data Parallel in PyTorch - Video Tutorials
+                  Getting Started with Distributed Data Parallel
+                  Writing Distributed Applications with PyTorch
+                  Getting Started with Fully Sharded Data Parallel (FSDP2)
+                  Introduction to Libuv TCPStore Backend
+                  Large Scale Transformer model training with Tensor Parallel (TP)
+                  Introduction to Distributed Pipeline Parallelism
+                  Customize Process Group Backends Using Cpp Extensions
+                  Interactive Distributed Applications with Monarch
+                  Debugging Hangs with Flight Recorder Using TorchComms and Debug Server
+                  Distributed Training with Uneven Inputs Using the Join Context Manager
+                  Distributed training at scale with PyTorch and Ray Train
+              Deep Dive
+                  Profiling your PyTorch Module
+                  CUDA Graph Kernel Annotations and Profiling
+                  Parametrizations Tutorial
+                  Pruning Tutorial
+                  Inductor CPU backend debugging and profiling
+                  (Beta) Implementing High-Performance Transformers with Scaled Dot Product Attention (SDPA)
+                  Knowledge Distillation Tutorial
+                  Channels Last Memory Format in PyTorch
+                  Forward-mode Automatic Differentiation (Beta)
+                  Jacobians, Hessians, hvp, vhp, and more: composing function transforms
+                  Model ensembling
+                  Per-sample-gradients
+                  Using the PyTorch C++ Frontend
+                  Autograd in C++ Frontend
+              Extension
+                  PyTorch Custom Operators
+                  Double Backward with Custom Functions
+                  Fusing Convolution and Batch Norm using Custom Function
+                  Registering a Dispatched Operator in C++
+                  Extending dispatcher for a new backend in C++
+                  Facilitating New Backend Integration by PrivateUse1
+              Ecosystem
+                  Hyperparameter tuning using Ray Tune
+                  Serve PyTorch models at scale with Ray Serve
+                  Multi-Objective NAS with Ax
+                  Real Time Inference on Raspberry Pi 4 and 5 (40 fps!)
+                  Mosaic: Memory Profiling for PyTorch
+                  Distributed training at scale with PyTorch and Ray Train
+            More
+                Recipes
+                Unstable
+Go to
+pytorch.org 
+Ctrl+K
+X
+GitHub
+Discourse
+PyPi
+v2.15.0+cu132
+              Intro
+                  Learn the Basics
+                  Introduction to PyTorch - YouTube Series
+                  Deep Learning with PyTorch: A 60 Minute Blitz
+                  Learning PyTorch with Examples
+                  What is torch.nn really?
+                  Understanding requires_grad, retain_grad, Leaf, and Non-leaf Tensors
+                  NLP from Scratch
+                  Visualizing Models, Data, and Training with TensorBoard
+                  A guide on good usage of non_blocking and pin_memory() in PyTorch
+                  Data Loading Optimization in PyTorch
+                  Visualizing Gradients
+              Compilers
+                  Introduction to torch.compile
+                  torch.compile End-to-End Tutorial
+                  Compiled Autograd: Capturing a larger backward graph for torch.compile
+                  Inductor CPU backend debugging and profiling
+                  Dynamic Compilation Control with torch.compiler.set_stance
+                  Demonstration of torch.export flow, common challenges and the solutions to address them
+                  (beta) Compiling the optimizer with torch.compile
+                  (beta) Running the compiled optimizer with an LR Scheduler
+                  Using Variable Length Attention in PyTorch
+                  Using User-Defined Triton Kernels with torch.compile
+                  Compile Time Caching in torch.compile
+                  Reducing torch.compile cold start compilation time with regional compilation
+                  torch.export Tutorial
+                  torch.export AOTInductor Tutorial for Python runtime (Beta)
+                  Demonstration of torch.export flow, common challenges and the solutions to address them
+                  Introduction to ONNX
+                  Export a PyTorch model to ONNX
+                  Extending the ONNX Exporter Operator Support
+                  Export a model with control flow to ONNX
+                  Building a Convolution/Batch Norm fuser with torch.compile
+                  (beta) Building a Simple CPU Performance Profiler with FX
+              Domains
+                  TorchVision Object Detection Finetuning Tutorial
+                  Transfer Learning for Computer Vision Tutorial
+                  Adversarial Example Generation
+                  DCGAN Tutorial
+                  Spatial Transformer Networks Tutorial
+                  Reinforcement Learning (DQN) Tutorial
+                  Reinforcement Learning (PPO) with TorchRL Tutorial
+                  Train a Mario-playing RL Agent
+                  Pendulum: Writing your environment and transforms with TorchRL
+                  Introduction to TorchRec
+                  Exploring TorchRec sharding
+              Distributed
+                  PyTorch Distributed Overview
+                  Distributed Data Parallel in PyTorch - Video Tutorials
+                  Getting Started with Distributed Data Parallel
+                  Writing Distributed Applications with PyTorch
+                  Getting Started with Fully Sharded Data Parallel (FSDP2)
+                  Introduction to Libuv TCPStore Backend
+                  Large Scale Transformer model training with Tensor Parallel (TP)
+                  Introduction to Distributed Pipeline Parallelism
+                  Customize Process Group Backends Using Cpp Extensions
+                  Interactive Distributed Applications with Monarch
+                  Debugging Hangs with Flight Recorder Using TorchComms and Debug Server
+                  Distributed Training with Uneven Inputs Using the Join Context Manager
+                  Distributed training at scale with PyTorch and Ray Train
+              Deep Dive
+                  Profiling your PyTorch Module
+                  CUDA Graph Kernel Annotations and Profiling
+                  Parametrizations Tutorial
+                  Pruning Tutorial
+                  Inductor CPU backend debugging and profiling
+                  (Beta) Implementing High-Performance Transformers with Scaled Dot Product Attention (SDPA)
+                  Knowledge Distillation Tutorial
+                  Channels Last Memory Format in PyTorch
+                  Forward-mode Automatic Differentiation (Beta)
+                  Jacobians, Hessians, hvp, vhp, and more: composing function transforms
+                  Model ensembling
+                  Per-sample-gradients
+                  Using the PyTorch C++ Frontend
+                  Autograd in C++ Frontend
+              Extension
+                  PyTorch Custom Operators
+                  Double Backward with Custom Functions
+                  Fusing Convolution and Batch Norm using Custom Function
+                  Registering a Dispatched Operator in C++
+                  Extending dispatcher for a new backend in C++
+                  Facilitating New Backend Integration by PrivateUse1
+              Ecosystem
+                  Hyperparameter tuning using Ray Tune
+                  Serve PyTorch models at scale with Ray Serve
+                  Multi-Objective NAS with Ax
+                  Real Time Inference on Raspberry Pi 4 and 5 (40 fps!)
+                  Mosaic: Memory Profiling for PyTorch
+                  Distributed training at scale with PyTorch and Ray Train
+              Recipes
+                  Defining a Neural Network in PyTorch
+                  (beta) Using TORCH_LOGS python API with torch.compile
+                  What is a state_dict in PyTorch
+                  Warmstarting model using parameters from a different model in PyTorch
+                  Zeroing out gradients in PyTorch
+                  PyTorch Profiler
+                  Model Interpretability using Captum
+                  How to use TensorBoard with PyTorch
+                  Automatic Mixed Precision
+                  Performance Tuning Guide
+                  (beta) Compiling the optimizer with torch.compile
+                  Timer quick start
+                  Shard Optimizer States with ZeroRedundancyOptimizer
+                  Getting Started with CommDebugMode
+                  Demonstration of torch.export flow, common challenges and the solutions to address them
+                  PyTorch Benchmark
+                  Tips for Loading an nn.Module from a Checkpoint
+                  Reasoning about Shapes in PyTorch
+                  Extension points in nn.Module for load_state_dict and tensor subclasses
+                  torch.export AOTInductor Tutorial for Python runtime (Beta)
+                  How to use TensorBoard with PyTorch
+                  (beta) Utilizing Torch Function modes with torch.compile
+                  (beta) Running the compiled optimizer with an LR Scheduler
+                  Explicit horizontal fusion with foreach_map and torch.compile
+                  Using User-Defined Triton Kernels with torch.compile
+                  Compile Time Caching in torch.compile
+                  Compile Time Caching Configuration
+                  Reducing torch.compile cold start compilation time with regional compilation
+                  Reducing AoT cold start compilation time with regional compilation
+                  Ease-of-use quantization for PyTorch with Intel® Neural Compressor
+                  Getting Started with DeviceMesh
+                  Getting Started with Distributed Checkpoint (DCP)
+                  Asynchronous Saving with Distributed Checkpoint (DCP)
+                  DebugMode: Recording Dispatched Operations and Numerical Debugging
+              Unstable
+                  Introduction to Context Parallel
+                  Flight Recorder for Debugging Stuck Jobs
+                  TorchInductor C++ Wrapper Tutorial
+                  How to use torch.compile on Windows CPU/XPU
+                  torch.vmap
+                  Getting Started with Nested Tensors
+                  MaskedTensor Overview
+                  MaskedTensor Sparsity
+                  MaskedTensor Advanced Semantics
+                  Efficiently writing “sparse” semantics for Adagrad with MaskedTensor
+                  Autoloading Out-of-Tree Extension
+                  Using Max-Autotune Compilation on CPU for Better Performance
+Go to
+pytorch.org 
+Ctrl+K
+X
+GitHub
+Discourse
+PyPi
+Section Navigation
+Getting Started with PyTorch
+Learn the Basics
+Quickstart
+Tensors
+Datasets & DataLoaders
+Transforms
+Build the Neural Network
+Automatic Differentiation with torch.autograd
+Optimizing Model Parameters
+Save and Load the Model
+Introduction to PyTorch - YouTube Series
+Introduction to PyTorch
+Introduction to PyTorch Tensors
+The Fundamentals of Autograd
+Building Models with PyTorch
+PyTorch TensorBoard Support
+Training with PyTorch
+Model Understanding with Captum
+Learning PyTorch
+Deep Learning with PyTorch: A 60 Minute Blitz
+Tensors
+A Gentle Introduction to torch.autograd
+Neural Networks
+Training a Classifier
+Learning PyTorch with Examples
+Warm-up: numpy
+PyTorch: Tensors
+PyTorch: Tensors and autograd
+PyTorch: Defining New autograd Functions
+PyTorch: nn
+PyTorch: optim
+PyTorch: Custom nn Modules
+PyTorch: Control Flow + Weight Sharing
+What is torch.nn really?
+Understanding requires_grad, retain_grad, Leaf, and Non-leaf Tensors
+NLP from Scratch
+Visualizing Models, Data, and Training with TensorBoard
+A guide on good usage of non_blocking and pin_memory() in PyTorch
+Data Loading Optimization in PyTorch
+Visualizing Gradients
+Intro
+Learn the Basics
+Optimizing...
+    Rate this Page
+★
+★
+★
+★
+★
+beginner/basics/optimization_tutorial
+Run in Google Colab
+Colab
+Download Notebook
+Notebook
+View on GitHub
+GitHub
+Note
+Go to the end
+to download the full example code.
+Learn the Basics ||
+Quickstart ||
+Tensors ||
+Datasets & DataLoaders ||
+Transforms ||
+Build Model ||
+Autograd ||
+Optimization ||
+Save & Load Model
+Optimizing Model Parameters#
+Created On: Feb 09, 2021 | Last Updated: Jul 31, 2026 | Last Verified: Nov 05, 2024
+Now that we have a model and data it’s time to train, validate and test our model by optimizing its parameters on
+our data. Training a model is an iterative process; in each iteration the model makes a guess about the output, calculates
+the error in its guess (loss), collects the derivatives of the error with respect to its parameters (as we saw in
+the previous section), and optimizes these parameters using gradient descent. For a more
+detailed walkthrough of this process, check out this video on backpropagation from 3Blue1Brown.
+Prerequisite Code#
+We load the code from the previous sections on Datasets & DataLoaders
+and Build Model.
+import torch
+from torch import nn
+from torch.utils.data import DataLoader
+from torchvision import datasets
+from torchvision.transforms import v2
+training_data = datasets.FashionMNIST(
+    root="data",
+    train=True,
+    download=True,
+    transform=v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)])
+)
+test_data = datasets.FashionMNIST(
+    root="data",
+    train=False,
+    download=True,
+    transform=v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)])
+)
+train_dataloader = DataLoader(training_data, batch_size=64)
+test_dataloader = DataLoader(test_data, batch_size=64)
+class NeuralNetwork(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.flatten = nn.Flatten()
+        self.linear_relu_stack = nn.Sequential(
+            nn.Linear(28*28, 512),
+            nn.ReLU(),
+            nn.Linear(512, 512),
+            nn.ReLU(),
+            nn.Linear(512, 10),
+        )
+    def forward(self, x):
+        x = self.flatten(x)
+        logits = self.linear_relu_stack(x)
+        return logits
+model = NeuralNetwork()
+  0%|          | 0.00/26.4M [00:00<?, ?B/s]
+  0%|          | 65.5k/26.4M [00:00<01:20, 329kB/s]
+  0%|          | 131k/26.4M [00:00<00:56, 464kB/s]
+  1%|          | 197k/26.4M [00:00<00:48, 535kB/s]
+  2%|▏         | 426k/26.4M [00:00<00:22, 1.14MB/s]
+  3%|▎         | 819k/26.4M [00:00<00:12, 2.06MB/s]
+  6%|▌         | 1.64M/26.4M [00:00<00:06, 4.01MB/s]
+ 12%|█▏        | 3.24M/26.4M [00:00<00:02, 7.79MB/s]
+ 21%|██        | 5.57M/26.4M [00:00<00:01, 12.6MB/s]
+ 30%|███       | 7.96M/26.4M [00:01<00:01, 16.0MB/s]
+ 39%|███▉      | 10.4M/26.4M [00:01<00:00, 18.6MB/s]
+ 49%|████▉     | 12.9M/26.4M [00:01<00:00, 20.5MB/s]
+ 58%|█████▊    | 15.4M/26.4M [00:01<00:00, 21.7MB/s]
+ 68%|██████▊   | 17.9M/26.4M [00:01<00:00, 22.6MB/s]
+ 77%|███████▋  | 20.4M/26.4M [00:01<00:00, 23.5MB/s]
+ 87%|████████▋ | 23.1M/26.4M [00:01<00:00, 24.4MB/s]
+ 98%|█████████▊| 25.8M/26.4M [00:01<00:00, 25.1MB/s]
+100%|██████████| 26.4M/26.4M [00:01<00:00, 15.5MB/s]
+  0%|          | 0.00/29.5k [00:00<?, ?B/s]
+100%|██████████| 29.5k/29.5k [00:00<00:00, 296kB/s]
+  0%|          | 0.00/4.42M [00:00<?, ?B/s]
+  1%|▏         | 65.5k/4.42M [00:00<00:12, 341kB/s]
+  4%|▎         | 164k/4.42M [00:00<00:09, 441kB/s]
+  7%|▋         | 328k/4.42M [00:00<00:06, 626kB/s]
+ 22%|██▏       | 983k/4.42M [00:00<00:01, 1.72MB/s]
+ 72%|███████▏  | 3.18M/4.42M [00:00<00:00, 6.30MB/s]
+100%|██████████| 4.42M/4.42M [00:00<00:00, 4.58MB/s]
+  0%|          | 0.00/5.15k [00:00<?, ?B/s]
+100%|██████████| 5.15k/5.15k [00:00<00:00, 33.2MB/s]
+Hyperparameters#
+Hyperparameters are adjustable parameters that let you control the model optimization process.
+Different hyperparameter values can impact model training and convergence rates
+(read more about hyperparameter tuning)
+We define the following hyperparameters for training:
+Number of Epochs - the number of times to iterate over the dataset
+Batch Size - the number of data samples propagated through the network before the parameters are updated
+Learning Rate - how much to update models parameters at each batch/epoch. Smaller values yield slow learning speed, while large values may result in unpredictable behavior during training.
+learning_rate = 1e-3
+batch_size = 64
+epochs = 5
+Optimization Loop#
+Once we set our hyperparameters, we can then train and optimize our model with an optimization loop. Each
+iteration of the optimization loop is called an epoch.
+Each epoch consists of two main parts:
+The Train Loop - iterate over the training dataset and try to converge to optimal parameters.
+The Validation/Test Loop - iterate over the test dataset to check if model performance is improving.
+Let’s briefly familiarize ourselves with some of the concepts used in the training loop. Jump ahead to
+see the Full Implementation of the optimization loop.
+Loss Function#
+When presented with some training data, our untrained network is likely not to give the correct
+answer. Loss function measures the degree of dissimilarity of obtained result to the target value,
+and it is the loss function that we want to minimize during training. To calculate the loss we make a
+prediction using the inputs of our given data sample and compare it against the true data label value.
+Common loss functions include nn.MSELoss (Mean Square Error) for regression tasks, and
+nn.NLLLoss (Negative Log Likelihood) for classification.
+nn.CrossEntropyLoss combines nn.LogSoftmax and nn.NLLLoss.
+We pass our model’s output logits to nn.CrossEntropyLoss, which will normalize the logits and compute the prediction error.
+# Initialize the loss function
+loss_fn = nn.CrossEntropyLoss()
+Optimizer#
+Optimization is the process of adjusting model parameters to reduce model error in each training step. Optimization algorithms define how this process is performed (in this example we use Stochastic Gradient Descent).
+All optimization logic is encapsulated in  the optimizer object. Here, we use the SGD optimizer; additionally, there are many different optimizers
+available in PyTorch such as ADAM and RMSProp, that work better for different kinds of models and data.
+We initialize the optimizer by registering the model’s parameters that need to be trained, and passing in the learning rate hyperparameter.
+optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+Inside the training loop, optimization happens in three steps:
+Call optimizer.zero_grad() to reset the gradients of model parameters. Gradients by default add up; to prevent double-counting, we explicitly zero them at each iteration.
+Backpropagate the prediction loss with a call to loss.backward(). PyTorch deposits the gradients of the loss w.r.t. each parameter.
+Once we have our gradients, we call optimizer.step() to adjust the parameters by the gradients collected in the backward pass.
+Full Implementation#
+We define train_loop that loops over our optimization code, and test_loop that
+evaluates the model’s performance against our test data.
+def train_loop(dataloader, model, loss_fn, optimizer):
+    size = len(dataloader.dataset)
+    # Set the model to training mode - important for batch normalization and dropout layers
+    # Unnecessary in this situation but added for best practices
+    model.train()
+    for batch, (X, y) in enumerate(dataloader):
+        # Compute prediction and loss
+        pred = model(X)
+        loss = loss_fn(pred, y)
+        # Backpropagation
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+        if batch % 100 == 0:
+            loss, current = loss.item(), batch * batch_size + len(X)
+            print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+def test_loop(dataloader, model, loss_fn):
+    # Set the model to evaluation mode - important for batch normalization and dropout layers
+    # Unnecessary in this situation but added for best practices
+    model.eval()
+    size = len(dataloader.dataset)
+    num_batches = len(dataloader)
+    test_loss, correct = 0, 0
+    # Evaluating the model with torch.no_grad() ensures that no gradients are computed during test mode
+    # also serves to reduce unnecessary gradient computations and memory usage for tensors with requires_grad=True
+    with torch.no_grad():
+        for X, y in dataloader:
+            pred = model(X)
+            test_loss += loss_fn(pred, y).item()
+            correct += (pred.argmax(1) == y).type(torch.float).sum().item()
+    test_loss /= num_batches
+    correct /= size
+    print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+We initialize the loss function and optimizer, and pass it to train_loop and test_loop.
+Feel free to increase the number of epochs to track the model’s improving performance.
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+epochs = 10
+for t in range(epochs):
+    print(f"Epoch {t+1}\n-------------------------------")
+    train_loop(train_dataloader, model, loss_fn, optimizer)
+    test_loop(test_dataloader, model, loss_fn)
+print("Done!")
+Epoch 1
+-------------------------------
+loss: 2.304587  [   64/60000]
+loss: 2.286348  [ 6464/60000]
+loss: 2.274027  [12864/60000]
+loss: 2.264260  [19264/60000]
+loss: 2.241716  [25664/60000]
+loss: 2.219365  [32064/60000]
+loss: 2.220220  [38464/60000]
+loss: 2.197055  [44864/60000]
+loss: 2.196571  [51264/60000]
+loss: 2.151650  [57664/60000]
+Test Error:
+ Accuracy: 48.8%, Avg loss: 2.151950
+Epoch 2
+-------------------------------
+loss: 2.168297  [   64/60000]
+loss: 2.150551  [ 6464/60000]
+loss: 2.096209  [12864/60000]
+loss: 2.106180  [19264/60000]
+loss: 2.047619  [25664/60000]
+loss: 1.991165  [32064/60000]
+loss: 2.015013  [38464/60000]
+loss: 1.944549  [44864/60000]
+loss: 1.954396  [51264/60000]
+loss: 1.858523  [57664/60000]
+Test Error:
+ Accuracy: 57.5%, Avg loss: 1.869946
+Epoch 3
+-------------------------------
+loss: 1.908793  [   64/60000]
+loss: 1.873859  [ 6464/60000]
+loss: 1.756977  [12864/60000]
+loss: 1.794944  [19264/60000]
+loss: 1.680021  [25664/60000]
+loss: 1.630193  [32064/60000]
+loss: 1.647089  [38464/60000]
+loss: 1.560465  [44864/60000]
+loss: 1.590943  [51264/60000]
+loss: 1.468327  [57664/60000]
+Test Error:
+ Accuracy: 61.2%, Avg loss: 1.501634
+Epoch 4
+-------------------------------
+loss: 1.570732  [   64/60000]
+loss: 1.538576  [ 6464/60000]
+loss: 1.389437  [12864/60000]
+loss: 1.461775  [19264/60000]
+loss: 1.341071  [25664/60000]
+loss: 1.336515  [32064/60000]
+loss: 1.343710  [38464/60000]
+loss: 1.280685  [44864/60000]
+loss: 1.319799  [51264/60000]
+loss: 1.207912  [57664/60000]
+Test Error:
+ Accuracy: 62.9%, Avg loss: 1.245380
+Epoch 5
+-------------------------------
+loss: 1.324850  [   64/60000]
+loss: 1.309805  [ 6464/60000]
+loss: 1.143787  [12864/60000]
+loss: 1.250905  [19264/60000]
+loss: 1.124508  [25664/60000]
+loss: 1.148601  [32064/60000]
+loss: 1.162665  [38464/60000]
+loss: 1.110826  [44864/60000]
+loss: 1.152740  [51264/60000]
+loss: 1.058316  [57664/60000]
+Test Error:
+ Accuracy: 64.5%, Avg loss: 1.088980
+Epoch 6
+-------------------------------
+loss: 1.161524  [   64/60000]
+loss: 1.167509  [ 6464/60000]
+loss: 0.985241  [12864/60000]
+loss: 1.120713  [19264/60000]
+loss: 0.994004  [25664/60000]
+loss: 1.023025  [32064/60000]
+loss: 1.051639  [38464/60000]
+loss: 1.003374  [44864/60000]
+loss: 1.042971  [51264/60000]
+loss: 0.964911  [57664/60000]
+Test Error:
+ Accuracy: 65.8%, Avg loss: 0.988104
+Epoch 7
+-------------------------------
+loss: 1.047038  [   64/60000]
+loss: 1.074613  [ 6464/60000]
+loss: 0.876145  [12864/60000]
+loss: 1.033031  [19264/60000]
+loss: 0.910944  [25664/60000]
+loss: 0.932379  [32064/60000]
+loss: 0.978117  [38464/60000]
+loss: 0.931797  [44864/60000]
+loss: 0.965158  [51264/60000]
+loss: 0.900484  [57664/60000]
+Test Error:
+ Accuracy: 67.2%, Avg loss: 0.917691
+Epoch 8
+-------------------------------
+loss: 0.961018  [   64/60000]
+loss: 1.008253  [ 6464/60000]
+loss: 0.796216  [12864/60000]
+loss: 0.968616  [19264/60000]
+loss: 0.853584  [25664/60000]
+loss: 0.863224  [32064/60000]
+loss: 0.924886  [38464/60000]
+loss: 0.881842  [44864/60000]
+loss: 0.907068  [51264/60000]
+loss: 0.851946  [57664/60000]
+Test Error:
+ Accuracy: 68.4%, Avg loss: 0.865309
+Epoch 9
+-------------------------------
+loss: 0.893247  [   64/60000]
+loss: 0.956824  [ 6464/60000]
+loss: 0.734902  [12864/60000]
+loss: 0.918320  [19264/60000]
+loss: 0.810968  [25664/60000]
+loss: 0.809175  [32064/60000]
+loss: 0.883354  [38464/60000]
+loss: 0.845642  [44864/60000]
+loss: 0.862286  [51264/60000]
+loss: 0.813327  [57664/60000]
+Test Error:
+ Accuracy: 69.3%, Avg loss: 0.824519
+Epoch 10
+-------------------------------
+loss: 0.838114  [   64/60000]
+loss: 0.914592  [ 6464/60000]
+loss: 0.686252  [12864/60000]
+loss: 0.877900  [19264/60000]
+loss: 0.777599  [25664/60000]
+loss: 0.766460  [32064/60000]
+loss: 0.849132  [38464/60000]
+loss: 0.818248  [44864/60000]
+loss: 0.827007  [51264/60000]
+loss: 0.781430  [57664/60000]
+Test Error:
+ Accuracy: 70.6%, Avg loss: 0.791558
+Done!
+Further Reading#
+Loss Functions
+torch.optim
+Warmstart Training a Model
+Total running time of the script: (1 minutes 45.012 seconds)
+Download Jupyter notebook: optimization_tutorial.ipynb
+Download Python source code: optimization_tutorial.py
+Download zipped: optimization_tutorial.zip
+    Rate this Page
+★
+★
+★
+★
+★
+Send Feedback
+previous
+Automatic Differentiation with torch.autograd
+next
+Save and Load the Model
+    Built with the PyData Sphinx Theme 0.15.4.
+previous
+Automatic Differentiation with torch.autograd
+next
+Save and Load the Model
+ On this page
+Prerequisite Code
+Hyperparameters
+Optimization Loop
+Loss Function
+Optimizer
+Full Implementation
+Further Reading
+PyTorch Libraries
+ExecuTorch
+Helion
+torchao
+kineto
+torchtitan
+TorchRL
+torchvision
+torchaudio
+tensordict
+PyTorch on XLA Devices
+Docs
+Access comprehensive developer documentation for PyTorch
+View Docs
+Tutorials
+Get in-depth tutorials for beginners and advanced developers
+View Tutorials
+Resources
+Find development resources and get your questions answered
+View Resources
+Stay in touch for updates, event info, and
+        the latest news
+By submitting this form, I consent to receive marketing emails from the LF and its
+        projects regarding their events, training, research, developments, and related announcements. I understand that
+        I can unsubscribe at any time using the links in the footers of the emails I receive. Privacy Policy.
+          © PyTorch. Copyright © The Linux Foundation®. All rights reserved. The Linux Foundation has registered
+          trademarks and uses trademarks. For more information, including terms of use, privacy policy, and trademark
+          usage, please see our Policies page. Trademark Usage. Privacy Policy.
+To analyze traffic and optimize your experience, we serve cookies on this site. By clicking or navigating, you agree to allow our usage of cookies. As the current maintainers of this site, Facebook’s Cookies Policy applies. Learn more, including about available controls: Cookies Policy.
+      © Copyright 2024, PyTorch.
+    Created using Sphinx 7.2.6.
+  Built with the PyData Sphinx Theme 0.15.4.

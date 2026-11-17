@@ -1,0 +1,360 @@
+
+      Listen to your Pub/Sub notifications  |  Cloud Billing  |  Google Cloud Documentation
+      Skip to main content
+    Documentation
+        close
+Get Started
+                      Get Started with Google Cloud
+                      Product List
+                      Cloud Customer Care
+Featured Products
+                      Agent Platform
+                      Apigee API Management
+                      BigQuery
+                      Compute Engine
+                      Cloud CDN
+                      Cloud Run
+                      Cloud Storage
+                      Cloud SQL
+                      Gemini Enterprise
+                      Google Kubernetes Engine
+                      Looker
+Cross-product Tools
+                      Access and resources management
+                      Costs and usage management
+                      Infrastructure as code
+                      SDK, languages, frameworks, and tools
+Technology Areas
+                      AI and ML
+                      Application development
+                      Application hosting
+                      Compute
+                      Data analytics and pipelines
+                      Databases
+                      Distributed, hybrid, and multicloud
+                      Industry solutions
+                      Migration
+                      Networking
+                      Observability and monitoring
+                      Security
+                      Storage
+            /
+  Console
+      English
+      Deutsch
+      Español
+      Español – América Latina
+      Français
+      Indonesia
+      Italiano
+      Português
+      Português – Brasil
+      עברית
+      中文 – 简体
+      中文 – 繁體
+      日本語
+      한국어
+              Sign in
+          Cloud Billing
+  Start free
+    Overview
+    Guides
+    APIs & Reference
+    Resources
+      Documentation
+      More
+      Overview
+      Guides
+      APIs & Reference
+      Resources
+      Console
+        Discover
+Product overview
+AI-powered cost monitoring and cost optimization features
+        Cost management for project owners
+Key concepts and tools
+Set up project-scoped access
+Supported currencies and payment methods
+Find your account type and charging cycle
+Find your billing account ID
+Find your billing account administrator
+        Get started
+Create a new Cloud Billing account
+Get started from other products
+Use Gemini Cloud Assist in Billing
+Apply for invoiced billing
+Interactive tutorials in the Google Cloud console
+        Pay your bill
+Get an invoice, statement, or receipt
+View your transaction history
+        Pay for invoiced accounts
+Understand your monthly invoice
+Split invoicing for agency model transactions
+Pay your invoice
+Update your PO number
+        Pay for self-serve (online) accounts
+Split charging cycles for online billing accounts
+Add, remove, or update a payment method
+Make a manual payment, or pay early
+        Monitor your costs
+Organize your resources for cost management
+Analyze your AI spend with the AI Cost Summary Agent
+        Manage budgets and spend caps
+Create, edit, or delete a budget alert
+Manage a spend cap budget
+Customize budget alert email recipients
+        View built-in billing reports
+Choose a billing report
+        Analyze billing data with Reports
+Access and configure Reports
+View Gemini Enterprise costs in Reports
+View live costs in Reports
+View and analyze your savings
+View charges on invoices
+View your forecasted costs
+View costs by project hierarchy
+View a budget in your report
+Understand your monthly invoice with the cost table report
+View and download your price lists
+Understand your savings with cost breakdown reports
+        Export billing data for analysis
+Overview of billing data export to BigQuery
+Set up billing data export to BigQuery
+Set up FOCUS export to BigQuery
+Understand the billing data tables in BigQuery
+Structure of FOCUS data export
+Structure of Standard data export
+Structure of Detailed data export
+Structure of Pricing data export
+Structure of CUD metadata export
+Example queries for Cloud Billing
+View and manage cost anomalies
+Track the status of your conditional incentives
+        Optimize usage costs
+        Optimize costs with FinOps hub
+Discover potential savings using the FinOps hub
+Review and apply FinOps hub Recommendations
+Review utilization and wasted usage insights
+        Committed use discounts
+About CUDs for cost optimization
+View your commitments
+Analyze CUDs
+Calculate savings with Compute flexible commitments
+Estimate your monthly costs for AI agents and Cloud services
+        Optimize infrastructure management and data protection costs
+About Infrastructure Management Essentials
+Enable or disable Infrastructure Management Essentials
+        Discounts for education accounts
+Get and redeem education credits
+Get a data transfer discount for research and education
+        Automate cost management
+Set up programmatic notifications
+        Set up cost control responses
+Listen to your notifications
+Send notifications to Slack
+Control resource usage with notifications
+Disable billing with notifications
+        Manage billing status of projects
+View projects linked to a billing account
+Verify the billing status of projects
+Enable, disable, or change billing for a project
+Lock a project to its billing account
+        Manage Cloud Billing accounts
+About account management
+Modify your Cloud Billing account
+Close or reopen your Cloud Billing account
+        Control access to Cloud Billing
+Overview of billing access control
+Create custom roles for billing
+Manage access to billing accounts
+Manage access to payment methods
+        Manage payments for self-serve (autopay) accounts
+Add, remove, or update a payment method
+Verify your bank account
+        Troubleshoot
+Resolve common billing issues
+Resolve an invalid Cloud Billing account
+Restart services
+      Get Started
+      Get Started with Google Cloud
+      Product List
+      Cloud Customer Care
+      Featured Products
+      Agent Platform
+      Apigee API Management
+      BigQuery
+      Compute Engine
+      Cloud CDN
+      Cloud Run
+      Cloud Storage
+      Cloud SQL
+      Gemini Enterprise
+      Google Kubernetes Engine
+      Looker
+      Cross-product Tools
+      Access and resources management
+      Costs and usage management
+      Infrastructure as code
+      SDK, languages, frameworks, and tools
+      Technology Areas
+      AI and ML
+      Application development
+      Application hosting
+      Compute
+      Data analytics and pipelines
+      Databases
+      Distributed, hybrid, and multicloud
+      Industry solutions
+      Migration
+      Networking
+      Observability and monitoring
+      Security
+      Storage
+          Home
+          Documentation
+          Costs and usage management
+          Cloud Billing
+          Guides
+    Send feedback
+      Listen to your Pub/Sub notifications
+      Stay organized with collections
+      Save and categorize content based on your preferences.
+Example reference architecture
+  Figure 1: An example of using budget alerts
+    to automate cost control responses using Pub/Sub for programmatic
+    notifications and Cloud Run functions to automate a response.
+This document explains how to listen to your programmatic budget
+notifications by subscribing to your Pub/Sub topic with
+Cloud Run function 
+triggers. Without a subscriber, Pub/Sub drops published messages
+and you can't retrieve them later. In this document, you'll learn how to
+complete the following tasks:
+Create a Cloud Run function that listens to notifications.
+View Cloud Run function events.
+Test a Cloud Run function.
+Note: Although there are many ways you can
+subscribe to your topic,
+the examples on this page use
+Cloud Run functions.
+Cloud Run functions lets you create functions that
+respond to cloud events without needing to manage a server or runtime
+environment.
+Before you begin
+Before you begin, you must complete the following tasks:
+Create a budget 
+Set up programmatic notifications 
+Create a Cloud Run function
+To create a Cloud Run function, complete the following steps:
+In the Google Cloud console, go to the Cloud Run functions page.
+Go to Cloud Run functions 
+Click Write a function.
+Select Use an inline editor to create a function.
+Enter a Service name that's meaningful to
+your budget notification.
+Select the region
+where your Cloud Run functions will run. You can't edit this setting
+after you deploy your function.
+Click Add trigger and select Cloud Pub/Sub.
+If prompted, enable any required APIs.
+In the Eventarc trigger panel, complete the following steps:
+Enter a Trigger name.
+Set Trigger type to Google sources.
+Set Event provider to Cloud Pub/Sub.
+Select the Cloud Pub/Sub topic that you configured on your
+budget.
+Select a Region.
+Click Save trigger.
+Edit the Identity-Aware Proxy, Billing, Service scaling,
+Ingress, and Container(s), Volume, Networking, Security settings
+as needed, then click Create.
+Write code using the inline editor or upload a file that tells your function
+how to handle notifications.
+See the following examples for code samples:
+Send notifications to Slack 
+Control resource usage with notifications 
+Disable billing usage with notifications 
+For details about the notifications your code will receive, see
+Notification format.
+Set Function entry point to the correct function to execute:
+Click DEPLOY.
+View Cloud Run function events
+After you deploy the Cloud Run function, click LOGS to view
+the logs from your function invocations.
+Test a Cloud Run function
+As notifications are sent to Pub/Sub, subscribers receive the
+messages. To test a sample notification and ensure that your function is working
+as expected,
+publish a message in Pub/Sub 
+with the following object as the message body:
+{
+    "budgetDisplayName": "name-of-budget",
+    "alertThresholdExceeded": 1.0,
+    "costAmount": 100.01,
+    "costIntervalStart": "2019-01-01T00:00:00Z",
+    "budgetAmount": 100.00,
+    "budgetAmountType": "SPECIFIED_AMOUNT",
+    "currencyCode": "USD"
+}
+You can also add message attributes such as the billing account ID. For more
+information, see
+Notification format.
+What's next
+To learn more about how you can use programmatic notifications, review the
+following examples of programmatic cost control responses:
+Send notifications to Slack 
+Control resource usage with notifications 
+Disable billing usage with notifications 
+    Send feedback
+Except as otherwise noted, the content of this page is licensed under the Creative Commons Attribution 4.0 License, and code samples are licensed under the Apache 2.0 License. For details, see the Google Developers Site Policies. Java is a registered trademark of Oracle and/or its affiliates.
+Last updated 2026-11-10 UTC.
+    Need to tell us more?
+      [[["Easy to understand","easyToUnderstand","thumb-up"],["Solved my problem","solvedMyProblem","thumb-up"],["Other","otherUp","thumb-up"]],[["Hard to understand","hardToUnderstand","thumb-down"],["Incorrect information or sample code","incorrectInformationOrSampleCode","thumb-down"],["Missing the information/samples I need","missingTheInformationSamplesINeed","thumb-down"],["Other","otherDown","thumb-down"]],["Last updated 2026-11-10 UTC."],[],[]]
+Products and pricing
+            See all products
+            Google Cloud pricing
+            Google Cloud Marketplace
+            Contact sales
+Support
+            Community forums
+            Support
+            Release Notes
+            System status
+Resources
+            GitHub
+            Getting Started with Google Cloud
+            Code samples
+            Cloud Architecture Center
+            Training and Certification
+            Builders Hub
+Engage
+            Blog
+            Events
+            X (Twitter)
+            Google Cloud on YouTube
+            Google Cloud Tech on YouTube
+          Android
+          Chrome
+          Firebase
+          Google AI
+          About Google
+          Privacy
+          Site terms
+          Google Cloud terms
+          Manage cookies
+          Our third decade of climate action: join us
+        Sign up for the Google Cloud newsletter
+          Subscribe
+      English
+      Deutsch
+      Español
+      Español – América Latina
+      Français
+      Indonesia
+      Italiano
+      Português
+      Português – Brasil
+      עברית
+      中文 – 简体
+      中文 – 繁體
+      日本語
+      한국어

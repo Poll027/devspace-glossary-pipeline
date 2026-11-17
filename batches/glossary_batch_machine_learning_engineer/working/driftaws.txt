@@ -1,0 +1,47 @@
+
+ 6. Continuous monitoring - AWS Prescriptive Guidance 
+View a markdown version of this page
+6. Continuous monitoring - AWS Prescriptive Guidance
+DocumentationAWS Prescriptive GuidanceEvaluating your ML project with the MLOps checklist
+6. Continuous monitoring
+In continuous monitoring, automated processes observe and detect performance issues and model issues. Owners can then identify potential problems and threats in real time to address them quickly.
+Continuous monitoring surfaces possible model issues such as data quality, distribution shift, model concept shift, and model quality degradation. Continuous monitoring also includes comprehensive logging for traditional system measures such as saturation, latency, traffic, and errors. A practical notification and alert strategy are set up to notify owners when issues arise.
+6.1 Model monitoring: data quality detection
+Rule-based monitoring is in place to know when incoming data deviates from model training data. This type of monitoring creates a schema from the training data, sets constraints based on that schema, and then runs exceptions when a violation occurs.
+6.2 Model monitoring: distribution shift
+Monitoring is set up to look at the incoming data distribution and check that it hasn't deviated from the model training data distribution. For example, the incoming data is sampled in as a moving window over inference data. A job is then run to test the sampled distribution and training distribution to see if they are the same.
+6.3 Model monitoring: model concept drift
+A concept drift check looks for the relationship between a model's inputs and target variable to remain unchanged from the training data. An additional check is to confirm that the relative features and their importance don't change.
+6.4 Model monitoring: model evaluation check
+This is a monitoring check that evaluates whether the model's quality has degraded. The model evaluation check compares baseline evaluation metrics from training time with the incoming results to assess whether the model's accuracy level has decreased on new data. Because it computes accuracy metrics, this check requires the ground truth of new data to be available after inference.
+6.5 System captures: input schemas
+The ML system captures the schema of training, testing, and validation data. In addition to providing information about inputs, schemas provide statistics regarding their skew and completeness.  Schemas are used for immediate testing and data quality monitoring checks in production.
+6.6 System captures: evaluation results and statistics
+The ML system outputs accuracy information on validation and training data. It can output the predictions and true labels from validation and training runs. These are used as monitoring constraints for the live production model.
+6.7 System captures: anomalies
+There is a tracking mechanism in place to flag anomalies in incoming data streams. If outliers occur in incoming data or if during a specified timeframe the key feature distribution changes, the system recognizes this as an anomaly and flags it.
+6.8 Logging: saturation and resources
+There is logging in place for how full the system is. Resource and saturation metrics should focus on CPU utilization, graphics processing unit (GPU) utilization, memory utilization, and disk utilization. These metrics should be available in time-series format with the ability to measure in percentiles. For batch jobs, this provides information on throughput, which shows how many units of information the system can process in each amount of time.
+6.9 Logging: latency
+Logging should be in place to measure the delay in network communication or the time it takes to service a request. An engineer should be able to judge how long the inference models are taking to serve predictions and how long the model takes to load.
+6.10 Logging: traffic
+The logging setup for traffic measures the volume of traffic on each instance. Traffic is measured by the number of HTTP requests and bytes or packets sent or received during a certain amount of time. Logging traffic provides insights of the total workload that is placed on a system.
+6.11 Logging: errors
+The logging setup for errors captures the number of requests that fail. Failures are of the following types:
+Explicit (for example, HTTP 500 errors)
+Implicit (for example, an HTTP 200 success response that's coupled with the wrong content)
+Policy (for example, if you commit to one-second response times, any request over one second is an error)
+Where protocol response codes are insufficient to express all failure conditions, secondary (internal) protocols might be necessary to track partial failure modes.
+6.12 Notifications and alerting
+Notifications and alerts are set up from monitoring. Notifications include the ability to get Slack, email notification, pages, and Short Message Service (SMS) messages. Alerting doesn't mean sending notifications for all possible violations. Instead, it means setting alerts to specific exceptions that are meaningful and important to the development team. In this way, alert fatigue is avoided.
+ Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+5. Continuous integration
+7. Continuous deployment
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

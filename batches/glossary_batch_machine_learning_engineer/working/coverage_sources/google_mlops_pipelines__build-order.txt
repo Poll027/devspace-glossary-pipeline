@@ -1,0 +1,564 @@
+
+      Configuring the order of build steps  |  Cloud Build  |  Google Cloud Documentation
+      Skip to main content
+    Documentation
+        close
+Get Started
+                      Get Started with Google Cloud
+                      Product List
+                      Cloud Customer Care
+Featured Products
+                      Agent Platform
+                      Apigee API Management
+                      BigQuery
+                      Compute Engine
+                      Cloud CDN
+                      Cloud Run
+                      Cloud Storage
+                      Cloud SQL
+                      Gemini Enterprise
+                      Google Kubernetes Engine
+                      Looker
+Cross-product Tools
+                      Access and resources management
+                      Costs and usage management
+                      Infrastructure as code
+                      SDK, languages, frameworks, and tools
+Technology Areas
+                      AI and ML
+                      Application development
+                      Application hosting
+                      Compute
+                      Data analytics and pipelines
+                      Databases
+                      Distributed, hybrid, and multicloud
+                      Industry solutions
+                      Migration
+                      Networking
+                      Observability and monitoring
+                      Security
+                      Storage
+            /
+  Console
+      English
+      Deutsch
+      Español
+      Español – América Latina
+      Français
+      Indonesia
+      Italiano
+      Português
+      Português – Brasil
+      עברית
+      中文 – 简体
+      中文 – 繁體
+      日本語
+      한국어
+              Sign in
+          Cloud Build
+  Start free
+    Overview
+    Guides
+    Reference
+    Samples
+    Support
+    Resources
+      Documentation
+      More
+      Overview
+      Guides
+      Reference
+      Samples
+      Support
+      Resources
+      Console
+        Discover
+Cloud Build overview
+        Quickstarts
+Build
+Deploy
+Automate
+Create private pools
+        Get started
+Set up Cloud Build
+        Set up private pools
+Overview
+Create and manage private pools
+Private pool configuration file schema
+Run builds in a private pool
+        Control access
+IAM roles and permissions
+Configure access to resources
+Manage resources with custom constraints
+        Configure
+Create a build config file
+Build configuration file schema
+Cloud builders
+Use community-contributed and custom builders
+Substitute variable values
+Run bash scripts
+Interact with Docker Hub images
+Configure the order of build steps
+Pass data between build steps
+Use payload bindings and bash parameter expansions in substitutions
+Release channels
+        Build, test, and store
+Develop applications
+Manage dependencies
+Build container images
+Build and test Node.js applications
+        Build and test Java applications
+Build and test Java applications
+Build, test, and containerize Java applications
+        Build and test Python applications
+Build and test Python applications
+Build, test, and containerize Python applications
+        Build and test Go applications
+Build and test Go applications
+Build, test, and containerize Go applications
+Build VM images using Packer
+Store build artifacts in Artifact Registry
+Store build artifacts in Cloud Storage
+Provision Cloud Build resources with Terraform
+        Deploy
+Deploy to GKE
+Deploy to Cloud Run
+Deploy to App Engine
+Deploy to Cloud Functions
+Deploy to GKE Enterprise
+Deploy to Compute Engine
+Deploy to Firebase
+        Run builds
+Triggers overview
+Repositories overview
+        Manually run a fully-managed build
+Submit a build via the command line and API
+Manually build code in source repositories
+Create and manage build triggers
+        GitHub
+Connect to a GitHub repository
+Build repositories from GitHub
+Access GitHub from a build via SSH keys
+        GitHub Enterprise
+Connect to a GitHub Enterprise host
+Connect to a GitHub Enterprise repository
+Build repositories from GitHub Enterprise
+Build repositories from GitHub Enterprise in a private network
+        GitLab
+Connect to a GitLab host
+Connect to a GitLab repository
+Build repositories from GitLab
+        GitLab Enterprise Edition
+Connect to a GitLab Enterprise Edition host
+Connect to a GitLab Enterprise Edition repository
+Build repositories from GitLab Enterprise Edition
+Build repositories from GitLab Enterprise Edition in a private network
+        Bitbucket Server
+Connect to a Bitbucket Server host
+Connect to a Bitbucket Server repository
+Build repositories from Bitbucket Server
+Build repositories from Bitbucket Server in a private network
+        Bitbucket Data Center
+Connect to a Bitbucket Data Center host
+Connect to a Bitbucket Data Center repository
+Build repositories from Bitbucket Data Center
+Build repositories from Bitbucket Data Center in a private network
+        Bitbucket Cloud
+Connect to a Bitbucket Cloud host
+Connect to a Bitbucket Cloud repository
+Build repositories from Bitbucket Cloud
+Automate builds in response to Pub/Sub events
+Automate builds in response to webhook events
+Schedule builds
+GitOps-style continuous delivery with Cloud Build
+        View results and monitor
+Audit logging
+        Store and manage build logs
+Build log storage options
+Store and view build logs
+Use structured logging with build logs
+View build results
+View build results for triggers
+View build security insights
+        Configure downstream notifications
+Cloud Build notifiers overview
+Configure BigQuery notifications
+Configure GitHub Issue notifications
+Configure Google Chat notifications
+Configure HTTP notifications
+Configure Slack notifications
+Configure SMTP notifications
+Automate configuration for notifications
+Create your own notifier
+Subscribe to build notifications
+        Secure builds
+Statement of shared responsibility
+        Secrets and credentials
+Use secrets from Secret Manager
+Use encrypted credentials
+CMEK compliance
+Generate and validate build provenance
+Secure image deployments to Cloud Run and Google Kubernetes Engine
+Use on-demand scanning in Cloud Build pipelines
+        Gate builds
+Gate builds on approvals
+Gate builds on organization policy
+Configure Cloud Build service account impersonation for managed services
+        Secure the network
+Use Cloud Build in a private network
+Set up environment to use private pools in a VPC network
+Access resources in a private JFrog Artifactory with private pools
+Access external resources in a private network using a static external IP
+Access private GKE clusters with Cloud Build private pools
+Access private GKE clusters from Cloud Build private pools using Identity Service for GKE
+Use VPC Service Controls
+        Integrate with Google Cloud services
+Configure user-specified service accounts
+Default Cloud Build service account
+Configure access for the default Cloud Build service account
+Authorize service-to-service access
+Cloud Build default service account change
+        Optimize
+Increase vCPU for builds
+Best practices to speed up builds
+Build leaner containers
+Manage infrastructure as code with Terraform, Cloud Build, and GitOps
+        Troubleshoot
+Troubleshoot build errors and more
+      Get Started
+      Get Started with Google Cloud
+      Product List
+      Cloud Customer Care
+      Featured Products
+      Agent Platform
+      Apigee API Management
+      BigQuery
+      Compute Engine
+      Cloud CDN
+      Cloud Run
+      Cloud Storage
+      Cloud SQL
+      Gemini Enterprise
+      Google Kubernetes Engine
+      Looker
+      Cross-product Tools
+      Access and resources management
+      Costs and usage management
+      Infrastructure as code
+      SDK, languages, frameworks, and tools
+      Technology Areas
+      AI and ML
+      Application development
+      Application hosting
+      Compute
+      Data analytics and pipelines
+      Databases
+      Distributed, hybrid, and multicloud
+      Industry solutions
+      Migration
+      Networking
+      Observability and monitoring
+      Security
+      Storage
+          Home
+          Documentation
+          Application development
+          Cloud Build
+          Guides
+    Send feedback
+      Configuring the order of build steps
+      Stay organized with collections
+      Save and categorize content based on your preferences.
+You can specify the order in which your build steps are executed. By default,
+build steps run sequentially, but you can configure them to run concurrently.
+This page explains how to configure the order of the build steps.
+Build step order and dependencies
+Use the waitFor field in a build step to specify which steps must run before
+the build step is run. If no values are provided for waitFor, the build step
+waits for all prior build steps in the build request to complete successfully
+before running.
+To run a build step immediately at build time, use - in the waitFor field.
+The order of the build steps in the steps field relates to the order in which
+the steps are executed. Steps will run serially or concurrently based on the
+dependencies defined in their waitFor fields.
+A step is dependent on every id in its waitFor and will not launch until
+each dependency has completed successfully.
+Note: Steps must be defined with the id field prior to being used as waitFor
+dependencies.
+Steps without the optional waitFor field (or with an empty waitFor) will
+wait for all prior steps to complete successfully before executing. Therefore,
+if no step contains an id in its waitFor field, then all steps will execute
+serially in the order they are defined.
+Steps can depend on the start of the build by having waitFor contain only
+-. By declaring that a step depends only on -, the step runs immediately
+when the build starts. The first step defined depends implicitly on start.
+The following snippet shows a build config with two steps that runs serially:
+ YAML 
+steps:
+- name: foo
+- name: bar
+ JSON 
+{
+    "steps": [{
+        "name": "foo"
+    },
+    {
+        "name": "bar"
+    }
+    ]
+}
+The following snippet shows two concurrent steps that both depend on start; the
+third step waits for the first two to complete successfully before
+launching. This concurrent build runs steps A and B at the start of the
+build. The third step will wait implicitly until both previous steps are
+finished before starting. This example could be simplified by omitting the id
+fields, which are not referenced in a subsequent waitFor.
+ YAML 
+steps:
+- name: foo
+  id: A
+- name: bar
+  id: B
+  waitFor: ['-']
+- name: baz
+ JSON 
+{
+    "steps": [
+    {
+        "name": "foo",
+        "id": "A"
+    },
+    {
+        "name": "bar",
+        "id": "B",
+        "waitFor": ["-"]
+    },
+    {
+        "name": "baz"
+    }
+    ]
+}
+The following snippet shows concurrent steps that depend on a previous
+step. Step A runs immediately when the build starts. Steps B and C run
+concurrently after A has completed successfully. Note that the id and
+waitFor fields in step B, and the id field in step C, could be omitted
+without changing the order of execution.
+ YAML 
+steps:
+- name: foo
+  id: A
+- name: bar
+  id: B
+  waitFor:
+  - A
+- name: baz
+  id: C
+  waitFor:
+  - A
+ JSON 
+{
+    "steps": [
+    {
+        "name": "foo",
+        "id": "A"
+    },
+    {
+        "name": "bar",
+        "id": "B",
+        "waitFor": [
+            "A"
+        ]
+    },
+    {
+        "name": "baz",
+        "id": "C",
+        "waitFor": [
+            "A"
+        ]
+    }
+    ]
+}
+Examples
+The following example calls the gcloud storage and wget steps concurrently.
+After these steps have completed, the ubuntu step is called.
+YAML
+steps:
+# Download the binary and the data in parallel.
+- name: 'gcr.io/cloud-builders/wget'
+  args: ['https://example.com/binary']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['storage', 'cp', 'gs://$PROJECT_ID-data/rawdata.tgz', '.']
+  waitFor: ['-']  # The '-' indicates that this step begins immediately.
+# Run the binary on the data, once both are downloaded.
+- name: 'ubuntu'
+  args: ['./binary', 'rawdata.tgz']
+JSON
+{
+  "steps": [
+    {
+      "name": "gcr.io/cloud-builders/wget",
+      "args": [
+        "https://example.com/binary"
+      ]
+    },
+    {
+      "name": "gcr.io/cloud-builders/gcloud",
+      "args": [
+        "storage",
+        "cp",
+        "gs://$PROJECT_ID-data/rawdata.tgz",
+        "."
+      ],
+      "waitFor": [
+        "-"
+      ]
+    },
+    {
+      "name": "ubuntu",
+      "args": [
+        "./binary",
+        "rawdata.tgz"
+      ]
+    }
+  ]
+}
+The example below uses the id field to identify certain build steps. The values
+from id are used in waitFor to define build step order:
+First, fetch-resources step uses gcloud storage to copy the local resources from
+Cloud Storage. Concurrently, go generates, tests, and installs the source
+code.
+Then, the docker build step builds the image after all other steps are
+complete.
+ YAML 
+steps:
+- name: 'gcr.io/cloud-builders/go'
+  args: ['generate']
+- name: 'gcr.io/cloud-builders/go'
+  args: ['test', './...']
+- name: 'gcr.io/cloud-builders/go'
+  args: ['install', 'mytarget']
+  id: 'go-install'
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['storage', 'cp', '-r', './somefiles', 'gs://my-resource-bucket/somefiles']
+  waitFor: ['-']  # The '-' indicates that this step begins immediately.
+  id: 'fetch-resources'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/mytarget', '.']
+  waitFor: ['go-install', 'fetch-resources']
+images: ['gcr.io/$PROJECT_ID/mytarget']
+ JSON 
+{
+  "steps": [
+    {
+      "name": "gcr.io/cloud-builders/go",
+      "args": [
+        "generate"
+      ]
+    },
+    {
+      "name": "gcr.io/cloud-builders/go",
+      "args": [
+        "test",
+        "./..."
+      ]
+    },
+    {
+      "name": "gcr.io/cloud-builders/go",
+      "args": [
+        "install",
+        "mytarget"
+      ],
+      "id": "go-install"
+    },
+    {
+      "name": "gcr.io/cloud-builders/gcloud",
+      "args": [
+        "storage",
+        "cp",
+        "-r",
+        "./somefiles",
+        "gs://my-resource-bucket/somefiles"
+      ],
+      "waitFor": [
+        "-"
+      ],
+      "id": "fetch-resources"
+    },
+    {
+      "name": "gcr.io/cloud-builders/docker",
+      "args": [
+        "build",
+        "-t",
+        "gcr.io/$PROJECT_ID/mytarget",
+        "."
+      ],
+      "waitFor": [
+        "go-install",
+        "fetch-resources"
+      ]
+    }
+  ],
+  "images": [
+    "gcr.io/$PROJECT_ID/mytarget"
+  ]
+}
+What's next
+Configure Cloud Build to build, test, and deploy
+artifacts.
+Learn how to run builds
+manually and
+using triggers.
+    Send feedback
+Except as otherwise noted, the content of this page is licensed under the Creative Commons Attribution 4.0 License, and code samples are licensed under the Apache 2.0 License. For details, see the Google Developers Site Policies. Java is a registered trademark of Oracle and/or its affiliates.
+Last updated 2026-11-10 UTC.
+    Need to tell us more?
+      [[["Easy to understand","easyToUnderstand","thumb-up"],["Solved my problem","solvedMyProblem","thumb-up"],["Other","otherUp","thumb-up"]],[["Hard to understand","hardToUnderstand","thumb-down"],["Incorrect information or sample code","incorrectInformationOrSampleCode","thumb-down"],["Missing the information/samples I need","missingTheInformationSamplesINeed","thumb-down"],["Other","otherDown","thumb-down"]],["Last updated 2026-11-10 UTC."],[],[]]
+Products and pricing
+            See all products
+            Google Cloud pricing
+            Google Cloud Marketplace
+            Contact sales
+Support
+            Community forums
+            Support
+            Release Notes
+            System status
+Resources
+            GitHub
+            Getting Started with Google Cloud
+            Code samples
+            Cloud Architecture Center
+            Training and Certification
+            Builders Hub
+Engage
+            Blog
+            Events
+            X (Twitter)
+            Google Cloud on YouTube
+            Google Cloud Tech on YouTube
+          Android
+          Chrome
+          Firebase
+          Google AI
+          About Google
+          Privacy
+          Site terms
+          Google Cloud terms
+          Manage cookies
+          Our third decade of climate action: join us
+        Sign up for the Google Cloud newsletter
+          Subscribe
+      English
+      Deutsch
+      Español
+      Español – América Latina
+      Français
+      Indonesia
+      Italiano
+      Português
+      Português – Brasil
+      עברית
+      中文 – 简体
+      中文 – 繁體
+      日本語
+      한국어

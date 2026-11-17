@@ -1,0 +1,162 @@
+
+    Define a scaling policy - Amazon SageMaker AI 
+View a markdown version of this page
+Define a scaling policy - Amazon SageMaker AI
+DocumentationAmazon SageMakerDeveloper Guide
+Specify a predefined metric (CloudWatch metric: InvocationsPerInstance)Specify a high-resolution predefined metric (CloudWatch metrics: ConcurrentRequestsPerModel and ConcurrentRequestsPerCopy)Define a custom metric (CloudWatch metric: CPUUtilization)Define a custom metric (CloudWatch metric: ExplanationsPerInstance)Specify cooldown periods
+Define a scaling policy
+Before you add a scaling policy to your model, save your policy configuration as a
+            JSON block in a text file. You use that text file when invoking the AWS Command Line Interface (AWS CLI) or
+            the Application Auto Scaling API. You can optimize scaling by choosing an appropriate CloudWatch metric.
+            However, before using a custom metric in production, you must test auto scaling with
+            your custom metric.
+Topics
+Specify a predefined metric (CloudWatch metric: InvocationsPerInstance)
+Specify a high-resolution predefined metric (CloudWatch metrics: ConcurrentRequestsPerModel and ConcurrentRequestsPerCopy)
+Define a custom metric (CloudWatch metric: CPUUtilization)
+Define a custom metric (CloudWatch metric: ExplanationsPerInstance)
+Specify cooldown periods
+This section shows you example policy configurations for target tracking scaling
+            policies.
+Specify a predefined metric (CloudWatch metric: InvocationsPerInstance)
+Example
+The following is an example target tracking policy configuration for a variant
+                    that keeps the average invocations per instance at 70. Save this configuration
+                    in a file named config.json.
+{
+    "TargetValue": 70.0,
+    "PredefinedMetricSpecification":
+    {
+        "PredefinedMetricType": "SageMakerVariantInvocationsPerInstance"
+    }
+}
+For more information, see TargetTrackingScalingPolicyConfiguration in the Application Auto Scaling
+                        API Reference.
+Specify a high-resolution predefined metric (CloudWatch metrics: ConcurrentRequestsPerModel and ConcurrentRequestsPerCopy)
+With the following high-resolution CloudWatch metrics, you can set scaling policies for
+                the volume of concurrent requests that your models receive:
+                    ConcurrentRequestsPerModel
+The number of concurrent requests being received by a model
+                            container.
+                    ConcurrentRequestsPerCopy
+The number of concurrent requests being received by an inference
+                            component.
+These metrics track the number of simultaneous requests that your model containers
+                handle, including the requests that are queued inside the containers. For models
+                that send their inference response as a stream of tokens, these metrics track each
+                request until the model sends the last token for the request.
+As high-resolution metrics, they emit data more frequently than standard CloudWatch
+                metrics. Standard metrics, such as the InvocationsPerInstance metric,
+                emit data once every minute. However, these high-resolution metrics emit data every
+                10 seconds. Therefore, as the concurrent traffic to your models increases, your
+                policy reacts by scaling out much more quickly than it would for standard metrics.
+                However, as the traffic to your models decreases, your policy scales in at the same
+                speed as it would for standard metrics.
+The following is an example target tracking policy configuration that adds
+                instances if the number of concurrent requests per model exceeds 5. Save this
+                configuration in a file named config.json.
+{
+    "TargetValue": 5.0,
+    "PredefinedMetricSpecification":
+    {
+        "PredefinedMetricType": "SageMakerVariantConcurrentRequestsPerModelHighResolution"
+    }
+}
+If you use inference components to deploy multiple models to the same endpoint,
+                you can create an equivalent policy. In that case, set
+                    PredefinedMetricType to
+                    SageMakerInferenceComponentConcurrentRequestsPerCopyHighResolution.
+For more information, see TargetTrackingScalingPolicyConfiguration in the Application Auto Scaling API
+                    Reference.
+Define a custom metric (CloudWatch metric: CPUUtilization)
+To create a target tracking scaling policy with a custom metric, specify the
+                metric's name, namespace, unit, statistic, and zero or more dimensions. A dimension
+                consists of a dimension name and a dimension value. You can use any production
+                variant metric that changes in proportion to capacity. 
+Example
+The following example configuration shows a target tracking scaling policy
+                    with a custom metric. The policy scales the variant based on an average CPU
+                    utilization of 50 percent across all instances. Save this configuration in a
+                    file named config.json.
+{
+    "TargetValue": 50.0,
+    "CustomizedMetricSpecification":
+    {
+        "MetricName": "CPUUtilization",
+        "Namespace": "/aws/sagemaker/Endpoints",
+        "Dimensions": [
+            {"Name": "EndpointName", "Value": "my-endpoint" },
+            {"Name": "VariantName","Value": "my-variant"}
+        ],
+        "Statistic": "Average",
+        "Unit": "Percent"
+    }
+}
+For more information, see CustomizedMetricSpecification in the Application Auto Scaling API
+                        Reference. 
+Define a custom metric (CloudWatch metric: ExplanationsPerInstance)
+When the endpoint has online explainability activated, it emits a
+                    ExplanationsPerInstance metric that outputs the average number of
+                records explained per minute, per instance, for a variant. The resource utilization
+                of explaining records can be more different than that of predicting records. We
+                strongly recommend using this metric for target tracking scaling of endpoints with
+                online explainability activated.
+You can create multiple target tracking policies for a scalable target. Consider
+                adding the InvocationsPerInstance policy from the Specify a predefined metric (CloudWatch metric: InvocationsPerInstance) section (in addition
+                to the ExplanationsPerInstance policy). If most invocations don't
+                return an explanation because of the threshold value set in the
+                    EnableExplanations parameter, then the endpoint can choose the
+                    InvocationsPerInstance policy. If there is a large number of
+                explanations, the endpoint can use the ExplanationsPerInstance policy. 
+Example
+The following example configuration shows a target tracking scaling policy
+                    with a custom metric. The policy scale adjusts the number of variant instances
+                    so that each instance has an ExplanationsPerInstance metric of 20.
+                    Save this configuration in a file named config.json.
+{
+    "TargetValue": 20.0,
+    "CustomizedMetricSpecification":
+    {
+        "MetricName": "ExplanationsPerInstance",
+        "Namespace": "AWS/SageMaker",
+        "Dimensions": [
+            {"Name": "EndpointName", "Value": "my-endpoint" },
+            {"Name": "VariantName","Value": "my-variant"}
+        ],
+        "Statistic": "Sum"
+    }
+}
+For more information, see CustomizedMetricSpecification in the Application Auto Scaling API
+                    Reference. 
+Specify cooldown periods
+You can optionally define cooldown periods in your target tracking scaling policy
+                by specifying the ScaleOutCooldown and ScaleInCooldown
+                parameters. 
+Example
+The following is an example target tracking policy configuration for a variant
+                    that keeps the average invocations per instance at 70. The policy configuration
+                    provides a scale-in cooldown period of 10 minutes (600 seconds) and a scale-out
+                    cooldown period of 5 minutes (300 seconds). Save this configuration in a file
+                    named config.json. 
+{
+    "TargetValue": 70.0,
+    "PredefinedMetricSpecification":
+    {
+        "PredefinedMetricType": "SageMakerVariantInvocationsPerInstance"
+    },
+    "ScaleInCooldown": 600,
+    "ScaleOutCooldown": 300
+}
+For more information, see TargetTrackingScalingPolicyConfiguration in the Application Auto Scaling
+                        API Reference. 
+ Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+Register a model
+Apply a scaling policy
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

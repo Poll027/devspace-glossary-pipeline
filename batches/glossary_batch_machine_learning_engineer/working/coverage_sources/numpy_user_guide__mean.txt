@@ -1,0 +1,187 @@
+
+    numpy.mean — NumPy v2.5 Manual
+Skip to main content
+    Back to top
+  Ctrl+K
+    User Guide
+    API reference
+    Building from source
+    Development
+    Release notes
+    Learn
+    NEPs
+    Choose version  
+            GitHub
+    User Guide
+    API reference
+    Building from source
+    Development
+    Release notes
+    Learn
+    NEPs
+    Choose version  
+            GitHub
+  Collapse Sidebar
+  Expand Sidebar
+Section Navigation
+NumPy’s module structure
+Array objects
+Universal functions (ufunc)
+Routines and objects by topic
+Constants
+Array creation routines
+Array manipulation routines
+Bit-wise operations
+String functionality
+Datetime support functions
+Data type routines
+Mathematical functions with automatic domain
+Floating point error handling
+Exceptions and Warnings
+Discrete Fourier Transform
+Functional programming
+Input and output
+Indexing routines
+Linear algebra
+Logic functions
+Masked array operations
+Mathematical functions
+Miscellaneous routines
+Polynomials
+Random sampling
+Set routines
+Sorting, searching, and counting
+Statistics
+numpy.ptp
+numpy.percentile
+numpy.nanpercentile
+numpy.quantile
+numpy.nanquantile
+numpy.median
+numpy.average
+numpy.mean
+numpy.std
+numpy.var
+numpy.nanmedian
+numpy.nanmean
+numpy.nanstd
+numpy.nanvar
+numpy.corrcoef
+numpy.correlate
+numpy.cov
+numpy.histogram
+numpy.histogram2d
+numpy.histogramdd
+numpy.bincount
+numpy.histogram_bin_edges
+numpy.digitize
+Test support
+Window functions
+Typing (numpy.typing)
+NumPy C-API
+Array API standard compatibility
+CPU/SIMD optimizations
+Thread Safety
+Global Configuration Options
+NumPy security
+Testing guidelines
+Status of numpy.distutils and migration advice
+NumPy and SWIG
+NumPy reference
+Routines and objects by topic
+Statistics
+numpy.mean
+numpy.mean#
+numpy.mean(a, axis=None, dtype=None, out=None, keepdims=<no value>, *, where=<no value>)[source]#
+Compute the arithmetic mean along the specified axis.
+Returns the average of the array elements.  The average is taken over
+the flattened array by default, otherwise over the specified axis.
+float64 intermediate and return values are used for integer inputs.
+Parameters:
+aarray_like
+Array containing numbers whose mean is desired. If a is not an
+array, a conversion is attempted.
+axisNone or int or tuple of ints, optional
+Axis or axes along which the means are computed. The default is to
+compute the mean of the flattened array.
+If this is a tuple of ints, a mean is performed over multiple axes,
+instead of a single axis or all the axes as before.
+dtypedata-type, optional
+Type to use in computing the mean.  For integer inputs, the default
+is float64; for floating point inputs, it is the same as the
+input dtype.
+outndarray, optional
+Alternate output array in which to place the result.  The default
+is None; if provided, it must have the same shape as the
+expected output, but the type will be cast if necessary.
+See Output type determination for more details.
+See Output type determination for more details.
+keepdimsbool, optional
+If this is set to True, the axes which are reduced are left
+in the result as dimensions with size one. With this option,
+the result will broadcast correctly against the input array.
+If the default value is passed, then keepdims will not be
+passed through to the mean method of sub-classes of
+ndarray, however any non-default value will be.  If the
+sub-class’ method does not implement keepdims any
+exceptions will be raised.
+wherearray_like of bool, optional
+Elements to include in the mean. See reduce for details.
+New in version 1.20.0.
+Returns:
+mndarray, see dtype parameter above
+If out=None, returns a new array containing the mean values,
+otherwise a reference to the output array is returned.
+See also
+average
+Weighted average
+std, var, nanmean, nanstd, nanvar
+Notes
+The arithmetic mean is the sum of the elements along the axis divided
+by the number of elements.
+Note that for floating-point input, the mean is computed using the
+same precision the input has.  Depending on the input data, this can
+cause the results to be inaccurate, especially for float32 (see
+example below).  Specifying a higher-precision accumulator using the
+dtype keyword can alleviate this issue.
+By default, float16 results are computed using float32 intermediates
+for extra precision.
+Examples
+Try it in your browser!
+>>> import numpy as np
+>>> a = np.array([[1, 2], [3, 4]])
+>>> np.mean(a)
+2.5
+>>> np.mean(a, axis=0)
+array([2., 3.])
+>>> np.mean(a, axis=1)
+array([1.5, 3.5])
+In single precision, mean can be inaccurate:
+>>> a = np.zeros((2, 512*512), dtype=np.float32)
+>>> a[0, :] = 1.0
+>>> a[1, :] = 0.1
+>>> np.mean(a)
+np.float32(0.54999924)
+Computing the mean in float64 is more accurate:
+>>> np.mean(a, dtype=np.float64)
+0.55000000074505806 # may vary
+Computing the mean in timedelta64 is available:
+>>> b = np.array([1, 3], dtype="timedelta64[D]")
+>>> np.mean(b)
+np.timedelta64(2,'D')
+Specifying a where argument:
+>>> a = np.array([[5, 9, 13], [14, 10, 12], [11, 15, 19]])
+>>> np.mean(a)
+12.0
+>>> np.mean(a, where=[[True], [False], [False]])
+9.0
+Go BackOpen In Tab
+previous
+numpy.average
+next
+numpy.std
+     On this page
+mean
+      © Copyright 2008-2026, NumPy Developers.
+    Created using Sphinx 7.2.6.
+  Built with the PyData Sphinx Theme 0.17.1.

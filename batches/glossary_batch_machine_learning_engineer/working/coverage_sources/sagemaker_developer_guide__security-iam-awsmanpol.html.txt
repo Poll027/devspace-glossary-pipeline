@@ -1,0 +1,1017 @@
+
+    AWS managed policies for Amazon SageMaker AI - Amazon SageMaker AI 
+View a markdown version of this page
+AWS managed policies for Amazon SageMaker AI - Amazon SageMaker AI
+DocumentationAmazon SageMakerDeveloper Guide
+AmazonSageMakerFullAccessAmazonSageMakerReadOnlyAmazon SageMaker AI policy updates
+AWS managed policies for Amazon SageMaker AI
+To add permissions to users, groups, and roles, it is easier to use AWS managed policies
+    than to write policies yourself. It takes time and expertise to create IAM customer managed
+      policies that provide your team with only the permissions they need. To get started
+    quickly, you can use our AWS managed policies. These policies cover common use cases and are
+    available in your AWS account. For more information about AWS managed policies, see AWS
+      managed policies in the IAM User Guide.
+AWS services maintain and update AWS managed policies. You can't change the
+    permissions in AWS managed policies. Services occasionally add additional permissions to an
+    AWS managed policy to support new features. This type of update affects all identities (users,
+    groups, and roles) to which the policy is attached. Services are most likely to update an AWS
+    managed policy when a new feature is launched or when new operations become available. Services
+    do not remove permissions from an AWS managed policy, so policy updates won't break your
+    existing permissions.
+Additionally, AWS supports managed policies for job functions that span multiple services.
+    For example, the ReadOnlyAccess AWS managed policy provides read-only access to
+    all AWS services and resources. When a service launches a new feature, AWS adds read-only
+    permissions for new operations and resources. For a list and descriptions of job function
+    policies, see AWS managed policies for job
+      functions in the IAM User Guide.
+Important
+We recommend that you use the most restricted policy that allows you to perform your use
+      case.
+The following AWS managed policies, which you can attach to users in your account, are
+    specific to Amazon SageMaker AI:
+AmazonSageMakerFullAccess – Grants
+        full access to Amazon SageMaker AI and SageMaker AI geospatial resources and the supported operations.
+        This does not provide unrestricted Amazon S3 access, but supports buckets and objects with
+        specific sagemaker tags. This policy allows all IAM roles to be passed to
+        Amazon SageMaker AI, but only allows IAM roles with "AmazonSageMaker" in them to be passed to the
+        AWS Glue, AWS Step Functions, and AWS RoboMaker services.
+AmazonSageMakerReadOnly – Grants
+        read-only access to Amazon SageMaker AI resources. 
+The following AWS managed policies can be attached to users in your account but are not
+    recommended:
+AdministratorAccess – Grants all actions for all AWS
+        services and for all resources in the account. 
+DataScientist – Grants a wide range of permissions to cover
+        most of the use cases (primarily for analytics and business intelligence) encountered by
+        data scientists.
+You can review these permissions policies by signing in to the IAM console and searching
+    for them.
+You can also create your own custom IAM policies to allow permissions for Amazon SageMaker AI
+    actions and resources as you need them. You can attach these custom policies to the users or
+    groups that require them. 
+Topics
+AWS managed policy: AmazonSageMakerFullAccess
+AWS managed policy: AmazonSageMakerReadOnly
+AWS managed policies for Amazon SageMaker Canvas
+AWS managed policies for Amazon SageMaker Feature Store
+AWS managed policies for Amazon SageMaker geospatial
+AWS Managed Policies for Amazon SageMaker Ground Truth
+AWS managed policies for Amazon SageMaker HyperPod
+AWS managed policies for SageMaker AI job runtime
+AWS managed policies for SageMaker AI jobs
+AWS managed policies for Amazon SageMaker AI model customization
+AWS Managed Policies for SageMaker AI Model Governance
+AWS Managed Policies for Model Registry
+AWS Managed Policies for SageMaker Notebooks
+AWS managed policies for Amazon SageMaker Partner AI Apps
+AWS Managed Policies for SageMaker Pipelines
+AWS managed policies for SageMaker training plans
+AWS Managed Policies for SageMaker Projects and JumpStart
+SageMaker AI Updates to AWS Managed Policies
+AWS managed policy: AmazonSageMakerFullAccess
+This policy grants administrative permissions that allow a principal full access to all
+      Amazon SageMaker AI and SageMaker AI geospatial resources and operations. The policy also provides select
+      access to related services. This policy allows all IAM roles to be passed to Amazon SageMaker AI, but
+      only allows IAM roles with "AmazonSageMaker" in them to be passed to the AWS Glue, AWS Step Functions,
+      and AWS RoboMaker services. This policy does not include permissions to create an Amazon SageMaker AI
+      domain. For information on the policy needed to create a domain, see Complete Amazon SageMaker AI prerequisites.
+Permissions details
+This policy includes the following permissions.
+application-autoscaling – Allows principals to automatically scale
+          a SageMaker AI real-time inference endpoint.
+athena – Allows principals to query a list of data catalogs,
+          databases, and table metadata from Amazon Athena.
+aws-marketplace – Allows principals to view AWS AI Marketplace
+          subscriptions. You need this if you want to access SageMaker AI software subscribed in
+          AWS Marketplace.
+cloudformation – Allows principals to get AWS CloudFormation templates for
+          using SageMaker AI JumpStart solutions and Pipelines. SageMaker AI JumpStart creates resources
+          necessary to run end-to-end machine learning solutions that tie SageMaker AI to other AWS
+          services. SageMaker AI Pipelines creates new projects that are backed by Service Catalog.
+cloudwatch – Allows principals to post CloudWatch metrics, interact with
+          alarms, and upload logs to CloudWatch Logs in your account.
+codebuild – Allows principals to store AWS CodeBuild artifacts for
+          SageMaker AI Pipeline and Projects.
+codecommit – Needed for AWS CodeCommit integration with SageMaker AI
+          notebook instances.
+cognito-idp – Needed for Amazon SageMaker Ground Truth to define private workforce and
+          work teams.
+ec2 – Needed for SageMaker AI to manage Amazon EC2 resources and network
+          interfaces when you specify an Amazon VPC for your SageMaker AI jobs, models, endpoints, and
+          notebook instances.
+ecr – Needed to pull and store Docker artifacts for Amazon SageMaker Studio Classic
+          (custom images), training, processing, batch inference, and inference endpoints. This is
+          also required to use your own container in SageMaker AI. Additional permissions for SageMaker AI
+          JumpStart solutions are required to create and remove custom images on behalf of
+          users.
+elasticfilesystem – Allows principals to access Amazon Elastic File System. This is
+          needed for SageMaker AI to use data sources in Amazon Elastic File System for training machine learning
+          models.
+fsx – Allows principals to access Amazon FSx. This is needed for
+          SageMaker AI to use data sources in Amazon FSx for training machine learning models.
+glue – Needed for inference pipeline pre-processing from within
+          SageMaker AI notebook instances.
+groundtruthlabeling – Needed for Ground Truth labeling jobs. The
+            groundtruthlabeling endpoint is accessed by the Ground Truth console.
+iam – Needed to give the SageMaker AI console access to available
+          IAM roles and create service-linked roles.
+kms – Needed to give the SageMaker AI console access to available
+          AWS KMS keys and retrieve them for any specified AWS KMS aliases in jobs and endpoints.
+lambda – Allows principals to invoke and get a list of AWS Lambda
+          functions.
+logs – Needed to allow SageMaker AI jobs and endpoints to publish log
+          streams.
+redshift – Allows principals to access Amazon Redshift cluster
+          credentials.
+redshift-data – Allows principals to use data from Amazon Redshift to run,
+          describe, and cancel statements; get statement results; and list schemas and
+          tables.
+robomaker – Allows principals to have full access to create, get
+          descriptions, and delete AWS RoboMaker simulation applications and jobs. This is also
+          needed to run reinforcement learning examples on notebook instances.
+s3, s3express – Allows principals to have full access to Amazon S3 and
+          Amazon S3 Express resources pertaining to SageMaker AI, but not all of Amazon S3 or Amazon S3 Express.
+sagemaker – Allows principals to list tags on SageMaker AI user profiles,
+          and add tags to SageMaker AI apps and spaces. Allows access only to SageMaker AI flow-definitions of
+          sagemaker:WorkteamType "private-crowd" or "vendor-crowd". Allows the use and description
+          of SageMaker AI training plans and reserved capacity in SageMaker training jobs, and SageMaker HyperPod
+          clusters, across all AWS Regions where the training plans feature is accessible.
+sagemaker and sagemaker-geospatial – Allows
+          principals read-only access to SageMaker AI domains and user profiles.
+secretsmanager – Allows principals to have full access to
+          AWS Secrets Manager. The principals can securely encrypt, store, and retrieve
+          credentials for databases and other services. This is also needed for SageMaker AI notebook
+          instances with SageMaker AI code repositories that use GitHub.
+servicecatalog – Allows principals to use Service Catalog. The principals can
+          create, get a list of, update, or terminate provisioned products, such as servers,
+          databases, websites, or applications deployed using AWS resources. This is needed for
+          SageMaker AI JumpStart and Projects to find and read service catalog products and launch
+          AWS resources in users.
+sns – Allows principals to get a list of Amazon SNS topics. This is
+          needed for endpoints with Async Inference enabled for notifying users that their inference
+          has completed.
+states – Needed for SageMaker AI JumpStart and Pipelines to use a
+          service catalog to create step function resources.
+tag – Needed for SageMaker AI Pipelines to render in Studio Classic.
+          Studio Classic needs resources tagged with particular sagemaker:project-id
+          tag-key. This requires the tag:GetResources permission.
+    JSON
+{
+  "Version":"2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowAllNonAdminSageMakerActions",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:*",
+        "sagemaker-geospatial:*"
+      ],
+      "NotResource": [
+        "arn:aws:sagemaker:*:*:domain/*",
+        "arn:aws:sagemaker:*:*:user-profile/*",
+        "arn:aws:sagemaker:*:*:app/*",
+        "arn:aws:sagemaker:*:*:space/*",
+        "arn:aws:sagemaker:*:*:partner-app/*",
+        "arn:aws:sagemaker:*:*:flow-definition/*",
+        "arn:aws:sagemaker:*:*:training-plan/*",
+        "arn:aws:sagemaker:*:*:reserved-capacity/*"
+      ]
+    },
+    {
+      "Sid": "AllowAddTagsForSpace",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags"
+      ],
+      "Resource": [
+        "arn:aws:sagemaker:*:*:space/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "sagemaker:TaggingAction": "CreateSpace"
+        }
+      }
+    },
+    {
+      "Sid": "AllowAddTagsForApp",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags"
+      ],
+      "Resource": [
+        "arn:aws:sagemaker:*:*:app/*"
+      ]
+    },
+    {
+      "Sid": "AllowUseOfTrainingPlanResources",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreateTrainingJob",
+        "sagemaker:CreateCluster",
+        "sagemaker:UpdateCluster",
+        "sagemaker:DescribeTrainingPlan"
+      ],
+      "Resource": [
+        "arn:aws:sagemaker:*:*:training-plan/*",
+        "arn:aws:sagemaker:*:*:reserved-capacity/*"
+      ]
+    },
+    {
+      "Sid": "AllowStudioActions",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreatePresignedDomainUrl",
+        "sagemaker:DescribeDomain",
+        "sagemaker:ListDomains",
+        "sagemaker:DescribeUserProfile",
+        "sagemaker:ListUserProfiles",
+        "sagemaker:DescribeSpace",
+        "sagemaker:ListSpaces",
+        "sagemaker:DescribeApp",
+        "sagemaker:ListApps"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowAppActionsForUserProfile",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreateApp",
+        "sagemaker:DeleteApp"
+      ],
+      "Resource": "arn:aws:sagemaker:*:*:app/*/*/*/*",
+      "Condition": {
+        "Null": {
+          "sagemaker:OwnerUserProfileArn": "true"
+        }
+      }
+    },
+    {
+      "Sid": "AllowAppActionsForSharedSpaces",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreateApp",
+        "sagemaker:DeleteApp"
+      ],
+      "Resource": "arn:aws:sagemaker:*:*:app/${sagemaker:DomainId}/*/*/*",
+      "Condition": {
+        "StringEquals": {
+          "sagemaker:SpaceSharingType": [
+            "Shared"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowMutatingActionsOnSharedSpacesWithoutOwner",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreateSpace",
+        "sagemaker:UpdateSpace",
+        "sagemaker:DeleteSpace"
+      ],
+      "Resource": "arn:aws:sagemaker:*:*:space/${sagemaker:DomainId}/*",
+      "Condition": {
+        "Null": {
+          "sagemaker:OwnerUserProfileArn": "true"
+        }
+      }
+    },
+    {
+      "Sid": "RestrictMutatingActionsOnSpacesToOwnerUserProfile",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreateSpace",
+        "sagemaker:UpdateSpace",
+        "sagemaker:DeleteSpace"
+      ],
+      "Resource": "arn:aws:sagemaker:*:*:space/${sagemaker:DomainId}/*",
+      "Condition": {
+        "ArnLike": {
+          "sagemaker:OwnerUserProfileArn": "arn:aws:sagemaker:*:*:user-profile/${sagemaker:DomainId}/${sagemaker:UserProfileName}"
+        },
+        "StringEquals": {
+          "sagemaker:SpaceSharingType": [
+            "Private",
+            "Shared"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "RestrictMutatingActionsOnPrivateSpaceAppsToOwnerUserProfile",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreateApp",
+        "sagemaker:DeleteApp"
+      ],
+      "Resource": "arn:aws:sagemaker:*:*:app/${sagemaker:DomainId}/*/*/*",
+      "Condition": {
+        "ArnLike": {
+          "sagemaker:OwnerUserProfileArn": "arn:aws:sagemaker:*:*:user-profile/${sagemaker:DomainId}/${sagemaker:UserProfileName}"
+        },
+        "StringEquals": {
+          "sagemaker:SpaceSharingType": [
+            "Private"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowFlowDefinitionActions",
+      "Effect": "Allow",
+      "Action": "sagemaker:*",
+      "Resource": [
+        "arn:aws:sagemaker:*:*:flow-definition/*"
+      ],
+      "Condition": {
+        "StringEqualsIfExists": {
+          "sagemaker:WorkteamType": [
+            "private-crowd",
+            "vendor-crowd"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowAWSServiceActions",
+      "Effect": "Allow",
+      "Action": [
+        "application-autoscaling:DeleteScalingPolicy",
+        "application-autoscaling:DeleteScheduledAction",
+        "application-autoscaling:DeregisterScalableTarget",
+        "application-autoscaling:DescribeScalableTargets",
+        "application-autoscaling:DescribeScalingActivities",
+        "application-autoscaling:DescribeScalingPolicies",
+        "application-autoscaling:DescribeScheduledActions",
+        "application-autoscaling:PutScalingPolicy",
+        "application-autoscaling:PutScheduledAction",
+        "application-autoscaling:RegisterScalableTarget",
+        "aws-marketplace:ViewSubscriptions",
+        "cloudformation:GetTemplateSummary",
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:GetMetricData",
+        "cloudwatch:GetMetricStatistics",
+        "cloudwatch:ListMetrics",
+        "cloudwatch:PutMetricAlarm",
+        "cloudwatch:PutMetricData",
+        "codecommit:BatchGetRepositories",
+        "codecommit:CreateRepository",
+        "codecommit:GetRepository",
+        "codecommit:List*",
+        "cognito-idp:AdminAddUserToGroup",
+        "cognito-idp:AdminCreateUser",
+        "cognito-idp:AdminDeleteUser",
+        "cognito-idp:AdminDisableUser",
+        "cognito-idp:AdminEnableUser",
+        "cognito-idp:AdminRemoveUserFromGroup",
+        "cognito-idp:CreateGroup",
+        "cognito-idp:CreateUserPool",
+        "cognito-idp:CreateUserPoolClient",
+        "cognito-idp:CreateUserPoolDomain",
+        "cognito-idp:DescribeUserPool",
+        "cognito-idp:DescribeUserPoolClient",
+        "cognito-idp:List*",
+        "cognito-idp:UpdateUserPool",
+        "cognito-idp:UpdateUserPoolClient",
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateNetworkInterfacePermission",
+        "ec2:CreateVpcEndpoint",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteNetworkInterfacePermission",
+        "ec2:DescribeDhcpOptions",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeRouteTables",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:CreateRepository",
+        "ecr:Describe*",
+        "ecr:GetAuthorizationToken",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:StartImageScan",
+        "elasticfilesystem:DescribeFileSystems",
+        "elasticfilesystem:DescribeMountTargets",
+        "fsx:DescribeFileSystems",
+        "glue:CreateJob",
+        "glue:DeleteJob",
+        "glue:GetJob*",
+        "glue:GetTable*",
+        "glue:GetWorkflowRun",
+        "glue:ResetJobBookmark",
+        "glue:StartJobRun",
+        "glue:StartWorkflowRun",
+        "glue:UpdateJob",
+        "groundtruthlabeling:*",
+        "iam:ListRoles",
+        "kms:DescribeKey",
+        "kms:ListAliases",
+        "lambda:ListFunctions",
+        "logs:CreateLogDelivery",
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:DeleteLogDelivery",
+        "logs:Describe*",
+        "logs:GetLogDelivery",
+        "logs:GetLogEvents",
+        "logs:ListLogDeliveries",
+        "logs:PutLogEvents",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "robomaker:CreateSimulationApplication",
+        "robomaker:DescribeSimulationApplication",
+        "robomaker:DeleteSimulationApplication",
+        "robomaker:CreateSimulationJob",
+        "robomaker:DescribeSimulationJob",
+        "robomaker:CancelSimulationJob",
+        "secretsmanager:ListSecrets",
+        "servicecatalog:Describe*",
+        "servicecatalog:List*",
+        "servicecatalog:ScanProvisionedProducts",
+        "servicecatalog:SearchProducts",
+        "servicecatalog:SearchProvisionedProducts",
+        "sns:ListTopics",
+        "tag:GetResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowECRActions",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:SetRepositoryPolicy",
+        "ecr:CompleteLayerUpload",
+        "ecr:BatchDeleteImage",
+        "ecr:UploadLayerPart",
+        "ecr:DeleteRepositoryPolicy",
+        "ecr:InitiateLayerUpload",
+        "ecr:DeleteRepository",
+        "ecr:PutImage"
+      ],
+      "Resource": [
+        "arn:aws:ecr:*:*:repository/*sagemaker*"
+      ]
+    },
+    {
+      "Sid": "AllowCodeCommitActions",
+      "Effect": "Allow",
+      "Action": [
+        "codecommit:GitPull",
+        "codecommit:GitPush"
+      ],
+      "Resource": [
+        "arn:aws:codecommit:*:*:*sagemaker*",
+        "arn:aws:codecommit:*:*:*SageMaker*",
+        "arn:aws:codecommit:*:*:*Sagemaker*"
+      ]
+    },
+    {
+      "Sid": "AllowCodeBuildActions",
+      "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild"
+      ],
+      "Resource": [
+        "arn:aws:codebuild:*:*:project/sagemaker*",
+        "arn:aws:codebuild:*:*:build/*"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Sid": "AllowStepFunctionsActions",
+      "Action": [
+        "states:DescribeExecution",
+        "states:GetExecutionHistory",
+        "states:StartExecution",
+        "states:StopExecution",
+        "states:UpdateStateMachine"
+      ],
+      "Resource": [
+        "arn:aws:states:*:*:statemachine:*sagemaker*",
+        "arn:aws:states:*:*:execution:*sagemaker*:*"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Sid": "AllowSecretManagerActions",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:CreateSecret"
+      ],
+      "Resource": [
+        "arn:aws:secretsmanager:*:*:secret:AmazonSageMaker-*"
+      ]
+    },
+    {
+      "Sid": "AllowReadOnlySecretManagerActions",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "secretsmanager:ResourceTag/SageMaker": "true"
+        }
+      }
+    },
+    {
+      "Sid": "AllowServiceCatalogProvisionProduct",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:ProvisionProduct"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowServiceCatalogTerminateUpdateProvisionProduct",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:TerminateProvisionedProduct",
+        "servicecatalog:UpdateProvisionedProduct"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "servicecatalog:userLevel": "self"
+        }
+      }
+    },
+    {
+      "Sid": "AllowS3ObjectActions",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:AbortMultipartUpload"
+      ],
+      "Resource": [
+        "arn:aws:s3:::*SageMaker*",
+        "arn:aws:s3:::*Sagemaker*",
+        "arn:aws:s3:::*sagemaker*",
+        "arn:aws:s3:::*aws-glue*"
+      ]
+    },
+    {
+      "Sid": "AllowS3GetObjectWithSageMakerExistingObjectTag",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::*"
+      ],
+      "Condition": {
+        "StringEqualsIgnoreCase": {
+          "s3:ExistingObjectTag/SageMaker": "true"
+        }
+      }
+    },
+    {
+      "Sid": "AllowS3GetObjectWithServiceCatalogProvisioningExistingObjectTag",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "s3:ExistingObjectTag/servicecatalog:provisioning": "true"
+        }
+      }
+    },
+    {
+      "Sid": "AllowS3BucketActions",
+      "Effect": "Allow",
+      "Action": [
+        "s3:CreateBucket",
+        "s3:GetBucketLocation",
+        "s3:ListBucket",
+        "s3:ListAllMyBuckets",
+        "s3:GetBucketCors",
+        "s3:PutBucketCors"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowS3BucketACL",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketAcl",
+        "s3:PutObjectAcl"
+      ],
+      "Resource": [
+        "arn:aws:s3:::*SageMaker*",
+        "arn:aws:s3:::*Sagemaker*",
+        "arn:aws:s3:::*sagemaker*"
+      ]
+    },
+    {
+      "Sid": "AllowLambdaInvokeFunction",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:InvokeFunction"
+      ],
+      "Resource": [
+        "arn:aws:lambda:*:*:function:*SageMaker*",
+        "arn:aws:lambda:*:*:function:*sagemaker*",
+        "arn:aws:lambda:*:*:function:*Sagemaker*",
+        "arn:aws:lambda:*:*:function:*LabelingFunction*"
+      ]
+    },
+    {
+      "Sid": "AllowCreateServiceLinkedRoleForSageMakerApplicationAutoscaling",
+      "Action": "iam:CreateServiceLinkedRole",
+      "Effect": "Allow",
+      "Resource": "arn:aws:iam::*:role/aws-service-role/sagemaker.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_SageMakerEndpoint",
+      "Condition": {
+        "StringLike": {
+          "iam:AWSServiceName": "sagemaker.application-autoscaling.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "AllowCreateServiceLinkedRoleForRobomaker",
+      "Effect": "Allow",
+      "Action": "iam:CreateServiceLinkedRole",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "iam:AWSServiceName": "robomaker.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "AllowSNSActions",
+      "Effect": "Allow",
+      "Action": [
+        "sns:Subscribe",
+        "sns:CreateTopic",
+        "sns:Publish"
+      ],
+      "Resource": [
+        "arn:aws:sns:*:*:*SageMaker*",
+        "arn:aws:sns:*:*:*Sagemaker*",
+        "arn:aws:sns:*:*:*sagemaker*"
+      ]
+    },
+    {
+      "Sid": "AllowPassRoleForSageMakerRoles",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole"
+      ],
+      "Resource": "arn:aws:iam::*:role/*AmazonSageMaker*",
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": [
+            "glue.amazonaws.com",
+            "robomaker.amazonaws.com",
+            "states.amazonaws.com"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowPassRoleToSageMaker",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole"
+      ],
+      "Resource": "arn:aws:iam::*:role/*",
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": "sagemaker.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "AllowAthenaActions",
+      "Effect": "Allow",
+      "Action": [
+        "athena:ListDataCatalogs",
+        "athena:ListDatabases",
+        "athena:ListTableMetadata",
+        "athena:GetQueryExecution",
+        "athena:GetQueryResults",
+        "athena:StartQueryExecution",
+        "athena:StopQueryExecution"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Sid": "AllowGlueCreateTable",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateTable"
+      ],
+      "Resource": [
+        "arn:aws:glue:*:*:table/*/sagemaker_tmp_*",
+        "arn:aws:glue:*:*:table/sagemaker_featurestore/*",
+        "arn:aws:glue:*:*:catalog",
+        "arn:aws:glue:*:*:database/*"
+      ]
+    },
+    {
+      "Sid": "AllowGlueUpdateTable",
+      "Effect": "Allow",
+      "Action": [
+        "glue:UpdateTable"
+      ],
+      "Resource": [
+        "arn:aws:glue:*:*:table/sagemaker_featurestore/*",
+        "arn:aws:glue:*:*:catalog",
+        "arn:aws:glue:*:*:database/sagemaker_featurestore"
+      ]
+    },
+    {
+      "Sid": "AllowGlueDeleteTable",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteTable"
+      ],
+      "Resource": [
+        "arn:aws:glue:*:*:table/*/sagemaker_tmp_*",
+        "arn:aws:glue:*:*:catalog",
+        "arn:aws:glue:*:*:database/*"
+      ]
+    },
+    {
+      "Sid": "AllowGlueGetTablesAndDatabases",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDatabases",
+        "glue:GetTable",
+        "glue:GetTables"
+      ],
+      "Resource": [
+        "arn:aws:glue:*:*:table/*",
+        "arn:aws:glue:*:*:catalog",
+        "arn:aws:glue:*:*:database/*"
+      ]
+    },
+    {
+      "Sid": "AllowGlueGetAndCreateDatabase",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateDatabase",
+        "glue:GetDatabase"
+      ],
+      "Resource": [
+        "arn:aws:glue:*:*:catalog",
+        "arn:aws:glue:*:*:database/sagemaker_featurestore",
+        "arn:aws:glue:*:*:database/sagemaker_processing",
+        "arn:aws:glue:*:*:database/default",
+        "arn:aws:glue:*:*:database/sagemaker_data_wrangler"
+      ]
+    },
+    {
+      "Sid": "AllowRedshiftDataActions",
+      "Effect": "Allow",
+      "Action": [
+        "redshift-data:ExecuteStatement",
+        "redshift-data:DescribeStatement",
+        "redshift-data:CancelStatement",
+        "redshift-data:GetStatementResult",
+        "redshift-data:ListSchemas",
+        "redshift-data:ListTables"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Sid": "AllowRedshiftGetClusterCredentials",
+      "Effect": "Allow",
+      "Action": [
+        "redshift:GetClusterCredentials"
+      ],
+      "Resource": [
+        "arn:aws:redshift:*:*:dbuser:*/sagemaker_access*",
+        "arn:aws:redshift:*:*:dbname:*"
+      ]
+    },
+    {
+      "Sid": "AllowListTagsForUserProfile",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:ListTags"
+      ],
+      "Resource": [
+        "arn:aws:sagemaker:*:*:user-profile/*"
+      ]
+    },
+    {
+      "Sid": "AllowCloudformationListStackResources",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:ListStackResources"
+      ],
+      "Resource": "arn:aws:cloudformation:*:*:stack/SC-*"
+    },
+    {
+      "Sid": "AllowS3ExpressObjectActions",
+      "Effect": "Allow",
+      "Action": [
+        "s3express:CreateSession"
+      ],
+      "Resource": [
+        "arn:aws:s3express:*:*:bucket/*SageMaker*",
+        "arn:aws:s3express:*:*:bucket/*Sagemaker*",
+        "arn:aws:s3express:*:*:bucket/*sagemaker*",
+        "arn:aws:s3express:*:*:bucket/*aws-glue*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceAccount": "${aws:PrincipalAccount}"
+        }
+      }
+    },
+    {
+      "Sid": "AllowS3ExpressCreateBucketActions",
+      "Effect": "Allow",
+      "Action": [
+        "s3express:CreateBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3express:*:*:bucket/*SageMaker*",
+        "arn:aws:s3express:*:*:bucket/*Sagemaker*",
+        "arn:aws:s3express:*:*:bucket/*sagemaker*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceAccount": "${aws:PrincipalAccount}"
+        }
+      }
+    },
+    {
+      "Sid": "AllowS3ExpressListBucketActions",
+      "Effect": "Allow",
+      "Action": [
+        "s3express:ListAllMyDirectoryBuckets"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+Show moreShow less
+AWS managed policy: AmazonSageMakerReadOnly
+This policy grants read-only access to Amazon SageMaker AI through the AWS Management Console and SDK.
+Permissions details
+This policy includes the following permissions.
+application-autoscaling – Allows users to browse descriptions of
+          scalable SageMaker AI real-time inference endpoints.
+aws-marketplace – Allows users to view AWS AI Marketplace
+          subscriptions.
+cloudwatch – Allows users to receive CloudWatch alarms.
+cognito-idp – Needed for Amazon SageMaker Ground Truth to browse descriptions and
+          lists of private workforce and work teams.
+ecr – Needed to read Docker artifacts for training and
+          inference.
+    JSON
+{
+    "Version":"2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sagemaker:Describe*",
+                "sagemaker:List*",
+                "sagemaker:BatchGetMetrics",
+                "sagemaker:GetDeviceRegistration",
+                "sagemaker:GetDeviceFleetReport",
+                "sagemaker:GetSearchSuggestions",
+                "sagemaker:BatchGetRecord",
+                "sagemaker:GetRecord",
+                "sagemaker:Search",
+                "sagemaker:QueryLineage",
+                "sagemaker:GetLineageGroupPolicy",
+                "sagemaker:BatchDescribeModelPackage",
+                "sagemaker:GetModelPackageGroupPolicy"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "application-autoscaling:DescribeScalableTargets",
+                "application-autoscaling:DescribeScalingActivities",
+                "application-autoscaling:DescribeScalingPolicies",
+                "application-autoscaling:DescribeScheduledActions",
+                "aws-marketplace:ViewSubscriptions",
+                "cloudwatch:DescribeAlarms",
+                "cognito-idp:DescribeUserPool",
+                "cognito-idp:DescribeUserPoolClient",
+                "cognito-idp:ListGroups",
+                "cognito-idp:ListIdentityProviders",
+                "cognito-idp:ListUserPoolClients",
+                "cognito-idp:ListUserPools",
+                "cognito-idp:ListUsers",
+                "cognito-idp:ListUsersInGroup",
+                "ecr:Describe*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+SageMaker AI Updates to AWS Managed Policies
+View details about updates to AWS managed policies for SageMaker AI since this service
+      began tracking these changes.
+            Policy
+            Version
+            Change
+            Date
+AmazonSageMakerJobRuntimeAccess
+                – New policy
+            1
+Initial policy
+            June 4, 2026
+AmazonSageMakerJobFullAccess –
+                New policy
+            1
+Initial policy
+            June 4, 2026
+AmazonSageMakerFullAccess - Update
+                to an existing policy
+            27
+Add Statement ID AllowUseOfTrainingPlanResources with the
+                    following actions: sagemaker:CreateTrainingJob,
+                      sagemaker:CreateCluster, sagemaker:UpdateCluster,
+                      sagemaker:DescribeTrainingPlan.
+ Add Partner Apps, training plans, and Reserved Capacity among the
+                    excluded resources of the AllowAllNonAdminSageMakerActions policy
+                    statement. 
+December 4, 2024
+AmazonSageMakerFullAccess - Update
+                to an existing policy
+            26
+Add sagemaker:AddTags permission.
+March 29, 2024
+AmazonSageMakerFullAccess - Update to an existing policy
+            25
+Add sagemaker:CreateApp, sagemaker:DescribeApp,
+                  sagemaker:DeleteApp, sagemaker:CreateSpace,
+                  sagemaker:UpdateSpace, sagemaker:DeleteSpace,
+                  s3express:CreateSession, s3express:CreateBucket, and
+                  s3express:ListAllMyDirectoryBuckets permissions.
+November 30, 2023
+AmazonSageMakerFullAccess - Update to an existing policy
+            24
+Add sagemaker-geospatial:*, sagemaker:AddTags,
+                  sagemaker-ListTags, sagemaker-DescribeSpace, and
+                  sagemaker:ListSpaces permissions.
+November 30, 2022
+AmazonSageMakerFullAccess - Update to an existing policy
+            23
+Add glue:UpdateTable.
+June 29, 2022
+AmazonSageMakerFullAccess - Update to an existing policy
+            22
+Add cloudformation:ListStackResources.
+May 1, 2022
+AmazonSageMakerReadOnly - Update to
+                an existing policy
+            11
+Add sagemaker:QueryLineage,
+                  sagemaker:GetLineageGroupPolicy,
+                  sagemaker:BatchDescribeModelPackage,
+                  sagemaker:GetModelPackageGroupPolicy permissions.
+December 1, 2021
+AmazonSageMakerFullAccess - Update to an existing policy
+            21
+Add sns:Publish permissions for endpoints with Async Inference
+                enabled.
+September 8, 2021
+AmazonSageMakerFullAccess - Update to an existing policy
+            20
+Update iam:PassRole resources and permissions.
+July 15, 2021
+AmazonSageMakerReadOnly - Update to an existing policy
+            10
+New API BatchGetRecord added for SageMaker AI Feature Store. 
+            June 10, 2021
+SageMaker AI started tracking changes for its AWS managed policies.
+            June 1, 2021
+ Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+Service-linked roles for SageMaker AI Inference
+SageMaker Canvas
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

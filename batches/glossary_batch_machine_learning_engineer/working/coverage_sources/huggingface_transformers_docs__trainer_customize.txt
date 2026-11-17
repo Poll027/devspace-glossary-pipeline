@@ -1,0 +1,131 @@
+
+		Subclassing Trainer methods · Hugging Face
+ Hugging Face 
+ Search models, datasets, users... Ctrl K  
+ Models
+ Datasets
+ Spaces
+ Buckets
+ Docs
+ Enterprise 
+Pricing 
+Website 
+ Tasks 
+ HuggingChat 
+ Collections 
+ Languages 
+ Organizations  
+Community 
+ Blog 
+ Posts 
+ Daily Papers 
+ Hardware 
+ Learn 
+ Discord 
+ Forum 
+ GitHub  
+Solutions 
+ Team & Enterprise 
+ Hugging Face PRO 
+ Enterprise Support 
+ Inference Providers 
+ Inference Endpoints 
+ Storage Buckets    
+Log In 
+Sign Up    
+Transformers documentation 
+Subclassing Trainer methods   
+Transformers  🏡 View all docsAWS Trainium & InferentiaAccelerateBitsandbytesCLIChat UIDataset viewerDatasetsDeploying on AWSDiffusersGoogle CloudGoogle TPUsGradioHubHub Python LibraryHuggingface.jsInference Endpoints (dedicated)Inference ProvidersKernelsLeRobotLeaderboardsLightevalMicrosoft AzureOpenEnvOptimumPEFTReachy MiniSafetensorsSentence TransformersTRLTasksText Embeddings InferenceTokenizersTrackioTransformersTransformers.jsXetsmolagentstimm  
+Search documentation  
+mainv5.23.0v5.22.2v5.21.1v5.20.2v5.19.0v5.17.0v5.15.1v5.14.0v5.13.1v5.12.0v5.11.0v5.10.4v5.9.0v5.8.1v5.7.0v5.6.2v5.5.4v5.4.0v5.3.0v5.2.0v5.1.0v5.0.0v4.57.6v4.56.2v4.55.4v4.53.3v4.52.3v4.51.3v4.50.0v4.49.0v4.48.2v4.47.1v4.46.3v4.45.2v4.44.2v4.43.4v4.42.4v4.41.2v4.40.2v4.39.3v4.38.2v4.37.2v4.36.1v4.35.2v4.34.1v4.33.3v4.32.1v4.31.0v4.30.0v4.29.1v4.28.1v4.27.2v4.26.1v4.25.1v4.24.0v4.23.1v4.22.2v4.21.3v4.20.1v4.19.4v4.18.0v4.17.0v4.16.2v4.15.0v4.14.1v4.13.0v4.12.5v4.11.3v4.10.1v4.9.2v4.8.2v4.7.0v4.6.0v4.5.1v4.4.2v4.3.3v4.2.2v4.1.1v4.0.1v3.5.1v3.4.0v3.3.1v3.2.0v3.1.0v3.0.2v2.11.0v2.10.0v2.9.1v2.8.0v2.7.0v2.6.0v2.5.1v2.4.1v2.3.0v2.2.2v2.1.1v2.0.0v1.2.0v1.1.0v1.0.0doc-builder-html ARENESFRIDJAKOPTRUTRVIZH 
+Get started  
+TransformersInstallationQuickstart
+Base classes  
+Models  
+Preprocessors  
+Inference  
+Pipeline API  
+Generate API  
+Optimization  
+Chat with models  
+Serving  
+Training  
+Get started  
+Customization  
+Subclassing Trainer methodsCallbacksData collatorsOptimizers and schedulersHyperparameter searchTrainer featuresParameter-efficient fine-tuning
+Performance  
+Distributed training  
+Hardware  
+Quantization  
+Ecosystem integrations  
+Resources  
+API   
+Join the Hugging Face community 
+and get access to the augmented documentation experience 
+Collaborate on models, datasets and Spaces 
+Faster examples with accelerated inference 
+Switch between documentation themes 
+Sign Up 
+to get started 
+ Copy page   
+ Subclassing Trainer methods 
+Subclass Trainer methods to change training behavior without rewriting the entire loop. Subclassing modifies the training loop, for example the forward pass or loss computation. 
+Before subclassing, consider whether you need to change what Trainer computes or when and whether it acts. For timing and conditional logic, use a Callback instead. Callbacks control when things happen (logging, evaluation, early stopping) and subclassing changes what happens (loss computation, data loading, optimization). 
+See the Trainer API docs for a complete list of methods you can subclass. Private methods (prefixed with _) like _save_checkpoint or _evaluate can also be overridden, but these may change without notice. 
+ get_train_dataloader 
+The standard get_train_dataloader() method loads one batch, trains on it, discards it, and loads the next batch. 
+ Copied 
+def get_train_dataloader(self):
+    return self._get_dataloader(
+        batch_size=self._train_batch_size,
+        ...
+) 
+GRPO is an online reinforcement learning algorithm that generates completions before training on them. Generating completions every step is expensive because it’s autoregressive. A 512-token completion requires ~512 sequential forward passes compared to one forward pass for a training step. GRPOTrainer subclasses get_train_dataloader() to batch generation across multiple steps. 
+trl.GRPOTrainer.get_train_dataloader loads batches of generation prompts for multiple training steps at once by multiplying batch size by a steps_per_generation argument. If train_batch_size=4 and steps_per_generation=8, the dataloader produces batches of 32, cutting generation cost by 8x. 
+ Copied 
+def get_train_dataloader(self):
+    dataloader_params = {
+        "batch_size": self._train_batch_size * self.args.steps_per_generation, # this is the only change
+        ...
+    } 
+ Compute loss 
+compute_loss() returns the cross-entropy loss calculated by the model. 
+ Copied 
+def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
+    ...
+    outputs = model(**inputs)
+    ...
+    loss = outputs["loss"] # get loss from model
+    return (loss, outputs) if return_outputs else loss 
+DPO measures how strongly the policy model prefers a chosen response over a rejected one, relative to a reference model. DPOTrainer subclasses compute_loss() because the loss computation differs from standard cross-entropy in several ways: 
+the model never sees labels; it only returns logits for DPO to calculate log-probs from 
+chosen and rejected responses are concatenated 
+a reference model calculates its own log-probs 
+the loss is a function of π_chosen, π_rejected, π_ref_chosen, π_ref_rejected 
+None of the above fits the standard Trainer.compute_loss() method. 
+ Copied 
+def compute_loss(
+    self,
+    model: PreTrainedModel | nn.Module,
+    inputs: dict[str, torch.Tensor | Any],
+    return_outputs=False,
+    num_items_in_batch=None,
+) -> torch.Tensor | tuple[torch.Tensor, dict[str, float]]:
+    ...
+    outputs = model(**inputs)
+    logits = outputs.logits
+    logps = get_logps(logits, inputs)
+    chosen_logps, rejected_logps = logps.chunk(2, dim=0)  # batch is [chosen, rejected]
+    ref_logits = self.ref_model(**inputs).logits
+    ref_logps = get_logps(ref_logits, inputs)
+    ref_chosen_logps, ref_rejected_logps = ref_logps.chunk(2, dim=0)  # batch is [chosen, rejected]
+    chosen_scores = chosen_logps - ref_chosen_logps
+    rejected_scores = rejected_logps - ref_rejected_logps
+    per_sequence_loss = -F.logsigmoid(self.beta * chosen_scores - rejected_scores)
+    loss = per_sequence_loss.mean()
+    return (loss, outputs) if return_outputs else loss 
+ Next steps 
+For more real-world examples, see how GRPOTrainer and DPOTrainer extend Trainer in TRL, or how Axolotl builds custom trainers on top of it. 
+Check the Callbacks guide if you only need to customize what happens during a training event such as logging metrics at the end of a training step.  Update on GitHub 
+←Fine-tuning Callbacks→ 
+Subclassing Trainer methodsget_train_dataloaderCompute lossNext steps 

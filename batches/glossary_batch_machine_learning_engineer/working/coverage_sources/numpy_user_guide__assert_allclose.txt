@@ -1,0 +1,180 @@
+
+    numpy.testing.assert_allclose — NumPy v2.5 Manual
+Skip to main content
+    Back to top
+  Ctrl+K
+    User Guide
+    API reference
+    Building from source
+    Development
+    Release notes
+    Learn
+    NEPs
+    Choose version  
+            GitHub
+    User Guide
+    API reference
+    Building from source
+    Development
+    Release notes
+    Learn
+    NEPs
+    Choose version  
+            GitHub
+  Collapse Sidebar
+  Expand Sidebar
+Section Navigation
+NumPy’s module structure
+Array objects
+Universal functions (ufunc)
+Routines and objects by topic
+Constants
+Array creation routines
+Array manipulation routines
+Bit-wise operations
+String functionality
+Datetime support functions
+Data type routines
+Mathematical functions with automatic domain
+Floating point error handling
+Exceptions and Warnings
+Discrete Fourier Transform
+Functional programming
+Input and output
+Indexing routines
+Linear algebra
+Logic functions
+Masked array operations
+Mathematical functions
+Miscellaneous routines
+Polynomials
+Random sampling
+Set routines
+Sorting, searching, and counting
+Statistics
+Test support
+numpy.testing.assert_allclose
+numpy.testing.assert_array_almost_equal_nulp
+numpy.testing.assert_array_max_ulp
+numpy.testing.assert_array_equal
+numpy.testing.assert_array_less
+numpy.testing.assert_equal
+numpy.testing.assert_raises
+numpy.testing.assert_raises_regex
+numpy.testing.assert_warns
+numpy.testing.assert_no_warnings
+numpy.testing.assert_no_gc_cycles
+numpy.testing.assert_string_equal
+numpy.testing.assert_
+numpy.testing.assert_almost_equal
+numpy.testing.assert_approx_equal
+numpy.testing.assert_array_almost_equal
+numpy.testing.print_assert_equal
+numpy.testing.decorate_methods
+numpy.testing.clear_and_catch_warnings
+numpy.testing.measure
+numpy.testing.rundocs
+numpy.testing.suppress_warnings
+numpy.testing.overrides.allows_array_function_override
+numpy.testing.overrides.allows_array_ufunc_override
+numpy.testing.overrides.get_overridable_numpy_ufuncs
+numpy.testing.overrides.get_overridable_numpy_array_functions
+Testing guidelines
+Window functions
+Typing (numpy.typing)
+NumPy C-API
+Array API standard compatibility
+CPU/SIMD optimizations
+Thread Safety
+Global Configuration Options
+NumPy security
+Testing guidelines
+Status of numpy.distutils and migration advice
+NumPy and SWIG
+NumPy reference
+NumPy’s module structure
+Test support
+numpy.testing.assert_allclose
+numpy.testing.assert_allclose#
+testing.assert_allclose(actual, desired, rtol=1e-07, atol=0, equal_nan=True, err_msg='', verbose=True, *, strict=False)[source]#
+Raises an AssertionError if two objects are not equal up to desired
+tolerance.
+Given two array_like objects, check that their shapes and all elements
+are equal (but see the Notes for the special handling of a scalar). An
+exception is raised if the shapes mismatch or any values conflict. In
+contrast to the standard usage in numpy, NaNs are compared like numbers,
+no assertion is raised if both objects have NaNs in the same positions.
+The test is equivalent to allclose(actual, desired, rtol, atol),
+except that it is stricter: it doesn’t broadcast its operands, and has
+tighter default tolerance values. It compares the difference between
+actual and desired to atol + rtol * abs(desired).
+Parameters:
+actualarray_like
+Array obtained.
+desiredarray_like
+Array desired.
+rtolfloat, optional
+Relative tolerance.
+atolfloat | np.timedelta64, optional
+Absolute tolerance.
+equal_nanbool, optional.
+If True, NaNs will compare equal.
+err_msgstr, optional
+The error message to be printed in case of failure.
+verbosebool, optional
+If True, the conflicting values are appended to the error message.
+strictbool, optional
+If True, raise an AssertionError when either the shape or the data
+type of the arguments does not match. The special handling of scalars
+mentioned in the Notes section is disabled.
+New in version 2.0.0.
+Raises:
+AssertionError
+If actual and desired are not equal up to specified precision.
+See also
+assert_array_almost_equal_nulp, assert_array_max_ulp
+Notes
+When one of actual and desired is a scalar and the other is array_like, the
+function performs the comparison as if the scalar were broadcasted to the shape
+of the array. Note that empty arrays are therefore considered equal to scalars.
+This behaviour can be disabled by setting strict==True.
+Examples
+Try it in your browser!
+>>> x = [1e-5, 1e-3, 1e-1]
+>>> y = np.arccos(np.cos(x))
+>>> np.testing.assert_allclose(x, y, rtol=1e-5, atol=0)
+As mentioned in the Notes section, assert_allclose has special
+handling for scalars. Here, the test checks that the value of numpy.sin
+is nearly zero at integer multiples of π.
+>>> x = np.arange(3) * np.pi
+>>> np.testing.assert_allclose(np.sin(x), 0, atol=1e-15)
+Use strict to raise an AssertionError when comparing an array
+with one or more dimensions against a scalar.
+>>> np.testing.assert_allclose(np.sin(x), 0, atol=1e-15, strict=True)
+Traceback (most recent call last):
+    ...
+AssertionError:
+Not equal to tolerance rtol=1e-07, atol=1e-15
+(shapes (3,), () mismatch)
+ ACTUAL: array([ 0.000000e+00,  1.224647e-16, -2.449294e-16])
+ DESIRED: array(0)
+The strict parameter also ensures that the array data types match:
+>>> y = np.zeros(3, dtype=np.float32)
+>>> np.testing.assert_allclose(np.sin(x), y, atol=1e-15, strict=True)
+Traceback (most recent call last):
+    ...
+AssertionError:
+Not equal to tolerance rtol=1e-07, atol=1e-15
+(dtypes float64, float32 mismatch)
+ ACTUAL: array([ 0.000000e+00,  1.224647e-16, -2.449294e-16])
+ DESIRED: array([0., 0., 0.], dtype=float32)
+Go BackOpen In Tab
+previous
+Test support
+next
+numpy.testing.assert_array_almost_equal_nulp
+     On this page
+testing.assert_allclose
+      © Copyright 2008-2026, NumPy Developers.
+    Created using Sphinx 7.2.6.
+  Built with the PyData Sphinx Theme 0.17.1.

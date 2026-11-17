@@ -1,0 +1,87 @@
+
+    Bias drift for models in production - Amazon SageMaker AI 
+View a markdown version of this page
+Bias drift for models in production - Amazon SageMaker AI
+DocumentationAmazon SageMakerDeveloper Guide
+Model Monitor Sample Notebook
+Bias drift for models in production
+Note
+Amazon SageMaker Model Monitor is no longer open to new customers. 
+            Existing customers can continue to use the service as normal. AWS continues to invest in security and availability improvements for
+             Model Monitor, but we do not plan to introduce new features. For more information, see Amazon SageMaker Model Monitor availability change.
+Amazon SageMaker Clarify bias monitoring helps data scientists and ML engineers monitor predictions for
+        bias on a regular basis. As the model is monitored, customers can view exportable reports
+        and graphs detailing bias in SageMaker Studio and configure alerts in Amazon CloudWatch to receive
+        notifications if bias beyond a certain threshold is detected. Bias can be introduced or
+        exacerbated in deployed ML models when the training data differs from the data that the
+        model sees during deployment (that is, the live data). These kinds of changes in the live
+        data distribution might be temporary (for example, due to some short-lived, real-world
+        events) or permanent. In either case, it might be important to detect these changes. For
+        example, the outputs of a model for predicting home prices can become biased if the mortgage
+        rates used to train the model differ from current, real-world mortgage rates. With bias
+        detection capabilities in Model Monitor, when SageMaker AI detects bias beyond a certain threshold, it
+        automatically generates metrics that you can view in SageMaker Studio and through Amazon CloudWatch
+        alerts. 
+In general, measuring bias only during the train-and-deploy phase might not be sufficient.
+        It is possible that after the model has been deployed, the distribution of the data that the
+        deployed model sees (that is, the live data) is different from data distribution in the
+        training dataset. This change might introduce bias in a model over time. The change in the
+        live data distribution might be temporary (for example, due to some short-lived behavior
+        like the holiday season) or permanent. In either case, it might be important to detect these
+        changes and take steps to reduce the bias when appropriate.
+To detect these changes, SageMaker Clarify provides functionality to monitor the bias metrics of a
+        deployed model continuously and raise automated alerts if the metrics exceed a threshold.
+        For example, consider the DPPL bias metric. Specify an allowed range of values
+            A=(amin​,amax​), for instance an interval
+        of (-0.1, 0.1), that DPPL should belong to during deployment. Any deviation from this range
+        should raise a bias detected alert. With SageMaker Clarify, you can perform these
+        checks at regular intervals.
+For example, you can set the frequency of the checks to 2 days. This means that SageMaker Clarify
+        computes the DPPL metric on data collected during a 2-day window. In this example,
+            Dwin​ is the data that the model processed during last 2-day
+        window. An alert is issued if the DPPL value bwin​ computed on
+            Dwin​ falls outside of an allowed range A. This approach to
+        checking if bwin​ is outside of A can be somewhat noisy.
+            Dwin​ might consist of very few samples and might not be
+        representative of the live data distribution. The small sample size means that the value of
+        bias bwin​ computed over Dwin​ might not be a
+        very robust estimate. In fact, very high (or low) values of bwin​ may
+        be observed purely due to chance. To ensure that the conclusions drawn from the observed
+        data Dwin​ are statistically significant, SageMaker Clarify makes use of
+        confidence intervals. Specifically, it uses the Normal Bootstrap Interval method to
+        construct an interval C=(cmin​,cmax​) such
+        that SageMaker Clarify is confident that the true bias value computed over the full live data is
+        contained in C with high probability. Now, if the confidence interval C overlaps with the
+        allowed range A, SageMaker Clarify interprets it as “it is likely that the bias metric value of the live
+        data distribution falls within the allowed range”. If C and A are disjoint, SageMaker Clarify is
+        confident that the bias metric does not lie in A and raises an alert.
+Model Monitor Sample Notebook
+Amazon SageMaker Clarify provides the following sample notebook that shows how to capture inference
+            data for a real-time endpoint, create a baseline to monitor evolving bias against, and
+            inspect the results: 
+Monitoring bias drift and feature attribution drift Amazon SageMaker Clarify
+                    – Use Amazon SageMaker Model Monitor to monitor bias drift and feature attribution drift over
+                    time.
+This notebook has been verified to run in Amazon SageMaker Studio only. If you need
+            instructions on how to open a notebook in Amazon SageMaker Studio, see Create or Open an Amazon SageMaker Studio Classic Notebook. If you're
+            prompted to choose a kernel, choose Python 3 (Data Science). The
+            following topics contain the highlights from the last two steps, and they contain code
+            examples from the example notebook. 
+Topics
+Create a Bias Drift Baseline
+Bias Drift Violations
+Parameters to Monitor Bias Drift
+Schedule Bias Drift Monitoring Jobs
+Inspect Reports for Data Bias Drift
+CloudWatch Metrics for Bias Drift Analysis
+ Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+Model quality metrics and Amazon CloudWatch monitoring
+Create a Bias Drift Baseline
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

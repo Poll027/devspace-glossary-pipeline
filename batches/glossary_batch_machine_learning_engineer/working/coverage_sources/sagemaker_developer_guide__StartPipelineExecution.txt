@@ -1,0 +1,154 @@
+
+    StartPipelineExecution - Amazon SageMaker 
+View a markdown version of this page
+StartPipelineExecution - Amazon SageMaker
+DocumentationAmazon SageMakerAmazon Sagemaker API Reference
+Request SyntaxRequest ParametersResponse SyntaxResponse ElementsErrorsSee Also
+StartPipelineExecution
+Starts a pipeline execution.
+Request Syntax
+{
+   "ClientRequestToken": "string",
+   "MlflowExperimentName": "string",
+   "ParallelismConfiguration": { 
+      "MaxParallelExecutionSteps": number
+   },
+   "PipelineExecutionDescription": "string",
+   "PipelineExecutionDisplayName": "string",
+   "PipelineName": "string",
+   "PipelineParameters": [ 
+      { 
+         "Name": "string",
+         "Value": "string"
+      }
+   ],
+   "PipelineVersionAlias": "string",
+   "PipelineVersionId": number,
+   "RoleArn": "string",
+   "SelectiveExecutionConfig": { 
+      "SelectedSteps": [ 
+         { 
+            "StepName": "string"
+         }
+      ],
+      "SourcePipelineExecutionArn": "string"
+   }
+}
+Request Parameters
+For information about the parameters that are common to all actions, see Common Parameters.
+The request accepts the following data in JSON format.
+                  ClientRequestToken
+A unique, case-sensitive identifier that you provide to ensure the idempotency of the
+         operation. An idempotent operation completes no more than once.
+Type: String
+Length Constraints: Minimum length of 32. Maximum length of 128.
+Required: Yes
+                  MlflowExperimentName
+         The MLflow experiment name of the pipeline execution.
+Type: String
+Length Constraints: Minimum length of 1. Maximum length of 256.
+Pattern: .*
+Required: No
+                  ParallelismConfiguration
+This configuration, if specified, overrides the parallelism configuration 
+            of the parent pipeline for this specific run.
+Type: ParallelismConfiguration object
+Required: No
+                  PipelineExecutionDescription
+The description of the pipeline execution.
+Type: String
+Length Constraints: Minimum length of 0. Maximum length of 3072.
+Pattern: .*
+Required: No
+                  PipelineExecutionDisplayName
+The display name of the pipeline execution.
+Type: String
+Length Constraints: Minimum length of 1. Maximum length of 82.
+Pattern: [a-zA-Z0-9](-*[a-zA-Z0-9]){0,81}
+Required: No
+                  PipelineName
+The name or Amazon Resource Name (ARN) of the pipeline.
+Type: String
+Length Constraints: Minimum length of 1. Maximum length of 2048.
+Pattern: (arn:aws[a-z\-]*:sagemaker:[a-z0-9\-]*:([0-9]{12}|aws):pipeline/.*)?([a-zA-Z0-9](-*[a-zA-Z0-9]){0,255})
+Required: Yes
+                  PipelineParameters
+Contains a list of pipeline parameters. This list can be empty. 
+Type: Array of Parameter objects
+Array Members: Minimum number of 0 items. Maximum number of 200 items.
+Required: No
+                  PipelineVersionAlias
+The alias of the pipeline version to start the execution from. You can't specify
+         this with PipelineVersionId. If no version of the pipeline has this alias,
+         the request fails with a ResourceNotFound error.
+Type: String
+Length Constraints: Minimum length of 1. Maximum length of 128.
+Pattern: [a-zA-Z0-9._\-]{1,128}
+Required: No
+                  PipelineVersionId
+The ID of the pipeline version to start execution from. You can't specify this with
+         PipelineVersionAlias.
+Type: Long
+Valid Range: Minimum value of 1.
+Required: No
+                  RoleArn
+The Amazon Resource Name (ARN) of the IAM role that the execution uses. You must specify this
+         parameter when you start an execution of a pipeline that AWS manages. You can't specify
+         it for a pipeline that you create, because its executions use the pipeline's
+         role.
+Type: String
+Length Constraints: Minimum length of 20. Maximum length of 2048.
+Pattern: arn:aws[a-z\-]*:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+
+Required: No
+                  SelectiveExecutionConfig
+The selective execution configuration applied to the pipeline run.
+Type: SelectiveExecutionConfig object
+Required: No
+Response Syntax
+{
+   "PipelineExecutionArn": "string"
+}
+Response Elements
+If the action is successful, the service sends back an HTTP 200 response.
+The following data is returned in JSON format by the service.
+                  PipelineExecutionArn
+The Amazon Resource Name (ARN) of the pipeline execution.
+Type: String
+Length Constraints: Minimum length of 0. Maximum length of 2048.
+Pattern: arn:aws[a-z\-]*:sagemaker:[a-z0-9\-]*:[0-9]{12}:pipeline\/.*\/execution\/.*
+Errors
+For information about the errors that are common to all actions, see Common Error Types.
+                  ConflictException
+There was a conflict when you attempted to modify a SageMaker entity such as an
+      Experiment or Artifact.
+HTTP Status Code: 400
+                  ResourceLimitExceeded
+ You have exceeded an SageMaker resource limit. For example, you might have too many
+            training jobs created. 
+HTTP Status Code: 400
+                  ResourceNotFound
+Resource being access is not found.
+HTTP Status Code: 400
+See Also
+For more information about using this API in one of the language-specific AWS SDKs, see the following:
+               AWS Command Line Interface V2
+               AWS SDK for .NET V4
+               AWS SDK for C++
+               AWS SDK for Go v2
+               AWS SDK for Java V2
+               AWS SDK for JavaScript V3
+               AWS SDK for Kotlin
+               AWS SDK for PHP V3
+               AWS SDK for Python (Boto3)
+               AWS SDK for Ruby V3
+ Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+StartNotebookInstance
+StartSession
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.
