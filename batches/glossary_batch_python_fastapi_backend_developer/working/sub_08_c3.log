@@ -3,26 +3,64 @@
 Lw-zLopB3o0: 0 proposals, 2 rejected
 epV3BPAMPtM: 0 proposals, 1 rejected
 T0JXFhJ7pM0: 0 proposals, 1 rejected
-abUaM6iuElU: 0 proposals, 1 rejected
-l_1GAJd88yY: 0 proposals, 1 rejected
-2vQKuw-47sg: 0 proposals, 1 rejected
-c9dcFmyizJU: 0 proposals, 1 rejected
+Traceback (most recent call last):
+  File "/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/llm_azure.py", line 190, in _post
+    with urllib.request.urlopen(req, timeout=float(os.environ.get("LLM_TIMEOUT_S", 600))) as r:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 515, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 532, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 1392, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 1348, in do_open
+    r = h.getresponse()
+        ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/http/client.py", line 1457, in getresponse
+    response.begin()
+  File "/usr/lib/python3.12/http/client.py", line 336, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/http/client.py", line 297, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/ssl.py", line 1252, in recv_into
+    return self.read(nbytes, buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/ssl.py", line 1104, in read
+    return self._sslobj.read(len, buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: The read operation timed out
+
+During handling of the above exception, another exception occurred:
+
 Traceback (most recent call last):
   File "/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/glm_generate.py", line 189, in <module>
     main()
-  File "/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/glm_generate.py", line 153, in main
-    prompt = video_prompt(B, vid, pairs, C, briefs, pa, names, header)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/glm_generate.py", line 37, in video_prompt
-    cat = load(BANK / "catalogue" / f"{vid}.json")
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/glm_generate.py", line 24, in load
-    return json.loads(Path(p).read_text())
-                      ^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
-    with self.open(mode='r', encoding=encoding, errors=errors) as f:
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
-    return io.open(self, mode, buffering, encoding, errors, newline)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/video_bank/catalogue/HxccuNyY2e8.json'
+  File "/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/glm_generate.py", line 158, in main
+    text = call_glm(client, model, prompt if not errs else prompt + "\n\nYour previous answer failed these checks, fix them and resend the full JSON:\n- " + "\n- ".join(errs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/glm_generate.py", line 85, in call_glm
+    r = converse_ladder(client, model, **kw)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/bedrock_llm.py", line 149, in converse_ladder
+    r = client.converse(modelId=m, **kw)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/llm_azure.py", line 206, in converse
+    return from_chat(_post(body, "/chat/completions")) if chat else from_responses(_post(body))
+                                                                                   ^^^^^^^^^^^
+  File "/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/llm_azure.py", line 195, in _post
+    raise ConnectionError(f"{type(e).__name__}: {e}")
+ConnectionError: TimeoutError: The read operation timed out
