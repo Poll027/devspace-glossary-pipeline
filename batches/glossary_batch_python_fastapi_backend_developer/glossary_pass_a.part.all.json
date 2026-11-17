@@ -631,7 +631,7 @@
           "id": "tb3",
           "purpose": "mechanism",
           "title": "How to use the rule",
-          "content": "Create an environment with python -m venv .venv and activate it with source .venv/bin/activate on Unix or .venv\\Scripts\\activate on Windows. Use python -m pip install package within the environment to install a dependency, and python -m pip show package to inspect its installed version and location. Check which python on Unix or where python on Windows to confirm that the interpreter path belongs to the activated environment.",
+          "content": "Create an environment with python -m venv .venv and activate it with source .venv/bin/activate in Bash/Zsh on Unix or .\\.venv\\Scripts\\Activate.ps1 in Windows PowerShell. Use python -m pip install package within the environment to install a dependency, and python -m pip show package to inspect its installed version and location. Run which python in Bash/Zsh on Unix or Get-Command python in Windows PowerShell to confirm that the interpreter path belongs to the activated environment.",
           "fact_ids": [
             "f2",
             "f3",
@@ -653,7 +653,7 @@
           "id": "tb5",
           "purpose": "walkthrough",
           "title": "Reason through an example",
-          "content": "Create .venv for one project, activate it using the command for the operating system, and then inspect the interpreter path. On Unix, which python should point into that environment; on Windows, use where python. Only after identifying the interpreter should you install a dependency with python -m pip install package. Then inspect it with python -m pip show package, checking both version and location. The location is useful evidence that this project is using its own installed package rather than another environment's copy. Repeat the same reasoning for the second project: its environment has its own installed packages and a particular Python installation. Activation and installation are steps in establishing that boundary; the interpreter-path check confirms which boundary your current shell commands are actually using.",
+          "content": "Create .venv for one project, activate it using the command for your shell, and then inspect the interpreter path. In Bash/Zsh on Unix, activate with source .venv/bin/activate and check that which python points into that environment; in Windows PowerShell, activate with .\\.venv\\Scripts\\Activate.ps1 and check the interpreter path with Get-Command python. Only after identifying the interpreter should you install a dependency with python -m pip install package. Then inspect it with python -m pip show package, checking both version and location. The location is useful evidence that this project is using its own installed package rather than another environment's copy. Repeat the same reasoning for the second project: its environment has its own installed packages and a particular Python installation. Activation and installation are steps in establishing that boundary; the interpreter-path check confirms which boundary your current shell commands are actually using.",
           "fact_ids": [
             "f1",
             "f2",
@@ -3503,7 +3503,7 @@
           "id": "tb2",
           "purpose": "definition",
           "title": "The rule and its boundary",
-          "content": "TrustedHostMiddleware validates the request Host against an allowed_hosts list and responds with 400 when the host is not allowed.",
+          "content": "TrustedHostMiddleware validates the request Host against an allowed_hosts list; an invalid host normally receives 400 unless the configured www redirect applies.",
           "fact_ids": [
             "f1"
           ]
@@ -3512,7 +3512,7 @@
           "id": "tb3",
           "purpose": "mechanism",
           "title": "How to use the rule",
-          "content": "Configure app.add_middleware(TrustedHostMiddleware, allowed_hosts=[...]) using domain names; *.example.com permits subdomains and [\"*\"] permits any host. www_redirect defaults to true and can redirect an allowed non-www host to its www counterpart, so account for it when verifying an allowlist's response.",
+          "content": "Configure app.add_middleware(TrustedHostMiddleware, allowed_hosts=[...]) using domain names; *.example.com permits subdomains and [\"*\"] permits any host. An already allowed host is accepted unchanged. An otherwise invalid non-www host is redirected to its www counterpart only when that exact www-prefixed hostname is in allowed_hosts and www_redirect is true (the default), so account for this exception when verifying an allowlist's response.",
           "fact_ids": [
             "f2",
             "f3"
@@ -3522,7 +3522,7 @@
           "id": "tb4",
           "purpose": "walkthrough",
           "title": "Reason through an example",
-          "content": "Configure allowed_hosts with intended domain names. An unallowed Host gets 400. Compare an exact domain with *.example.com, permitting subdomains, and [\"*\"], permitting any host. These are different policies. Account for www_redirect, whose default true behavior can redirect an allowed non-www host to its www counterpart. In verification, record the supplied Host and observed response rather than assuming all allowed cases look identical. Trace rejection separately from an allowed redirect. This keeps requested host identity separate from authentication or trust in forwarded proxy metadata.",
+          "content": "Configure allowed_hosts with intended domain names. An invalid Host normally gets 400 unless the configured www redirect applies. Compare an exact domain with *.example.com, permitting subdomains, and [\"*\"], permitting any host. These are different policies. With allowed_hosts=[\"example.com\"], example.com is already allowed and is accepted unchanged. With allowed_hosts=[\"www.example.com\"], the otherwise invalid example.com redirects to www.example.com when www_redirect is true, its default. The redirect requires that exact www-prefixed hostname in allowed_hosts. In verification, record the supplied Host and observed response rather than assuming all nonmatching cases look identical. Trace rejection separately from this redirect exception. This keeps requested host identity separate from authentication or trust in forwarded proxy metadata.",
           "fact_ids": [
             "f1",
             "f2",
@@ -3533,7 +3533,7 @@
           "id": "tb5",
           "purpose": "misconception",
           "title": "Keep this distinction",
-          "content": "An all-host wildcard removes the selective allowlist boundary. Allowed non-www cases may redirect under www_redirect.",
+          "content": "An all-host wildcard removes the selective allowlist boundary. An already allowed host is accepted unchanged; www_redirect redirects an otherwise invalid non-www host only when its exact www-prefixed hostname is allowlisted and www_redirect is true (the default).",
           "fact_ids": [
             "f2",
             "f3"

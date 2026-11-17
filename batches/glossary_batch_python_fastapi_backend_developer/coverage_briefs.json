@@ -7,7 +7,7 @@
     "run_id": "glossary_batch_python_fastapi_backend_developer__03_coverage_brief__20261116T102917Z",
     "prompt_version": "03_coverage_brief@v1",
     "model": "none",
-    "generated_at": "2026-11-16T10:48:26.589519+00:00",
+    "generated_at": "2026-11-17T06:47:58.576944+00:00",
     "source_snapshot_id": "glossary_batch_python_fastapi_backend_developer",
     "parent_artifact_hashes": {
       "batches/glossary_batch_python_fastapi_backend_developer/extracted_concepts.json": "67970e7e6c73ea02bfc2cf88112a2f469d0f28d312a5f81b28a86891c5015a72",
@@ -405,9 +405,10 @@
           },
           {
             "id": "f2",
-            "statement": "Create an environment with python -m venv .venv and activate it with source .venv/bin/activate on Unix or .venv\\Scripts\\activate on Windows.",
+            "statement": "Create an environment with python -m venv .venv; activate it with source .venv/bin/activate in Bash/Zsh on Unix or .\\.venv\\Scripts\\Activate.ps1 in Windows PowerShell.",
             "source_refs": [
-              "python_tutorial#https://docs.python.org/3/tutorial/venv.html#creating-virtual-environments"
+              "python_tutorial#https://docs.python.org/3/tutorial/venv.html#creating-virtual-environments",
+              "python_tutorial#https://docs.python.org/3/library/venv.html#how-venvs-work"
             ]
           },
           {
@@ -419,7 +420,7 @@
           },
           {
             "id": "f4",
-            "statement": "Check which python on Unix or where python on Windows to confirm that the interpreter path belongs to the activated environment.",
+            "statement": "Run which python in Bash/Zsh on Unix or Get-Command python in Windows PowerShell to confirm that the interpreter path belongs to the activated environment.",
             "source_refs": [
               "fastapi_docs_tutorial#https://tiangolo.com/guides/virtual-environments/#check-the-virtual-environment-is-active"
             ]
@@ -665,9 +666,9 @@
           },
           {
             "id": "f2",
-            "statement": "Pydantic validation can convert compatible inputs to declared types; its default validation is not a guarantee that input values already had those types.",
+            "statement": "In default non-strict validation, int accepts integer strings (such as '123') and finite floats with no fractional part, but rejects nonnumeric strings, fractional floats, nan and inf; float accepts integers and valid float strings (such as '3.141'); bool accepts booleans, numeric 0 or 1, and case-insensitive strings '0', 'off', 'f', 'false', 'n', 'no', '1', 'on', 't', 'true', 'y', 'yes', but rejects other numbers or strings; str accepts strings and UTF-8-decodable bytes or bytearray, but does not accept integers or floats unless coerce_numbers_to_str is enabled.",
             "source_refs": [
-              "pydantic_models_docs#https://pydantic.dev/docs/validation/latest/concepts/models/#data-conversion"
+              "pydantic_models_docs#https://docs.pydantic.dev/latest/concepts/conversion_table/"
             ]
           },
           {
@@ -911,14 +912,14 @@
             "id": "f1",
             "statement": "Use Field(gt=..., ge=..., lt=..., le=..., multiple_of=...) to enforce exclusive bounds, inclusive bounds and divisibility on numeric values.",
             "source_refs": [
-              "pydantic_models_docs#https://pydantic.dev/docs/validation/latest/concepts/fields/#numeric-constraints"
+              "pydantic_models_docs#https://docs.pydantic.dev/2.10/concepts/fields/#numeric-constraints"
             ]
           },
           {
             "id": "f2",
             "statement": "Use Field(min_length=..., max_length=..., pattern=...) to constrain a string's length and regular-expression match.",
             "source_refs": [
-              "pydantic_models_docs#https://pydantic.dev/docs/validation/latest/concepts/fields/#string-constraints"
+              "pydantic_models_docs#https://docs.pydantic.dev/2.10/concepts/fields/#string-constraints"
             ]
           },
           {
@@ -1082,20 +1083,24 @@
           },
           {
             "id": "f2",
-            "statement": "Construct Settings() to read environment variables and validate their types, with missing required settings or invalid values producing validation failures.",
+            "statement": "Construct Settings() to read environment variables and validate their types before serving requests, for example before the yield in the application lifespan function, and let missing required settings or invalid values raise a validation failure that aborts startup rather than deferring construction to a request.",
             "source_refs": [
-              "fastapi_docs_advanced#https://fastapi.tiangolo.com/advanced/settings/#create-the-settings-object"
+              "fastapi_docs_advanced#https://fastapi.tiangolo.com/advanced/settings/#create-the-settings-object",
+              "fastapi_docs_advanced#https://fastapi.tiangolo.com/advanced/events/#lifespan",
+              "pydantic_models_docs#https://docs.pydantic.dev/latest/concepts/pydantic_settings/"
             ]
-          },
+          }
+        ],
+        "optional_enrichment": [
           {
             "id": "f3",
             "statement": "Use SettingsConfigDict(env_file=\".env\") as model_config when a dotenv file should provide settings; environment variables take precedence over its values.",
             "source_refs": [
-              "fastapi_docs_advanced#https://fastapi.tiangolo.com/advanced/settings/#reading-a-env-file"
+              "fastapi_docs_advanced#https://fastapi.tiangolo.com/advanced/settings/#reading-a-env-file",
+              "pydantic_models_docs#https://docs.pydantic.dev/latest/concepts/pydantic_settings/#dotenv-env-support"
             ]
           }
         ],
-        "optional_enrichment": [],
         "misconceptions": [],
         "created_in_batch_id": "glossary_batch_python_fastapi_backend_developer",
         "used_by_path_ids": [
@@ -2102,9 +2107,10 @@
         "required_facts": [
           {
             "id": "f1",
-            "statement": "TrustedHostMiddleware validates the request Host against an allowed_hosts list and responds with 400 when the host is not allowed.",
+            "statement": "TrustedHostMiddleware validates the request Host against an allowed_hosts list; an invalid host normally receives 400 unless the configured www redirect applies.",
             "source_refs": [
-              "fastapi_docs_advanced#https://starlette.dev/middleware/#trustedhostmiddleware"
+              "fastapi_docs_advanced#https://starlette.dev/middleware/#trustedhostmiddleware",
+              "fastapi_docs_advanced#https://raw.githubusercontent.com/Kludex/starlette/main/starlette/middleware/trustedhost.py#TrustedHostMiddleware.__call__"
             ]
           },
           {
@@ -2116,9 +2122,10 @@
           },
           {
             "id": "f3",
-            "statement": "www_redirect defaults to true and can redirect an allowed non-www host to its www counterpart, so account for it when verifying an allowlist's response.",
+            "statement": "An already allowed host is accepted unchanged; an otherwise invalid non-www host is redirected to its www counterpart only when that exact www-prefixed hostname is in allowed_hosts and www_redirect is true (the default).",
             "source_refs": [
-              "fastapi_docs_advanced#https://starlette.dev/middleware/#trustedhostmiddleware"
+              "fastapi_docs_advanced#https://starlette.dev/middleware/#trustedhostmiddleware",
+              "fastapi_docs_advanced#https://raw.githubusercontent.com/Kludex/starlette/main/starlette/middleware/trustedhost.py#TrustedHostMiddleware.__call__"
             ]
           }
         ],
@@ -2831,7 +2838,8 @@
             "id": "f3",
             "statement": "Propose CREATE INDEX name ON table (column) for a frequent lookup, accounting for extra storage and the cost of maintaining the index during writes.",
             "source_refs": [
-              "postgresql_docs#https://www.postgresql.org/docs/current/indexes.html#INDEXES"
+              "postgresql_docs#https://www.postgresql.org/docs/current/indexes-intro.html#INDEXES-INTRO",
+              "postgresql_docs#https://www.postgresql.org/docs/current/storage-file-layout.html#STORAGE-FILE-LAYOUT"
             ]
           }
         ],
@@ -3142,7 +3150,9 @@
             "id": "f4",
             "statement": "Partition the compared signals by bounded nonsensitive categories such as method, route template and outcome, not by raw caller or request identifiers.",
             "source_refs": [
-              "prometheus_client_python#https://prometheus.github.io/client_python/instrumenting/labels/#main-content"
+              "prometheus_client_python#https://prometheus.github.io/client_python/instrumenting/labels/#main-content",
+              "prometheus_client_python#https://prometheus.io/docs/practices/instrumentation/#do-not-overuse-labels",
+              "opentelemetry_python_docs#https://opentelemetry.io/docs/security/handling-sensitive-data/#data-minimization"
             ]
           },
           {
