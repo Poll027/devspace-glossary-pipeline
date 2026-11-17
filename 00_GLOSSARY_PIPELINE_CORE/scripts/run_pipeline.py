@@ -493,6 +493,50 @@ def notify(c, subject, body):
         alert(subject, body)
 
 
+def apply_audit_repair(c):
+    """A FAILed final audit (stage 16) names facts that are wrong or unsupported in coverage_briefs.json / glossary_pass_a.json. Instead of rerunning the
+    whole pipeline: repair only the named concepts in stage 03 (the facts), then in stage 05 (the teaching blocks that state them), and invalidate
+    everything downstream (11 draft, 13 leakage, 14 bundle, 15 validation, 16 audit) so the normal loop regenerates, re-evaluates and re-audits it.
+    Runs once per audit report (working/audit_repair_applied.json holds the report hash). BLOCKER/HIGH only; LOW advisories are polish."""
+    f = c.B / "glossary_independent_audit_report.json"
+    if not f.exists():
+        return
+    rep = load(f)
+    h = UL.artifact_hash(str(c.B), f.name)
+    mark = c.B / "working" / "audit_repair_applied.json"
+    if rep.get("verdict") != "FAIL" or (mark.exists() and load(mark).get("report_hash") == h):
+        return
+    issues = [i for i in rep.get("issues", []) if i.get("severity") in ("BLOCKER", "HIGH")]
+    stage_of = {"coverage_briefs.json": "03_coverage_brief", "glossary_pass_a.json": "05_glossary_pass_a"}
+    bad = [i for i in issues if Path(i.get("artifact", "")).name not in stage_of]
+    if bad:
+        raise Stuck("audit findings outside coverage_briefs / glossary_pass_a need a manual fix or a rerun from the stage that owns them:\n" + "\n".join(f"{i.get('artifact')}: {i.get('problem', '')[:200]}" for i in bad))
+    ids = sorted({x for i in issues for x in i.get("concept_ids", [])})
+    if not ids:
+        return
+    text = "\n".join(f"AUDIT {i['severity']} {','.join(i.get('concept_ids', []))}: {i['problem']}\nREQUIRED FIX: {i.get('required_fix', '')}" for i in issues)
+    chunks = concept_chunks(c)
+    c.log(f"audit repair: {len(issues)} blocking finding(s) on {ids}")
+    for sid, intro in (("03_coverage_brief", "Fix the facts and source references the audit names (add or replace source_refs only with approved sources in this batch's source pack). Change nothing else."),
+                       ("05_glossary_pass_a", "The coverage-brief facts for these concepts were just corrected as the audit finding requires. Update every teaching block and glossary statement that states or depends on a corrected fact, and its source references. Change nothing else.")):
+        for chunk, cids in chunks.items():
+            mine = [x for x in ids if x in cids]
+            if mine:
+                repair(c, sid, chunk, mine, [intro, text])
+    for sid in ("03_coverage_brief", "05_glossary_pass_a"):  # keep the repaired parts; redo their evaluation and the merge
+        for chunk in chunks:
+            (c.B / "working" / f"state_{sid}_{chunk}.json").unlink(missing_ok=True)
+        (c.B / c.artifact(sid)).unlink(missing_ok=True)
+    for sid in ("11_reconciliation", "13_leakage_check", "14_bundle_assembly", "15_final_validation", "16_final_audit"):  # regenerate from the repaired inputs
+        for o in c.stage[sid]["outputs"]:
+            for g in list(c.B.glob(o)) + list(c.B.glob(o.replace(".json", ".part.*.json"))):
+                g.unlink()
+        for g in (c.B / "working").glob(f"state_{sid}_*.json"):
+            g.unlink()
+    mark.write_text(json.dumps({"report_hash": h, "concept_ids": ids, "at": time.strftime("%FT%T")}))
+    c.log("audit repair applied; downstream stages reopened")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("batch_dir"); ap.add_argument("--max-usd", type=float, default=float(os.environ.get("MAX_USD", 300)))
@@ -508,6 +552,8 @@ def main():
     if not a.plan:
         git(c, "", pull=True)
     try:
+        if not a.plan:
+            apply_audit_repair(c)
         for st in c.manifest["stages"]:
             sid, kind = st["id"], st["kind"]
             if sid == "09_segment_judge":
