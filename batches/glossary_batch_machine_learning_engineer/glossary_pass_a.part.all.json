@@ -894,25 +894,28 @@
           "id": "tb3",
           "purpose": "mechanism",
           "title": "Apply and verify",
-          "content": "Compute the arithmetic mean with np.mean(numeric_values, axis=0), so each selected numeric feature column is summarized over rows. Compute standard deviation with np.std(numeric_values, axis=0, ddof=0), which divides squared deviations by N before taking the square root; use ddof=1 only when the stated calculation requires the N−1 divisor. Write assert predicate checks for the declared valid, boundary and failure cases; a false predicate raises AssertionError during ordinary non-optimized execution.",
+          "content": "Calculate each feature’s training mean and spread using only its observed, nonmissing training values. For arrays without missing values, np.mean(observed_training_values, axis=0) summarizes each column over rows, and np.std(observed_training_values, axis=0, ddof=0) divides squared deviations by N before taking the square root; use ddof=1 only when the stated calculation requires the N−1 divisor. When missing entries are NaN, use np.nanmean(X_train, axis=0) and np.nanstd(X_train, axis=0, ddof=0): these ignore NaNs within each feature. Ordinary np.mean/np.std on NaN-containing columns do not provide those observed-only summaries. With strategy=\"mean\", compare the feature means against the fitted imputer statistics_. Write assert predicate checks for the declared valid, boundary and failure cases; a false predicate raises AssertionError during ordinary non-optimized execution.",
           "fact_ids": [
+            "f3",
             "f4",
             "f5",
-            "f6"
+            "f6",
+            "f7"
           ]
         },
         {
           "id": "tb4",
           "purpose": "example",
           "title": "A bounded work example",
-          "content": "Suppose the observed training distances are 2 and 6, and the declared strategy is mean. Their mean is 4, so the fitted replacement for a missing distance is 4. If validation contains distance 100 and a missing value, transform it using the stored replacement rather than incorporating 100 into a new mean. Inspect statistics_ before and after transformation to confirm the replacement stayed fixed. Keep checks for a complete row, a missing row and the declared boundary case. If the readiness calculation also asks for feature spread, use the specified standard-deviation divisor on the selected numerical observations; that summary is distinct from selecting the imputer strategy. Other supplied strategies may call for a different replacement, so do not treat this example's mean as a general requirement.\n\nThe missing validation row is an application case for the stored statistic. It is not an extra observation from which to relearn the statistic, and the observed value 100 belongs to the held-out cohort rather than the training reference. Check the transformed result and statistics_ together: the expected replacement verifies the output, while unchanged statistics verify reuse of the fitted state. This distinction remains important if the supplied strategy is median, most_frequent or constant instead of mean. The chosen strategy defines how the replacement is learned or supplied; the train-versus-transform boundary defines when its state may change. Preserve both choices in the bounded workflow.",
+          "content": "Use an illustrative training fixture with two numerical features, distance and duration:\n\n```python\nimport numpy as np\nfrom sklearn.impute import SimpleImputer\n\nX_train = np.array([[2, 10], [6, np.nan], [np.nan, 14]])\nX_validation = np.array([[100, 20], [np.nan, np.nan]])\nmeans = np.nanmean(X_train, axis=0)\nspread = np.nanstd(X_train, axis=0, ddof=0)\nimputer = SimpleImputer(strategy=\"mean\").fit(X_train)\nbefore = imputer.statistics_.copy()\ntransformed = imputer.transform(X_validation)\nassert np.allclose(means, imputer.statistics_)\nassert np.allclose(spread, [2, 2])\nassert np.allclose(imputer.statistics_, before)\nassert np.allclose(transformed, [[100, 20], [4, 12]])\n```\n\nDistance is summarized from 2 and 6; duration from 10 and 14. The observed-only means are [4, 12] and the ddof=0 spreads are [2, 2]. Both columns contain a NaN, so ordinary np.mean(X_train, axis=0) and np.std(X_train, axis=0, ddof=0) instead return [nan, nan]. The NaN-aware means agree with statistics_, demonstrating that mean imputation learned the replacements from the same observed training values.\n\nValidation retains its complete row [100, 20] and replaces its missing row with [4, 12]. Neither 100 nor 20 contributes to the training summaries. Checking both transformed output and unchanged statistics_ verifies replacement and reuse of fitted state. Keep the declared boundary and failure checks alongside this complete-row and missing-row fixture. Spread summarizes the training observations; it does not select the imputer strategy. Median, most_frequent or constant can specify different replacements, so agreement with training means is specifically a check for strategy=\"mean\".",
           "fact_ids": [
             "f1",
             "f2",
             "f3",
             "f4",
             "f5",
-            "f6"
+            "f6",
+            "f7"
           ]
         },
         {
@@ -1722,7 +1725,7 @@
           "id": "tb4",
           "purpose": "example",
           "title": "A bounded work example",
-          "content": "For a fixture with six orders and two numerical features, X_train has shape (6, 2) and y_train has shape (6,). Fit the declared estimator with random_state=0, then obtain predictions on the corresponding validation inputs. If the training workflow used fitted preprocessing, invoke the fitted pipeline's prediction path so validation receives that representation. Compare predictions with y_validation by observation correspondence, count errors and calculate the predeclared quantities. For expected cost, use actual-negative counts for FPR and actual-positive counts for FNR, then the supplied deployment probabilities and error costs. The working example should make the whole bounded path inspectable: aligned inputs, fitted state, held-out outputs and their evaluation, rather than stopping when fit returns.\n\nThe fitted model and validation result have different roles. Fit establishes estimator state from X_train and y_train; predict applies that state to X_validation; evaluation compares those outputs with the corresponding y_validation. Shape agreement is necessary but not enough to establish target correspondence, so use the declared aligned examples. If preprocessing belongs to a fitted pipeline, inspect prediction through that object rather than constructing a fresh validation representation. The resulting baseline is a concrete executable reference under the declared task metric. It is not acceptance evidence until its held-out quantities and required constraints have been calculated and inspected.",
+          "content": "For an illustrative six-order fixture with two numerical features, use these aligned training and validation arrays:\n\n```python\nimport numpy as np\nfrom sklearn.linear_model import LogisticRegression\n\nX_train = np.array([[0, 0], [1, 0], [0, 1], [3, 3], [4, 3], [3, 4]])\ny_train = np.array([0, 0, 0, 1, 1, 1])\nX_validation = np.array([[0, 0], [4, 4], [1, 0], [3, 3]])\ny_validation = np.array([0, 1, 1, 0])\nestimator = LogisticRegression(random_state=0)\nestimator.fit(X_train, y_train)\npredictions = estimator.predict(X_validation)\n```\n\nX_train has shape (6, 2), and y_train has shape (6,). Predictions are [0, 1, 0, 1], aligned with validation labels [0, 1, 1, 0]. In row order these give a true negative, true positive, false negative and false positive: TN=TP=FN=FP=1. Thus FPR=1/(1+1)=0.5 and FNR=1/(1+1)=0.5.\n\nFor this fixture, fix the reference predictions at [0, 0, 0, 0] before comparison. They give TN=2, FN=2, FP=TP=0, hence FPR=0 and FNR=1. Declare deployment probabilities P(Y=0)=P(Y=1)=0.5, cost_FP=2, cost_FN=8 and zero cost for correct predictions. The fitted estimator’s expected error cost is 0.5×0.5×2 + 0.5×0.5×8 = 2.5; the fixed reference’s is 0.5×0×2 + 0.5×1×8 = 4. Under this fixture’s fixed cost rule, the fitted estimator has lower expected error cost. That comparison does not establish satisfaction of other required constraints.\n\nThis fixture uses the supplied numerical representation directly. If training instead includes fitted preprocessing, obtain validation predictions through that fitted pipeline, not a freshly constructed validation representation. Fit establishes training state; predict applies it; evaluation compares corresponding held-out outputs with labels under the fixed rule.",
           "fact_ids": [
             "f1",
             "f2",
@@ -3279,14 +3282,13 @@
           "id": "tb4",
           "purpose": "example",
           "title": "A bounded work example",
-          "content": "Suppose minimized validation values are 0.50, 0.44, 0.43 and 0.45, with min_delta 0.02 and patience 2. The move from 0.50 to 0.44 is sufficient improvement and resets the counter. The value 0.43 does not satisfy 0.43 < 0.44−0.02, so the counter becomes one; 0.45 makes it two and exhausts patience. The lowest observed value is 0.43, but the best checkpoint accepted under min_delta is the one at 0.44. Retain the 0.44 checkpoint’s weights, preserving them by deep copy or a saved state file. Bound the while loop by maximum epochs as well as the non-improvement rule. Protected-test observations do not decide patience or checkpoint choice.\n\nTrace the controller's counter explicitly after every validation value. Reset only when the minimized quantity improves by more than min_delta, increment otherwise and stop when patience is exhausted or the epoch bound is reached. The fixture's small decrease from 0.44 to 0.43 is intentionally insufficient under the declared 0.02 rule. Save or deep-copy the 0.44 checkpoint’s weights when that qualifying improvement is accepted. This separates controller state from the live model state that later epochs can change. Restore that saved checkpoint for subsequent use rather than the last weights merely because they were the most recently trained.\n\nSource for checkpoint reference versus copy: [PyTorch Saving and Loading Models — Save/Load state_dict (Recommended), best_model_state note](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html).",
+          "content": "Suppose minimized validation values are 0.50, 0.44, 0.43 and 0.45, with min_delta 0.02 and patience 2. The move from 0.50 to 0.44 is sufficient improvement and resets the counter. The value 0.43 does not satisfy 0.43 < 0.44−0.02, so the counter becomes one; 0.45 makes it two and exhausts patience. The lowest observed value is 0.43, but the best checkpoint accepted under min_delta is the one at 0.44. Preserve the 0.44 checkpoint’s weights by deep copy or a saved state file, and restore that checkpoint for subsequent use rather than the last weights. Protected-test observations do not decide patience or checkpoint choice.\n\nSource for checkpoint reference versus copy: [PyTorch Saving and Loading Models — Save/Load state_dict (Recommended), best_model_state note](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html).",
           "fact_ids": [
             "f1",
             "f2",
             "f3",
             "f4",
-            "f5",
-            "f6"
+            "f5"
           ]
         },
         {
@@ -5951,7 +5953,7 @@
           "id": "tb6",
           "purpose": "example",
           "title": "A bounded work example",
-          "content": "Suppose a dataset fixture is missing a required feature. Record the failed named check and snapshot identity, return the declared failure or raise, and verify training did not run. Wire the supplied test entry point into its Cloud Build step with the execution image and command. Set step IDs and waitFor dependencies; textual order alone does not establish the required dependency. Keep gate failure fatal rather than allowing its exit code. Run accepted and rejected fixtures through the existing repository trigger and branch filter, inspecting actual stage results. A repaired snapshot must pass the same requirements before the affected path can continue.",
+          "content": "Suppose a dataset fixture is missing a required feature. Record the failed named check and snapshot identity, return the declared failure or raise, and verify training did not run. Wire the supplied test entry point into its Cloud Build step with the execution image and command. With omitted waitFor or an empty waitFor list, a Cloud Build step waits for all preceding steps to succeed; under that default, placing training after the fatal quality gate establishes the dependency. Explicit waitFor entries instead name the preceding step IDs that must succeed, such as waitFor: ['quality_gate'] on training. A step with waitFor: ['-'] depends only on the build starting and launches independently of preceding steps; do not give training that setting when it must wait for the gate. Inspect the configured dependencies rather than assuming every step uses the default. Keep gate failure fatal rather than allowing its exit code. Run accepted and rejected fixtures through the existing repository trigger and branch filter, inspecting actual stage results. A repaired snapshot must pass the same requirements before the affected path can continue.",
           "fact_ids": [
             "f1",
             "f2",
