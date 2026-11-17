@@ -1,0 +1,289 @@
+{
+  "metadata": {
+    "artifact_type": "segment_proposals",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_python_fastapi_backend_developer",
+    "run_id": "glossary_batch_python_fastapi_backend_developer",
+    "prompt_version": "08_segment_detection@v1",
+    "model": "bedrock:gpt-6.1-sol",
+    "generated_at": "2026-11-17T02:49:52.778422+00:00",
+    "source_snapshot_id": "data_analytics.source_pack",
+    "parent_artifact_hashes": {
+      "video_candidates.json": "639324255cf6b9848b20f186ce5ac5e12e3b3cbc31b3bb3b77623c4921456086",
+      "coverage_briefs.json": "29252d83f0bfa87f1a9cbd7417da43af1765f51c11fd7188c0983ed407515522",
+      "extracted_concepts.json": "67970e7e6c73ea02bfc2cf88112a2f469d0f28d312a5f81b28a86891c5015a72"
+    }
+  },
+  "batch_id": "glossary_batch_python_fastapi_backend_developer",
+  "proposals": [
+    {
+      "proposal_id": "prop_01N8maLs2a8_jwt_verification",
+      "concept_id": "auth.jwt_verification",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "01N8maLs2a8",
+      "start_seconds": 178,
+      "end_seconds": 625,
+      "label": "Read JWT claims without trusting them, then verify tokens before serving a protected endpoint",
+      "role": "worked_example",
+      "covered_fact_ids": [
+        "f1",
+        "f2",
+        "f4"
+      ],
+      "visual_mode": "annotated_code",
+      "chapter_aligned": true,
+      "transcript_evidence": "Then decode access token. A TokenError: four zero one, with the reason.",
+      "issues": [
+        "Visual mode is inferred from references to Python files, numbered output lines, and explanations of jwt.encode, jwt.decode, and endpoint code; actual visuals are not available.",
+        "The 447-second range exceeds the usual worked-example duration. It includes token anatomy and creation to establish otherwise untaught JWT foundations, followed by verification failures and protected-request rejection. The intervening HS256/RS256 comparison adds material not essential to this objective.",
+        "f1 is supported by the readable-payload and failed-tampering demonstration, but the explicit warning against using verification-disabled decoding for login appears outside this range.",
+        "f3 is only partially covered and is not claimed: nbf and exp are defined, and requiring exp is distinguished from checking expiration, but not-before rejection is not demonstrated or explicitly explained.",
+        "The video makes a technically inaccurate universal claim at 199 seconds: every JWT starts with e y J. JWT headers need not have that particular encoded prefix. This is an actual factual error, not a coverage gap, and warrants judge review for video-level rejection.",
+        "The anatomy demonstration briefly references video thirty six at 248 seconds. Its readable-payload and signature-failure explanation is supplied locally, so that reference appears nonessential.",
+        "The endpoint example assumes its local user lookup and authentication helpers exist; their implementations are not shown. Local password verification and bearer-header handling are allowed knowledge for this path.",
+        "The end boundary is the actual caption timestamp 625, where discussion of next-video OAuth2PasswordBearer and Swagger begins. That later-topic caption is excluded."
+      ]
+    },
+    {
+      "proposal_id": "prop_mRU2PsyOLRk_freshness_policy",
+      "concept_id": "cache.freshness_policy",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "mRU2PsyOLRk",
+      "start_seconds": 234,
+      "end_seconds": 333,
+      "label": "Keep cached resource data fresh with expiry and write invalidation",
+      "role": "mental_model",
+      "covered_fact_ids": [
+        "f3"
+      ],
+      "visual_mode": "talking_head_only",
+      "chapter_aligned": true,
+      "transcript_evidence": "read misses and reloads. This keeps the",
+      "issues": [
+        "Partial coverage only: explains TTL as a tolerated staleness window, but does not explicitly teach the shorter-versus-longer TTL trade-off in primary-store reads required by f1.",
+        "Does not show Python Redis set(key, value, ex=seconds), so f2 is not covered.",
+        "Does not inspect ttl(key), explain its -1 and -2 results, or demonstrate verification after a primary-record change, so f4 is not covered.",
+        "Visual mode is a conservative inference: the supplied transcript contains no explicit screen, diagram, or code-display cues. Visual teaching value cannot be confirmed.",
+        "The range completes the combined TTL-and-invalidation recommendation before the next topic begins at transcript timestamp 333.",
+        "Outside this range, the introduction incorrectly claims that database queries hit disk every single time; database caching makes that blanket claim false. That statement is excluded from this proposal.",
+        "The later TaskFlow demonstration uses Prisma, which is not established in this path's allowed knowledge, and proceeds into blocked rate-limiting content. It is excluded."
+      ]
+    },
+    {
+      "proposal_id": "prop_3OwBgMirBJU_freshness_policy",
+      "concept_id": "cache.freshness_policy",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "3OwBgMirBJU",
+      "start_seconds": 193,
+      "end_seconds": 224,
+      "label": "Expire a cached value and delete its key after a price change",
+      "role": "tool_workflow",
+      "covered_fact_ids": [
+        "f3"
+      ],
+      "visual_mode": "screen_demo",
+      "chapter_aligned": true,
+      "transcript_evidence": "read would load the new price.",
+      "issues": [
+        "Partial coverage only: the narration connects deletion after a price change to reloading on the next read, but does not demonstrate the primary-record update or execute that subsequent read.",
+        "Does not cover f1's TTL selection from tolerated staleness and primary-store read tradeoff.",
+        "Does not show f2's Python Redis set(key, value, ex=seconds) syntax.",
+        "Does not cover f4's ttl(key) inspection, -1/-2 meanings, or verification that the next read returns the changed value.",
+        "Screen-demo visual mode is inferred from the real-server chapter and narration of commands and results; actual screen contents are not supplied.",
+        "The 31-second range is shorter than the usual tool-workflow target, but contains the complete expiry and deletion demonstrations. Extending to timestamp 224 introduces tags, an unnecessary additional mechanism.",
+        "The opening at timestamp 193 corresponds to the chapter beginning at 192. The end boundary is timestamp 224, where 'Third tags' begins; that next topic should be excluded from playback."
+      ]
+    },
+    {
+      "proposal_id": "prop_RzkD8hIDbkk_redundant_queries",
+      "concept_id": "sqlalchemy.redundant_queries",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "RzkD8hIDbkk",
+      "start_seconds": 0,
+      "end_seconds": 470,
+      "label": "Recognize an N+1 listing read and batch relationship loading with selectinload",
+      "role": "live_code_demo",
+      "covered_fact_ids": [
+        "f1",
+        "f2"
+      ],
+      "visual_mode": "screen_demo",
+      "chapter_aligned": false,
+      "transcript_evidence": "We've",
+      "issues": [
+        "The 470-second range exceeds the usual live-code duration target. Keeping the initial query setup, echo logging, lazy-loading baseline, and completed selectinload comparison makes the demonstration standalone.",
+        "Fact f3 is not covered: joinedload and collection-result unique() are not demonstrated. The closing announcement of a future joinedload video does not supply this fact.",
+        "Fact f4 is partially supported: the creator enables engine echo logging and compares nine queries before the change with two afterward while retaining the relationship-printing loop. The transcript does not explicitly verify unchanged returned entity data, so full f4 coverage is not claimed.",
+        "Screen-demo visual mode is inferred from references to the notebook, editing code, database rows, and displayed SQL output; the visuals themselves were not supplied.",
+        "The notebook uses synchronous session operations. Learners on the async-session path must distinguish this demonstration from async execution; lazy relationship access should not be assumed to work identically with AsyncSession.",
+        "At 157 seconds the creator mistakenly describes the initial selection as returning reviews, then correctly identifies the selected objects as movies and consistently explains the parent/relationship query pattern afterward.",
+        "The end boundary is the actual 470-second transition into filtering a subset of movies, after the nine-to-two query comparison concludes."
+      ]
+    },
+    {
+      "proposal_id": "prop_43vH_lnM7x0_bounded_idempotent_retries",
+      "concept_id": "integration.bounded_idempotent_retries",
+      "path_id": "python_fastapi_backend_developer",
+      "video_id": "43vH_lnM7x0",
+      "start_seconds": 1307,
+      "end_seconds": 1396,
+      "label": "Decide whether an operation is safe and useful to retry",
+      "role": "mental_model",
+      "covered_fact_ids": [
+        "f1",
+        "f4"
+      ],
+      "visual_mode": "talking_head_only",
+      "chapter_aligned": true,
+      "transcript_evidence": "operation fails but you may get all",
+      "issues": [
+        "Partial coverage of f1: explains safe repetition and duplicate side effects, but does not explicitly establish retry safety through HTTP method semantics, an application contract, or proof that the original request was not applied.",
+        "Partial coverage of f4: distinguishes temporary failures from permanent failures such as invalid credentials or invalid input, but does not explicitly explain that a timeout or lost response cannot prove the remote operation had no effect.",
+        "Does not cover f2: Retry-After and its HTTP-date or delay-seconds forms are absent.",
+        "Does not cover f3: warns against excessive retries but specifies neither a finite attempt count nor a finite total time budget in this range.",
+        "Does not cover f5: this range contains no verification demonstration.",
+        "Visual mode is inferred from the concluding advice chapter and spoken delivery; no drawing, code walkthrough, or other visual teaching cue is present in these captions.",
+        "Earlier code at 192\u2013211 recommends catching every exception and retrying without failure classification. That is unsafe as a general operation policy and conflicts with the required contract-aware classification. This proposal excludes that demonstration; the selected range supplies the later safety cautions.",
+        "The range begins at the chapter transition and ends at the actual 1396 caption boundary, after the concluding caution and before the fallback/circuit-breaker discussion."
+      ]
+    }
+  ],
+  "rejected_videos": [
+    {
+      "video_id": "h4Sl21AKiDg",
+      "concept_id": "observability.service_signal_interpretation",
+      "reason": "No clean standalone segment covers the intended signal interpretation. The metrics discussion at 473\u2013527 distinguishes counters, gauges and histograms but does not explain request/error rates, traffic-dependent error counts, rate(request_counter[window]), failure fractions, histogram-derived latency quantiles, bounded nonsensitive labels, or comparisons using matching windows and label groups (f1\u2013f5). The PromQL discussion at 1061\u20131115 gives only a generic status-code query example, not the required dashboard comparison. Earlier scenarios concern service-failure diagnosis, a blocked later concept. The video also contains factual errors outside these potential ranges: at 838\u2013845 it claims Pushgateway lets jobs push metrics directly to the Prometheus database, whereas Prometheus scrapes metrics exposed by Pushgateway; at 1260\u20131275 it claims deploying Prometheus on Kubernetes automatically gathers each node's metrics without extra configuration. These are accuracy concerns, not merely coverage gaps."
+    },
+    {
+      "video_id": "f4W_eEJC-20",
+      "concept_id": "observability.service_signal_interpretation",
+      "reason": "No standalone segment covers the required signal-interpretation facts. The video explains Prometheus use cases, architecture, exporters and pull/push collection. It mentions average latency and application error counts, but does not explain request versus error rates, rate(request_counter[window]), failure fractions over matching windows and label groups, histogram-derived latency quantiles, bounded nonsensitive labels, or comparison of successful, failing and delayed samples. The upload example at 95\u2013142 discusses correlating file size with average latency rather than distinguishing traffic changes from error or latency regressions. Additionally, the architecture explanation incorrectly states at 430\u2013438 that Prometheus expects all scrape targets to be hardcoded; service discovery is supported and is subsequently described by the video itself. This is an accuracy concern distinct from the coverage gaps."
+    },
+    {
+      "video_id": "powvddxPs_c",
+      "concept_id": "rest.bounded_resource_listing",
+      "reason": "No standalone range adequately teaches the required bounded, filtered, deterministically ordered listing. The video demonstrates limit/offset and cursor pagination over a fake product dataset. It explains the skip-and-cap behavior of OFFSET and LIMIT, but does not establish consistent filtering and unique ordering across pages (f3). It does not teach the SQLAlchemy select/where/order_by/limit/offset construction (f1), a unique tie-breaker for repeated sort values (f2), or declared numeric bounds and offset computation from a page contract (f4). These are coverage gaps, not demonstrated factual contradictions."
+    },
+    {
+      "video_id": "Azo9tDUtC9s",
+      "concept_id": "security.injection_resistant_inputs",
+      "reason": "No clean standalone segment meets this path's objective. The prevention section materially misexplains parameterization: at 473\u2013486 and 526\u2013537 it attributes protection to node-postgres sanitizing input, discovering field types, and checking that the ID is numeric. Parameter binding instead separates SQL structure from data; the demonstrated integer-input error is PostgreSQL type conversion, not driver sanitization. Trimming before these claims would leave the prevention example unfinished. The video also omits the required SQLAlchemy expression (f2), text() with an execute parameter dictionary (f3), and structural-choice allowlisting (f4). The earlier exploit demonstration requires untaught Express/node-postgres syntax and does not teach safe binding."
+    },
+    {
+      "video_id": "OczgkARt-mc",
+      "concept_id": "security.injection_resistant_inputs",
+      "reason": "No clean, prerequisite-safe segment meets this path's objective. The parameterization demonstration relies on an earlier DB-API connection/cursor setup rather than the allowed SQLAlchemy workflow, and never teaches the SQLAlchemy expression in f2, text() with an execute parameter dictionary in f3, or structural allowlisting in f4. There is also a technical accuracy concern, not merely a coverage gap: at 595\u2013617 the explanation generalizes parameterization as backslash-escaping characters, and at 668\u2013676 recommends always escaping characters as well as parameterizing. Driver-specific escaping is not the general mechanism of bound parameters, and manual escaping is not the required safety boundary. At 488\u2013513 it also misleadingly suggests missing input validation makes parameterization only partially protective against this injection attack. The nominal chapter boundaries are not standalone starts: 420 falls within the preceding attack demonstration, and 562 falls within the parameterized-query test."
+    },
+    {
+      "video_id": "FN_BvbOwur0",
+      "concept_id": "sqlalchemy.create_resource",
+      "reason": "No clean standalone segment meets this concept's objective. The create implementation at 0\u201359 seconds relies on previously configured endpoint and database code, explicitly copying earlier setup rather than introducing a self-contained example. The demonstration uses synchronous db.commit(), does not explain pending insert state or await session.flush(), and never verifies a database-generated identity using await fresh_session.get(Entity, identity) in an independent session. At 96\u2013104 seconds it supplies the ID manually and suggests generating IDs by taking the last ID plus one; that is not database-generated identity and is unsafe under concurrent creation. The database and GET-list checks at 168\u2013190 seconds verify a manually identified row, not the required generated-identity workflow. The later update and delete sections are blocked for this concept."
+    },
+    {
+      "video_id": "XMoK33jsgcs",
+      "concept_id": "sqlalchemy.delete_resource",
+      "reason": "The video demonstrates deletion from an in-memory Python list, not deletion through SQLAlchemy. At 20 seconds it explicitly states, \"We are still not working with\", followed at 21 seconds by \"database. And we basically have this\". The deletion example at 400\u2013529 seconds searches list entries by ID and deletes a list element. It does not teach await session.get and None handling, await session.delete and flush, transaction commit/rollback, or verification through a fresh primary-key lookup or independent session. No standalone range covers the required ORM facts. This is a coverage mismatch, not a claim that the demonstrated list deletion is technically wrong."
+    },
+    {
+      "video_id": "XMoK33jsgcs",
+      "concept_id": "sqlalchemy.update_resource",
+      "reason": "The video demonstrates full replacement of an in-memory list element with a submitted product, not updating a loaded persistent SQLAlchemy entity. The update example at 131\u2013384 seconds contains no ORM change tracking or flush, model_dump(exclude_unset=True), transaction commit/rollback, or independent-session verification. Fields retained in the example are explicitly resubmitted rather than omitted, so their preservation does not establish the required partial-update behavior. At 559\u2013566 seconds the creator confirms the implementation uses an in-memory list. No standalone range covers the required ORM facts; the list-based example is materially off-topic for this objective."
+    },
+    {
+      "video_id": "ZWEIeLiysp0",
+      "concept_id": "auth.jwt_verification",
+      "reason": "Reject for technical inaccuracies and insufficient coverage of the required verification contract. The tutorial repeatedly describes signed JWT payloads as encrypted and decoding as decryption (141, 177, 219\u2013248, 401\u2013404); signing does not provide payload confidentiality. It never establishes that decoding without verification leaves claims untrusted (f1), nor demonstrates issuer/audience verification, required exp/iss/aud claims, or an algorithm allowlist selected from trusted configuration (f2). It mentions expiry but omits not-before and the distinction between checking a present claim and requiring its presence (f3). The endpoint demonstration at 820\u2013896 catches verification errors and returns an empty object, but does not demonstrate rejecting a protected request as an invalid credential (f4). The later tampering demonstration also depends on token/code setup from earlier sections. No standalone range adequately teaches the intended objective without these problems."
+    },
+    {
+      "video_id": "UsL4YIJ-d7o",
+      "concept_id": "fastapi.safe_unexpected_errors",
+      "reason": "No clean segment covers the target concept. The video teaches expected HTTP errors, domain-specific exception handlers returning 409, and validation-error envelopes. Its unhandled 500 examples motivate handling expected domain failures, not containing unexpected internal exceptions. It does not demonstrate generic public error information, a catch-all 500 handler with internal exception recording, safe diagnostic context and redaction, disabling production debug traceback responses, or TestClient(app, raise_server_exceptions=False) assertions. Reframing its domain-error handler as an unexpected-error fallback would misrepresent the lesson."
+    },
+    {
+      "video_id": "ULv9x0GQFbw",
+      "concept_id": "integration.upstream_failure_translation",
+      "reason": "No clean segment teaches the required upstream-to-local failure translation. The video demonstrates Requests exceptions, printing, re-raising, and logging rather than HTTPX RequestError versus HTTPStatusError or classification through exc.response.status_code (f1\u2013f2). It supplies no explicit local integration contract (f3), declared mapping to local statuses or domain exceptions, including gateway 502/504 semantics (f4), or tests asserting mapped outcomes without raw upstream internals (f5). Its connection-error explanation is also technically misleading: at 6 seconds it says \"which means the website doesn't exist\", although connection failures can occur for existing services. The live-code presentation cannot substitute for the missing translation lesson."
+    },
+    {
+      "video_id": "I2ZYUulreI4",
+      "concept_id": "integration.webhook_authenticity",
+      "reason": "No clean standalone segment satisfies this path's objective. The implementation chapter relies on previously configured raw-body middleware in server.js (277\u2013285), requiring untaught Node.js middleware knowledge rather than demonstrating FastAPI's await request.body() before parsing (f1). It manually computes and compares HMAC signatures rather than demonstrating the publisher's supported SDK or verification library (f2). More importantly, the demonstrated error response exposes verification internals: at 441\u2013449 it reports the calculated request-body digest mismatch, and at 522\u2013532 the response reveals signature-comparison details. This contradicts f3's requirement not to disclose internal failure details, rather than merely omitting coverage. The tests demonstrate absent and fabricated signatures and a valid GitHub delivery, but not modification of an otherwise valid signed body (f4). Trimming cannot repair the unsafe response behavior or missing implementation prerequisites."
+    },
+    {
+      "video_id": "6N0QuS8k-eY",
+      "concept_id": "integration.webhook_authenticity",
+      "reason": "No clean standalone segment satisfies this path's required facts. The local verification example at 224\u2013328 depends on a previously introduced helper and captured APS delivery. It correctly warns against formatting the payload, but never demonstrates await request.body() or establishes use of a publisher-supported verification library. The Lambda demonstration requires untaught AWS-specific setup and shows a successful signature match without demonstrating rejection before event processing, safe failure responses, or modified-body and absent-signature tests. At 543\u2013550, the claim that the helper works with either a dictionary or a string also conflicts with the raw-byte preservation requirement unless additional constraints are supplied; none are explained. Trimming cannot supply the missing verification and rejection behavior."
+    },
+    {
+      "video_id": "C-bie4ZY_o0",
+      "concept_id": "observability.evidence_based_service_diagnosis",
+      "reason": "No clean segment teaches the required evidence-based service diagnosis. The video demonstrates VS Code debugging of payment rounding and formatting, not comparison of request rate, failure fraction and latency (f1), interaction-ID correlation across local and outbound logs (f2), or timeout and database evidence comparison (f3). The worked example reproduces an incorrect payment result and inspects variables before editing code, but does not record the required related service evidence or choose a diagnostic boundary from those signals, so it only partially supports f4. Debugger configuration and breakpoint demonstrations cannot substitute for this concept's required facts."
+    },
+    {
+      "video_id": "FxCGs6UympM",
+      "concept_id": "observability.evidence_based_service_diagnosis",
+      "reason": "The video demonstrates a monitoring stack and navigation among metrics, logs and traces, but does not actually teach evidence-based failure localization. It mentions request rate and latency without comparing them with failure fraction for an affected operation and time window (f1). It shows trace and span identifiers but does not follow a failing interaction through local and outbound logs to locate the first failure or delay (f2). No integration timeout, database-work or input-rejection evidence is compared (f3). Although an error is triggered at 146 seconds, the transcript does not establish a controlled failing request, interpret its outcome and related evidence, or justify a suspected diagnostic boundary before a change (f4). No standalone range supports the required diagnostic case; the error and trace-navigation sequence alone would teach tool navigation rather than diagnosis."
+    },
+    {
+      "video_id": "pZunzLJ1qcQ",
+      "concept_id": "security.bounded_api_resources",
+      "reason": "The video teaches request-rate throttling, not the required budgets for payload size, result count, operation duration, and concurrent expensive work. It does not demonstrate actual body-byte enforcement, Field bounds for batch/page sizes, finite dependency timeouts, or Uvicorn --limit-concurrency. The SlowAPI example at 739\u2013855 shows successful responses and rate-limit rejection, but only prints results; it does not assert rejection before an expensive operation or preservation of the accepted-work contract. No standalone range adequately covers a required fact for this concept."
+    },
+    {
+      "video_id": "cGzz0zoyUO0",
+      "concept_id": "security.bounded_api_resources",
+      "reason": "The video demonstrates per-IP request-rate limiting with SlowAPI, not the required resource budgets. It does not teach actual body-byte limits, Field-bounded batch or page sizes, finite dependency timeouts, or Uvicorn --limit-concurrency. Although it identifies password hashing as expensive and demonstrates an accepted request followed by HTTP 429, it does not assert that excess work is rejected before the expensive operation. Its pytest section instead disables rate limiting. No standalone range adequately covers a required fact without conflating request-rate limits with payload, duration, or concurrency budgets."
+    },
+    {
+      "video_id": "KNxVG4OcboY",
+      "concept_id": "sqlalchemy.redundant_queries",
+      "reason": "Reject for technically incorrect loading guidance and mismatch with the required demonstration. At 318\u2013334 and 443\u2013453, the video incorrectly attributes unnecessary lazy relationship queries to accessing users without needing or accessing their posts; lazy relationship loading emits those queries when the relationship is accessed. At 555\u2013561, it incorrectly describes selectin eager loading as loading all users' posts upon relationship access. These are factual contradictions, not merely coverage gaps. Although the earlier explanation illustrates N+1 access, the selectin demonstration changes relationship(lazy=...) rather than teaching statement.options(selectinload(Entity.relationship_attribute)) (f2), and the joined-loading demonstration never teaches Result.unique() for collections (f3). The before/after demonstration also depends on earlier code setup and does not explicitly verify unchanged returned entity data (f4)."
+    },
+    {
+      "video_id": "o5kz8IgNBaU",
+      "concept_id": "auth.authorization_server_integration",
+      "reason": "No clean standalone segment satisfies this objective. The demonstration provisions Keycloak and registers a client rather than using supplied infrastructure; at 278\u2013288 seconds it explicitly instructs enabling direct access grants, contrary to the required no-password-grant integration approach. The transcript does not establish which grant the token command actually uses, and shows no authorization-code redirect or matching PKCE-verifier token exchange (f1\u2013f2). It also does not demonstrate trusted JWKS configuration, PyJWKClient, expected issuer, allowed algorithms, API audience, or required claims (f3). The request at 678\u2013716 seconds does demonstrate sending an issuer-issued bearer token and receiving a successful response (f4), but depends on code and token-acquisition commands established earlier. The negative request at 720\u2013739 seconds omits the bearer token; it does not test a tampered token or wrong-audience issued token (f5). Trimming cannot supply the missing flow, verifier configuration, or required rejection test."
+    },
+    {
+      "video_id": "a2h6c0Irlig",
+      "concept_id": "auth.authorization_server_integration",
+      "reason": "No clean standalone segment meets this integration objective. The executable token-acquisition demo explicitly uses the resource-owner password grant: at 1310, \"asks for the grant type which we said\"; at 1312, \"password let us send this it's going to\". This contradicts the required authorization-code/PKCE approach; the brief PKCE recommendation at 1501\u20131510 does not demonstrate it or repair the workflow. The implementation uses python-jose and manual JWKS key selection rather than the required PyJWKClient, and the transcript does not establish configured expected issuer, allowed algorithms, API audience or required claims during decoding. The successful bearer request at 1319\u20131337 depends on the preceding password-grant acquisition and previously configured code. No HTTP rejection test for a tampered token or wrong API audience is demonstrated; the later failures concern expiration and role permissions. Provisioning and client-registration console workflows dominate the setup, while implementation and testing repeatedly introduce blocked endpoint permissions/RBAC. There is also a misleading explanation at 1064\u20131076 that attributes login/token-fetching behavior to OAuth2AuthorizationCodeBearer, which extracts bearer credentials and declares the flow rather than performing the code exchange. Trimming cannot produce the required executable, prerequisite-safe mini-lesson."
+    },
+    {
+      "video_id": "_k2M-LpxId8",
+      "concept_id": "auth.endpoint_permissions",
+      "reason": "The video teaches role-based authorization using a custom RoleChecker dependency and the database user's role, not OAuth2 scope-based endpoint permissions. It does not explain OAuth2 scopes (f1), declare Security(provider, scopes=[...]) or accept SecurityScopes (f2), compare required scopes with verified-token scopes (f3), or test tokens with and without a required scope (f4). The demonstration at 1651\u20131683 changes the endpoint's allowed roles for the same user rather than comparing differently scoped tokens. This is a coverage mismatch, not a factual contradiction; no standalone range covers the required facts."
+    },
+    {
+      "video_id": "4OuaONkZw1I",
+      "concept_id": "fastapi_backend.webhook_delivery_idempotency",
+      "reason": "No clean standalone segment covers the required webhook-delivery facts. The order-number example at 330\u2013358 explains duplicate no-op behavior, but does not establish an authenticated publisher event identifier, durable deduplication across restarts and the replay window, transactional recording with a uniqueness constraint, or separate duplicate and concurrent-delivery tests. Its check-then-write explanation also omits concurrency protection. The subsequent request-content hashing alternative is not a substitute for the required publisher event identity. Broader ranges introduce retry mechanisms and service-mesh context outside this objective without supplying the missing facts."
+    },
+    {
+      "video_id": "IWCg75wLlx4",
+      "concept_id": "fastapi_backend.webhook_delivery_idempotency",
+      "reason": "No clean standalone segment covers the required webhook idempotency guarantees. The CLI walkthrough demonstrates duplicate detection and JSON state persistence across runs, but does not establish an authenticated publisher event identifier, retention for the required replay window, transactional recording of identifiers with durable effects, or a uniqueness constraint protecting concurrent deliveries. It also does not demonstrate successful duplicate acknowledgments or separate duplicate and concurrency tests. The demonstration interleaves duplicate handling with version checks and out-of-order processing whose rules are not established for this path. These are coverage and prerequisite gaps, not an explicit factual contradiction."
+    },
+    {
+      "video_id": "q8WcTtQS88c",
+      "concept_id": "fastapi_backend.webhook_replay_freshness",
+      "reason": "No clean, technically accurate standalone segment covers the required freshness lesson. At 610\u2013620, the explanation says attacks cannot be replayed within a certain time frame and that after five minutes the webhook cannot be retried or replayed. This incorrectly conflates an old signed delivery's expiration with the original event's eligibility for provider retries: Stripe can generate a fresh delivery timestamp and signature for a retry. At 669\u2013673, the demonstration reinforces that misconception by describing the expired timestamp as the maximum time for the webhook itself to remain relevant or acknowledged. The replay demonstration starts at 552 with 'going back to the event page' and depends on previously configured Node.js code and an earlier delivery; including that setup would require untaught Node.js implementation knowledge. The video also does not explain timestamp authentication explicitly, clock synchronization, rejection of impermissibly future timestamps, or the required three-case valid-signature test. Trimming cannot repair the factual contradiction while preserving a complete freshness explanation."
+    },
+    {
+      "video_id": "FdMnfu4HhvY",
+      "concept_id": "fastapi_backend.webhook_replay_freshness",
+      "reason": "No clean standalone segment teaches the required delivery-freshness check. The Node verifier at 49\u201376 seconds requires untaught Node-specific code and describes rejecting timestamps older than five minutes before signature verification, rather than the required post-verification check. It omits impermissibly future timestamps, receiver clock synchronization, and the three valid-signature test cases. The video also never distinguishes authenticated delivery-timestamp freshness from original event age or explains refreshed timestamps and signatures on provider retries. The warning at 102\u2013106 seconds explains replay risk but is embedded in a broader list of signature-verification mistakes and does not provide a complete freshness lesson. These are coverage and prerequisite gaps; the supplied transcript does not establish a factual contradiction."
+    },
+    {
+      "video_id": "gO3ceIf-MIg",
+      "concept_id": "integration.bounded_idempotent_retries",
+      "reason": "No standalone range covers the required HTTP retry decision. The lesson explicitly uses injected local callables and teaches exception filtering, finite attempts, and exponential delays. It does not address HTTP method/application-contract idempotency or duplicated effects (f1), Retry-After date and delay formats (f2), a finite total time budget (f3), or the fact that a timeout or lost response does not prove the remote operation had no effect (f4). Its verification does not test withholding retries from a non-idempotent operation without a retry-safe contract (f5). These are coverage gaps, not explicit factual contradictions; extending the range cannot supply the missing material."
+    },
+    {
+      "video_id": "_tRbsSqYN3M",
+      "concept_id": "fastapi.production_security_documentation",
+      "reason": "No clean segment covers the required deployed security contract. At 252\u2013271 seconds, the tutorial describes bearer authentication but declares its OpenAPI scheme as an API key in the Authorization header, rather than HTTPBearer. This materially misrepresents bearer presentation relative to required fact f1; it is not merely an omitted fact. The custom schema walkthrough at 282\u2013315 seconds searches for JWT-required routes instead of demonstrating scheme and scope attachment through real operation dependencies. The video never configures OAuth2AuthorizationCodeBearer with supplied issuer endpoints and scopes, explains authorization-code/PKCE acquisition, or verifies those details against the deployed contract. Its acquisition demonstration at 341\u2013392 seconds instead obtains tokens through a local username/password login; this is not evidence for the required authorization-server flow. The final chapter at 423\u2013508 seconds enters blocked authentication/authorization testing, including missing-token rejection. The earlier code walkthrough also relies on a previously implemented application and JWT-library setup. Trimming cannot resolve the contradictory scheme declaration or supply the missing required contract."
+    }
+  ]
+}

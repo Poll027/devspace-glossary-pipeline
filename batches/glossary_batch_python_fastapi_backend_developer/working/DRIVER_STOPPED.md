@@ -32,4 +32,4 @@ Traceback (most recent call last):
 FileNotFoundError: [Errno 2] No such file or directory: '/home/azureuser/roles/python_fastapi_backend_developer/glossary/00_GLOSSARY_PIPELINE_CORE/video_bank/catalogue/CeQJepmYkjQ.json'
 
 
-Spend so far $5.48. Fix the cause, then rerun the same command (finished stages are skipped).
+Spend so far $5.87. Fix the cause, then rerun the same command (finished stages are skipped).
