@@ -1,0 +1,69 @@
+
+### 4 aws_devops.define_recovery_time_and_recovery_point_objectives
+INLINE supplied workload recovery constraints=supplied; RTO versus RPO=RTO bounds service restoration time; RPO bounds the acceptable age of recovered data.
+f1 Recovery time objective (RTO) is the maximum acceptable time to restore service after a disruption.
+f2 Recovery point objective (RPO) is the maximum acceptable data loss measured in time.
+f3 Set recovery objectives from business requirements and use them to choose recovery capabilities that meet the tolerated downtime and data loss.
+tb1 A business owner says a service may be unavailable briefly, but only a small amount of recent data may be lost. Those are two requirements, not one general promise of fast recovery. Name the tolerated downtime and tolerated data loss separately.
+tb4 For an illustrative requirement, suppose the owner accepts at most 30 minutes to restore service and at most 5 minutes of lost data. Record RTO as 30 minutes and RPO as 5 minutes. The first number answers how long service restoration may take after disruption; the second answers how much data loss, measured in time, is acceptable. A proposed recovery capability must be compared with both requirements. If its restoration time meets 30 minutes but its recoverable data is 20 minutes behind the disruption, it does not satisfy the stated data-loss objective. Conversely, sufficiently recent data does not by itself establish timely restoration. These numbers are example business requirements, not recommended AWS defaults.
+tb5 RPO is not another name for recovery duration. RTO bounds the time to restore service; RPO bounds acceptable data loss measured in time. Derive both from the business requirement rather than choosing whichever number is easiest to meet.
+assessment distinguish_downtime_tolerance_from_acceptable_data_loss
+practice_anchor.type field_selection
+practice_anchor.objective For one supplied workload, select RTO and RPO from the owner's stated downtime and data-loss tolerances. Choose a recovery approach from supplied options with stated restoration times and data-loss intervals, and justify the choice against both objectives.
+practice_anchor.success RTO matches the maximum tolerated service-restoration time, RPO matches the maximum tolerated data loss measured in time, and the selected approach meets both limits. The justification compares each supplied capability with its corresponding business requirement.
+visual_anchor.type data_table
+visual_anchor.purpose Show the example workload's 30-minute downtime tolerance and 5-minute data-loss tolerance beside candidate recovery approaches' restoration times and data-loss intervals, making visible that meeting only one limit is insufficient.
+note Keep measurement and rehearsal procedures for the later recovery-verification concept.
+
+### 5 aws_devops.distinguish_aws_managed_and_customer_operational_responsibilities
+INLINE supplied responsibility scenario=supplied; shared responsibility=AWS owns the managed infrastructure boundary while the customer retains workload, data and configuration responsibilities.; supplied managed-service scenario=supplied
+f1 With EC2, customers manage the guest operating system, including updates and security patches.
+f2 With RDS, AWS manages database infrastructure and operating-system maintenance, while customers manage their data and application use.
+f3 Assign duties by the service boundary: AWS manages its infrastructure, while customers retain responsibilities for data, access and customer-controlled configuration.
+f4 Interpret the supplied EC2 OS-update report as customer guest-OS work and the supplied RDS parameter-check report as customer-controlled database configuration; RDS parameter groups contain database engine configuration values.
+tb1 Two reports arrive in the operations queue: an EC2 operating-system update report and an RDS parameter-check report. To route the work correctly, look at what the service manages and what the customer still controls, rather than treating all managed services alike.
+tb4 Label the EC2 report as customer guest-operating-system work, including updates and security patches. For the RDS report, distinguish AWS-managed database infrastructure and operating-system maintenance from the customer's data, application use and customer-controlled engine configuration. A parameter group contains database engine configuration values, so the supplied parameter-check report concerns customer-controlled configuration. In the handoff, name the service boundary alongside the report: guest OS for EC2, engine configuration values for this RDS check. That makes the assignment specific enough to act on without claiming the customer operates RDS infrastructure. Data and access responsibilities also remain part of the customer side of the boundary.
+tb5 AWS-managed infrastructure is not a blanket transfer of every operational duty. In particular, EC2 guest-OS patching remains customer work, while RDS operating-system maintenance is AWS work. RDS customer configuration and data duties still remain.
+assessment assign_operating_system_maintenance_by_service
+assessment assign_data_access_and_configuration_responsibilities
+assessment classify_supplied_reports_by_service_boundary
+practice_anchor.type matching
+practice_anchor.objective Produce one responsibility assignment for a workload using EC2 and RDS by matching the supplied duties and reports to AWS or the customer and identifying the relevant service boundary.
+practice_anchor.success The assignment places EC2 guest-OS updates and security patches with the customer; RDS database infrastructure and operating-system maintenance with AWS; and data, access, application use and customer-controlled configuration with the customer. It classifies the EC2 OS-update report as customer guest-OS work and the RDS parameter-check report as customer-controlled database engine configuration.
+visual_anchor.type data_table
+visual_anchor.purpose Make the EC2 and RDS responsibility boundaries visible in a table of service, duty or supplied report, responsible party and boundary rationale. Distinguish EC2 guest-OS patching from RDS operating-system maintenance, and identify RDS parameter groups as database engine configuration values controlled by the customer.
+note Do not introduce database capacity selection or specialist database administration.
+
+### 6 aws_devops.distinguish_capacity_requirements_from_availability_requirements
+INLINE supplied load and failure constraints=supplied; capacity versus availability=Capacity serves demand; availability preserves service despite a component loss.; supplied demand and failure scenario=supplied
+f1 Redundant components and multiple locations can keep a workload available when a component fails.
+f2 Capacity must accommodate workload demand; adding or removing resources helps match capacity to changing demand.
+f3 For a component-failure constraint, evaluate independent redundant capacity rather than merely increasing the size of the same component.
+tb1 One requirement asks for more throughput during busy periods. Another asks for service to continue after a component fails. Both involve resources, but they ask different questions. Separate the amount of capacity from the independence of the capacity that remains after a failure.
+tb4 Suppose a lab's demand requirement says it must handle 200 requests per second, while its failure requirement says it must keep serving after one component is lost. Increasing the size of a single component may address demand, but evaluating the failure requirement calls for independent redundant capacity. Write two conclusions: whether total capacity accommodates the supplied demand, and whether remaining independent components can meet the supplied service requirement after the loss. Adding or removing resources helps match changing demand; redundant components and multiple locations can support availability during a component failure. Keep the two requirements visible when comparing proposals, rather than accepting a larger component as the answer to both. Now compare two illustrative proposals with equal total capacity: one larger component and two independent components. Under ordinary load they may both satisfy the supplied demand requirement. Under loss of the single larger component, its capacity is unavailable; with independent components, remaining capacity can be evaluated against the service requirement. Equal total capacity therefore does not settle the failure requirement. The record needs the surviving capacity question as well.
+tb5 More capacity in the same component is not the same as independent redundant capacity. For a component-failure constraint, evaluate the latter; for changing demand, evaluate whether the workload has enough capacity. One measure does not replace the other.
+assessment identify_demand_constraints_requiring_scaling
+assessment identify_failure_constraints_requiring_independent_redundancy
+practice_anchor.type field_selection
+practice_anchor.objective Select one design change from supplied proposals for a lab facing either changing demand or loss of one component.
+practice_anchor.success For changing demand, select a resource adjustment that matches capacity to the supplied demand. For component loss, select independent redundant capacity whose surviving components meet the supplied service requirement, rather than merely enlarging the same component.
+visual_anchor.type comparison
+visual_anchor.purpose Show one larger component beside two independent components with equal total capacity. Make ordinary-demand capacity and surviving capacity after one component is lost visible separately, alongside the supplied demand and service requirements.
+note Defer specific scaling-policy and controlled-AZ-failure procedures.
+
+### 7 aws_devops.establish_service_ownership_and_escalation
+INLINE supplied service context=supplied; operational owner=The accountable responder for a named service.; escalation path=The defined next responder when the current operator cannot safely complete recovery.; supplied sandbox service ownership context=supplied
+f1 Operational events need response processes with identified owners and escalation paths.
+f2 Assign event-response responsibility and document when and to whom unresolved issues are escalated.
+f3 Identify a team responsible for each resource and process so operators know whom to engage.
+tb1 An operator has an unresolved event and needs to know who can take responsibility. A resource name alone is not enough for a handoff. The response process needs an accountable owner and a defined next responder when routine work cannot resolve the issue.
+tb4 For a sandbox orders service, suppose the supplied ownership record names the application operations team for the service and a separate team for an associated process. Use those named responsibilities when preparing the event-response record. Document the condition that requires escalation and identify the recipient rather than writing only escalate if necessary. If the current operator reaches the stated unresolved-issue condition, the record should show whom to engage and why. This example does not invent a universal escalation time or chain; the responsible teams and conditions come from the established environment. The operational value is that a later responder can find responsibility for both the resource and the process without guessing. Compare an entry that says operations handles issues with one that names the responsible team, the unresolved-issue condition and the next responder. Only the latter gives the current operator a definite handoff decision under that condition. If responsibility for a process differs from responsibility for its resources, record both rather than assuming a single resource owner covers every operational activity.
+tb5 An escalation path is more than a list of contacts. The response process must document when an unresolved issue moves on and to whom. Naming a team for each resource and process supplies the ownership context for that decision.
+assessment identify_responsible_team_for_supplied_operational_alert
+assessment identify_escalation_condition_and_next_responder
+practice_anchor.type field_selection
+practice_anchor.objective Complete an ownership and escalation record for the sandbox orders service using supplied established teams and escalation conditions. Select the service owner, associated-process owner, initial event responder, unresolved-issue escalation condition, and escalation recipient.
+practice_anchor.success The completed record matches the supplied responsibilities for both the service and its associated process, identifies who initially acts on an event, and specifies when and to whom an unresolved issue is escalated without inventing a new policy.
+visual_anchor.type data_table
+visual_anchor.purpose Make the sandbox orders service's resource and process responsibilities visible alongside the initial event responder, established unresolved-issue escalation condition, and next recipient.
+note Use established owners and escalation conditions; do not author an organization-wide incident policy.

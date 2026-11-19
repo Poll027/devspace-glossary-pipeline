@@ -1,0 +1,71 @@
+
+### 72 aws_devops.route_alarm_notifications_to_an_operational_owner
+INLINE supplied SNS endpoint=supplied; alarm notification=An alarm-state message sent to an approved operational endpoint without changing evaluation.; supplied alarm and SNS endpoint=supplied
+f1 An alarm action can publish state-change notifications to an SNS topic without changing the alarm’s metric evaluation.
+f2 Configure the approved topic as the alarm’s notification action and create the approved recipient subscription, confirming it when required.
+f3 Verify the recipient receives a test alarm notification containing alarm and workload context; a configured but unconfirmed subscription may not deliver notifications.
+tb1 An alarm must reach the operational owner, not merely change state. Set up the approved notification route and verify receipt independently of the alarm's metric evaluation.
+tb4 Configure the approved SNS topic as the alarm action and create the recipient subscription. Confirm it where required. Send the supplied test alarm notification and check that the intended recipient receives alarm and workload context. Retain receipt evidence alongside the subscription configuration. An unconfirmed subscription may not deliver, so configured is not the same as received.
+tb5 Notification routing does not change the alarm's metric evaluation. A topic action and a recipient subscription need a receipt test; configuration alone, especially an unconfirmed subscription, is not delivery evidence.
+assessment distinguish_notification_routing_from_metric_evaluation
+assessment verify_approved_recipient_subscription_readiness
+assessment verify_test_notification_receipt_with_alarm_and_workload_context
+practice_anchor.type tool_simulation
+practice_anchor.objective Connect one supplied CloudWatch alarm to the approved SNS topic and recipient endpoint, confirm the subscription when required, and use the supplied test alarm notification to verify receipt.
+practice_anchor.success The supplied alarm uses the approved SNS topic as its notification action without changes to metric evaluation. The approved recipient subscription is confirmed when required, and receipt evidence shows that the intended operational owner received the supplied test notification containing alarm and workload context.
+visual_anchor.type UI_state
+visual_anchor.purpose Make visible the supplied alarm's approved SNS notification action, the approved recipient endpoint and subscription confirmation status, and the received test notification containing alarm and workload context.
+note Use supplied SNS topic/recipient and test; leave fault injection to its dedicated concept.
+MEDIA {"group_title": "Connect an alarm to its notification recipient", "segments": [{"segment_id": "seg_aws_devops.route_alarm_notifications_to_an_operational_owner_lHWrAAzoxJA_868_1009", "label": "Configure an SNS email notification route and understand subscription confirmation", "video_id": "lHWrAAzoxJA", "youtube_url": "https://www.youtube.com/watch?v=lHWrAAzoxJA", "review_url": "https://www.youtube.com/watch?v=lHWrAAzoxJA&t=868s", "start_seconds": 868, "end_seconds": 1009, "summary": "An SNS topic provides the notification route for an alarm entering ALARM state. The example creates a topic with an email recipient, reviews the configuration, and saves the alarm. Notification actions can also be configured for other states. The alarm initially shows INSUFFICIENT_DATA and later reaches OK. The recipient must accept the email subscription confirmation before receiving notifications; the confirmation step is described rather than demonstrated. The presenter suggests lowering the threshold to test email delivery, but does not demonstrate receipt of a test notification.", "fact_ids": ["f2"], "transcript_ref": "lHWrAAzoxJA:868-1009"}], "bridge_note": {"before": "Watch how the SNS topic connects the alarm to an email recipient. The presenter calls this an \u201coutbound hook.\u201d Use the supplied approved topic, recipient, and test; do not follow the threshold-lowering suggestion.", "after": "The clip explains subscription confirmation but does not demonstrate contextual test receipt or establish unchanged metric evaluation. The text covers both: preserve evaluation settings and verify the intended owner receives alarm and workload context."}}
+
+### 73 aws_devops.run_a_bounded_operational_action_with_lambda
+INLINE supplied Lambda function=supplied; bounded action=A supplied Lambda operation executed only within the approved role permissions and target scope.
+f1 A Lambda execution role grants the function permission to access AWS resources during invocation.
+f2 Assign the approved execution role whose actions and resources are limited to the supplied operational task.
+f3 Invoke the function with the supplied payload and inspect its returned result and execution logs, distinguishing successful invocation from a successful operational result.
+tb1 A supplied Lambda function performs one bounded operational task. Its execution role must cover that task's approved actions and resources, and invocation evidence must be separated from the operational result.
+tb4 Assign the approved execution role scoped to the supplied task. Invoke the function with the supplied payload and inspect both the returned result and execution logs. For an illustrative resource check, suppose the invocation succeeds but the returned task result says the expected operation failed. Preserve that distinction instead of describing the task as successful because the function was invoked. The execution role grants access to AWS resources during invocation; it is not an unlimited operating identity. This exercise evaluates the supplied payload and task result, not independent function-feature development or serverless capacity configuration. For the opposite case, suppose the supplied function returns a task-success result and the execution logs support that outcome. Record both with the approved payload and role context. That verifies this bounded task execution, not every operation the function could conceivably perform. If the task needs an action absent from the approved role, report the permission/result evidence instead of broadening the role during the test.
+tb5 Successful invocation is not proof of a successful operational outcome. Read the supplied task result and logs under the approved execution role. Keep the role's bounded actions/resources separate from the mere ability to invoke the function.
+assessment verify_execution_role_limits_actions_and_resources_to_approved_task
+assessment distinguish_invocation_success_from_operational_success_using_result_and_logs
+practice_anchor.type tool_simulation
+practice_anchor.objective Assign the approved scoped execution role to one supplied Lambda operational function, invoke it with the supplied payload, and inspect its returned result and execution logs.
+practice_anchor.success The assigned role permits only the approved task's actions and resources. The supplied payload is used unchanged, and the recorded outcome distinguishes successful invocation from operational success or failure using the returned task result and execution logs, without broadening permissions.
+visual_anchor.type UI_state
+visual_anchor.purpose Show the supplied function's assigned execution role and its bounded actions and resources alongside the supplied invocation payload, returned task result, and execution logs, making invocation status and operational outcome separately visible.
+note Use supplied function and payload; do not introduce serverless concurrency or application authoring.
+
+### 74 aws_devops.triage_a_representative_guardduty_finding
+INLINE supplied GuardDuty finding=supplied; threat evidence versus proof=A threat finding supports investigation but is not automatic proof of compromise.; supplied finding=supplied
+f1 A GuardDuty finding contains a finding type, severity, affected resource and details of suspicious activity.
+f2 Inspect resource identity, activity timestamps and finding details, and preserve the evidence supporting investigation.
+f3 Follow the established investigation and escalation procedure for the finding type rather than taking destructive action from severity alone.
+tb1 A GuardDuty finding has a severity label, but an operator needs its resource and activity evidence before responding. Use the established investigation path rather than acting destructively from severity alone.
+tb4 Open the supplied finding and record its type, severity, affected resource identity and activity timestamps. Inspect the detailed suspicious activity and preserve the supporting evidence. Route the investigation through the established procedure for that finding type. If the finding is severe, include that urgency in the response context, but do not turn it into an unsupported conclusion that the resource is compromised or permission to destroy it. The example teaches bounded finding triage: identify what the finding says, retain the evidence and follow the approved escalation procedure. A finding timeline should retain the activity timestamps supplied in the finding rather than substituting the time someone opened it. Resource identity narrows which workload the suspicious activity concerns, while type and detail inform the established investigation path. If those details are incomplete, preserve the available evidence and escalate under the procedure. Missing detail is not a basis for asserting an attack mechanism or destroying the resource.
+tb5 A severity label alone is not the complete investigation or an instruction to take destructive action. Inspect resource identity, timestamps and activity details, preserve the evidence and follow the established finding-type procedure.
+assessment identify_affected_identity_or_resource_from_finding_evidence
+assessment identify_evidence_supported_escalation_under_established_procedure
+practice_anchor.type tool_simulation
+practice_anchor.objective Triage one supplied GuardDuty finding using a read-only finding interface and its established investigation and escalation procedure. Record the finding type, severity, affected resource identity, activity timestamps and suspicious activity details; preserve the supporting evidence and identify the procedure-supported next step.
+practice_anchor.success The triage record accurately identifies the affected identity or resource, retains the supplied activity timestamps and supporting finding details, and selects the next investigation or escalation step specified by the supplied procedure. It neither asserts compromise without supporting evidence nor takes destructive action from severity alone.
+visual_anchor.type annotated_screenshot
+visual_anchor.purpose Make the finding type, severity, affected resource identity, activity timestamps and suspicious activity details visible in a representative GuardDuty finding, distinguishing activity timestamps from the time the finding was opened.
+note Do not invent compromise conclusions or specialist incident-containment actions.
+
+### 75 security.audit_storage_access
+INLINE supplied audit principals=supplied; least-privilege bucket access=Scoped S3 writer and reader permissions verified with approved and denied audit principals.
+f1 S3 bucket policies can grant or deny object operations to specified principals and resource paths.
+f2 Give approved audit writers and readers only their required actions on the intended bucket or object ARNs; inspect other applicable grants and denies.
+f3 Test a write and read with approved identities and a read with the unapproved identity; encryption or retention settings do not replace authorization checks.
+tb1 Audit objects need approved write and read access without unintended readers. Inspect authorization as its own control, not as an effect of encryption or retention.
+tb4 Scope the supplied bucket policy to the approved writers/readers, required actions and intended bucket or object ARNs. Inspect other applicable grants and denies. Test an approved write, an approved read and an unapproved read, recording the identity and resource path for each. Those results verify the requested access boundary; encryption and retention settings do not replace these tests.
+tb5 Protected storage settings are not authorization evidence. Even with encryption or retention configured, inspect applicable grants/denies and test approved and unapproved object operations.
+assessment distinguish_approved_and_denied_principal_operations
+assessment evaluate_action_and_resource_scope_with_applicable_grants_and_denies
+assessment verify_authorization_using_approved_and_unapproved_identity_tests
+practice_anchor.type tool_simulation
+practice_anchor.objective Apply least-privilege access to the supplied S3 audit bucket policy using the supplied approved writers, approved readers and audit paths. Inspect other applicable grants and denies, then test an approved write, an approved read and an unapproved read.
+practice_anchor.success The policy grants approved writers and readers only their required actions on the intended bucket or object ARNs without broadening principal access. Applicable grants and denies have been inspected. The approved write and read succeed, and the unapproved read is denied, with the identity, resource path and result recorded for each test. Encryption or retention settings are not treated as authorization evidence.
+visual_anchor.type comparison
+visual_anchor.purpose Show the scoped bucket-policy statements alongside the three authorization test results, making each principal, requested action, resource ARN and allowed or denied outcome visible.
+note Use supplied audit paths and policy; do not broaden principal access for convenience.

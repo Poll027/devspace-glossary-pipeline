@@ -1,0 +1,66 @@
+
+### 20 aws_devops.attribute_an_aws_change_using_cloudtrail_evidence
+INLINE supplied sandbox change=supplied; CloudTrail event=An audit record identifying an AWS API operation, actor, target and time.; supplied change=supplied
+f1 CloudTrail event history exposes recent management events for the selected Region; it does not represent all application activity.
+f2 Filter event history by an attribute such as event name, resource name or user name and the relevant time interval.
+f3 Inspect eventTime, eventName, userIdentity and requestParameters or resources to attribute a change to an actor, operation, target and time.
+tb1 A resource setting changed during a known interval, and the operator needs evidence of the actor and operation. Start with the selected Region and management-event history rather than assuming the record covers every kind of application activity.
+tb4 Suppose the supplied incident interval is 09:00 to 09:15 and identifies a resource name. Filter event history by the relevant attribute and time window, then inspect candidate events. For a matching change, read eventTime, eventName, userIdentity and requestParameters or resources. Record the actor, operation, target and time from those fields. If several nearby events exist, keep the target and operation comparison explicit rather than assigning the change to the closest timestamp alone. The example establishes attribution of an AWS management change; it does not establish the sequence of all application requests or supply application tracing. For two candidate events in the interval, compare eventName and target evidence before assigning the change. One event may involve the same actor but a different target; another may involve the target but a different operation. Retain the event whose fields support the supplied change attribution. The record should make the actor, operation, target and event time inspectable together rather than reducing the result to a person's name.
+tb5 CloudTrail event history is not all application activity. It exposes recent management events for the selected Region. Keep that scope in the attribution record and derive the actor and target from event evidence, not from a guessed owner.
+assessment identify_actor_operation_resource_and_time_from_event_fields
+practice_anchor.type tool_simulation
+practice_anchor.objective Find the event for a supplied sandbox configuration change in CloudTrail event history using the supplied Region, resource name and 09:00–09:15 interval.
+practice_anchor.success Select the supplied Region, filter by the relevant attribute and time interval, and identify the matching event by comparing its operation and target with the supplied change. Record the actor from userIdentity, operation from eventName, target from requestParameters or resources, and time from eventTime rather than choosing the closest timestamp alone.
+visual_anchor.type UI_state
+visual_anchor.purpose Make the selected Region, event-history attribute filter and time interval visible alongside candidate events and the matching event's eventTime, eventName, userIdentity and requestParameters or resources.
+note Do not introduce X-Ray/request tracing or infer causation beyond the supplied change evidence.
+
+### 21 aws_devops.attribute_workload_spend_using_resource_tags
+INLINE supplied tagged billing records=supplied; cost-allocation tag=A resource label activated for grouping billed usage by workload or owner.; unallocated spend=Billing records not assigned to the intended workload tag grouping.; supplied tagged billing dataset=supplied
+f1 Cost-allocation tags categorize costs by resource-associated tag keys and values after activation for billing.
+f2 Activate the desired cost-allocation tag, then group Cost Explorer costs by that tag for the chosen period.
+f3 Resources without the relevant active tag can leave spend unallocated to the intended workload category.
+tb1 A cost report needs to distinguish orders-workload spend from other resource spend. A resource label can support that grouping only when the relevant cost-allocation tag has been activated for billing.
+tb4 Suppose the intended tag key is Workload and an approved value is orders. Activate that cost-allocation tag, then group Cost Explorer costs by it for the supplied period. Compare the orders category with spend not allocated to the intended category. If a resource lacks the relevant active tag, do not assign its spend to orders just because its name resembles the service name. Record the chosen period and tag grouping with the result. This is attribution of billed costs using resource-associated labels, not a new estimate of what the workload ought to cost. The example shows why activation and resource tagging both matter to the intended grouping. Separate the labeling check from the billing-category check. The resource-associated Workload value states the intended category, while the active cost-allocation grouping shows how billed spend is categorized in the selected report. An unallocated category is evidence to investigate against missing relevant active tags, not permission to redistribute its amount by guessing. Keep the report's allocated and unallocated categories intact in the finding.
+tb5 A label on a resource is not by itself the billing grouping check. Cost-allocation tags categorize costs after activation. Resources without the relevant active tag can leave spend unallocated, so the intended workload category may not contain all expected spend.
+assessment group_tagged_charges_by_active_cost_allocation_tag
+assessment identify_spend_unallocated_to_the_intended_workload
+practice_anchor.type tool_simulation
+practice_anchor.objective Produce an orders workload cost breakdown using supplied resource tags and observed billing evidence. Activate the Workload cost-allocation tag, select the supplied period, and group Cost Explorer costs by Workload.
+practice_anchor.success The breakdown records the chosen period and Workload grouping, reports the observed orders amount, and preserves other allocated and unallocated categories. Resources missing the relevant active tag are flagged for investigation without assigning their spend to orders based on resource names.
+visual_anchor.type UI_state
+visual_anchor.purpose Show the Workload cost-allocation tag as active and the selected Cost Explorer period grouped by Workload, with the orders category and unallocated spend visible alongside supplied resource-tag evidence.
+note Defer workload cost estimation; use observed Cost Explorer evidence only.
+
+### 22 aws_devops.centralize_structured_application_logs_in_cloudwatch_logs
+INLINE structured application log=An application event with named fields that preserve workload and request identity.; supplied log emitter=supplied; supplied application logs=supplied
+f1 A log group holds log streams with shared retention and access settings; a stream is a sequence of events from one source.
+f2 Configure the supplied log collector with the application file path, log group and stream name, and verify a known JSON event arrives in that stream.
+f3 CloudWatch Logs Insights can discover fields in JSON log events, so preserving structured event fields makes them queryable.
+tb1 An application writes structured events to a supplied file, and operators need those named fields in CloudWatch Logs. Follow one known event from its file source to the intended log stream rather than checking only that a log group exists.
+tb4 For an illustrative orders event, the supplied JSON contains a request ID, an outcome and a timestamp. Configure the supplied collector with the application file path, intended group and intended stream name. Then verify that this known event appears in that stream with its structured fields preserved. The group provides shared retention and access settings, while the stream sequences events from a source. Named JSON fields can be discovered by Logs Insights, so preserving them supports later queries. Record the event identity and arrival location as the collection evidence. Do not claim that merely creating the group proves the collector sent the intended application event.
+tb5 A log group and a log stream are not interchangeable labels. The group shares settings across streams; the stream holds a sequence of events from a source. Successful setup should include a known-event arrival check in the intended stream.
+assessment locate_known_structured_event_in_intended_log_stream
+practice_anchor.type tool_simulation
+practice_anchor.objective Configure a supplied, ready-to-use log collector with the orders application's supplied file path, intended log group and stream name, then ship the supplied JSON events into that group.
+practice_anchor.success The known orders event appears in the intended stream within the intended group, with its request ID, outcome and timestamp preserved. The recorded collection evidence identifies the event and its arrival group and stream.
+visual_anchor.type UI_state
+visual_anchor.purpose Show the supplied collector's application file path, destination group and stream alongside the destination stream containing the known orders JSON event with its request ID, outcome and timestamp preserved.
+note Do not teach later query syntax here or redesign application logging.
+
+### 23 aws_devops.change_and_validate_a_linux_service_configuration
+INLINE supplied rollback files=supplied
+f1 A configuration change needs validation of its intended effect and a defined way to return to the previous working configuration.
+f2 Identify and verify the supplied rollback files, change the supplied setting and run the supplied syntax or configuration check before activation.
+f3 Use the service’s supported reload or restart procedure to activate a valid change, then inspect status and the supplied effective-setting check; on failure restore and reactivate the saved configuration.
+tb1 A lab asks for one Linux service setting to change and supplies files for returning to the previous working configuration. Before activating anything, identify those rollback files and establish how the supplied checks will judge the change.
+tb4 Imagine the approved change modifies a setting in the supplied service configuration. First identify and verify the supplied rollback files. Change only the supplied setting, then run the supplied syntax or configuration check before activation. For a valid change, use the service's supported reload or restart procedure. Inspect both service status and the supplied effective-setting check: the latter answers whether the intended setting took effect. If the change fails, restore and reactivate the saved configuration using the approved procedure. Keep the check results with the change record so that a restart request is not mistaken for a verified outcome. Linux filesystem, permission and service-operation preparation must already be complete; the supplied files do not replace that mastery.
+tb5 Activation is not validation. A reload or restart request does not replace the syntax/configuration check before activation or the status and effective-setting checks afterwards. Returning to the saved configuration also requires reactivation, not just restoring a file.
+assessment verify_changed_setting_is_active
+assessment restore_and_reactivate_supplied_prior_configuration_on_failure
+practice_anchor.type tool_simulation
+practice_anchor.objective Change one supplied setting in a sandbox Linux service using prepared controls and supplied rollback files. Verify the rollback files, run the supplied configuration check before activation, then activate and verify the change. Restore and reactivate the saved configuration if validation fails.
+practice_anchor.success The supplied rollback files are verified before editing, only the designated setting changes, and a passing configuration check precedes activation. Service status and the supplied effective-setting check confirm the outcome. In the supplied failure case, the saved configuration is restored and reactivated, and both checks confirm the previous working state.
+visual_anchor.type UI_state
+visual_anchor.purpose Make the sandbox service's configuration state, supplied rollback files, pre-activation check result, activation result, service status and effective-setting result visible, including the restored and reactivated state after failure.
+note Use supplied rollback files; do not teach backup creation, boot-startup policy or independent Bash authoring.

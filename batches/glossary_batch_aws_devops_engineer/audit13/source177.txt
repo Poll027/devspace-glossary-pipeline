@@ -1,0 +1,67 @@
+OPS03-BP02 Test and validate any and all changes - AWS Well-Architected Framework
+View a markdown version of this page
+OPS03-BP02 Test and validate any and all changes - AWS Well-Architected Framework
+DocumentationAWS Well-ArchitectedFramework
+Implementation guidanceResources
+OPS03-BP02 Test and validate any and all changes
+Test every change before it reaches production, including application code, infrastructure, configuration, security controls, and operational procedures. When you run tests immediately after each change, defects are cheap to fix and developers get fast feedback.
+Desired outcome:
+Your changes are tested before they are delivered, and your pipeline blocks any change that fails.
+Your developers see test results quickly and act on them without leaving their workflow.
+Your testing covers application code, infrastructure, configuration, and security controls, not code alone.
+Every artifact meets your shared testing standard before it is promoted.
+Common anti-patterns:
+Teams deploy a change with no tests, and it fails in production and causes an incident.
+Teams deploy new security group rules without testing them, and the change makes the application unreachable for customers.
+Developers modify a method that has no unit test, and the defect surfaces only after release.
+Testing happens manually at the end of the process, so feedback arrives too late to be cheap to act on.
+Benefits of establishing this best practice:
+Change failure rate drops because defects are caught before release.
+Software quality improves as tests document expected behavior and guard against regression.
+Developers gain confidence in their changes through fast, automated feedback.
+Security and compliance controls roll out with evidence that they work as intended.
+Infrastructure changes such as scaling policy updates are validated before they affect live traffic.
+Level of risk exposed if this best practice is not established: High
+Implementation guidance
+The earlier a test runs, the cheaper the defect is to fix, because less work has been built on top of it.
+Unit tests check a single function in isolation and run in milliseconds. Integration and end-to-end tests exercise components together and take longer. Static analysis and software composition analysis (SCA) inspect code and dependencies for known vulnerabilities without running the software. Weight your test suite toward fast, narrow tests and use slower, broad tests sparingly. A suite that takes an hour to run gets skipped under deadline pressure.
+Test infrastructure definitions, configuration, security controls, and operational procedures the same way you test code. Code tests never catch security group rules that block legitimate traffic, a scaling policy that fails under load, or a runbook that no longer matches reality. Treat every artifact that can change production behavior as something to test.
+Automated tests remove manual effort and human error, and give developers fast feedback. Automate everything repetitive, and reserve human judgment for work such as exploratory testing, usability review, or security assessment of a novel design. Publish results to developers immediately. Agree on a testing standard with stakeholders that defines which tests every artifact must pass and who is notified when they complete.
+Use Kiro to write code artifacts, find and resolve bugs, and develop unit tests across large codebases. AWS CodeBuild runs tests on each artifact, and AWS CodePipeline sequences those tests into gates a change must clear before promotion. The AWS Deployment Pipeline Reference Architecture catalogs the test types you can place at each stage.
+Implementation steps
+Define a testing standard with your stakeholders: Agree on which tests every artifact must pass, the compliance and governance requirements to cover, and who is notified when tests complete. Use the AWS Deployment Pipeline Reference Architecture as an authoritative list of test types to include.
+Instrument artifacts with automated tests: Add the tests your standard requires so they run as part of the integration pipeline, and keep each suite within a predictable duration, such as under ten minutes. Use Kiro to generate unit tests with boundary conditions and to find defects.
+Run tests automatically in the pipeline: Configure AWS CodeBuild to run your tests on each change, and use AWS CodePipeline to order them into gates that block promotion on failure.
+Test infrastructure and security changes the same way: Validate infrastructure definitions, configuration, and security controls in a pre-production environment before they reach production. Apply the same automated gates to these artifacts that you apply to application code.
+Publish results and store validated artifacts: Send test outcomes to developers as each gate passes, so feedback is immediate. Promote only artifacts that clear every gate, and store them in an artifact repository for deployment.
+Resources
+Related best practices:
+OPS03-BP03 Implement practices to improve code quality
+OPS03-BP04 Fully automate integration and deployment
+OPS03-BP01 Adopt a configuration, build, and release pipeline
+OPS04-BP02 Automate testing and rollback
+Related documents:
+Practicing continuous integration and continuous delivery on AWS
+My CI/CD pipeline is my release captain
+Shift-Left Workload, leveraging AI for test creation
+Related videos:
+AWS re:Invent 2025 - Spec-driven development with Kiro (DEV314)
+The Tale of Building with Kiro
+Related examples:
+AWS Deployment Pipeline Reference Architecture - Application
+AWS Kubernetes DevSecOps pipeline
+Related services:
+Kiro
+AWS CodeBuild
+AWS CodePipeline
+Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+OPS03-BP01 Adopt a configuration, build, and release pipeline
+OPS03-BP03 Implement practices to improve code quality
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

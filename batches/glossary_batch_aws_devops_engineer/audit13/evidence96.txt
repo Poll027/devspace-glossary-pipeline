@@ -1,0 +1,97 @@
+
+### 96 aws_devops.rightsize_a_resource_using_a_supplied_workload_baseline
+SOURCE 175 https://docs.aws.amazon.com/wellarchitected/latest/framework/cost06-bp02.html [f1]
+6: COST06-BP02 Select resource type, size, and number based on data
+17: Reusing a resource type from an unrelated workload because it is familiar.
+SOURCE 175 https://docs.aws.amazon.com/wellarchitected/latest/framework/cost06-bp02.html [f2]
+28: Many processor and instance types target specific workload shapes, such as machine learning training, high-throughput storage, or particular instruction sets. They deliver better price performance than general-purpose resources for those workloads. The cost is reduced flexibility, a purpose-built resource that no longer matches the workload is harder to repurpose. Prefer specialized options for stable, well-understood profiles. Keep general purpose when the profile is uncertain or changing.
+35: Prefer purpose-built resources for stable profiles: When a purpose-built processor or instance type matches a well-understood workload, select it over a general-purpose equivalent for better price performance. Keep general purpose where the profile is uncertain or likely to change.
+SOURCE 175 https://docs.aws.amazon.com/wellarchitected/latest/framework/cost06-bp02.html [f3]
+10: Your sizing decisions account for multiple dimensions, including compute, memory, storage, and network, not a single dimension.
+20: Sizing decisions are defensible because they rest on documented evidence.
+
+### 97 aws_devops.route_a_security_finding_with_evidence_to_its_responsible_owner
+SOURCE 141 https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings-summary.html [f1]
+400: A finding's Action gives details about the type of activity that triggered the finding. The information available varies based on action type.
+426: A finding has an Actor section if the Resource role was TARGET. This indicates that your resource was targeted by suspicious activity, and the Actor section contains details about the entity that targeted your resource.
+SOURCE 181 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06-bp03.html [f2]
+36: Assign ownership: Name an internal owner for each step of the escalation path, so every stage of an incident has a named owner accountable for moving it forward.
+51: Atlassian - Escalation policies for effective incident management
+SOURCE 141 https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings-summary.html [f3]
+120: ARN – The Amazon Resource Name (ARN) of the task.
+284: Each finding covers a single resource, such as an instance, a task, or a container. For more information about how GuardDuty groups signals, see Finding aggregation.
+
+### 98 aws_devops.route_an_operational_event_to_a_notification_or_established_systems_manager_action
+SOURCE 134 https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-create-rule-wizard.html [f1]
+31: For Event source, choose AWS events or EventBridge partner events.
+86: Choose one or more targets to receive events that match the specified pattern. Targets can include an EventBridge event bus, EventBridge API destinations, including SaaS partners such as Salesforce, or another AWS service.
+SOURCE 134 https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-create-rule-wizard.html [f2]
+88: For Target type, choose one of the following target types: Event bus
+97: For Event bus as target, enter the ARN of the event bus you want to use.
+SOURCE 137 https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-events-iam-roles.html [f3]
+15: Permissions required for EventBridge to access targets using IAM roles
+35: If the target is a Kinesis stream, the role used to send event data to that target must include a policy with the following statement:
+
+### 99 aws_devops.run_an_ecs_service_with_a_desired_task_count
+SOURCE 52 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html [f1]
+3: Amazon ECS services - Amazon Elastic Container Service
+28: Service auto scaling is the ability to increase or decrease the desired number of tasks in your Amazon ECS service automatically. Amazon ECS leverages the Application Auto Scaling service to provide this functionality.
+SOURCE 53 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service_definition_parameters.html [f2]
+1: Amazon ECS service definition parameters - Amazon Elastic Container Service
+3: Amazon ECS service definition parameters - Amazon Elastic Container Service
+SOURCE 52 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html [f3]
+7: You can use an Amazon ECS service to run and maintain a specified number of instances of a task definition simultaneously in an Amazon ECS cluster. If one of your tasks fails or stops, the Amazon ECS service scheduler launches another instance of your task definition to replace it. This helps maintain your desired number of tasks in the service.
+13: If the maximumPercent parameter limits the scheduler from starting a replacement task first, the scheduler will stop an unhealthy task one at a time at random to free up capacity, and then start a replacement task. The start and stop process continues until all unhealthy tasks are replaced with healthy tasks. Once all unhealthy tasks have been replaced and only healthy tasks are running, if the total task count exceeds the desiredCount, healthy tasks are stopped at random until the total task count equals desiredCount. For more information about maximumPercent and desiredCount, see Service definition parameters.
+
+### 100 aws_devops.run_supplied_unit_and_integration_tests_as_blocking_pipeline_gates
+SOURCE 188 https://docs.github.com/en/actions/how-tos/create-and-publish-actions/set-exit-codes [f1]
+17: Setting a failure exit code in a JavaScript action
+21: Setting a failure exit code in a Docker container action
+SOURCE 193 https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax [f2]
+471: Use jobs.<job_id>.runs-on to define the type of machine to run the job on.
+913: Prevents a workflow run from failing when a job fails. Set to true to allow a workflow run to pass when this job fails.
+SOURCE 193 https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax [f3]
+820: Prevents a job from failing when a step fails. Set to true to allow a job to pass when this step fails.
+
+### 101 aws_devops.submit_small_reviewable_infrastructure_changes
+SOURCE 173 https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/dl.ci.1-integrate-code-changes-regularly-and-frequently.html [f1]
+5: [DL.CI.1] Integrate code changes regularly and frequently
+7: Working in small batches, characterized by regular, small changes to a code base, enhances software delivery performance. It reduces the time to receive feedback on changes, which is required to enable continuous integration. This way of working is an improvement over traditional phased development approaches, which often leads to delayed feedback due to large batches of work. By making smaller, more frequent changes, teams can uncover and fix bugs earlier in the development lifecycle, simplifying the process of updating, testing, and releasing software.
+SOURCE 199 https://git-scm.com/docs/git-commit [f2]
+274: $ edit hello.c $ git rm goodbye.c $ git add hello.c $ git commit
+279: $ edit hello.c hello.h $ git add hello.c hello.h $ edit Makefile $ git commit Makefile
+SOURCE 198 https://git-scm.com/docs/git-add [f2]
+178: You can also add only part of your changes to a file with git add -p.
+229: This shows the change between HEAD and index (i.e. what will be committed if you say git commit), and between index and working tree files (i.e. what you could stage further before git commit using git add) for each path. A sample output looks like this:
+SOURCE 200 https://git-scm.com/docs/git-push [f2]
+258: Usually, git push will refuse to update a branch that is not an ancestor of the commit being pushed.
+392: If the push destination is not a branch or tag:
+SOURCE 4 https://developer.hashicorp.com/terraform/cli/commands/plan [f3]
+20: If you run terraform plan without the -out=FILE option then it will create a speculative plan, which is a description of the effect of the plan but without any intent to actually apply it.
+107: -DestroyTerraform will destroy this resource.
+SOURCE 1 https://developer.hashicorp.com/terraform/cli/commands/apply [f4]
+19: Use terraform show to inspect a saved plan file before applying it.
+22: Without a saved plan file, terraform apply supports all planning modes and planning options available for terraform plan.
+
+### 102 aws_devops.verify_availability_across_availability_zones_under_a_controlled_failure
+SOURCE 186 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel12-bp04.html [f1]
+54: REL08-BP03 Integrate resilience testing as part of your deployment
+67: AWS re:Invent 2025 - AI-powered resilience testing and disaster recovery (COP420)
+SOURCE 186 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel12-bp04.html [f2]
+10: You combine chaos engineering with resilience testing that validates known, expected behavior during an event.
+28: Guardrails keep experiments safe. Define stop conditions on the metrics that represent steady state and on the components you are injecting faults into, so an experiment halts automatically before it causes unacceptable impact. Include a synthetic monitor, or user canary, as a proxy for customer experience. Simulate faults in a non-production environment first to confirm that stop conditions activate and observability catches exceptions, then move toward production, where real load reveals behavior that no lower environment reproduces. Run first experiments during off-peak hours, and use synthetic traffic against control and experimental deployments when customer traffic poses too much risk.
+SOURCE 185 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel11.html [f3]
+16: REL11-BP07 Architect your product to meet availability targets and uptime service level agreements (SLAs)
+19: Load is spread across independent resources, Availability Zones, or Regions, and traffic shifts away from an impairment automatically where the service allows.
+
+### 103 cost.safe_teardown
+SOURCE 17 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-delete-stack.html [f1]
+8: When deleting a stack, CloudFormation deletes all resources in that stack unless you used a deletion policy to retain specific resources. For more information, see DeletionPolicy attribute.
+40: In the CloudFormation console, you can select Express for the deployment mode when deleting a stack to use express mode.
+SOURCE 17 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-delete-stack.html [f2]
+7: If you no longer need the resources in a stack, you can delete the entire stack.
+SOURCE 71 https://docs.aws.amazon.com/AmazonS3/latest/userguide/delete-bucket.html [f3]
+31: To empty and delete a general purpose bucket using the AWS SDK for Java, you must first delete all objects in the general purpose bucket, and then delete the bucket.
+35: For buckets without versioning enabled, you can delete all objects directly and then delete the bucket. For buckets with versioning enabled, you must delete all object versions before deleting the bucket.
+SOURCE 17 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-delete-stack.html [f4]
+31: All retained resources show the DELETE_SKIPPED Status.

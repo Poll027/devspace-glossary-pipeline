@@ -1,0 +1,129 @@
+### 63 aws_devops.diagnose_an_iam_denied_request_from_request_and_policy_evidence 0-274
+0 if you've ever been frustrated when
+2 troubleshooting iam policies then you
+4 need to know about this tool the iam
+7 policy simulator this is something that
+9 i've been using for quite a few years
+11 now and it's a very very useful tool to
+13 help troubleshoot issues with iam
+16 especially when you're facing access
+18 denied arrows and you just can't figure
+20 out why you don't have access to a
+22 particular resource or service so the
+24 great thing about this tool is the fact
+25 that it doesn't start you off with a
+27 clean slate over on the left hand side
+29 here we have access to the users groups
+31 and roles that currently exist in the
+34 aws account that you're currently logged
+36 in as so you can come here and just
+38 tinker with some of the different
+40 entities that you have created in the
+42 iem section of your account and on the
+44 right hand side here in the policy
+46 simulator section this is where we
+48 interact with many of the other aws
+50 services to simulate different actions
+52 for certain apis so for example if i
+55 wanted to test if a user has a certain
+56 aws amplify permission i would click the
+59 aws amplify service select the actions
+62 that i want to test it against and then
+63 run the simulation so that's the idea of
+66 this service let's see this a little bit
+67 in action so i have an iam user here
+70 called daniel if i click on daniel right
+72 away i can see some specifics about the
+74 iem policies that are currently
+76 configured against this user we can see
+79 we have one iam policy called amazon s3
+82 full access and if we click on it we can
+84 see the details of the policy so it's
+86 effect allow it's all the s3 actions on
+89 any resource if we click on back we can
+91 also see we have another policy the
+93 student policy that's attached to us in
+96 this case this student policy is denied
+98 so the effect is deny the action to
+100 create a bucket on any aws resource so
+103 the expectation is and if you recall how
+106 iam works deny trump's allows so if you
+108 have a deny and you have an allow the
+110 deny will win so we can test this out
+113 really quick to see what the behavior is
+115 when we try to call that s3 create
+118 bucket api as if we were this user
+120 daniel trying to access this api either
+123 through the aws console or
+124 programmatically using my aws
+126 credentials so let's see this a little
+128 bit in action here if we go to the top
+130 now and we just change this we're going
+132 to go to s3 and for the actions that
+135 we're going to test against we're going
+136 to do create bucket here and let's just
+139 close that
+140 you can see here if we expand the s3
+142 section you can also specify if you want
+144 to test this simulation against a
+146 specific bucket but if you have the wild
+149 card here then it's going to apply to
+150 all
+151 and then what we can do now is just very
+153 simply run the simulation so you can see
+156 the result here is that we have a deny
+158 which is as you would expect because the
+160 student policy had that deny for create
+163 bucket now the cool part about this tool
+165 is if you click on this and then you go
+167 to show statement it shows you very
+170 explicitly where the denial is coming
+172 from so there's no longer any guessing
+174 as to why you're getting a specific
+176 denial
+178 as you're trying to troubleshoot an
+179 issue it's very clearly laid out to you
+181 using this tool and so if you go back
+184 now let's try this out with a couple
+186 other permissions where we would expect
+188 us to have access to so for example if i
+190 go back to the top here and let's say
+192 we're trying to access delete object and
+195 get object over here now our expectation
+198 should be that these api since we have
+200 s3 full access should work correctly we
+203 can very easily run that simulation we
+205 can see that it is allowed for the
+207 delete object and allowed for the get
+209 object and still denied for the create
+212 bucket
+212 very neat as well as if you click on the
+214 allow ones you can see where you are
+216 getting the allow permission which is
+218 that amazon s3 full access policy
+221 attached to this user group so that's
+223 when you have explicit permissions
+225 specified for a service but what if
+227 we're trying to access a service where
+228 we don't have any permissions associated
+230 with our user so let's try a service
+233 like dynamodb and i'm just going to
+235 change the selection now to dynamodb
+238 and let's reset the results here clear
+240 the results and for select actions let's
+243 just do select all actually to see what
+245 we have permission to as the user daniel
+248 so we can run the simulation now and as
+250 you would expect we get denied for
+251 everything and it very cleverly detects
+254 that this is an implicit denial which
+256 for those of you that aren't familiar
+257 with iam
+258 follows the rules that is if you are
+260 not given the explicit permission to
+262 perform an action then you are
+264 automatically denied the permission to
+266 do so so in other words you need to be
+269 given the permission in order to do
+271 something uh just a roundabout way of
+273 explaining it

@@ -1,0 +1,93 @@
+
+### 120 cost.residual_charge_verification
+SOURCE 126 https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html [f1]
+9: When you first sign up for Cost Explorer, AWS prepares the data about your costs for the current month and the last 13 months, and then calculates the forecast for the next 18 months. The current month's data is available for viewing in about 24 hours. The rest of your data takes a few days longer. Cost Explorer refreshes your cost data at least once every 24 hours. However, this depends on your upstream data from your billing applications, and some data might be updated later than 24 hours. After you sign up, Cost Explorer by default can display up to 13 months of historical data (if you have that much), the current month, and the forecasted costs for the next 18 months. The first time that you use Cost Explorer, Cost Explorer walks you through the main parts of the console with an explanation for each section.
+17: Exploring more data for advanced cost analysis
+SOURCE 125 https://docs.aws.amazon.com/cost-management/latest/userguide/ce-filtering.html [f2]
+70: Taxes are excluded if you select non-Linked Account filters, either singly or in combination with other filters.
+98: Usage types are the units that each service uses to measure the usage of a specific type of resource. For example, the BoxUsage:t2.micro(Hrs) usage type filters by the running hours of Amazon EC2 t2.micro instances. Usage type group
+SOURCE 126 https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html [f3]
+5: Analyzing your costs and usage with AWS Cost Explorer
+
+### 121 terraform.state_access_isolation
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f1]
+147: An S3 bucket that will contain the Terraform state files for each workspace.
+178: terraform { backend "s3" { bucket = "example-bucket" key = "path/to/state" use_lockfile = true region = "us-east-1" } }
+SOURCE 13 https://developer.hashicorp.com/terraform/language/state/sensitive-data [f1]
+34: You can also add sensitive to output blocks that contain sensitive data:
+93: The S3 backend can encrypt state at rest if you enable the encrypt option, and protects state with TLS in transit
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f2]
+19: State locking is an opt-in feature of the S3 backend.
+21: To enable S3 state locking, use the following optional argument:
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f3]
+12: terraform { backend "s3" { bucket = "mybucket" key = "path/to/my/key" region = "us-east-1" } }
+115: terraform { backend "s3" { bucket = "example-bucket" key = "path/to/state" region = "us-east-1" assume_role = { role_arn = "arn:aws:iam::PRODUCTION-ACCOUNT-ID:role/Terraform" } } } Assume Role With Web Identity Configuration
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f4]
+171: To isolate access to different environment accounts, use a separate EC2 instance for each target account so that its access can be limited only to the single account.
+175: Amazon S3 supports fine-grained access control on a per-object-path basis using IAM policy. A full description of S3's access control mechanism is beyond the scope of this guide, but an example IAM policy granting access to only a single state object within an S3 bucket is shown below:
+
+### 122 terraform.state_locking
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f1]
+9: Stores the state as a given key in a given bucket on Amazon S3. This backend also supports state locking which can be enabled by setting the use_lockfile argument to true.
+178: terraform { backend "s3" { bucket = "example-bucket" key = "path/to/state" use_lockfile = true region = "us-east-1" } }
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f2]
+32: Note: If use_lockfile is set, s3:GetObject, s3:PutObject, and s3:DeleteObject are required on the lock file, e.g., arn:aws:s3:::mybucket/path/to/my/key.tflock.
+41: Note: If use_lockfile is set, s3:GetObject, s3:PutObject, and s3:DeleteObject are required on the lock file, e.g., arn:aws:s3:::mybucket/<workspace_key_prefix>/*/path/to/my/key.tflock.
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f3]
+19: State locking is an opt-in feature of the S3 backend.
+21: To enable S3 state locking, use the following optional argument:
+SOURCE 12 https://developer.hashicorp.com/terraform/language/state/locking [f3]
+10: State locking happens automatically on all operations that could write state. You do not see any message that it happens. If state locking fails, Terraform does not continue. You can disable state locking for most commands with the -lock=false flag, but we do not recommend it.
+11: If acquiring the lock takes longer than expected, Terraform outputs a status message. If Terraform does not output a message, state locking is still occurring if your backend supports it.
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f4]
+SOURCE 12 https://developer.hashicorp.com/terraform/language/state/locking [f4]
+
+### 123 aws_devops.control_environment_promotion_with_a_manual_approval
+SOURCE 111 https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals.html [f1]
+1: Add a manual approval action to a stage - AWS CodePipeline
+3: Add a manual approval action to a stage - AWS CodePipeline
+SOURCE 111 https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals.html [f2]
+SOURCE 111 https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals.html [f3]
+7: In AWS CodePipeline, you can add an approval action to a stage in a pipeline at the point where you want the pipeline execution to stop so that someone with the required AWS Identity and Access Management permissions can approve or reject the action.
+32: When you use the AWS CLI to create the pipeline or after you have used the CLI or console to create the pipeline, you add an approval action to a stage in the pipeline.
+
+### 124 aws_devops.recover_an_incident_safely_using_an_established_runbook
+SOURCE 179 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05-bp01.html [f1]
+11: Your runbook content stays current because updates follow your change management process as procedures evolve.
+49: Achieving operational excellence using automated playbook and runbook
+SOURCE 179 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05-bp01.html [f2]
+55: Using Document Builder to create a custom runbook
+SOURCE 181 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06-bp03.html [f3]
+7: When an incident exceeds what the first responder can resolve, someone must decide who acts next and with what authority. Escalation paths define when to escalate, who to involve at each level, and which actions are pre-approved, so decisions happen fast and the right people engage.
+57: To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+
+### 125 aws_devops.verify_restored_service_and_data_against_rto_rpo_in_an_isolated_rehearsal
+SOURCE 171 https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/ag.dlm.1-define-recovery-objectives-to-maintain-business-continuity.html [f1]
+8: Set recovery point objectives (RPO) indicating how much data loss is acceptable, and recovery time objectives (RTO) specifying how quickly services need to be restored following an incident. Develop and document your disaster recovery (DR) strategy, make it available to teams, and conduct exercises and trainings to maintain the ability to perform the strategy. Implement policies and automated governance capabilities that align with your RPO and RTO objectives.
+11: AWS Well-Architected Reliability Pillar: REL13-BP01 Define recovery objectives for downtime and data loss
+SOURCE 171 https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/ag.dlm.1-define-recovery-objectives-to-maintain-business-continuity.html [f2]
+25: If you've got a moment, please tell us how we can make the documentation better.
+SOURCE 171 https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/ag.dlm.1-define-recovery-objectives-to-maintain-business-continuity.html [f3]
+7: Clear recovery objectives help to ensure that teams can maintain business continuity and recover with minimal data loss, keeping the delivery pipeline flowing and maintaining service reliability.
+
+### 126 aws_devops.document_incident_evidence_and_a_preventive_change
+SOURCE 183 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07-bp01.html [f1]
+7: A structured post-incident analysis examines the contributing factors behind a customer-impacting event and converts those findings into changes that reduce the chance of recurrence.
+23: You reduce recurrence because corrective actions address contributing factors instead of symptoms.
+SOURCE 183 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07-bp01.html [f2]
+11: You capture the telemetry and timeline data needed to reconstruct what happened and when, and you automate its assembly so responders spend their time interpreting evidence rather than collecting it.
+40: Split the work: automation collects evidence, people apply judgment. Assembling the timeline, correlating deployments and configuration changes with the incident window, and pulling logs and metrics is mechanical, time-consuming work suited to automation. Judgment and accountability stay with named people. They decide which conditions contributed, judge what is worth changing, weigh a fix's cost against the risk it removes, and commit to own that fix.
+SOURCE 183 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07-bp01.html [f3]
+17: Organizations document a single root cause and stop, missing the chain of conditions that allowed the incident to happen.
+26: You spread knowledge across teams, so improvements from one incident protect other workloads.
+
+### 127 recovery.endpoint_cutover
+SOURCE 187 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html [f1]
+14: Teams implement inconsistent recovery procedures for workloads that share the same objectives.
+19: Common tooling and test procedures become possible because recovery follows defined patterns.
+SOURCE 187 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html [f2]
+41: Implement traffic redirection: Decide how to reroute traffic to the recovery site, and prefer manually initiated failover with automated steps so a false alarm does not trigger an unnecessary, costly switch. For warm standby and multi-site active/active patterns, use ARC Region Switch to orchestrate the failover as a single operator-initiated operation with pre-flight checks and health validation. This is exactly the pattern of human-triggered but fully orchestrated failover. For complex multi-cell topologies requiring independent per-service routing decisions, use Amazon Application Recovery Controller routing controls. Use data plane operations during failover and avoid control plane dependencies, as described in REL11-BP04 Rely on the data plane and not the control plane during recovery.
+52: Creating a Multi-Region Application with AWS Services series
+SOURCE 88 https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-values-basic.html [f3]
+7: When you create simple records, you specify the following values.
+40: The DNS record type. For more information, see Supported DNS record types.

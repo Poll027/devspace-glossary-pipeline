@@ -1,0 +1,73 @@
+
+### 24 aws_devops.choose_rolling_blue_green_or_canary_delivery_for_stated_availability_and_rollback_requirements
+SOURCE 178 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html [f1]
+34: Rolling deployments replace instances in batches and use the least extra capacity, but a failure can leave the fleet in a mixed-version state.
+SOURCE 178 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html [f2]
+35: Immutable and blue/green deployments create a parallel set of resources running the new version and shift traffic to it.
+SOURCE 178 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html [f3]
+37: Canary releases send a small share of live traffic to the new version, which catches problems that appear only under real load.
+SOURCE 178 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html [f4]
+
+### 25 aws_devops.collect_host_telemetry_with_the_cloudwatch_agent
+SOURCE 38 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html [f1]
+83: By default, the CloudWatch agent sends health and performance data about itself to CloudWatch whenever it publishes metrics or logs to CloudWatch.
+SOURCE 38 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html [f2]
+1118: { "agent": { "metrics_collection_interval": 60, "logfile": "c:\\ProgramData\\Amazon\\AmazonCloudWatchAgent\\Logs\\amazon-cloudwatch-agent.log" }, "metrics": { "namespace": "MyCustomNamespace", "metrics_collected": { "Processor": { "measurement": [ {"name": "% Idle Time", "rename": "CPU_IDLE", "unit": "Percent"}, "% Interrupt Time", "% User Time", "% Processor Time" ], "resources": [ "*" ], "append_dimensions": { "customized_dimension_key_1": "customized_dimension_value_1", "customized_dimension_key_2": "customized_dimension_value_2" } }, "LogicalDisk": { "measurement": [ {"name": "% Idle Time", "unit": "Percent"}, {"name": "% Disk Read Time", "rename": "DISK_READ"}, "% Disk Write Time" ], "resources": [ "*" ] }, "customizedObjectName": { "metrics_collection_interval": 60, "customizedCounterName": [ "metric1", "metric2" ], "resources": [ "customizedInstances" ] }, "Memory": { "metrics_collection_interval": 5, "measurement": [ "Available Bytes", "Cache Faults/sec", "Page Faults/sec", "Pages/sec" ] }, "Network Interface": { "metrics_collection_interval": 5, "measurement": [ "Bytes Received/sec", "Bytes Sent/sec", "Packets Received/sec", "Packets Sent/sec" ], "resources": [ "*" ], "append_dimensions": { "customized_dimension_key_3": "customized_dimension_value_3" } }, "System": { "measurement": [ "Context Switches/sec", "System Calls/sec", "Processor Queue Length" ] } }, "append_dimensions": { "ImageId": "${aws:ImageId}", "InstanceId": "${aws:InstanceId}", "InstanceType": "${aws:
+SOURCE 45 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/start-CloudWatch-Agent-on-premise-SSM-onprem.html [f3]
+43: In this command, -a fetch-config causes the agent to load the latest version of the CloudWatch agent configuration file, and -s starts the agent.
+
+### 26 aws_devops.configure_cloudwatch_alarm_evaluation_and_missing_data_behavior_from_supplied_signals_and_thresholds
+SOURCE 41 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html [f1]
+11: INSUFFICIENT_DATA – The alarm has just started, the metric is not available, or not enough data is available for the metric to determine the alarm state.
+SOURCE 41 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html [f2]
+30: Datapoints to Alarm is the number of data points within the Evaluation Periods that must be breaching to cause the alarm to go to the ALARM state.
+SOURCE 39 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ConsoleAlarms.html [f3]
+7: The alarm goes to ALARM state when the metric breaches the threshold for a specified number of evaluation periods.
+SOURCE 42 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html [f4]
+162: If the oldest breaching data point during the evaluation range is at least as old as the value of Datapoints to Alarm, and all of the more recent data points are either breaching or missing, the alarm goes into ALARM state no matter the value of M (Datapoints to Alarm).
+
+### 27 aws_devops.configure_secure_human_access_with_temporary_credentials
+SOURCE 152 https://docs.aws.amazon.com/singlesignon/latest/userguide/permissionsetsconcept.html [f1]
+53: You can add other users to IAM Identity Center and assign existing or new permission sets to those users.
+SOURCE 151 https://docs.aws.amazon.com/singlesignon/latest/userguide/assignusers.html [f2]
+62: To assign existing IAM roles to IAM Identity Center users and groups — with the full IAM role feature set — see account access manager in the IAM User Guide.
+SOURCE 101 https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html [f3]
+198: $ aws sso login --profile my-dev-profile --use-device-code
+
+### 28 aws_devops.configure_security_groups
+SOURCE 170 https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html [f1]
+70: The security group rules allow traffic as follows:
+SOURCE 170 https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html [f2]
+44: For example, if you send a request from an instance, the response traffic for that request is allowed to reach the instance regardless of the inbound security group rules.
+SOURCE 166 https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html [f3]
+9: You can add or remove rules for a security group (also referred to as authorizing or revoking inbound or outbound access).
+
+### 29 aws_devops.define_an_ec2_instance_with_terraform_hcl_and_a_pinned_provider
+SOURCE 11 https://developer.hashicorp.com/terraform/language/providers/requirements [f1]
+130: terraform { required_providers { aws = { source = "hashicorp/aws" version = "~> 1.0" } } }
+SOURCE 208 https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance [f2]
+3: Please enable Javascript to use this application
+SOURCE 7 https://developer.hashicorp.com/terraform/cli/run [f3]
+28: By default, terraform apply performs a fresh plan right before applying changes, and displays the plan to the user when asking for confirmation.
+SOURCE 3 https://developer.hashicorp.com/terraform/cli/commands/init [f3]
+62: For providers that are published in either the public Terraform Registry or in a third-party provider registry, terraform init will automatically find, download, and install the necessary provider plugins.
+SOURCE 4 https://developer.hashicorp.com/terraform/cli/commands/plan [f3]
+51: To create and apply a plan in destroy mode in earlier versions you must run terraform destroy.
+SOURCE 1 https://developer.hashicorp.com/terraform/cli/commands/apply [f3]
+55: Only available when you run terraform apply without a saved plan file.
+
+### 30 aws_devops.evaluate_resource_based_permissions_for_a_requested_operation
+SOURCE 77 https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_identity-vs-resource.html [f1]
+46: Her identity-based policy allows her more actions on more resources than the resource-based policies, but none of them deny access.
+SOURCE 77 https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_identity-vs-resource.html [f2]
+62: A user who has specific permissions might request a resource that also has a permissions policy attached to it.
+SOURCE 84 https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html [f3]
+16: When an IAM entity (user or role) requests access to a resource within the same account, AWS evaluates all the permissions granted by the identity-based and resource-based policies.
+
+### 31 aws_devops.execute_an_established_managed_account_onboarding_workflow
+SOURCE 121 https://docs.aws.amazon.com/controltower/latest/userguide/account-factory.html [f1]
+13: The AWS Control Tower Account Factory enables cloud administrators and users in AWS IAM Identity Center to provision accounts in your landing zone.
+SOURCE 123 https://docs.aws.amazon.com/controltower/latest/userguide/methods-of-provisioning.html [f2]
+17: You also can create AWS accounts outside AWS Control Tower and move them into an OU that's registered with AWS Control Tower, without creating inheritance drift, if you opt into the Automated account enrollment feature of your landing zone Settings.
+SOURCE 122 https://docs.aws.amazon.com/controltower/latest/userguide/how-controls-work.html [f3]
+10: Mandatory controls are always applied, and they can't be changed.

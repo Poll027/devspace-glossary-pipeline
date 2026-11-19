@@ -1,0 +1,74 @@
+
+### 100 aws_devops.run_supplied_unit_and_integration_tests_as_blocking_pipeline_gates
+INLINE supplied unit and integration tests=supplied
+f1 A nonzero command exit status reports failure to a pipeline step, while zero reports success.
+f2 Run the supplied unit and integration test commands in workflow steps with run: TEST_COMMAND; set the promotion job’s needs: [UNIT_JOB, INTEGRATION_JOB] to require both test jobs.
+f3 Do not set continue-on-error on the blocking test steps; demonstrate a failing supplied test prevents the dependent promotion.
+tb1 A promotion job must require both supplied unit and integration tests. Make failure visible to the workflow and preserve the dependency on both jobs rather than allowing promotion to ignore a failing test.
+tb4 Run the supplied TEST_COMMAND values in test steps and set the promotion job's needs to the supplied unit and integration job names. Do not set continue-on-error on blocking test steps. Use the seeded failing test and inspect its nonzero exit result and the dependent promotion outcome. Record that the test failure prevents promotion; an independently successful other test is not enough to satisfy both gates.
+tb5 A command that failed must not be converted into a tolerated blocking-test result with continue-on-error. The promotion dependency requires both test jobs, and the supplied failure case demonstrates that progression is blocked.
+assessment verify_failing_supplied_test_blocks_promotion
+practice_anchor.type live_code
+practice_anchor.objective Wire the supplied unit and integration test commands into separate jobs in one prepared GitHub Actions workflow. Require both jobs for promotion, leave continue-on-error unset on blocking test steps, and run the supplied seeded failure case.
+practice_anchor.success The failing supplied test reports a nonzero exit status, its job fails, and the dependent promotion job is skipped even when the other test job succeeds.
+practice_anchor.live_code {"required_skill": "Configure supplied test commands as blocking workflow steps and make promotion depend on both test jobs.", "allowed_syntax": ["jobs:", "runs-on:", "steps:", "run: TEST_COMMAND", "needs: [UNIT_JOB, INTEGRATION_JOB]"], "blocked_syntax": ["environment:", "if: always()"], "starter_state_intent": "Provide a runnable sandbox workflow with prepared runner and application setup, supplied UNIT_JOB and INTEGRATION_JOB names, supplied TEST_COMMAND values, and a harmless promotion job. Include a prepared seeded failing test case; learners modify only the test steps and promotion dependencies.", "observable_success": "Both supplied test commands appear in their respective jobs, promotion declares both jobs in needs, and neither blocking test step sets continue-on-error. Execution shows a nonzero test result, a failed test job, a successful other test job, and skipped promotion."}
+visual_anchor.type UI_state
+visual_anchor.purpose Make the workflow dependency and execution outcomes visible: both test jobs feed promotion, one supplied test job fails, the other succeeds, and promotion is skipped. Show the failing command's nonzero exit status.
+note Use supplied tests; do not teach application test authoring or unfamiliar shell exit-handling syntax.
+
+### 101 aws_devops.submit_small_reviewable_infrastructure_changes
+INLINE supplied reviewer approval and CI apply workflow=supplied; saved plan evidence=The saved provider-resolved infrastructure impact attached to the reviewable change and approved execution record.; supplied reviewer approval and CI apply=supplied
+f1 Small coherent changes reduce review complexity and make delivery feedback easier to act on.
+f2 In the supplied repository workflow, stage the focused files with git add FILES, commit with git commit -m "MESSAGE", push the review branch with git push, and open its supplied pull-request interface to request review.
+f3 Submit a focused infrastructure pull request with its intent, coherent diff and saved plan evidence showing the affected EC2 resource.
+f4 After the supplied approval, execute the supplied CI apply using the approved saved plan and attach the execution and resource-verification evidence to the change record.
+tb1 A small infrastructure change should be understandable at review and traceable through approved execution. Keep intent, focused diff, saved plan and resource verification in one change record.
+tb4 Stage only the focused supplied files, commit with a descriptive supplied message and push the review branch through the established Git workflow. Open its supplied pull-request interface to request review. Include the change's intent, coherent diff and saved plan evidence for the affected EC2 resource. After supplied approval, run the supplied CI apply with that approved saved plan and attach execution plus resource-verification evidence. The example carries one focused change from review to verified outcome instead of mixing unrelated modifications into the submission.
+tb5 Review approval alone is not the execution record. Retain the approved saved plan, supplied CI apply outcome and live-resource verification. A small coherent diff improves reviewability but still needs those execution checks.
+assessment verify_change_isolation_and_coherence
+assessment verify_submission_traceability_and_saved_plan_evidence
+assessment verify_approved_execution_and_resource_evidence
+practice_anchor.type external_proof
+practice_anchor.objective Submit one focused Terraform EC2 pull request through the supplied repository and review interface. Stage the focused files, commit and push the review branch, and include intent, a coherent diff and saved-plan evidence. After the supplied reviewer approves it, run the supplied CI apply workflow using the approved saved plan and attach execution and EC2 resource-verification evidence. Independent impact authorization is not reassessed.
+practice_anchor.success The change record contains one coherent EC2 change, a traceable commit, clear intent, saved-plan evidence identifying the affected EC2 resource, supplied reviewer approval, a successful CI execution using that approved saved plan, and verification of the resulting single EC2 instance.
+visual_anchor.type annotated_screenshot
+visual_anchor.purpose Make the supplied pull-request record visible with its focused diff, intent, commit reference, saved-plan evidence for the EC2 resource, reviewer approval, CI execution result and resulting instance verification.
+note Require external Git/CI preparation; use supplied review interface and approved apply workflow.
+
+### 102 aws_devops.verify_availability_across_availability_zones_under_a_controlled_failure
+INLINE supplied two-AZ topology and controlled fault=supplied; independent failure domain=A boundary whose component loss should leave another independently provisioned service path usable.; supplied topology and fault=supplied
+f1 Resilience testing deliberately introduces failures to verify the workload can meet its availability requirements.
+f2 Limit the approved failure to the supplied AZ components, define abort criteria, and monitor client-visible service behavior during the experiment.
+f3 Check that the remaining independent capacity and request path maintain the required service behavior rather than inferring availability from surviving instance count alone.
+tb1 A workload has capacity in more than one Availability Zone, but the controlled test must show required client-visible behavior during an approved AZ-component loss. Surviving resources alone do not establish availability.
+tb4 Define the approved AZ-scoped failure and abort criteria before the experiment. During the supplied failure, monitor the client-visible service behavior. Compare the remaining independent capacity and request path with the service requirement. Suppose some instances survive but clients cannot complete the required request: record that the availability criterion was not demonstrated, rather than calling the test passed from the survivor count. Keep the failure scope, observed client behavior and remaining-path evidence together. This is deliberate resilience verification within supplied limits, not an exercise to disable an entire Region or infer availability from the existence of multiple locations. For a passing result, retain the client check that demonstrates required behavior along with the surviving path and capacity observations. If remaining resources exist but the request path fails, the availability criterion has not been met. These two contrasting cases show why the experiment monitors the service from the client perspective instead of treating resource survival as an automatic availability proof.
+tb5 A surviving instance count is not a client-visible availability result. Verify that remaining independent capacity and the request path maintain the required behavior, and keep the experiment within the approved AZ components and abort limits.
+assessment explain_controlled_failure_as_availability_verification
+assessment bound_az_component_failure_and_monitor_client_behavior
+assessment verify_availability_using_remaining_capacity_and_request_path
+practice_anchor.type tool_simulation
+practice_anchor.objective Run the supplied approved AZ-component failure procedure in a two-AZ topology. Confirm the target components and define abort criteria before starting, monitor required client-visible behavior during the failure, and check the remaining independent capacity and request path.
+practice_anchor.success Only the approved components in one AZ are affected, the defined abort criteria are enforced, and the result is judged against the supplied service requirement using client-request outcomes and remaining-path evidence rather than surviving instance count alone.
+visual_anchor.type diagram
+visual_anchor.purpose Show the supplied two-AZ topology with the approved failed components marked, the remaining independent capacity and client request path identified, and observed client-request outcomes compared with the required service behavior.
+note Use approved failure procedure; do not introduce regional failover or unsafe production faults.
+
+### 103 cost.safe_teardown
+INLINE supplied exercise resource list=supplied; reverse dependency deletion=Delete dependent exercise resources before prerequisites, leaving preexisting resources untouched.; supplied scoped exercise=supplied
+f1 Resource deletion must respect dependencies; CloudFormation uses resource relationships when deleting a stack.
+f2 Identify only the supplied exercise resources by stack membership or approved tags, remove dependent resources before their prerequisites and verify deletion results.
+f3 An S3 bucket must be empty before deletion; remove the exercise bucket’s objects, all object versions and delete markers before deleting that bucket.
+f4 Retained resources and failed deletions need explicit inspection and approved follow-up; a completed deletion operation is not billing verification.
+tb1 Exercise teardown should remove only approved resources in dependency order. The operator also needs to inspect what was retained or failed to delete, without claiming deletion completion is billing verification.
+tb4 Identify exercise resources by approved stack membership or tags. Remove dependents before their prerequisites and verify deletion results. For the supplied S3 bucket, empty objects, all object versions and delete markers before deleting the bucket; a current listing alone is not the stated version cleanup. Inspect any retained resources and failed deletions for approved follow-up. CloudFormation uses resource relationships during stack deletion, but that does not remove the need to inspect retained or failed resources. Keep the scope and per-resource deletion evidence in the cleanup record. A completed deletion operation is not a proof of zero charge: this task verifies resource removal, while the later billing check verifies residual charges.
+tb5 Deleting a versioned bucket requires emptying versions and delete markers as well as objects. Also, a completed deletion operation is not billing verification. Inspect retained resources and deletion failures rather than assuming every exercise resource disappeared.
+assessment verify_exercise_only_deletion_scope
+assessment verify_dependency_ordered_resource_removal
+assessment verify_bucket_contents_removed_before_bucket_deletion
+assessment inspect_deletion_results_and_identify_approved_follow_up
+practice_anchor.type tool_simulation
+practice_anchor.objective Delete one supplied tagged sandbox exercise using approved tags or stack membership to establish scope. Remove dependents before prerequisites, empty the exercise S3 bucket of objects, all object versions and delete markers before deleting it, and inspect deletion results.
+practice_anchor.success Only approved exercise resources are targeted, and unrelated resources remain unchanged. Removal respects dependencies, including complete bucket-content cleanup before bucket deletion. Each deletion result is inspected; retained resources and failures are identified for approved follow-up rather than treated as removed. Completion is reported as a resource-removal result, not billing verification.
+visual_anchor.type process_flow
+visual_anchor.purpose Make the approved exercise boundary and dependent-first removal sequence visible. Show objects, all object versions and delete markers being removed before the S3 bucket, CloudFormation using resource relationships during stack deletion, and deletion results branching into confirmed removal or retained/failed resources requiring inspection and approved follow-up. Keep billing verification outside this teardown flow.
+note Use approved scope and dependency order; leave residual-charge verification to its later concept.

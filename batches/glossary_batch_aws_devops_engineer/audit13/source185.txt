@@ -1,0 +1,41 @@
+Design your workload to withstand component failures - AWS Well-Architected Framework
+View a markdown version of this page
+Design your workload to withstand component failures - AWS Well-Architected Framework
+DocumentationAWS Well-ArchitectedFramework
+Capability intentCommon issues to watch for
+Design your workload to withstand component failures
+Hardware faults, software defects, network partitions, and the loss of an Availability Zone may all occur in normal operation. Design each workload to expect these failures and keep serving customers when they happen, rather than assuming its components stay healthy.
+This capability covers how an organization designs a workload to keep running when its components fail: detecting faults at every layer, failing over to healthy resources, automating recovery so it does not wait for a person, keeping recovery actions on the most available paths, holding capacity in advance for static stability, notifying teams even when automation resolves an event, and designing to the availability target the business set.
+REL11: How do you design your workload to withstand component failures?
+REL11-BP01 Monitor all components of the workload to detect failures
+REL11-BP02 Fail over to healthy resources
+REL11-BP03 Automate healing on all layers
+REL11-BP04 Rely on the data plane and not the control plane during recovery
+REL11-BP05 Use static stability to prevent bimodal behavior
+REL11-BP06 Send notifications when events impact availability
+REL11-BP07 Architect your product to meet availability targets and uptime service level agreements (SLAs)
+Capability intent
+Every layer of the workload is monitored, so a fault is detected within the recovery time the workload must meet.
+Load is spread across independent resources, Availability Zones, or Regions, and traffic shifts away from an impairment automatically where the service allows.
+Recovery runs through automation rather than manual runbooks, and leans on data plane operations that stay available during large events.
+Capacity to absorb a failure is provisioned before the failure, so the workload behaves the same whether or not a component is impaired.
+Notifications reach the right teams whenever availability is affected, including the faults that automated healing quietly resolves.
+Each workload has an explicit availability target, set during design, that drives its architecture and its dependency choices.
+Common issues to watch for
+Monitoring covers only customer-facing interfaces, so gray failures in the layers beneath serve slow or wrong results while health checks still report healthy.
+Failover is designed but never rehearsed, so quotas, stale configuration, or missing capacity in the recovery location block it during a real event.
+Recovery depends on control plane operations, such as creating resources or editing DNS records, which are the operations most likely to be degraded during a large impairment.
+Workloads try to acquire capacity at the moment of failure rather than holding it in advance, so recovery fails exactly when spare capacity and the control plane are least certain.
+Automated healing resolves a recurring fault silently, so no one fixes the root cause and the failure keeps happening.
+Workloads are built without an availability target, so there is no basis for the architectural trade-offs that determine whether they can meet one.
+Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+REL10-BP03 Use bulkhead architectures to limit scope of impact
+REL11-BP01 Monitor all components of the workload to detect failures
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

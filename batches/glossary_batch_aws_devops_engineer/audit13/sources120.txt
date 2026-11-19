@@ -1,0 +1,69 @@
+
+### 120 cost.residual_charge_verification
+SOURCE 126 https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html [f1]
+20: Cost Explorer refreshes your cost data at least once every 24 hours.
+SOURCE 125 https://docs.aws.amazon.com/cost-management/latest/userguide/ce-filtering.html [f2]
+171: Usage type groups are filters that collect a specific category of usage type filters into one filter.
+SOURCE 126 https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html [f3]
+24: Cost Explorer uses the same dataset that is used to generate the AWS Cost and Usage Reports and the detailed billing reports.
+
+### 121 terraform.state_access_isolation
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f1]
+19: The S3 backend stores state data in an S3 object at the path set by the key parameter in the S3 bucket indicated by the bucket parameter.
+SOURCE 13 https://developer.hashicorp.com/terraform/language/state/sensitive-data [f1]
+59: Terraform stores values with the sensitive argument in both state and plan files, and anyone who can access those files can access your sensitive values.
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f2]
+277: A full description of S3's access control mechanism is beyond the scope of this guide, but an example IAM policy granting access to only a single state object within an S3 bucket is shown below:
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f3]
+180: terraform { backend "s3" { bucket = "example-bucket" key = "path/to/state" region = "us-east-1" assume_role = { role_arn = "arn:aws:iam::PRODUCTION-ACCOUNT-ID:role/Terraform" } } } Assume Role With Web Identity Configuration
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f4]
+
+### 122 terraform.state_locking
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f1]
+280: terraform { backend "s3" { bucket = "example-bucket" key = "path/to/state" use_lockfile = true region = "us-east-1" } }
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f2]
+55: Note: If use_lockfile is set, s3:GetObject, s3:PutObject, and s3:DeleteObject are required on the lock file, e.g., arn:aws:s3:::mybucket/<workspace_key_prefix>/*/path/to/my/key.tflock.
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f3]
+275: If state locking is enabled, the lock file (<key>.tflock) must also be included in the access controls.
+SOURCE 12 https://developer.hashicorp.com/terraform/language/state/locking [f3]
+14: You can disable state locking for most commands with the -lock=false flag, but we do not recommend it.
+SOURCE 8 https://developer.hashicorp.com/terraform/language/backend/s3 [f4]
+29: To support migration from older versions of Terraform that only support DynamoDB-based locking, the S3 and DynamoDB arguments can be configured simultaneously.Enabling S3 State Locking
+SOURCE 12 https://developer.hashicorp.com/terraform/language/state/locking [f4]
+
+### 123 aws_devops.control_environment_promotion_with_a_manual_approval
+SOURCE 111 https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals.html [f1]
+16: Publish Approval Notifications You can configure an approval action to publish a message to an Amazon Simple Notification Service topic when the pipeline stops at the action.
+SOURCE 111 https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals.html [f2]
+46: If an Amazon SNS topic ARN was included in the configuration of the action, a notification is published to the Amazon SNS topic, and a message is delivered to any subscribers to the topic or subscribed endpoints, with a link to review the approval action in the console.
+SOURCE 111 https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals.html [f3]
+
+### 124 aws_devops.recover_an_incident_safely_using_an_established_runbook
+SOURCE 179 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05-bp01.html [f1]
+75: Achieving operational excellence using automated playbook and runbook
+SOURCE 179 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05-bp01.html [f2]
+50: Fill in the title, the runbook info, and each step in order.
+SOURCE 181 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06-bp03.html [f3]
+80: Please refer to your browser's Help pages for instructions.
+
+### 125 aws_devops.verify_restored_service_and_data_against_rto_rpo_in_an_isolated_rehearsal
+SOURCE 171 https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/ag.dlm.1-define-recovery-objectives-to-maintain-business-continuity.html [f1]
+8: Set recovery point objectives (RPO) indicating how much data loss is acceptable, and recovery time objectives (RTO) specifying how quickly services need to be restored following an incident.
+SOURCE 171 https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/ag.dlm.1-define-recovery-objectives-to-maintain-business-continuity.html [f2]
+SOURCE 171 https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/ag.dlm.1-define-recovery-objectives-to-maintain-business-continuity.html [f3]
+
+### 126 aws_devops.document_incident_evidence_and_a_preventive_change
+SOURCE 183 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07-bp01.html [f1]
+7: A structured post-incident analysis examines the contributing factors behind a customer-impacting event and converts those findings into changes that reduce the chance of recurrence.
+SOURCE 183 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07-bp01.html [f2]
+59: Trigger the analysis consistently, reconstruct the timeline from evidence, and track corrective actions to completion in that system.
+SOURCE 183 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07-bp01.html [f3]
+89: Amazon's COEs average six to eight action items against an internal SLA measured in weeks, which is a useful sanity check on whether your analysis produced a realistic amount of work.
+
+### 127 recovery.endpoint_cutover
+SOURCE 187 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html [f1]
+44: Where you want warm-standby recovery times closer to pilot-light cost, a purpose-built replication service can continuously protect data and orchestrate compute recovery on failover.
+SOURCE 187 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html [f2]
+71: For warm standby and multi-site active/active patterns, use ARC Region Switch to orchestrate the failover as a single operator-initiated operation with pre-flight checks and health validation.
+SOURCE 88 https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-values-basic.html [f3]
+52: However, if you specify a longer value for TTL, it takes longer for changes to the record (for example, a new IP address) to take effect.

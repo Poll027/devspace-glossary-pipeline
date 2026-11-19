@@ -1,0 +1,185 @@
+### 9 aws_devops.execute_a_github_actions_workflow_with_an_appropriate_runner 738-1230
+734 obviously you can make your own workflow
+736 with different combination and adjust it
+738 so let's create a build workflow for our
+741 Java Gradle application and obviously I
+743 will choose the Java Gradle workflow
+745 template and let's see what the workflow
+747 file looks like
+750 and see what happens it automatically
+752 creates this configuration view in my
+756 project or my repository it creates this
+759 path dot GitHub workflows and this is
+763 the file that basically holds my
+765 workflow logic it is written in yaml
+768 it's a yaml format and what's great with
+771 this list of workflow suggestions is
+773 that you get a pre-configured workflow
+777 that you may need to adjust just a
+779 little bit but most of the stuff is
+781 already here so you don't have to start
+783 from blank file so let's go through the
+786 syntax of this workflow file in detail
+790 so that we understand how to write our
+792 own workflows so I'm gonna copy this in
+796 my editor so we can see better so first
+799 of all we have the name of the workflow
+801 this is basically for you to describe
+804 what the workflow is doing these are the
+808 events that I mentioned so every time an
+811 event happens or events happen we can
+814 trigger a certain workflow so this is a
+816 section where we Define events that
+818 should trigger the following workflow
+821 and I think it's pretty intuitive every
+824 time someone pushes to master Branch we
+827 want to trigger this workflow or every
+829 time a pull request gets created with
+831 Master Branch as a Target
+833 this workflow will get executed which in
+836 this case makes sense because every time
+838 something gets pushed into a master or
+841 you want to merge something into Master
+843 it makes sense to run tests or to test
+847 our application to make sure that it's
+849 mergeable so to say or that we didn't
+852 break something in the master branch
+855 so that's pretty straightforward other
+857 examples that I mentioned could be
+858 creating an issue or a contributor
+861 joining this will be all events listed
+865 here you have a complete list of such
+867 events documented on this page so here
+870 you see the list and here you see some
+872 more detailed explanation and also the
+874 usage and as always I will put all the
+877 relevant links for this tutorial in the
+879 video description and this is a part
+882 that gets executed whenever these events
+885 happen
+887 so we have jobs these are the names of
+889 the job this could be arbitrary just
+891 like the name of the workflow so you can
+894 name it yourself and job basically
+896 groups a set of actions that will be
+901 executed right
+903 so as I mentioned events trigger a chain
+905 of actions or combination of actions and
+908 these are defined here so let's look at
+911 the first one pretty logical whenever we
+913 want to build application or run tests
+917 we need to check out the repository or
+919 the code first so how does this get
+922 executed or what is behind this syntax
+925 so the actions path in GitHub is where
+929 pre-created or predefined actions are
+932 hosted so basically you can assume that
+935 everybody who uses a CI CD pipeline in
+937 GitHub actions will need to use checkout
+940 Command right so instead of letting
+943 everybody do that on their own they're
+945 creating an action called checkout that
+947 people can use so if I go to GitHub
+952 slash actions
+954 I will see list of repositories that
+957 contain all those actions so let's look
+960 for our checkout
+962 action so these are all these actions
+965 are basically repositories let's go
+967 inside and here you have action yemo so
+970 this is a normal repository with some
+973 code in it and we have action EML file
+976 here this is basically what checkout
+979 action does in the background or the
+982 logic that people already wrote so you
+984 don't have to write it in your workflow
+987 and just reuse it and each action in the
+991 repository will have some sort of
+993 documentation where you see if you can
+995 configure some additional parameters for
+998 this checkout action and this here is
+1002 version of that action so to say because
+1005 as I said these are simple repositories
+1007 that are built and released and have
+1010 versioning
+1011 so this is our checkout step
+1014 and whenever you're using an action that
+1017 is already available either at slash
+1020 actions or maybe some other community or
+1023 team has created one you can basically
+1025 use any such action using the uses
+1028 attribute so these are the official ones
+1031 but whenever someone creates an action
+1034 basically a repository with action yaml
+1037 file you can use it here
+1039 using the uses attribute
+1042 so the second one second step is action
+1046 called setup Java which is another
+1050 repository in this actions list and what
+1053 it does is basically prepares your
+1055 environment with Java with a version
+1058 that you defined here and this is the
+1060 part where I mentioned that you don't
+1062 have to install or configure anything
+1064 like in Jenkins for example you would go
+1066 and configure job version here you just
+1069 Define that you want to use environment
+1072 with Java on it so Java version 1.8 will
+1076 be installed and available there the
+1079 next one is a command so here you see
+1083 the difference whenever we are referring
+1085 to action in repository we use this
+1088 attribute whenever we're running a
+1090 command just like a Linux command for
+1092 example command line command we are
+1094 using run attribute so this basically
+1097 just changes the permissions of Gradle
+1101 file
+1102 and the next step just calls Gradle
+1105 build and all of this is done in the
+1107 same environment so your code gets
+1109 checked out Java version gets installed
+1112 and then you call Gradle build in the
+1114 same environment
+1116 so obviously for this to work you have
+1118 to have Java application that is built
+1121 with cradle and now let's actually go
+1123 ahead and execute this workflow for our
+1125 Java project
+1127 the name of the yaml file is also
+1129 something that you can decide for
+1131 yourself we can actually call it CI and
+1135 start commit let's create a new branch
+1142 and create a pull request that will be
+1144 merged into Master branch
+1148 and here you see that the workflow got
+1152 triggered because our event matched to
+1156 what just happened so we created a pull
+1158 request against must branch and that
+1161 triggered the workflow this is in
+1163 progress and if I go into details we're
+1166 gonna see what is actually happening
+1170 so the bill completed so let's actually
+1172 look at the steps that got executed
+1175 setup job which basically prepares the
+1178 job environment for executing the
+1181 workflow here you see for example this
+1183 action repositories got downloaded so
+1186 that it can be used here you see the
+1188 checkout action and you actually see
+1191 pretty helpful information in all these
+1194 steps and they also highlight the
+1196 comment that gets executed so that you
+1199 can easily see first of all the command
+1202 and differentiate it from the logs and
+1204 also see how they kind of interpret your
+1207 comments for example with the options
+1209 and flags and environmental variables
+1211 and so on then we have the setup jdk
+1214 again these are the commands that are
+1216 got executed and some log files this is
+1219 where the build the actual build
+1220 happened build successful and then we
+1223 have some post build actions which we
+1226 didn't Define these are out of the box
+1227 things get cleaned up so in my opinion

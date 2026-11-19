@@ -1,0 +1,36 @@
+Pushing a Docker image to an Amazon ECR private repository - Amazon ECR
+View a markdown version of this page
+Pushing a Docker image to an Amazon ECR private repository - Amazon ECR
+DocumentationAmazon ECRUser Guide
+Pushing a Docker image to an Amazon ECR private repository
+You can push your container images to an Amazon ECR repository with the docker push command.
+Amazon ECR also supports creating and pushing Docker manifest lists that are used for multi-architecture images. For information, see Pushing a multi-architecture image to an Amazon ECR private repository.
+To push a Docker image to an Amazon ECR repository
+The Amazon ECR repository must exist before you push the image, or you must have a repository creation template defined. For more information, see Creating an Amazon ECR private repository to store images and Templates to control repositories created during a pull through cache, create on push, or replication action.
+Authenticate your Docker client to the Amazon ECR registry to which you intend to push your image. Authentication tokens must be obtained for each registry used, and the tokens are valid for 12 hours. For more information, see Private registry authentication in Amazon ECR.
+To authenticate Docker to an Amazon ECR registry, run the aws ecr get-login-password command. When passing the authentication token to the docker login command, use the value AWS for the username and specify the Amazon ECR registry URI you want to authenticate to. If authenticating to multiple registries, you must repeat the command for each registry.
+Important
+If you receive an error, install or upgrade to the latest version of the AWS CLI. For more information, see Installing the AWS Command Line Interface in the AWS Command Line Interface User Guide.
+aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.<region>.amazonaws.com
+If your image repository doesn't exist in the registry you intend to push to yet, and you have a repository creation template defined, you can push your image using your repository creation template's prefix and your desired repository name. ECR will automatically create the repository for you using the predefined settings of your repository creation template.
+If you do not have a matching repository creation template defined, you will need to create a repository. For more information, see Templates to control repositories created during a pull through cache, create on push, or replication action or Creating an Amazon ECR private repository to store images.
+Identify the local image to push. Run the Docker images command to list the container images on your system.
+docker images
+You can identify an image with the repository:tag value or the image ID in the resulting command output.
+Tag your image with the Amazon ECR registry, repository, and optional image tag name combination to use. The registry format is aws_account_id.dkr.ecr.region.amazonaws.com. The repository name should match the repository that you created for your image. If you omit the image tag, we assume that the tag is latest.
+The following example tags a local image with the ID e9ae3c220b23 as aws_account_id.dkr.ecr.region.amazonaws.com/my-repository:tag.
+docker tag e9ae3c220b23 aws_account_id.dkr.ecr.region.amazonaws.com/my-repository:tag
+Push the image using the docker push command:
+docker push aws_account_id.dkr.ecr.region.amazonaws.com/my-repository:tag
+(Optional) Apply any additional tags to your image and push those tags to Amazon ECR by repeating Step 4 and Step 5.
+Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+Required IAM permissions
+Pushing a multi-architecture image
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

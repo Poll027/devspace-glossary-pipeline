@@ -1,0 +1,58 @@
+### 57 aws_devops.configure_artifact_repository_retention 177-341
+174 to pull images when you go to run them.
+177 Over the life of a project, we will end
+179 up building a lot of images. Having
+181 already built images available is handy,
+184 but there comes a point when it's
+186 unlikely that you will need that build
+188 artifact. This is where life cycle
+190 policies come in handy.
+192 Our workflow is to push images while we
+194 develop them. When we merge our feature
+196 branch to the development branch, we
+198 will tag it development with a release
+201 number and then we'll tag it with
+203 development by itself, which is a moving
+206 tag. Same with staging, same with
+208 production. So you can see we have
+211 staging two, production five,
+213 development four and then we have a lot
+215 of untagged images also that were just
+218 work in progress.
+220 We will probably never want to roll back
+222 more than a few versions of our
+223 software. So let's create a life cycle
+226 policy that preserves the most recent
+228 images, but cleans up older images that
+230 will likely not be used again.
+233 We'll start by clicking the tab for dry
+235 run of life cycle rules.
+239 And let's say that we want to keep 10
+242 production images
+244 and five staging images and five
+246 development images.
+249 We can add a rule.
+252 We give the rule a priority
+254 and a description.
+261 We can specify a tag prefix.
+266 And then our match criteria is going to
+268 be image count more than
+271 five.
+274 We can do the same thing for
+275 development.
+295 And then remember all those untagged
+296 images that were just work in progress?
+300 Let's make a rule to clean those up
+301 also. Let's just keep around the last 30
+304 or so.
+305 So we'll add
+317 image count more than 30. This time
+320 you'll notice I picked untagged for
+322 image status
+324 and save.
+327 If we're happy with this result,
+329 we just apply as life cycle policy.
+335 And now we have a policy in place to
+336 keep our registry tidy.
+339 So that's how we can use Amazon ECR to
+341 host our Docker images and automatically

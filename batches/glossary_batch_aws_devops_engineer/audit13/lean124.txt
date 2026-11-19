@@ -1,0 +1,72 @@
+
+### 124 aws_devops.recover_an_incident_safely_using_an_established_runbook
+INLINE supplied established runbook=supplied; stop condition=An established runbook condition requiring halt and escalation instead of further mutation.; supplied incident and stop conditions=supplied
+f1 A runbook describes known procedures and their expected operational outcomes.
+f2 Verify the established runbook’s preconditions, execute only the approved actions and check each expected result before advancing.
+f3 On a supplied stop condition or an outcome outside the runbook’s bounds, stop routine execution and escalate with the observed evidence.
+tb1 An incident matches an established runbook, but routine execution still depends on its preconditions and expected outcomes. Keep verification and stop decisions at each action boundary.
+tb4 Check the supplied runbook's preconditions before taking the first approved action. Execute only the stated approved steps and compare each actual result with its expected operational outcome before advancing. If a supplied stop condition occurs or a result falls outside the runbook's bounds, stop routine execution and escalate with the observed evidence. Record the last completed action and the result that required escalation so the next responder need not guess what happened. This example applies a known procedure safely; it does not authorize improvising further resource changes because the initial diagnosis seemed familiar. For a passing step, record the actual result that matches the runbook before moving to the next approved action. For a failing step, preserve its output and stop/escalate according to the bounds. These branches keep the response reproducible for another operator. A runbook that initially fits the incident does not authorize continuing after its own expected-result check says the situation is outside routine execution.
+tb5 A known runbook is not unconditional permission to continue. Preconditions, expected results and stop bounds govern execution. An out-of-bounds result calls for stopping and escalation with evidence, not an unapproved extension of the procedure.
+assessment identify_runbook_procedures_and_expected_outcomes
+assessment verify_preconditions_and_approved_action_success_checks
+assessment stop_and_escalate_out_of_bounds_results_with_evidence
+practice_anchor.type tool_simulation
+practice_anchor.objective Respond to one seeded sandbox service incident using a supplied established runbook and escalation owner. Verify its preconditions, execute only approved actions, and compare each result with its expected outcome before advancing. Stop and escalate with observed evidence if a supplied stop condition occurs.
+practice_anchor.success The action record shows verified preconditions and only approved actions, with each expected-result check completed before advancement. Execution ends either with the runbook's recovery success checks satisfied or with routine execution stopped at a supplied stop condition or out-of-bounds result and an escalation containing the last completed action and observed evidence.
+visual_anchor.type UI_state
+visual_anchor.purpose Make the supplied runbook's preconditions, approved current action, expected outcome, actual result, and stop condition visible alongside the execution record and recovery or escalation status.
+note Use established runbook and owners; do not invent recovery actions or skip expected-result checks.
+
+### 125 aws_devops.verify_restored_service_and_data_against_rto_rpo_in_an_isolated_rehearsal
+INLINE supplied timestamps and recovery markers=supplied; restored data age=The elapsed age of the recovery marker used to verify the supplied RPO objective.; supplied markers and timestamps=supplied
+f1 Recovery verification must test both restoration time against RTO and recoverable data loss against RPO.
+f2 Using the supplied timestamps, measure elapsed time from the defined disruption start to passing service-readiness checks and compare it with RTO.
+f3 Using the supplied recovery markers, measure the gap between the disruption point and the latest recovered data point and compare it with RPO; a running service alone does not prove either objective was met.
+tb1 An isolated rehearsal restored a service, but the recovery objectives need two separate measured comparisons. Use the defined disruption start, readiness result and recovered data markers to test RTO and RPO.
+tb4 For an illustrative rehearsal, suppose disruption starts at 10:00 and the supplied readiness checks pass at 10:18. Elapsed restoration time is 18 minutes; compare that with the stated RTO, not with the data marker. If the latest recovered marker is 09:56, the gap from the 10:00 disruption point is 4 minutes; compare that with the stated RPO. With example objectives of 20 minutes RTO and 5 minutes RPO, both comparisons pass. If the marker were 09:50 instead, the service could still pass the time comparison while failing the data-loss comparison. These numbers are illustrative measurements, not AWS defaults. Retain the timestamps, marker and readiness evidence for both conclusions.
+tb5 A running service alone does not prove either objective was met. Measure elapsed time to passing readiness checks for RTO and the recovered-data gap for RPO. A good result for one cannot substitute for the other.
+assessment verify_both_recovery_objectives_independently
+assessment compare_elapsed_time_to_service_readiness_with_rto
+assessment compare_recovered_data_gap_with_rpo
+assessment distinguish_running_service_status_from_recovery_verification
+practice_anchor.type spreadsheet
+practice_anchor.objective Measure one isolated restoration using supplied disruption-start and passing-readiness timestamps, the latest recovered data marker, and stated RTO and RPO limits. Record each measured interval and its independent pass/fail conclusion.
+practice_anchor.success The completed worksheet measures restoration time from disruption start to passing service-readiness checks and compares it with RTO. It measures the gap from the latest recovered data marker to the disruption point and compares it with RPO. Both conclusions cite the supplied evidence rather than running-service status alone.
+visual_anchor.type data_table
+visual_anchor.purpose Make the two independent comparisons visible: disruption at 10:00 to passing readiness at 10:18 gives 18 minutes against a 20-minute RTO; a recovered marker at 09:56 gives a 4-minute gap against a 5-minute RPO. Include an alternative 09:50 marker to show that RPO can fail while RTO still passes.
+note Use isolated rehearsal and supplied readiness/data markers; do not substitute resource status for service checks.
+
+### 126 aws_devops.document_incident_evidence_and_a_preventive_change
+INLINE supplied verified fix and timeline=supplied; preventive change=A follow-up action justified by the demonstrated incident cause rather than unsupported speculation.
+f1 Post-incident analysis documents the incident’s impact, events, contributing causes and actions to reduce recurrence.
+f2 Write a timeline from supplied evidence and distinguish direct observations from causal conclusions supported by the verified fix.
+f3 Record one preventive action justified by the demonstrated cause, with an accountable owner and a way to verify completion.
+tb1 A verified incident fix should lead to a factual timeline and one justified preventive action. Keep observations separate from causal conclusions so the follow-up does not overstate what the evidence established.
+tb4 Write the timeline from the supplied timestamps and observations: symptom, investigation evidence, approved correction and verified result. State which causal conclusion the verified fix supports rather than treating every nearby event as a contributing cause. Record one preventive action tied to that demonstrated cause, name its accountable owner and state how completion will be checked. If the evidence supports only one narrow cause, keep the action equally bounded. The post-incident analysis should describe impact, events, contributing causes and recurrence-reduction work, not assign unsupported blame or add unrelated improvements. A justified preventive action should close the demonstrated recurrence path. If the verified fix supports a particular configuration error, tie the one follow-up action to preventing or detecting that error rather than selecting an unrelated improvement. The owner and verification method make the action accountable. Keep the incident timeline factual even when a causal conclusion remains narrower than the team first suspected.
+tb5 A plausible causal story is not the same as a supported conclusion. Separate direct observations from conclusions backed by the verified fix, and give the justified preventive action an owner and verification method.
+assessment link_incident_timeline_to_supported_cause
+assessment justify_accountable_prevention_from_verified_cause
+practice_anchor.type external_proof
+practice_anchor.objective Write one short incident record using supplied logs, impact evidence and a verified fix. Include a factual timeline, a separately identified supported causal conclusion and one justified preventive action with an accountable owner and completion check.
+practice_anchor.success The record documents impact and timestamped events without inventing evidence, distinguishes observations from the causal conclusion supported by the verified fix, and ties one preventive action to that demonstrated cause. The action names an accountable owner and a verifiable completion condition.
+visual_anchor.type data_table
+visual_anchor.purpose Make the evidence-to-action link visible in a table containing supplied timestamps and direct observations, the causal conclusion supported by the verified fix, and one justified preventive action with its owner and completion check.
+note Use supplied evidence only; do not invent causal facts, blame or unrelated preventive work.
+MEDIA {"group_title": "Evidence-based incident records and accountable prevention", "segments": [{"segment_id": "seg_aws_devops.document_incident_evidence_and_a_preventive_change_qKTxXE5h-18_73_199", "label": "Structure a factual incident record and accountable preventive actions", "video_id": "qKTxXE5h-18", "youtube_url": "https://www.youtube.com/watch?v=qKTxXE5h-18", "review_url": "https://www.youtube.com/watch?v=qKTxXE5h-18&t=73s", "start_seconds": 73, "end_seconds": 199, "summary": "Post-incident analysis, called a postmortem here, records impact, response actions, causes and follow-up work. A blameless account focuses on contributing system and process conditions rather than accusing individuals or teams. A useful structure includes an executive summary, incident details, impact, causes and trigger, a timeline, lessons learned and action items. Severity claims should use verifiable data rather than dramatic language. Follow-up actions need clear owners, priorities, tracking tickets and verifiable completion criteria. Include prevention rather than only mitigation, and track completion dates or estimates so actions can be reviewed later.", "fact_ids": ["f1"], "transcript_ref": "qKTxXE5h-18:73-199"}], "bridge_note": {"before": "Watch for the incident-record structure and concrete completion criteria for follow-up actions. The clip uses \u201cpostmortem\u201d for post-incident analysis and emphasizes contributing causes rather than personal blame.", "after": "The clip explains structure and accountability, but does not work through an evidence timeline or justify one action from a verified cause. The text covers observation-versus-conclusion separation and cause-linked prevention."}}
+
+### 127 recovery.endpoint_cutover
+INLINE supplied endpoint switch=supplied; validated target=The restored service whose supplied readiness checks pass before endpoint cutover.; supplied endpoint=supplied
+f1 Recovery procedures include restoring service and directing clients to the recovered environment.
+f2 Confirm the restored target’s supplied readiness checks pass, perform the approved DNS or application endpoint switch and verify clients reach the restored target.
+f3 For DNS cutover, account for cached answers and TTL when testing client convergence rather than assuming every client immediately uses the new endpoint.
+tb1 A restored target has passed its readiness checks, and clients now need to reach it through the approved endpoint change. Verify convergence rather than assuming every client immediately follows the new setting.
+tb4 Confirm the restored target's supplied readiness checks before the approved DNS or application-endpoint switch. Perform that switch through the supplied procedure and test that clients reach the restored target. For a DNS switch, account for cached answers and TTL while checking client convergence. A changed DNS setting and an old client answer can coexist during caching; retain the actual client-target evidence instead of declaring all clients moved at the update request.
+tb5 Endpoint configuration is not the same as verified client convergence. For DNS, cached answers and TTL matter; test clients reaching the ready restored target rather than assuming an immediate universal switch.
+assessment verify_clients_reach_restored_target_after_approved_switch
+assessment account_for_dns_caching_and_ttl_in_client_convergence_checks
+practice_anchor.type tool_simulation
+practice_anchor.objective Use a supplied sandbox cutover procedure to confirm the restored service's readiness checks pass, switch one supplied DNS endpoint to that service, and verify client convergence using the supplied TTL and client-target evidence.
+practice_anchor.success The endpoint switch occurs only after readiness checks pass and through the approved procedure. Client checks establish that clients reach the restored target, accounting for cached DNS answers and the supplied TTL rather than treating the configuration update as immediate convergence.
+visual_anchor.type diagram
+visual_anchor.purpose Show the restored target passing readiness checks before the approved DNS switch, followed by a client-convergence timeline distinguishing the updated endpoint setting from clients retaining cached answers until their supplied TTL expires.
+note Use approved cutover procedure only after readiness; do not invent DNS record commands or TTL defaults.

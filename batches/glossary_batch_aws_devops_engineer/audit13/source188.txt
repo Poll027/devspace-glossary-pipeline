@@ -1,0 +1,33 @@
+Setting exit codes for actions - GitHub Docs
+Skip to main content
+Skip to content
+Search or ask Copilot/Menu
+Collapse sidebar
+Expand sidebar
+In this article
+Setting exit codes for actions
+You can use exit codes to set the status of an action. GitHub displays statuses to indicate passing or failing actions.
+Copy markdown
+In this article
+About exit codes
+GitHub uses the exit code to set the action's check run status, which can be success or failure.
+Exit statusCheck run statusDescription
+0successThe action completed successfully and other tasks that depend on it can begin.
+Nonzero value (any integer but 0)failureAny other exit code indicates the action failed. When an action fails, all concurrent actions are canceled and future actions are skipped. The check run and check suite both get a failure status.
+Setting a failure exit code in a JavaScript action
+If you are creating a JavaScript action, you can use the actions toolkit @actions/core package to log a message and set a failure exit code. For example:
+try { // something } catch (error) { core.setFailed(error.message); }
+For more information, see Creating a JavaScript action.
+Setting a failure exit code in a Docker container action
+If you are creating a Docker container action, you can set a failure exit code in your entrypoint.sh script. For example:
+if <condition> ; then echo "Game over!" exit 1 fi
+For more information, see Creating a Docker container action.
+Back to top
+Help and support
+Was this Doc helpful?
+YesNo
+Help us make GitHub Docs great!
+All Docs are open source. See something that's wrong or unclear? Submit a pull request.Make a contribution
+Still need help?
+Ask the GitHub communityContact supportExpert servicesBlog
+GitHub Inc. © 2026TermsPrivacyStatusPricing

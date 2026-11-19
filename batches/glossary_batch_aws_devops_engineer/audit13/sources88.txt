@@ -1,0 +1,68 @@
+
+### 88 aws_devops.expose_an_eks_workload_using_a_kubernetes_service
+SOURCE 202 https://kubernetes.io/docs/concepts/services-networking/service/ [f1]
+371: When network traffic arrives into the cluster, with the external IP (as destination IP) and the port matching that Service, rules and routes that Kubernetes has configured ensure that the traffic is routed to one of the endpoints for that Service.
+SOURCE 202 https://kubernetes.io/docs/concepts/services-networking/service/ [f2]
+264: If the traffic is delivered directly to the pod, the destination would be set to the pod's IP and port.
+SOURCE 202 https://kubernetes.io/docs/concepts/services-networking/service/ [f3]
+334: When you have a Pod that needs to access a Service, and you are using the environment variable method to publish the port and cluster IP to the client Pods, you must create the Service before the client Pods come into existence.
+
+### 89 aws_devops.inject_a_controlled_failure_and_verify_alarm_behavior
+SOURCE 174 https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/qa.nt.6-experiment-with-failure-using-resilience-testing-to-build-recovery-preparedness.html [f1]
+7: Resilience testing deliberately introduces controlled failures into a system to gauge its ability to withstand failure and recover during disruptive scenarios.
+SOURCE 174 https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/qa.nt.6-experiment-with-failure-using-resilience-testing-to-build-recovery-preparedness.html [f2]
+49: Chaos Testing with AWS Fault Injection Service and AWS CodePipeline
+SOURCE 40 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Notify_Users_Alarm_Changes.html [f3]
+33: Add an Amazon SNS notification for the state you want to be notified about, and select the Amazon SNS topic you created in the previous step to send an email notification when the alarm enters the selected state.
+
+### 90 aws_devops.perform_a_lambda_version_and_alias_release_with_rollback
+SOURCE 145 https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html [f1]
+66: When you publish a version, Lambda creates an immutable snapshot of your function's code and configuration.
+SOURCE 144 https://docs.aws.amazon.com/lambda/latest/dg/configuration-aliases.html [f2]
+7: A Lambda alias is a pointer to a function version that you can update.
+SOURCE 144 https://docs.aws.amazon.com/lambda/latest/dg/configuration-aliases.html [f3]
+27: aws lambda update-alias \ --function-name my-function \ --name alias-name \ --function-version version-number
+SOURCE 145 https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html [f3]
+45: aws lambda publish-version --function-name my-function
+
+### 91 aws_devops.perform_a_managed_eks_deployment_rollout
+SOURCE 203 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ [f1]
+172: This means that the new revision is created if and only if the Deployment's Pod template (.spec.template) is changed, for example if you update the labels or container images of the template.
+SOURCE 203 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ [f2]
+406: kubectl rollout status deployment/nginx-deployment
+SOURCE 203 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ [f3]
+226: kubectl rollout undo deployment/nginx-deployment --to-revision=2
+
+### 92 aws_devops.perform_an_ec2_blue_green_deployment_with_codedeploy
+SOURCE 106 https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-groups-create-blue-green.html [f1]
+60: In Deployment settings, review the default options for rerouting traffic to the replacement environment, which deployment configuration to use for the deployment, and how instances in the original environment are handled after the deployment.
+SOURCE 106 https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-groups-create-blue-green.html [f2]
+80: Keep the original instances in the deployment group running: After traffic is rerouted to the replacement environment, the instances that were deregistered from the load balancers and target groups are kept running.
+SOURCE 108 https://docs.aws.amazon.com/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html [f3]
+88: You can add them to the instance yourself if they are required for application revision 1, or you can create a new application revision.
+
+### 93 aws_devops.perform_cleanup_after_supplied_script_failure
+SOURCE 195 https://docs.python.org/3/tutorial/errors.html [f1]
+131: The finally clause runs whether or not the try statement produces an exception.
+SOURCE 195 https://docs.python.org/3/tutorial/errors.html [f2]
+147: >>> def divide(x, y): ... try: ... result = x / y ... except ZeroDivisionError: ... print("division by zero!") ... else: ... print("result is", result) ... finally: ... print("executing finally clause") ... >>> divide(2, 1) result is 2.0 executing finally clause >>> divide(2, 0) division by zero! executing finally clause >>> divide("2", "1") executing finally clause Traceback (most recent call last): File "<stdin>", line 1, in <module> divide("2", "1") ~~~~~~^^^^^^^^^^ File "<stdin>", line 3, in divide result = x / y ~~^~~ TypeError: unsupported operand type(s) for /: 'str' and 'str'
+SOURCE 195 https://docs.python.org/3/tutorial/errors.html [f3]
+183: When an exception is created in order to be raised, it is usually initialized with information that describes the error that has occurred.
+
+### 94 aws_devops.reconcile_terraform_ec2_drift
+SOURCE 4 https://developer.hashicorp.com/terraform/cli/commands/plan [f1]
+68: Similar to -refresh=false, this option causes Terraform to ignore external changes to resources that have no planned changes, which can result in an incomplete or incorrect plan.
+SOURCE 4 https://developer.hashicorp.com/terraform/cli/commands/plan [f2]
+175: Resource actions are indicated with the following symbols: + create ~ update in-place - destroy -/+ destroy and then create replacement Terraform will perform the following actions: # aws_instance.api will be updated in-place ~ resource "aws_instance" "api" { ~ tags = { + "Name" = "api" } ##... } # aws_instance.web must be replaced -/+ resource "aws_instance" "web" { ~ ami = "ami-02c98622c4c3f017d" -> "ami-0d7d6fe23ca71032d" # forces replacement ##... # aws_s3_bucket.new_bucket will be created + resource "aws_s3_bucket" "new_bucket" { ##... # aws_s3_bucket.old_bucket will be destroyed # (because aws_s3_bucket.old_bucket is not in configuration) - resource "aws_s3_bucket" "old_bucket" { ##...
+SOURCE 4 https://developer.hashicorp.com/terraform/cli/commands/plan [f3]
+51: To create and apply a plan in destroy mode in earlier versions you must run terraform destroy.
+SOURCE 4 https://developer.hashicorp.com/terraform/cli/commands/plan [f4]
+44: Refresh-only mode: creates a plan whose goal is only to update the Terraform state and any root module output values to match changes made to remote objects outside of Terraform.
+
+### 95 aws_devops.reuse_a_supplied_terraform_module_provisioning_ec2
+SOURCE 10 https://developer.hashicorp.com/terraform/language/modules/syntax [f1]
+239: The version attribute can reference constant input variables and local values.
+SOURCE 10 https://developer.hashicorp.com/terraform/language/modules/syntax [f2]
+351: resource "aws_s3_bucket" "example" { bucket = "my-example-bucket-12345" } module "ec2_instance" { source = "terraform-aws-modules/ec2-instance/aws" version = "6.0.2" name = "example-instance" ami = data.aws_ami.latest_amazon_linux.id instance_type = "t2.micro" depends_on = [aws_s3_bucket.example] }
+SOURCE 7 https://developer.hashicorp.com/terraform/cli/run [f3]
+26: The terraform apply command performs a plan just like terraform plan does, but then actually carries out the planned changes to each resource using the relevant infrastructure provider's API.

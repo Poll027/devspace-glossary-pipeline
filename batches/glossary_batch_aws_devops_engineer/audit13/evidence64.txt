@@ -1,0 +1,90 @@
+
+### 64 aws_devops.execute_a_reviewed_terraform_plan_provisioning_ec2
+SOURCE 1 https://developer.hashicorp.com/terraform/cli/commands/apply [f1]
+18: When you pass a saved plan file to terraform apply, Terraform performs the operations in the saved plan without prompting you for confirmation. You may want to use this two-step workflow when running Terraform in automation.
+22: Without a saved plan file, terraform apply supports all planning modes and planning options available for terraform plan.
+SOURCE 1 https://developer.hashicorp.com/terraform/cli/commands/apply [f2]
+19: Use terraform show to inspect a saved plan file before applying it.
+SOURCE 5 https://developer.hashicorp.com/terraform/cli/commands/show [f3]
+1: terraform show command reference | Terraform | HashiCorp Developer
+14: For Terraform plan files, terraform show -json shows a JSON representation of the plan, configuration, and current state.
+
+### 65 aws_devops.execute_a_scoped_systems_manager_remote_command
+SOURCE 159 https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command.html [f1]
+3: AWS Systems Manager Run Command - AWS Systems Manager
+17: Setting up managed nodes for AWS Systems Manager
+SOURCE 161 https://docs.aws.amazon.com/systems-manager/latest/userguide/walkthrough-cli.html [f2]
+73: aws ssm send-command \ --document-name "AWS-RunShellScript" \ --targets "Key=InstanceIds,Values=instance-id" \ --cli-input-json file://installCodeDeployAgent.json Windows
+74: aws ssm send-command ^ --document-name "AWS-RunShellScript" ^ --targets "Key=InstanceIds,Values=instance-id" ^ --cli-input-json file://installCodeDeployAgent.json
+SOURCE 156 https://docs.aws.amazon.com/systems-manager/latest/userguide/monitor-commands.html [f3]
+18: Detailed status for command plugins and invocations
+33: DeliveryTimedOut The command wasn't delivered to the managed node before the total timeout expired. Total timeouts don't count against the parent command’s max-errors limit, but they do contribute to whether the parent command status is Success, Incomplete, or Delivery Timed Out. This is a terminal state.
+
+### 66 aws_devops.gate_infrastructure_changes_with_configuration_validation
+SOURCE 6 https://developer.hashicorp.com/terraform/cli/commands/validate [f1]
+1: terraform validate command reference | Terraform | HashiCorp Developer
+9: The terraform validate command validates the configuration files in a directory. It does not validate remote services, such as remote state or provider APIs.
+SOURCE 6 https://developer.hashicorp.com/terraform/cli/commands/validate [f2]
+13: Validation requires an initialized working directory with any referenced plugins and modules installed. To initialize a working directory for validation without accessing any configured backend, use:
+32: valid (boolean): Summarizes the overall validation result, by indicating true if Terraform considers the current configuration to be valid or false if it detected any errors.
+SOURCE 6 https://developer.hashicorp.com/terraform/cli/commands/validate [f3]
+12: It is safe to run this command automatically, for example as a post-save check in a text editor or as a test step for a reusable module in a CI system.
+SOURCE 2 https://developer.hashicorp.com/terraform/cli/commands/fmt [f4]
+18: By default, the terraform fmt command scans your current directory for configuration files. You can also provide a target argument to tell terraform fmt to scan:
+22: The terraform fmt command accepts the following arguments.
+
+### 67 aws_devops.handle_aws_automation_errors_with_bounded_retries_and_useful_reporting
+SOURCE 98 https://docs.aws.amazon.com/boto3/latest/guide/retries.html [f1]
+586: AWS config file with max_attempts = 3: 1 initial request + 2 retries = 3 total attempts
+588: Config object with max_attempts: 3: 1 initial request + 3 retries = 4 total attempts
+SOURCE 98 https://docs.aws.amazon.com/boto3/latest/guide/retries.html [f2]
+599: config = Config( retries = { 'total_max_attempts': 10, 'mode': 'standard' } )
+603: import boto3 from botocore.config import Config config = Config( retries = { 'total_max_attempts': 10, 'mode': 'standard' } ) ec2 = boto3.client('ec2', config=config)
+SOURCE 97 https://docs.aws.amazon.com/boto3/latest/guide/error-handling.html [f3]
+574: { 'Error': { 'Code': 'SomeServiceException', 'Message': 'Details/context around the exception or error' }, 'ResponseMetadata': { 'RequestId': '1234567890ABCDEF', 'HostId': 'host ID data will appear here as a hash', 'HTTPStatusCode': 400, 'HTTPHeaders': {'header metadata key/values will appear here'}, 'RetryAttempts': 0 } }
+576: Using Amazon Kinesis as an example service, you can use Boto3 to catch the exception LimitExceededException and insert your own logging message when your code experiences request throttling from the AWS service.
+SOURCE 98 https://docs.aws.amazon.com/boto3/latest/guide/retries.html [f4]
+584: When set in a Config object: max_attempts excludes the initial request (retries only)
+
+### 68 aws_devops.identify_avoidable_charges_with_cost_explorer
+SOURCE 126 https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html [f1]
+3: Analyzing your costs and usage with AWS Cost Explorer - AWS Cost Management
+5: Analyzing your costs and usage with AWS Cost Explorer
+SOURCE 125 https://docs.aws.amazon.com/cost-management/latest/userguide/ce-filtering.html [f2]
+157: This Usage Type Group contains only the following Usage Types:
+172: This Usage Type Group contains only the following Usage Types:
+SOURCE 126 https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html [f3]
+7: You can view your costs and usage using the Cost Explorer user interface free of charge. You can also access your data programmatically using the Cost Explorer API. Each paginated API request incurs a charge of $0.01. You can't disable Cost Explorer after you enable it.
+
+### 69 aws_devops.operate_an_eks_deployment_using_supplied_cluster_access_setup
+SOURCE 203 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ [f1]
+194: Ensure that the 10 replicas in your Deployment are running.
+277: No old replicas for the Deployment are running.
+SOURCE 203 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ [f2]
+33: kubectl apply -f https://k8s.io/examples/controllers/nginx-deployment.yaml
+34: Run kubectl get deployments to check if the Deployment was created.
+SOURCE 203 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ [f3]
+68: The pod-template-hash label is added by the Deployment controller to every ReplicaSet that a Deployment creates or adopts.
+363: Note:This will only guarantee Pod termination previous to creation for upgrades. If you upgrade a Deployment, all Pods of the old revision will be terminated immediately. Successful removal is awaited before any Pod of the new revision is created. If you manually delete a Pod, the lifecycle is controlled by the ReplicaSet and the replacement will be created immediately (even if the old Pod is still in a Terminating state). If you need an "at most" guarantee for your Pods, you should consider using a StatefulSet.Rolling Update Deployment
+
+### 70 aws_devops.plan_infrastructure_and_data_restoration_in_dependency_order
+SOURCE 187 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html [f1]
+9: Each workload has a defined, implemented disaster recovery strategy that meets its recovery objectives.
+16: A workload has no disaster recovery plan at all.
+SOURCE 187 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html [f2]
+7: A workload needs a planned way to run from a recovery site when its primary location cannot serve it. Choosing that plan is a trade-off between how fast you recover and how much standing infrastructure you pay for and operate. Define a strategy for each workload, drawn from a small set of reusable patterns.
+11: Your strategy accounts for both service failover and the protection of data against corruption.
+SOURCE 187 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html [f3]
+52: Creating a Multi-Region Application with AWS Services series
+66: Get Started with AWS Elastic Disaster Recovery | Amazon Web Services
+
+### 71 aws_devops.query_logs_to_correlate_a_service_symptom
+SOURCE 34 https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html [f1]
+87: Logs Insights QL commands supported in log classes
+130: Logs Insights QL commands supported in log classes
+SOURCE 32 https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax-Filter.html [f2]
+10: fields @timestamp, @message | filter (range>3000) | sort @timestamp desc | limit 20
+26: fields @timestamp, @message | filter logGroup in ["example_group"]
+SOURCE 33 https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax-Sort.html [f3]
+6: Use sort to display log events in ascending (asc) or descending (desc) order by a specified field. You can use this with the limit command to create "top N" or "bottom N" queries.
+17: To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.

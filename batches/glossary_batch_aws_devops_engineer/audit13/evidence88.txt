@@ -1,0 +1,92 @@
+
+### 88 aws_devops.expose_an_eks_workload_using_a_kubernetes_service
+SOURCE 202 https://kubernetes.io/docs/concepts/services-networking/service/ [f1]
+6: In Kubernetes, a Service is a method for exposing a network application that is running as one or more Pods in your cluster.
+220: You can (and almost always should) set up a DNS service for your Kubernetes cluster using an add-on.
+SOURCE 202 https://kubernetes.io/docs/concepts/services-networking/service/ [f2]
+156: If the traffic is delivered to the node then DNATed to the pod, the destination would be set to the node's IP and node port;
+157: If the traffic is delivered directly to the pod, the destination would be set to the pod's IP and port.
+SOURCE 202 https://kubernetes.io/docs/concepts/services-networking/service/ [f3]
+17: The set of Pods targeted by a Service is usually determined by a selector that you define. To learn about other ways to define Service endpoints, see Services without selectors.
+31: The controller for that Service continuously scans for Pods that match its selector, and then makes any necessary updates to the set of EndpointSlices for the Service.
+
+### 89 aws_devops.inject_a_controlled_failure_and_verify_alarm_behavior
+SOURCE 174 https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/qa.nt.6-experiment-with-failure-using-resilience-testing-to-build-recovery-preparedness.html [f1]
+7: Resilience testing deliberately introduces controlled failures into a system to gauge its ability to withstand failure and recover during disruptive scenarios. Simulating failures in different parts of the system provides insight into how failures propagate and affect other components. This helps identify bottlenecks or single points of failure in the system.
+22: Chaos experiments on Amazon RDS using AWS Fault Injection Service
+SOURCE 174 https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/qa.nt.6-experiment-with-failure-using-resilience-testing-to-build-recovery-preparedness.html [f2]
+23: Chaos Testing with AWS Fault Injection Service and AWS CodePipeline
+SOURCE 40 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Notify_Users_Alarm_Changes.html [f3]
+11: The following example of an advanced filter matches an alarm state change from OK to ALARM on the alarm named ServerCpuTooHigh.
+12: { "detail": { "alarmName": ["ServerCpuTooHigh"], "previousState": { "value": ["OK"] }, "state": { "value": ["ALARM"] } } }
+
+### 90 aws_devops.perform_a_lambda_version_and_alias_release_with_rollback
+SOURCE 145 https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html [f1]
+23: You can create a function version using the Lambda console.
+47: When you publish a version, Lambda creates an immutable snapshot of your function's code and configuration. Not all configuration changes trigger the publication of a new version. The following configuration changes qualify a function for version publication:
+SOURCE 144 https://docs.aws.amazon.com/lambda/latest/dg/configuration-aliases.html [f2]
+1: Create an alias for a Lambda Event Function - AWS Lambda
+3: Create an alias for a Lambda Event Function - AWS Lambda
+SOURCE 144 https://docs.aws.amazon.com/lambda/latest/dg/configuration-aliases.html [f3]
+20: aws lambda update-alias \ --function-name my-function \ --name alias-name \ --function-version version-number
+22: aws lambda delete-alias \ --function-name my-function \ --name alias-name
+SOURCE 145 https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html [f3]
+3: Manage Lambda Event Function versions - AWS Lambda
+32: aws lambda publish-version --function-name my-function
+
+### 91 aws_devops.perform_a_managed_eks_deployment_rollout
+SOURCE 203 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ [f1]
+101: Next time you want to update these Pods, you only need to update the Deployment's Pod template again.
+266: The Deployment is scaling down its older ReplicaSet(s).
+SOURCE 203 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ [f2]
+284: kubectl rollout status deployment/nginx-deployment
+323: kubectl rollout status deployment/nginx-deployment
+SOURCE 203 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ [f3]
+165: kubectl rollout undo deployment/nginx-deployment
+169: kubectl rollout undo deployment/nginx-deployment --to-revision=2
+
+### 92 aws_devops.perform_an_ec2_blue_green_deployment_with_codedeploy
+SOURCE 106 https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-groups-create-blue-green.html [f1]
+5: Create a deployment group for an EC2/On-Premises blue/green deployment (console)
+37: Traffic will be rerouted from the original to the replacement instances according to your chosen Traffic rerouting and Deployment configuration settings.
+SOURCE 106 https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-groups-create-blue-green.html [f2]
+6: To use the CodeDeploy console to create a deployment group for a blue/green deployment:
+SOURCE 108 https://docs.aws.amazon.com/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html [f3]
+5: Automatic rollbacksManual rollbacksRollback and redeployment workflowRollback behavior with existing content
+16: When you create a new deployment, you can also choose to override the automatic rollback configuration that were specified for the deployment group.
+
+### 93 aws_devops.perform_cleanup_after_supplied_script_failure
+SOURCE 195 https://docs.python.org/3/tutorial/errors.html [f1]
+32: If no exception occurs, the except clause is skipped and execution of the try statement is finished.
+78: If a finally clause is present, the finally clause will execute as the last task before the try statement completes. The finally clause runs whether or not the try statement produces an exception. The following points discuss more complex cases when an exception occurs:
+SOURCE 195 https://docs.python.org/3/tutorial/errors.html [f2]
+77: >>> try: ... raise KeyboardInterrupt ... finally: ... print('Goodbye, world!') ... Goodbye, world! Traceback (most recent call last): File "<stdin>", line 2, in <module> raise KeyboardInterrupt KeyboardInterrupt
+85: >>> def bool_return(): ... try: ... return True ... finally: ... return False ... >>> bool_return() False
+SOURCE 195 https://docs.python.org/3/tutorial/errors.html [f3]
+26: Built-in Exceptions lists the built-in exceptions and their meanings.
+74: Many standard modules define their own exceptions to report errors that may occur in functions they define.
+
+### 94 aws_devops.reconcile_terraform_ec2_drift
+SOURCE 4 https://developer.hashicorp.com/terraform/cli/commands/plan [f1]
+16: The plan command alone does not actually carry out the proposed changes You can use this command to check whether the proposed changes match what you expected before you apply the changes or share your changes with your team for broader review.
+47: Similar to -refresh=false, this option causes Terraform to ignore external changes to resources that have no planned changes, which can result in an incomplete or incorrect plan.
+SOURCE 4 https://developer.hashicorp.com/terraform/cli/commands/plan [f2]
+46: -minimal-refresh - Reduces the number of remote API requests by refreshing only resource instances that Terraform plans to change. Terraform first compares the current configuration to the prior state; if there are no planned changes, the resource skips refreshing its current state. If there are planned changes, Terraform refreshes the resource and plans it again with the refreshed state. Each resource instance independently determines whether it needs to be refreshed, so refreshing one resource does not cause other resources that depend on it to be refreshed.
+50: -replace=ADDRESS - Instructs Terraform to plan to replace the resource instance with the given address. This is helpful when one or more remote objects have become degraded, and you can use replacement objects with the same configuration to align with immutable infrastructure patterns. Terraform will use a "replace" action if the specified resource would normally cause an "update" action or no action at all. Include this option multiple times to replace several objects at once. You cannot use -replace with the -destroy option, and it is only available from Terraform v0.15.2 onwards. For earlier versions, use terraform taint to achieve a similar result.
+SOURCE 4 https://developer.hashicorp.com/terraform/cli/commands/plan [f3]
+18: If you are using Terraform directly in an interactive terminal and you expect to apply the changes Terraform proposes, you can alternatively run terraform apply directly. By default, the "apply" command automatically generates a new plan and prompts for you to approve it.
+20: If you run terraform plan without the -out=FILE option then it will create a speculative plan, which is a description of the effect of the plan but without any intent to actually apply it.
+SOURCE 4 https://developer.hashicorp.com/terraform/cli/commands/plan [f4]
+14: Proposes a set of change actions that should, if applied, make the remote objects match the configuration.
+35: Refresh-only mode: creates a plan whose goal is only to update the Terraform state and any root module output values to match changes made to remote objects outside of Terraform. This can be useful if you've intentionally changed one or more remote objects outside of the usual workflow (e.g. while responding to an incident) and you now need to reconcile Terraform's records with those changes.
+
+### 95 aws_devops.reuse_a_supplied_terraform_module_provisioning_ec2
+SOURCE 10 https://developer.hashicorp.com/terraform/language/modules/syntax [f1]
+48: The source attribute can reference constant input variables and local values. Any input variable referenced in source must declare const = true.
+191: module "<LABEL>" { depends_on = [ <resource reference> ] }
+SOURCE 10 https://developer.hashicorp.com/terraform/language/modules/syntax [f2]
+57: module "<LABEL>" { source = "<NAMESPACE>/<NAME>/<PROVIDER>" #... }
+61: module "<LABEL>" { source = "<HOSTNAME>/<NAMESPACE>/<NAME>/<PROVIDER>" #... }
+SOURCE 7 https://developer.hashicorp.com/terraform/cli/run [f3]
+8: Terraform workflow for provisioning infrastructure
+24: For details, see the terraform apply command.

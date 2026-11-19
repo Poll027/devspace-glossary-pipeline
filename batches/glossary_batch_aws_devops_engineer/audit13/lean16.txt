@@ -1,0 +1,68 @@
+
+### 16 aws.cloudformation_change_sets
+INLINE supplied CloudFormation template=supplied; stack=A CloudFormation-managed collection of declared resources with a shared lifecycle.; supplied template and update set=supplied
+f1 A change set previews proposed stack resource changes without executing them.
+f2 Review additions, modifications, removals and replacement indicators before authorizing execution; a preview does not guarantee that execution will succeed.
+f3 For a new stack, create a CREATE change set from the supplied template, wait for creation to complete, inspect it, and execute the approved set to provision the resources.
+tb1 An approved CloudFormation template is ready to provision a new sandbox stack. Before execution, the operator needs a preview of the proposed resource actions and a clear separation between review and execution.
+tb4 Create the supplied template's CREATE change set and wait until change-set creation completes. Inspect the proposed additions against the approved scope. For an illustrative new-stack review, suppose the preview contains the expected EC2 addition but also an extra addition the task does not authorize. Record that discrepancy for the approval decision rather than treating the preview as automatic authorization. When the set is approved, execute that specific set to provision the resources. A preview describes proposed changes without performing them, so retain execution evidence separately from the review. Even a preview that matches the requested scope does not guarantee execution will succeed. A reviewer should be able to distinguish three records: the template and scope requested, the change-set actions previewed, and the later execution outcome. If the preview does not match the requested scope, execution should not be described as the approved change. If the preview matches but execution fails, preserve the failed outcome; the successful preview is not contradictory evidence because it was never a guarantee of execution success.
+tb5 Creating a change set does not provision its resources. It previews changes without executing them. Likewise, a clean review is not a guarantee of execution success; inspect the preview before authorization and distinguish it from the later execution outcome.
+assessment identify_proposed_ec2_additions_modifications_and_replacement_indicators
+practice_anchor.type tool_simulation
+practice_anchor.objective Using the supplied template and approval path, create a CREATE change set for one sandbox EC2 instance, wait for change-set creation to complete, inspect the proposed actions, and execute the approved set. Then review a supplied update change set for unintended EC2 replacement before making an authorization decision.
+practice_anchor.success The CREATE change set is inspected before execution, its proposed additions match the approved scope, and execution of that specific approved set provisions one sandbox EC2 instance. The supplied update review identifies the EC2 action and its replacement indicator, withholding authorization if replacement is unintended. Review results and execution outcomes remain distinct; a successful preview is not treated as a guarantee of execution success.
+visual_anchor.type UI_state
+visual_anchor.purpose Show a completed CREATE change set with the proposed EC2 addition and a separate execution action, alongside a supplied update change set displaying the EC2 modification and replacement indicator so unintended replacement is visible before authorization.
+note Use the supplied template and approval path; leave rollback diagnosis to its dedicated concept.
+
+### 17 aws.mfa_enforcement
+INLINE supplied MFA condition=supplied; MFA=Multi-factor authentication combines distinct authentication factors; the exercise supplies the policy condition to enforce it.
+f1 The aws:MultiFactorAuthPresent condition indicates whether qualifying temporary credentials were authenticated with MFA.
+f2 A Deny with BoolIfExists on aws:MultiFactorAuthPresent set to false can block non-MFA requests, including requests where the key is absent, subject to the statement’s scoped actions.
+f3 Apply the supplied scoped MFA policy and compare an allowed MFA-authenticated request with a denied request without MFA.
+tb1 A supplied policy should deny covered requests that are not MFA authenticated. The key question is what the condition means for the request's temporary credentials, including requests where the condition key is absent.
+tb4 Inspect the supplied Deny statement's scoped actions and its BoolIfExists test on aws:MultiFactorAuthPresent set to false. Compare two approved test cases: one using qualifying MFA-authenticated temporary credentials and one without MFA. The condition can block the latter, including a request where the key is absent, but only subject to the statement's action scope. Record the request context and result for each test. Do not describe the policy as covering every AWS action if its supplied scope covers only selected actions. The exercise is a comparison of allowed MFA-authenticated and denied non-MFA requests under the supplied policy, not a general redesign of human authentication. Compare the action scope as well as the authentication context in the two test cases. A denial of one covered action without MFA supports the supplied scoped enforcement result; it does not establish denial of an action outside that statement. Similarly, a key-absent request falls under the stated BoolIfExists behavior, so absence must not be mistaken for a third automatically exempt authentication category.
+tb5 An absent key is not automatically outside a BoolIfExists Deny set to false. Keep that behavior and the statement's scoped actions together when explaining the result. Avoid turning this condition into an unqualified claim about all credentials or all requests.
+assessment distinguish_permitted_mfa_access_from_denied_non_mfa_access
+practice_anchor.type tool_simulation
+practice_anchor.objective Apply the supplied scoped MFA policy to a sandbox identity and run two supplied test requests for the same covered action: one with qualifying MFA-authenticated temporary credentials and one without MFA.
+practice_anchor.success The supplied policy is applied without expanding its action scope. The MFA-authenticated request is allowed and the request without MFA is denied. Record each request's action, aws:MultiFactorAuthPresent context, and result; explain that the supplied BoolIfExists Deny set to false also covers an absent key for actions within its scope.
+visual_anchor.type comparison
+visual_anchor.purpose Show the supplied statement's action scope alongside three request contexts: aws:MultiFactorAuthPresent true, false, and absent. For a covered action with an existing Allow, make visible that this Deny does not match the true case but matches both the false and absent cases; distinguish those results from requests outside the statement's action scope.
+note Keep the qualifying-temporary-credential limitation; apply only the supplied scoped MFA policy.
+
+### 18 aws.role_trust
+INLINE principal=The identity, role session or AWS service requesting an operation.; AssumeRole=The STS operation requesting a temporary session in a role subject to its trust policy.
+f1 A role trust policy identifies principals allowed to assume the role and any conditions for assumption.
+f2 Set Principal to the approved principal and Action to sts:AssumeRole with the supplied conditions in the role’s trust policy.
+f3 For cross-account assumption, the caller also needs permission to call sts:AssumeRole on the role; test approved and unapproved principals.
+f4 A role’s permissions policy controls what an assumed session may do, rather than who may assume it.
+tb1 A caller needs to enter a role, and that role needs permissions for the resulting session's work. These are different questions. Read trust as the role-entry boundary before evaluating what the assumed session may do.
+tb4 For an approved cross-account caller, inspect the role trust policy's Principal, sts:AssumeRole action and supplied conditions. Then inspect the caller's permission to call sts:AssumeRole on that role. Test the approved principal and the supplied unapproved principal and retain their outcomes. Once a session is assumed, its allowed work is governed by the role's permissions policy rather than by treating the trust policy as an operations allowlist. For example, permitting entry to an orders-operator role does not itself describe which orders-resource actions that session may perform. The example keeps role entry and session permissions separate without inventing additional trust conditions or granting broader access.
+tb5 A trust policy answers who may assume a role, not what an assumed session may do. Cross-account assumption also needs caller-side AssumeRole permission. An approved principal in the trust policy alone does not complete that cross-account permission check.
+assessment evaluate_named_principal_against_role_trust_and_conditions
+assessment verify_cross_account_caller_assume_role_permission
+assessment distinguish_role_entry_from_assumed_session_permissions
+practice_anchor.type tool_simulation
+practice_anchor.objective Configure the sandbox orders-operator role's trust policy with the supplied approved principal, sts:AssumeRole action and conditions. Check the supplied cross-account caller permissions, then test assumption by the approved and unapproved principals.
+practice_anchor.success The trust policy names only the supplied approved principal and preserves the supplied conditions. The approved caller has permission to call sts:AssumeRole on the role and succeeds when those conditions are met; the unapproved caller is rejected. Both test outcomes are retained.
+visual_anchor.type diagram
+visual_anchor.purpose Make the caller-to-role-to-assumed-session relationship visible, separating caller-side sts:AssumeRole permission, the role trust policy's principal and condition checks, and the role permissions policy governing the session's work.
+note Use approved principals and supplied conditions; avoid advanced federation design.
+
+### 19 aws.root_protection
+INLINE supplied root-protection checklist=supplied; root user=The exceptional account-owner identity, not a routine operating identity.; supplied root checklist=supplied
+f1 The AWS account root user has broad account authority and should not be used for routine tasks.
+f2 Protect root access with MFA and do not create root access keys; delete existing root access keys when they are no longer needed.
+f3 Review root-use and access-key evidence against the root-protection checklist, using non-root identities for routine operations.
+tb1 A root-protection review is not a routine operating task performed with root. It checks that exceptional account authority is protected and that normal work uses non-root identities.
+tb4 Take the supplied root-use and access-key evidence and compare each item with the protection checklist. Confirm MFA protection in the review, note whether root access keys exist, and distinguish those keys from the non-root credentials used for routine operations. Do not create root access keys for the exercise. Existing root access keys that are no longer needed should be deleted under the approved process. Record findings against the checklist rather than using root to demonstrate ordinary resource operations. The purpose of the example is to interpret protection evidence and use the appropriate routine identity, not to explore every root-only capability. The review should distinguish root access keys from root sign-in protection. An MFA finding answers the protection question, while the access-key evidence answers whether long-lived root keys exist and remain needed. A non-root identity used for the ordinary lab task supports the routine-use boundary. Keep these findings separate so one satisfactory item is not used to erase a problem in another item.
+tb5 Broad account authority is not a reason to use root for convenience. Root should not be used for routine tasks. MFA protection and root-key hygiene belong in the protection review; ordinary operational testing belongs under non-root identities.
+assessment identify_root_access_key_policy_violations
+assessment identify_routine_root_use_policy_violations
+practice_anchor.type tool_simulation
+practice_anchor.objective Review a supplied root-protection checklist alongside simulated MFA, root-use, and access-key evidence. Identify routine root use and remove simulated root access keys marked as no longer needed, without accessing a real root account.
+practice_anchor.success The completed checklist records MFA protection separately from access-key findings, flags routine root use as a violation, and identifies non-root identities for routine operations. Simulated root access keys marked as no longer needed are removed, and no root access keys are created.
+visual_anchor.type data_table
+visual_anchor.purpose Make the supplied MFA status, root-use evidence, and root access-key evidence visible alongside separate checklist findings, including whether each simulated root key remains needed and its removal status.
+note Review supplied evidence; do not introduce or perform unapproved root-only operations.

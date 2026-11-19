@@ -1,0 +1,73 @@
+
+### 88 aws_devops.expose_an_eks_workload_using_a_kubernetes_service
+INLINE Service selector=The labels a Kubernetes Service uses to choose Pods behind its stable endpoint.; supplied Deployment and endpoint=supplied
+f1 A Kubernetes Service provides a stable network endpoint for a changing set of selected Pods.
+f2 Set spec.selector to match the intended Pod labels and ports.port and ports.targetPort to map the Service port to the application’s container port.
+f3 Apply the supplied Service, inspect its EndpointSlices or endpoints and test the Service address from the supplied client to verify selected Pods receive traffic.
+tb1 A Kubernetes Service should reach the supplied application even as selected Pods change. Connect its selector and port mapping with actual selected endpoints, then test from the supplied client.
+tb4 Set spec.selector to match the intended Pod labels and map ports.port to the application's ports.targetPort. Apply the supplied Service and inspect its EndpointSlices or endpoints. Test the Service address from the supplied client to verify traffic reaches the selected Pods. Keep selector, endpoint and client-result evidence together rather than accepting a Service object name as proof of application reachability.
+tb5 A Service declaration is not the traffic test. Its selector must match the intended Pods, its targetPort must map to the application port, and observed endpoints/client results verify the intended path.
+assessment explain_stable_service_endpoint_for_changing_pods
+assessment verify_service_selector_and_port_mapping
+assessment verify_intended_pods_receive_service_traffic
+practice_anchor.type tool_simulation
+practice_anchor.objective Create one Service for the supplied Deployment using the supplied access and apply procedure. Match its selector to the intended Pod labels, map the Service port to the application's container port, inspect EndpointSlices or endpoints, and test the Service address from the supplied client.
+practice_anchor.success The applied Service selects the intended Pods and maps its port to the application's container port. EndpointSlice or endpoint evidence identifies those Pods, and the supplied client receives the expected application response through the Service address.
+visual_anchor.type diagram
+visual_anchor.purpose Make the request path visible from the supplied client through the stable Service address and Service port to selected Pod endpoints and the application's container port. Annotate the selector-to-label match and associate the path with endpoint evidence and the client result.
+note Use supplied apply/access procedure; do not introduce cluster networking administration or unsupported Service types.
+
+### 89 aws_devops.inject_a_controlled_failure_and_verify_alarm_behavior
+INLINE supplied controlled fault=supplied; sandbox blast radius=The approved isolated resource and traffic scope within which the supplied failure may be injected.
+f1 Controlled failure experiments test how a system behaves under disruption rather than merely inspecting its configuration.
+f2 Define the approved fault, limited scope, expected signals and abort conditions before injecting the sandbox failure.
+f3 Observe alarm state history and receipt of the expected notification during the fault, then remove the fault and verify recovery.
+tb1 An alarm is configured, but a controlled failure should demonstrate its behavior and notification path. Bound the experiment before causing the approved sandbox disruption.
+tb4 Write the supplied fault, limited target scope, expected signals and abort conditions before injection. During the approved fault, observe alarm state history and receipt of the expected notification. Remove the fault and verify recovery using the supplied checks. Keep the observations in sequence: preconditions and limits, injected fault, alarm behavior, recipient receipt and recovery. If the expected notification is absent, preserve that result rather than treating the alarm configuration as proof of a successful test. This is a controlled sandbox experiment, not permission to disrupt production or extend the fault beyond the approved limits. If the abort condition is reached, follow the approved stop path instead of extending the fault until a desired alarm appears. A test result may show a missed signal, missed notification or unsuccessful recovery, and each should be retained honestly. The experiment's purpose is to verify behavior under a limited planned fault, so staying within scope is part of the result rather than an obstacle to it.
+tb5 An alarm's configuration is not demonstrated failure behavior. A controlled experiment verifies state history, actual notification receipt and recovery after fault removal. Define scope and abort conditions before injection, not after a problem appears.
+assessment verify_fault_induced_alarm_transition_and_notification_receipt
+assessment define_approved_fault_scope_signals_and_abort_conditions
+assessment verify_recovery_after_fault_removal
+practice_anchor.type tool_simulation
+practice_anchor.objective Use a supplied sandbox simulation to inject one approved failure and observe the supplied alarm's response. Before injection, record the approved fault, limited target scope, expected signals and supplied abort conditions.
+practice_anchor.success Stay within the approved scope and abort conditions. Record the alarm state history and whether the expected notification actually arrives. Remove the fault using the supplied control and record the recovery check result. Preserve missing signals, absent notifications or unsuccessful recovery as test outcomes rather than claiming success.
+visual_anchor.type UI_state
+visual_anchor.purpose Make the approved experiment limits, fault status, alarm state history, notification receipt and post-removal recovery result visible in sequence.
+note Use approved fault and supplied abort conditions; do not invent failure-injection commands.
+
+### 90 aws_devops.perform_a_lambda_version_and_alias_release_with_rollback
+INLINE supplied alias=supplied; version immutability=A published Lambda version cannot be changed; an alias can point to a different approved version.; supplied alias and rollback scenario=supplied
+f1 A published Lambda version is an immutable snapshot of function code and most configuration.
+f2 A Lambda alias points to a published version and can be updated to direct invocations to a different version.
+f3 Use aws lambda publish-version --function-name NAME, then aws lambda update-alias --function-name NAME --name ALIAS --function-version VERSION; invoke NAME:ALIAS through the supplied test and roll back by updating the alias to the approved previous version.
+tb1 A supplied Lambda release uses an alias so the test can target the chosen published version. Keep the immutable version and the movable alias distinct when releasing and rolling back.
+tb4 Publish the approved function with aws lambda publish-version --function-name NAME, then update ALIAS to the returned approved VERSION through the stated update-alias command. Invoke NAME:ALIAS through the supplied test and inspect its result. For the controlled rollback, update that alias to the approved previous published version and repeat verification. The version is an immutable snapshot of code and most configuration, while the alias points to a published version and can change that target. Record the alias target before release, after release and after rollback so the test result can be tied to the intended version rather than to an unqualified function name. Compare invocation targets before and after the alias change. A test against NAME:ALIAS checks the version selected by that alias, whereas an unqualified invocation is not the stated alias test. After rollback, inspect the alias target and repeat the supplied result check for the approved previous version. These observations connect traffic selection with a verified result without claiming the immutable published code was edited.
+tb5 Changing an alias is not editing a published version. The published snapshot is immutable; rollback here changes the alias's target to an approved previous version. Preserve most configuration rather than claiming the version captures every possible configuration property.
+assessment distinguish_immutable_version_from_movable_alias
+assessment verify_alias_invokes_approved_version
+assessment restore_and_verify_previous_alias_target
+practice_anchor.type live_code
+practice_anchor.objective Publish one version of the supplied Lambda function, switch the supplied alias to the approved published version, verify NAME:ALIAS through the supplied test, and demonstrate rollback to the approved previous version.
+practice_anchor.success The recorded alias targets show the approved previous version before release, the newly approved version after release, and the approved previous version after rollback. The supplied test targets NAME:ALIAS and confirms the expected result after both alias updates.
+practice_anchor.live_code {"required_skill": "Use Lambda publish-version and update-alias commands to release and roll back an alias, verifying its selected version through a supplied test.", "allowed_syntax": ["aws lambda publish-version --function-name NAME", "aws lambda update-alias --function-name NAME --name ALIAS --function-version VERSION"], "blocked_syntax": ["aws deploy create-deployment", "aws ecs update-service", "kubectl rollout"], "starter_state_intent": "Provide the approved function NAME ready for publication, the existing alias ALIAS, its approved previous published version, and a supplied test targeting NAME:ALIAS. Supply alias-target inspection and expected test results so no additional command syntax or application changes are required.", "observable_success": "One version is published; ALIAS is updated to its approved version number and then restored to the approved previous version. Alias-target observations and supplied test results confirm both transitions without modifying either published snapshot."}
+visual_anchor.type before_after
+visual_anchor.purpose Show the same alias pointing to the approved previous published version before release, the newly approved published version after release, and the previous version after rollback, alongside the corresponding NAME:ALIAS test results. Keep the published snapshots visibly unchanged.
+note Use supplied test; do not introduce weighted aliases, concurrency or application code changes.
+
+### 91 aws_devops.perform_a_managed_eks_deployment_rollout
+INLINE supplied failed revision=supplied; rollout status=The observed progress and health of Deployment replacement after an image revision change.
+f1 Changing a Deployment’s Pod template creates a new rollout revision; scaling alone does not create a new template revision.
+f2 Use kubectl set image deployment/NAME CONTAINER=IMAGE to update the supplied image and kubectl rollout status deployment/NAME to monitor rollout.
+f3 On the controlled failure, inspect rollout history and use kubectl rollout undo deployment/NAME --to-revision=REVISION to restore the approved prior revision and verify readiness.
+tb1 A managed EKS Deployment needs an approved image update and a controlled rollback case. Follow the template revision and readiness evidence, not just the image-change request.
+tb4 Use the supplied Deployment and container names in kubectl set image deployment/NAME CONTAINER=IMAGE. Monitor kubectl rollout status deployment/NAME. In the controlled failure, inspect rollout history through the supplied procedure, then use kubectl rollout undo deployment/NAME --to-revision=REVISION for the approved prior revision and verify readiness. A Pod-template change creates a new rollout revision; scaling alone does not create a new template revision. Keep the chosen revision and readiness results with the record so rollback means the verified approved prior template, not an arbitrary change that happens to reduce a symptom. For the controlled failure, keep the failed rollout's revision evidence and the approved rollback revision separate. The prior revision must be the one the supplied procedure authorizes, not merely the most recent history entry seen by the operator. Readiness after undo is the verification point. A successful undo request cannot substitute for checking whether the restored template's Pods satisfy the supplied readiness result.
+tb5 Scaling a Deployment is not the same as changing its Pod template and creating a new template revision. For this rollback, restore the approved prior revision and verify readiness rather than treating the undo request as completed recovery.
+assessment distinguish_template_revision_changes_from_scaling
+assessment verify_deployment_rollout_status
+assessment restore_approved_prior_revision_and_verify_readiness
+practice_anchor.type tool_simulation
+practice_anchor.objective Using supplied cluster access, Deployment and container names, image, and history/readiness procedure, update one Deployment image with kubectl set image and monitor its rollout. In the seeded failure case, inspect history, restore the approved prior revision with kubectl rollout undo --to-revision, and verify readiness within the supplied test bounds.
+practice_anchor.success The image update targets only the supplied Deployment and container. Rollout status is checked, the failed revision and approved prior revision are distinguished using the supplied history procedure, and the explicit approved revision is restored. The supplied readiness check confirms the restored Deployment is ready; acceptance of the undo request alone does not count as success.
+visual_anchor.type UI_state
+visual_anchor.purpose Make the supplied Deployment's image update, rollout status, revision history, explicit rollback target, and post-rollback readiness results visible in a terminal state sequence.
+note Use supplied cluster access and history/readiness procedure; do not introduce self-managed cluster administration.

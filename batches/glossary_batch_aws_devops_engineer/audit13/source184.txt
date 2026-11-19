@@ -1,0 +1,37 @@
+Design your workload to adapt to changes in demand - AWS Well-Architected Framework
+View a markdown version of this page
+Design your workload to adapt to changes in demand - AWS Well-Architected Framework
+DocumentationAWS Well-ArchitectedFramework
+Capability intentCommon issues to watch for
+Design your workload to adapt to changes in demand
+Demand on a workload rarely holds steady. Traffic grows over months, spikes during a sales event, and falls away overnight, and a component can degrade at any point along the way. Provisioning a fixed amount of capacity to cover the highest expected peak wastes money during quiet periods and still runs short when a peak exceeds the estimate. An elastic workload adds and removes resources automatically so that capacity tracks demand, but that elasticity only holds up when the scaling is automated, the signals reflect real load, and the limits have been proven under test.
+This capability covers how an organization designs a workload to match resources to demand: provisioning and scaling through automation rather than manually, recovering capacity when a component becomes impaired, adding resources as healthy demand grows, and validating the whole arrangement with load tests that find the breaking point before customers do.
+REL07: How do you design your workload to adapt to changes in demand?
+REL07-BP01 Use automation when obtaining or scaling resources
+REL07-BP02 Obtain resources upon detection of impairment to a workload
+REL07-BP03 Obtain resources upon detection that more resources are needed for a workload
+REL07-BP04 Load test your workload
+Capability intent
+Infrastructure is defined as code and provisioned through automated pipelines, so every environment is built the same way and every change is reviewable.
+Resources scale out and scale in automatically within defined limits, so capacity follows demand instead of a static estimate.
+Impairment is detected from health signals and answered with a defined response that restores capacity, rather than waiting on a customer report.
+Demand-driven scaling uses a metric that tracks load in both directions, with headroom for a burst to be served while replacements come online.
+Scaling policies and capacity plans are proven through load testing against a production-scale environment, and re-tested as demand grows.
+Common issues to watch for
+Resources are provisioned manually through the console, so environments drift apart and a rebuild produces a subtly different system that fails in production.
+A scaling metric is chosen that does not track demand in both directions, such as memory utilization, so the workload scales out under load and never scales back in.
+Scaling targets are set close to full utilization, so existing capacity is exhausted before latent scaling brings replacements to full service.
+Health checks confirm only that a process is listening, not that it can serve requests, so an impaired component is reported as healthy.
+Load testing runs against an environment that does not match production, or stops just above expected load, so the real breaking point is never found.
+Load testing happens once at launch and is never repeated, so a limit that sat above traffic at launch moves into range unnoticed as demand climbs.
+Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+REL06-BP07 Monitor end-to-end tracing of requests through your system
+REL07-BP01 Use automation when obtaining or scaling resources
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

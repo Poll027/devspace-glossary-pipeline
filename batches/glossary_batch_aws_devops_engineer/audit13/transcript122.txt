@@ -1,0 +1,118 @@
+### 122 terraform.state_locking 196-504
+194 solution in your Dev environment today
+196 so let's go back to my code this is
+198 terraform and I have that Dynamo DB
+200 table I want to get rid of it so I
+202 simply say let me remove
+205 it and I say use log
+209 file they want it
+212 true I want to enable that mechanism
+215 that's all it is so now I will just
+216 command
+218 s and my S3 bucket for the back end is
+221 called Mar bucket for TF State I have
+224 just created this just for this reason
+226 just to show you how it works so if we
+228 go to S3 buckets as you can see this is
+230 the bucket Mark bucket for TF state if I
+232 click on it it's currently empty there
+234 is nothing in this bucket and every time
+237 when you change the backend
+238 configuration you have to run terraform
+241 in it anyways so you run
+244 terraform in it click
+248 enter and it's been successfully
+251 initialized the first line said
+254 initializing the back end which means
+256 this S3 bucket can be used also for that
+259 log file now let's test it Let Me Maybe
+261 clear
+264 that and I say terraform
+268 apply it says free to add because I've
+271 got server subnet and
+274 VPC if we have a look theform indeed
+277 tries to create the
+279 server the subnet and the
+282 VPC but before I say
+285 yes let's have a look what's in the
+287 bucket there is no TF State file yet but
+291 we already see TF State TF lock file
+294 this is our locking mechanism a TF State
+297 file will only be created now when I say
+299 yes
+300 let's say
+303 yes it's been added I mean all my
+306 resources have been added if I go back
+308 to my bucket if I refresh it now we've
+311 got TF state but we don't have TF lock
+314 that's because my TF State file doesn't
+317 have to be locked because terraform
+319 already completed its work we can even
+321 check I've got let's maybe instead of
+323 duplicating let's try
+326 here ec2 we can see we've got virtual
+330 server
+331 running this is my server it's been
+334 created together with subnet and VPC so
+337 let's now destroy it let's clear first
+340 again data form
+345 destroy yes I want to destroy
+354 everything all resources have now been
+356 destroyed so if I go to my instances and
+359 refresh we can see it's not running but
+361 if I remove this filter we can see it
+363 but in instance State terminated and if
+366 we go back to my bucket if I refresh my
+368 bucket this terraform TF state will now
+371 stay here and it will always be there
+374 regardless of if I have some resources
+376 or if I don't have any resources in the
+378 cloud but now if we go back to vs code
+382 let's clear again and I want to
+384 terraform apply again let's click enter
+387 so I want to build my infrastructure
+389 again and terraform asks me if I want to
+392 perform these actions I will not say
+394 anything yet but I will open Terminal so
+397 let's imagine this is a second person
+399 trying to apply the same changes at the
+402 same
+403 time I'm now basically in the same in
+406 the same folder as here yes I can see
+409 provider server subnet blah blah and I
+411 run terraform apply
+413 here and also run the same command I get
+417 the error and the error says error
+419 acquiring the state log because if we go
+422 to this S3 bucket and refresh now we've
+424 got both TF State because it will always
+427 be here from now on and we have the lock
+430 file which tells me that somebody else
+433 is working on this infrastructure at
+435 exactly the same time as I want to do it
+438 so I won't be able to run anything until
+440 this log is removed so let me go back to
+443 terraform to vs code sorry I say yes
+446 let's build that infrastructure again
+452 and now it's been created again so now
+454 if I go back to my terminal if I run
+457 terraform apply again and click enter I
+459 shouldn't get any errors this time it
+462 now tells me your infrastructure matches
+465 the configuration it now can run
+467 terraform apply because it checks if the
+469 lock file exists if I refresh it
+471 shouldn't be there yes there is no TF
+474 log file there is only TF State file so
+476 terraform checks this TF State file it
+479 sees that all the resources that are
+481 supposed to be built are have already
+483 been built so there is nothing for it to
+485 do it says your infrastructure much as
+487 the configuration because if I run it
+489 here in vs code perform apply I will get
+492 the same
+494 message my infrastructure matches the
+496 configuration so I can destroy now and I
+499 hope that makes sense and you don't need
+502 to manage that Dynamo DB table anymore

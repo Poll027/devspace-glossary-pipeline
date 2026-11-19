@@ -1,0 +1,74 @@
+
+### 0 aws.operator_profiles
+INLINE supplied approved operator credentials=supplied; AWS account and Region=An account is an AWS identity and resource boundary; a Region is a geographic service location selected for the operation.; supplied operator context=supplied
+f1 A named AWS CLI profile groups credential and configuration settings; select it with --profile NAME.
+f2 Run aws sts get-caller-identity --profile NAME to inspect the caller ARN and account ID.
+f3 Run aws configure list --profile NAME to inspect the effective configuration and where its values came from; --region REGION overrides the configured Region for a command.
+tb1 You are about to operate in a sandbox, but your workstation has more than one approved AWS context. Before issuing a resource-changing command, make the chosen context explicit. A profile name is a starting point for checking the caller, not a substitute for checking it.
+tb4 Suppose the exercise supplies a profile named lab-operator and expects a particular account. Run aws sts get-caller-identity --profile lab-operator. Suppose the illustrative result shows Account: [REDACTED_ACCOUNT] and Arn: arn:aws:iam::[REDACTED_ACCOUNT]:user/[REDACTED_OPERATOR]. Compare both values with the supplied operator context: this checks the caller identity and account. Then run aws configure list --profile lab-operator. Suppose its illustrative Region row shows Value: us-west-2, Type: config-file, Location: ~/.aws/config. This checks the effective Region and its configuration origin rather than inferring them from the profile's label. If the approved command targets a different Region, substitute that Region for REGION in its --region option. Keep the same explicit profile on the command. This example checks identity and effective configuration separately: knowing which account is selected does not answer which Region the command will use.
+tb5 Do not treat an account check as a Region check. get-caller-identity inspects the caller ARN and account ID; configure list inspects effective configuration and its origins. --region overrides the configured Region for that command, not the meaning of the caller ARN.
+assessment select_explicit_named_profile
+assessment verify_caller_arn_and_account_id
+assessment verify_effective_region_and_configuration_origin
+assessment identify_command_region_override
+practice_anchor.type tool_simulation
+practice_anchor.objective Select the supplied approved lab-operator context and confirm its caller identity, account and effective Region before proceeding with a supplied sandbox command.
+practice_anchor.success Use aws sts get-caller-identity --profile lab-operator and compare the returned ARN and account ID with the supplied expected context. Use aws configure list --profile lab-operator to identify the effective Region and its source. Keep --profile lab-operator on the supplied sandbox command and, when its approved target Region differs from the configured Region, select that target with --region REGION. Complete these checks before proceeding, without creating or changing credentials.
+visual_anchor.type annotated_screenshot
+visual_anchor.purpose Make the lab-operator profile selection, caller ARN and account ID, and configure list Region value, Type and Location visible in a simulated terminal. Distinguish the configured Region from an explicit --region option on the supplied sandbox command.
+note Keep credential creation out of scope; use supplied approved operator credentials and require the external secrets-handling preparation.
+
+### 1 aws_devops.allocate_vpc_and_subnet_cidrs
+INLINE supplied two-AZ design=supplied; Availability Zone=An independently located failure domain inside an AWS Region.
+f1 An IPv4 subnet CIDR must be within its VPC CIDR and must not overlap another subnet in that VPC.
+f2 IPv4 subnet sizes range from /16 to /28; AWS reserves the first four addresses and the last address of each subnet.
+f3 Choose subnet ranges inside the VPC that do not intersect, and allow for the five reserved addresses when checking usable capacity.
+f4 Each subnet resides entirely in one Availability Zone; create separate subnets for workloads in different Availability Zones.
+tb1 A lab needs two subnets for workloads placed in different Availability Zones. Address allocation has two separate questions: do the ranges fit without overlap, and does each range leave enough usable addresses? Complete the external IP-addressing and CIDR preparation before this AWS-specific allocation.
+tb4 Take a supplied VPC range of 10.20.0.0/16. Two candidate subnets are 10.20.1.0/24 and 10.20.2.0/24. They lie inside that VPC and do not intersect. A /24 contains 256 addresses; after the five AWS reservations, 251 remain usable. For 10.20.1.0/24, the reserved addresses are .0 through .3 and .255. Compare 251 with the supplied capacity requirement, not 256. Place the two separate subnets in the two intended Availability Zones. Now consider changing the second candidate to 10.20.1.128/25: that range lies inside the first subnet, so it fails the nonoverlap check even though it is inside the VPC. Containment and nonoverlap are distinct tests, and both must pass.
+tb5 A larger VPC does not make overlapping subnet ranges valid. Nor does an address count before reservations establish usable capacity. Check the VPC boundary, intersections with other subnets, and usable addresses separately; a subnet also belongs wholly to one Availability Zone.
+assessment identify_subnet_containment_and_overlap_errors
+assessment identify_subnet_size_and_usable_capacity_errors
+assessment identify_invalid_subnet_availability_zone_assignments
+practice_anchor.type field_selection
+practice_anchor.objective Allocate two subnet CIDRs within the supplied VPC 10.20.0.0/16, assigning one subnet to each of two supplied Availability Zones. Select from candidate ranges to provide at least 200 usable IPv4 addresses per subnet.
+practice_anchor.success Both selected subnet CIDRs are within 10.20.0.0/16, do not overlap, and have prefix lengths within /16 through /28. Each provides at least 200 usable addresses after subtracting the five AWS-reserved addresses, and each is assigned entirely to a different supplied Availability Zone.
+visual_anchor.type diagram
+visual_anchor.purpose Show 10.20.1.0/24 and 10.20.2.0/24 as nonintersecting ranges inside VPC 10.20.0.0/16, with one subnet assigned to each Availability Zone. Contrast the overlapping candidate 10.20.1.128/25 inside 10.20.1.0/24. Annotate the first four and last reserved addresses of each /24 and its 251 usable addresses.
+note Do not reteach CIDR arithmetic; require demonstrated external networking.ip_addressing_and_cidr mastery.
+
+### 2 aws_devops.compare_ecs_and_managed_eks_operational_ownership
+INLINE supplied ownership scenario=supplied; control plane=The platform management components, distinguished from customer-owned workload operation.; supplied team constraints=supplied
+f1 ECS is a managed container orchestration service that schedules container workloads; customers supply and operate their applications.
+f2 Managed EKS runs the Kubernetes control plane; customers retain responsibility for workload configuration and, depending on the compute option, worker nodes.
+f3 Choose between ECS and EKS by comparing the need for Kubernetes APIs and ecosystem with the team’s willingness to operate Kubernetes workloads.
+tb1 A team choosing a container platform asks who will operate each part of it. The useful comparison is not simply whether a service is managed. Identify which platform work the service handles and which workload work remains with the team.
+tb4 Imagine an approved workload requirement that calls for Kubernetes APIs and its ecosystem. Managed EKS supplies the Kubernetes control plane, but the team still configures and operates Kubernetes workloads; worker-node responsibility depends on the selected compute option. Compare that requirement with an alternative that only needs managed container scheduling and can be operated through ECS. Record both the platform requirement and the remaining customer duties. The choice should reflect the team's willingness to operate those workloads, not just a preference for the word managed. This is an ownership comparison, not an exercise in administering a self-managed Kubernetes control plane. For a second requirement, suppose the supplied application has no Kubernetes API dependency. That removes the stated platform reason for selecting EKS, but it does not remove the need to operate the application on ECS. Describe the remaining workload duty under both proposals. A comparison that says AWS manages everything for either service would hide the very ownership boundary the decision is meant to evaluate.
+tb5 Managed does not mean the application is operated for you. ECS customers supply and operate applications; EKS customers retain workload configuration responsibilities and may retain worker-node duties. Keep that compute-option qualification when describing EKS ownership.
+assessment assign_ecs_platform_and_application_responsibilities
+assessment assign_managed_eks_control_plane_workload_and_compute_dependent_node_responsibilities
+assessment align_platform_choice_and_retained_responsibilities_with_team_constraints
+practice_anchor.type field_selection
+practice_anchor.objective Select ECS or managed EKS for a supplied team's Kubernetes API and ecosystem requirements and willingness to operate Kubernetes workloads. Select the corresponding platform and customer responsibilities, preserving the compute-option qualification for EKS worker nodes.
+practice_anchor.success The selected platform fits the supplied requirements and operating constraints. The responsibility selections identify ECS-managed container scheduling and customer-operated applications, or the EKS-managed Kubernetes control plane and customer workload configuration, with worker-node responsibility dependent on the compute option.
+visual_anchor.type data_table
+visual_anchor.purpose Make the ownership comparison visible in a compact ECS-versus-managed-EKS table showing managed platform duties, retained customer workload duties, the compute-dependent EKS worker-node qualification, and the Kubernetes requirements and team willingness that guide the choice.
+note Keep this comparison short; do not introduce self-managed Kubernetes administration.
+
+### 3 aws_devops.configure_subnet_internet_routing
+INLINE supplied subnet and internet gateway=supplied
+f1 A subnet uses its explicitly associated route table or, without an explicit association, the VPC main route table.
+f2 Among matching destination routes, the most specific destination prefix takes priority.
+f3 Associate the subnet with the intended route table and add an IPv4 0.0.0.0/0 route targeting the attached internet gateway for internet-bound destinations not matched by a more specific route.
+tb1 A subnet's intended internet route has been added to a route table, yet the operator still needs to establish which table the subnet actually uses. Routing starts with association, then destination matching. Use the CIDR knowledge completed in external preparation.
+tb4 Suppose the intended table contains a route for 10.20.0.0/16 and an internet-gateway route for 0.0.0.0/0. A destination of 10.20.2.10 matches both prefixes; the /16 is more specific, so the default route does not take priority. An example destination of 198.51.100.8 matches the default route when no more specific destination route applies. Before reasoning from those entries, inspect the subnet's association. If it has no explicit association, it uses the VPC main table, which may not be the table you edited. Associate the subnet with the intended table and check the default route's target is the attached internet gateway. The routing claim here is about the selected route, not a claim that every other requirement for a working connection has been met.
+tb5 Adding 0.0.0.0/0 is not an instruction to override every other route. More specific matching destinations take priority. Also, editing a table is not proof that a subnet uses it: an explicit association or the main-table fallback determines that.
+assessment select_effective_subnet_route_table
+assessment select_most_specific_matching_destination_route
+assessment select_ipv4_default_route_and_internet_gateway_target
+practice_anchor.type tool_simulation
+practice_anchor.objective Associate the supplied subnet with the intended route table and configure an IPv4 0.0.0.0/0 route targeting the supplied internet gateway, which is already attached to the VPC.
+practice_anchor.success The subnet is explicitly associated with the intended route table. That table retains its 10.20.0.0/16 route and contains a 0.0.0.0/0 route targeting the supplied attached internet gateway.
+visual_anchor.type diagram
+visual_anchor.purpose Show a subnet using the VPC main route table before explicit association and the intended table afterward. Display that table's 10.20.0.0/16 and 0.0.0.0/0 routes, highlighting the /16 match for 10.20.2.10 and the internet-gateway default route for 198.51.100.8 when no more specific route matches.
+note Teach route selection only; leave security rules and end-to-end connectivity diagnosis to their later concepts.

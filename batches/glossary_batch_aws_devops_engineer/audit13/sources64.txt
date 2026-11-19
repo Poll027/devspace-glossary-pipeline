@@ -1,0 +1,68 @@
+
+### 64 aws_devops.execute_a_reviewed_terraform_plan_provisioning_ec2
+SOURCE 1 https://developer.hashicorp.com/terraform/cli/commands/apply [f1]
+20: When you pass a saved plan file to terraform apply, Terraform performs the operations in the saved plan without prompting you for confirmation.
+SOURCE 1 https://developer.hashicorp.com/terraform/cli/commands/apply [f2]
+14: When you run terraform apply without passing a saved plan file, Terraform automatically creates a new execution plan as if you had run terraform plan, prompts you to approve that plan, and performs the indicated operations.
+SOURCE 5 https://developer.hashicorp.com/terraform/cli/commands/show [f3]
+24: If you don't specify a file path, Terraform will show the latest state snapshot.
+
+### 65 aws_devops.execute_a_scoped_systems_manager_remote_command
+SOURCE 159 https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command.html [f1]
+34: Learn how to run a command that targets one or more managed nodes by using the AWS Management Console.
+SOURCE 161 https://docs.aws.amazon.com/systems-manager/latest/userguide/walkthrough-cli.html [f2]
+100: aws ssm send-command ^ --document-name "AWS-RunShellScript" ^ --targets "Key=InstanceIds,Values=instance-id" ^ --cli-input-json file://installCodeDeployAgent.json
+SOURCE 156 https://docs.aws.amazon.com/systems-manager/latest/userguide/monitor-commands.html [f3]
+113: However, if a command has 5 invocations, 4 of which return the status AccessDenied and 1 of which returns the status Success, then the parent command's status is Success.) This is a terminal state.
+
+### 66 aws_devops.gate_infrastructure_changes_with_configuration_validation
+SOURCE 6 https://developer.hashicorp.com/terraform/cli/commands/validate [f1]
+10: It does not validate remote services, such as remote state or provider APIs.
+SOURCE 6 https://developer.hashicorp.com/terraform/cli/commands/validate [f2]
+45: valid (boolean): Summarizes the overall validation result, by indicating true if Terraform considers the current configuration to be valid or false if it detected any errors.
+SOURCE 6 https://developer.hashicorp.com/terraform/cli/commands/validate [f3]
+53: The presence of errors causes Terraform to consider a configuration to be invalid, while warnings are just advice or caveats to the user which do not block working with the configuration.
+SOURCE 2 https://developer.hashicorp.com/terraform/cli/commands/fmt [f4]
+9: The terraform fmt command formats Terraform configuration file contents so that it matches the canonical format and style.
+
+### 67 aws_devops.handle_aws_automation_errors_with_bounded_retries_and_useful_reporting
+SOURCE 98 https://docs.aws.amazon.com/boto3/latest/guide/retries.html [f1]
+606: AWS config file with max_attempts = 3: 1 initial request + 2 retries = 3 total attempts
+SOURCE 98 https://docs.aws.amazon.com/boto3/latest/guide/retries.html [f2]
+630: import boto3 from botocore.config import Config config = Config( retries = { 'total_max_attempts': 10, 'mode': 'standard' } ) ec2 = boto3.client('ec2', config=config)
+SOURCE 97 https://docs.aws.amazon.com/boto3/latest/guide/error-handling.html [f3]
+624: import botocore import boto3 client = boto3.client('sqs') queue_url = 'SQS_QUEUE_URL' try: client.send_message(QueueUrl=queue_url, MessageBody=('some_message')) except botocore.exceptions.ClientError as err: if err.response['Error']['Code'] == 'InternalError': # Generic error # We grab the message, request ID, and HTTP code to give to customer support print('Error Message: {}'.format(err.response['Error']['Message'])) print('Request ID: {}'.format(err.response['ResponseMetadata']['RequestId'])) print('Http code: {}'.format(err.response['ResponseMetadata']['HTTPStatusCode'])) else: raise err
+SOURCE 98 https://docs.aws.amazon.com/boto3/latest/guide/retries.html [f4]
+604: When set in a Config object: max_attempts excludes the initial request (retries only)
+
+### 68 aws_devops.identify_avoidable_charges_with_cost_explorer
+SOURCE 126 https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html [f1]
+24: Cost Explorer uses the same dataset that is used to generate the AWS Cost and Usage Reports and the detailed billing reports.
+SOURCE 125 https://docs.aws.amazon.com/cost-management/latest/userguide/ce-filtering.html [f2]
+247: This Usage Type Group contains only the following Usage Types:
+SOURCE 126 https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html [f3]
+12: You can view your costs and usage using the Cost Explorer user interface free of charge.
+
+### 69 aws_devops.operate_an_eks_deployment_using_supplied_cluster_access_setup
+SOURCE 203 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ [f1]
+414: You can scale it up/down, roll back to a previous revision, or even pause it if you need to apply multiple tweaks in the Deployment Pod template.
+SOURCE 203 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ [f2]
+445: Should you manually scale a Deployment, example via kubectl scale deployment deployment --replicas=X, and then you update that Deployment based on a manifest (for example: by running kubectl apply -f deployment.yaml), then applying that manifest overwrites the manual scaling that you previously did.
+SOURCE 203 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ [f3]
+466: If you manually delete a Pod, the lifecycle is controlled by the ReplicaSet and the replacement will be created immediately (even if the old Pod is still in a Terminating state).
+
+### 70 aws_devops.plan_infrastructure_and_data_restoration_in_dependency_order
+SOURCE 187 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html [f1]
+18: A workload has no disaster recovery plan at all.
+SOURCE 187 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html [f2]
+74: Use data plane operations during failover and avoid control plane dependencies, as described in REL11-BP04 Rely on the data plane and not the control plane during recovery.
+SOURCE 187 https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html [f3]
+48: Every strategy therefore needs point-in-time backups or versioning in addition to replication, so you can recover to a moment before the data was damaged.
+
+### 71 aws_devops.query_logs_to_correlate_a_service_symptom
+SOURCE 34 https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html [f1]
+147: Logs Insights QL commands supported in log classes
+SOURCE 32 https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax-Filter.html [f2]
+16: fields @timestamp, @message | filter (range>3000 and accountId=123456789012) | sort @timestamp desc | limit 20
+SOURCE 33 https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax-Sort.html [f3]
+22: Please refer to your browser's Help pages for instructions.

@@ -1,0 +1,98 @@
+
+### 24 aws_devops.choose_rolling_blue_green_or_canary_delivery_for_stated_availability_and_rollback_requirements
+SOURCE 178 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html [f1]
+9: Your delivery pipeline releases production changes in incremental stages rather than to all customers at once.
+48: OPS03-BP02 Test and validate any and all changes
+SOURCE 178 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html [f2]
+56: Blue/green deployments with AWS Elastic Beanstalk
+58: New – Fully managed blue/green deployments in Amazon Aurora and Amazon RDS
+SOURCE 178 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html [f3]
+20: Recovery is faster because the previous version stays available and traffic can shift back to it.
+27: Several strategies implement this pattern, differing in cost, speed, and rollback behavior. Rolling deployments replace instances in batches and use the least extra capacity, but a failure can leave the fleet in a mixed-version state. Immutable and blue/green deployments create a parallel set of resources running the new version and shift traffic to it. Rollback shifts traffic back, at the cost of running two environments during the transition. Canary releases send a small share of live traffic to the new version, which catches problems that appear only under real load. Feature flags separate deployment from release, so you can turn a change on or off without another deployment. Most teams combine these.
+SOURCE 178 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html [f4]
+
+### 25 aws_devops.collect_host_telemetry_with_the_cloudwatch_agent
+SOURCE 38 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html [f1]
+7: The CloudWatch agent configuration file is a JSON file with five sections: agent, metrics, logs, traces, and opentelemetry.
+419: For the first entry, the agent collects all journal logs without any filtering and sends them to the journald-all-logs log group.
+SOURCE 38 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html [f2]
+520: Save the CloudWatch agent configuration file manually
+SOURCE 45 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/start-CloudWatch-Agent-on-premise-SSM-onprem.html [f3]
+9: Start the CloudWatch agent using the command line on Amazon EC2
+40: In this command, -a fetch-config causes the agent to load the latest version of the CloudWatch agent configuration file, and -s starts the agent.
+
+### 26 aws_devops.configure_cloudwatch_alarm_evaluation_and_missing_data_behavior_from_supplied_signals_and_thresholds
+SOURCE 41 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html [f1]
+8: A metric alarm has the following possible states:
+41: At 12:03, the alarm evaluates again, sees the successful job, and returns to OK state.
+SOURCE 41 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html [f2]
+23: Datapoints to Alarm is the number of data points within the Evaluation Periods that must be breaching to cause the alarm to go to the ALARM state. The breaching data points don't have to be consecutive, but they must all be within the last number of data points equal to Evaluation Period.
+26: If the number of evaluation periods multiplied by the length of each evaluation period exceeds one day, the alarm is evaluated once per hour. For more details about how these multi-day alarms are evaluated, see Example of evaluating a multi-day alarm.
+SOURCE 39 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ConsoleAlarms.html [f3]
+6: You choose a CloudWatch metric for the alarm to watch, and the threshold for that metric. The alarm goes to ALARM state when the metric breaches the threshold for a specified number of evaluation periods.
+18: Under Period, choose the evaluation period for the alarm. When evaluating the alarm, each period is aggregated into one data point.
+SOURCE 42 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html [f4]
+24: How alarm state is evaluated when data is missing
+75: Data points # of missing data points Missing Ignore Breaching Not breaching
+
+### 27 aws_devops.configure_secure_human_access_with_temporary_credentials
+SOURCE 152 https://docs.aws.amazon.com/singlesignon/latest/userguide/permissionsetsconcept.html [f1]
+1: Manage AWS accounts with permission sets - AWS IAM Identity Center
+3: Manage AWS accounts with permission sets - AWS IAM Identity Center
+SOURCE 151 https://docs.aws.amazon.com/singlesignon/latest/userguide/assignusers.html [f2]
+1: Assign user or group access to AWS accounts - AWS IAM Identity Center
+3: Assign user or group access to AWS accounts - AWS IAM Identity Center
+SOURCE 101 https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html [f3]
+146: $ aws sso login --profile my-dev-profile --use-device-code
+165: aws sso login in the AWS CLI version 2 Reference
+
+### 28 aws_devops.configure_security_groups
+SOURCE 170 https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html [f1]
+6: Control traffic to your AWS resources using security groups
+48: The following diagram shows a VPC with two security groups and two subnets. The instances in subnet A have the same connectivity requirements, so they are associated with security group 1. The instances in subnet B have the same connectivity requirements, so they are associated with security group 2. The security group rules allow traffic as follows:
+SOURCE 170 https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html [f2]
+31: Security groups do not filter traffic destined to and from the following:
+SOURCE 166 https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html [f3]
+8: You can add or remove rules for a security group (also referred to as authorizing or revoking inbound or outbound access). A rule applies either to inbound traffic (ingress) or outbound traffic (egress). You can grant access to a specific source or destination.
+62: Add rules to the load balancer security group to allow HTTP and HTTPS traffic from the internet. The source is 0.0.0.0/0.
+
+### 29 aws_devops.define_an_ec2_instance_with_terraform_hcl_and_a_pinned_provider
+SOURCE 11 https://developer.hashicorp.com/terraform/language/providers/requirements [f1]
+67: terraform { required_providers { mycloud = { source = "hashicorp/aws" version = ">= 1.0" } } }
+93: terraform { required_providers { aws = { source = "hashicorp/aws" version = "~> 1.0" } } }
+SOURCE 208 https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance [f2]
+3: Please enable Javascript to use this application
+SOURCE 7 https://developer.hashicorp.com/terraform/cli/run [f3]
+19: Plans are usually run to validate configuration changes and confirm that the resulting actions are as expected. However, terraform plan can also save its plan as a runnable artifact, which terraform apply can use to carry out those exact changes.
+24: For details, see the terraform apply command.
+SOURCE 3 https://developer.hashicorp.com/terraform/cli/commands/init [f3]
+1: terraform init command reference | Terraform | HashiCorp Developer
+43: Most Terraform providers are published separately from Terraform as plugins. During init, Terraform searches the configuration for both direct and indirect references to providers and attempts to install the plugins for those providers.
+SOURCE 4 https://developer.hashicorp.com/terraform/cli/commands/plan [f3]
+20: If you run terraform plan without the -out=FILE option then it will create a speculative plan, which is a description of the effect of the plan but without any intent to actually apply it.
+39: Note: In Terraform v0.15 and earlier, the -destroy option is supported only by the terraform plan command, and not by the terraform apply command. To create and apply a plan in destroy mode in earlier versions you must run terraform destroy.
+SOURCE 1 https://developer.hashicorp.com/terraform/cli/commands/apply [f3]
+15: You can pass the -auto-approve option to instruct Terraform to apply the plan without asking for confirmation.
+37: All planning modes and planning options for terraform plan - Customize how Terraform will create the plan. Only available when you run terraform apply without a saved plan file.
+
+### 30 aws_devops.evaluate_resource_based_permissions_for_a_requested_operation
+SOURCE 77 https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_identity-vs-resource.html [f1]
+16: John – John can perform list and read actions on Resource X. He is granted this permission by the identity-based policy on his user and the resource-based policy on Resource X.
+18: Mary – Mary can perform list, read, and write operations on Resource X, Resource Y, and Resource Z. Her identity-based policy allows her more actions on more resources than the resource-based policies, but none of them deny access.
+SOURCE 77 https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_identity-vs-resource.html [f2]
+6: A policy is an object in AWS that, when associated with an identity or resource, defines their permissions. When you create a permissions policy to restrict access to a resource, you can choose an identity-based policy or a resource-based policy.
+23: A user who has specific permissions might request a resource that also has a permissions policy attached to it. In that case, AWS evaluates both sets of permissions when determining whether to grant access to the resource. For information about how policies are evaluated, see Policy evaluation logic.
+SOURCE 84 https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html [f3]
+3: Policy evaluation logic - AWS Identity and Access Management
+4: DocumentationAWS Identity and Access ManagementUser Guide
+
+### 31 aws_devops.execute_an_established_managed_account_onboarding_workflow
+SOURCE 121 https://docs.aws.amazon.com/controltower/latest/userguide/account-factory.html [f1]
+6: Provision and manage accounts with Account Factory
+18: Considerations for managing accounts in Account Factory
+SOURCE 123 https://docs.aws.amazon.com/controltower/latest/userguide/methods-of-provisioning.html [f2]
+15: Through automated enrollment, by moving an account into an OU from the console. See Move and enroll accounts with auto-enrollment
+19: Lambda code: From your AWS Control Tower landing zone's management account, using Lambda code and appropriate IAM roles. See Automated Account Provisioning with IAM Roles.
+SOURCE 122 https://docs.aws.amazon.com/controltower/latest/userguide/how-controls-work.html [f3]
+7: A control is a high-level rule that provides ongoing governance for your overall AWS environment. Each control enforces a single rule, and it's expressed in plain language. You can change the elective or strongly recommended controls that are in force, at any time, from the AWS Control Tower console or the AWS Control Tower APIs. Mandatory controls are always applied, and they can't be changed.
+15: To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.

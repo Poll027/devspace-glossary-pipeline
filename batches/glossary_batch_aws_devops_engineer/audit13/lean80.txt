@@ -1,0 +1,73 @@
+
+### 80 aws.credential_expiry
+INLINE supplied automation operation=supplied; credential expiry=The time after which a temporary credential session is no longer valid.
+f1 Temporary credentials stop being usable after expiration and must be replaced with a newly authorized session.
+f2 On an expired-session error, renew the approved session through its credential provider and use the new access key, secret key and token together.
+f3 Before retrying a resource-changing operation, inspect its known outcome and use a supported idempotency token where the supplied operation offers one to avoid duplicate effects.
+tb1 An approved session expired while an operational task was being handled. Renew the credentials, but first keep the known outcome of any resource-changing request in view before deciding to retry it.
+tb4 On the supplied expired-session error, renew through the approved credential provider and use the new access key, secret key and session token together. For a resource-changing request, inspect its known outcome before repeating it. Use a supported idempotency token where the supplied operation offers one. Record whether the original request is known to have taken effect instead of assuming an error always means no effect occurred. Compare a known completed mutation with an operation whose result is unresolved. Renewed credentials are needed in either case, but the completed mutation should not be described as needing repetition simply because the caller later expired. For the unresolved case, inspect available outcome evidence before retrying and use the supplied operation's supported idempotency token where available. Valid identity and safe repeat behavior are separate questions.
+tb5 Renewing credentials does not settle a previous operation's outcome. Expired credentials must be replaced, but mutation retries require checking the known result and using supported idempotency where available to avoid duplicate effects.
+assessment recognize_temporary_credential_expiration
+assessment renew_approved_session_with_complete_credential_set
+assessment determine_safe_retry_from_known_outcome_and_supported_idempotency
+practice_anchor.type tool_simulation
+practice_anchor.objective Recover one supplied resource-changing automation operation from an expired session using the approved credential provider, without extending permissions. Inspect the operation's known outcome before deciding whether to retry, and use its supported idempotency token if a retry is warranted.
+practice_anchor.success The expired session is replaced through the approved provider with the new access key, secret key and session token used together, without displaying credential values or changing permissions. The learner checks the supplied outcome evidence, avoids repeating a known completed operation, and uses the supplied supported idempotency token for any warranted retry.
+visual_anchor.type process_flow
+visual_anchor.purpose Make session expiration and safe retry decisions visible as separate checks: replace the expired credential set through the approved provider, inspect the original operation's known outcome, avoid repeating a completed mutation, and use supported idempotency when retrying is warranted.
+note Do not expose credentials or claim every AWS operation supports idempotency tokens.
+
+### 81 aws.ecs_task_identity
+INLINE supplied ECS task=supplied; task role versus execution role=The task role authorizes application AWS calls; the execution role authorizes ECS startup work such as image pulls and log setup.; supplied task=supplied
+f1 The ECS task role supplies credentials for AWS calls made by the application containers.
+f2 The task execution role authorizes ECS startup work such as pulling an image and publishing logs; it is distinct from application AWS permissions.
+f3 Set taskRoleArn to the approved least-privilege application role in the task definition and test allowed and denied application operations from the task.
+tb1 An ECS task starts, yet its application still needs AWS permissions. Separate the task execution role's startup work from the task role used by application containers.
+tb4 In the supplied task definition, set taskRoleArn to the approved least-privilege application role. From the task, test the supplied allowed and denied application operations. Inspect those results under the task's application identity. The execution role covers startup work such as image pulling and log publication; those capabilities do not substitute for the application role's permissions.
+tb5 The task execution role is not the task role. Successful image pulling or log publication does not establish application AWS access. Set and test the approved taskRoleArn for application calls.
+assessment distinguish_application_task_role_permissions_from_execution_role_startup_permissions
+practice_anchor.type tool_simulation
+practice_anchor.objective Assign the approved least-privilege application role to taskRoleArn in a supplied ECS task definition, then run the supplied allowed and denied application operations from the task.
+practice_anchor.success taskRoleArn references the approved application role, the allowed application operation succeeds, and the denied application operation returns an access denial. The task execution role remains unchanged.
+visual_anchor.type diagram
+visual_anchor.purpose Show two distinct permission paths: the task execution role authorizes ECS startup work, including image pulling and log publication; the task role referenced by taskRoleArn supplies credentials for application AWS calls. Associate the allowed and denied application test results with the task role.
+note Do not broaden startup permissions to cover application work; use approved roles.
+
+### 82 aws_devops.apply_an_approved_security_baseline_to_sandbox_accounts
+INLINE supplied security baseline=supplied; supplied baseline=supplied
+f1 A governed account baseline applies standardized organizational controls and configuration to accounts.
+f2 Apply the supplied approved control configuration to the sandbox account and inspect each stated control’s deployment or evaluation result.
+f3 Distinguish preventive controls that restrict actions from detective controls that report noncompliance when interpreting the baseline checks.
+tb1 A sandbox account needs the approved governed baseline. Apply the supplied control configuration, then check each control's actual deployment or evaluation result.
+tb4 Use the approved sandbox control configuration and inspect every stated checkpoint. For a supplied preventive control, interpret its result as a restriction on actions. For a supplied detective control, interpret evaluation as reporting noncompliance. Record those different results by control rather than treating all baseline settings as equivalent barriers. The task applies an established baseline; it does not design new organizational security controls.
+tb5 Preventive and detective controls do different work. A detective noncompliance report is not itself the preventive restriction, and the presence of baseline configuration is not the per-control verification result.
+assessment verify_stated_baseline_controls_in_a_sandbox_account
+assessment distinguish_preventive_restrictions_from_detective_noncompliance_results
+practice_anchor.type tool_simulation
+practice_anchor.objective Apply one supplied approved baseline to the designated sandbox account, inspect every stated control's deployment or evaluation result, and record the control-check results.
+practice_anchor.success The supplied approved configuration is applied to the designated sandbox account. Every stated control has a recorded deployment or evaluation result, with preventive controls interpreted as action restrictions and detective controls interpreted as noncompliance reporting. No additional controls are introduced.
+visual_anchor.type UI_state
+visual_anchor.purpose Show the designated sandbox account's applied baseline and per-control checkpoints, distinguishing preventive deployment results from detective evaluation results.
+note Use supplied approved controls only; do not add organizational-policy behaviors absent from the brief.
+
+### 83 aws_devops.apply_bounded_eks_workload_configuration_and_secrets
+INLINE Kubernetes Secret reference=A supplied Kubernetes Secret is referenced from the Deployment; independent Secrets Manager retrieval is not required and configuration injection is taught here.; supplied Deployment configuration=supplied; supplied Deployment=supplied
+f1 A ConfigMap supplies nonconfidential configuration separately from the container image.
+f2 Reference a ConfigMap with envFrom.configMapRef or env.valueFrom.configMapKeyRef in the supplied Pod template.
+f3 Reference a Secret with env.valueFrom.secretKeyRef or a secret-backed volume and test the consuming workload without printing the secret values.
+f4 Secrets require access control and appropriate storage protection; base64 encoding is not encryption.
+tb1 A supplied EKS workload needs ordinary configuration and a secret without rebuilding its image or displaying the secret. Select the intended references and test the consumer's safe behavior.
+tb4 Reference the supplied ConfigMap through envFrom.configMapRef or env.valueFrom.configMapKeyRef in the Pod template. Reference the supplied Secret through env.valueFrom.secretKeyRef or the prepared secret-backed volume. Test the consuming workload without printing secret values. A ConfigMap is for nonconfidential configuration; the Secret still needs access control and storage protection because base64 encoding is not encryption. If the exercise changes a ConfigMap used for environment variables, do not expect values in already-running containers to update automatically. Keep the consumer check tied to the actual supplied configuration and secret references.
+tb5 Base64 encoding is not encryption. Also, ConfigMap-backed environment variables do not automatically update inside already-running containers after the ConfigMap changes. Test the intended consumer and protect secret values instead of exposing them for inspection.
+tb6 Environment variables populated from a ConfigMap do not automatically update inside already-running containers when the ConfigMap changes.
+assessment verify_nonconfidential_configmap_references
+assessment verify_secret_consumption_without_exposing_values
+assessment distinguish_secret_encoding_from_required_protection
+assessment recognize_running_container_environment_update_limits
+practice_anchor.type live_code
+practice_anchor.objective Configure the supplied Deployment's Pod template with references to the supplied ConfigMap and Secret, then use the supplied safe consumer check to verify consumption without displaying secret values.
+practice_anchor.success The Pod template references the intended ConfigMap and Secret names and keys, and the supplied consumer check confirms successful consumption without exposing secret values.
+practice_anchor.live_code {"required_skill": "Edit configuration and secret references within a supplied Deployment Pod template.", "allowed_syntax": ["YAML mappings and lists within the supplied Deployment", "spec.template.spec.containers[].envFrom[].configMapRef.name", "spec.template.spec.containers[].env[].name", "spec.template.spec.containers[].env[].valueFrom.configMapKeyRef.name", "spec.template.spec.containers[].env[].valueFrom.configMapKeyRef.key", "spec.template.spec.containers[].env[].valueFrom.secretKeyRef.name", "spec.template.spec.containers[].env[].valueFrom.secretKeyRef.key"], "blocked_syntax": ["kind: Service", "kubectl expose", "kubectl rollout restart", "kubectl rollout undo", "kubectl set image", "strategy.rollingUpdate"], "starter_state_intent": "Provide the supplied Deployment with its existing container names and image unchanged, the supplied ConfigMap and Secret reference names and keys, and a prepared consumer check that reports success or failure without returning secret values.", "observable_success": "Only the intended Pod-template references are added. They match the supplied objects and keys, and the prepared check reports successful configuration and secret consumption without displaying secret values."}
+visual_anchor.type code
+visual_anchor.purpose Make the supplied Deployment's Pod-template references visible, connecting ConfigMap and Secret names and keys to their consuming environment variables while keeping secret values hidden.
+note Use supplied configuration/secret objects; avoid secret display and untaught rollout/update procedures.

@@ -1,0 +1,92 @@
+Using dead-letter queues to process undelivered events in EventBridge - Amazon EventBridge
+View a markdown version of this page
+Using dead-letter queues to process undelivered events in EventBridge - Amazon EventBridge
+DocumentationAmazon EventBridgeUser Guide
+Considerations for using DLQsGranting permissions to DLQsResending events from DLQs
+Using dead-letter queues to process undelivered events in EventBridge
+To avoid losing events after they fail to be delivered to a target, you can configure a dead-letter queue (DLQ) and send all failed events to it for processing later.
+EventBridge DLQs are standard Amazon SQS queues that EventBridge uses to store events that couldn't successfully be delivered to a target. When you create a rule and add a target, you can choose whether or not to use a DLQ. When you configure a DLQ, you can retain any events that weren't successfully delivered. Then you can resolve the issue that resulted in the failed event delivery and process the events at a later time.
+When you configure a DLQ for a target of a rule, EventBridge sends the events with failed invocations to the Amazon SQS queue selected.
+Event errors are handled in different ways. Some events are dropped or sent to a DLQ without any retry attempts. For example, for errors that result from missing permissions to a target, a target resource that no longer exists, or a target that cannot be found due to an invalid address or DNS lookup failure, no retry attempts will happen until action is taken to resolve the underlying issue. EventBridge sends these events directly to the target DLQ, if you have specified one.
+When an event delivery fails, EventBridge publishes an event to Amazon CloudWatch metrics indicating that a target invocation failed. If you use a DLQ, additional metrics are sent to CloudWatch including InvocationsSentToDLQ and InvocationsFailedToBeSentToDLQ.
+You can also specify DLQs for event buses, if you use AWS KMS customer managed keys to encrypt events at rest. For more information, see Using dead-letter queues to capture encrypted event errors in EventBridge.
+Each message in your DLQ will include the following custom attributes:
+RULE_ARN
+TARGET_ARN
+ERROR_CODE
+The following is a sample of the error codes a DLQ can return:
+ACTION_DECRYPTION_FAILURE
+CONNECTION_FAILURE
+CROSS_ACCOUNT_INGESTION_FAILED
+CROSS_REGION_INGESTION_FAILED
+ERROR_FROM_TARGET
+EVENT_DECRYPTION_FAILURE
+EVENT_ENCRYPTION_FAILURE
+EVENTS_IN_BATCH_REQUEST_REJECTED
+FAILED_TO_ASSUME_ROLE
+INTERNAL_ERROR
+INVALID_JSON
+INVALID_PARAMETER
+NO_PERMISSIONS
+NO_RESOURCE
+RESOURCE_ALREADY_EXISTS
+RESOURCE_LIMIT_EXCEEDED
+RESOURCE_MODIFICATION_COLLISION
+RULE_DECRYPTION_FAILURE
+SDK_CLIENT_ERROR
+THIRD_ACCOUNT_HOP_DETECTED
+THIRD_REGION_HOP_DETECTED
+THROTTLING
+TIMEOUT
+TRANSIENT_ASSUME_ROLE
+UNKNOWN
+ERROR_MESSAGE
+EXHAUSTED_RETRY_CONDITION
+The following conditions can be returned:
+MaximumRetryAttempts
+MaximumEventAgeInSeconds
+RETRY_ATTEMPTS
+The following video goes over setting up DLQs:
+Topics
+Considerations for using a dead-letter queue
+Granting permissions to the dead-letter queue
+How to resend events from a dead-letter queue
+Considerations for using a dead-letter queue
+Consider the following when configuring a DLQ for EventBridge.
+Only standard queues are supported. You can't use a FIFO queue for a DLQ in EventBridge.
+EventBridge includes event metadata and message attributes in the message, including: the Error Code, Error Message, the Exhausted Retry Condition, Rule ARN, Retry Attempts, and the Target ARN. You can use these values to identify an event and the cause of the failure.
+Permissions for DLQs in the same account:
+If you add a target to a rule using the console, and you choose an Amazon SQS queue in the same account, a resource-based policy that grants EventBridge access to the queue is attached to the queue for you.
+If you use the PutTargets operation of the EventBridge API to add or update a target for a rule, and you choose an Amazon SQS queue in the same account, you must manually grant permissions to the queue selected. To learn more, see Granting permissions to the dead-letter queue.
+Permissions for using Amazon SQS queues from a different AWS account.
+If you create a rule from the console, queues from other accounts aren't displayed for you to select. You must provide the ARN for the queue in the other account, and then manually attach a resource-based policy to grant permission to the queue. To learn more, see Granting permissions to the dead-letter queue.
+If you create a rule using the API, you must manually attach a resource-based policy to the SQS queues in another account that is used as the dead-letter queue. To learn more, see Granting permissions to the dead-letter queue.
+The Amazon SQS queue you use must be in the same Region in which you create the rule.
+Granting permissions to the dead-letter queue
+To successfully deliver events to the queue, EventBridge must have permission to do so. When you specify a DLQ using the EventBridge console, the permissions are automatically added. This includes:
+When you configure a DLQ for a target of a rule.
+When you configure a DLQ for an event bus where you've specified that EventBridge use an AWS KMS customer managed key to encrypt events at rest.
+For more information, see Using dead-letter queues to capture encrypted event errors in EventBridge.
+If you specify a DLQ using the API, or use a queue that is in a different AWS account, you must manually create a resource-based policy that grants the required permissions and then attach it to the queue.
+Target dead-letter queue permissions example
+The following resource-based policy demonstrates how to grant the required permissions for EventBridge to send event messages to an Amazon SQS queue. The policy example grants the EventBridge service permissions to use the SendMessage operation to send messages to a queue named "MyEventDLQ". The queue must be in the us-west-2 Region in AWS account 123456789012. The Condition statement allows only requests that come from a rule named "MyTestRule" that is created in the us-west-2 Region in the AWS account 123456789012.
+{ "Sid": "Dead-letter queue permissions", "Effect": "Allow", "Principal": { "Service": "events.amazonaws.com" }, "Action": "sqs:SendMessage", "Resource": "arn:aws:sqs:us-west-2:123456789012:MyEventDLQ", "Condition": { "ArnEquals": { "aws:SourceArn": "arn:aws:events:us-west-2:123456789012:rule/MyTestRule" } } }
+Event bus dead-letter queue permissions example
+The following resource-based policy demonstrates how to grant the required permissions when specifying a DLQ for an event bus. In this case, aws:SourceArn specifies the ARN of the event bus sending the events to the DLQ. Here again in this example, the queue must be in the same Region as the event bus.
+{ "Sid": "Dead-letter queue permissions", "Effect": "Allow", "Principal": { "Service": "events.amazonaws.com" }, "Action": "sqs:SendMessage", "Resource": "arn:aws:sqs:region:account-id:queue-name", "Condition": { "ArnEquals": { "aws:SourceArn": "arn:aws:events:region:account-id:event-bus/event-bus-arn" } } }
+To attach the policy to the queue, use the Amazon SQS console, open the queue, then choose the Access policy and edit the policy. You can also use the AWS CLI. To learn more, see Amazon SQS permissions.
+How to resend events from a dead-letter queue
+You can move messages out of a DLQ in two ways:
+Avoid writing Amazon SQS consumer logic – Set your DLQ as an event source to the Lambda function to drain your DLQ.
+Write Amazon SQS consumer logic – Use the Amazon SQS API, AWS SDK, or AWS CLI to write custom consumer logic for polling, processing, and deleting the messages in the DLQ.
+Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+Retrying event delivery
+Events via CloudTrail
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

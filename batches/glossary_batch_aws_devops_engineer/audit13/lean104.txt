@@ -1,0 +1,70 @@
+
+### 104 recovery.credential_readiness
+INLINE supplied backup and recovery resource checks=supplied; supplied recovery session and resources=supplied
+f1 Recovery execution needs a valid, unexpired session with the permissions required for backup access and resource creation.
+f2 Establish the approved recovery session, inspect its identity and expiry, and test the supplied backup-read and recovery-resource operations before rehearsal.
+f3 A valid credential lifetime does not prove sufficient authorization; verify both access outcomes and lifetime.
+tb1 Recovery rehearsal needs a valid session that can perform the required work. Check lifetime and authorization independently before using it for restoration.
+tb4 Establish the approved recovery session and inspect its identity and expiry. Test the supplied backup-read and recovery-resource operations. Record both outcomes alongside the credential lifetime. If the credentials are unexpired but the backup-read test is denied, they are not ready for the required recovery. Conversely, permission evidence does not remove the need for a valid session during execution.
+tb5 Unexpired credentials do not prove sufficient authorization. Recovery readiness needs both valid lifetime and successful required access tests for backup reading and resource creation.
+assessment verify_recovery_session_identity_and_expiry
+assessment verify_backup_access_and_recovery_resource_creation
+assessment distinguish_session_lifetime_from_authorization
+practice_anchor.type tool_simulation
+practice_anchor.objective Test one approved recovery session before rehearsal using the supplied identity, expiry, backup-read, and recovery-resource checks without exposing credentials.
+practice_anchor.success The approved session is established, its identity and expiry are inspected, and both supplied operation outcomes are recorded alongside its lifetime. Readiness requires the expected identity, a valid unexpired session, and successful backup-read and recovery-resource operations; an unexpired session with a denied operation is identified as not ready.
+visual_anchor.type UI_state
+visual_anchor.purpose Show the approved recovery session's identity and expiry alongside the supplied backup-read and recovery-resource test outcomes, making lifetime and authorization separately visible without displaying credentials.
+note Use approved session provider and safe supplied tests; do not expose credentials.
+
+### 105 recovery.rehearsal_isolation
+INLINE supplied account and network boundaries=supplied; production isolation=Supplied account and network boundaries prevent rehearsal resources or test traffic affecting production.
+f1 Recovery testing should use a controlled environment that limits the experiment’s effects.
+f2 Prepare the supplied isolated account and network target and check restoration destinations and client test traffic do not point to production.
+f3 Record the approved scope and stop conditions before provisioning recovery resources or directing test traffic.
+tb1 A recovery rehearsal must stay inside the approved environment. Confirm restoration destinations and test traffic before provisioning resources, not only after clients begin using them.
+tb4 Prepare the supplied isolated account and network target. Inspect restoration destinations and client test traffic settings to confirm they do not point to production. Record approved scope and stop conditions before provisioning or redirecting traffic. Keep those settings beside the rehearsal record so isolation is evidence of the actual targets, not just a label on the exercise.
+tb5 Calling an account a sandbox is not the complete isolation check. Restoration destinations and client traffic must also stay out of production, and approved scope/stop conditions must be recorded before the experiment acts.
+assessment verify_restoration_destinations_and_test_traffic_are_isolated_from_production
+assessment verify_scope_and_stop_conditions_are_recorded_before_rehearsal_actions
+practice_anchor.type tool_simulation
+practice_anchor.objective Prepare one recovery target using the supplied isolated account and network boundaries. Inspect restoration destinations and client test traffic settings, and record the approved scope and stop conditions before provisioning resources or directing test traffic.
+practice_anchor.success The prepared target uses the supplied isolated account and network. Restoration destinations and client test traffic settings do not point to production, and the approved scope and stop conditions are recorded before any provisioning or test traffic begins.
+visual_anchor.type diagram
+visual_anchor.purpose Make the supplied isolated account and network boundaries visible, with restoration destinations and client test traffic paths confined to the recovery target and production clearly outside those paths.
+note Use supplied isolated target; do not create production cutover or new network-isolation design.
+
+### 106 response.approval_stop
+INLINE supplied remediation workflow=supplied; approval and stop controls=The remediation action executes only after approval and is blocked by an active stop condition.
+f1 An aws:approve Automation step pauses execution pending approval or rejection by the designated approvers.
+f2 Put the approval step before the protected operation and use the supplied branching or failure path to prevent that operation on rejection or stop.
+f3 Stop an Automation execution with the approved stop operation when a stop condition occurs and inspect execution state before allowing further actions.
+tb1 A protected Automation operation requires approval and an enforceable stop path. Position that decision before the operation and inspect the actual execution state when stopping.
+tb4 Place the supplied aws:approve step before the protected action. Use the established branching or failure path so rejection or stop prevents that operation. In the supplied stop-condition test, use the approved stop operation and inspect execution state before allowing further actions. The approval step pauses for designated approvers; it is not authorization to run the protected action before they decide.
+tb5 An approval request is not an approval outcome. Rejection or stop must prevent the protected operation, and a stop request still requires inspecting execution state before further action is allowed.
+assessment verify_pending_or_rejected_approval_blocks_protected_operation
+assessment verify_stopped_execution_blocks_protected_operation_before_further_actions
+practice_anchor.type tool_simulation
+practice_anchor.objective Add the supplied aws:approve gate before the protected operation in a bounded remediation workflow. Connect the supplied rejection or failure path, then use the approved stop operation when the supplied stop condition occurs.
+practice_anchor.success The workflow pauses for designated approvers before the protected operation. Pending approval, rejection, and stop do not permit that operation. After requesting a stop, execution state is inspected before any further action is allowed.
+visual_anchor.type UI_state
+visual_anchor.purpose Make the approval step's position before the protected operation visible, together with pending, rejected, and stopped execution states and the protected operation remaining unexecuted in each case.
+note Use supplied branching and stop operation; do not invent Automation document syntax.
+
+### 107 response.audit_evidence
+INLINE supplied response run=supplied; execution identifier=A run identifier connecting authority, target, performed action and outcome for audit review.
+f1 Automation execution details include an execution identifier, step statuses, inputs, outputs and failure information.
+f2 Record execution ID, acting role, target identities, start/end times and per-step outcomes for the supplied response.
+f3 Use CloudTrail request identity and operation evidence to attribute the underlying AWS actions; success and failure outcomes both belong in the response record.
+tb1 An operational response needs an audit record for successful and failed steps. Connect the Automation execution context with CloudTrail evidence of the underlying AWS actions.
+tb4 Record the execution ID, acting role, targets, start/end times and per-step outcomes from the supplied response. Inspect inputs, outputs and failure information as part of that record. Use CloudTrail request identity and operation evidence to attribute the AWS actions. If a step failed, retain its evidence rather than omitting it from a success-focused summary. This makes the record describe what the response actually attempted and achieved.
+tb5 Audit evidence is not only a list of successful steps. Inputs, outputs, failure information and attributed underlying operations all matter. Keep both success and failure outcomes with the execution identity and targets.
+assessment identify_response_execution_and_per_step_outcomes
+assessment attribute_aws_operations_to_acting_authority_and_targets
+assessment recognize_success_and_failure_evidence
+practice_anchor.type field_selection
+practice_anchor.objective Capture the execution ID, acting role, target identities, start/end times and per-step outcomes for one supplied response run. Include inputs, outputs and failure information, and select CloudTrail request identity and operation evidence that attributes the underlying AWS actions.
+practice_anchor.success The completed response record accurately captures the supplied execution identifiers, authority, targets, times and step details, links underlying actions to CloudTrail evidence, and retains both successful and failed outcomes without inferring actions from the intended plan.
+visual_anchor.type data_table
+visual_anchor.purpose Make one supplied response run's execution ID, acting role, targets, start/end times, step statuses, inputs, outputs and failure information visible alongside the corresponding CloudTrail request identity and operation evidence.
+note Use supplied execution/CloudTrail records; do not infer actions from the operator’s intended plan.

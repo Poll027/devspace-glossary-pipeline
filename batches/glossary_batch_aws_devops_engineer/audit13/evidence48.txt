@@ -1,0 +1,86 @@
+
+### 48 aws.pipeline_federation
+SOURCE 190 https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws [f1]
+13: OpenID Connect (OIDC) allows your GitHub Actions workflows to access resources in Amazon Web Services (AWS), without needing to store the AWS credentials as long-lived GitHub secrets.
+26: To configure the role and trust in IAM, see the AWS documentation Configure AWS Credentials for GitHub Actions and Configuring a role for GitHub OIDC identity provider.
+SOURCE 190 https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws [f2]
+22: To add the GitHub OIDC provider to IAM, see the AWS documentation.
+28: AWS Identity and Access Management (IAM) recommends that users evaluate the IAM condition key, token.actions.githubusercontent.com:sub, in the trust policy of any role that trusts GitHub’s OIDC identity provider (IdP). Evaluating this condition key in the role trust policy limits which GitHub actions are able to assume the role.
+SOURCE 190 https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws [f3]
+43: In the following example, StringLike is used with a wildcard operator (*) to allow any branch, pull request merge branch, or environment from the octo-org/octo-repo organization and repository to assume a role in AWS.
+54: Setting id-token: write in the workflow’s permissions does not give the workflow permission to modify or write to any resources. Instead, it only allows the workflow to request (fetch) and use (set) an OIDC token for an action or step. This token is then used to authenticate with external services using a short-lived access token.
+
+### 49 aws.sts_session
+SOURCE 79 https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html [f1]
+1: Use temporary credentials with AWS resources - AWS Identity and Access Management
+3: Use temporary credentials with AWS resources - AWS Identity and Access Management
+SOURCE 78 https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html [f2]
+44: Your application should cache the credentials returned by AWS STS and refresh them as needed. If your application is built using an AWS SDK, the SDK has credential providers that can handle calling AssumeRoleWithWebIdentity and refreshing AWS credentials before they expire. For more information, see AWS SDKs and Tools standardized credential providers in the AWS SDKs and Tools Reference Guide.
+95: The call to AWS STS can be to the global endpoint or to any of the Regional endpoints that you activate your AWS account. For more information, see the AWS STS section of Regions and Endpoints.
+SOURCE 76 https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html [f3]
+37: If you specify a role session or user in the principal element of a resource-based policy, an explicit allow in the permission boundary is not required. However, if you specify a role ARN in the principal element of a resource-based policy, an explicit allow in the permission boundary is required. In both cases, an explicit deny in the permission boundary is effective. An explicit deny in any of these policies overrides the allow. For more information about permissions boundaries, see Permissions boundaries for IAM entities.
+50: Session policies are advanced policies that you pass as a parameter when you programmatically create a temporary session for a role or an AWS STS federated user principal. The permissions for a session are the intersection of the identity-based policies for the IAM entity (user or role) used to create the session and the session policies. Permissions can also come from a resource-based policy. An explicit deny in any of these policies overrides the allow.
+
+### 50 aws_devops.authorize_an_event_target_with_least_privilege_execution_permissions
+SOURCE 137 https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-events-iam-roles.html [f1]
+26: EventBridge event bus targets must have an IAM role that grants events:PutEvents on the target event bus. When the target event bus is in another account, the target bus's resource-based policy must allow the sender account.
+35: If the target is a Kinesis stream, the role used to send event data to that target must include a policy with the following statement:
+SOURCE 137 https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-events-iam-roles.html [f2]
+12: In Select Role Type, choose AWS Service Roles, and then choose Amazon EventBridge. This grants EventBridge permissions to assume the role.
+16: EventBridge targets typically require IAM roles that grant EventBridge permission to invoke the target. The following sections give examples for several AWS services and targets. For other targets, use the EventBridge console to create a rule. The console creates a new role for you, with a policy that has well-scoped permissions already configured.
+SOURCE 140 https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-use-resource-based.html [f3]
+9: For Amazon CloudWatch Logs targets, do not specify a RoleArn in the target configuration. For Lambda, Amazon SNS, and Amazon SQS targets, you can use either an IAM execution role or a resource-based policy. If you specify a RoleArn for Lambda, Amazon SNS, or Amazon SQS targets, ensure the role has the required permissions (for example, lambda:InvokeFunction, sns:Publish, or sqs:SendMessage). If no execution role is configured, EventBridge uses resource-based policies on the target resource.
+41: To add permissions that enable EventBridge to publish SNS topics
+
+### 51 aws_devops.automate_prohibited_configuration_checks
+SOURCE 118 https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_use-managed-rules.html [f1]
+7: The AWS Config console guides you through the process of configuring and activating a managed rule. You can also use the AWS Command Line Interface or AWS Config API to pass the JSON code that defines your configuration of a managed rule.
+8: You can customize the behavior of a managed rule to suit your needs. For example, you can define the rule's scope to constrain which resources trigger an evaluation for the rule, such as EC2 instances or volumes.
+SOURCE 118 https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_use-managed-rules.html [f2]
+9: You can customize the rule's parameters to define attributes that your resources must have to comply with the rule. For example, you can customize a parameter to specify that your security group should block incoming traffic to a specific port number.
+SOURCE 119 https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_view-compliance.html [f3]
+6: Viewing Compliance Information and Evaluation Results for your AWS Resources with AWS Config
+46: Example 1: To get the compliance summary for all resource types
+
+### 52 aws_devops.configure_a_budget_notification
+SOURCE 124 https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-create.html [f1]
+8: When you create a budget, AWS Budgets provides a Cost Explorer graph to help you see your incurred costs and usage. If you didn't enable Cost Explorer yet, this graph is blank and AWS Budgets will enable Cost Explorer when you create your first budget. You can create your budget without enabling Cost Explorer. It can take up to 24 hours for this graph to appear after you or AWS Budgets enable Cost Explorer.
+14: AWS Budgets supports billing views, allowing you to create and manage budgets based on filtered cost and usage data across multiple accounts within your organization. When creating a budget, you can select a billing view to define the scope of cost and usage data the budget will track. For more information on controlling access to cost management data using billing views, see Controlling cost management data access with Billing View.
+SOURCE 124 https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-create.html [f2]
+9: You can create and set up a budget in two ways:
+SOURCE 124 https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-create.html [f3]
+12: To learn how to add email recipients to your budget notifications and how email verification works, see Adding email recipients to a budget notification.
+45: If you've got a moment, please tell us how we can make the documentation better.
+
+### 53 aws_devops.configure_a_codebuild_buildspec_for_a_supplied_application
+SOURCE 105 https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html [f1]
+25: Buildspec files must be expressed in YAML format.
+266: In version 0.1, AWS CodeBuild runs each build command in a separate instance of the default shell in the build environment. In version 0.2, CodeBuild runs all build commands in the same instance of the default shell in the build environment.
+SOURCE 105 https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html [f2]
+119: Optional sequence. Represents the commands, if any, that CodeBuild runs during installation. We recommend that you use the install phase only for installing packages in the build environment. For example, you might use this phase to install a code testing framework such as Mocha or RSpec.
+253: A custom environment variable named dockerLoginPassword you stored in Amazon EC2 Systems Manager Parameter Store is referenced later in build commands by using the key LOGIN_PASSWORD.
+SOURCE 105 https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html [f3]
+98: Optional mapping. Set to yes if you want your build in an explicit proxy server to upload artifacts. The default is no. proxy/logs
+113: If this property is not specified, the failure process follows the transition phases as shown in Build phase transitions.
+
+### 54 aws_devops.configure_a_codedeploy_deployment_action_for_a_supplied_ec2_application
+SOURCE 109 https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file.html [f1]
+14: AppSpec files on an EC2/on-premises compute platform
+30: AppSpec files on an EC2/on-premises compute platform
+SOURCE 107 https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-groups.html [f2]
+23: View deployment group details with CodeDeploy
+24: Change deployment group settings with CodeDeploy
+SOURCE 109 https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file.html [f3]
+19: AppSpec files on an Amazon ECS compute platform
+25: AppSpec files on an AWS Lambda compute platform
+
+### 55 aws_devops.configure_and_verify_an_ec2_auto_scaling_policy_under_bounded_load
+SOURCE 90 https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html [f1]
+6: Target tracking scaling policies for Amazon EC2 Auto Scaling
+19: Create a target tracking scaling policy using metric math
+SOURCE 90 https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html [f2]
+5: Multiple target tracking scaling policiesChoose metricsDefine target valueDefine instance warmup timeConsiderations
+53: While instances are in the warmup period, your scaling policies only scale out if the metric value from instances that are not warming up is greater than the policy's target utilization.
+SOURCE 90 https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html [f3]
+46: When a metric emits real 0 values to CloudWatch (for example, ALBRequestCountPerTarget), an Auto Scaling group can scale in to 0 when there is no traffic to your application for a sustained period of time. To have your Auto Scaling group scale in to 0 when no requests are routed it, the group's minimum capacity must be set to 0.
+61: If the metric is missing data points, this causes the CloudWatch alarm state to change to INSUFFICIENT_DATA. When this happens, Amazon EC2 Auto Scaling cannot scale your group until new data points are found.

@@ -1,0 +1,101 @@
+
+### 32 aws_devops.execute_python_aws_automation_in_an_isolated_dependency_environment
+SOURCE 196 https://docs.python.org/3/tutorial/venv.html [f1]
+1: 12. Virtual Environments and Packages — Python 3.15.2 documentation
+49: python -m pip list will display all of the packages installed in the virtual environment:
+SOURCE 196 https://docs.python.org/3/tutorial/venv.html [f2]
+32: $ source ~/envs/tutorial-env/bin/activate (tutorial-env) $ python Python 3.5.1 (default, May 6 2016, 10:59:36) ... >>> import sys >>> sys.path ['', '/usr/local/lib/python35.zip', ..., '~/envs/tutorial-env/lib/python3.5/site-packages'] >>>
+46: python -m pip uninstall followed by one or more package names will remove the packages from the virtual environment.
+SOURCE 196 https://docs.python.org/3/tutorial/venv.html [f3]
+51: python -m pip freeze will produce a similar list of the installed packages, but the output uses the format that python -m pip install expects. A common convention is to put this list in a requirements.txt file:
+SOURCE 96 https://docs.aws.amazon.com/boto3/latest/guide/credentials.html [f4]
+616: To begin using the IAM Identity Center credential provider, start by using the AWS CLI (v2) to configure and manage your SSO profiles and login sessions. For detailed instructions on the configuration and login process see the AWS CLI User Guide for SSO. Once completed you will have one or many profiles in the shared configuration file with the following settings:
+664: If you’re running on an EC2 instance, use AWS IAM roles. See the IAM Roles for Amazon EC2 guide for more information on how to set this up.
+
+### 33 aws_devops.extract_structured_aws_cli_inventory_across_paginated_results
+SOURCE 103 https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-pagination.html [f1]
+3: Using the pagination options in the AWS CLI - AWS Command Line Interface
+14: The options for most AWS CLI commands include the following:
+SOURCE 103 https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-pagination.html [f2]
+22: The --no-paginate option disables following pagination tokens on the client side. When using a command, by default the AWS CLI automatically makes multiple calls to return all possible results to create pagination. One call for each page. Disabling pagination has the AWS CLI only call once for the first page of command results.
+24: $ aws s3api list-objects \ --bucket amzn-s3-demo-bucket \ --no-paginate { "Contents": [ ...
+SOURCE 103 https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-pagination.html [f3]
+26: If you see issues when running list commands on a large number of resources, the default page size might be too high. This can cause calls to AWS services to exceed the maximum allowed time and generate a "timed out" error. You can use the --page-size option to specify that the AWS CLI request a smaller number of items from each call to the AWS service. The AWS CLI still retrieves the full list, but performs a larger number of service API calls in the background and retrieves a smaller number of items with each call. This gives the individual calls a better chance of succeeding without a timeout. Changing the page size doesn't affect the output; it affects only the number of API calls that need to be made to generate the output.
+32: If the number of items output (--max-items) is fewer than the total number of items returned by the underlying API calls, the output includes a NextToken that you can pass to a subsequent command to retrieve the next set of items. The following example shows how to use the NextToken value returned by the previous example, and enables you to retrieve the second 100 items.
+
+### 34 aws_devops.hand_over_an_actionable_operational_runbook
+SOURCE 179 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05-bp01.html [f1]
+11: Your runbook content stays current because updates follow your change management process as procedures evolve.
+49: Achieving operational excellence using automated playbook and runbook
+SOURCE 179 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05-bp01.html [f2]
+16: Two people perform the same task and produce different results because the steps are undocumented.
+68: If you've got a moment, please tell us what we did right so we can do more of it.
+SOURCE 181 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06-bp03.html [f3]
+7: When an incident exceeds what the first responder can resolve, someone must decide who acts next and with what authority. Escalation paths define when to escalate, who to involve at each level, and which actions are pre-approved, so decisions happen fast and the right people engage.
+27: An escalation path must reach a person who can act. Name a role on the on-call schedule so the path stays valid when the current holder is unavailable. Each contact needs the permissions and access to act the moment they are engaged. Match the schedule depth to incident severity.
+
+### 35 aws_devops.operate_an_eks_pod_using_supplied_cluster_access_setup
+SOURCE 204 https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/ [f1]
+164: PodReadyToStartContainers: the Pod sandbox has been successfully created, networking configured, storage volumes mounted, and any dynamic resources (if requested) allocated.
+197: Later in the lifecycle of the Pod, when the Pod sandbox has been destroyed due to either:
+SOURCE 204 https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/ [f2]
+5: This page describes the lifecycle of a Pod. Pods follow a defined lifecycle, starting in the Pending phase, moving through Running if at least one of its primary containers starts OK, and then through either the Succeeded or Failed phases depending on whether any container in the Pod terminated in failure.
+39: Since Kubernetes 1.27, the kubelet transitions deleted Pods to a terminal phase (Failed or Succeeded depending on the exit statuses of the pod containers) before their deletion from the API server, with two exceptions:
+SOURCE 206 https://kubernetes.io/docs/tasks/debug/debug-application/debug-pods/ [f3]
+40: You can also use kubectl describe rc ${CONTROLLER_NAME} to introspect events related to the replication controller.
+50: kubectl get pods --selector=name=nginx,type=frontend
+
+### 36 aws_devops.operate_an_rds_managed_database
+SOURCE 65 https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/accessing-monitoring.html [f1]
+7: Using the Amazon RDS console, you can quickly access the status of your DB instance.
+11: The status of a DB instance indicates its current operational state. You can use the following procedures to view the DB instance status in the Amazon RDS console, the AWS CLI command, or the API operation.
+SOURCE 65 https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/accessing-monitoring.html [f2]
+1: Viewing instance status - Amazon Relational Database Service
+3: Viewing instance status - Amazon Relational Database Service
+SOURCE 60 https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html [f3]
+3: Connecting to an Amazon RDS DB instance - Amazon Relational Database Service
+7: Before you can connect to a DB instance, you must create the DB instance. For information, see Creating an Amazon RDS DB instance. After Amazon RDS provisions your DB instance, use any standard client application or utility for your DB engine to connect to the DB instance. In the connection string, specify the DNS address from the DB instance endpoint as the host parameter. Also, specify the port number from the DB instance endpoint as the port parameter.
+
+### 37 aws_devops.protect_recoverable_s3_objects_with_versioning_and_lifecycle_controls
+SOURCE 70 https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html [f1]
+3: Retaining multiple versions of objects with S3 Versioning - Amazon Simple Storage Service
+6: Retaining multiple versions of objects with S3 Versioning
+SOURCE 70 https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html [f2]
+8: Versioning-enabled buckets can help you recover objects from accidental deletion or overwrite. For example, if you delete an object, Amazon S3 inserts a delete marker instead of removing the object permanently. The delete marker becomes the current object version. If you overwrite an object, it results in a new object version in the bucket. You can always restore the previous version. For more information, see Deleting object versions from a versioning-enabled bucket.
+30: Working with objects in a versioning-enabled bucket
+SOURCE 66 https://docs.aws.amazon.com/AmazonS3/latest/userguide/RestoringPreviousVersions.html [f3]
+8: Copy a previous version of the object into the same bucket.
+20: You can restore a previous version of an object using the Amazon S3 console by deleting the current version. Deleting the current version makes the previous version the new current version.
+SOURCE 73 https://docs.aws.amazon.com/AmazonS3/latest/userguide/intro-lifecycle-rules.html [f4]
+60: The Expiration action applies only to the current version (it has no impact on noncurrent object versions).
+88: Restoring previous versions of an object when using S3 Lifecycle configurations
+
+### 38 aws_devops.publish_a_container_image_to_ecr
+SOURCE 48 https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html [f1]
+6: You can push your container images to an Amazon ECR repository with the docker push command.
+17: Identify the local image to push. Run the Docker images command to list the container images on your system.
+SOURCE 48 https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html [f2]
+11: To authenticate Docker to an Amazon ECR registry, run the aws ecr get-login-password command. When passing the authentication token to the docker login command, use the value AWS for the username and specify the Amazon ECR registry URI you want to authenticate to. If authenticating to multiple registries, you must repeat the command for each registry.
+14: aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.<region>.amazonaws.com
+SOURCE 48 https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html [f3]
+8: To push a Docker image to an Amazon ECR repository
+23: Push the image using the docker push command:
+SOURCE 47 https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-pull-ecr-image.html [f4]
+12: To pull a Docker image from an Amazon ECR repository
+21: Pull the image using the docker pull command. The image name format should be registry/repository [:tag] to pull by tag, or registry /repository[@digest] to pull by digest.
+
+### 39 aws_devops.publish_a_traceable_immutable_build_artifact
+SOURCE 191 https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations [f1]
+17: You can use GitHub Actions to generate artifact attestations that establish build provenance for artifacts such as binaries and container images.
+66: Verifying an artifact attestation for binaries
+SOURCE 191 https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations [f2]
+24: permissions: id-token: write contents: read attestations: write
+44: permissions: id-token: write contents: read attestations: write
+SOURCE 192 https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow [f2]
+41: If you download all workflow run's artifacts, a directory for each artifact is created using its name.
+65: To view the SHA256 digest, open the logs for the upload-artifact job or check in the Artifact output that appears in the workflow run UI.
+SOURCE 192 https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow [f3]
+40: - name: Download all workflow run artifacts uses: actions/download-artifact@v5
+SOURCE 191 https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations [f3]
+69: gh attestation verify PATH/TO/YOUR/BUILD/ARTIFACT-BINARY -R ORGANIZATION_NAME/REPOSITORY_NAME
+70: gh attestation verify PATH/TO/YOUR/BUILD/ARTIFACT-BINARY -R ORGANIZATION_NAME/REPOSITORY_NAME

@@ -1,0 +1,64 @@
+
+### 112 aws_devops.automate_isolated_infrastructure_restoration_using_a_supplied_cloudformation_ec2_template
+SOURCE 16 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html [f1]
+147: To create a change set for a new stack, select your stack template and specify the configuration of your stack as you would if you were creating a new stack, then choose to create a new change set rather than a new stack.
+SOURCE 16 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html [f2]
+SOURCE 18 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-view-stack-data-resources.html [f3]
+31: Displays the Amazon Simple Notification Service topic where notifications about stack events are sent, if specified.
+
+### 113 aws_devops.block_release_on_actionable_dependency_or_image_security_findings
+SOURCE 143 https://docs.aws.amazon.com/inspector/latest/user/findings-understanding.html [f1]
+33: Understanding severity levels for your Amazon Inspector findings
+SOURCE 143 https://docs.aws.amazon.com/inspector/latest/user/findings-understanding.html [f2]
+8: A finding is a detailed report about a vulnerability impacting one of your AWS resources.
+SOURCE 188 https://docs.github.com/en/actions/how-tos/create-and-publish-actions/set-exit-codes [f3]
+19: The check run and check suite both get a failure status.
+
+### 114 aws_devops.diagnose_a_failed_delivery_pipeline_action
+SOURCE 115 https://docs.aws.amazon.com/codepipeline/latest/userguide/troubleshooting.html [f1]
+7: Make sure that the pipeline IAM role has sufficient permissions to access the repository."Pipeline error: A Jenkins build or test action runs for a long time and then fails due to lack of credentials or permissionsPipeline error: A pipeline created in one AWS Region using a bucket created in another AWS Region returns an "InternalError" with the code "JobFailed"Deployment error: A ZIP file that contains a WAR file is deployed successfully to AWS Elastic Beanstalk, but the application URL reports a 404 not found errorPipeline artifact folder names appear to be truncatedAdd CodeBuild GitClone permissions for connections to Bitbucket, GitHub, GitHub Enterprise Server, or GitLab.comAdd CodeBuild GitClone permissions for CodeCommit source actionsPipeline error: A deployment with the CodeDeployToECS action returns an error message: "Exception while trying to read the task definition artifact file from: <source artifact name>"GitHub (via OAuth app) source action: Repository list shows different repositoriesGitHub (via GitHub App) source action: Unable to complete the connection for a repositoryAmazon S3 error: CodePipeline service role <ARN> is getting S3 access denied for the S3 bucket <BucketName>Pipelines with an Amazon S3, Amazon ECR, or CodeCommit source no longer start automaticallyConnections error when connecting to GitHub: "A problem occurred, make sure cookies are enabled in your browser" or "An organization owner must install the GitHub app"Pipelines with execution mode c
+SOURCE 114 https://docs.aws.amazon.com/codepipeline/latest/userguide/pipelines-view-console.html [f2]
+43: A View details button that opens a dialog box with details about the action execution, logs, and action configuration.
+SOURCE 115 https://docs.aws.amazon.com/codepipeline/latest/userguide/troubleshooting.html [f3]
+278: Problem: A pipeline has multiple source actions that use connections (such as a Bitbucket, GitHub, or GitLab connection), with each source action pointing to a different branch of the same repository.
+
+### 115 aws_devops.diagnose_ec2_or_container_health_failures_using_telemetry_and_prepared_linux_inspection_skills
+SOURCE 30 https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/monitoring-system-instance-status-check.html [f1]
+38: System status checks monitor the AWS systems on which your instance runs.
+SOURCE 180 https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06-bp01.html [f2]
+32: The alerting signal can be a metric, a service level objective, or a recurring log signal turned into a metric (OPS02-BP04 Regularly analyze workload logs).
+SOURCE 55 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/stopped-task-errors.html [f3]
+12: If your task ran on a container instance on Amazon EC2 or external computers, you can also look at the logs of the container runtime and the Amazon ECS Agent.
+
+### 116 aws_devops.gate_release_completion_on_a_deployed_service_smoke_check
+SOURCE 110 https://docs.aws.amazon.com/codepipeline/latest/userguide/actions-invoke-lambda-function.html [f1]
+225: Save your changes to the pipeline, and then manually release a change to test the action and Lambda function.
+SOURCE 110 https://docs.aws.amazon.com/codepipeline/latest/userguide/actions-invoke-lambda-function.html [f2]
+147: Two action configuration details, FunctionName and UserParameters, are included in both the JSON event and the response to the GetJobDetails API.
+SOURCE 110 https://docs.aws.amazon.com/codepipeline/latest/userguide/actions-invoke-lambda-function.html [f3]
+106: import { CodePipelineClient, PutJobSuccessResultCommand, PutJobFailureResultCommand } from "@aws-sdk/client-codepipeline"; import http from 'http'; import assert from 'assert'; export const handler = (event, context) => { const codepipeline = new CodePipelineClient(); // Retrieve the Job ID from the Lambda action const jobId = event["CodePipeline.job"].id; // Retrieve the value of UserParameters from the Lambda action configuration in CodePipeline, in this case a URL which will be // health checked by this function. const url = event["CodePipeline.job"].data.actionConfiguration.configuration.UserParameters; // Notify CodePipeline of a successful job const putJobSuccess = async function(message) { const command = new PutJobSuccessResultCommand({ jobId: jobId }); try { await codepipeline.send(command); context.succeed(message); } catch (err) { context.fail(err); } }; // Notify CodePipeline of a failed job const putJobFailure = async function(message) { const command = new PutJobFailureResultCommand({ jobId: jobId, failureDetails: { message: JSON.stringify(message), type: 'JobFailed', externalExecutionId: context.awsRequestId } }); await codepipeline.send(command); context.fail(message); }; // Validate the URL passed in UserParameters if(!url || url.indexOf('http://') === -1) { putJobFailure('The UserParameters field must contain a valid URL address to test, including http:// or https://'); return; } // Helper function to make a HTTP GET request to the page. // The helper will t
+
+### 117 aws_devops.handle_failed_event_delivery_with_bounded_retries_and_failure_capture
+SOURCE 139 https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-retry-policy.html [f1]
+12: By default, EventBridge retries sending the event for 24 hours and up to 185 times with an exponential back off and jitter, or randomized delay.
+SOURCE 139 https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-retry-policy.html [f2]
+14: To avoid losing events after they fail to be delivered to a target, configure a dead-letter queue (DLQ) to receive all failed events.
+SOURCE 138 https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-dlq.html [f3]
+88: The following resource-based policy demonstrates how to grant the required permissions for EventBridge to send event messages to an Amazon SQS queue.
+SOURCE 138 https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-dlq.html [f4]
+15: For example, for errors that result from missing permissions to a target, a target resource that no longer exists, or a target that cannot be found due to an invalid address or DNS lookup failure, no retry attempts will happen until action is taken to resolve the underlying issue.
+
+### 118 aws_devops.perform_a_controlled_ecs_service_rollout
+SOURCE 51 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html [f1]
+18: During a rolling deployment, when tasks become unhealthy, Amazon ECS replaces them to maintain your service's minimumHealthyPercent and protect availability.
+SOURCE 51 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html [f2]
+7: When you create a service which uses the rolling update (ECS) deployment type, the Amazon ECS service scheduler replaces the currently running tasks with new tasks.
+SOURCE 51 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html [f3]
+58: If you create a service with a desired task count of zero, Amazon ECS can't establish container digests until you trigger another deployment of the service with a desired task count greater than zero.
+
+### 119 aws_devops.promote_the_same_artifact_version_across_environments
+SOURCE 0 https://12factor.net/build-release-run [f1]
+14: The run stage (also known as “runtime”) runs the app in the execution environment, by launching some set of the app’s processes against a selected release.
+SOURCE 0 https://12factor.net/build-release-run [f2]
+SOURCE 191 https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations [f3]
+21: You can use GitHub Actions to generate artifact attestations that establish build provenance for artifacts such as binaries and container images.

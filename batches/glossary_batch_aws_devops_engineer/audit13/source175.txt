@@ -1,0 +1,66 @@
+COST06-BP02 Select resource type, size, and number based on data - AWS Well-Architected Framework
+View a markdown version of this page
+COST06-BP02 Select resource type, size, and number based on data - AWS Well-Architected Framework
+DocumentationAWS Well-ArchitectedFramework
+Implementation guidanceResources
+COST06-BP02 Select resource type, size, and number based on data
+Base the type, size, and number of resources on evidence of the workload's compute, memory, throughput, and storage demands. Draw that evidence from a prior version of the workload, vendor documentation, published benchmarks, or a cost model.
+Desired outcome:
+You size resources from measured or documented workload characteristics rather than estimates.
+Your sizing decisions account for multiple dimensions, including compute, memory, storage, and network, not a single dimension.
+You match workloads to purpose-built resource types when the workload profile justifies them.
+Your resource selections trace back to a named data source that another engineer can review.
+Common anti-patterns:
+Allocating resources from unsubstantiated estimates.
+Sizing on a single characteristic, such as CPU, while ignoring memory, storage, or network.
+Choosing the largest available resource to avoid any risk of under-provisioning.
+Reusing a resource type from an unrelated workload because it is familiar.
+Benefits of establishing this best practice:
+Workloads perform well under load without paying for capacity they do not use.
+Sizing decisions are defensible because they rest on documented evidence.
+Purpose-built resource types deliver better price performance than general-purpose equivalents for the workloads that fit them.
+Multi-dimensional analysis helps prevent a single overlooked requirement from causing a bottleneck.
+Level of risk exposed if this best practice is not established: Medium
+Implementation guidance
+A workload's profile spans compute, memory, storage, throughput, and network demands. Match resources to that profile without excess. The profile is rarely obvious before the workload runs, so without data, sizing tends toward the largest option.
+Sizing on one visible dimension, such as high CPU, can miss the dimension that actually constrains the workload, such as memory. Resource families each target a different bottleneck: general purpose, compute optimized, memory optimized, storage optimized, and accelerated. To select the family, first identify the constraining dimension by evaluating all dimensions together.
+The strongest evidence comes from a prior version of the workload, whether on-premises or in another environment, because it reflects real behavior. Without one, vendor documentation and published benchmarks provide a starting point. A cost model from earlier analysis maps expected usage to specific resource dimensions. With weaker sources, choose more conservatively and validate against real measurements sooner.
+Many processor and instance types target specific workload shapes, such as machine learning training, high-throughput storage, or particular instruction sets. They deliver better price performance than general-purpose resources for those workloads. The cost is reduced flexibility, a purpose-built resource that no longer matches the workload is harder to repurpose. Prefer specialized options for stable, well-understood profiles. Keep general purpose when the profile is uncertain or changing.
+Serverless and managed components expose fewer sizing knobs, and those knobs still drive cost. AWS Lambda cost scales with allocated memory. Test to find the best cost-performance setting. If a prior version of the function is already running, AWS Compute Optimizer recommends a memory size, narrowing the range to test. AWS Graviton (Arm) processors lower cost for the same work on Lambda, AWS Fargate, and many instance families where your runtime supports Arm.
+This best practice covers initial resource selection from data. To keep resources correctly sized as demand changes, see COST06-BP03 Select resource type, size, and number automatically based on metrics. For each resource family's characteristics and use cases, see the Amazon EC2 instance types documentation.
+Implementation steps
+Gather workload system requirements: Document the workload's technical profile, including operating system, CPU and GPU core counts, system memory, storage type and capacity, network bandwidth, and any required processor type. Record the source for each figure so reviewers can judge its reliability.
+Identify the constraining dimension: Analyze the requirements together to find which dimension limits the workload, rather than reacting to the most visible one. Use this to select the resource family, such as general purpose, compute optimized, memory optimized, storage optimized, or accelerated computing.
+Select type and size from data: Use your cost model and workload data to choose a specific type and size within the family, setting virtual CPU count, memory, local and Amazon EBS storage, and network performance to match the required data transfer rate. Estimate the number of resources needed for the anticipated load.
+Prefer purpose-built resources for stable profiles: When a purpose-built processor or instance type matches a well-understood workload, select it over a general-purpose equivalent for better price performance. Keep general purpose where the profile is uncertain or likely to change.
+Validate against cost and performance: Confirm the selection against the cost model and, where possible, a benchmark under predicted load. Adjust the type, size, or number if measured behavior differs from the source data.
+Resources
+Related best practices:
+COST06-BP01 Perform cost modeling
+COST06-BP03 Select resource type, size, and number automatically based on metrics
+COST05-BP03 Analyze the total cost of ownership of each component
+Related documents:
+Amazon EC2 instance types
+Amazon EC2 processor types
+Optimizing your cost with rightsizing recommendations
+Amazon CloudWatch features
+Related videos:
+AWS re:Invent 2025 - How well do you know EC2? (CMP356)
+How to use AWS Compute Optimizers new features
+Related examples:
+Choosing an AWS compute service
+Choosing an AWS storage service
+Choosing an AWS database service
+Related workshops:
+CFM TIPs: Amazon EC2 compute playbook
+Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+COST06-BP01 Perform cost modeling
+COST06-BP03 Select resource type, size, and number automatically based on metrics
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

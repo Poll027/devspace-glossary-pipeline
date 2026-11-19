@@ -1,0 +1,41 @@
+### 48 aws.pipeline_federation 141-296
+141 In this example, we want to test whether
+143 the AWS credentials configured via OIDC
+147 can successfully authenticate and access
+149 the target AWS account. The OIDC
+152 configuration in GitHub actions consists
+154 of two key parts. First, under
+157 permissions, we must configure ID token.
+160 Right? This is required because GitHub
+162 must generate a unique OIDC JWT token
+165 for the workflow run.
+172 That token will then be used to assume
+174 the IM role in AWS. Second, we use the
+178 AWS actions/configure
+181 AWS credentials action. These lines of
+184 code exchange the GitHub issued JWT
+187 token. Assume the IM role created in
+190 AWS.
+195 Configure temporary AWS credentials for
+198 the workflow.
+202 As a final step, the workflow attempts
+205 to list S3 buckets. This serves as a
+208 validation step to confirm that
+209 authentication and role assumption were
+212 successful.
+225 Now, let's push the code to GitHub.
+247 Go to the actions tab in the repository.
+250 You will see the workflow triggered by
+252 the recent push. Open the workflow to
+255 observe each step being executed.
+257 Finally.
+272 Expand the step labeled test AWS
+275 credential. If the workflow successfully
+278 lists the S3 buckets in the AWS account,
+281 it confirms that GitHub actions has
+283 successfully authenticated with AWS
+285 using OIDC. At this point, we have
+288 established secure token-based
+290 authentication between GitHub and AWS
+293 without using longived access keys. That
+296 concludes today's session. If you found

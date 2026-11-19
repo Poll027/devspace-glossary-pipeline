@@ -1,0 +1,43 @@
+### 65 aws_devops.execute_a_scoped_systems_manager_remote_command 1081-1252
+1076 So this is an example of a really simple patch process using Systems Manager.
+1081 What we're going to do next is use Systems Manager to run a command on an EC2 instance.
+1088 So scroll down on the menu on the left and select "Run Command" and then click on "Run Command".
+1094 Now these are all the command documents available
+1097 and in this search box I want you to go ahead and type
+1100 AWS-RunShellScript and press enter
+1104 So check the box next to AWS-RunShellScript
+1108 and scroll down
+1109 and then under command parameters in commands go ahead and enter both of these lines
+1114 So what this is going to do is run "shoodoo touch" to create a file
+1119 and then it's going to call the file /hello_from_systems_manager
+1126 so this is going to create a file on a Linux instance with this name
+1130 and then this command, so shudu useradd -c jeffbezos jbezos
+1138 is going to add a user within our Linux operating system called jbezos
+1144 Scroll down and we need to select the target that we're going to run this against.
+1149 So select 'Choose Instances Manually'
+1152 and we're going to click this box to select both EC2 instances.
+1156 So this is going to run this command on both of our available EC2 instances.
+1161 Then scroll down and under 'Output Options'
+1166 we're going to uncheck 'Enable an S3 bucket' because we don't want any output logs of what we're about to run.
+1172 Scroll down to the bottom and click on run
+1175 and this is going to run this command document on our EC2 instances
+1180 which will have the effect of running a shell script which we've provided
+1184 which will create that file and create a Linux user.
+1187 Now this does take a few moments to run, keep clicking on refresh.
+1191 We'll see immediately overall status is success and detailed status is success.
+1197 If we go ahead and go back to the EC2 console
+1200 Go to instances, pick either of the instances
+1203 I'm going to pick Ubuntu, select it, right click
+1206 Go to connect
+1207 Session manager, and click on connect
+1210 Then once we've connected, if we do an ls -l / and press enter
+1217 We should see the file that we've just created using systems manager
+1222 Additionally, if we run a shudu -tail
+1225 space and then /etc/password
+1231 so p-a-s-s-w-d
+1234 this should show us a list of any users created on this Linux operating system
+1239 and at the bottom here we have the user jbezos that we just created
+1243 again using Systems Manager
+1245 so that's an example of how we can use run command
+1248 to execute commands or scripts on any managed instances
+1252 Next what I want to do is go back to Systems Manager
