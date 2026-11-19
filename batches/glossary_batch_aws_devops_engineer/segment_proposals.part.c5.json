@@ -1,0 +1,204 @@
+{
+  "metadata": {
+    "artifact_type": "segment_proposals",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_aws_devops_engineer",
+    "run_id": "glossary_batch_aws_devops_engineer",
+    "prompt_version": "08_segment_detection@v1",
+    "model": "bedrock:gpt-6.1-sol",
+    "generated_at": "2026-11-19T10:22:01.007560+00:00",
+    "source_snapshot_id": "glossary_batch_aws_devops_engineer",
+    "parent_artifact_hashes": {
+      "video_candidates.json": "cc80d99ac693cb95c29397927f5c798fa748b137f558c1d905833a3343fd9e13",
+      "coverage_briefs.json": "873acae7b21dc3119236e0e3213db011559c6f8a61dcd1be66bdb9938ea512d4",
+      "extracted_concepts.json": "e5655c589dc783e9bcf5aef3d029dcad038c706eb941eb9ad594badae4a805ae"
+    }
+  },
+  "batch_id": "glossary_batch_aws_devops_engineer",
+  "proposals": [
+    {
+      "proposal_id": "prop_PhIiVsCEBu8_execute_an_established_fleet_patch_task",
+      "concept_id": "aws_devops.execute_an_established_fleet_patch_task",
+      "path_id": "aws_devops_engineer",
+      "video_id": "PhIiVsCEBu8",
+      "start_seconds": 1666,
+      "end_seconds": 1804,
+      "label": "How patch baselines, managed-node targets, and scan/install operations produce compliance results",
+      "role": "mental_model",
+      "covered_fact_ids": [
+        "f1"
+      ],
+      "visual_mode": "slides_with_signaling",
+      "chapter_aligned": false,
+      "transcript_evidence": "scan or a patch based on what you told it to do and then it's going to return a",
+      "issues": [
+        "Visual mode is inferred from the presentation context, references to slides, and the step-by-step user-experience explanation; actual visual signaling is not verified.",
+        "Covers f1 only. It does not demonstrate using an established maintenance-window task with approved parameters, concurrency, and error limits (f2), or inspecting task execution and per-node results (f3).",
+        "The presenter describes defining baselines and schedules. For this path, frame those as already approved configuration to understand, not configuration the learner should create or change.",
+        "The supplied transcript's hands-on execution uses Run Command and patch-policy associations rather than an established maintenance-window task; those demonstrations should not be treated as evidence for f2.",
+        "The range ends at the actual 1804 transition into deeper feature explanations, after the scan/non-compliance and install/compliance explanation finishes."
+      ]
+    },
+    {
+      "proposal_id": "prop_acTvUZI0Nfg_reconcile_terraform_ec2_drift",
+      "concept_id": "aws_devops.reconcile_terraform_ec2_drift",
+      "path_id": "aws_devops_engineer",
+      "video_id": "acTvUZI0Nfg",
+      "start_seconds": 76,
+      "end_seconds": 158,
+      "label": "Preview Terraform drift and refresh state without changing infrastructure",
+      "role": "mental_model",
+      "covered_fact_ids": [
+        "f4"
+      ],
+      "visual_mode": "talking_head_only",
+      "chapter_aligned": false,
+      "transcript_evidence": "your Terraform state without making",
+      "issues": [
+        "Partial coverage of f4: distinguishes refresh-only preview from applying state changes without changing infrastructure, but does not explicitly mention outputs.",
+        "Does not cover f1\u2013f3: no explanation of normal pre-plan refresh, EC2 settings comparison, declaration decision, or infrastructure reconciliation and live verification.",
+        "Visual mode is an inference from the narration; no thumbnail or explicit screen-demo cues were supplied.",
+        "The caption at 76 seconds contains the trailing word 'automation.' before the new thought 'To handle drift'; the supplied timestamp cannot isolate that transition precisely.",
+        "The caption at 158 seconds finishes the plan/apply explanation and begins 'Now, a few'; the supplied timestamp cannot precisely separate the completed thought from the next best-practices introduction."
+      ]
+    }
+  ],
+  "rejected_videos": [
+    {
+      "video_id": "E-YanBx38Cs",
+      "concept_id": "aws_devops.configure_codepipeline_source_to_deploy_actions",
+      "reason": "No clean standalone segment covers the required source-to-CodeBuild-to-CodeDeploy configuration. The conceptual explanation discusses stages and artifacts but introduces blocked manual-approval content at 72\u2013116 seconds and again at 269 seconds. The action explanation at 276\u2013298 seconds only provides partial coverage of f1. The practical demonstration uses Elastic Beanstalk, explicitly skips the build stage at 693 seconds, and depends on earlier Beanstalk environment and GitHub connection setup not supplied by this path. It therefore cannot demonstrate the artifact-name wiring required by f2. Creating a service role at 672 seconds does not explain CodePipeline service trust, action and artifact permissions, or the distinction from GitHub OIDC federation required by f3. The final deployment demonstration shows a successful application change, but does not verify revision-linked action execution evidence or failed-action blocking of dependent actions as required by f4."
+    },
+    {
+      "video_id": "DHe2-Ovi6VQ",
+      "concept_id": "aws_devops.configure_codepipeline_source_to_deploy_actions",
+      "reason": "No clean standalone segment covers the required action configuration. The source/build configuration at 1999\u20132108 leaves artifact fields at defaults without explaining declared input/output links and uses Elastic Beanstalk rather than the required CodeDeploy action. The service-role explanation at 1731\u20131764 mentions permissions but omits trust for codepipeline.amazonaws.com and the distinction from GitHub OIDC federation. Execution footage does not verify source-revision continuity; at 2425 it enters blocked failed-action diagnosis, followed by an administrator-access workaround. Completing the deployment demo also requires untaught Elastic Beanstalk setup. Technical accuracy concerns: at 1491\u20131502 the creator incorrectly claims CodeBuild automatically created an S3 artifact bucket despite selecting no artifacts, later correcting this at 1888\u20131894; at 1678\u20131696 superseded execution is misleadingly described as cancelling the already-running build. These are factual problems, not merely coverage gaps."
+    },
+    {
+      "video_id": "KVDt4559cTs",
+      "concept_id": "aws_devops.deploy_a_supplied_cloudformation_s3_environment_across_accounts_and_regions_with_assumed_roles",
+      "reason": "The video demonstrates a StackSets console workflow deploying AWS Config within one account, not the supplied S3 template deployed across approved account/Region pairs using named assumed-role profiles. It does not cover f2 (role_arn/source_profile configuration, per-profile STS caller verification, and explicit-profile/Region stack creation) or f3 (per-target stack outputs, S3 bucket identity/location, and absence of stacks in unapproved targets). Although the introduction supports f1 generally, the video contains technical errors: at 400\u2013403 it claims exceeding zero failure tolerance makes everything fail and roll back, whereas StackSets failure tolerance stops further deployment without automatically rolling back successful stack instances; at 598\u2013603 it incorrectly says multi-Region template deployment requires StackSets. No clean, accurate standalone segment serves the intended deployment workflow."
+    },
+    {
+      "video_id": "n7VMDRxVGRk",
+      "concept_id": "aws_devops.deploy_a_supplied_cloudformation_s3_environment_across_accounts_and_regions_with_assumed_roles",
+      "reason": "No transcript available (transcript_available: false). Cannot verify standalone segment boundaries, prerequisite safety, required-fact coverage, or provide verbatim transcript evidence."
+    },
+    {
+      "video_id": "3v_X53RmYf0",
+      "concept_id": "aws_devops.inject_a_controlled_failure_and_verify_alarm_behavior",
+      "reason": "No clean segment teaches the required controlled-failure experiment. The video manually changes a CloudWatch alarm state with set-alarm-state rather than disrupting the system; at 22 seconds it explicitly says \"purposes without actually having to set\". It does not define an approved fault, limited scope or abort conditions (f2), nor demonstrate alarm history, notification receipt, fault removal and recovery verification (f3). Its claim at 132\u2013138 seconds that the alarm will return to OK after the next scheduled check is also overly categorical: subsequent metric-alarm evaluation determines the state from the underlying conditions, not necessarily OK. Trimming cannot turn this synthetic alarm-action test into the required standalone failure-injection lesson."
+    },
+    {
+      "video_id": "asG0l6_up9Y",
+      "concept_id": "aws_devops.inject_a_controlled_failure_and_verify_alarm_behavior",
+      "reason": "No clean standalone segment demonstrates the required controlled experiment. The fault relies on an externally supplied, AI-generated stress.sh script whose complete setup is unavailable in the transcript; it runs repeatedly for random durations (446\u2013507), without defined approval or abort conditions. The alarm-triggering demonstration at 961\u20131143 depends on that earlier script and background-process setup. It shows CPU threshold crossing, an In Alarm state and email receipt, but not alarm state history or removal of the active fault followed by verified recovery. At 1157 the video instead transitions into alarm deletion and instance termination, introducing blocked safe-teardown content rather than completing the recovery check."
+    },
+    {
+      "video_id": "Bv5PCkdfRwc",
+      "concept_id": "aws_devops.perform_a_managed_eks_deployment_rollout",
+      "reason": "No clean standalone segment meets this path's controlled managed-EKS rollout requirements. The tutorial uses a locally built ASP.NET application and Minikube image-loading/service-access workflow rather than supplied EKS access and images; its rollout demo depends on that earlier setup. It updates a manifest with kubectl apply, never demonstrates kubectl set image or kubectl rollout status, and does not explain that scaling alone creates no template revision. The rollback section demonstrates history inspection and explicit revision selection, but only imagines a failure and checks browser output rather than verifying rollout readiness. Technical issues also warrant rejection: at 150\u2013178 and 303\u2013311 it categorically describes rolling updates as guaranteeing zero downtime and replacing exactly one Pod at a time, although behavior depends on strategy settings and readiness; at 477\u2013500 it incorrectly describes a Service selector as linking to a Deployment by name rather than selecting Pods by labels. Trimming cannot supply the missing required procedure or make the setup-dependent demo appropriate for this path."
+    },
+    {
+      "video_id": "P6N9LaVq-0w",
+      "concept_id": "aws_devops.perform_cleanup_after_supplied_script_failure",
+      "reason": "No clean segment covers this concept. The video demonstrates broad age-based AWS resource deletion, not cleanup after a supplied task fails. It never explains finally or wrapping the failing task in try/finally with scoped cleanup calls (f1\u2013f2). At 1431\u20131450 it describes reporting a deletion exception, not ensuring cleanup when control leaves a try block. It does not track exercise-created resources or verify preservation of preexisting resources (f3): at 1379\u20131422 it explicitly proposes deleting every key pair older than three months, and at 1512 reports reducing the existing inventory from 17 to three. This cleanup scope conflicts with the required exercise-only scope; the console count change is not evidence of scoped removal or preservation. Trimming cannot recover the missing facts."
+    },
+    {
+      "video_id": "kj1dDBRNsa4",
+      "concept_id": "aws_devops.reuse_a_supplied_terraform_module_provisioning_ec2",
+      "reason": "No clean standalone segment matches the supplied-module workflow. The video primarily authors new EC2 and S3 child modules using configuration copied from earlier lessons. The root-interface walkthrough at 1105\u20131318 depends on those earlier variable and output declarations and references an incorrect output name; the validation failure at 1369 is corrected only in the subsequent debugging section. Trimming before that correction would teach an invalid reference, while including it retains substantial missing setup and ambiguous interface names. The execution section does not inspect the planned instance settings or demonstrate an approved apply workflow: it uses auto-approve at 1552. The introductory explanation does not independently cover the required input/output interface. These are scope, prerequisite, and coverage problems; the corrected output-reference error is not treated as an uncorrected technical claim."
+    },
+    {
+      "video_id": "_AHPbxzIGV0",
+      "concept_id": "aws_devops.rightsize_a_resource_using_a_supplied_workload_baseline",
+      "reason": "No clean standalone segment serves the supplied-baseline task. The rightsizing discussion at 1295\u20131569 explains matching instance specifications to application needs and periodically reviewing Compute Optimizer recommendations, but does not compare supplied load, utilization, performance evidence and service constraints before recommending a smaller instance (f2). It also does not explain accounting for peak demand rather than relying on one low-utilization sample (f3). The earlier peak-demand material concerns scaling, not evaluating a rightsizing recommendation, and combining it with this section would introduce substantial unrelated content. Separately, the video makes a technically incorrect claim at 3146\u20133147 that an Auto Scaling group could only be a single instance type; mixed-instance Auto Scaling groups are supported. This is an explicit factual error, not merely a coverage gap."
+    },
+    {
+      "video_id": "k5GefbUGujQ",
+      "concept_id": "aws_devops.route_a_security_finding_with_evidence_to_its_responsible_owner",
+      "reason": "No clean standalone segment teaches the required evidence handoff. The finding-detail explanation at 428\u2013498 provides resource, account and severity context, but does not teach routing a finding ID or evidence link, observed activity and urgency to the accountable owner through an established escalation path. Preserving evidence rather than asserting compromise is also not taught. The custom-action sections mention email, paging and tickets but move into notification implementation and automated remediation, including the blocked operational-event routing concept; the later demonstration relies on setup introduced earlier. Additionally, the video states at 993 and 1052 that S3 Object Lock cannot be enabled after bucket creation. That restriction is outdated and contradicts current S3 capabilities."
+    },
+    {
+      "video_id": "IzsMHbYTdDo",
+      "concept_id": "aws_devops.route_a_security_finding_with_evidence_to_its_responsible_owner",
+      "reason": "No clean standalone segment covers the required evidence handoff. The video demonstrates configuring SNS, Lambda and EventBridge to email Security Hub notifications, but does not explain resource identity, severity or observed activity as responder context (f1); routing a finding ID or evidence link and urgency to the accountable owner using an established escalation path (f2); or preserving evidence without unsupported compromise claims (f3). The customization section refers to code without explaining its contents, so evidence-field coverage cannot be established from the supplied transcript. The EventBridge section also depends on the previously created Lambda function and topic. This is a notification-configuration workflow rather than the required finding-evidence and ownership lesson."
+    },
+    {
+      "video_id": "7-HEjs5yoqo",
+      "concept_id": "aws_devops.route_an_operational_event_to_a_notification_or_established_systems_manager_action",
+      "reason": "Reject for a material target-permissions error: at 255\u2013288 seconds, the creator claims the default SNS topic policy allows any AWS service in the account to publish. EventBridge delivery requires an SNS resource policy authorizing the events.amazonaws.com service principal; account ownership alone does not grant that permission. The subsequent routing demonstration relies on this incorrect setup without showing the required authorization. It also does not demonstrate selecting a supplied event bus, restricting configuration to an approved target, or testing a nonmatching event. Although 350\u2013618 seconds shows an EC2 state-change pattern, SNS targeting, and matching-event notification evidence, trimming out the incorrect policy explanation would leave its consequential permission dependency unresolved."
+    },
+    {
+      "video_id": "Xmmu5mMsq3c",
+      "concept_id": "aws_devops.route_an_operational_event_to_a_notification_or_established_systems_manager_action",
+      "reason": "No clean standalone segment demonstrates the intended approved-target workflow. The rule targets SSM OpsItem creation (171s), rather than an approved SNS notification or established Systems Manager action. The subsequent configuration depends on input-transformer and OpsItem template schemas not included in this path's allowed knowledge (181\u2013234s). Although the video shows event-pattern configuration and a resulting OpsItem, it does not establish the supplied event bus, configure target permissions, or send matching and nonmatching test events. The earlier runbook execution (66\u201382s) is separate from the routing demonstration and cannot fill those gaps. No technical contradiction was identified; rejection is for target mismatch and prerequisite safety."
+    },
+    {
+      "video_id": "esISkPlnxL0",
+      "concept_id": "aws_devops.run_an_ecs_service_with_a_desired_task_count",
+      "reason": "No clean, technically accurate segment covers the intended reconciliation exercise. The service explanation at 769\u2013839 states at 823\u2013825 that the service can restart the pre-existing task/container; ECS service reconciliation replaces stopped tasks rather than restarting a stopped task. This is a factual problem, not merely missing coverage. The creation demonstration at 1701\u20131921 selects a task definition, desired count of two and network settings, then observes initial provisioning, but never performs controlled task removal or inspects service events and running/pending counts until recovery (f3). Deleting the entire service at 1430\u20131475 or 2296\u20132333 is not the required exercise. The video also makes materially incorrect general claims about ECS port mappings at 1049\u20131067 and an unchanging load-balancer IP at 2274\u20132277, supporting rejection rather than treating omissions alone as the problem."
+    },
+    {
+      "video_id": "esISkPlnxL0",
+      "concept_id": "aws_devops.perform_a_controlled_ecs_service_rollout",
+      "reason": "No standalone range adequately teaches the specified controlled rollout. The demonstration at 2009\u20132252 overwrites the existing image tag, creates an otherwise unchanged task-definition revision and updates the service; it does not register a supplied new image version in the revision as required by f2. It never explains minimumHealthyPercent or maximumPercent relative to desiredCount (f1). It observes replacement tasks and eventual running count, then checks the changed page, but does not inspect service events, verify running task revisions or establish the supplied steady-state health criteria (f3). Starting at 2009 also relies on application code and ECS resources configured earlier; starting at 2082 leaves the image update outside the range. Extending backward would add substantial setup without supplying the missing deployment-bound explanation. Material technical inaccuracies elsewhere include the assertion at 2274\u20132277 that the load balancer's IP always remains the same; the later Application Load Balancer demo uses its DNS name, not a guaranteed static IP."
+    },
+    {
+      "video_id": "UEOtZvTCmDo",
+      "concept_id": "aws_devops.run_supplied_unit_and_integration_tests_as_blocking_pipeline_gates",
+      "reason": "No clean standalone segment teaches the required blocking pipeline gate. The workflow uses one test job, not separate unit and integration jobs with a promotion job requiring both via needs. It does not explain zero versus nonzero command exit status or the need to omit continue-on-error. The failure demonstration at 1422\u20131464 raises a Python exception and discusses pull-request merging, rather than showing a failing supplied test preventing a dependent promotion job; it also depends on earlier application, workflow, and Git/pull-request setup outside this path's allowed knowledge. Separately, the video makes technically incorrect claims at 1552 and 1572 that administrators can view stored GitHub secret values; stored secret values cannot be retrieved for viewing, even by administrators."
+    },
+    {
+      "video_id": "gxPykhPxRW0",
+      "concept_id": "aws_devops.submit_small_reviewable_infrastructure_changes",
+      "reason": "No standalone segment covers the required facts. The relevant discussion at 420\u2013508 seconds recommends reviewing and testing Terraform changes through merge requests and applying changes from an automated build, but does not explain small coherent changes, demonstrate the supplied Git staging/commit/push and pull-request workflow, show a focused EC2 diff with saved plan evidence, or execute an approved saved plan and attach execution/resource-verification evidence. This is general workflow advice rather than the required bounded change-submission walkthrough."
+    },
+    {
+      "video_id": "lClPDUDskv8",
+      "concept_id": "aws_devops.submit_small_reviewable_infrastructure_changes",
+      "reason": "No clean standalone segment adequately covers the required workflow. At 624\u2013844, the demonstration plans and deploys an Azure cognitive service, requiring Azure-specific setup outside the allowed knowledge; it does not demonstrate applying an approved saved EC2 plan or attaching execution and resource-verification evidence. The pull-request discussion at 844\u2013922 depends on that preceding workflow and recommends showing validation and plan results, but does not demonstrate a focused change with intent, coherent diff and saved EC2 plan evidence. The video does not explain the benefit of small coherent changes or demonstrate the required git add, git commit and git push sequence. The subsequent demonstration beginning at 922 concerns AI-assisted repair of an intentionally invalid configuration rather than the supplied infrastructure-review workflow."
+    },
+    {
+      "video_id": "1Ia5hng1frs",
+      "concept_id": "aws_devops.verify_availability_across_availability_zones_under_a_controlled_failure",
+      "reason": "No clean segment teaches the required controlled-failure verification. The video explains multi-AZ networking architecture but does not cover deliberate resilience testing (f1), approved AZ-scoped targets, abort criteria and client-visible monitoring (f2), or verification of surviving capacity and request-path behavior against availability requirements (f3). It also makes a materially incorrect absolute claim at 185\u2013194: only a region failure can impact a well-designed multi-AZ application's service. Multi-AZ design does not eliminate other service-impacting failures or guarantee sufficient surviving capacity. Later sections introduce untaught interface endpoints (228 onward) and regional disaster-recovery routing (279 onward), which the teaching notes exclude. Trimming cannot supply the missing experimental procedure or verification evidence."
+    },
+    {
+      "video_id": "8BwDrzeHOks",
+      "concept_id": "cost.safe_teardown",
+      "reason": "No clean standalone segment teaches safe teardown. The Tag Editor demonstration inventories resources across all regions and deletes instances without restricting deletion to supplied exercise resources through stack membership or approved tags. It does not teach dependency-aware deletion, CloudFormation deletion relationships, verification of deletion results, emptying versioned S3 buckets including versions and delete markers, or inspection of retained resources and failed deletions. There is also a technical error at 327\u2013329 seconds: EC2 termination is described as 'going to blow away everything hard drive included', although EBS volume deletion depends on DeleteOnTermination settings and volumes can remain. The Cost Explorer section treats billing data as evidence of what is currently running, which is not a reliable live inventory, and overlaps the blocked residual-charge-verification topic. Trimming cannot remedy the unsafe deletion scope, factual error, or missing required teardown instruction."
+    },
+    {
+      "video_id": "dLS7_OLiwbM",
+      "concept_id": "cost.safe_teardown",
+      "reason": "Reject for technical inaccuracies and insufficient safe-teardown coverage. At 169\u2013173s, the creator incorrectly says EC2 key pairs incur charges. At 216\u2013222s, the creator treats EC2 dashboard counts as proof that no AWS charges remain; this contradicts f4 and enters blocked residual-charge verification. The demo does not establish approved exercise scope through stack membership or tags, explain CloudFormation dependency-aware deletion, cover emptying versioned S3 buckets including delete markers, or inspect retained resources and failed deletions. Trimming out the inaccurate sections leaves only a basic instance-termination demonstration, not a clean standalone segment covering the required safe-teardown facts."
+    },
+    {
+      "video_id": "MkiWa31iV6U",
+      "concept_id": "recovery.credential_readiness",
+      "reason": "No clean segment covers credential readiness. The video demonstrates IAM-user console login, role switching, and S3 bucket-list authorization, but never inspects session expiry or tests supplied backup-read and recovery-resource operations. It therefore does not establish both lifetime and authorization readiness required by f1\u2013f3. The testing chapter at 729 seconds also relies on the user, role, and policies created earlier rather than introducing an approved recovery session. Technical concern: statements at 14\u201318 and 200\u2013219 misleadingly generalize that any IAM user can assume a generic role; assumption depends on applicable trust and authorization policies, not merely a role being generic. The broader workflow uses the root account for routine IAM administration and copies a console password into a notepad, conflicting with the safe-session teaching notes."
+    },
+    {
+      "video_id": "IiXFN-ka_Ts",
+      "concept_id": "recovery.rehearsal_isolation",
+      "reason": "No clean segment teaches rehearsal isolation. The transcript does not explain limiting recovery-test effects in a controlled environment (f1), checking the supplied isolated account/network, restoration destinations, and client traffic against production (f2), or recording approved scope and stop conditions before provisioning or traffic (f3). The restore-parameter discussion at 320\u2013331 mentions choosing an Availability Zone and encryption key but skips those choices and provides no isolation checks. The remaining material concerns restore-testing configuration, validation, compliance, pricing, and results rather than the required isolation lesson."
+    },
+    {
+      "video_id": "fQ_KahCPBeU",
+      "concept_id": "response.approval_stop",
+      "reason": "The video demonstrates authoring an EC2 instance-state workflow in the Systems Manager visual designer, not approval or stopping an Automation execution. It does not explain aws:approve, designated approvers, approval/rejection pauses, placing approval before a protected operation, rejection branching or failure paths, or stopping an Automation execution and inspecting its state. Stopping an EC2 instance is not stopping an Automation execution. No standalone range covers the required facts."
+    },
+    {
+      "video_id": "Yb31uQzW2Uc",
+      "concept_id": "response.approval_stop",
+      "reason": "No clean segment covers approval or stopping an Automation execution. The demonstration stops an EC2 instance, which is not the approved operation for stopping an Automation execution. It contains no aws:approve step, designated approvers, rejection branch, or protected-action gating. Additionally, the explanation at 245\u2013250 incorrectly implies that EC2 stop Automation requires the instance to be managed through the SSM agent; EC2 stop/start Automation operates through EC2 APIs."
+    },
+    {
+      "video_id": "Yb31uQzW2Uc",
+      "concept_id": "aws_devops.recover_an_incident_safely_using_an_established_runbook",
+      "reason": "No standalone incident-recovery runbook lesson exists. The video demonstrates selecting EC2 stop/start Automation documents and observing instance states, but does not explain an established recovery procedure and its expected outcomes, verify its operational preconditions, or demonstrate supplied stop conditions and evidence-based escalation. The state checks alone do not cover the required safe-recovery workflow. Additionally, the explanation at 245\u2013250 incorrectly implies that EC2 stop Automation requires the instance to be managed through the SSM agent; EC2 stop/start Automation operates through EC2 APIs."
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "artifact_type": "segment_judgments",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_aws_devops_engineer",
+    "run_id": "glossary_batch_aws_devops_engineer",
+    "prompt_version": "09_segment_judge@v1",
+    "model": "gpt-6.1-sol",
+    "generated_at": "2026-11-19T10:19:48Z",
+    "source_snapshot_id": "glossary_batch_aws_devops_engineer",
+    "parent_artifact_hashes": {
+      "segment_proposals.part.c3.json": "fe40853160a62273099e3d5854acc4fa4a3ab2795a490ed06501aa4d4e77fe4e",
+      "coverage_briefs.json": "873acae7b21dc3119236e0e3213db011559c6f8a61dcd1be66bdb9938ea512d4",
+      "extracted_concepts.json": "e5655c589dc783e9bcf5aef3d029dcad038c706eb941eb9ad594badae4a805ae"
+    }
+  },
+  "batch_id": "glossary_batch_aws_devops_engineer",
+  "judgments": [
+    {
+      "proposal_id": "prop_TlCuOjviOhk_ec2_instance_profile",
+      "verdict": "approved",
+      "final_start_seconds": 146,
+      "final_end_seconds": 205,
+      "confirmed_fact_ids": [
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 5,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read transcript 116\u2013234 and catalogue: no chapters, embedding enabled. At 146\u2013160 the speaker names DemoRoleForEC2 and its IAM read-only policy, then explains attaching it to provide instance credentials. At 161\u2013187 the narration follows Instances > Actions > Security > Modify IAM role, selects the named role and verifies it in Security. This teaches f2's console route, consistent with the official EC2 attach-iam-role documentation. Earlier creation of this explicitly named supplied role need not be understood to follow attachment; EC2 operation and role trust are allowed knowledge. At 190\u2013204 it successfully runs aws iam list-users without aws configure. This does not establish f1's profile/role distinction or f3's caller identity and allowed/denied tests under unchanged permissions, so neither is confirmed. ADVISORY: the proposed end 204 clips 'it worked'; extend to 205 at the permission-removal transition beginning 204.80. Do not extend into that separate experiment. The focused 59-second workflow completes attachment and its positive result. Console navigation and terminal-response cues support screen-demo value, but actual frames were not supplied and thumbnail metadata alone does not verify screen content."
+    },
+    {
+      "proposal_id": "prop__0VQ-FpqbBc_pipeline_federation",
+      "verdict": "approved",
+      "final_start_seconds": 141,
+      "final_end_seconds": 296,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read transcript 0\u2013308 and catalogue: no chapters, embedding enabled. Approve a narrower workflow-to-result cut beginning with the new test-purpose explanation at 141.44, rather than the uncertain AWS trust-policy setup. At 141\u2013169 the speaker identifies the authentication test and explains workflow id-token write permission and token generation. At 172\u2013201 the AWS credentials action exchanges the GitHub token, assumes the role and configures temporary AWS credentials. At 202\u2013214 it identifies S3 listing as the positive test; at 225\u2013260 it pushes the workflow and opens its Actions run; at 272\u2013295.60 it inspects the bucket-list result and explicitly concludes authentication without long-lived access keys. Together this teaches f1, consistent with GitHub's official OIDC-in-AWS documentation. Temporary credentials are explained here as the result of this concept, not an assumed understanding of blocked STS-session controls or credential-expiry handling. The preconfigured AWS role/provider are inputs to this narrowed demonstration. f2 is not confirmed: the omitted 36\u201386 setup has garbled issuer/audience captions and no transcript-verifiable branch/environment subject syntax. f3 is not confirmed because no negative repository/branch test occurs. ADVISORY: narrow 0\u2013295 to 141\u2013296 to focus on the supported workflow mechanism and preserve the complete closing explanation; this is not a complete AWS-side setup lesson. Narrated workflow code, Actions navigation and result expansion support screen/code teaching value. Actual UI annotations and exact displayed YAML have not been visually verified. The 155 seconds include the mechanism and its finished positive result."
+    },
+    {
+      "proposal_id": "prop_UtwPl6glP94_configure_a_codedeploy_deployment_action_for_a_supplied_ec2_application",
+      "verdict": "rejected_fact_mismatch",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 1,
+        "prerequisite_safety": 4,
+        "standalone_clarity": 3,
+        "visual_teaching_value": 4,
+        "pacing": 3,
+        "boundary_quality": 2
+      },
+      "reasoning": "Read transcript 629\u2013941 and catalogue: no chapters, embedding enabled. At 664\u2013694 the speaker creates an EC2/on-premises application; at 697\u2013781 it creates a deployment group, selects a previously created CodeDeploy service role, targets EC2 by DeployTarget/WebApp tags and selects an all-at-once in-place deployment. At 793\u2013820 it supplies an S3 ZIP revision, followed by succeeded status and browser output at 821\u2013850; at 845\u2013911 it repeats with a second revision. These are relevant portions of f2, consistent with the official deployment-group documentation, but nothing in this range identifies, explains or verifies the installed CodeDeploy agent required by f2. Official CodeDeploy agent documentation explicitly makes installed/configured agent software the condition for using an EC2 instance in a deployment. Deployment success does not teach that prerequisite. No complete proposed fact is confirmed; AppSpec mappings/hooks (f1) and hook results/target-file inspection (f3) are also absent. BLOCKING: the sole claimed fact f2 is incomplete. Replace with a standalone cut that identifies the supplied application/revision, intended targets, approved service role and installed/ready agent, or provide complementary agent-readiness coverage before claiming f2. The agent belongs to this concept, so its omission is not a later-knowledge leak. Earlier supplied role/tag/archive setup alone is not a hard prerequisite rejection, and the simple browser outcome does not require the later smoke-check-gate competency. ADVISORY: 659 begins on trailing 'deploy' from the previous setup sentence, while 911 cuts the final 'updated the instance' explanation, which ends at 913.60 and overlaps the cleanup transition. A replacement must use clean transitions. Console selection, revision pasting and status cues support screen-demo value but cannot cure the unsupported fact claim."
+    },
+    {
+      "proposal_id": "prop_9BlsFNBnKHc_configure_and_verify_an_ec2_auto_scaling_policy_under_bounded_load",
+      "verdict": "approved",
+      "final_start_seconds": 931,
+      "final_end_seconds": 995,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 5,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read transcript 901\u20131025 and catalogue chapters. Dynamic Scaling begins at 931 and runs to 1026; the cut ends before the step-scaling contrast at 995.87. At 931.55\u2013961.10 the speaker immediately names target tracking, compares it to a thermostat/cruise control, and explains choosing a metric such as average CPU utilization and a 50-percent target. At 961\u2013994.88 increased traffic raises CPU to 75 percent and target tracking calculates and adds five instances 'in this case' to restore utilization. This completes f1's mechanism, consistent with the official target-tracking documentation; it is not a universal five-instance formula. No blocked load-balancer configuration, deployment or incident-response knowledge is needed. 'The third' is only an enumeration, not a dependency on the earlier sections. Neither f2's warmup/capacity-bound setup nor f3's bounded load-test evidence is taught. The 64-second explanation finishes its example and stays focused. Conference catalogue/chapter structure and narration of changing capacity support an explanatory presentation, but slides/signaling are inferred, not frame-verified. Catalogue confirms captions and embedding. Retain the proposed range: chapter timing and the new thought at 931.55 support its start despite overlapping captions from the prior sentence."
+    },
+    {
+      "proposal_id": "prop_-RumeaoPB2M_configure_and_verify_an_ec2_auto_scaling_policy_under_bounded_load",
+      "verdict": "approved",
+      "final_start_seconds": 6,
+      "final_end_seconds": 84,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 3,
+        "pacing": 5,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read transcript 0\u2013114 and catalogue chapters: Auto Scaling 17\u201345, Target Tracking Scaling Policies 45\u201384, Getting Started 84\u2013118. At 6.76 the speaker introduces himself; 13\u201339 explains increasing/decreasing EC2 counts with demand. At 39\u201363 it introduces choosing a load-metric target and adjusting resource levels like a thermostat; at 63\u201383 it gives the concrete 50-percent average-CPU example and says EC2 instances are added or removed to maintain it. This directly and exceptionally clearly teaches f1, consistent with the official target-tracking documentation. It does not teach warmup/capacity bounds (f2) or a tested activity/capacity comparison (f3). Retain 6\u201384 for a standalone explanation, excluding the dated supported-services/regions discussion and outro in Getting Started. Even treating the proposed talking_head_only mode conservatively, this qualifies for the conceptual exception: a concise definition, intuitive thermostat analogy and explicit metric/instance-count example make the mental model clear without a visual dependency. Visual teaching value remains 3; a diagram-rich alternative could be preferable. No later concept is needed. Catalogue confirms captions and embedding; its chapter structure suggests title/editorial support but is not proof of animated visuals. Actual frames were not supplied."
+    },
+    {
+      "proposal_id": "prop_H73uX0TOX9g_configure_artifact_repository_retention",
+      "verdict": "approved",
+      "final_start_seconds": 177,
+      "final_end_seconds": 341,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read transcript 146\u2013352 and catalogue: dry-run chapter starts at 232, while the retention thought begins at 176.80. At 177\u2013192 it explains accumulating build images and why lifecycle policies are useful. At 192\u2013230 it defines development/staging/production tags and retaining recent versions rather than obsolete artifacts. At 232\u2013278 it opens dry-run rules and specifies priority, tag prefix and image-count-more-than-five selection. At 295\u2013328 it adds an untagged-image rule with count more than 30; at 327\u2013340.72 it applies the policy and concludes that it keeps the registry tidy. This teaches f1's tag-status/count selection and expiration mechanism, consistent with the official ECR lifecycle-policy documentation. The moving-tag workflow is explained locally: following selection does not require the blocked same-artifact-promotion competency. The preview/apply flow supplies partial f2 support, but the transcript does not explicitly teach the complete rulePriority/selection/action field structure, so f2 is not confirmed. It never compares previewed digests with deployed/still-needed versions, so f3 is not confirmed; do not infer that deployed images are protected. ADVISORY: start at 177 rather than 176 to omit the prior compression/pull sentence; extend 338 to 341 so 'keep our registry tidy' completes. The dry-run chapter, narrated tab selections/rule inputs and resulting policy support UI-demo value, but annotations and individual previewed digests are not visually verified. The 164-second workflow completes its count-based rule example within normal role duration. Catalogue confirms captions and embedding."
+    }
+  ]
+}

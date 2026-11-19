@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "artifact_type": "segment_judgments",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_aws_devops_engineer",
+    "run_id": "glossary_batch_aws_devops_engineer",
+    "prompt_version": "09_segment_judge@v1",
+    "model": "gpt-6.1-sol",
+    "generated_at": "2026-11-19T10:14:38.793279+00:00",
+    "source_snapshot_id": "glossary_batch_aws_devops_engineer",
+    "parent_artifact_hashes": {
+      "segment_proposals.part.c1.json": "433f5313185d54993c20ae3059fa097f52386c38d43adbfa66f835cea1011269",
+      "coverage_briefs.json": "873acae7b21dc3119236e0e3213db011559c6f8a61dcd1be66bdb9938ea512d4",
+      "extracted_concepts.json": "e5655c589dc783e9bcf5aef3d029dcad038c706eb941eb9ad594badae4a805ae"
+    }
+  },
+  "batch_id": "glossary_batch_aws_devops_engineer",
+  "judgments": [
+    {
+      "proposal_id": "prop_FNbHpOTwifQ_diagnose_an_iam_denied_request_from_request_and_policy_evidence",
+      "verdict": "approved",
+      "final_start_seconds": 0,
+      "final_end_seconds": 274,
+      "confirmed_fact_ids": [
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read FNbHpOTwifQ transcript 0\u2013308 and its catalogue chapters (Intro, Policy Simulator, Demo, Create Bucket, Show Statement, Other Permissions, Implicit Denial). The opening names the IAM Policy Simulator and explains that it uses existing identities. At 67\u2013103 Daniel's S3FullAccess allow and student-policy CreateBucket deny are inspected; 103\u2013115 explains deny precedence. At 130\u2013162 the narrator selects S3/CreateBucket and runs the simulation; 164\u2013181 opens Show Statement to localize the denial. At 190\u2013223 other S3 operations are allowed and their allow statement is located. At 231\u2013274 DynamoDB operations are denied because no permission was granted. This genuinely teaches f2 through explicit-deny and missing-allow alternatives, consistent with the IAM access-denied guide, but not request-context diagnosis, the complete multi-policy evaluation or correction/retest (f1/f3/f4). No blocked concept needs to be understood: service operations are supplied test inputs, not S3 or DynamoDB operational lessons. Approve 0\u2013274, ending after the implicit-denial explanation and before the redundant recap at 274.4 and policy-sandbox transition at 278.72. The proposed 278-second end interrupts the recap about denials for other APIs. Narrated policy panes, selectors, result rows and Show Statement provide strong UI visual cues; catalogue confirms embedding and captions, but annotations were not directly inspected."
+    },
+    {
+      "proposal_id": "prop_Xwpi0ITkL3U_execute_a_github_actions_workflow_with_an_appropriate_runner",
+      "verdict": "rejected_inaccurate",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 2,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 3
+      },
+      "reasoning": "Read Xwpi0ITkL3U transcript 1432\u20131795 and catalogue chapters/embedding metadata. The 1462 start is a terminology transition; 1473\u20131526 explains events/workflows/jobs/steps/runners, and 1536\u20131562 explains on/workflow_dispatch. However, at 1564.24\u20131570.32 it explicitly teaches 'Jobs is a list within that workflow,' while contrasting it with the steps list. GitHub's approved workflow-syntax documentation says jobs.<job_id> uses a string key whose value is a map of job configuration: jobs is an object/mapping, not a YAML list. This is an actual structural error in the YAML explanation, not a prerequisite issue. Runner selection is explained at 1573\u20131608; 1610\u20131649 launches a manual run and views its greeting; 1730\u20131765 launches three jobs, observes all succeeding and checks their expected outputs, so f3 is supported (a failed example is not essential to credit inspection of success status). Do not credit f1: no .github/workflows location in the window; nor complete f2: the transcript does not identify uses/run keys and the jobs structure is wrong. Bash/Python greetings and a pinned action are supplied examples; they do not require the later Python AWS-automation or artifact-publication skills. Browser/editor, numbered YAML and outlined boxes are strong visual cues. Reject the proposed integrated cut for the jobs/list error; an end trim cannot remove it, and starting after it would discard the introduction of the workflow being run. The proposed end also slightly clips the output sentence (caption continues to 1766.56). Select a correct standalone workflow demonstration instead."
+    },
+    {
+      "proposal_id": "prop_R8_veQiYBjI_execute_a_github_actions_workflow_with_an_appropriate_runner",
+      "verdict": "approved",
+      "final_start_seconds": 738,
+      "final_end_seconds": 1230,
+      "confirmed_fact_ids": [
+        "f1",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 3,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read R8_veQiYBjI transcript 708\u20131411 and catalogue chapters: demo through 784, syntax 784\u20131240, runner discussion 1240\u20131475. At 738.12 the narrator starts a Java/Gradle build-workflow example, selects a template and explains the automatically created .github/workflows path at 755\u2013770. At 807\u2013854 the event section is explained using push/pull-request triggers; this establishes f1. Jobs and reused checkout actions are introduced at 886\u20131042, with uses named at 1025\u20131042; run versus reusable actions is explained at 1079\u20131115. At 1120\u20131169 the supplied repository's workflow is committed, a pull request triggers it, and details are opened. At 1169\u20131230 the completed build's setup, checkout, JDK, command/log separation, successful build and post-build cleanup are inspected: f3 is supported. Tighten the end to 1230 after cleanup, before the evaluative recap and separate runner discussion. Do not confirm complete f2 in this final range: runs-on selection is not explained until 1366\u20131384, outside the approved cut. This also removes the 1257\u20131308 categorical description of workflows running on GitHub servers/fresh servers and the intervening hypothetical artifact-publish dependency. The supplied Java application and template commands are treated as inputs, not authored/configured here, so understanding later artifact publication or unit-test gating is unnecessary. At 1115\u20131125 the narrator explicitly identifies the needed Java/Gradle repository. The longer-than-target 492-second cut is justified by a complete template-to-trigger-to-logs workflow, although the checkout repository/documentation detour is slow. A single end trim cannot remove that internal detour. Editor/interface/log narration and chapter structure support screen-demo value; embedding and captions are present. This is a creation/run/logs segment, not a complete runner-selection lesson; retain f2 as an uncovered fact for media selection."
+    },
+    {
+      "proposal_id": "prop_jlV6W6n2Kbc_attribute_an_aws_change_using_cloudtrail_evidence",
+      "verdict": "rejected_fact_mismatch",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 1,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 3,
+        "pacing": 4,
+        "boundary_quality": 3
+      },
+      "reasoning": "Read jlV6W6n2Kbc transcript 212\u2013339 and catalogue chapters (What is CloudTrail ends 310; Use Cases begins 310). At 242.72\u2013257 the narrator describes 90 days of management events. At 257\u2013289 a screenshot is toured: event name, event time, username, service and resource columns. At 289.76\u2013298.88 the entire filtering instruction is merely 'over at the top it allows you to apply certain filters and certain time ranges.' No attribute is selected or named as the lookup attribute, no filter value or relevant interval is supplied, and no filtered result is examined. Therefore the sole claimed fact f2 (filter by an attribute and relevant interval) is not actually taught. The CloudTrail event-history source confirms a single attribute filter plus time-range filtering; the screenshot orientation is not an example of that procedure. Also do not credit f1 (selected Region/activity scope absent) or f3 (no event record fields/request parameters inspected). This is a narrated screenshot with useful column cues but only modest visual mechanism value, not a completed attribution workflow. The proposed start 242 falls in the preceding convenience sentence and end 309 precedes completion of 'from a user perspective'; neither boundary repair adds the missing filtering instruction. Reject for fact mismatch and replace with a real attribute/time-filter walkthrough. Out-of-range claims about Insights do not determine this segment's verdict. Catalogue confirms embedding and captions."
+    },
+    {
+      "proposal_id": "prop_AWVTKBUnoIg_choose_rolling_blue_green_or_canary_delivery_for_stated_availability_and_rollback_requirements",
+      "verdict": "rejected_inaccurate",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 2,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 3,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read AWVTKBUnoIg transcript 43\u2013499 and catalogue chapters (Rolling 74\u2013197; Blue-green 197\u2013338; Canary 338\u2013469). The start at 73 captures 'Then we have the Rolling Deployment.' At 94\u2013121 the ten-server example replaces servers sequentially, establishing f1; 122\u2013166 appropriately qualifies rolling's availability and residual risks. At 199\u2013240 separate blue and green environments are established; 252\u2013280 switches traffic and explains switch-back rollback, establishing f2. But at 261.24\u2013267 it states 'Users are seamlessly transitioned ... with zero downtime' without conditions. The approved Well-Architected delivery guidance requires validation and deliberate treatment of state, synchronization and in-flight transactions during a switch, rather than establishing a guaranteed zero-downtime outcome. For a learner choosing delivery to satisfy availability constraints, the unconditional promise is material and must not be presented as assured. At 361\u2013411 canary limits exposure before wider rollout, establishing f3. Parallel-capacity cost is discussed at 297\u2013306 and canary risks at 431\u2013457, but no actual choice against supplied capacity/rollback requirements is worked; conservatively do not confirm full f4. Load balancing, monitoring, testing and API/database compatibility are conceptual considerations, not configuration exercises needing blocked product-specific skills. The 396-second length has a defensible reason (three contiguous complete strategy explanations), and the 469 end correctly excludes feature toggles. Reject for the in-range availability overpromise: no single boundary trim preserves the three-strategy comparison plus blue/green rollback while removing the internal erroneous sentence. Use a qualified comparison, or submit a separately labeled rolling-only cut around 73\u2013196. Server/traffic explanations and chapters suggest diagram value but do not establish animation independently; visual score remains conservative. Catalogue confirms embeddability and creator captions."
+    }
+  ]
+}

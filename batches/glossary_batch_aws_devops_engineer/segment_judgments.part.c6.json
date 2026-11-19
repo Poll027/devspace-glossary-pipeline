@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "artifact_type": "segment_judgments",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_aws_devops_engineer",
+    "run_id": "glossary_batch_aws_devops_engineer",
+    "prompt_version": "09_segment_judge@v1",
+    "model": "gpt-6.1-sol",
+    "generated_at": "2026-11-19T10:24:48.722467+00:00",
+    "source_snapshot_id": "glossary_batch_aws_devops_engineer",
+    "parent_artifact_hashes": {
+      "segment_proposals.part.c6.json": "dfafe77d9f0bcd5429fa2437c6dd4e6b7c88e3a4d0ca2e10520f4827062ea32e",
+      "coverage_briefs.json": "873acae7b21dc3119236e0e3213db011559c6f8a61dcd1be66bdb9938ea512d4",
+      "extracted_concepts.json": "e5655c589dc783e9bcf5aef3d029dcad038c706eb941eb9ad594badae4a805ae"
+    }
+  },
+  "batch_id": "glossary_batch_aws_devops_engineer",
+  "judgments": [
+    {
+      "proposal_id": "prop_kK8wbPBNVxA_replacement_controls",
+      "verdict": "approved",
+      "final_start_seconds": 406,
+      "final_end_seconds": 504,
+      "confirmed_fact_ids": [
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read kK8wbPBNVxA transcript 68-534 and catalogue chapters (create-before-destroy 98-395; prevention 395-504). Tighten to 406-504: 406-434 introduces a resource that must not be deleted; 434-453 edits the lifecycle setting to prevent_destroy = true; 454-473 changes it and shows 'instance cannot be destroyed'; 484-493 explicitly says the lifecycle policy must be removed to permit the change. This teaches f2, consistent with HashiCorp lifecycle documentation requiring the argument to remain in configuration. The Azure resource-group example does not require Azure administration to understand this resource-block/plan-error mechanism. Starting at the new prevention example avoids dependency on the earlier replacement execution. Drop 98-405: syntax troubleshooting, storage latency, and UI caching are unnecessary for the sole claimed fact, and default replacement ordering/approved apply are not fully taught (no f1, f3, or f4 confirmation). End before ignore_changes at 504. Narrated code edits and terminal error provide credible live-code value, inferred rather than directly inspected; catalogue says embeddable. No blocked concept is needed to understand the retained example."
+    },
+    {
+      "proposal_id": "prop_90auAVyZswc_gate_release_completion_on_a_deployed_service_smoke_check",
+      "verdict": "approved",
+      "final_start_seconds": 1111,
+      "final_end_seconds": 1200,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 2,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 90auAVyZswc transcript 1070-1224 and catalogue's smoke-tests chapter 1100-1584. Use 1111-1200: omit the preceding manual-approval conclusion and generic 'very critical' preamble. At 1111-1136 the presenter distinguishes a successful deployment operation from an application that crashes or has broken connectivity; 1134-1144 defines immediate post-deployment sanity checks; 1163-1187 lists homepage HTTP 200, login and health-endpoint checks. These concretely teach f1 without requiring the later manual-approval concept or microservice architecture (the latter is only an optional check mentioned in passing). Extend the proposed end: the overlapping 1192-1196 caption says tests 'should complete within 1 or 2 minutes', and 1194-1200 finishes the basic-versus-comprehensive testing contrast. Stop before the new rollback prescription starting at 1200; that advice is not needed here. No supplied action execution/revision verification or Lambda job-result handling appears, so f2/f3 are not confirmed. Despite no demonstrable visual support, approve the talking-head exception: this is a genuinely conceptual distinction, explained exceptionally clearly with failure cases, a car-start analogy and observable endpoint behaviors. Visual score remains low; catalogue confirms embed availability, not actual visual mode."
+    },
+    {
+      "proposal_id": "prop_AmWnWfuSTfQ_state_locking",
+      "verdict": "approved",
+      "final_start_seconds": 196,
+      "final_end_seconds": 504,
+      "confirmed_fact_ids": [
+        "f1",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 3,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read AmWnWfuSTfQ transcript 165-534 and all catalogue chapters. Align start to 196, the configuration chapter. At 196-216 the presenter replaces the DynamoDB backend argument with the opt-in lock-file setting set true; 218-258 identifies the S3 state bucket and reinitializes the backend. At 287-319 the bucket contains a .tflock during apply and no lock after completion. Most decisively, 384-418 starts apply, leaves its approval pending, opens a second terminal in the same folder and attempts a competing apply; 417-435 reports 'error acquiring the state lock' and shows the lock object. At 443-474 the first apply completes, a retry reports matching infrastructure, and refreshing the bucket shows the lock gone. This verifies f1 and f3, not just a narrated concurrency hypothetical, and uses no lock-disable bypass. Configuration and completed retry justify retaining the 308-second demo, although destruction/recreation and repeated no-change narration slow it down. No .tflock IAM permissions are taught (no f2), and no authorization-boundary distinction is taught (no f4). 'Won't be able to run anything' at 437-443 is contextualized by competing Terraform apply commands, not a claim that S3 access permissions are revoked; do not repurpose it as f4. S3/EC2/VPC and backend knowledge is already available; the legacy-table reference is a removed setting rather than required DynamoDB expertise. Terminal and bucket-refresh cues support screen-demo visual value; visuals not directly inspected. End at 504 before community promotion; embed allowed."
+    },
+    {
+      "proposal_id": "prop_hgYAFw14yR0_control_environment_promotion_with_a_manual_approval",
+      "verdict": "rejected_fact_mismatch",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 1,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 3,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read hgYAFw14yR0 transcript 306-571 and catalogue chapters (stage insertion 341-474, manual approval 474-569). At 336-428 the presenter inserts a manual approval before an existing Deploy stage and supplies an instance URL. At 448-470 a committed change triggers execution; 511-521 shows it waiting; 521-538 clicks approval; 539-566 compares deployment IDs and refreshes the changed app. This supports partial pause/resume behavior, but neither claimed fact is fully verified. f1 requires an authorized approver and rejection/expiration failing the action: the clip names a responsible engineer and says 'we can reject it' (529-536), but does not establish permissions or explain failure on rejection/expiration. f3 requires approval of the intended execution AND revision: post-approval deployment-ID comparison is not pre-approval source-revision verification, and clicking the review/approve control is not evidence that the supplied revision was reviewed. AWS approvals documentation makes authorized approval and rejection/expiration outcomes explicit. No staging-to-production placement/permissions demonstration supplies f2 either. Therefore reject as fact mismatch, not inaccuracy or prerequisite leakage: the demonstrated basic gate is plausible and relevant, but none of the proposed complete facts is taught. Trimming or extending to the video's conclusion cannot supply the omitted facts. Screen-editing and deployment-result cues give real workflow value (inferred); catalogue permits embedding. A replacement must teach the missing approval outcomes/authorization and exact execution/revision verification, or be scoped at the owning evidence stage to genuinely narrower facts."
+    },
+    {
+      "proposal_id": "prop_qKTxXE5h-18_document_incident_evidence_and_a_preventive_change",
+      "verdict": "approved",
+      "final_start_seconds": 73,
+      "final_end_seconds": 199,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 5,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 2,
+        "pacing": 5,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read qKTxXE5h-18 transcript 43-228 and catalogue chapters 73-117 (blamelessness), 117-156 (report structure), 156-198 (action accountability). At 73-85 the report is defined as impact, response actions, root causes and follow-ups; 124-138 gives detection/resolution, incident details, timeline, lessons and action items. At 159-180 clear owners, priorities, tickets, verifiable completion and preventive rather than merely mitigating actions are explained. This fully teaches conceptual f1 and agrees with AWS post-incident analysis guidance on contributing factors and recurrence-reduction changes. No worked evidence timeline/direct-observation-versus-causal-conclusion distinction is constructed (no f2), and no demonstrated cause justifies one particular preventive change (no f3). The earlier-provider-report reference at 108-117 illustrates blameless style but is not needed to understand the definition or template. No recovery endpoint-cutover knowledge is needed. Adjust end to 199 to complete 'add a date, then review the list again later' (194.48-198.87); incident rehearsal starts at 198.89 and should not be retained beyond the integer rounding margin. Approve the talking-head exception: report structure and accountable follow-up are genuinely conceptual, with exceptionally clear, concise and practical guidance, though no demonstrated visual template is evidenced. Visual support is not independently verified; embed availability is confirmed by catalogue."
+    }
+  ]
+}

@@ -1,0 +1,232 @@
+{
+  "metadata": {
+    "artifact_type": "segment_proposals",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_aws_devops_engineer",
+    "run_id": "glossary_batch_aws_devops_engineer",
+    "prompt_version": "08_segment_detection@v1",
+    "model": "bedrock:gpt-6.1-sol",
+    "generated_at": "2026-11-19T10:17:59.960156+00:00",
+    "source_snapshot_id": "glossary_batch_aws_devops_engineer",
+    "parent_artifact_hashes": {
+      "video_candidates.json": "cc80d99ac693cb95c29397927f5c798fa748b137f558c1d905833a3343fd9e13",
+      "coverage_briefs.json": "873acae7b21dc3119236e0e3213db011559c6f8a61dcd1be66bdb9938ea512d4",
+      "extracted_concepts.json": "e5655c589dc783e9bcf5aef3d029dcad038c706eb941eb9ad594badae4a805ae"
+    }
+  },
+  "batch_id": "glossary_batch_aws_devops_engineer",
+  "proposals": [
+    {
+      "proposal_id": "prop_B2MecqC5nJA_execute_a_scoped_systems_manager_remote_command",
+      "concept_id": "aws_devops.execute_a_scoped_systems_manager_remote_command",
+      "path_id": "aws_devops_engineer",
+      "video_id": "B2MecqC5nJA",
+      "start_seconds": 1081,
+      "end_seconds": 1251,
+      "label": "Run a shell-script document on two selected managed instances and verify its effects",
+      "role": "tool_workflow",
+      "covered_fact_ids": [
+        "f1"
+      ],
+      "visual_mode": "screen_demo",
+      "chapter_aligned": false,
+      "transcript_evidence": "to execute commands or scripts on any managed instances",
+      "issues": [
+        "Visual mode is inferred from console navigation, parameter entry, and shell-verification cues; visuals were not independently reviewed.",
+        "Starts at the actual spoken transition at 1081, one second before the catalogue chapter boundary. Ends at the Inventory transition at 1251, after the command example finishes.",
+        "Supports the document-execution mechanism in f1, but authorized access is established earlier in the video, not explained within this range. Prepared, authorized managed nodes must be supplied externally.",
+        "Does not cover f2's send-command CLI syntax, explicit --instance-ids or tag-based --targets, or an approval check. It instead selects AWS-RunShellScript, enters parameters, and manually selects two instances in the console.",
+        "Does not cover f3: no command ID recording or inspection of each invocation's status and output. It observes overall success and verifies shell effects on only one instance; this must not be presented as sufficient fleet verification.",
+        "The Linux file and user commands require the external shell preparation specified for this concept. Auto-captions garble sudo and other command text, so the transcript alone cannot verify the exact displayed syntax.",
+        "Disables S3 output storage for the training example; this is not guidance to omit operational result evidence."
+      ]
+    },
+    {
+      "proposal_id": "prop_UfPqrkoUFiQ_identify_avoidable_charges_with_cost_explorer",
+      "concept_id": "aws_devops.identify_avoidable_charges_with_cost_explorer",
+      "path_id": "aws_devops_engineer",
+      "video_id": "UfPqrkoUFiQ",
+      "start_seconds": 736,
+      "end_seconds": 893,
+      "label": "Use Cost Explorer filters and service groupings to locate billed charges",
+      "role": "tool_workflow",
+      "covered_fact_ids": [
+        "f2"
+      ],
+      "visual_mode": "annotated_ui",
+      "chapter_aligned": false,
+      "transcript_evidence": "S3 I did not incur any charges related",
+      "issues": [
+        "Visual mode is inferred from narrated dropdown selections, filter application, chart changes, and the supporting data table; frames were not supplied.",
+        "Partial f2 coverage: demonstrates service and tag filters, mentions account filtering, switches grouping dimensions, and inspects billed cost evidence. It does not demonstrate selecting the supplied period or account, grouping by usage type, or inspecting usage quantities.",
+        "The range opens with 'back in cost Explorer' and a short UI-update comment. The presenter then explains the existing service grouping before changing it; no earlier example setup is needed for the filter demonstration.",
+        "The date interval is already configured and is not explained inside this range. Required f1 interval coverage needs accompanying text.",
+        "The example distinguishes no S3 charges from charges for another service using billing evidence, but does not explicitly teach the full f3 resource-existence-versus-charge distinction or establish that the charge is avoidable.",
+        "Ends at the real 893-second transition into commentary about advanced options, after the supporting data download example is complete."
+      ]
+    },
+    {
+      "proposal_id": "prop_cVCArQM-x3s_route_alarm_notifications_to_an_operational_owner",
+      "concept_id": "aws_devops.route_alarm_notifications_to_an_operational_owner",
+      "path_id": "aws_devops_engineer",
+      "video_id": "cVCArQM-x3s",
+      "start_seconds": 100,
+      "end_seconds": 314,
+      "label": "Configure an SNS email subscription and connect it to a CloudWatch alarm",
+      "role": "tool_workflow",
+      "covered_fact_ids": [
+        "f2"
+      ],
+      "visual_mode": "screen_demo",
+      "chapter_aligned": false,
+      "transcript_evidence": "you can see this is the email which we",
+      "issues": [
+        "Screen-demo visual mode is inferred from console-navigation instructions and references to the displayed subscription status; visuals were not independently reviewed.",
+        "The start is an inferred topic-creation transition, not a creator chapter boundary. Auto-caption wording at 100 seconds is garbled.",
+        "The example creates a test topic and uses the presenter's email rather than identifying a supplied approved topic and operational owner. Approval and ownership must come from the surrounding lesson.",
+        "Claims only f2. The range does not explicitly explain that notification actions leave metric evaluation unchanged, and it does not verify receipt of an alarm notification.",
+        "Includes already-allowed alarm-evaluation setup and a brief CloudWatch-agent digression rather than focusing exclusively on notification routing.",
+        "Ends at the 314-second transition to testing. The later test changes the alarm threshold at 327\u2013353 seconds, overlapping the blocked controlled-failure/alarm-verification concept, so it is excluded.",
+        "Outside this range, the notification explanation at 438\u2013444 seconds describes an 80-percent threshold after the demonstration changed it to 0.1 at 345 seconds. This is a factual inconsistency in the video's test explanation, not merely a coverage gap; the judge should consider whether it warrants rejecting the video altogether."
+      ]
+    }
+  ],
+  "rejected_videos": [
+    {
+      "video_id": "Nax2zbYakf4",
+      "concept_id": "aws_devops.configure_managed_database_backups",
+      "reason": "The transcript provides a backup overview, not the required snapshot creation and recovery workflow. It never shows creating a snapshot for the intended DB instance or waiting for snapshot status available (f2). At 173\u2013181 seconds it explains that restoration creates a separate instance with a new endpoint, but omits the new identifier and supplied network settings required by f3. It never covers waiting for the restored instance, connecting to its endpoint, or running the supplied recovery-marker query (f4). No clean range completes the intended operational example. There is also a technical concern at 91\u201395 seconds: the wording conflates PITR recovery granularity with the roughly five-minute lag of the latest restorable time; PITR supports second-level target selection."
+    },
+    {
+      "video_id": "IpByb6Z6Yh0",
+      "concept_id": "aws_devops.configure_scoped_log_access",
+      "reason": "No standalone segment teaches scoped CloudWatch Logs access. The video uses generic IAM, S3, DynamoDB, and EC2 examples; it does not explain authorization for log-group/log-stream operations, the required Logs read actions and supported resource scopes (including operations requiring *), or testing approved and unapproved readers. Generic least-privilege and policy-simulator advice does not cover these required facts. Additionally, the S3 example at 384\u2013395 incorrectly claims that an Allow for GetObject prevents uploading, deleting, or modifying objects: omitting those permissions from this policy does not override grants from other applicable policies."
+    },
+    {
+      "video_id": "4xd1eM6Js60",
+      "concept_id": "aws_devops.define_an_ecs_task_for_a_supplied_image",
+      "reason": "No clean, prerequisite-safe standalone segment exists for this concept. The task-definition demo begins at 424 by referring to an earlier cluster and explanation, and its configuration sequence introduces blocked ECS task identity at 457\u2013483 through task-role and task-execution-role choices. The image and port configuration at 489\u2013542 omits that preceding setup and does not demonstrate the required container CPU and memory settings. At 516\u2013527, the presenter incorrectly claims that a port must always be enabled for ECS to verify container health; ECS has no universally required health-check port. This is a technical error, not merely a coverage gap. From 548 onward, the demo creates and inspects a service rather than running a standalone task with supplied cluster and network settings, introducing blocked service operation and desired-count concepts. The brief blueprint explanation at 386\u2013397 is embedded in service discussion and does not independently explain the required image and runtime settings."
+    },
+    {
+      "video_id": "B2MecqC5nJA",
+      "concept_id": "aws_devops.execute_an_established_fleet_patch_task",
+      "reason": "No clean segment demonstrates the intended established maintenance-window task. The patch execution section uses ad hoc Patch now, selects patch all instances at 710, and initiates patching of all accessible nodes at 726\u2013732. It does not execute an established task with an approved target set, document parameters, concurrency, and error limits (f2). The later document and execution-output inspection at 853\u20131076 provides useful mechanism context but does not inspect per-node patch compliance or identify instances requiring follow-up (f3). Trimming cannot turn this broad ad hoc operation into the required bounded workflow. This is a scope and coverage mismatch, not an assertion that Patch now is technically invalid."
+    },
+    {
+      "video_id": "qNi-CNpnfmY",
+      "concept_id": "aws_devops.execute_a_scoped_systems_manager_remote_command",
+      "reason": "No standalone segment teaches the required scoped Run Command workflow. The only direct coverage, at 882\u2013889 seconds, briefly describes executing controlled actions on selected fleet nodes and refers back to earlier automation documents; patch management begins at 892 seconds. This overview does not establish Run Command document execution under authorized access (f1), demonstrate send-command with supplied document parameters and approved instance IDs or tag targets (f2), or record a command ID and inspect each node's invocation status and output separately from parent status (f3). Extending the range adds unrelated capabilities, including blocked patch-management content, rather than the missing facts. The wording also appears to conflate Run Command documents with Automation runbooks, a technical-accuracy concern."
+    },
+    {
+      "video_id": "e9hntYLHUPI",
+      "concept_id": "aws_devops.handle_aws_automation_errors_with_bounded_retries_and_useful_reporting",
+      "reason": "No verifiable standalone range covers a complete required fact. The answer at 104\u2013121 seconds recommends inspecting the exception response, but the transcript does not establish ClientError handling with Error.Code, Error.Message, optional ResponseMetadata.RequestId, and terminal-failure reporting; the intervening code is not transcribed. No caption explains selected retryable failures, standard-mode Config with total_max_attempts, SDK backoff, or initial-request versus retry counting. Additionally, at 189\u2013202 seconds the video incorrectly claims that both botocore and boto3 must be imported because boto3 dynamically populates botocore exceptions; botocore.exceptions can be imported directly. Later sections focus on service-exception discovery rather than bounded retries and useful reporting."
+    },
+    {
+      "video_id": "e9hntYLHUPI",
+      "concept_id": "automation.partial_failure",
+      "reason": "The video discusses Boto3 exceptions and service-specific exception discovery, not partial fleet-command outcomes. No transcript range explains separate per-target invocation results, recording successful, failed and unresolved targets from statuses and outputs, or choosing scoped follow-up without repeating work on successful targets. No clean segment covers the required facts."
+    },
+    {
+      "video_id": "ZxseRwJt3dg",
+      "concept_id": "aws_devops.handle_aws_automation_errors_with_bounded_retries_and_useful_reporting",
+      "reason": "No clean segment teaches the required bounded-retry and terminal-reporting behavior. At 117\u2013178 the creator catches ClientError and prints the exception, but never inspects Error.Code or Error.Message or preserves the failure RequestId. The video does not explain selected retryable errors, configure standard retries with total_max_attempts, or distinguish initial requests from retries. The later ResponseMetadata discussion concerns a successful response's HTTP status, not terminal exception reporting. The demo also builds on bucket-creation code from a previous video rather than using a supplied ready call. Catalogue chapter titles do not match the transcript's actual topics."
+    },
+    {
+      "video_id": "ZxseRwJt3dg",
+      "concept_id": "automation.partial_failure",
+      "reason": "The video demonstrates exception handling and local logging for individual S3 bucket-creation calls, not partial fleet outcomes. It contains no separate per-target invocation results, no classification of successful, failed and unresolved targets, and no target-specific scoped follow-up. Sequential bucket-creation tests cannot supply the required partial-failure facts; no relevant standalone range exists."
+    },
+    {
+      "video_id": "UfPqrkoUFiQ",
+      "concept_id": "aws_devops.rightsize_a_resource_using_a_supplied_workload_baseline",
+      "reason": "The only rightsizing discussion, at 677\u2013731 seconds, enables and opens EC2 rightsizing recommendations. It does not explain matching size to workload requirements, compare utilization and performance evidence against constraints, or account for peak and changing demand. No standalone baseline-comparison lesson exists in the supplied transcript."
+    },
+    {
+      "video_id": "UfPqrkoUFiQ",
+      "concept_id": "cost.residual_charge_verification",
+      "reason": "No segment compares usage timestamps with resource-deletion evidence or distinguishes pre-deletion charges from continuing usage. The approximately 24-hour population discussion at 691\u2013710 seconds concerns initial Cost Explorer activation, not recurring at-least-daily refresh or potentially longer reporting delays. General date and filter demonstrations do not cover residual-charge verification."
+    },
+    {
+      "video_id": "qmDzcu5uY1I",
+      "concept_id": "aws_devops.operate_an_eks_deployment_using_supplied_cluster_access_setup",
+      "reason": "No clean segment covers a complete required fact. The reconciliation explanation at 115\u2013182 describes restoring replicas but omits the Deployment\u2013ReplicaSet relationship. The demo applies a Deployment and inspects Pods, but does not demonstrate the required Deployment inspection together with that operation. No controlled Pod deletion or replacement verification occurs; the deletion at 817\u2013843 removes the Deployment and Service instead. The combined apply demo also introduces Kubernetes Services, which are blocked for this concept."
+    },
+    {
+      "video_id": "qmDzcu5uY1I",
+      "concept_id": "aws_devops.expose_an_eks_workload_using_a_kubernetes_service",
+      "reason": "The selector explanation is technically misleading: at 418\u2013450 the creator says the Deployment's own label and the Pod label are both used by the Service selector, describing a connection to the Deployment or its Pods. A Service selector selects matching Pods, not Deployments; Deployment metadata labels do not determine Service membership. This is a factual error, not merely a coverage gap. Although 457\u2013510 explains port mapping and 577\u2013665 checks endpoints against Pod IPs, the video does not establish the stable-endpoint model or test the Service address from a client. No clean range supplies the intended selector-and-request-path lesson without the misleading explanation."
+    },
+    {
+      "video_id": "qmDzcu5uY1I",
+      "concept_id": "aws_devops.perform_a_managed_eks_deployment_rollout",
+      "reason": "The video does not cover the required rollout operations. It explains Deployment YAML and initial creation, but does not distinguish Pod-template revisions from scaling, demonstrate kubectl set image or kubectl rollout status, or inspect rollout history and undo a controlled failure to an approved revision with readiness verification. No standalone segment covers a required rollout fact."
+    },
+    {
+      "video_id": "2ydtgyEYQIk",
+      "concept_id": "aws_devops.plan_infrastructure_and_data_restoration_in_dependency_order",
+      "reason": "The video explains storage resilience to host, Availability Zone, and Region failures, not workload restoration planning in dependency order. The cross-region example at 346\u2013384 describes copying a snapshot, creating an EBS volume, and attaching it to EC2, but does not establish workload objectives, list infrastructure/data/service dependencies, or include verification checkpoints before dependent services resume. No standalone segment adequately teaches the intended concept."
+    },
+    {
+      "video_id": "2ydtgyEYQIk",
+      "concept_id": "aws_devops.verify_restored_service_and_data_against_rto_rpo_in_an_isolated_rehearsal",
+      "reason": "The video covers storage failure resilience and cross-region recovery capabilities, not recovery verification. It provides no isolated rehearsal, disruption/readiness timestamps, recovered-data markers, independent RTO/RPO measurements, or pass/fail comparisons. No segment tests service readiness or distinguishes a running service from recovery that satisfies both objectives."
+    },
+    {
+      "video_id": "2s2xcwm8QrM",
+      "concept_id": "aws_devops.query_logs_to_correlate_a_service_symptom",
+      "reason": "No clean standalone segment teaches request-based symptom correlation. The video demonstrates VPC Flow Logs rather than structured application events sharing a request identity. It covers log-group and time-window selection, but does not demonstrate the required fields/filter/sort query with a supplied request field and identity, ascending timestamp ordering, or reconstruction and retention of a symptom's event sequence. Pipe-connected commands are not explained in the supplied transcript. The query-help and sample-query sections also introduce untaught aggregate statistics, parsing, and time-bucket grouping, contrary to this concept's teaching notes."
+    },
+    {
+      "video_id": "mAdBKHDTAiI",
+      "concept_id": "aws_devops.query_logs_to_correlate_a_service_symptom",
+      "reason": "No clean standalone range covers the intended request-correlation lesson. The transcript demonstrates time-window and log selection, default fields, and parsing/display operations, but does not explain pipe-connected commands (f1), demonstrate filtering a supplied request identity and sorting its events by ascending timestamp (f2), or reconstruct a symptom sequence and retain relevant events as evidence (f3). Despite the title, the transcript contains no filter-and-sort demonstration. The parsing section beginning at 76 seconds introduces untaught query operations outside the teaching notes; the earlier UI introduction alone does not adequately cover any required fact."
+    },
+    {
+      "video_id": "F_E365WxWgY",
+      "concept_id": "aws_devops.run_a_bounded_operational_action_with_lambda",
+      "reason": "No clean standalone segment meets this concept's scope. The video creates and authors a toy Python function rather than running a supplied bounded operational task. At 70\u201399 seconds it selects a newly generated basic Lambda role, without explaining resource-access permissions during invocation (f1) or assigning an approved task-scoped execution role (f2). The testing section depends on code authored earlier; the 204-second chapter boundary is mid-explanation, not a standalone start. Although 246\u2013341 seconds distinguishes execution success from the returned response, it does not inspect execution logs or verify an operational task result, so it does not fully cover f3. Including the missing setup would introduce application authoring contrary to the teaching notes. These are coverage and scope gaps, not an identified factual contradiction."
+    },
+    {
+      "video_id": "WXl4gW0znVc",
+      "concept_id": "aws_devops.triage_a_representative_guardduty_finding",
+      "reason": "No clean standalone triage segment covers the intended facts safely. The finding overview around 330\u2013375 shows finding type, severity, resource ID and suspicious-file information, but does not inspect activity timestamps, preserve investigation evidence or explain following an established investigation and escalation procedure. The later finding walkthrough around 1295\u20131375 explicitly depends on the earlier credential-exfiltration demonstration ('So if you recall earlier' at 1326) and makes a compromise conclusion at 1336\u20131338 using that prior context. The chapter boundary at 1193 actually begins an S3 malware-upload demonstration, not a standalone finding-triage lesson, and includes file-removal advice at 1257\u20131266 outside this concept's bounded response decision."
+    },
+    {
+      "video_id": "eq3_H-aiHhk",
+      "concept_id": "aws_devops.triage_a_representative_guardduty_finding",
+      "reason": "No clean standalone segment teaches triage of a representative GuardDuty finding. The transcript describes threat detection, severity and investigation options, but never opens a finding or identifies its finding type, affected resource, activity timestamps and suspicious-activity details. It does not teach preservation of investigation evidence or following an established finding-type investigation and escalation procedure rather than acting from severity alone. The promised hands-on walkthrough is in an external workshop, not this video. The Flow of Findings section instead introduces Security Hub routing and specialist EC2 isolation/remediation workflows outside this concept's allowed knowledge and scope."
+    },
+    {
+      "video_id": "YCokJ1_iCuA",
+      "concept_id": "security.audit_storage_access",
+      "reason": "No clean standalone segment teaches the required audit-storage authorization workflow. The policy demo at 279\u2013399 grants an entire external account GetObject access to all objects, rather than using supplied audit paths and narrowly scoped writer/reader identities; it demonstrates Allow but not Deny or inspection of other applicable grants and denies. The initial read tests precede that policy setup, and the later successful cross-account read depends on intervening public-policy and Block Public Access changes. Although write permission is added at 805\u2013824, no write is tested. The video does not compare approved writer/reader tests with an unapproved-identity read or explain that encryption and retention do not replace authorization checks. Its primary subject is public-access guardrails, not audit-object authorization evidence."
+    },
+    {
+      "video_id": "Ru5Gfo2n-IM",
+      "concept_id": "aws.ecs_task_identity",
+      "reason": "No clean standalone range at the supplied transcript timestamps. The role explanation begins within an ongoing task-definition feature list: 39 seconds starts with the preceding volume sentence, 42 seconds starts mid-sentence, and 46 seconds starts with 'task ro.' before explaining the execution role. The nominal 60-second role chapter actually falls mid-explanation. Starting at 0 would include ECS service orchestration at 17\u201328 seconds, which is blocked for this concept. The role discussion finishes before environment variables begin at 67 seconds, but provides only partial coverage: it distinguishes image-pull permissions from task permissions without explicitly explaining application credentials or log publishing, and it does not cover taskRoleArn, approved least-privilege role selection, or allowed-and-denied application tests."
+    },
+    {
+      "video_id": "3-aaw-B1j8Y",
+      "concept_id": "aws_devops.apply_an_approved_security_baseline_to_sandbox_accounts",
+      "reason": "No clean standalone baseline-application checkpoint exists. The video explains a multi-account baseline and distinguishes preventive from detective guardrails, but it never applies a supplied approved control configuration to a sandbox account or inspects each stated control's deployment or evaluation result (f2). The guardrail listing at 481\u2013504 does not demonstrate application or results; the compliance walkthrough at 575\u2013619 concerns the Security OU, not a sandbox account. Combining these sections would include substantial unrelated setup and navigation without supplying the missing workflow. Technical concerns also warrant rejection: at 437\u2013455, Account Factory VPC provisioning settings are described as defining what users are allowed to create, conflating provisioning defaults with enforced restrictions; at 45\u201358, creation of a Production OU is presented as standard landing-zone behavior, although that is not a standard automatically created OU."
+    },
+    {
+      "video_id": "Krpb44XR0bk",
+      "concept_id": "aws_devops.apply_bounded_eks_workload_configuration_and_secrets",
+      "reason": "Reject for misleading security teaching and insufficient operational coverage. At 473\u2013501, the explanation contrasts insecure plaintext ConfigMap credentials with base64-encoded Secret data as though encoding provides protection; base64 is not encryption, and the video does not explain required access control or storage protection (f4). At 452\u2013462, it also implies changing a ConfigMap is sufficient without explaining that running-container environment values remain unchanged. No supplied Pod-template reference syntax or safe consumer test is demonstrated (f2\u2013f3). The chapter starts at 366 with 'as we said' and relies on the earlier Service explanation, which is blocked for this concept. No clean, prerequisite-safe segment serves the intended configuration demonstration."
+    },
+    {
+      "video_id": "Krpb44XR0bk",
+      "concept_id": "aws_devops.expose_an_eks_workload_using_a_kubernetes_service",
+      "reason": "Reject for technical inaccuracy and insufficient operational coverage. The 232\u2013261 explanation supplies only an introductory stable-endpoint mental model, not selectors, selected Pod sets, port/targetPort mapping, application of a supplied Service, endpoint inspection, or a client test (f2\u2013f3). Extending from 263 introduces external/internal Service terminology and then untaught Ingress rather than the required bounded workflow. The later Service explanation at 757\u2013765 incorrectly claims traffic is forwarded to whichever Pod is least busy; Kubernetes Services do not generally select backends by workload busyness. No clean range provides the intended accurate request-path and verification lesson."
+    },
+    {
+      "video_id": "FAnQTgr04mU",
+      "concept_id": "aws_devops.apply_bounded_eks_workload_configuration_and_secrets",
+      "reason": "No clean standalone segment fits this path's bounded task. The environment-reference overview at 73\u2013160 seconds explicitly relies on an earlier video and previously shown configuration. The volume demo creates configuration and Secret objects rather than using only supplied objects, and its verification prints the Secret's plaintext contents at 909\u2013916 seconds, contrary to f3 and the teaching notes. Ending before that display would omit the completed verification rather than provide a safe consuming-workload test. The video also omits f4's access-control and storage-protection requirements and does not explain that base64 encoding is not encryption; this is a coverage gap, not an explicit factual contradiction. The catalogue's Summary boundary at 884 seconds is not a safe alternative start: the transcript is still completing the container inspection."
+    }
+  ]
+}

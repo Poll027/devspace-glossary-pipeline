@@ -1,0 +1,258 @@
+{
+  "metadata": {
+    "artifact_type": "segment_proposals",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_aws_devops_engineer",
+    "run_id": "glossary_batch_aws_devops_engineer",
+    "prompt_version": "08_segment_detection@v1",
+    "model": "bedrock:gpt-6.1-sol",
+    "generated_at": "2026-11-19T10:23:22.890157+00:00",
+    "source_snapshot_id": "glossary_batch_aws_devops_engineer",
+    "parent_artifact_hashes": {
+      "video_candidates.json": "cc80d99ac693cb95c29397927f5c798fa748b137f558c1d905833a3343fd9e13",
+      "coverage_briefs.json": "873acae7b21dc3119236e0e3213db011559c6f8a61dcd1be66bdb9938ea512d4",
+      "extracted_concepts.json": "e5655c589dc783e9bcf5aef3d029dcad038c706eb941eb9ad594badae4a805ae"
+    }
+  },
+  "batch_id": "glossary_batch_aws_devops_engineer",
+  "proposals": [
+    {
+      "proposal_id": "prop_kK8wbPBNVxA_replacement_controls",
+      "concept_id": "terraform.replacement_controls",
+      "path_id": "aws_devops_engineer",
+      "video_id": "kK8wbPBNVxA",
+      "start_seconds": 98,
+      "end_seconds": 504,
+      "label": "Observe Terraform replacement ordering and a prevent_destroy error",
+      "role": "live_code_demo",
+      "covered_fact_ids": [
+        "f2"
+      ],
+      "visual_mode": "live_code",
+      "chapter_aligned": true,
+      "transcript_evidence": "basically if you want to you know,",
+      "issues": [
+        "Visual mode is inferred from narrated code edits, terminal execution-plan output, and resource creation/destruction output; visuals were not directly inspected.",
+        "The 406-second range exceeds the usual live-code target. It retains configuration, replacement-triggering changes, execution-plan ordering, replacement execution, and the subsequent prevention error. Ending at 504 excludes the ignore_changes topic beginning at that timestamp.",
+        "Fact f1 is only partially covered: the reverse replacement order is demonstrated, but default destroy-before-create ordering and the where-supported qualifier are not explicitly explained.",
+        "Fact f2 is supported by the prevention error at 467\u2013473 and the explanation at 484\u2013490 that changing the resource requires removing the lifecycle policy. Protection after configuration removal is not claimed.",
+        "Fact f3 is only partially covered: lifecycle configuration, a replacement-triggering name change, plan ordering, and a prevention error are demonstrated, but approved permitted apply is not established. The creator uses auto-approve for several operations.",
+        "Fact f4 is not covered in this range. Scope and impact approval must remain prerequisites; lifecycle settings are not approval substitutes.",
+        "The example uses an Azure resource group rather than the AWS EC2 resource taught on this path. The resource is briefly identified at the start, but its original configuration and Azure setup precede the range; the judge should assess whether this leaves an untaught prerequisite.",
+        "The start introduces create_before_destroy clearly, but refers to an existing on-screen resource group. The initial configuration is not rebuilt within the range.",
+        "The explanation includes syntax troubleshooting, a remote-state-storage digression at 287\u2013315, and Azure UI caching commentary at 364\u2013383.",
+        "Creation completion and the start of destruction are narrated at 384\u2013390; explicit destruction completion is not narrated before the transition to prevent_destroy."
+      ]
+    },
+    {
+      "proposal_id": "prop_90auAVyZswc_gate_release_completion_on_a_deployed_service_smoke_check",
+      "concept_id": "aws_devops.gate_release_completion_on_a_deployed_service_smoke_check",
+      "path_id": "aws_devops_engineer",
+      "video_id": "90auAVyZswc",
+      "start_seconds": 1100,
+      "end_seconds": 1194,
+      "label": "Why deployment success still needs a live-service smoke check",
+      "role": "mental_model",
+      "covered_fact_ids": [
+        "f1"
+      ],
+      "visual_mode": "talking_head_only",
+      "chapter_aligned": true,
+      "transcript_evidence": "Just because a deployment is succeeded,",
+      "issues": [
+        "Visual mode is inferred: this explanatory section has no explicit screen, diagram, or code cues; actual visuals are unverified.",
+        "Covers f1 only. It describes live endpoint checks but does not run the supplied action or verify a response identifying the deployed revision, so f2 is not covered.",
+        "The video does not demonstrate a Lambda validation action or CodePipeline PutJobSuccessResult and PutJobFailureResult calls with the job ID; f3 is not covered.",
+        "The later demonstration uses a CodeBuild curl check and treats returned HTML as success without establishing expected-response or deployed-revision validation. It is not proposed as a substitute for the required supplied Lambda workflow.",
+        "The range ends at the 1194 caption boundary after the smoke-test duration explanation, before the subsequent discussion introduces automatic rollback at 1200."
+      ]
+    },
+    {
+      "proposal_id": "prop_AmWnWfuSTfQ_state_locking",
+      "concept_id": "terraform.state_locking",
+      "path_id": "aws_devops_engineer",
+      "video_id": "AmWnWfuSTfQ",
+      "start_seconds": 195,
+      "end_seconds": 504,
+      "label": "Enable S3 state locking and test competing Terraform writers",
+      "role": "live_code_demo",
+      "covered_fact_ids": [
+        "f1",
+        "f3"
+      ],
+      "visual_mode": "screen_demo",
+      "chapter_aligned": false,
+      "transcript_evidence": "the error and the error says error",
+      "issues": [
+        "Screen-demo visual mode is inferred from references to VS Code, terminal commands, and refreshing the S3 bucket; visuals were not independently inspected.",
+        "Does not cover the required s3:GetObject, s3:PutObject, and s3:DeleteObject permissions on the .tflock object, so f2 is not claimed.",
+        "Does not explain that locking is concurrency coordination rather than an authorization boundary, so f4 is not claimed. The statement at 437 that the presenter cannot run anything until the lock is removed is overbroad if interpreted beyond cooperating Terraform operations.",
+        "The start at 195 is a code transition immediately before the catalogue's 196-second chapter boundary. It refers back to existing code, but immediately identifies the backend setting being changed. The judge should verify that the visible backend and resource configuration provide sufficient standalone context.",
+        "The range includes a legacy DynamoDB setting being removed, an initial apply, destruction, and recreation before the competing-writer test. It does not teach DynamoDB as mandatory or demonstrate disabling locking.",
+        "The 309-second range retains configuration and initialization context through the completed contention test and successful retry. It includes redundant resource-lifecycle steps and a repeated no-change check.",
+        "The end at 504 is the actual transcript timestamp where community promotion starts, after the demonstration and closing explanation."
+      ]
+    },
+    {
+      "proposal_id": "prop_hgYAFw14yR0_control_environment_promotion_with_a_manual_approval",
+      "concept_id": "aws_devops.control_environment_promotion_with_a_manual_approval",
+      "path_id": "aws_devops_engineer",
+      "video_id": "hgYAFw14yR0",
+      "start_seconds": 336,
+      "end_seconds": 566,
+      "label": "Add a manual approval gate and observe deployment pause and resume",
+      "role": "tool_workflow",
+      "covered_fact_ids": [
+        "f1",
+        "f3"
+      ],
+      "visual_mode": "screen_demo",
+      "chapter_aligned": false,
+      "transcript_evidence": "and it's waiting for the approval let's",
+      "issues": [
+        "Visual mode is inferred from console-editing instructions, approval controls, deployment IDs, and application-refresh narration; visuals were not independently inspected.",
+        "Coverage of f1 is partial: the demonstration shows progression stopping until approval, but does not establish authorized-approver permissions or explain failure on rejection or expiration.",
+        "Coverage of f3 is partial: a new change triggers an execution that pauses and then deploys after approval. Deployment IDs are compared, but explicit verification of the intended source revision before approval is not demonstrated.",
+        "Does not fully cover f2: an approval action is inserted before deployment and an application review link is supplied, but separate staging and production environments and approver permissions are not configured.",
+        "The existing pipeline and application are assumed. Their underlying technologies are allowed knowledge for this path; the clip does not include their creation.",
+        "Starts at the transcript's stage-editing transition at 336 seconds rather than the chapter boundary at 341 seconds. The 474-second chapter boundary begins mid-explanation and is not a standalone start."
+      ]
+    },
+    {
+      "proposal_id": "prop_qKTxXE5h-18_document_incident_evidence_and_a_preventive_change",
+      "concept_id": "aws_devops.document_incident_evidence_and_a_preventive_change",
+      "path_id": "aws_devops_engineer",
+      "video_id": "qKTxXE5h-18",
+      "start_seconds": 73,
+      "end_seconds": 198,
+      "label": "Structure a blameless incident report and make preventive actions accountable",
+      "role": "mental_model",
+      "covered_fact_ids": [
+        "f1"
+      ],
+      "visual_mode": "talking_head_only",
+      "chapter_aligned": true,
+      "transcript_evidence": "They should have a verifiable end state, not vague wording like improve.",
+      "issues": [
+        "Partial coverage: f2 is not demonstrated. The segment names a timeline and requests verifiable severity data, but does not construct a timeline from supplied evidence or distinguish observations from causal conclusions supported by a verified fix.",
+        "Partial support for f3: preventive actions, clear owners, and verifiable completion are explained, but no single preventive action is justified by a demonstrated cause. Therefore f3 is not claimed as covered.",
+        "Visual mode is a conservative inference from presenter-oriented narration and the absence of explicit diagram, table, or screen-demonstration cues; actual visuals cannot be confirmed from the supplied material.",
+        "At 107 seconds, the speaker briefly references provider reports quoted earlier. These references are not needed to understand the self-contained definition, template, or action-item guidance.",
+        "The range ends at the actual 198-second transition into incident rehearsal, excluding that separate topic."
+      ]
+    }
+  ],
+  "rejected_videos": [
+    {
+      "video_id": "IIgMX2ILK6g",
+      "concept_id": "response.audit_evidence",
+      "reason": "No standalone segment adequately covers the required response-evidence facts. The console walkthrough shows CloudTrail identity, operation, time and resource information, but does not show automation execution identifiers, step statuses, inputs, outputs or failure information (f1), or assemble an execution-level response record (f2). It also does not demonstrate recording both successful and failed action outcomes (f3). The relevant walkthrough therefore repeats allowed CloudTrail-attribution knowledge rather than teaching the intended response evidence task. Later storage sections introduce blocked audit-retention knowledge. Separately, the video incorrectly states at 225\u2013229 and 256\u2013261 that CloudWatch Logs subscription filters can trigger CloudWatch alarms; metric filters, not subscription filters, provide the log-derived metrics used by alarms."
+    },
+    {
+      "video_id": "XQVm0ebdz3E",
+      "concept_id": "security.audit_storage_retention",
+      "reason": "The video contains outdated technical guidance: at 206\u2013213 seconds it says Object Lock can only be enabled during bucket creation and requires contacting AWS Support for an existing bucket. S3 now supports enabling Object Lock on existing buckets directly. The demonstration also selects an unsupplied compliance-mode default at 382\u2013394 seconds, contrary to this path's instruction to use an approved supplied policy on a prepared bucket. Governance explanations mention special permissions but do not explain the required explicit bypass request, leaving required fact f3 incomplete. Reject rather than present this workflow as current, prerequisite-safe operational guidance."
+    },
+    {
+      "video_id": "_NKihZZyu5k",
+      "concept_id": "security.audit_storage_retention",
+      "reason": "Technical contradiction: at 26\u201334 seconds, the video categorically claims that after an object is locked nobody can overwrite or delete it until expiration, including root and administrators. This incorrectly generalizes compliance protection to governance mode, contradicting the authorized bypass described at 103\u2013116 seconds and required fact f3. Trimming the opening leaves incomplete coverage: the retention discussion at 42\u2013167 seconds does not explain individual object-version retain-until dates (f1), demonstrate applying a supplied policy on a prepared bucket and inspecting audit-object version retention (f2), or explain that governance bypass requires both authorization and an explicit bypass request (f3). The available console walkthrough instead discusses enabling Object Lock and choosing retention settings without the supplied-policy safety constraint."
+    },
+    {
+      "video_id": "KHVmt22OXCU",
+      "concept_id": "terraform.replacement_controls",
+      "reason": "The replacement-controls explanations contain materially misleading generalizations. At 85\u201394, create_before_destroy is described as creating a new object whenever modifications occur, without distinguishing replacement-triggering changes from in-place updates; at 178\u2013185, its behavior is stated unconditionally rather than where supported. At 281\u2013300, the presenter says destroying a protected resource requires manually changing prevent_destroy to false, omitting that protection depends on the lifecycle rule remaining in configuration and does not persist after configuration removal. These are accuracy concerns, not merely missing coverage. The demonstrations also do not teach the required scope-and-impact approval gate or a distinct reviewed-plan-before-approved-apply workflow. No clean, accurate standalone range was identified for this concept."
+    },
+    {
+      "video_id": "889B25UAc6s",
+      "concept_id": "aws_devops.automate_isolated_infrastructure_restoration_using_a_supplied_cloudformation_ec2_template",
+      "reason": "No transcript is available (transcript_available: false). Cannot establish timestamped standalone boundaries or verify required fact coverage and prerequisite safety."
+    },
+    {
+      "video_id": "fmDG-W5TFp4",
+      "concept_id": "aws_devops.automate_isolated_infrastructure_restoration_using_a_supplied_cloudformation_ec2_template",
+      "reason": "The video demonstrates generic provisioning with an AWS LAMP sample, not isolated restoration using a supplied recovery template. It does not establish the target account's execution authority or selected Region (f1), approved recovery credentials and an explicit isolated target (f2), or supplied instance and service recovery-ready checks (f3). The creation sequence beginning at 293 seconds shows sample selection and parameters; 346\u2013418 seconds shows progress, resource IDs, outputs, and opening a webpage. These are relevant mechanics but do not form a standalone lesson covering the required restoration workflow. The 289-second chapter boundary also begins with unresolved designer context rather than a fresh explanation."
+    },
+    {
+      "video_id": "GGWinWTHqCY",
+      "concept_id": "aws_devops.block_release_on_actionable_dependency_or_image_security_findings",
+      "reason": "No clean standalone segment teaches the required release-policy decision. The video demonstrates Trivy rather than Inspector, so it does not cover f1. At 180\u2013205 it mentions using a nonzero exit code to fail a pipeline, but the demonstrated workflow deliberately remains nonblocking; it does not require scan-policy success before promotion or retain a policy decision as evidence, leaving f3 incomplete. At 328\u2013379 it shows high/critical misconfiguration reports and alert-dismissal options, not comparison of dependency or image findings against a supplied threshold and documented exception policy as required by f2. That section also relies on Helm-chart configuration knowledge absent from the allowed prerequisites. These are coverage and prerequisite gaps, not an identified factual contradiction."
+    },
+    {
+      "video_id": "CMH6YIHLvAw",
+      "concept_id": "aws_devops.block_release_on_actionable_dependency_or_image_security_findings",
+      "reason": "No standalone range teaches the required release-policy decision. The video demonstrates Trivy rather than Inspector, so it does not cover f1. At 409\u2013444 it configures scan output, excludes findings without fixes, and selects high, medium, and low severities, but supplies no stated release threshold or documented exception policy for determining actionability (f2). At 447\u2013480 it checks that output exists and commits the report; it never makes actionable unexcepted findings fail a policy check, requires that check before promotion, or retains a policy decision (f3). Report retention alone is insufficient. These are coverage gaps, not evidence that the video explicitly contradicts the required facts."
+    },
+    {
+      "video_id": "EiYmOwX5Uzc",
+      "concept_id": "aws_devops.diagnose_a_failed_delivery_pipeline_action",
+      "reason": "No clean standalone segment covers the required diagnosis workflow. The troubleshooting section at 201\u2013270 mentions CodeBuild logs but does not inspect pipeline execution/action history, identify the first failing action, check its input artifact revision, derive a correction from supplied error evidence, or retest that action before investigating dependent actions. It also relies on an earlier analogy. The video contains material technical inaccuracies: at 252\u2013268 it claims the local build agent perfectly reproduces the AWS environment and guarantees pipeline success; local builds cannot provide that guarantee. At 314\u2013324 it incorrectly states that buildspec.yaml must be at the repository root or the build immediately fails, omitting supported alternative buildspec configurations. These are factual contradictions, not merely coverage gaps."
+    },
+    {
+      "video_id": "T5Mqnemxi2Y",
+      "concept_id": "aws_devops.diagnose_a_failed_delivery_pipeline_action",
+      "reason": "No standalone segment teaches the required troubleshooting workflow. The transcript describes a local release-gate model, not pipeline execution/action history or an evidence-led diagnosis. At 113\u2013123 seconds it explains report configuration and build exit status, but does not identify the first failing action, inspect its input revision and linked service logs, derive an approved correction, or retest that action before investigating dependent actions. The validation checklist at 195\u2013220 seconds likewise does not demonstrate those steps. Broader ranges also introduce blocked manual-approval knowledge at 137\u2013147 seconds. The video therefore does not actually cover the requested concept."
+    },
+    {
+      "video_id": "YLtlz88zrLg",
+      "concept_id": "aws_devops.gate_release_completion_on_a_deployed_service_smoke_check",
+      "reason": "No clean segment covers the required concept. The video demonstrates pre-deployment GitHub Actions tests and deployment through SCP, SSH, and a Node.js process restart. It does not demonstrate a post-deployment check of live application behavior, verify an endpoint response for the deployed revision, or use a supplied Lambda validation action with CodePipeline PutJobSuccessResult and PutJobFailureResult. The local workflow testing at 324\u2013351 seconds is not a deployed-service smoke check or a release-completion gate."
+    },
+    {
+      "video_id": "8-yC4XfuP0Y",
+      "concept_id": "aws_devops.handle_failed_event_delivery_with_bounded_retries_and_failure_capture",
+      "reason": "Technical contradiction of required fact f4: the demonstration removes Lambda invocation permission, then repeatedly claims that EventBridge retries before sending the event to the DLQ (794\u2013797, 814\u2013824, 856\u2013865). The inspected message instead reports a permission failure at 932\u2013949. NO_PERMISSIONS is a nonretryable delivery failure that goes directly to the configured DLQ, so this is not the seeded exhausted-retry failure required by f3. The theory at 185\u2013227 also presents retries as applying generally to unsuccessful deliveries without explaining the nonretryable branch. Trimming cannot make this demonstration accurate. Additionally, the configuration at 495\u2013529 sets one retry attempt but does not establish an approved finite maximum event age, leaving f2 incomplete."
+    },
+    {
+      "video_id": "heJbgToU04c",
+      "concept_id": "aws_devops.handle_failed_event_delivery_with_bounded_retries_and_failure_capture",
+      "reason": "No clean standalone segment adequately teaches this concept. The configuration and failure demonstration depend on a previous tutorial's deployed order-manager application, API destination and template; these prerequisites are explicitly required at 280\u2013413 seconds and are not established by this path's allowed knowledge. The introductory explanation omits the nonretryable direct-to-DLQ branch required by f4 and broadly presents failure capture as occurring after retries. It also incorrectly states the default retry-attempt limit as 180 at 82 seconds; EventBridge documents up to 185 attempts. The demo breaks an API destination using a nonexistent HTTP method/path, but does not establish that the resulting failure is retryable or that retries were exhausted. Seeing a queued message therefore does not demonstrate the seeded exhausted delivery failure required by f3. Later processing sections introduce an unnecessary Lambda-to-DynamoDB workflow rather than resolving these gaps."
+    },
+    {
+      "video_id": "PFQQkoO9kEc",
+      "concept_id": "aws_devops.promote_the_same_artifact_version_across_environments",
+      "reason": "No clean segment teaches the required same-artifact promotion and verification. At 127\u2013145, the video describes building an artifact and deploying the application to test and production, but does not identify an immutable artifact reference or digest, explain promotion with environment-specific configuration, or distinguish build, release, and run. It never compares staging and production artifact digests or recorded build provenance (f3). The later demonstration begins with a source edit at 292 and triggers a new build rather than demonstrating promotion of a supplied artifact without rebuilding. These are coverage gaps, not an explicit contradiction of the required facts."
+    },
+    {
+      "video_id": "76A8BshRAHs",
+      "concept_id": "cost.residual_charge_verification",
+      "reason": "No standalone segment teaches residual charge verification. The video demonstrates account, service, and usage-type filtering and deletes a NAT gateway, but never checks a supplied teardown interval against resource-deletion evidence (f2). It does not explain at-least-daily Cost Explorer refresh or potentially longer appearance delays (f1), nor distinguish pre-deletion charges from continuing usage and repeat verification after refresh (f3). Comments attributing historical spending drops to deletion are speculative, not a usage-time/deletion-time comparison. The deletion demonstration ends without a post-deletion billing check."
+    },
+    {
+      "video_id": "9rkeidDSiGg",
+      "concept_id": "terraform.state_access_isolation",
+      "reason": "No clean standalone segment teaches the required state-access isolation facts. The access discussion at 147\u2013177 is generic; the code discussion at 819\u2013837 addresses blocking public access, not restricting approved identities to the selected state bucket, ListBucket prefix, and GetObject/PutObject key permissions. The video does not explain sensitive state values or demonstrate an unapproved identity being denied state reads and overwrites. Its provisioning workflow creates the backend bucket itself rather than a separate exercise bucket through a supplied, approved identity, and includes blocked state-locking material. The least-privilege conclusion at 1354\u20131393 depends on a user configured in a previous video and supplies no scoped policy or authorization test. Technical issues also weigh against selection: at 314\u2013318, use_lockfile is incorrectly described as belonging inside a resource block, although the later explanation at 995\u20131002 correctly places it in the backend block; the provider-version discussion at 378\u2013418 incorrectly presents version 5.0 as the dividing line for separate S3 configuration resources."
+    },
+    {
+      "video_id": "BXcGSE0BIdc",
+      "concept_id": "terraform.state_access_isolation",
+      "reason": "No clean standalone segment teaches state access isolation. The permissions chapter diagnoses denied bucket creation, then grants S3 full access (330\u2013357), rather than scoping ListBucket to a prefix and GetObject/PutObject to the state key. It also depends on an identity and partially completed deployment from earlier material (308\u2013323, 366\u2013379). The backend chapter demonstrates state migration, not approved versus unapproved access. The video does not explain sensitive state contents, test unauthorized reads or overwrites, or distinguish access isolation from concurrent-writer coordination. Separately, the cleanup instruction at 1206\u20131214 is technically incorrect: emptying the bucket and running terraform apply again does not delete a bucket still declared in the configuration."
+    },
+    {
+      "video_id": "Vy6Y7O43qK0",
+      "concept_id": "terraform.state_locking",
+      "reason": "Reject for technical inaccuracies that contradict required fact f4: at 416\u2013426 the presenter claims only the lock holder can change state, and at 520\u2013527 claims no state changes whatsoever are possible while the lock file exists. S3 lock-file locking coordinates cooperating Terraform writers; it does not prevent authorized identities from directly modifying state objects. At 503\u2013518, the presenter also incorrectly describes manually deleting the lock object as the only solution to a stale lock, omitting Terraform force-unlock and safe ownership checks. No clean segment meets the intended lesson: the configuration explanation omits the required .tflock GetObject, PutObject, and DeleteObject permissions (f2), and the concurrency example is narrated rather than a controlled competing-operation demonstration verifying failure to acquire the lock or change state (f3)."
+    },
+    {
+      "video_id": "loAnYj4QV14",
+      "concept_id": "aws_devops.control_environment_promotion_with_a_manual_approval",
+      "reason": "No clean segment covers the intended environment-promotion facts. The approval demo beginning at 1481 places a gate between source and deployment, not between staging and production. It omits authorized approver permissions and leaves the review context unconfigured; at 1801\u20131822 the presenter acknowledges the missing review URL. The demo shows a waiting approval and an approval result, but does not verify the intended execution and revision or explicitly demonstrate downstream advancement after approval. Rejection and expiration behavior are also absent. These are coverage gaps, not established factual contradictions; extending the range does not resolve them."
+    },
+    {
+      "video_id": "3_sS0ZfhrvA",
+      "concept_id": "aws_devops.recover_an_incident_safely_using_an_established_runbook",
+      "reason": "No clean segment teaches safe execution of an established runbook. The video describes runbook components and general incident-management practices, but does not explain verifying preconditions, executing only approved actions, or checking each expected result before advancing (f2). Its escalation section describes generic tiers and timings rather than stopping on supplied stop conditions or out-of-bounds outcomes and escalating with observed evidence (f3). Coverage of f1 is partial: documented procedures and restoration are mentioned, but expected operational outcomes are not explained. There is no worked execution or controlled response demonstration; trimming or extending cannot supply the missing facts."
+    },
+    {
+      "video_id": "hpIVXXZB4rE",
+      "concept_id": "recovery.endpoint_cutover",
+      "reason": "transcript_available is false and no transcript was supplied. Reject under the no-transcript rule; chapter metadata alone cannot establish standalone boundaries, required-fact coverage, prerequisite safety, or verbatim transcript evidence."
+    },
+    {
+      "video_id": "Kxpl0ICzQV0",
+      "concept_id": "recovery.endpoint_cutover",
+      "reason": "No clean standalone segment teaches the required recovery cutover procedure. The explanation at 169\u2013205 describes automatic failover to recovery resources, but does not cover restoring service, confirming the restored target's supplied readiness checks, or performing an approved endpoint switch. The demo creates Route 53 health checks and failover records, then tests failover by terminating primary-region instances; it depends on earlier configuration and DNS hosted-zone, alias-record, and routing-policy knowledge not established in the allowed prerequisites. Although the demo verifies that one browser reaches Ireland, it never explains cached DNS answers, TTL, or client convergence, so it cannot cover f3. These are coverage and prerequisite gaps, not an explicit factual contradiction."
+    }
+  ]
+}

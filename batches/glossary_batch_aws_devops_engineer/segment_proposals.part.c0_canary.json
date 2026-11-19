@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "artifact_type": "segment_proposals",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_aws_devops_engineer",
+    "run_id": "glossary_batch_aws_devops_engineer",
+    "prompt_version": "08_segment_detection@v1",
+    "model": "bedrock:gpt-6.1-sol",
+    "generated_at": "2026-11-19T10:08:06.947372+00:00",
+    "source_snapshot_id": "glossary_batch_aws_devops_engineer",
+    "parent_artifact_hashes": {
+      "video_candidates.json": "cc80d99ac693cb95c29397927f5c798fa748b137f558c1d905833a3343fd9e13",
+      "coverage_briefs.json": "873acae7b21dc3119236e0e3213db011559c6f8a61dcd1be66bdb9938ea512d4",
+      "extracted_concepts.json": "e5655c589dc783e9bcf5aef3d029dcad038c706eb941eb9ad594badae4a805ae"
+    }
+  },
+  "batch_id": "glossary_batch_aws_devops_engineer",
+  "proposals": [
+    {
+      "proposal_id": "prop_U5y7JI_mHk8_extract_structured_aws_cli_inventory_across_paginated_results",
+      "concept_id": "aws_devops.extract_structured_aws_cli_inventory_across_paginated_results",
+      "path_id": "aws_devops_engineer",
+      "video_id": "U5y7JI_mHk8",
+      "start_seconds": 1538,
+      "end_seconds": 1648,
+      "label": "How the AWS CLI collects a full listing across service pages",
+      "role": "visual_mechanism",
+      "covered_fact_ids": [
+        "f1"
+      ],
+      "visual_mode": "slides_with_signaling",
+      "chapter_aligned": false,
+      "transcript_evidence": "list and the CLI will do this Auto",
+      "issues": [
+        "Visual mode is inferred from the presentation context and the narrated request/response illustration at 1596\u20131636; no frames were supplied.",
+        "Covers the automatic-pagination behavior in f1, but does not explain how automatic pagination is disabled.",
+        "Does not cover f2 or f3: explicit profile/Region selection, --output json, --no-paginate, --page-size, --max-items, NextToken and --starting-token are not taught in this range.",
+        "The opening briefly previews streaming output and terminal paging before explaining service pagination; these are distinct mechanisms.",
+        "Ends at the actual 1648 caption boundary before the discussion of downsides. The full-list explanation has finished, although the preceding caption ends with the transitional word 'there'.",
+        "This is a 2019 developer-preview presentation. The broader video uses the historical aws2 executable; current command spelling should not be inferred from its slides."
+      ]
+    },
+    {
+      "proposal_id": "prop_3FumWkHSusY_diagnose_aws_connectivity_failures",
+      "concept_id": "aws_devops.diagnose_aws_connectivity_failures",
+      "path_id": "aws_devops_engineer",
+      "video_id": "3FumWkHSusY",
+      "start_seconds": 1762,
+      "end_seconds": 1857,
+      "label": "Why a network ACL can permit a request but block its response",
+      "role": "visual_mechanism",
+      "covered_fact_ids": [
+        "f3"
+      ],
+      "visual_mode": "slides_with_signaling",
+      "chapter_aligned": false,
+      "transcript_evidence": "respond to them which is different with",
+      "issues": [
+        "Visual mode is inferred from the PowerPoint presentation, references to an on-screen outbound rule, and the creator preparing a pen; visuals were not directly reviewed.",
+        "The opening closes the preceding security-group explanation before introducing stateful responses. It references an existing inbound-rule diagram, although the relevant rule behavior is explained again within the range.",
+        "This is partial reinforcement for f3 only. It does not teach DNS checks, route-association inspection, an evidence-supported correction, or a repeated endpoint test.",
+        "The end is the actual timestamp of the transition into additional NACL behavior. NACL rule-number evaluation begins at 1863 and is excluded because it is outside the supplied facts.",
+        "Elsewhere the video contains technical inaccuracies: at 2098\u20132127 it claims traffic to a public S3 endpoint necessarily leaves the AWS network, and at 2193\u20132210 it incorrectly requires security groups on the S3 gateway endpoint described earlier. These sections are excluded, but warrant whole-video reliability review."
+      ]
+    }
+  ],
+  "rejected_videos": [
+    {
+      "video_id": "U5y7JI_mHk8",
+      "concept_id": "aws.operator_profiles",
+      "reason": "No clean prerequisite-safe operator-profile segment exists. The configure-list and caller-identity demonstration at 476\u2013514 depends explicitly on an EC2 instance role and instance metadata, which are blocked for this concept. The named-profile demonstration at 515\u2013599 creates an assumed-role credential configuration and relies on that setup; trimming to 572 leaves unresolved earlier context. The later profile demonstrations depend on SSO credential setup and S3 operations, also blocked here. The transcript does not teach an explicit --region override or aws configure list --profile NAME. This is a coverage and prerequisite-safety rejection, not a finding that the demonstrated commands are technically wrong."
+    },
+    {
+      "video_id": "jCHOsMPbcV0",
+      "concept_id": "aws.operator_profiles",
+      "reason": "No standalone segment covers the required operator-profile facts. The video demonstrates only default-profile setup with aws configure; it does not teach named profiles or --profile NAME (f1), aws sts get-caller-identity and caller ARN/account inspection (f2), or aws configure list, configuration origins, and a command-level --region override (f3). The configuration walkthrough at 211\u2013248 depends on IAM-user and credential creation at 128\u2013211, contrary to the instruction to use supplied approved operator credentials and keep credential creation out of scope. It also exposes a secret access key and dismisses the exposure because the user will later be deleted (193\u2013200), an unsafe security claim. Installation footage and the subsequent DynamoDB example cannot supply the missing facts."
+    },
+    {
+      "video_id": "QM63dyA_4Pc",
+      "concept_id": "aws_devops.allocate_vpc_and_subnet_cidrs",
+      "reason": "No clean standalone range covers the required allocation lesson. The CIDR discussion at 504\u2013679 explains containment, /16\u2013/28 subnet sizes, and reserved addresses, but never teaches that subnet ranges must not overlap or demonstrates usable-capacity checking. Availability Zone placement is explained separately at 386\u2013421; joining it to the CIDR discussion includes untaught public/private subnet and VPN material at 421\u2013504. The video also contains a factual error, not merely a coverage gap: at 1014\u20131027 it says NAT gateways can make subnets public. A private subnet routed through a NAT gateway remains private; public-subnet classification depends on a direct route to an internet gateway. This contradicts correct AWS networking behavior and supports rejecting the video rather than extending the range."
+    },
+    {
+      "video_id": "ApGz8tpNLgo",
+      "concept_id": "aws_devops.allocate_vpc_and_subnet_cidrs",
+      "reason": "No clean standalone range adequately teaches the required allocation facts. The subnet-CIDR discussion at 301\u2013372 omits the /16\u2013/28 limits, AWS's five reserved addresses, and explicit containment/non-overlap requirements. At 334\u2013343 it describes all 4096 addresses as accessible in the example subnet, contradicting usable capacity after AWS reservations (4091). The Availability Zone discussion beginning at 188 moves into blocked availability/capacity teaching at 209 before providing a complete allocation mini-lesson. The earlier non-overlap discussion concerns VPC peering, not subnets within a VPC."
+    },
+    {
+      "video_id": "ApGz8tpNLgo",
+      "concept_id": "aws_devops.configure_subnet_internet_routing",
+      "reason": "No clean standalone range teaches the required route-selection and configuration facts. The resource review at 587\u2013632 inspects existing route tables and an internet-gateway route, but does not explain main-table fallback, longest-prefix priority, or demonstrate explicit subnet association and adding a 0.0.0.0/0 route. The wizard creates these resources automatically rather than teaching those operations. The earlier diagram discussion at 372\u2013410 depends on previously configured resources and transitions into untaught VPC endpoints at 410 and NAT gateways at 463. The endpoint discussion also makes an incorrect generalized suggestion at 456\u2013462 that VPC endpoints are free; that claim must not be presented as technically reliable."
+    },
+    {
+      "video_id": "3FumWkHSusY",
+      "concept_id": "aws_devops.configure_subnet_internet_routing",
+      "reason": "No sufficiently clean, prerequisite-safe segment for the intended routing lesson. The explanation at 1114\u20131306 mentions custom subnet route tables and main-table fallback, but never explains longest-prefix selection (f2). It describes 0.0.0.0 as meaning the public internet at 1207\u20131210 rather than explaining the IPv4 default destination prefix and its relationship to more-specific routes, and does not complete the explicit association-and-route configuration required by f3. The console wizard section mixes routing with NAT gateways, VPC endpoints, and cleanup behavior outside this path's allowed knowledge; it does not supply the missing route-selection explanation. Technical inaccuracies elsewhere also reduce reliability: the S3 endpoint section incorrectly claims public-endpoint traffic necessarily leaves AWS and requires security groups for the S3 gateway endpoint."
+    }
+  ]
+}
