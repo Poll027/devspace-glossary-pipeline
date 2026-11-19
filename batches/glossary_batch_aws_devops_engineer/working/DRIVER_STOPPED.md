@@ -2,4 +2,4 @@
 
 13 leakage check found 1 blocking issues; the fix belongs to stage 05/11 (or 09 for a leaking segment), then rerun downstream. See leakage_audit_report.json.
 
-Spend so far $12.32. Fix the cause, then rerun the same command (finished stages are skipped).
+Spend so far $12.35. Fix the cause, then rerun the same command (finished stages are skipped).
