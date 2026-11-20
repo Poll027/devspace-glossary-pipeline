@@ -1,14 +1,12 @@
 # Stage 13 content repair
 
-Affected concept: `aws_devops.perform_an_ec2_blue_green_deployment_with_codedeploy`.
+Blocking bundle: `aws_devops.perform_an_ec2_blue_green_deployment_with_codedeploy`.
 
-The leakage audit reports one blocking source-support defect, not prerequisite leakage. Assessment and practice anchors require rollback to the original fleet, but the cited CodeDeploy documentation describes rollback as a new deployment of a previous revision and allows termination of original instances. The stage 05 teaching text already correctly requires the known-good revision without promising restoration of the original fleet.
+The audit reports a source-support defect, not prerequisite leakage: assessment and practice anchors require rollback to the original fleet, but the cited CodeDeploy sources describe redeployment of a previous revision as a new deployment and permit termination of original instances. Teaching blocks already correctly require the known-good revision.
 
-Apply this source-aligned content repair through stage 05/11:
-- Rename `assessment_anchors[1].capability` from `verify_rollback_restores_original_fleet_and_known_good_behavior` to `verify_rollback_restores_known_good_revision_and_behavior`.
-- Rewrite `practice_anchor.success` to require verification of traffic destination, known-good revision, and application behavior according to the supplied rollback/redeployment procedure; do not require restoration of the original fleet.
-- Keep the traffic, revision, and behavior verification requirements intact; do not weaken any evaluator, gate, ledger, or check.
+Required upstream content repair in stage 05/11:
+- Change `assessment_anchors[1].capability` from `verify_rollback_restores_original_fleet_and_known_good_behavior` to `verify_rollback_restores_known_good_revision_and_behavior`.
+- Change `practice_anchor.success` to require verified traffic destination, known-good revision, and application behavior according to the supplied rollback/redeployment procedure, not return to the original fleet.
+- Preserve all other health, lifecycle, traffic and behavior checks and source-support requirements.
 
-Use the supported stage-repair/invalidation workflow to regenerate affected artifacts and rerun downstream stages and their gates, then rerun the original driver command. A plain rerun currently skips stages 05 and 11 and reproduces the same blocking finding.
-
-Investigation only: no production artifacts or code were changed and no pipeline was rerun; writes are restricted to this working folder.
+Use the pipeline's supported upstream repair/re-gating procedure so stages 05/11 and affected downstream artifacts are regenerated and re-evaluated; then rerun the original command. Plain reruns currently skip the passed upstream stages and repeat the same stage-13 blocker. Do not bypass or weaken stage 13 or manually falsify the ledger. No code or production artifacts were changed during triage.
