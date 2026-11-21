@@ -1,0 +1,8 @@
+# Stage 16 content remediation
+
+The independent audit has two BLOCKER findings; this is a content stop, not a transient failure. Earlier validation and reconciliation passed, but the canonical evidence still has defects. A plain rerun will not repair them.
+
+1. In canonical coverage for `aws_devops.reconcile_terraform_ec2_drift`, correct required fact f4: a refresh-only plan **proposes** state/output updates; applying the approved refresh-only plan persists those updates without restoring remote infrastructure to configuration. Preserve the already-correct learner-facing distinction. Regenerate every downstream copied coverage field and merge input from that canonical origin rather than patching copies independently.
+2. For `aws_devops.handle_aws_automation_errors_with_bounded_retries_and_useful_reporting`, keep the accurate f3 advice, but register and cite authoritative evidence supporting idempotency, unknown committed outcomes, and reconciliation before retrying a resource-changing operation. The audit suggests AWS Builders Library, "Making retries safe with idempotent APIs": https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/ (Retrying and side effects / Reducing client complexity). Verify that source and relevant sections, then propagate corrected source_refs through downstream copies and merge inputs. The current boto3 retries page alone does not support f3.
+
+Use the normal content-repair workflow to reopen affected stages and rebuild/revalidate dependent artifacts before rerunning the original driver command. Preserve evaluator, gate, and ledger checks. No canonical artifacts or code were modified during this read-only triage; this file records the required repairs.

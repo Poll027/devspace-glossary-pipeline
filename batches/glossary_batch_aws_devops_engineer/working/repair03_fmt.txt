@@ -1,0 +1,271 @@
+terraform fmt command reference | Terraform | HashiCorp Developer
+{"@context":"https://schema.org","@type":"TechArticle","headline":"terraform fmt command reference","description":"The `terraform fmt` command formats Terraform configuration contents so that it matches the canonical format and style.","url":"https://developer.hashicorp.comundefined","datePublished":"2025-11-19T19:11:19.000Z","dateModified":"2026-01-17T09:13:13.000Z","author":{"@type":"Organization","name":"HashiCorp","url":"https://www.hashicorp.com"},"publisher":{"@type":"Organization","name":"HashiCorp"},"isPartOf":{"@type":"WebSite","name":"HashiCorp Developer","url":"https://developer.hashicorp.com"},"about":{"@type":"SoftwareApplication","name":"Terraform"}}
+[{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Developer","item":"https://developer.hashicorp.com/"},{"@type":"ListItem","position":2,"name":"Terraform","item":"https://developer.hashicorp.com/terraform"},{"@type":"ListItem","position":3,"name":"Terraform CLI","item":"https://developer.hashicorp.com/terraform/cli"}]}]
+HashiConf 2025
+Don't miss the live stream of HashiConf Day 2 happening now
+View live stream
+!function(){try{var d=document.documentElement,n='data-theme',s='setAttribute';var e=localStorage.getItem('theme');if('system'===e||(!e&&true)){var t='(prefers-color-scheme: dark)',m=window.matchMedia(t);if(m.media!==t||m.matches){d.style.colorScheme = 'dark';d[s](n,'dark')}else{d.style.colorScheme = 'light';d[s](n,'light')}}else if(e){d[s](n,e|| '')}if(e==='light'||e==='dark')d.style.colorScheme=e}catch(e){}}()
+.cls-1{fill:#fff;stroke-width:0}
+Products
+HashiCorp Cloud Platform
+Get started in minutes with our cloud products
+Learn more
+Infrastructure Lifecycle Management
+Terraform
+Manage infrastructure as code
+Packer
+Build machine images
+Nomad
+Orchestrate workloads
+Waypoint
+Standardize application patterns
+Vagrant
+Build developer environments
+Security Lifecycle Management
+Vault
+Centrally manage secrets
+Boundary
+Secure remote access
+Vault
+Radar
+Scan for embedded secrets
+Consul
+Secure network services
+Learn
+Certifications
+Get HashiCorp certified
+Tutorials
+Learn HashiCorp products
+Validated Designs
+Customer-validated designs for HashiCorp products
+Well-Architected Framework
+Adopt HashiCorp best practices
+Sign in
+Sign up
+Theme
+.terraform-light-cls-1{fill:#7b42bc;fill-rule:evenodd}.terraform-light-cls-1,.terraform-light-cls-2{stroke-width:0}
+.terraform-dark-cls-1{fill:#a067da;fill-rule:evenodd;stroke-width:0}.terraform-dark-cls-2{stroke-width:0;fill:#fff}
+Install
+Tutorials
+Documentation
+Documentation
+Intro to Terraform
+Configuration Language
+Terraform CLI
+HCP Terraform
+Terraform Enterprise
+Terraform MCP Server
+Terraform Migrate
+Provider Use
+Terraform Policy
+CLI: tfctl
+Plugin Development
+Registry Publishing
+Integration Program
+Sandbox
+Registry
+(opens in new tab)
+Try HCP Terraform
+(opens in new tab)
+Menu
+Product
+Infrastructure Lifecycle Management
+Terraform
+Manage infrastructure as code
+Packer
+Build machine images
+Nomad
+Orchestrate workloads
+Waypoint
+Standardize application patterns
+Vagrant
+Build developer environments
+Security Lifecycle Management
+Vault
+Centrally manage secrets
+Vault
+Radar
+Scan for embedded secrets
+Boundary
+Secure remote access
+Consul
+Secure network services
+HashiCorp Cloud Platform
+Get started in minutes with our cloud products
+Learn more
+Learn
+Certifications
+Get HashiCorp certified
+Tutorials
+Learn HashiCorp products
+Validated Designs
+Customer-validated designs for HashiCorp products
+Well-Architected Framework
+Adopt HashiCorp best practices
+Terraform Home
+Terraform CLI
+Terraform CLI
+Basic CLI Features
+Initializing Working Directories
+Provisioning Infrastructure
+Authenticating
+Writing and Modifying Code
+Overview
+console
+fmt
+validate
+Inspecting Infrastructure
+Import Infrastructure
+Manually Update State
+Manage Stacks
+Managing Workspaces
+Managing Plugins
+CLI Configuration
+Using HCP Terraform
+Testing Terraform
+Automating Terraform
+Alphabetical List of Commands
+Terraform Internals
+Resources
+Tutorial Library
+Certifications
+Sandbox
+Community Forum
+(opens in new tab)
+Support
+(opens in new tab)
+GitHub
+(opens in new tab)
+Terraform Registry
+(opens in new tab)
+Developer
+Terraform
+Terraform CLI
+v1.17.x (latest)
+Terraform
+v1.17.x (latest)
+v1.16.x
+v1.15.x
+v1.14.x
+v1.13.x
+v1.12.x
+v1.11.x
+v1.10.x
+v1.9.x
+v1.8.x
+v1.7.x
+v1.6.x
+v1.5.x
+v1.4.x
+v1.3.x
+v1.2.x
+v1.1.x
+terraform fmt command
+The
+terraform fmt
+command formats Terraform configuration file contents so that it matches the canonical format and style. This command applies a subset of
+the
+Terraform language style conventions
+,
+along with other minor adjustments for readability.
+Introduction
+Terraform commands that generate Terraform configuration produce
+configuration files that conform to the style imposed by
+terraform fmt
+. Follow this style in your files to ensure consistency.
+The canonical format may change in minor ways between Terraform versions, so
+after upgrading Terraform we recommend to proactively run
+terraform fmt
+on your modules along with any other changes you are making to adopt the new
+version.
+We do not consider new formatting rules in
+terraform fmt
+to be a breaking
+change in new versions of Terraform, but we minimize changes for
+configurations that already follow the style examples shown in the
+Terraform documentation. New formatting rules programmed into the
+terraform fmt
+command are usually expansions to include existing rules from the documentation.
+We recommend following the documented style even for decisions that
+terraform fmt
+does not yet apply automatically.
+Formatting decisions are always subjective and so you might disagree with the
+decisions that
+terraform fmt
+makes. This command is intentionally opinionated
+and has no customization options because its primary goal is to encourage
+consistency of style between different Terraform codebases, even though the
+chosen style can never be everyone's favorite.
+We recommend that you follow the style conventions applied by
+terraform fmt
+when writing Terraform modules, but if you find the results particularly
+objectionable then you may choose not to use this command, and possibly choose
+to use a third-party formatting tool instead. If you choose to use a
+third-party tool then you should also run it on files that are generated
+automatically by Terraform, to get consistency between your hand-written files
+and the generated files.
+Usage
+Usage:
+terraform fmt [options] [target...]
+By default, the
+terraform fmt
+command scans your current directory for configuration files. You can also provide a
+target
+argument to tell
+terraform fmt
+to scan:
+A directory
+A specific file
+Standard input by supplying a single dash (
+-
+).
+The
+terraform fmt
+command accepts the following arguments.
+Flag
+Description
+Required
+-list=false
+Prevents the command from listing the files containing formatting inconsistencies.
+Optional
+-diff
+Displays the diffs of formatting changes.
+Optional
+-write=false
+Prevents the command from overwriting files. This behavior is implied by the
+-check
+flag or if the input is from
+STDIN
+.
+Optional
+-check
+Checks if the input is formatted. The exit status is
+0
+if the command's input is properly formatted. Otherwise, the exit status is non-zero, and the command outputs a list of improperly formatted file names.
+Optional
+-no-color
+If specified, output won't contain any color.
+Optional
+-recursive
+Processes files in subdirectories in addition to the current directory. By default, the command only processes the specified, or current, directory.
+Optional
+Edit this page on GitHub
+On this page:
+terraform fmt command
+Introduction
+Usage
+Theme
+Certifications
+System Status
+Cookie Manager
+Terms of Use
+Security
+Privacy
+Trademark Policy
+Trade Controls
+Accessibility
+Give Feedback
+(opens in new tab)
+stdin is not a tty
+{"props":{"pageProps":{"experiments":{},"layoutProps":{"breadcrumbLinks":[{"title":"Developer","url":"/"},{"title":"Terraform","url":"/terraform"},{"title":"Terraform CLI","url":"/terraform/cli","isCurrentPage":false},{"title":"commands"},{"title":"fmt"}],"sidebarNavDataLevels":[{"levelButtonProps":{"levelDownButtonText":"Terraform Home"},"menuItems":[{"leadingIconName":"home","title":"HashiCorp Developer","href":"/"},{"leadingIconName":"guide","title":"Tutorials","href":"/tutorials"},{"divider":true},{"heading":"Products"},{"leadingIconName":"hcp","title":"HashiCorp Cloud Platform","href":"/hcp"},{"leadingIconName":"terraform","title":"Terraform","href":"/terraform"},{"leadingIconName":"packer","title":"Packer","href":"/packer"},{"leadingIconName":"consul","title":"Consul","href":"/consul"},{"leadingIconName":"vault","title":"Vault","href":"/vault"},{"leadingIconName":"vault-radar","title":"Vault Radar","href":"/vault-radar"},{"leadingIconName":"boundary","title":"Boundary","href":"/boundary"},{"leadingIconName":"nomad","title":"Nomad","href":"/nomad"},{"leadingIconName":"waypoint","title":"Waypoint","href":"/waypoint"},{"leadingIconName":"vagrant","title":"Vagrant","href":"/vagrant"}],"showFilterInput":false,"title":"Main Menu"},{"levelButtonProps":{"levelUpButtonText":"Main Menu","levelDownButtonText":"Previous"},"menuItems":[{"title":"Terraform","fullPath":"/terraform","theme":"terraform"},{"title":"Install","fullPath":"/terraform/install"},{"title":"Intro to Terraform","fullPath":"/terraform/intro"},{"title":"Tutorials","fullPath":"/terraform/tutorials"},{"title":"Documentation","isOpen":true,"routes":[{"title":"Documentation","fullPath":"/terraform/docs"},{"title":"Configuration Language","fullPath":"/terraform/language"},{"title":"Terraform CLI","fullPath":"/terraform/cli"},{"title":"HCP Terraform","fullPath":"/terraform/cloud-docs"},{"title":"Terraform Enterprise","fullPath":"/terraform/enterprise"},{"title":"Terraform MCP Server","fullPath":"/terraform/mcp-server"},{"title":"Terraform Migrate","fullPath":"/terraform/migrate"},{"title":"Provider Use","fullPath":"/terraform/language/providers"},{"title":"Terraform Policy","fullPath":"/terraform/policy"},{"title":"CLI: tfctl","fullPath":"/terraform/tfctl-cli"},{"title":"Plugin Development","fullPath":"/terraform/plugin"},{"title":"Registry Publishing","fullPath":"/terraform/registry"},{"title":"Integration Program","fullPath":"/terraform/docs/partnerships"}]}],"showFilterInput":false,"title":"Terraform","visuallyHideTitle":true},{"backToLinkProps":{"text":"Terraform Home","href":"/terraform"},"levelButtonProps":{"levelUpButtonText":"Terraform Home"},"menuItems":[{"title":"Terraform CLI","fullPath":"/terraform/cli","theme":"terraform"},{"title":"Basic CLI Features","href":null,"fullPath":"/terraform/cli/commands","id":"sidebar-nav-item-2","path":"/cli/commands"},{"title":"Initializing Working Directories","routes":[{"title":"Overview","path":"init","fullPath":"/terraform/cli/init","id":"sidebar-nav-item-4"},{"title":"\u003ccode\u003einit\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/init","id":"sidebar-nav-item-5","path":"/cli/commands/init"},{"title":"\u003ccode\u003eget\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/get","id":"sidebar-nav-item-6","path":"/cli/commands/get"}],"id":"sidebar-nav-item-3"},{"title":"Provisioning Infrastructure","routes":[{"title":"Overview","path":"run","fullPath":"/terraform/cli/run","id":"sidebar-nav-item-8"},{"title":"\u003ccode\u003eplan\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/plan","id":"sidebar-nav-item-9","path":"/cli/commands/plan"},{"title":"\u003ccode\u003eapply\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/apply","id":"sidebar-nav-item-10","path":"/cli/commands/apply"},{"title":"\u003ccode\u003edestroy\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/destroy","id":"sidebar-nav-item-11","path":"/cli/commands/destroy"}],"id":"sidebar-nav-item-7"},{"title":"Authenticating","routes":[{"title":"Overview","path":"auth","fullPath":"/terraform/cli/auth","id":"sidebar-nav-item-13"},{"title":"\u003ccode\u003elogin\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/login","id":"sidebar-nav-item-14","path":"/cli/commands/login"},{"title":"\u003ccode\u003elogout\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/logout","id":"sidebar-nav-item-15","path":"/cli/commands/logout"}],"id":"sidebar-nav-item-12"},{"title":"Writing and Modifying Code","routes":[{"title":"Overview","path":"code","fullPath":"/terraform/cli/code","id":"sidebar-nav-item-17"},{"title":"\u003ccode\u003econsole\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/console","id":"sidebar-nav-item-18","path":"/cli/commands/console"},{"title":"\u003ccode\u003efmt\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/fmt","id":"sidebar-nav-item-19","path":"/cli/commands/fmt"},{"title":"\u003ccode\u003evalidate\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/validate","id":"sidebar-nav-item-20","path":"/cli/commands/validate"}],"id":"sidebar-nav-item-16"},{"title":"Inspecting Infrastructure","routes":[{"title":"Overview","path":"inspect","fullPath":"/terraform/cli/inspect","id":"sidebar-nav-item-22"},{"title":"\u003ccode\u003egraph\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/graph","id":"sidebar-nav-item-23","path":"/cli/commands/graph"},{"title":"\u003ccode\u003eoutput\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/output","id":"sidebar-nav-item-24","path":"/cli/commands/output"},{"title":"\u003ccode\u003eshow\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/show","id":"sidebar-nav-item-25","path":"/cli/commands/show"},{"title":"\u003ccode\u003estate list\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/list","id":"sidebar-nav-item-26","path":"/cli/commands/state/list"},{"title":"\u003ccode\u003estate show\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/show","id":"sidebar-nav-item-27","path":"/cli/commands/state/show"},{"title":"\u003ccode\u003estate identities\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/identities","id":"sidebar-nav-item-28","path":"/cli/commands/state/identities"}],"id":"sidebar-nav-item-21"},{"title":"Import Infrastructure","routes":[{"title":"Overview","path":"import","fullPath":"/terraform/cli/import","id":"sidebar-nav-item-30"},{"title":"Import existing resources","path":"import/usage","fullPath":"/terraform/cli/import/usage","id":"sidebar-nav-item-31"},{"title":"Evaluate policies during search","href":null,"badge":{"text":"BETA","type":"outlined","color":"neutral"},"fullPath":"/terraform/cli/import/evaluate-policy","id":"sidebar-nav-item-32","path":"import/evaluate-policy"},{"title":"import command reference","href":null,"fullPath":"/terraform/cli/commands/import","id":"sidebar-nav-item-33","path":"/cli/commands/import"},{"title":"query command reference","href":null,"fullPath":"/terraform/cli/commands/query","id":"sidebar-nav-item-34","path":"/cli/commands/query"}],"id":"sidebar-nav-item-29"},{"title":"Manually Update State","routes":[{"title":"Overview","path":"state","fullPath":"/terraform/cli/state","id":"sidebar-nav-item-36"},{"title":"Resource Addressing","path":"state/resource-addressing","fullPath":"/terraform/cli/state/resource-addressing","id":"sidebar-nav-item-37"},{"title":"\u003ccode\u003estate\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state","id":"sidebar-nav-item-38","path":"/cli/commands/state"},{"title":"Inspecting State","routes":[{"title":"Overview","path":"state/inspect","fullPath":"/terraform/cli/state/inspect","id":"sidebar-nav-item-40"},{"title":"\u003ccode\u003estate list\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/list","id":"sidebar-nav-item-41","path":"/cli/commands/state/list"},{"title":"\u003ccode\u003estate show\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/show","id":"sidebar-nav-item-42","path":"/cli/commands/state/show"},{"title":"\u003ccode\u003estate identities\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/identities","id":"sidebar-nav-item-43","path":"/cli/commands/state/identities"},{"title":"\u003ccode\u003erefresh\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/refresh","id":"sidebar-nav-item-44","path":"/cli/commands/refresh"}],"id":"sidebar-nav-item-39"},{"title":"Forcing Re-creation (Tainting)","routes":[{"title":"Overview","path":"state/taint","fullPath":"/terraform/cli/state/taint","id":"sidebar-nav-item-46"},{"title":"\u003ccode\u003etaint\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/taint","id":"sidebar-nav-item-47","path":"/cli/commands/taint"},{"title":"\u003ccode\u003euntaint\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/untaint","id":"sidebar-nav-item-48","path":"/cli/commands/untaint"}],"id":"sidebar-nav-item-45"},{"title":"Moving Resources","routes":[{"title":"Overview","path":"state/move","fullPath":"/terraform/cli/state/move","id":"sidebar-nav-item-50"},{"title":"\u003ccode\u003estate mv\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/mv","id":"sidebar-nav-item-51","path":"/cli/commands/state/mv"},{"title":"\u003ccode\u003estate rm\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/rm","id":"sidebar-nav-item-52","path":"/cli/commands/state/rm"},{"title":"\u003ccode\u003estate replace-provider\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/replace-provider","id":"sidebar-nav-item-53","path":"/cli/commands/state/replace-provider"}],"id":"sidebar-nav-item-49"},{"title":"Disaster Recovery","routes":[{"title":"Overview","path":"state/recover","fullPath":"/terraform/cli/state/recover","id":"sidebar-nav-item-55"},{"title":"\u003ccode\u003estate pull\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/pull","id":"sidebar-nav-item-56","path":"/cli/commands/state/pull"},{"title":"\u003ccode\u003estate push\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/push","id":"sidebar-nav-item-57","path":"/cli/commands/state/push"},{"title":"\u003ccode\u003eforce-unlock\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/force-unlock","id":"sidebar-nav-item-58","path":"/cli/commands/force-unlock"}],"id":"sidebar-nav-item-54"}],"id":"sidebar-nav-item-35"},{"title":"Manage Stacks","routes":[{"title":"Overview","href":null,"fullPath":"/terraform/cli/commands/stacks","id":"sidebar-nav-item-60","path":"/cli/commands/stacks"},{"title":"Global Flags","href":null,"fullPath":"/terraform/cli/commands/stacks/global-flags","id":"sidebar-nav-item-61","path":"/cli/commands/stacks/global-flags"},{"title":"\u003ccode\u003ecreate\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/create","id":"sidebar-nav-item-62","path":"/cli/commands/stacks/create"},{"title":"\u003ccode\u003ediagnostics\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/diagnostics","id":"sidebar-nav-item-63","path":"/cli/commands/stacks/diagnostics"},{"title":"\u003ccode\u003efmt\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/fmt","id":"sidebar-nav-item-64","path":"/cli/commands/stacks/fmt"},{"title":"\u003ccode\u003einit\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/init","id":"sidebar-nav-item-65","path":"/cli/commands/stacks/init"},{"title":"\u003ccode\u003elist\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/list","id":"sidebar-nav-item-66","path":"/cli/commands/stacks/list"},{"title":"\u003ccode\u003eproviders-lock\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/providers-lock","id":"sidebar-nav-item-67","path":"/cli/commands/stacks/providers-lock"},{"title":"\u003ccode\u003evalidate\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/validate","id":"sidebar-nav-item-68","path":"/cli/commands/stacks/validate"},{"title":"\u003ccode\u003eversion\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/version","id":"sidebar-nav-item-69","path":"/cli/commands/stacks/version"},{"title":"Configuration","routes":[{"title":"Overview","href":null,"fullPath":"/terraform/cli/commands/stacks/configuration","id":"sidebar-nav-item-71","path":"/cli/commands/stacks/configuration"},{"title":"\u003ccode\u003econfiguration fetch\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/configuration/fetch","id":"sidebar-nav-item-72","path":"/cli/commands/stacks/configuration/fetch"},{"title":"\u003ccode\u003econfiguration list\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/configuration/list","id":"sidebar-nav-item-73","path":"/cli/commands/stacks/configuration/list"},{"title":"\u003ccode\u003econfiguration upload\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/configuration/upload","id":"sidebar-nav-item-74","path":"/cli/commands/stacks/configuration/upload"},{"title":"\u003ccode\u003econfiguration watch\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/configuration/watch","id":"sidebar-nav-item-75","path":"/cli/commands/stacks/configuration/watch"}],"id":"sidebar-nav-item-70"},{"title":"Deployment Group","routes":[{"title":"Overview","href":null,"fullPath":"/terraform/cli/commands/stacks/deployment-group","id":"sidebar-nav-item-77","path":"/cli/commands/stacks/deployment-group"},{"title":"\u003ccode\u003edeployment-group approve-all-plans\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/deployment-group/approve-all-plans","id":"sidebar-nav-item-78","path":"/cli/commands/stacks/deployment-group/approve-all-plans"},{"title":"\u003ccode\u003edeployment-group list\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/deployment-group/list","id":"sidebar-nav-item-79","path":"/cli/commands/stacks/deployment-group/list"},{"title":"\u003ccode\u003edeployment-group rerun\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/deployment-group/rerun","id":"sidebar-nav-item-80","path":"/cli/commands/stacks/deployment-group/rerun"},{"title":"\u003ccode\u003edeployment-group watch\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/stacks/deployment-group/watch","id":"sidebar-nav-item-81","path":"/cli/commands/stacks/deployment-group/watch"}],"id":"sidebar-nav-item-76"},{"title":"Deployment Run","routes":[{"title":"Overview","href":null,"fullPath":"/terraform/cli/commands/stacks/deployment-run","id":"sidebar-nav-item-83","path":"/cli/commands/stacks/deployment-run"},{"title":"deployment-run approve-all-plans","href":null,"fullPath":"/terraform/cli/commands/stacks/deployment-run/approve-all-plans","id":"sidebar-nav-item-84","path":"/cli/commands/stacks/deployment-run/approve-all-plans"},{"title":"deployment-run cancel","href":null,"fullPath":"/terraform/cli/commands/stacks/deployment-run/cancel","id":"sidebar-nav-item-85","path":"/cli/commands/stacks/deployment-run/cancel"},{"title":"deployment-run list","href":null,"fullPath":"/terraform/cli/commands/stacks/deployment-run/list","id":"sidebar-nav-item-86","path":"/cli/commands/stacks/deployment-run/list"},{"title":"deployment-run watch","href":null,"fullPath":"/terraform/cli/commands/stacks/deployment-run/watch","id":"sidebar-nav-item-87","path":"/cli/commands/stacks/deployment-run/watch"}],"id":"sidebar-nav-item-82"}],"id":"sidebar-nav-item-59"},{"title":"Managing Workspaces","routes":[{"title":"Overview","path":"workspaces","fullPath":"/terraform/cli/workspaces","id":"sidebar-nav-item-89"},{"title":"\u003ccode\u003eworkspace\u003c/code\u003e","routes":[{"title":"Overview","href":null,"fullPath":"/terraform/cli/commands/workspace","id":"sidebar-nav-item-91","path":"/cli/commands/workspace"},{"title":"\u003ccode\u003eworkspace list\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/workspace/list","id":"sidebar-nav-item-92","path":"/cli/commands/workspace/list"},{"title":"\u003ccode\u003eworkspace select\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/workspace/select","id":"sidebar-nav-item-93","path":"/cli/commands/workspace/select"},{"title":"\u003ccode\u003eworkspace new\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/workspace/new","id":"sidebar-nav-item-94","path":"/cli/commands/workspace/new"},{"title":"\u003ccode\u003eworkspace delete\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/workspace/delete","id":"sidebar-nav-item-95","path":"/cli/commands/workspace/delete"},{"title":"\u003ccode\u003eworkspace show\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/workspace/show","id":"sidebar-nav-item-96","path":"/cli/commands/workspace/show"}],"id":"sidebar-nav-item-90"}],"id":"sidebar-nav-item-88"},{"title":"Managing Plugins","routes":[{"title":"Overview","path":"plugins","fullPath":"/terraform/cli/plugins","id":"sidebar-nav-item-98"},{"title":"Plugin Signing","path":"plugins/signing","fullPath":"/terraform/cli/plugins/signing","id":"sidebar-nav-item-99"},{"title":"\u003ccode\u003eproviders\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/providers","id":"sidebar-nav-item-100","path":"/cli/commands/providers"},{"title":"\u003ccode\u003eversion\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/version","id":"sidebar-nav-item-101","path":"/cli/commands/version"},{"title":"\u003ccode\u003eproviders lock\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/providers/lock","id":"sidebar-nav-item-102","path":"/cli/commands/providers/lock"},{"title":"\u003ccode\u003eproviders mirror\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/providers/mirror","id":"sidebar-nav-item-103","path":"/cli/commands/providers/mirror"},{"title":"\u003ccode\u003eproviders schema\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/providers/schema","id":"sidebar-nav-item-104","path":"/cli/commands/providers/schema"}],"id":"sidebar-nav-item-97"},{"title":"CLI Configuration","routes":[{"title":"Overview","path":"config","fullPath":"/terraform/cli/config","id":"sidebar-nav-item-106"},{"title":"CLI Configuration","path":"config/config-file","fullPath":"/terraform/cli/config/config-file","id":"sidebar-nav-item-107"},{"title":"Environment Variables","path":"config/environment-variables","fullPath":"/terraform/cli/config/environment-variables","id":"sidebar-nav-item-108"}],"id":"sidebar-nav-item-105"},{"title":"Using HCP Terraform","routes":[{"title":"Overview","path":"cloud","fullPath":"/terraform/cli/cloud","id":"sidebar-nav-item-110"},{"title":"Connect to HCP Terraform","path":"cloud/settings","fullPath":"/terraform/cli/cloud/settings","id":"sidebar-nav-item-111"},{"title":"Command Line Arguments","path":"cloud/command-line-arguments","fullPath":"/terraform/cli/cloud/command-line-arguments","id":"sidebar-nav-item-112"}],"id":"sidebar-nav-item-109"},{"title":"Testing Terraform","routes":[{"title":"Overview","path":"test","fullPath":"/terraform/cli/test","id":"sidebar-nav-item-114"},{"title":"\u003ccode\u003etest\u003ccode\u003e","href":null,"fullPath":"/terraform/cli/commands/test","id":"sidebar-nav-item-115","path":"/cli/commands/test"}],"id":"sidebar-nav-item-113"},{"title":"Automating Terraform","routes":[{"title":"Running Terraform in Automation","href":"/terraform/tutorials/automation/automate-terraform?utm_source=WEBSITE\u0026utm_medium=WEB_IO\u0026utm_offer=ARTICLE_PAGE\u0026utm_content=DOCS","id":"sidebar-nav-item-117"},{"title":"GitHub Actions","href":"/terraform/tutorials/automation/github-actions?utm_source=WEBSITE\u0026utm_medium=WEB_IO\u0026utm_offer=ARTICLE_PAGE\u0026utm_content=DOCS","id":"sidebar-nav-item-118"}],"id":"sidebar-nav-item-116"},{"title":"Alphabetical List of Commands","routes":[{"title":"Overview","href":null,"fullPath":"/terraform/cli/commands","id":"sidebar-nav-item-120","path":"/cli/commands"},{"title":"\u003ccode\u003eapply\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/apply","id":"sidebar-nav-item-121","path":"/cli/commands/apply"},{"title":"\u003ccode\u003econsole\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/console","id":"sidebar-nav-item-122","path":"/cli/commands/console"},{"title":"\u003ccode\u003edestroy\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/destroy","id":"sidebar-nav-item-123","path":"/cli/commands/destroy"},{"title":"\u003ccode\u003efmt\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/fmt","id":"sidebar-nav-item-124","path":"/cli/commands/fmt"},{"title":"\u003ccode\u003eforce-unlock\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/force-unlock","id":"sidebar-nav-item-125","path":"/cli/commands/force-unlock"},{"title":"\u003ccode\u003eget\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/get","id":"sidebar-nav-item-126","path":"/cli/commands/get"},{"title":"\u003ccode\u003egraph\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/graph","id":"sidebar-nav-item-127","path":"/cli/commands/graph"},{"title":"\u003ccode\u003eimport\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/import","id":"sidebar-nav-item-128","path":"/cli/commands/import"},{"title":"\u003ccode\u003einit\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/init","id":"sidebar-nav-item-129","path":"/cli/commands/init"},{"title":"\u003ccode\u003elogin\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/login","id":"sidebar-nav-item-130","path":"/cli/commands/login"},{"title":"\u003ccode\u003elogout\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/logout","id":"sidebar-nav-item-131","path":"/cli/commands/logout"},{"title":"\u003ccode\u003emodules\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/modules","id":"sidebar-nav-item-132","path":"/cli/commands/modules"},{"title":"\u003ccode\u003eoutput\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/output","id":"sidebar-nav-item-133","path":"/cli/commands/output"},{"title":"\u003ccode\u003eplan\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/plan","id":"sidebar-nav-item-134","path":"/cli/commands/plan"},{"title":"\u003ccode\u003eproviders\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/providers","id":"sidebar-nav-item-135","path":"/cli/commands/providers"},{"title":"\u003ccode\u003eproviders lock\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/providers/lock","id":"sidebar-nav-item-136","path":"/cli/commands/providers/lock"},{"title":"\u003ccode\u003eproviders mirror\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/providers/mirror","id":"sidebar-nav-item-137","path":"/cli/commands/providers/mirror"},{"title":"\u003ccode\u003eproviders schema\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/providers/schema","id":"sidebar-nav-item-138","path":"/cli/commands/providers/schema"},{"title":"\u003ccode\u003equery\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/query","id":"sidebar-nav-item-139","path":"/cli/commands/query"},{"title":"\u003ccode\u003erefresh\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/refresh","id":"sidebar-nav-item-140","path":"/cli/commands/refresh"},{"title":"\u003ccode\u003eshow\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/show","id":"sidebar-nav-item-141","path":"/cli/commands/show"},{"title":"\u003ccode\u003estate\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state","id":"sidebar-nav-item-142","path":"/cli/commands/state"},{"title":"\u003ccode\u003estate identities\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/identities","id":"sidebar-nav-item-143","path":"/cli/commands/state/identities"},{"title":"\u003ccode\u003estate list\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/list","id":"sidebar-nav-item-144","path":"/cli/commands/state/list"},{"title":"\u003ccode\u003estate mv\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/mv","id":"sidebar-nav-item-145","path":"/cli/commands/state/mv"},{"title":"\u003ccode\u003estate pull\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/pull","id":"sidebar-nav-item-146","path":"/cli/commands/state/pull"},{"title":"\u003ccode\u003estate push\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/push","id":"sidebar-nav-item-147","path":"/cli/commands/state/push"},{"title":"\u003ccode\u003estate replace-provider\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/replace-provider","id":"sidebar-nav-item-148","path":"/cli/commands/state/replace-provider"},{"title":"\u003ccode\u003estate rm\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/rm","id":"sidebar-nav-item-149","path":"/cli/commands/state/rm"},{"title":"\u003ccode\u003estate show\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/state/show","id":"sidebar-nav-item-150","path":"/cli/commands/state/show"},{"title":"\u003ccode\u003etaint\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/taint","id":"sidebar-nav-item-151","path":"/cli/commands/taint"},{"title":"\u003ccode\u003etest\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/test","id":"sidebar-nav-item-152","path":"/cli/commands/test"},{"title":"\u003ccode\u003euntaint\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/untaint","id":"sidebar-nav-item-153","path":"/cli/commands/untaint"},{"title":"\u003ccode\u003evalidate\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/validate","id":"sidebar-nav-item-154","path":"/cli/commands/validate"},{"title":"\u003ccode\u003eversion\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/version","id":"sidebar-nav-item-155","path":"/cli/commands/version"},{"title":"\u003ccode\u003eworkspace\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/workspace","id":"sidebar-nav-item-156","path":"/cli/commands/workspace"},{"title":"\u003ccode\u003eworkspace list\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/workspace/list","id":"sidebar-nav-item-157","path":"/cli/commands/workspace/list"},{"title":"\u003ccode\u003eworkspace select\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/workspace/select","id":"sidebar-nav-item-158","path":"/cli/commands/workspace/select"},{"title":"\u003ccode\u003eworkspace new\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/workspace/new","id":"sidebar-nav-item-159","path":"/cli/commands/workspace/new"},{"title":"\u003ccode\u003eworkspace delete\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/workspace/delete","id":"sidebar-nav-item-160","path":"/cli/commands/workspace/delete"},{"title":"\u003ccode\u003eworkspace show\u003c/code\u003e","href":null,"fullPath":"/terraform/cli/commands/workspace/show","id":"sidebar-nav-item-161","path":"/cli/commands/workspace/show"},{"title":"0.12upgrade","href":null,"fullPath":"/terraform/cli/commands/0.12upgrade","id":"sidebar-nav-item-162","path":"/cli/commands/0.12upgrade"},{"title":"0.13upgrade","href":null,"fullPath":"/terraform/cli/commands/0.13upgrade","id":"sidebar-nav-item-163","path":"/cli/commands/0.13upgrade"}],"id":"sidebar-nav-item-119"},{"divider":true,"id":"sidebar-nav-item-164"},{"title":"Terraform Internals","href":null,"fullPath":"/terraform/internals","id":"sidebar-nav-item-165","path":"/internals"}],"title":"Terraform CLI","visuallyHideTitle":true}],"mainWidth":"narrow","githubFileUrl":"https://github.com/hashicorp/web-unified-docs/blob/main/content/terraform/v1.17.x/docs/cli/commands/fmt.mdx"},"metadata":{"title":"terraform fmt command reference","description":"The `terraform fmt` command formats Terraform configuration contents so that it matches the canonical format and style.","layout":null,"structuredData":{"@context":"https://schema.org","@type":"TechArticle","headline":"terraform fmt command reference","description":"The `terraform fmt` command formats Terraform configuration contents so that it matches the canonical format and style.","url":"https://developer.hashicorp.comundefined","datePublished":"2025-11-19T19:11:19.000Z","dateModified":"2026-01-17T09:13:13.000Z","author":{"@type":"Organization","name":"HashiCorp","url":"https://www.hashicorp.com"},"publisher":{"@type":"Organization","name":"HashiCorp"},"isPartOf":{"@type":"WebSite","name":"HashiCorp Developer","url":"https://developer.hashicorp.com"},"about":{"@type":"SoftwareApplication","name":"Terraform"}}},"outlineItems":[{"title":"terraform fmt command","url":"#terraform-fmt-command"},{"title":"Introduction","url":"#introduction"},{"title":"Usage","url":"#usage"}],"pageHeading":{"id":"terraform-fmt-command","title":"terraform fmt command"},"mdxSource":{"compiledSource":"const layoutProps={};const MDXLayout=\"wrapper\";function MDXContent({components,...props}){return mdx(MDXLayout,{...layoutProps,...props,components:components,mdxType:\"MDXLayout\"},mdx(\"p\",null,`The `,mdx(\"inlineCode\",{parentName:\"p\"},`terraform fmt`),` command formats Terraform configuration file contents so that it matches the canonical format and style. This command applies a subset of\nthe `,mdx(\"a\",{parentName:\"p\",\"href\":\"/terraform/language/style#code-formatting\"},`Terraform language style conventions`),`,\nalong with other minor adjustments for readability.`),mdx(\"h2\",{\"id\":\"introduction\"},mdx(\"a\",{parentName:\"h2\",\"className\":\"__permalink-h\",\"href\":\"#introduction\",\"aria-label\":\"introduction permalink\"},`\\xbb`),`Introduction`),mdx(\"p\",null,`Terraform commands that generate Terraform configuration produce\nconfiguration files that conform to the style imposed by `,mdx(\"inlineCode\",{parentName:\"p\"},`terraform fmt`),`. Follow this style in your files to ensure consistency.`),mdx(\"p\",null,`The canonical format may change in minor ways between Terraform versions, so\nafter upgrading Terraform we recommend to proactively run `,mdx(\"inlineCode\",{parentName:\"p\"},`terraform fmt`),`\non your modules along with any other changes you are making to adopt the new\nversion.`),mdx(\"p\",null,`We do not consider new formatting rules in `,mdx(\"inlineCode\",{parentName:\"p\"},`terraform fmt`),` to be a breaking\nchange in new versions of Terraform, but we minimize changes for\nconfigurations that already follow the style examples shown in the\nTerraform documentation. New formatting rules programmed into the `,mdx(\"inlineCode\",{parentName:\"p\"},`terraform fmt`),`\ncommand are usually expansions to include existing rules from the documentation.\nWe recommend following the documented style even for decisions that `,mdx(\"inlineCode\",{parentName:\"p\"},`terraform fmt`),`\ndoes not yet apply automatically.`),mdx(\"p\",null,`Formatting decisions are always subjective and so you might disagree with the\ndecisions that `,mdx(\"inlineCode\",{parentName:\"p\"},`terraform fmt`),` makes. This command is intentionally opinionated\nand has no customization options because its primary goal is to encourage\nconsistency of style between different Terraform codebases, even though the\nchosen style can never be everyone's favorite.`),mdx(\"p\",null,`We recommend that you follow the style conventions applied by `,mdx(\"inlineCode\",{parentName:\"p\"},`terraform fmt`),`\nwhen writing Terraform modules, but if you find the results particularly\nobjectionable then you may choose not to use this command, and possibly choose\nto use a third-party formatting tool instead. If you choose to use a\nthird-party tool then you should also run it on files that are generated\nautomatically by Terraform, to get consistency between your hand-written files\nand the generated files.`),mdx(\"h2\",{\"id\":\"usage\"},mdx(\"a\",{parentName:\"h2\",\"className\":\"__permalink-h\",\"href\":\"#usage\",\"aria-label\":\"usage permalink\"},`\\xbb`),`Usage`),mdx(\"p\",null,`Usage: `,mdx(\"inlineCode\",{parentName:\"p\"},`terraform fmt [options] [target...]`)),mdx(\"p\",null,`By default, the `,mdx(\"inlineCode\",{parentName:\"p\"},`terraform fmt`),` command scans your current directory for configuration files. You can also provide a `,mdx(\"inlineCode\",{parentName:\"p\"},`target`),` argument to tell `,mdx(\"inlineCode\",{parentName:\"p\"},`terraform fmt`),` to scan:`),mdx(\"ul\",null,mdx(\"li\",{parentName:\"ul\"},`A directory `),mdx(\"li\",{parentName:\"ul\"},`A specific file`),mdx(\"li\",{parentName:\"ul\"},`Standard input by supplying a single dash (`,mdx(\"inlineCode\",{parentName:\"li\"},`-`),`).`)),mdx(\"p\",null,`The `,mdx(\"inlineCode\",{parentName:\"p\"},`terraform fmt`),` command accepts the following arguments.`),mdx(\"table\",null,mdx(\"thead\",{parentName:\"table\"},mdx(\"tr\",{parentName:\"thead\"},mdx(\"th\",{parentName:\"tr\",\"align\":\"left\"},`Flag`),mdx(\"th\",{parentName:\"tr\",\"align\":\"left\"},`Description`),mdx(\"th\",{parentName:\"tr\",\"align\":\"left\"},`Required`))),mdx(\"tbody\",{parentName:\"table\"},mdx(\"tr\",{parentName:\"tbody\"},mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},mdx(\"inlineCode\",{parentName:\"td\",\"className\":\"tableCellSolelyInlineCode\"},`-list=false`)),mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},`Prevents the command from listing the files containing formatting inconsistencies.`),mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},`Optional`)),mdx(\"tr\",{parentName:\"tbody\"},mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},mdx(\"inlineCode\",{parentName:\"td\",\"className\":\"tableCellSolelyInlineCode\"},`-diff`)),mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},`Displays the diffs of formatting changes.`),mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},`Optional`)),mdx(\"tr\",{parentName:\"tbody\"},mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},mdx(\"inlineCode\",{parentName:\"td\",\"className\":\"tableCellSolelyInlineCode\"},`-write=false`)),mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},`Prevents the command from overwriting files. This behavior is implied by the `,mdx(\"inlineCode\",{parentName:\"td\"},`-check`),` flag or if the input is from `,mdx(\"inlineCode\",{parentName:\"td\"},`STDIN`),`.`),mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},`Optional`)),mdx(\"tr\",{parentName:\"tbody\"},mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},mdx(\"inlineCode\",{parentName:\"td\",\"className\":\"tableCellSolelyInlineCode\"},`-check`)),mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},`Checks if the input is formatted. The exit status is `,mdx(\"inlineCode\",{parentName:\"td\"},`0`),` if the command's input is properly formatted. Otherwise, the exit status is non-zero, and the command outputs a list of improperly formatted file names.`),mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},`Optional`)),mdx(\"tr\",{parentName:\"tbody\"},mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},mdx(\"inlineCode\",{parentName:\"td\",\"className\":\"tableCellSolelyInlineCode\"},`-no-color`)),mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},`If specified, output won't contain any color.`),mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},`Optional`)),mdx(\"tr\",{parentName:\"tbody\"},mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},mdx(\"inlineCode\",{parentName:\"td\",\"className\":\"tableCellSolelyInlineCode\"},`-recursive`)),mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},`Processes files in subdirectories in addition to the current directory. By default, the command only processes the specified, or current, directory.`),mdx(\"td\",{parentName:\"tr\",\"align\":\"left\"},`Optional`)))))};MDXContent.isMDXComponent=true;","scope":{"product":"terraform","version":"latest"}},"product":{"slug":"terraform","name":"Terraform","algoliaConfig":{"indexName":"product_TERRAFORM"},"alertBannerActive":true,"alertBanner":{"tag":"New","url":"https://www.hashicorp.com/blog/introducing-the-infrastructure-cloud","text":"Terraform Cloud is now HCP Terraform","linkText":"Read more →","expirationDate":"2024-04-29T00:00:00-08:00"},"basePaths":["cdktf","cli","cloud-docs","cloud-docs/agents","docs","enterprise","internals","intro","language","mcp-server","migrate","policy","plugin","plugin/framework","plugin/log","plugin/mux","plugin/sdkv2","plugin/testing","registry","downloads","tfctl-cli"],"docsNavItems":["docs","intro","language","cli","cloud-docs","enterprise","mcp-server","migrate",{"icon":"provider","label":"Provider Use","fullPath":"/terraform/language/providers"},"policy","tfctl-cli","plugin","registry",{"icon":"handshake","label":"Integration Program","fullPath":"/terraform/docs/partnerships"}],"rootDocsPaths":[{"iconName":"code","name":"CDK for Terraform","path":"cdktf","productSlugForLoader":"terraform-cdk"},{"iconName":"terminal-screen","name":"Terraform CLI","path":"cli"},{"iconName":"cloud","name":"HCP Terraform","path":"cloud-docs","productSlugForLoader":"terraform-docs-common"},{"iconName":"cloud","name":"HCP Terraform Agents","navDataPrefix":"cloud-docs-agents","path":"cloud-docs/agents","productSlugForLoader":"terraform-docs-agents"},{"iconName":"docs","name":"Documentation","path":"docs","productSlugForLoader":"terraform-docs-common"},{"iconName":"org","name":"Terraform Enterprise","path":"enterprise","productSlugForLoader":"terraform-enterprise"},{"iconName":"docs","name":"Internals","path":"internals"},{"iconName":"docs","name":"Intro to Terraform","path":"intro"},{"iconName":"file-source","name":"Configuration Language","path":"language"},{"iconName":"wrench","name":"Plugin Development","path":"plugin","productSlugForLoader":"terraform-docs-common"},{"iconName":"plug","name":"Framework","navDataPrefix":"plugin-framework","path":"plugin/framework","productSlugForLoader":"terraform-plugin-framework"},{"iconName":"plug","name":"Logging","navDataPrefix":"plugin-log","path":"plugin/log","productSlugForLoader":"terraform-plugin-log"},{"iconName":"plug","name":"Combining and Translating","navDataPrefix":"plugin-mux","path":"plugin/mux","productSlugForLoader":"terraform-plugin-mux"},{"iconName":"plug","name":"SDKv2","path":"plugin/sdkv2","productSlugForLoader":"terraform-plugin-sdk","navDataPrefix":"plugin-sdkv2"},{"iconName":"plug","name":"Testing","path":"plugin/testing","productSlugForLoader":"terraform-plugin-testing","navDataPrefix":"plugin-testing"},{"iconName":"plus-circle","name":"Registry Publishing","path":"registry","productSlugForLoader":"terraform-docs-common"},{"iconName":"docs","name":"Terraform Migrate","path":"migrate","productSlugForLoader":"terraform-migrate"},{"iconName":"docs","name":"Terraform Policy","path":"policy","productSlugForLoader":"terraform-policy"},{"iconName":"docs","name":"Terraform MCP Server","path":"mcp-server","productSlugForLoader":"terraform-mcp-server"},{"iconName":"docs","name":"CLI: tfctl","path":"tfctl-cli","productSlugForLoader":"terraform-tfctl-cli"}],"currentRootDocsPath":{"iconName":"terminal-screen","name":"Terraform CLI","path":"cli"}},"projectName":null,"versions":[{"name":"latest","label":"v1.17.x (latest)","isLatest":true,"releaseStage":"stable","version":"v1.17.x","found":true},{"name":"v1.16.x","label":"v1.16.x","isLatest":false,"releaseStage":"stable","version":"v1.16.x","found":true},{"name":"v1.15.x","label":"v1.15.x","isLatest":false,"releaseStage":"stable","version":"v1.15.x","found":true},{"name":"v1.14.x","label":"v1.14.x","isLatest":false,"releaseStage":"stable","version":"v1.14.x","found":true},{"name":"v1.13.x","label":"v1.13.x","isLatest":false,"releaseStage":"stable","version":"v1.13.x","found":true},{"name":"v1.12.x","label":"v1.12.x","isLatest":false,"releaseStage":"stable","version":"v1.12.x","found":true},{"name":"v1.11.x","label":"v1.11.x","isLatest":false,"releaseStage":"stable","version":"v1.11.x","found":true},{"name":"v1.10.x","label":"v1.10.x","isLatest":false,"releaseStage":"stable","version":"v1.10.x","found":true},{"name":"v1.9.x","label":"v1.9.x","isLatest":false,"releaseStage":"stable","version":"v1.9.x","found":true},{"name":"v1.8.x","label":"v1.8.x","isLatest":false,"releaseStage":"stable","version":"v1.8.x","found":true},{"name":"v1.7.x","label":"v1.7.x","isLatest":false,"releaseStage":"stable","version":"v1.7.x","found":true},{"name":"v1.6.x","label":"v1.6.x","isLatest":false,"releaseStage":"stable","version":"v1.6.x","found":true},{"name":"v1.5.x","label":"v1.5.x","isLatest":false,"releaseStage":"stable","version":"v1.5.x","found":true},{"name":"v1.4.x","label":"v1.4.x","isLatest":false,"releaseStage":"stable","version":"v1.4.x","found":true},{"name":"v1.3.x","label":"v1.3.x","isLatest":false,"releaseStage":"stable","version":"v1.3.x","found":true},{"name":"v1.2.x","label":"v1.2.x","isLatest":false,"releaseStage":"stable","version":"v1.2.x","found":true},{"name":"v1.1.x","label":"v1.1.x","isLatest":false,"releaseStage":"stable","version":"v1.1.x","found":true}],"docHeaders":{"age":"0","cache-control":"public, max-age=0, must-revalidate","content-encoding":"br","content-type":"application/json","date":"Sat, 21 Nov 2026 10:31:18 GMT","served-from":"current build","server":"Vercel","strict-transport-security":"max-age=63072000; includeSubDomains; preload","transfer-encoding":"chunked","vary":"rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch","x-matched-path":"/api/content/[productSlug]/doc/[version]/[...docsPath]","x-robots-tag":"noindex","x-vercel-cache":"MISS","x-vercel-id":"iad1:sfo1::iad1::68kng-1795257078548-a2fed44d0395"}},"__N_SSG":true},"page":"/terraform/cli/[[...page]]","query":{"page":["commands","fmt"]},"buildId":"build-TfctsWXpff2fKS","isFallback":false,"isExperimentalCompile":false,"gsp":true,"appGip":true,"scriptLoader":[]}
+window.MSInputMethodContext && document.documentMode && document.write('<script src="/ie-warning.js"><\x2fscript>');

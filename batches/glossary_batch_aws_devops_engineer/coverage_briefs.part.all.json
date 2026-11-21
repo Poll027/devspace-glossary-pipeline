@@ -75,14 +75,14 @@
           },
           {
             "id": "f2",
-            "statement": "IPv4 subnet sizes range from /16 to /28; AWS reserves the first four addresses and the last address of each subnet.",
+            "statement": "IPv4 subnet sizes range from /16 to /28; for ordinary AWS-provided IPv4 subnet ranges, AWS reserves the first four addresses and the last address, but with BYOIP you can use all addresses in the brought IPv4 range, including the network and broadcast addresses.",
             "source_refs": [
               "aws_vpc_user_guide#subnet-sizing.html"
             ]
           },
           {
             "id": "f3",
-            "statement": "Choose subnet ranges inside the VPC that do not intersect, and allow for the five reserved addresses when checking usable capacity.",
+            "statement": "Choose subnet ranges inside the VPC that do not intersect, and allow for the five reserved addresses in ordinary AWS-provided IPv4 subnet ranges when checking usable capacity.",
             "source_refs": [
               "aws_vpc_user_guide#subnet-sizing.html"
             ]
@@ -127,7 +127,7 @@
           },
           {
             "id": "f3",
-            "statement": "Choose between ECS and EKS by comparing the need for Kubernetes APIs and ecosystem with the team’s willingness to operate Kubernetes workloads.",
+            "statement": "Choose between ECS and EKS by comparing the need for Kubernetes APIs and ecosystem with the team\u2019s willingness to operate Kubernetes workloads.",
             "source_refs": [
               "aws_eks_user_guide#what-is-eks.html"
             ]
@@ -400,7 +400,7 @@
           },
           {
             "id": "f3",
-            "statement": "Inspect a workflow run’s job and step logs to verify which steps ran and which succeeded or failed.",
+            "statement": "Inspect a workflow run\u2019s job and step logs to verify which steps ran and which succeeded or failed.",
             "source_refs": [
               "github_actions_docs#how-tos/monitor-workflows/use-workflow-run-logs"
             ]
@@ -507,14 +507,14 @@
           },
           {
             "id": "f2",
-            "statement": "In the launch workflow, use the approved AMI, subnet and supplied IAM instance profile, then inspect the created instance’s ID and settings.",
+            "statement": "In the launch workflow, use the approved AMI, subnet and supplied IAM instance profile, then inspect the created instance\u2019s ID and settings.",
             "source_refs": [
               "aws_ec2_user_guide#ec2-launch-instance-wizard.html"
             ]
           },
           {
             "id": "f3",
-            "statement": "An instance profile contains an IAM role and attaches it to EC2; applications on the instance can use that role’s temporary credentials.",
+            "statement": "An instance profile contains an IAM role and attaches it to EC2; applications on the instance can use that role\u2019s temporary credentials.",
             "source_refs": [
               "aws_iam_user_guide#id_roles_use_switch-role-ec2_instance-profiles.html"
             ]
@@ -705,7 +705,7 @@
           },
           {
             "id": "f2",
-            "statement": "A Deny with BoolIfExists on aws:MultiFactorAuthPresent set to false can block non-MFA requests, including requests where the key is absent, subject to the statement’s scoped actions.",
+            "statement": "A Deny with BoolIfExists on aws:MultiFactorAuthPresent set to false can block non-MFA requests, including requests where the key is absent, subject to the statement\u2019s scoped actions.",
             "source_refs": [
               "aws_iam_user_guide#reference_policies_examples_aws_my-sec-creds-self-manage.html"
             ]
@@ -743,7 +743,7 @@
           },
           {
             "id": "f2",
-            "statement": "Set Principal to the approved principal and Action to sts:AssumeRole with the supplied conditions in the role’s trust policy.",
+            "statement": "Set Principal to the approved principal and Action to sts:AssumeRole with the supplied conditions in the role\u2019s trust policy.",
             "source_refs": [
               "aws_iam_user_guide#id_roles_create_for-user.html"
             ]
@@ -757,7 +757,7 @@
           },
           {
             "id": "f4",
-            "statement": "A role’s permissions policy controls what an assumed session may do, rather than who may assume it.",
+            "statement": "A role\u2019s permissions policy controls what an assumed session may do, rather than who may assume it.",
             "source_refs": [
               "aws_iam_user_guide#id_roles.html"
             ]
@@ -904,12 +904,13 @@
             "id": "f2",
             "statement": "Configure the supplied log collector with the application file path, log group and stream name, and verify a known JSON event arrives in that stream.",
             "source_refs": [
-              "aws_cloudwatch_user_guide#CloudWatch-Agent-Configuration-File-Details.html"
+              "aws_cloudwatch_user_guide#CloudWatch-Agent-Configuration-File-Details.html",
+              "aws_cloudwatch_user_guide#../logs/Working-with-log-groups-and-streams.html"
             ]
           },
           {
             "id": "f3",
-            "statement": "CloudWatch Logs Insights can discover fields in JSON log events, so preserving structured event fields makes them queryable.",
+            "statement": "Check that collected JSON log events preserve the application\u2019s structured event fields.",
             "source_refs": [
               "aws_cloudwatch_user_guide#../logs/CWL_AnalyzeLogData-discoverable-fields.html"
             ]
@@ -947,7 +948,7 @@
           },
           {
             "id": "f3",
-            "statement": "Use the service’s supported reload or restart procedure to activate a valid change, then inspect status and the supplied effective-setting check; on failure restore and reactivate the saved configuration.",
+            "statement": "Use the service\u2019s supported reload or restart procedure to activate a valid change, then inspect status and the supplied effective-setting check; on failure restore and reactivate the saved configuration.",
             "source_refs": [
               "linux_man_pages#man5/systemd.service.5.html"
             ]
@@ -1079,6 +1080,34 @@
             "source_refs": [
               "aws_cloudwatch_user_guide#alarms-and-missing-data.html"
             ]
+          },
+          {
+            "id": "f5",
+            "statement": "For the default sliding evaluation window, CloudWatch attempts to retrieve more datapoints than EvaluationPeriods; this evaluation range depends on the period and metric resolution, while a wall clock evaluation window retrieves only the datapoints in its aligned window.",
+            "source_refs": [
+              "aws_cloudwatch_user_guide#alarms-and-missing-data.html"
+            ]
+          },
+          {
+            "id": "f6",
+            "statement": "If the evaluation range contains at least EvaluationPeriods real datapoints, CloudWatch evaluates the most recent EvaluationPeriods real datapoints, using older real datapoints as needed and ignoring the missing-data setting.",
+            "source_refs": [
+              "aws_cloudwatch_user_guide#alarms-and-missing-data.html"
+            ]
+          },
+          {
+            "id": "f7",
+            "statement": "If fewer than EvaluationPeriods real datapoints are retrieved, CloudWatch includes all retrieved real datapoints and uses the configured missing-data treatment to fill only as many missing datapoints as necessary.",
+            "source_refs": [
+              "aws_cloudwatch_user_guide#alarms-and-missing-data.html"
+            ]
+          },
+          {
+            "id": "f8",
+            "statement": "With partially missing data, CloudWatch can enter ALARM even when fewer than DatapointsToAlarm real datapoints are available if the oldest breaching datapoint in the evaluation range is at least as old as DatapointsToAlarm and every more recent datapoint is breaching or missing; for the source\u2019s three-out-of-three example with missing treatment and a five-point evaluation range, four missing points followed by a new breach do not immediately cause ALARM, whereas two missing points, a breach, and two more missing points do.",
+            "source_refs": [
+              "aws_cloudwatch_user_guide#alarms-and-missing-data.html"
+            ]
           }
         ],
         "optional_enrichment": [],
@@ -1169,7 +1198,7 @@
         "misconceptions": [
           {
             "id": "m1",
-            "statement": "Using a security-group ID as an allowed source does not import the referenced group’s rules into the destination group.",
+            "statement": "Using a security-group ID as an allowed source does not import the referenced group\u2019s rules into the destination group.",
             "source_refs": [
               "aws_vpc_user_guide#security-group-rules.html#security-group-referencing"
             ]
@@ -1239,7 +1268,7 @@
           },
           {
             "id": "f2",
-            "statement": "For an S3 bucket policy, compare Principal, Action, Resource and Condition with the caller’s request; bucket and object ARNs identify different resource scopes.",
+            "statement": "For an S3 bucket policy, compare Principal, Action, Resource and Condition with the caller\u2019s request; bucket and object ARNs identify different resource scopes.",
             "source_refs": [
               "aws_iam_user_guide#access_policies_identity-vs-resource.html"
             ]
@@ -1277,14 +1306,14 @@
           },
           {
             "id": "f2",
-            "statement": "Execute the established provisioning workflow with the approved account inputs and inspect the account’s enrollment and organizational-unit placement.",
+            "statement": "Execute the established provisioning workflow with the approved account inputs and inspect the account\u2019s enrollment and organizational-unit placement.",
             "source_refs": [
               "aws_control_tower_user_guide#methods-of-provisioning.html"
             ]
           },
           {
             "id": "f3",
-            "statement": "Verify the supplied baseline checkpoints against the account’s applied controls; creating an account alone does not demonstrate governance completion.",
+            "statement": "Verify the supplied baseline checkpoints against the account\u2019s applied controls; creating an account alone does not demonstrate governance completion.",
             "source_refs": [
               "aws_control_tower_user_guide#how-controls-work.html"
             ]
@@ -1315,7 +1344,7 @@
           },
           {
             "id": "f2",
-            "statement": "Create one with python -m venv ENV_DIR and activate it using the platform’s activation command, such as source ENV_DIR/bin/activate on Unix.",
+            "statement": "Create one with python -m venv ENV_DIR and activate it using the platform\u2019s activation command, such as source ENV_DIR/bin/activate on Unix.",
             "source_refs": [
               "python_tutorial#venv.html"
             ]
@@ -1398,7 +1427,7 @@
           },
           {
             "id": "f2",
-            "statement": "Write the task’s preconditions, ordered actions and expected results so execution can be checked rather than inferred.",
+            "statement": "Write the task\u2019s preconditions, ordered actions and expected results so execution can be checked rather than inferred.",
             "source_refs": [
               "aws_well_architected_framework#ops05-bp01.html"
             ]
@@ -1530,6 +1559,14 @@
             "source_refs": [
               "aws_s3_user_guide#intro-lifecycle-rules.html"
             ]
+          },
+          {
+            "id": "f5",
+            "statement": "Enable versioning in the S3 console under the bucket\u2019s Properties > Bucket Versioning > Edit > Enable > Save changes, and check its Bucket Versioning setting; apply the supplied lifecycle JSON with aws s3api put-bucket-lifecycle-configuration --bucket <bucket> --lifecycle-configuration file://<policy.json>, then retrieve it with aws s3api get-bucket-lifecycle-configuration --bucket <bucket> to verify the configured rules.",
+            "source_refs": [
+              "aws_s3_user_guide#manage-versioning-examples.html",
+              "aws_s3_user_guide#how-to-set-lifecycle-configuration-intro.html"
+            ]
           }
         ],
         "optional_enrichment": [],
@@ -1602,7 +1639,7 @@
           },
           {
             "id": "f2",
-            "statement": "For a supplied output file, set workflow permissions id-token: write, contents: read and attestations: write, generate provenance with actions/attest@v4 and subject-path set to the file, then publish it with actions/upload-artifact@v4 using path set to that file and name set to the supplied revision-based version; retain the workflow run, artifact name and upload’s SHA256 digest as the immutable content reference, since v4 artifacts are immutable.",
+            "statement": "For a supplied output file, set workflow permissions id-token: write, contents: read and attestations: write, generate provenance with actions/attest@v4 and subject-path set to the file, then publish it with actions/upload-artifact@v4 using path set to that file and name set to the supplied revision-based version; retain the workflow run, artifact name and upload\u2019s SHA256 digest as the immutable content reference, since v4 artifacts are immutable.",
             "source_refs": [
               "github_actions_docs#how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations",
               "github_actions_docs#how-tos/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow"
@@ -1610,7 +1647,7 @@
           },
           {
             "id": "f3",
-            "statement": "Download the published artifact with actions/download-artifact, which checks the upload’s SHA256 digest and warns on mismatch, then verify the extracted output file’s provenance with gh attestation verify PATH/TO/YOUR/BUILD/ARTIFACT-BINARY -R ORGANIZATION_NAME/REPOSITORY_NAME --format json and inspect the verified attestation for the source revision and build workflow/run before deployment.",
+            "statement": "Download the published artifact with actions/download-artifact, which checks the upload\u2019s SHA256 digest and warns on mismatch, then verify the extracted output file\u2019s provenance with gh attestation verify PATH/TO/YOUR/BUILD/ARTIFACT-BINARY -R ORGANIZATION_NAME/REPOSITORY_NAME --format json and inspect the verified attestation for the source revision and build workflow/run before deployment.",
             "source_refs": [
               "github_actions_docs#how-tos/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow",
               "github_actions_docs#how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations"
@@ -1635,7 +1672,7 @@
         "required_facts": [
           {
             "id": "f1",
-            "statement": "A CloudFormation template’s Resources section declares resources by logical ID, Type and Properties.",
+            "statement": "A CloudFormation template\u2019s Resources section declares resources by logical ID, Type and Properties.",
             "source_refs": [
               "aws_cloudformation_user_guide#template-anatomy.html"
             ]
@@ -1656,7 +1693,7 @@
           },
           {
             "id": "f4",
-            "statement": "Inspect stack events and outputs and the bucket’s live property to confirm the declaration was deployed.",
+            "statement": "Inspect stack events and outputs and the bucket\u2019s live property to confirm the declaration was deployed.",
             "source_refs": [
               "aws_cloudformation_user_guide#cfn-console-view-stack-data-resources.html"
             ]
@@ -1694,7 +1731,7 @@
           },
           {
             "id": "f3",
-            "statement": "Use the retrieved value in the runtime consumer without writing it into source code or logs; verify success through the consumer’s safe result rather than displaying the value.",
+            "statement": "Use the retrieved value in the runtime consumer without writing it into source code or logs; verify success through the consumer\u2019s safe result rather than displaying the value.",
             "source_refs": [
               "aws_secrets_manager_user_guide#best-practices.html"
             ]
@@ -1763,7 +1800,7 @@
           },
           {
             "id": "f2",
-            "statement": "Open the rule’s noncompliant resources and inspect the affected resource, evaluation result and rule parameters to identify the configuration mismatch.",
+            "statement": "Open the rule\u2019s noncompliant resources and inspect the affected resource, evaluation result and rule parameters to identify the configuration mismatch.",
             "source_refs": [
               "aws_config_developer_guide#evaluate-config_view-compliance.html"
             ]
@@ -1801,7 +1838,7 @@
           },
           {
             "id": "f2",
-            "statement": "Run drift detection on the provisioned stack after the supplied out-of-band change, wait for completion and inspect the bucket’s expected and actual property values.",
+            "statement": "Run drift detection on the provisioned stack after the supplied out-of-band change, wait for completion and inspect the bucket\u2019s expected and actual property values.",
             "source_refs": [
               "aws_cloudformation_user_guide#using-cfn-stack-drift.html"
             ]
@@ -1877,14 +1914,14 @@
           },
           {
             "id": "f2",
-            "statement": "Attach or replace the approved instance profile on the EC2 instance using the instance’s IAM-role setting or associate-iam-instance-profile.",
+            "statement": "Attach or replace the approved instance profile on the EC2 instance using the instance\u2019s IAM-role setting or associate-iam-instance-profile.",
             "source_refs": [
               "aws_ec2_user_guide#attach-iam-role.html"
             ]
           },
           {
             "id": "f3",
-            "statement": "Use the instance’s role credential provider rather than embedded keys, inspect the caller identity and test one allowed and one denied operation under the assigned role’s permissions.",
+            "statement": "Use the instance\u2019s role credential provider rather than embedded keys, inspect the caller identity and test one allowed and one denied operation under the assigned role\u2019s permissions.",
             "source_refs": [
               "aws_ec2_user_guide#iam-roles-for-amazon-ec2.html"
             ]
@@ -1953,7 +1990,7 @@
           },
           {
             "id": "f2",
-            "statement": "Configure the GitHub token issuer as an IAM OIDC provider and constrain the role trust policy’s aud and sub claims to the approved audience and repository/branch or environment.",
+            "statement": "Configure the GitHub token issuer as an IAM OIDC provider and constrain the role trust policy\u2019s aud and sub claims to the approved audience and repository/branch or environment.",
             "source_refs": [
               "github_actions_docs#how-tos/secure-your-work/security-harden-deployments/oidc-in-aws"
             ]
@@ -1998,7 +2035,7 @@
           },
           {
             "id": "f3",
-            "statement": "Permissions granted through a role’s identity-based policies are intersected with any session policies; resource-based grants are evaluated separately, and grants directly to the session ARN are not limited by session policies; an explicit deny in any applicable policy overrides an allow.",
+            "statement": "Permissions granted through a role\u2019s identity-based policies are intersected with any session policies; resource-based grants are evaluated separately, and grants directly to the session ARN are not limited by session policies; an explicit deny in any applicable policy overrides an allow.",
             "source_refs": [
               "aws_iam_user_guide#access_policies.html#policies_session"
             ]
@@ -2036,7 +2073,7 @@
           },
           {
             "id": "f3",
-            "statement": "Targets such as SNS and Lambda use resource-based permissions for invocation; use the target’s required authorization model rather than assuming every target uses a role.",
+            "statement": "Targets such as SNS and Lambda use resource-based permissions for invocation; use the target\u2019s required authorization model rather than assuming every target uses a role.",
             "source_refs": [
               "aws_eventbridge_user_guide#eb-use-resource-based.html"
             ]
@@ -2060,7 +2097,7 @@
         "required_facts": [
           {
             "id": "f1",
-            "statement": "A Config managed rule evaluates supported resource configuration against the rule’s criteria and configured parameters.",
+            "statement": "A Config managed rule evaluates supported resource configuration against the rule\u2019s criteria and configured parameters.",
             "source_refs": [
               "aws_config_developer_guide#evaluate-config_use-managed-rules.html"
             ]
@@ -2074,7 +2111,7 @@
           },
           {
             "id": "f3",
-            "statement": "Read each evaluation’s resource ID and compliance result rather than treating the presence of the rule as proof that all resources passed.",
+            "statement": "Read each evaluation\u2019s resource ID and compliance result rather than treating the presence of the rule as proof that all resources passed.",
             "source_refs": [
               "aws_config_developer_guide#evaluate-config_view-compliance.html"
             ]
@@ -2150,7 +2187,7 @@
           },
           {
             "id": "f3",
-            "statement": "Set artifacts.files and, if needed, base-directory to match the generated output, then inspect the build’s phase logs and exported artifact.",
+            "statement": "Set artifacts.files and, if needed, base-directory to match the generated output, then inspect the build\u2019s phase logs and exported artifact.",
             "source_refs": [
               "aws_codebuild_user_guide#build-spec-ref.html"
             ]
@@ -2219,14 +2256,14 @@
           },
           {
             "id": "f2",
-            "statement": "Select the approved metric and target value and configure instance warmup along with the group’s minimum, desired and maximum capacities.",
+            "statement": "Select the approved metric and target value and configure instance warmup along with the group\u2019s minimum, desired and maximum capacities.",
             "source_refs": [
               "aws_ec2_autoscaling_user_guide#as-scaling-target-tracking.html"
             ]
           },
           {
             "id": "f3",
-            "statement": "Run the bounded load test and compare metric values and scaling activities with resulting capacity; capacity cannot exceed the group’s configured maximum.",
+            "statement": "Run the bounded load test and compare metric values and scaling activities with resulting capacity; capacity cannot exceed the group\u2019s configured maximum.",
             "source_refs": [
               "aws_ec2_autoscaling_user_guide#as-scaling-target-tracking.html"
             ]
@@ -2257,7 +2294,7 @@
           },
           {
             "id": "f2",
-            "statement": "Scope the supplied policy’s principals and actions to approved publishers and consumers, then test push and pull and an unapproved principal.",
+            "statement": "Scope the supplied policy\u2019s principals and actions to approved publishers and consumers, then test push and pull and an unapproved principal.",
             "source_refs": [
               "aws_ecr_user_guide#repository-policy-examples.html"
             ]
@@ -2378,7 +2415,7 @@
           },
           {
             "id": "f2",
-            "statement": "Set the supplied retention interval with put-retention-policy and inspect the log group’s retentionInDays.",
+            "statement": "Set the supplied retention interval with put-retention-policy and inspect the log group\u2019s retentionInDays.",
             "source_refs": [
               "aws_cloudwatch_user_guide#../logs/Working-with-log-groups-and-streams.html"
             ]
@@ -2627,7 +2664,7 @@
           },
           {
             "id": "f3",
-            "statement": "Record the command ID and inspect each invocation’s status and output; the parent command status does not replace per-node result checks.",
+            "statement": "Record the command ID and inspect each invocation\u2019s status and output; the parent command status does not replace per-node result checks.",
             "source_refs": [
               "aws_systems_manager_user_guide#monitor-commands.html"
             ]
@@ -2669,16 +2706,17 @@
             "source_refs": [
               "terraform_language#../cli/commands/validate"
             ]
-          },
+          }
+        ],
+        "optional_enrichment": [
           {
             "id": "f4",
-            "statement": "terraform fmt -check checks canonical formatting and can be used as an additional blocking configuration check.",
+            "statement": "As optional supporting practice, terraform fmt -check checks canonical formatting and can be used as an additional blocking configuration check.",
             "source_refs": [
               "terraform_language#../cli/commands/fmt"
             ]
           }
         ],
-        "optional_enrichment": [],
         "misconceptions": [],
         "created_in_batch_id": "glossary_batch_aws_devops_engineer",
         "used_by_path_ids": [
@@ -2703,7 +2741,7 @@
           },
           {
             "id": "f2",
-            "statement": "Set botocore.config.Config(retries={\"mode\": \"standard\", \"total_max_attempts\": APPROVED_ATTEMPTS}) on the supplied Boto3 client to bound requests with the SDK’s backoff; do not wrap terminal errors in an unbounded retry loop.",
+            "statement": "Set botocore.config.Config(retries={\"mode\": \"standard\", \"total_max_attempts\": APPROVED_ATTEMPTS}) on the supplied Boto3 client to bound requests with the SDK\u2019s backoff; do not wrap terminal errors in an unbounded retry loop.",
             "source_refs": [
               "boto3_guide#retries.html"
             ]
@@ -2869,7 +2907,7 @@
           },
           {
             "id": "f3",
-            "statement": "Use shared request identity and event timestamps to reconstruct the supplied symptom’s sequence, retaining the relevant events as evidence.",
+            "statement": "Use shared request identity and event timestamps to reconstruct the supplied symptom\u2019s sequence, retaining the relevant events as evidence.",
             "source_refs": [
               "aws_cloudwatch_user_guide#../logs/CWL_QuerySyntax-Sort.html"
             ]
@@ -2893,14 +2931,14 @@
         "required_facts": [
           {
             "id": "f1",
-            "statement": "An alarm action can publish state-change notifications to an SNS topic without changing the alarm’s metric evaluation.",
+            "statement": "An alarm action can publish state-change notifications to an SNS topic without changing the alarm\u2019s metric evaluation.",
             "source_refs": [
               "aws_cloudwatch_user_guide#Notify_Users_Alarm_Changes.html"
             ]
           },
           {
             "id": "f2",
-            "statement": "Configure the approved topic as the alarm’s notification action and create the approved recipient subscription, confirming it when required.",
+            "statement": "Configure the approved topic as the alarm\u2019s notification action and create the approved recipient subscription, confirming it when required.",
             "source_refs": [
               "aws_cloudwatch_user_guide#Notify_Users_Alarm_Changes.html"
             ]
@@ -3059,7 +3097,7 @@
           },
           {
             "id": "f3",
-            "statement": "Configure the supplied KMS key as bucket default encryption and test reads with approved object/key authority and with KMS use denied; inspect the object’s encryption metadata.",
+            "statement": "Configure the supplied KMS key as bucket default encryption and test reads with approved object/key authority and with KMS use denied; inspect the object\u2019s encryption metadata.",
             "source_refs": [
               "aws_s3_user_guide#UsingKMSEncryption.html"
             ]
@@ -3137,14 +3175,14 @@
           },
           {
             "id": "f2",
-            "statement": "Use the supplied fleet wrapper’s preview mode, inspect its proposed targets and actions and compare them with approved scope without enabling mutation.",
+            "statement": "Use the supplied fleet wrapper\u2019s preview mode, inspect its proposed targets and actions and compare them with approved scope without enabling mutation.",
             "source_refs": [
               "aws_well_architected_framework#ops04-bp01.html"
             ]
           },
           {
             "id": "f3",
-            "statement": "Dry-run permission success does not guarantee later operation success or provide a universal preview of every AWS service’s changes.",
+            "statement": "Dry-run permission success does not guarantee later operation success or provide a universal preview of every AWS service\u2019s changes.",
             "source_refs": [
               "aws_ec2_user_guide#../../../AWSEC2/latest/APIReference/API_StartInstances.html"
             ]
@@ -3289,7 +3327,7 @@
           },
           {
             "id": "f2",
-            "statement": "Apply the supplied approved control configuration to the sandbox account and inspect each stated control’s deployment or evaluation result.",
+            "statement": "Apply the supplied approved control configuration to the sandbox account and inspect each stated control\u2019s deployment or evaluation result.",
             "source_refs": [
               "aws_control_tower_user_guide#how-controls-work.html"
             ]
@@ -3380,7 +3418,7 @@
           },
           {
             "id": "f2",
-            "statement": "Configure source output, CodeBuild input/output and CodeDeploy input artifact names so each action receives the intended revision’s output.",
+            "statement": "Configure source output, CodeBuild input/output and CodeDeploy input artifact names so each action receives the intended revision\u2019s output.",
             "source_refs": [
               "aws_codepipeline_user_guide#welcome-introducing-artifacts.html"
             ]
@@ -3456,7 +3494,7 @@
         "required_facts": [
           {
             "id": "f1",
-            "statement": "The subnet’s route table must contain a matching destination route to a usable target for the required network path.",
+            "statement": "The subnet\u2019s route table must contain a matching destination route to a usable target for the required network path.",
             "source_refs": [
               "aws_vpc_user_guide#VPC_Route_Tables.html"
             ]
@@ -3477,7 +3515,7 @@
           },
           {
             "id": "f4",
-            "statement": "Make the approved correction supported by the failing layer’s evidence and repeat the endpoint connection test.",
+            "statement": "Make the approved correction supported by the failing layer\u2019s evidence and repeat the endpoint connection test.",
             "source_refs": [
               "aws_vpc_user_guide#VPC_Route_Tables.html"
             ]
@@ -3546,7 +3584,7 @@
           },
           {
             "id": "f2",
-            "statement": "Set spec.selector to match the intended Pod labels and ports.port and ports.targetPort to map the Service port to the application’s container port.",
+            "statement": "Set spec.selector to match the intended Pod labels and ports.port and ports.targetPort to map the Service port to the application\u2019s container port.",
             "source_refs": [
               "kubernetes_overview#../services-networking/service/"
             ]
@@ -3654,7 +3692,7 @@
         "required_facts": [
           {
             "id": "f1",
-            "statement": "Changing a Deployment’s Pod template creates a new rollout revision; scaling alone does not create a new template revision.",
+            "statement": "Changing a Deployment\u2019s Pod template creates a new rollout revision; scaling alone does not create a new template revision.",
             "source_refs": [
               "kubernetes_overview#../workloads/controllers/deployment/"
             ]
@@ -3789,7 +3827,7 @@
           },
           {
             "id": "f4",
-            "statement": "A refresh-only plan updates state and outputs to reflect remote changes; it does not itself change remote infrastructure to restore configuration.",
+            "statement": "A refresh-only plan proposes state and output updates to reflect remote changes; applying the approved refresh-only plan persists those updates without restoring remote infrastructure to configuration.",
             "source_refs": [
               "terraform_language#../cli/commands/plan"
             ]
@@ -3889,7 +3927,7 @@
         "required_facts": [
           {
             "id": "f1",
-            "statement": "A finding’s resource identity, severity and activity details provide context needed by the accountable responder.",
+            "statement": "A finding\u2019s resource identity, severity and activity details provide context needed by the accountable responder.",
             "source_refs": [
               "aws_guardduty_user_guide#guardduty_findings-summary.html"
             ]
@@ -3941,7 +3979,7 @@
           },
           {
             "id": "f3",
-            "statement": "Configure the target’s required permissions, then send matching and nonmatching test events and inspect the approved target’s execution or notification evidence.",
+            "statement": "Configure the target\u2019s required permissions, then send matching and nonmatching test events and inspect the approved target\u2019s execution or notification evidence.",
             "source_refs": [
               "aws_eventbridge_user_guide#eb-events-iam-roles.html"
             ]
@@ -4010,7 +4048,7 @@
           },
           {
             "id": "f2",
-            "statement": "Run the supplied unit and integration test commands in workflow steps with run: TEST_COMMAND; set the promotion job’s needs: [UNIT_JOB, INTEGRATION_JOB] to require both test jobs.",
+            "statement": "Run the supplied unit and integration test commands in workflow steps with run: TEST_COMMAND; set the promotion job\u2019s needs: [UNIT_JOB, INTEGRATION_JOB] to require both test jobs.",
             "source_refs": [
               "github_actions_docs#reference/workflows-and-actions/workflow-syntax"
             ]
@@ -4140,7 +4178,7 @@
           },
           {
             "id": "f3",
-            "statement": "An S3 bucket must be empty before deletion; remove the exercise bucket’s objects, all object versions and delete markers before deleting that bucket.",
+            "statement": "An S3 bucket must be empty before deletion; remove the exercise bucket\u2019s objects, all object versions and delete markers before deleting that bucket.",
             "source_refs": [
               "aws_s3_user_guide#delete-bucket.html"
             ]
@@ -4209,7 +4247,7 @@
         "required_facts": [
           {
             "id": "f1",
-            "statement": "Recovery testing should use a controlled environment that limits the experiment’s effects.",
+            "statement": "Recovery testing should use a controlled environment that limits the experiment\u2019s effects.",
             "source_refs": [
               "aws_well_architected_framework#rel12-bp04.html"
             ]
@@ -4458,7 +4496,7 @@
           },
           {
             "id": "f3",
-            "statement": "Set the supplied lifecycle argument in the resource block, introduce the controlled replacement-triggering change, and inspect the plan’s replacement order or prevention error before the approved permitted apply.",
+            "statement": "Set the supplied lifecycle argument in the resource block, introduce the controlled replacement-triggering change, and inspect the plan\u2019s replacement order or prevention error before the approved permitted apply.",
             "source_refs": [
               "terraform_language#meta-arguments/lifecycle"
             ]
@@ -4489,7 +4527,7 @@
         "required_facts": [
           {
             "id": "f1",
-            "statement": "Creating a stack from a template provisions its declared resources under the target account’s execution authority and selected Region.",
+            "statement": "Creating a stack from a template provisions its declared resources under the target account\u2019s execution authority and selected Region.",
             "source_refs": [
               "aws_cloudformation_user_guide#cfn-console-create-stack.html"
             ]
@@ -4603,14 +4641,14 @@
         "required_facts": [
           {
             "id": "f1",
-            "statement": "EC2 system status checks concern underlying AWS host issues, while instance checks concern the instance’s software and networking.",
+            "statement": "EC2 system status checks concern underlying AWS host issues, while instance checks concern the instance\u2019s software and networking.",
             "source_refs": [
               "aws_ec2_user_guide#monitoring-system-instance-status-check.html"
             ]
           },
           {
             "id": "f2",
-            "statement": "Use the supplied metric and log time window to identify the affected workload, then inspect the component’s service status, events and logs rather than assuming the symptom proves its cause.",
+            "statement": "Use the supplied metric and log time window to identify the affected workload, then inspect the component\u2019s service status, events and logs rather than assuming the symptom proves its cause.",
             "source_refs": [
               "aws_well_architected_framework#ops06-bp01.html"
             ]
@@ -4769,7 +4807,7 @@
           },
           {
             "id": "f2",
-            "statement": "Promote the same immutable artifact reference or digest to the next environment while supplying that environment’s configuration rather than rebuilding the source.",
+            "statement": "Promote the same immutable artifact reference or digest to the next environment while supplying that environment\u2019s configuration rather than rebuilding the source.",
             "source_refs": [
               "twelve_factor_app#build-release-run"
             ]
@@ -4992,14 +5030,14 @@
           },
           {
             "id": "f2",
-            "statement": "Verify the established runbook’s preconditions, execute only the approved actions and check each expected result before advancing.",
+            "statement": "Verify the established runbook\u2019s preconditions, execute only the approved actions and check each expected result before advancing.",
             "source_refs": [
               "aws_well_architected_framework#ops05-bp01.html"
             ]
           },
           {
             "id": "f3",
-            "statement": "On a supplied stop condition or an outcome outside the runbook’s bounds, stop routine execution and escalate with the observed evidence.",
+            "statement": "On a supplied stop condition or an outcome outside the runbook\u2019s bounds, stop routine execution and escalate with the observed evidence.",
             "source_refs": [
               "aws_well_architected_framework#ops06-bp03.html"
             ]
@@ -5061,7 +5099,7 @@
         "required_facts": [
           {
             "id": "f1",
-            "statement": "Post-incident analysis documents the incident’s impact, events, contributing causes and actions to reduce recurrence.",
+            "statement": "Post-incident analysis documents the incident\u2019s impact, events, contributing causes and actions to reduce recurrence.",
             "source_refs": [
               "aws_well_architected_framework#ops07-bp01.html"
             ]
@@ -5106,7 +5144,7 @@
           },
           {
             "id": "f2",
-            "statement": "Confirm the restored target’s supplied readiness checks pass, perform the approved DNS or application endpoint switch and verify clients reach the restored target.",
+            "statement": "Confirm the restored target\u2019s supplied readiness checks pass, perform the approved DNS or application endpoint switch and verify clients reach the restored target.",
             "source_refs": [
               "aws_well_architected_framework#rel13-bp02.html"
             ]

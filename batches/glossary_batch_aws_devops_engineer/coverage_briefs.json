@@ -7,7 +7,7 @@
     "run_id": "glossary_batch_aws_devops_engineer",
     "prompt_version": "03_coverage_brief@v1",
     "model": "none",
-    "generated_at": "2026-11-17T17:01:55.666152+00:00",
+    "generated_at": "2026-11-21T14:33:41.696925+00:00",
     "source_snapshot_id": "glossary_batch_aws_devops_engineer",
     "parent_artifact_hashes": {
       "batches/glossary_batch_aws_devops_engineer/extracted_concepts.json": "e5655c589dc783e9bcf5aef3d029dcad038c706eb941eb9ad594badae4a805ae",
@@ -75,14 +75,14 @@
           },
           {
             "id": "f2",
-            "statement": "IPv4 subnet sizes range from /16 to /28; AWS reserves the first four addresses and the last address of each subnet.",
+            "statement": "IPv4 subnet sizes range from /16 to /28; for ordinary AWS-provided IPv4 subnet ranges, AWS reserves the first four addresses and the last address, but with BYOIP you can use all addresses in the brought IPv4 range, including the network and broadcast addresses.",
             "source_refs": [
               "aws_vpc_user_guide#subnet-sizing.html"
             ]
           },
           {
             "id": "f3",
-            "statement": "Choose subnet ranges inside the VPC that do not intersect, and allow for the five reserved addresses when checking usable capacity.",
+            "statement": "Choose subnet ranges inside the VPC that do not intersect, and allow for the five reserved addresses in ordinary AWS-provided IPv4 subnet ranges when checking usable capacity.",
             "source_refs": [
               "aws_vpc_user_guide#subnet-sizing.html"
             ]
@@ -904,12 +904,13 @@
             "id": "f2",
             "statement": "Configure the supplied log collector with the application file path, log group and stream name, and verify a known JSON event arrives in that stream.",
             "source_refs": [
-              "aws_cloudwatch_user_guide#CloudWatch-Agent-Configuration-File-Details.html"
+              "aws_cloudwatch_user_guide#CloudWatch-Agent-Configuration-File-Details.html",
+              "aws_cloudwatch_user_guide#../logs/Working-with-log-groups-and-streams.html"
             ]
           },
           {
             "id": "f3",
-            "statement": "CloudWatch Logs Insights can discover fields in JSON log events, so preserving structured event fields makes them queryable.",
+            "statement": "Check that collected JSON log events preserve the application\u2019s structured event fields.",
             "source_refs": [
               "aws_cloudwatch_user_guide#../logs/CWL_AnalyzeLogData-discoverable-fields.html"
             ]
@@ -1076,6 +1077,34 @@
           {
             "id": "f4",
             "statement": "Missing-data settings are breaching, notBreaching, ignore (retain current state), and missing (insufficient data when all datapoints are missing); missing is the default.",
+            "source_refs": [
+              "aws_cloudwatch_user_guide#alarms-and-missing-data.html"
+            ]
+          },
+          {
+            "id": "f5",
+            "statement": "For the default sliding evaluation window, CloudWatch attempts to retrieve more datapoints than EvaluationPeriods; this evaluation range depends on the period and metric resolution, while a wall clock evaluation window retrieves only the datapoints in its aligned window.",
+            "source_refs": [
+              "aws_cloudwatch_user_guide#alarms-and-missing-data.html"
+            ]
+          },
+          {
+            "id": "f6",
+            "statement": "If the evaluation range contains at least EvaluationPeriods real datapoints, CloudWatch evaluates the most recent EvaluationPeriods real datapoints, using older real datapoints as needed and ignoring the missing-data setting.",
+            "source_refs": [
+              "aws_cloudwatch_user_guide#alarms-and-missing-data.html"
+            ]
+          },
+          {
+            "id": "f7",
+            "statement": "If fewer than EvaluationPeriods real datapoints are retrieved, CloudWatch includes all retrieved real datapoints and uses the configured missing-data treatment to fill only as many missing datapoints as necessary.",
+            "source_refs": [
+              "aws_cloudwatch_user_guide#alarms-and-missing-data.html"
+            ]
+          },
+          {
+            "id": "f8",
+            "statement": "With partially missing data, CloudWatch can enter ALARM even when fewer than DatapointsToAlarm real datapoints are available if the oldest breaching datapoint in the evaluation range is at least as old as DatapointsToAlarm and every more recent datapoint is breaching or missing; for the source\u2019s three-out-of-three example with missing treatment and a five-point evaluation range, four missing points followed by a new breach do not immediately cause ALARM, whereas two missing points, a breach, and two more missing points do.",
             "source_refs": [
               "aws_cloudwatch_user_guide#alarms-and-missing-data.html"
             ]
@@ -1529,6 +1558,14 @@
             "statement": "Inspect noncurrent-version expiration and other lifecycle rules so required recoverable versions remain for the required window.",
             "source_refs": [
               "aws_s3_user_guide#intro-lifecycle-rules.html"
+            ]
+          },
+          {
+            "id": "f5",
+            "statement": "Enable versioning in the S3 console under the bucket\u2019s Properties > Bucket Versioning > Edit > Enable > Save changes, and check its Bucket Versioning setting; apply the supplied lifecycle JSON with aws s3api put-bucket-lifecycle-configuration --bucket <bucket> --lifecycle-configuration file://<policy.json>, then retrieve it with aws s3api get-bucket-lifecycle-configuration --bucket <bucket> to verify the configured rules.",
+            "source_refs": [
+              "aws_s3_user_guide#manage-versioning-examples.html",
+              "aws_s3_user_guide#how-to-set-lifecycle-configuration-intro.html"
             ]
           }
         ],
@@ -2669,16 +2706,17 @@
             "source_refs": [
               "terraform_language#../cli/commands/validate"
             ]
-          },
+          }
+        ],
+        "optional_enrichment": [
           {
             "id": "f4",
-            "statement": "terraform fmt -check checks canonical formatting and can be used as an additional blocking configuration check.",
+            "statement": "As optional supporting practice, terraform fmt -check checks canonical formatting and can be used as an additional blocking configuration check.",
             "source_refs": [
               "terraform_language#../cli/commands/fmt"
             ]
           }
         ],
-        "optional_enrichment": [],
         "misconceptions": [],
         "created_in_batch_id": "glossary_batch_aws_devops_engineer",
         "used_by_path_ids": [
@@ -3789,7 +3827,7 @@
           },
           {
             "id": "f4",
-            "statement": "A refresh-only plan updates state and outputs to reflect remote changes; it does not itself change remote infrastructure to restore configuration.",
+            "statement": "A refresh-only plan proposes state and output updates to reflect remote changes; applying the approved refresh-only plan persists those updates without restoring remote infrastructure to configuration.",
             "source_refs": [
               "terraform_language#../cli/commands/plan"
             ]

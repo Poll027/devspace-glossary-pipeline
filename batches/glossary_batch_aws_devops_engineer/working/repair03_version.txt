@@ -1,0 +1,389 @@
+Enabling versioning on buckets - Amazon Simple Storage Service
+View a markdown version of this page
+Enabling versioning on buckets - Amazon Simple Storage Service
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon Simple Storage Service (S3)",
+        "item" : "https://docs.aws.amazon.com/s3/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonS3/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Data protection in Amazon S3",
+        "item" : "https://docs.aws.amazon.com/AmazonS3/latest/userguide/data-protection.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Retaining multiple versions of objects with S3 Versioning",
+        "item" : "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Enabling versioning on buckets",
+        "item" : "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html"
+      }
+    ]
+}
+Documentation
+Amazon Simple Storage Service (S3)
+User Guide
+Enabling versioning on buckets
+You can use S3 Versioning to keep multiple versions of an object in one bucket. This
+        section provides examples of how to enable versioning on a bucket using the console, REST
+        API, AWS SDKs, and AWS Command Line Interface (AWS CLI).
+Note
+After enabling versioning on a bucket for the first time, it may take up to 15 minutes for the change to fully propagate across the S3 system. During this time,
+GET
+requests for objects created or updated after enabling versioning may result in
+HTTP 404 NoSuchKey
+errors. We recommend waiting 15 minutes after enabling versioning before performing any write operations (
+PUT
+or
+DELETE
+) on objects in the bucket. This waiting period helps avoid potential issues with object visibility and version tracking.
+For more information about S3 Versioning, see
+Retaining multiple versions of objects with S3 Versioning
+. For information about working with objects that are in
+        versioning-enabled buckets, see
+Working with objects in a versioning-enabled bucket
+.
+To learn more about how to use S3 Versioning to
+        protect data, see
+Tutorial: Protecting data on Amazon S3 against accidental deletion or application bugs using
+            S3 Versioning, S3 Object Lock, and S3 Replication
+.
+Each S3 bucket that you create has a
+versioning
+subresource
+        associated with it. (For more information, see
+General purpose buckets configuration options
+.) By default, your bucket is
+unversioned
+, and the versioning subresource stores the empty
+        versioning configuration, as follows.
+<VersioningConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/"> 
+</VersioningConfiguration>
+To enable versioning, you can send a request to Amazon S3 with a versioning configuration that
+        includes a status.
+<VersioningConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/"> 
+  <Status>Enabled</Status> 
+</VersioningConfiguration>
+To suspend versioning, you set the status value to
+Suspended
+.
+The bucket owner and all authorized users can enable versioning. The bucket owner is
+        the AWS account that created the bucket (the root account). For more information about
+        permissions, see
+Identity and Access Management for Amazon S3
+.
+The following sections provide more detail about enabling S3 Versioning using the console,
+        AWS CLI, and the AWS SDKs.
+Follow these steps to use the AWS Management Console to enable versioning on an S3 bucket.
+To enable or disable versioning on an S3 general purpose bucket
+Sign in to the AWS Management Console and open the Amazon S3 console at
+https://console.aws.amazon.com/s3/
+.
+In the left navigation pane, choose
+General purpose buckets
+.
+In the buckets list, choose the name of the bucket that you want to
+        enable versioning for.
+Choose
+Properties
+.
+Under
+Bucket Versioning
+, choose
+Edit
+.
+Choose
+Suspend
+or
+Enable
+, and then choose
+Save changes
+.
+Note
+You can use AWS multi-factor authentication (MFA) with versioning. When you use MFA with
+      versioning, you must provide your AWS account’s access keys and a valid code from the
+      account’s MFA device to permanently delete an object version or suspend or reactivate
+      versioning.
+To use MFA with versioning, you enable
+MFA Delete
+. However, you can't enable
+MFA Delete
+using the AWS Management Console. You must use the AWS Command Line Interface (AWS CLI) or the API.
+      For more information, see
+Configuring MFA delete
+.
+The following example enables versioning on an S3 general purpose bucket.
+aws s3api put-bucket-versioning --bucket
+amzn-s3-demo-bucket1
+--versioning-configuration Status=Enabled
+The following example enables S3 Versioning and multi-factor authentication (MFA) delete on a bucket for a physical MFA device. For physical MFA devices, in the
+--mfa
+parameter, pass a concatenation of the MFA device serial number, a space character, and the value that is displayed on your authentication device.
+aws s3api put-bucket-versioning --bucket
+amzn-s3-demo-bucket1
+--versioning-configuration Status=Enabled,MFADelete=Enabled --mfa "
+SerialNumber 123456
+"
+The following example enables S3 Versioning and multi-factor authentication (MFA) delete on a bucket for a virtual MFA device. For virtual MFA devices, in the
+--mfa
+parameter, pass a concatenation of the MFA device ARN, a space character, and the value that is displayed on your authentication device.
+aws s3api put-bucket-versioning --bucket
+amzn-s3-demo-bucket1
+--versioning-configuration Status=Enabled,MFADelete=Enabled --mfa "arn:aws:iam::
+account-id
+:mfa/root-account-mfa-device
+123789
+"
+Note
+Using MFA delete requires an approved physical or virtual authentication
+                    device. For more information about using MFA delete in Amazon S3, see
+Configuring MFA delete
+.
+For more information about enabling versioning using the AWS CLI, see
+put-bucket-versioning
+in the
+AWS CLI Command Reference
+.
+The following examples enable versioning on a bucket and then retrieve versioning
+                status using the AWS SDK for Java and the AWS SDK for .NET. For information about using other
+                AWS SDKs, see the
+AWS Developer
+                Center
+.
+.NET
+For
+                            information about setting up and running the code examples, see
+Getting Started
+                                with the AWS SDK for .NET
+in the
+AWS SDK for .NET Developer
+                                    Guide
+.
+using System;
+using Amazon.S3;
+using Amazon.S3.Model;
+
+namespace s3.amazon.com.docsamples
+{
+class BucketVersioningConfiguration
+{
+static string bucketName = "*** bucket name ***";
+
+        public static void Main(string[] args)
+{
+using (var client = new AmazonS3Client(Amazon.RegionEndpoint.USEast1))
+{
+try
+{
+EnableVersioningOnBucket(client);
+                    string bucketVersioningStatus = RetrieveBucketVersioningConfiguration(client);
+                }
+                catch (AmazonS3Exception amazonS3Exception)
+{
+if (amazonS3Exception.ErrorCode != null &&
+                        (amazonS3Exception.ErrorCode.Equals("InvalidAccessKeyId")
+                        ||
+                        amazonS3Exception.ErrorCode.Equals("InvalidSecurity")))
+{
+Console.WriteLine("Check the provided AWS Credentials.");
+                        Console.WriteLine(
+                        "To sign up for service, go to http://aws.amazon.com/s3");
+                    }
+                    else
+{
+Console.WriteLine(
+                         "Error occurred. Message:'
+{
+0}' when listing objects",
+                         amazonS3Exception.Message);
+                    }
+                }
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
+        static void EnableVersioningOnBucket(IAmazonS3 client)
+{
+PutBucketVersioningRequest request = new PutBucketVersioningRequest
+{
+BucketName = bucketName,
+                    VersioningConfig = new S3BucketVersioningConfig
+{
+Status = VersionStatus.Enabled
+                    }
+                };
+
+                PutBucketVersioningResponse response = client.PutBucketVersioning(request);
+        }
+
+
+        static string RetrieveBucketVersioningConfiguration(IAmazonS3 client)
+{
+GetBucketVersioningRequest request = new GetBucketVersioningRequest
+{
+BucketName = bucketName
+                };
+ 
+                GetBucketVersioningResponse response = client.GetBucketVersioning(request);
+                return response.VersioningConfig.Status;
+            }
+    }
+}
+Java
+For instructions on how to create and test a working sample, see
+Getting
+                            Started
+in the AWS SDK for Java Developer Guide.
+import java.io.IOException;
+
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
+import com.amazonaws.services.s3.model.BucketVersioningConfiguration;
+import com.amazonaws.services.s3.model.SetBucketVersioningConfigurationRequest;
+
+public class BucketVersioningConfigurationExample
+{
+public static String bucketName = "*** bucket name ***"; 
+    public static AmazonS3Client s3Client;
+
+    public static void main(String[] args) throws IOException
+{
+s3Client = new AmazonS3Client(new ProfileCredentialsProvider());
+        s3Client.setRegion(Region.getRegion(Regions.US_EAST_1));
+        try
+{
+// 1. Enable versioning on the bucket.
+        	BucketVersioningConfiguration configuration = 
+        			new BucketVersioningConfiguration().withStatus("Enabled");
+            
+			SetBucketVersioningConfigurationRequest setBucketVersioningConfigurationRequest = 
+					new SetBucketVersioningConfigurationRequest(bucketName,configuration);
+			
+			s3Client.setBucketVersioningConfiguration(setBucketVersioningConfigurationRequest);
+			
+			// 2. Get bucket versioning configuration information.
+			BucketVersioningConfiguration conf = s3Client.getBucketVersioningConfiguration(bucketName);
+			 System.out.println("bucket versioning configuration status:    " + conf.getStatus());
+
+        } catch (AmazonS3Exception amazonS3Exception)
+{
+System.out.format("An Amazon S3 error occurred. Exception: %s", amazonS3Exception.toString());
+        } catch (Exception ex)
+{
+System.out.format("Exception: %s", ex.toString());
+        }        
+    }
+}
+Python
+The following Python code example creates an Amazon S3 bucket, enables it for versioning, and 
+                            configures a lifecycle that expires noncurrent object versions after 7 days.
+def create_versioned_bucket(bucket_name, prefix):
+    """
+    Creates an Amazon S3 bucket, enables it for versioning, and configures a lifecycle
+    that expires noncurrent object versions after 7 days.
+
+    Adding a lifecycle configuration to a versioned bucket is a best practice.
+    It helps prevent objects in the bucket from accumulating a large number of
+    noncurrent versions, which can slow down request performance.
+
+    Usage is shown in the usage_demo_single_object function at the end of this module.
+
+    :param bucket_name: The name of the bucket to create.
+    :param prefix: Identifies which objects are automatically expired under the
+                   configured lifecycle rules.
+    :return: The newly created bucket.
+    """
+    try:
+        bucket = s3.create_bucket(
+            Bucket=bucket_name,
+            CreateBucketConfiguration=
+{
+"LocationConstraint": s3.meta.client.meta.region_name
+            },
+        )
+        logger.info("Created bucket %s.", bucket.name)
+    except ClientError as error:
+        if error.response["Error"]["Code"] == "BucketAlreadyOwnedByYou":
+            logger.warning("Bucket %s already exists! Using it.", bucket_name)
+            bucket = s3.Bucket(bucket_name)
+        else:
+            logger.exception("Couldn't create bucket %s.", bucket_name)
+            raise
+
+    try:
+        bucket.Versioning().enable()
+        logger.info("Enabled versioning on bucket %s.", bucket.name)
+    except ClientError:
+        logger.exception("Couldn't enable versioning on bucket %s.", bucket.name)
+        raise
+
+    try:
+        expiration = 7
+        bucket.LifecycleConfiguration().put(
+            LifecycleConfiguration=
+{
+"Rules": [
+{
+"Status": "Enabled",
+                        "Prefix": prefix,
+                        "NoncurrentVersionExpiration":
+{
+"NoncurrentDays": expiration},
+                    }
+                ]
+            }
+        )
+        logger.info(
+            "Configured lifecycle to expire noncurrent versions after %s days "
+            "on bucket %s.",
+            expiration,
+            bucket.name,
+        )
+    except ClientError as error:
+        logger.warning(
+            "Couldn't configure lifecycle on bucket %s because %s. "
+            "Continuing anyway.",
+            bucket.name,
+            error,
+        )
+
+    return bucket
+Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+S3 Versioning
+Configuring MFA delete
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.
