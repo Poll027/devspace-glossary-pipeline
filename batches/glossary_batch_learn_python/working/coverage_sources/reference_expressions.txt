@@ -1,7 +1,77 @@
-https://docs.python.org/3/reference/expressions.html
 
+
+  
+
+    
 
     6. Expressions — Python 3.15.2 documentation
+
+    
+
+#pygments_dark_css
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+      
+
+      
+
+    
+
+    
+
+#pydoctheme_dark_css
+
+    
+
+            
+
+             
+
+            
+
+  
+
+    
+#menuToggler
+
+    
+
+            
+
+        
+
+                
+
+            
+
+                
+
+                
+
+                
+
+        
+
+    
+
+            
 
     Theme
 
@@ -9,7 +79,11 @@ https://docs.python.org/3/reference/expressions.html
         Light
         Dark
 
+  
+
 Table of Contents
+
+    
 
 6. Expressions
 
@@ -113,41 +187,105 @@ Table of Contents
 
 6.17. Operator precedence
 
+  
+
     Previous topic
 
 5. The import system
+
+  
 
     Next topic
 
 7. Simple statements
 
+  
+
+  
+
 This page
+
+    
 
 Report a bug
 
+      
 Improve this page
+
+      
 
         Show source
 
+      
+
+      
+
+  
+
+    
+
+  
+
+      
 Navigation
+
+      
 
           index
 
+        
+
           modules |
+
+        
 
           next |
 
+        
+
           previous |
 
+          
+
+          
 Python »
+
+          
+
+            
+
+          
+
+          
+
+              
+
+    
+#cpython-language-and-version
 
       3.15.2 documentation »
 
+          
 The Python Language Reference »
 
+        
 6. Expressions
 
+                
+
+                    
+
+    
+
+          
+#search-box
+
+          
+
+    
                      |
+
+            
 
     Theme
 
@@ -157,9 +295,23 @@ The Python Language Reference »
 
  |
 
-SECTION expressions
+            
+
+        
+
+    
+
+        
+
+            
+
+#expressions
+
+#id1
 
 6. Expressions¶
+
+#index-0
 
 This chapter explains the meaning of the elements of expressions in Python.
 
@@ -169,14 +321,19 @@ not lexical analysis.
 
 When (one alternative of) a syntax rule has the form:
 
+#grammar-token-python-grammar-name
 name: othername
 
 and no semantics are given, the semantics of this form of name are the same
 as for othername.
 
-SECTION arithmetic-conversions
+#arithmetic-conversions
+
+#conversions
 
 6.1. Arithmetic conversions¶
+
+#index-1
 
 When a description of an arithmetic operator below uses the phrase “the numeric
 arguments are converted to a common real type”, this means that the operator
@@ -188,9 +345,13 @@ Some additional rules apply for certain operators and non-numeric operands
 (for example, a string as a left argument to the % operator).
 Extensions must define their own conversion behavior.
 
-SECTION atoms
+#atoms
+
+#id2
 
 6.2. Atoms¶
+
+#index-2
 
 Atoms are the most basic elements of expressions.
 The simplest atoms are builtin constants,
@@ -208,6 +369,7 @@ generator expressions;
 
 Formally, the syntax for atoms is:
 
+#grammar-token-python-grammar-atom
 atom:
    | builtin_constant
    | identifier
@@ -215,21 +377,29 @@ atom:
    | parenthesized_enclosure
    | bracketed_enclosure
    | braced_enclosure
+
+#grammar-token-python-grammar-parenthesized_enclosure
 parenthesized_enclosure:
    | group
    | tuple
    | yield_atom
    | generator_expression
+
+#grammar-token-python-grammar-bracketed_enclosure
 bracketed_enclosure:
    | listcomp
    | list
+
+#grammar-token-python-grammar-braced_enclosure
 braced_enclosure:
    | dictcomp
    | dict
    | setcomp
    | set
 
-SECTION built-in-constants
+#built-in-constants
+
+#atom-singletons
 
 6.2.1. Built-in constants¶
 
@@ -253,22 +423,32 @@ SyntaxError: cannot assign to False
 
 Formally, the syntax for built-in constants is:
 
+#grammar-token-python-grammar-builtin_constant
 builtin_constant: 'True' | 'False' | 'None' | '...'
 
-SECTION atom-identifiers
+#atom-identifiers
+
+#identifiers-names
 
 6.2.2. Identifiers (Names)¶
+
+#index-3
 
 An identifier occurring as an atom is a name.  See section Names (identifiers and keywords)
 for lexical definition and section Naming and binding for documentation of naming and
 binding.
 
+#index-4
+
 When the name is bound to an object, evaluation of the atom yields that object.
 When a name is not bound, an attempt to evaluate it raises a NameError
 exception.
 
-SECTION index-5
+#index-5
 
+#private-name-mangling
+
+#id3
 6.2.2.1. Private name mangling¶
 
 When an identifier that textually occurs in a class definition begins with two
@@ -310,9 +490,13 @@ If the class name consists only of underscores, the transformation is the
 identity, e.g., the identifier __spam occurring in a class named _
 or __ is left as is.
 
-SECTION literals
+#literals
+
+#atom-literals
 
 6.2.3. Literals¶
+
+#index-6
 
 A literal is a textual representation of a value.
 Python supports numeric, string and bytes literals.
@@ -339,10 +523,14 @@ and imaginary literals.
 
 The formal grammar for literals is:
 
+#grammar-token-python-grammar-literal
 literal: strings | NUMBER
 
-SECTION literals-and-object-identity
+#literals-and-object-identity
 
+#index-7
+
+#literals-identity
 6.2.3.1. Literals and object identity¶
 
 All literals correspond to immutable data types, and hence the object’s identity
@@ -390,8 +578,9 @@ both their structure and the identity of the values match.
 CPython implementation detail: Currently, each evaluation of a template string results in
 a different object.
 
-SECTION string-literal-concatenation
+#string-literal-concatenation
 
+#string-concatenation
 6.2.3.2. String literal concatenation¶
 
 Multiple adjacent string or bytes literals, possibly
@@ -435,9 +624,16 @@ Template(strings=('Hello', '!'), interpolations=(...))
 
 Formally:
 
+#grammar-token-python-grammar-strings
 strings: (STRING | fstring)+ | tstring+
 
-SECTION parenthesized-groups
+#parenthesized-groups
+
+#parenthesized
+
+#parenthesized-forms
+
+#index-8
 
 6.2.4. Parenthesized groups¶
 
@@ -464,11 +660,18 @@ generator expressions for other parenthesized forms.
 
 Formally, the syntax for groups is:
 
+#grammar-token-python-grammar-group
 group: '(' assignment_expression ')'
 
-SECTION container-displays
+#container-displays
+
+#displays
+
+#displays-for-lists-sets-and-dictionaries
 
 6.2.5. Container displays¶
+
+#index-9
 
 For constructing builtin containers (lists, sets, tuples or dictionaries),
 Python provides special syntax called displays.
@@ -494,6 +697,8 @@ In list, tuple and dictionary (but not set) displays, the series may be empty:
 >>> {}  # empty dictionary
 {}
 
+#index-10
+
 If the series is not empty, the items may be followed by an additional comma,
 which has no effect:
 
@@ -517,6 +722,8 @@ need to modify an existing line:
 At runtime, when a display is evaluated, the listed items are evaluated from
 left to right and placed into a new container of the appropriate type.
 
+#index-11
+
 For tuple, list and set (but not dict) displays, any item in the display may
 be prefixed with an asterisk (*).
 This denotes iterable unpacking.
@@ -538,11 +745,16 @@ computed via a set of looping and filtering instructions.
 See the Comprehensions section for details.
 
 Added in version 3.5: Iterable and dictionary unpacking in displays, originally proposed
-by PEP 448.
+by 
+#index-12
+PEP 448.
 
-SECTION list-displays
+#list-displays
 
+#lists
 6.2.5.1. List displays¶
+
+#index-13
 
 A list display is a possibly empty series of expressions enclosed in
 square brackets. For example:
@@ -558,11 +770,15 @@ See Container displays for general information on displays.
 
 The formal grammar for list displays is:
 
+#grammar-token-python-grammar-list
 list: '[' [flexible_expression_list] ']'
 
-SECTION set-displays
+#set-displays
 
+#set
 6.2.5.2. Set displays¶
+
+#index-14
 
 A set display is a non-empty series of expressions enclosed in
 curly braces. For example:
@@ -581,10 +797,16 @@ Call set() with no arguments to get an empty set.
 
 The formal grammar for set displays is:
 
+#grammar-token-python-grammar-set
 set: '{' flexible_expression_list '}'
 
-SECTION tuple-displays
+#tuple-displays
 
+#index-16
+
+#tuple-display
+
+#index-15
 6.2.5.3. Tuple displays¶
 
 A tuple display is a series of expressions enclosed in
@@ -628,14 +850,18 @@ Only the empty tuple is spelled without a comma.
 
 The formal grammar for tuple displays is:
 
+#grammar-token-python-grammar-tuple
 tuple:
    | '(' flexible_expression (',' flexible_expression)+ [','] ')'
    | '(' flexible_expression ',' ')'
    | '(' ')'
 
-SECTION dictionary-displays
+#dictionary-displays
 
+#dict
 6.2.5.4. Dictionary displays¶
+
+#index-17
 
 A dictionary display is a possibly empty series of dict items
 enclosed in curly braces.
@@ -663,6 +889,9 @@ For example:
 ... }
 {1: 'one', 2: 'two'}
 
+#dict-unpacking
+
+#index-18
 Instead of a key-value pair, a dict item may be an expression prefixed by
 a double asterisk **. This denotes dictionary unpacking.
 At runtime, the expression must evaluate to a mapping;
@@ -676,16 +905,29 @@ This may be used to override a set of defaults:
 >>> {**defaults, **overrides}
 {'color': 'yellow', 'count': 8}
 
-Added in version 3.5: Unpacking into dictionary displays, originally proposed by PEP 448.
+Added in version 3.5: Unpacking into dictionary displays, originally proposed by 
+#index-19
+PEP 448.
 
 The formal grammar for dict displays is:
 
+#grammar-token-python-grammar-dict
 dict:                   '{' [double_starred_kvpairs] '}'
+
+#grammar-token-python-grammar-double_starred_kvpairs
 double_starred_kvpairs: ','.double_starred_kvpair+ [',']
+
+#grammar-token-python-grammar-double_starred_kvpair
 double_starred_kvpair:  '**' or_expr | kvpair
+
+#grammar-token-python-grammar-kvpair
 kvpair:                 expression ':' expression
 
-SECTION comprehensions
+#comprehensions
+
+#index-20
+
+#id4
 
 6.2.6. Comprehensions¶
 
@@ -768,10 +1010,13 @@ from which you can construct a tuple like this:
 Changed in version 3.8: Prior to Python 3.8, in dict comprehensions, the evaluation order of key
 and value was not well-defined.  In CPython, the value was evaluated before
 the key.  Starting with 3.8, the key is evaluated before the value, as
-proposed by PEP 572.
+proposed by 
+#index-21
+PEP 572.
 
-SECTION filtering-in-comprehensions
+#filtering-in-comprehensions
 
+#index-22
 6.2.6.1. Filtering in comprehensions¶
 
 The for clause may be followed by an if clause
@@ -801,8 +1046,9 @@ get_math_f_names(vars(math))
 Filtering is a special case of more complex comprehensions.
 See the next section for a more formal description.
 
-SECTION complex-comprehensions
+#complex-comprehensions
 
+#id5
 6.2.6.2. Complex comprehensions¶
 
 Generally, a comprehension’s initial for clause may be followed by
@@ -867,8 +1113,9 @@ appear directly in a class definition.
 
 Changed in version 3.8: yield and yield from prohibited in the implicitly nested scope.
 
-SECTION unpacking-in-comprehensions
+#unpacking-in-comprehensions
 
+#unpacking-comprehensions
 6.2.6.3. Unpacking in comprehensions¶
 
 If the expression of a list or set comprehension is starred, the result will
@@ -910,10 +1157,13 @@ For example:
 {'color': 'yellow', 'count': 5}
 
 Added in version 3.15: Unpacking in comprehensions using the * and ** operators
-was introduced in PEP 798.
+was introduced in 
+#index-23
+PEP 798.
 
-SECTION asynchronous-comprehensions
+#asynchronous-comprehensions
 
+#index-24
 6.2.6.4. Asynchronous comprehensions¶
 
 In an async def function, an async for
@@ -929,32 +1179,46 @@ the iterable expression in the leftmost for clause, it is called an
 asynchronous comprehension. An asynchronous comprehension may suspend the
 execution of the coroutine function in which it appears.
 
-Added in version 3.6: Asynchronous comprehensions were introduced in PEP 530.
+Added in version 3.6: Asynchronous comprehensions were introduced in 
+#index-25
+PEP 530.
 
 Changed in version 3.11: Asynchronous comprehensions are now allowed inside comprehensions in
 asynchronous functions. Outer comprehensions implicitly become
 asynchronous.
 
-SECTION formal-grammar-for-comprehensions
+#formal-grammar-for-comprehensions
 
+#comprehension-grammar
 6.2.6.5. Formal grammar for comprehensions¶
 
 The formal grammar for comprehensions is:
 
+#grammar-token-python-grammar-listcomp
 listcomp:      '[' comprehension ']'
+
+#grammar-token-python-grammar-setcomp
 setcomp:       '{' comprehension '}'
+
+#grammar-token-python-grammar-comprehension
 comprehension: flexible_expression for_if_clause+
 
+#grammar-token-python-grammar-dictcomp
 dictcomp:
     | '{' kvpair for_if_clause+ '}'
     | '{' '**' expression for_if_clause+ '}'
 
+#grammar-token-python-grammar-for_if_clause
 for_if_clause:
     | ['async'] 'for' target_list 'in' or_test ('if' or_test)*
 
-SECTION generator-expressions
+#generator-expressions
+
+#genexpr
 
 6.2.7. Generator expressions¶
+
+#index-26
 
 The syntax for generator expressions is the same as for
 list comprehensions, except that they are enclosed in
@@ -1044,6 +1308,7 @@ object, which is an asynchronous iterator (see Asynchronous Iterators).
 
 The formal grammar for generator expressions is:
 
+#grammar-token-python-grammar-generator_expression
 generator_expression: "(" comprehension ")"
 
 Added in version 3.6: Asynchronous generator expressions were introduced.
@@ -1054,12 +1319,21 @@ with 3.7, any function can use asynchronous generator expressions.
 
 Changed in version 3.8: yield and yield from prohibited in the implicitly nested scope.
 
-SECTION yield-expressions
+#yield-expressions
+
+#yieldexpr
 
 6.2.8. Yield expressions¶
 
+#index-27
+
+#grammar-token-python-grammar-yield_atom
 yield_atom:       "(" yield_expression ")"
+
+#grammar-token-python-grammar-yield_from
 yield_from:       "yield" "from" expression
+
+#grammar-token-python-grammar-yield_expression
 yield_expression: "yield" yield_list | yield_from
 
 The yield expression is used when defining a generator function
@@ -1104,6 +1378,8 @@ method which resumed the execution.  If __next__() is used
 result is None.  Otherwise, if send() is used, then
 the result will be the value passed in to that method.
 
+#index-28
+
 All of this makes generator functions quite similar to coroutines; they yield
 multiple times, they have more than one entry point and their execution can be
 suspended.  The only difference is that a generator function cannot control
@@ -1115,6 +1391,8 @@ generator is not resumed before it is
 finalized (by reaching a zero reference count or by being garbage collected),
 the generator-iterator’s close() method will be called,
 allowing any pending finally clauses to execute.
+
+#index-29
 
 When yield from <expr> is used, the supplied expression must be an
 iterable. The values produced by iterating that iterable are passed directly
@@ -1138,27 +1416,34 @@ on the right hand side of an assignment statement.
 
 See also
 
+#index-30
 PEP 255 - Simple Generators
 
 The proposal for adding generators and the yield statement to Python.
 
+#index-31
 PEP 342 - Coroutines via Enhanced Generators
 
 The proposal to enhance the API and syntax of generators, making them
 usable as simple coroutines.
 
+#index-32
 PEP 380 - Syntax for Delegating to a Subgenerator
 
 The proposal to introduce the yield_from syntax,
 making delegation to subgenerators easy.
 
+#index-33
 PEP 525 - Asynchronous Generators
 
-The proposal that expanded on PEP 492 by adding generator capabilities to
+The proposal that expanded on 
+#index-34
+PEP 492 by adding generator capabilities to
 coroutine functions.
 
-SECTION examples
+#examples
 
+#index-35
 6.2.8.1. Examples¶
 
 Here is a simple example that demonstrates the behavior of generators and
@@ -1191,8 +1476,9 @@ Don't forget to clean up when 'close()' is called.
 For examples using yield from, see PEP 380: Syntax for Delegating to a Subgenerator in “What’s New in
 Python.”
 
-SECTION asynchronous-generator-functions
+#asynchronous-generator-functions
 
+#id6
 6.2.8.2. Asynchronous generator functions¶
 
 The presence of a yield expression in a function or method defined using
@@ -1253,22 +1539,34 @@ Lib/asyncio/base_events.py.
 The expression yield from <expr> is a syntax error when used in an
 asynchronous generator function.
 
-SECTION primaries
+#primaries
+
+#id7
 
 6.3. Primaries¶
+
+#index-36
 
 Primaries represent the most tightly bound operations of the language. Their
 syntax is:
 
+#grammar-token-python-grammar-primary
 primary: atom | attributeref | subscription | call
 
-SECTION attribute-references
+#attribute-references
+
+#id8
 
 6.3.1. Attribute references¶
 
+#index-37
+
 An attribute reference is a primary followed by a period and a name:
 
+#grammar-token-python-grammar-attributeref
 attributeref: primary "." identifier
+
+#index-38
 
 The primary must evaluate to an object of a type that supports attribute
 references, which most objects do.  This object is then asked to produce the
@@ -1285,10 +1583,15 @@ available.
 If an AttributeError is raised and the object has a __getattr__()
 method, that method is called as a fallback.
 
-SECTION subscriptions-and-slicings
+#subscriptions-and-slicings
+
+#subscriptions
 
 6.3.2. Subscriptions and slicings¶
 
+#index-40
+
+#index-39
 The subscription syntax is usually used for selecting an element from a
 container – for example, to get a value from
 a dict:
@@ -1355,8 +1658,13 @@ special method, respectively, instead of __getitem__().
 All advanced forms of subscript documented in the following sections
 are also usable for assignment and deletion.
 
-SECTION slicings
+#slicings
 
+#index-42
+
+#index-41
+
+#id9
 6.3.2.1. Slicings¶
 
 A more advanced form of subscription, slicing, is commonly used
@@ -1397,7 +1705,7 @@ subscripted with: slice(2, 3, None)
 >>> demo[::'spam']
 subscripted with: slice(None, None, 'spam')
 
-SECTION comma-separated-subscripts
+#comma-separated-subscripts
 
 6.3.2.2. Comma-separated subscripts¶
 
@@ -1422,11 +1730,13 @@ by a comma, to specify a one-element tuple:
 >>> demo['spam',]
 subscripted with: ('spam',)
 
-SECTION starred-subscriptions
+#starred-subscriptions
 
 6.3.2.3. “Starred” subscriptions¶
 
-Added in version 3.11: Expressions in tuple_slices may be starred. See PEP 646.
+Added in version 3.11: Expressions in tuple_slices may be starred. See 
+#index-43
+PEP 646.
 
 The subscript can also contain a starred expression.
 In this case, the interpreter unpacks the result into a tuple, and passes
@@ -1442,42 +1752,70 @@ and slices:
 >>> demo['a', 'b', *range(3), 'c']
 subscripted with: ('a', 'b', 0, 1, 2, 'c')
 
-SECTION formal-subscription-grammar
+#formal-subscription-grammar
 
 6.3.2.4. Formal subscription grammar¶
 
+#grammar-token-python-grammar-subscription
 subscription:     primary '[' subscript ']'
+
+#grammar-token-python-grammar-subscript
 subscript:        single_subscript | tuple_subscript
+
+#grammar-token-python-grammar-single_subscript
 single_subscript: proper_slice | assignment_expression
+
+#grammar-token-python-grammar-proper_slice
 proper_slice:     [expression] ":" [expression] [ ":" [expression] ]
+
+#grammar-token-python-grammar-tuple_subscript
 tuple_subscript:  ','.(single_subscript | starred_expression)+ [',']
 
 Recall that the | operator denotes ordered choice.
 Specifically, in subscript, if both alternatives would match, the
 first (single_subscript) has priority.
 
-SECTION calls
+#calls
+
+#index-44
+
+#id10
 
 6.3.3. Calls¶
 
 A call calls a callable object (e.g., a function) with a possibly empty
 series of arguments:
 
+#grammar-token-python-grammar-call
 call:                 primary "(" [argument_list [","] | comprehension] ")"
+
+#grammar-token-python-grammar-argument_list
 argument_list:        positional_arguments ["," starred_and_keywords]
                         ["," keywords_arguments]
                       | starred_and_keywords ["," keywords_arguments]
                       | keywords_arguments
+
+#grammar-token-python-grammar-positional_arguments
 positional_arguments: positional_item ("," positional_item)*
+
+#grammar-token-python-grammar-positional_item
 positional_item:      assignment_expression | "*" expression
+
+#grammar-token-python-grammar-starred_and_keywords
 starred_and_keywords: ("*" expression | keyword_item)
                       ("," "*" expression | "," keyword_item)*
+
+#grammar-token-python-grammar-keywords_arguments
 keywords_arguments:   (keyword_item | "**" expression)
                       ("," keyword_item | "," "**" expression)*
+
+#grammar-token-python-grammar-keyword_item
 keyword_item:         identifier "=" expression
 
 An optional trailing comma may be present after the positional and keyword arguments
 but does not affect the semantics.
+
+#index-45
 
 The primary must evaluate to a callable object (user-defined functions, built-in
 functions, methods of built-in objects, class objects, methods of class
@@ -1522,6 +1860,8 @@ dictionary containing the excess keyword arguments (using the keywords as keys
 and the argument values as corresponding values), or a (new) empty dictionary if
 there were no excess keyword arguments.
 
+#index-46
+
 If the syntax *expression appears in the function call, expression must
 evaluate to an iterable.  Elements from these iterables are
 treated as if they were additional positional arguments.  For the call
@@ -1548,6 +1888,8 @@ TypeError: f() got multiple values for keyword argument 'a'
 It is unusual for both keyword arguments and the *expression syntax to be
 used in the same call, so in practice this confusion does not often arise.
 
+#index-47
+
 If the syntax **expression appears in the function call, expression must
 evaluate to a mapping, the contents of which are treated as
 additional keyword arguments. If a parameter matching a key has already been
@@ -1570,7 +1912,9 @@ used as positional argument slots or as keyword argument names.
 Changed in version 3.5: Function calls accept any number of * and ** unpackings,
 positional arguments may follow iterable unpackings (*),
 and keyword arguments may follow dictionary unpackings (**).
-Originally proposed by PEP 448.
+Originally proposed by 
+#index-48
+PEP 448.
 
 A call always returns some value, possibly None, unless it raises an
 exception.  How this value is computed depends on the type of the callable
@@ -1579,6 +1923,8 @@ object.
 If it is—
 
 a user-defined function:
+
+#index-49
 
 The code block for the function is executed, passing it the argument list.  The
 first thing the code block will do is bind the formal parameters to the
@@ -1589,14 +1935,20 @@ executing a return statement, the return value is None.
 
 a built-in function or method:
 
+#index-50
+
 The result is up to the interpreter; see Built-in functions for the
 descriptions of built-in functions and methods.
 
 a class object:
 
+#index-51
+
 A new instance of that class is returned.
 
 a class instance method:
+
+#index-52
 
 The corresponding user-defined function is called, with an argument list that is
 one longer than the argument list of the call: the instance becomes the first
@@ -1604,27 +1956,39 @@ argument.
 
 a class instance:
 
+#index-53
+
 The class must define a __call__() method; the effect is then the same as
 if that method was called.
 
-SECTION await-expression
+#await-expression
+
+#await
+
+#index-54
 
 6.4. Await expression¶
 
 Suspend the execution of coroutine on an awaitable object.
 Can only be used inside a coroutine function.
 
+#grammar-token-python-grammar-await_expr
 await_expr: "await" primary
 
 Added in version 3.5.
 
-SECTION the-power-operator
+#the-power-operator
+
+#power
 
 6.5. The power operator¶
+
+#index-55
 
 The power operator binds more tightly than unary operators on its left; it binds
 less tightly than unary operators on its right.  The syntax is:
 
+#grammar-token-python-grammar-power
 power: (await_expr | primary) ["**" u_expr]
 
 Thus, in an unparenthesized sequence of power and unary operators, the operators
@@ -1649,41 +2013,63 @@ number. (In earlier versions it raised a ValueError.)
 This operation can be customized using the special __pow__() and
 __rpow__() methods.
 
-SECTION unary-arithmetic-and-bitwise-operations
+#unary-arithmetic-and-bitwise-operations
+
+#unary
 
 6.6. Unary arithmetic and bitwise operations¶
 
+#index-56
+
 All unary arithmetic and bitwise operations have the same priority:
 
+#grammar-token-python-grammar-u_expr
 u_expr: power | "-" u_expr | "+" u_expr | "~" u_expr
+
+#index-57
 
 The unary - (minus) operator yields the negation of its numeric argument; the
 operation can be overridden with the __neg__() special method.
 
+#index-58
+
 The unary + (plus) operator yields its numeric argument unchanged; the
 operation can be overridden with the __pos__() special method.
+
+#index-59
 
 The unary ~ (invert) operator yields the bitwise inversion of its integer
 argument.  The bitwise inversion of x is defined as -(x+1).  It only
 applies to integral numbers or to custom objects that override the
 __invert__() special method.
 
+#index-60
+
 In all three cases, if the argument does not have the proper type, a
 TypeError exception is raised.
 
-SECTION binary-arithmetic-operations
+#binary-arithmetic-operations
+
+#binary
 
 6.7. Binary arithmetic operations¶
+
+#index-61
 
 The binary arithmetic operations have the conventional priority levels.  Note
 that some of these operations also apply to certain non-numeric types.  Apart
 from the power operator, there are only two levels, one for multiplicative
 operators and one for additive operators:
 
+#grammar-token-python-grammar-m_expr
 m_expr: u_expr | m_expr "*" u_expr | m_expr "@" m_expr |
         m_expr "//" u_expr | m_expr "/" u_expr |
         m_expr "%" u_expr
+
+#grammar-token-python-grammar-a_expr
 a_expr: m_expr | a_expr "+" m_expr | a_expr "-" m_expr
+
+#index-62
 
 The * (multiplication) operator yields the product of its arguments.  The
 arguments must either both be numbers, or one argument must be an integer and
@@ -1698,6 +2084,8 @@ __rmul__() methods.
 Changed in version 3.14: If only one operand is a complex number, the other operand is converted
 to a floating-point number.
 
+#index-63
+
 The @ (at) operator is intended to be used for matrix multiplication.  No
 builtin Python types implement this operator.
 
@@ -1705,6 +2093,8 @@ This operation can be customized using the special __matmul__() and
 __rmatmul__() methods.
 
 Added in version 3.5.
+
+#index-64
 
 The / (division) and // (floor division) operators yield the quotient of
 their arguments.  The numeric arguments are first
@@ -1719,6 +2109,8 @@ and __rtruediv__() methods.
 The floor division operation can be customized using the special
 __floordiv__() and __rfloordiv__() methods.
 
+#index-65
+
 The % (modulo) operator yields the remainder from the division of the first
 argument by the second.  The numeric arguments are first
 converted to a common type.
@@ -1727,12 +2119,16 @@ arguments may be floating-point numbers, e.g., 3.14%0.7 equals 0.34
 (since 3.14 equals 4*0.7 + 0.34.)  The modulo operator always yields a
 result with the same sign as its second operand (or zero); the absolute value of
 the result is strictly smaller than the absolute value of the second operand
+
+#id11
 [1].
 
 The floor division and modulo operators are connected by the following
 identity: x == (x//y)*y + (x%y).  Floor division and modulo are also
 connected with the built-in function divmod(): divmod(x, y) == (x//y,
-x%y). [2].
+x%y). 
+#id12
+[2].
 
 In addition to performing the modulo operation on numbers, the % operator is
 also overloaded by string objects to perform old-style string formatting (also
@@ -1745,6 +2141,8 @@ and __rmod__() methods.
 The floor division operator, the modulo operator, and the divmod()
 function are not defined for complex numbers.  Instead, convert to a
 floating-point number using the abs() function if appropriate.
+
+#index-66
 
 The + (addition) operator yields the sum of its arguments.  The arguments
 must either both be numbers or both be sequences of the same type.  In the
@@ -1759,6 +2157,8 @@ __radd__() methods.
 Changed in version 3.14: If only one operand is a complex number, the other operand is converted
 to a floating-point number.
 
+#index-67
+
 The - (subtraction) operator yields the difference of its arguments.
 The numeric arguments are first
 converted to a common real type.
@@ -1769,12 +2169,17 @@ __rsub__() methods.
 Changed in version 3.14: If only one operand is a complex number, the other operand is converted
 to a floating-point number.
 
-SECTION shifting-operations
+#shifting-operations
+
+#shifting
 
 6.8. Shifting operations¶
 
+#index-68
+
 The shifting operations have lower priority than the arithmetic operations:
 
+#grammar-token-python-grammar-shift_expr
 shift_expr: a_expr | shift_expr ("<<" | ">>") a_expr
 
 These operators accept integers as arguments.  They shift the first argument to
@@ -1785,47 +2190,73 @@ and __rlshift__() methods.
 The right shift operation can be customized using the special __rshift__()
 and __rrshift__() methods.
 
+#index-69
+
 A right shift by n bits is defined as floor division by pow(2,n).  A left
 shift by n bits is defined as multiplication with pow(2,n).
 
-SECTION binary-bitwise-operations
+#binary-bitwise-operations
+
+#bitwise
 
 6.9. Binary bitwise operations¶
 
+#index-70
+
 Each of the three bitwise operations has a different priority level:
 
+#grammar-token-python-grammar-and_expr
 and_expr: shift_expr | and_expr "&" shift_expr
+
+#grammar-token-python-grammar-xor_expr
 xor_expr: and_expr | xor_expr "^" and_expr
+
+#grammar-token-python-grammar-or_expr
 or_expr:  xor_expr | or_expr "|" xor_expr
+
+#index-71
 
 The & operator yields the bitwise AND of its arguments, which must be
 integers or one of them must be a custom object overriding __and__() or
 __rand__() special methods.
 
+#index-72
+
 The ^ operator yields the bitwise XOR (exclusive OR) of its arguments, which
 must be integers or one of them must be a custom object overriding __xor__() or
 __rxor__() special methods.
+
+#index-73
 
 The | operator yields the bitwise (inclusive) OR of its arguments, which
 must be integers or one of them must be a custom object overriding __or__() or
 __ror__() special methods.
 
-SECTION comparisons
+#comparisons
+
+#id13
 
 6.10. Comparisons¶
+
+#index-74
 
 Unlike C, all comparison operations in Python have the same priority, which is
 lower than that of any arithmetic, shifting or bitwise operation.  Also unlike
 C, expressions like a < b < c have the interpretation that is conventional
 in mathematics:
 
+#grammar-token-python-grammar-comparison
 comparison:    or_expr (comp_operator or_expr)*
+
+#grammar-token-python-grammar-comp_operator
 comp_operator: "<" | ">" | "==" | ">=" | "<=" | "!="
                | "is" ["not"] | ["not"] "in"
 
 Comparisons yield boolean values: True or False. Custom
 rich comparison methods may return non-boolean values. In this case
 Python will call bool() on such value in boolean contexts.
+
+#index-75
 
 Comparisons can be chained arbitrarily, e.g., x < y <= z is equivalent to
 x < y and y <= z, except that y is evaluated only once (but in both
@@ -1840,7 +2271,9 @@ Note that a op1 b op2 c doesn’t imply any kind of comparison between a and
 c, so that, e.g., x < y > z is perfectly legal (though perhaps not
 pretty).
 
-SECTION value-comparisons
+#value-comparisons
+
+#expressions-value-comparisons
 
 6.10.1. Value comparisons¶
 
@@ -1896,7 +2329,9 @@ themselves.  For example, if x = float('NaN'), 3 < x, x < 3 and
 x == x are all false, while x != x is true.  This behavior is
 compliant with IEEE 754.
 
-None and NotImplemented are singletons.  PEP 8 advises that
+None and NotImplemented are singletons.  
+#index-76
+PEP 8 advises that
 comparisons for singletons should always be done with is or is not,
 never the equality operators.
 
@@ -1906,7 +2341,9 @@ the numeric values of their elements.
 
 Strings (instances of str) compare lexicographically using the
 numerical Unicode code points (the result of the built-in function
-ord()) of their characters. [3]
+ord()) of their characters. 
+#id14
+[3]
 
 Strings and binary sequences cannot be directly compared.
 
@@ -2002,7 +2439,13 @@ or be marked as unhashable.
 Python does not enforce these consistency rules. In fact, the not-a-number
 values are an example for not following these rules.
 
-SECTION membership-test-operations
+#membership-test-operations
+
+#membership-test-details
+
+#not-in
+
+#in
 
 6.10.2. Membership test operations¶
 
@@ -2035,24 +2478,49 @@ integer index i such that x is y[i] or x == y[i], and no lower integer index
 raises the IndexError exception.  (If any other exception is raised, it is as
 if in raised that exception).
 
+#index-77
+
 The operator not in is defined to have the inverse truth value of
 in.
 
-SECTION is-not
+#is-not
+
+#is
+
+#index-78
+
+#identity-comparisons
 
 6.10.3. Identity comparisons¶
 
 The operators is and is not test for an object’s identity: x
 is y is true if and only if x and y are the same object.  An Object’s identity
 is determined using the id() function.  x is not y yields the inverse
-truth value. [4]
+truth value. 
+#id15
+[4]
 
-SECTION boolean-operations
+#boolean-operations
+
+#not
+
+#or
+
+#and
+
+#booleans
 
 6.11. Boolean operations¶
 
+#index-79
+
+#grammar-token-python-grammar-or_test
 or_test:  and_test | or_test "or" and_test
+
+#grammar-token-python-grammar-and_test
 and_test: not_test | and_test "and" not_test
+
+#grammar-token-python-grammar-not_test
 not_test: comparison | "not" not_test
 
 In the context of Boolean operations, and also when expressions are used by
@@ -2062,11 +2530,17 @@ False, None, numeric zero of all types, and empty strings and containers
 other values are interpreted as true.  User-defined objects can customize their
 truth value by providing a __bool__() method.
 
+#index-80
+
 The operator not yields True if its argument is false, False
 otherwise.
 
+#index-81
+
 The expression x and y first evaluates x; if x is false, its value is
 returned; otherwise, y is evaluated and the resulting value is returned.
+
+#index-82
 
 The expression x or y first evaluates x; if x is true, its value is
 returned; otherwise, y is evaluated and the resulting value is returned.
@@ -2079,10 +2553,15 @@ the desired value.  Because not has to create a new value, it
 returns a boolean value regardless of the type of its argument
 (for example, not 'foo' produces False rather than ''.)
 
-SECTION assignment-expressions
+#assignment-expressions
+
+#index-83
+
+#id16
 
 6.12. Assignment expressions¶
 
+#grammar-token-python-grammar-assignment_expression
 assignment_expression: [identifier ":="] expression
 
 An assignment expression (sometimes also called a “named expression” or
@@ -2108,13 +2587,22 @@ in assert, with, and assignment statements.
 In all other places where they can be used, parentheses are not required,
 including in if and while statements.
 
-Added in version 3.8: See PEP 572 for more details about assignment expressions.
+Added in version 3.8: See 
+#index-84
+PEP 572 for more details about assignment expressions.
 
-SECTION conditional-expressions
+#conditional-expressions
+
+#if-expr
 
 6.13. Conditional expressions¶
 
+#index-85
+
+#grammar-token-python-grammar-conditional_expression
 conditional_expression: or_test ["if" or_test "else" expression]
+
+#grammar-token-python-grammar-expression
 expression:             conditional_expression | lambda_expr
 
 A conditional expression (sometimes called a “ternary operator”) is an
@@ -2125,12 +2613,21 @@ The expression x if C else y first evaluates the condition, C rather than x.
 If C is true, x is evaluated and its value is returned; otherwise, y is
 evaluated and its value is returned.
 
-See PEP 308 for more details about conditional expressions.
+See 
+#index-86
+PEP 308 for more details about conditional expressions.
 
-SECTION lambda
+#lambda
+
+#lambdas
+
+#id17
 
 6.14. Lambdas¶
 
+#index-87
+
+#grammar-token-python-grammar-lambda_expr
 lambda_expr: "lambda" [parameter_list] ":" expression
 
 Lambda expressions (sometimes called lambda forms) are used to create anonymous
@@ -2144,21 +2641,42 @@ See section Function definitions for the syntax of parameter lists.  Note that
 functions created with lambda expressions cannot contain statements or
 annotations.
 
-SECTION expression-lists
+#expression-lists
+
+#exprlists
+
+#index-88
 
 6.15. Expression lists¶
 
+#index-89
+
+#grammar-token-python-grammar-starred_expression
 starred_expression:       "*" or_expr | expression
+
+#grammar-token-python-grammar-flexible_expression
 flexible_expression:      assignment_expression | starred_expression
+
+#grammar-token-python-grammar-flexible_expression_list
 flexible_expression_list: flexible_expression ("," flexible_expression)* [","]
+
+#grammar-token-python-grammar-starred_expression_list
 starred_expression_list:  starred_expression ("," starred_expression)* [","]
+
+#grammar-token-python-grammar-expression_list
 expression_list:          expression ("," expression)* [","]
+
+#grammar-token-python-grammar-yield_list
 yield_list:               expression_list | starred_expression "," [starred_expression_list]
+
+#index-90
 
 Except when part of a list or set display, an expression list
 containing at least one comma yields a tuple.  The length of
 the tuple is the number of expressions in the list.  The expressions are
 evaluated from left to right.
+
+#index-91
 
 A trailing comma is required only to create a one-item tuple,
 such as 1,; it is optional in all other cases.
@@ -2167,7 +2685,11 @@ trailing comma doesn’t create a tuple, but rather yields the value of that
 expression. (To create an empty tuple, use an empty pair of parentheses:
 ().)
 
-SECTION index-92
+#index-92
+
+#iterable-unpacking
+
+#id18
 
 6.15.1. Iterable unpacking¶
 
@@ -2181,13 +2703,21 @@ The iterable is expanded into a sequence of items,
 which are included in the new tuple, list, or set, at the site of
 the unpacking.
 
-Added in version 3.5: Iterable unpacking in expression lists, originally proposed by PEP 448.
+Added in version 3.5: Iterable unpacking in expression lists, originally proposed by 
+#index-93
+PEP 448.
 
-Added in version 3.11: Any item in an expression list may be starred. See PEP 646.
+Added in version 3.11: Any item in an expression list may be starred. See 
+#index-94
+PEP 646.
 
-SECTION evaluation-order
+#evaluation-order
+
+#evalorder
 
 6.16. Evaluation order¶
+
+#index-95
 
 Python evaluates expressions from left to right.  Notice that while evaluating
 an assignment, the right-hand side is evaluated before the left-hand side.
@@ -2202,9 +2732,15 @@ expr1 + expr2 * (expr3 - expr4)
 expr1(expr2, expr3, *expr4, **expr5)
 expr3, expr4 = expr1, expr2
 
-SECTION operator-precedence
+#operator-precedence
+
+#operator-summary
+
+#id19
 
 6.17. Operator precedence¶
+
+#index-96
 
 The following table summarizes the operator precedence in Python, from highest
 precedence (most binding) to lowest precedence (least binding).  Operators in
@@ -2244,7 +2780,9 @@ Await expression
 
 **
 
-Exponentiation [5]
+Exponentiation 
+#id20
+[5]
 
 +x, -x, ~x
 
@@ -2254,7 +2792,9 @@ Positive, negative, bitwise NOT
 
 Multiplication, matrix
 multiplication, division, floor
-division, remainder [6]
+division, remainder 
+#id21
+[6]
 
 +, -
 
@@ -2309,6 +2849,8 @@ Assignment expression
 
 Footnotes
 
+#id22
+
 [1]
 
 While abs(x%y) < abs(y) is true mathematically, for floats it may not be
@@ -2320,12 +2862,16 @@ math.fmod() returns a result whose sign matches the sign of the
 first argument instead, and so returns -1e-100 in this case. Which approach
 is more appropriate depends on the application.
 
+#id23
+
 [2]
 
 If x is very close to an exact integer multiple of y, it’s possible for
 x//y to be one larger than (x-x%y)//y due to rounding.  In such
 cases, Python returns the latter result, in order to preserve that
 divmod(x,y)[0] * y + x % y be very close to x.
+
+#id24
 
 [3]
 
@@ -2348,6 +2894,8 @@ represent the same abstract character “LATIN CAPITAL LETTER C WITH CEDILLA”.
 To compare strings at the level of abstract characters (that is, in a way
 intuitive to humans), use unicodedata.normalize().
 
+#id25
+
 [4]
 
 Due to automatic garbage-collection, free lists, and the dynamic nature of
@@ -2355,17 +2903,31 @@ descriptors, you may notice seemingly unusual behaviour in certain uses of
 the is operator, like those involving comparisons between instance
 methods, or constants.  Check their documentation for more info.
 
+#id26
+
 [5]
 
 The power operator ** binds less tightly than an arithmetic or
 bitwise unary operator on its right, that is, 2**-1 is 0.5.
+
+#id27
 
 [6]
 
 The % operator is also used for string formatting; the same
 precedence applies.
 
+            
+
+        
+
+      
+
+  
+
 Table of Contents
+
+    
 
 6. Expressions
 
@@ -2469,43 +3031,109 @@ Table of Contents
 
 6.17. Operator precedence
 
+  
+
     Previous topic
 
 5. The import system
+
+  
 
     Next topic
 
 7. Simple statements
 
+  
+
+  
+
 This page
+
+    
 
 Report a bug
 
+      
 Improve this page
+
+      
 
         Show source
 
+      
+
+      
+
+  
+
+#sidebarbutton
+
 «
 
+      
+
+      
+
+      
 Navigation
+
+      
 
           index
 
+        
+
           modules |
+
+        
 
           next |
 
+        
+
           previous |
 
+          
+
+          
 Python »
+
+          
+
+            
+
+          
+
+          
+
+              
+
+    
+#cpython-language-and-version
 
       3.15.2 documentation »
 
+          
 The Python Language Reference »
 
+        
 6. Expressions
 
+                
+
+                    
+
+    
+
+          
+#search-box
+
+          
+
+    
                      |
+
+            
 
     Theme
 
@@ -2515,20 +3143,32 @@ The Python Language Reference »
 
  |
 
+            
+
+      
+
     © Copyright 2001 Python Software Foundation.
 
     This page is licensed under the Python Software Foundation License Version 2.
 
     Examples, recipes, and other code in the documentation are additionally licensed under the Zero Clause BSD License.
 
+    
       See History and License for more information.
+
+    
 
     The Python Software Foundation is a non-profit corporation.
 Please donate.
 
-      Last updated on Nov 19, 2026 (13:33 UTC).
+    
+      Last updated on Nov 21, 2026 (13:22 UTC).
 
       Found a bug?
 
+    
+
     Created using Sphinx 9.1.1.
+
+    
 

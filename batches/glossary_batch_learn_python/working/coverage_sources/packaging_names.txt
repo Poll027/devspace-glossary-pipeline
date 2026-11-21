@@ -1,0 +1,753 @@
+
+
+  
+    
+    
+
+
+    
+        Distribution package vs. import package - Python Packaging User Guide
+      
+    
+    
+    
+    
+    
+    
+
+
+
+  
+    
+    
+    
+
+
+  
+#svg-toc
+
+    Contents
+    
+      
+    
+  
+  
+#svg-menu
+
+    Menu
+    
+      
+      
+      
+    
+  
+  
+#svg-arrow-right
+
+    Expand
+    
+      
+    
+  
+  
+#svg-sun
+
+    Light mode
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+  
+  
+#svg-moon
+
+    Dark mode
+    
+      
+      
+    
+  
+  
+#svg-sun-with-moon
+
+    Auto light/dark, in light mode
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+  
+  
+#svg-moon-with-sun
+
+    Auto light/dark, in dark mode
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+  
+  
+#svg-pencil
+
+    
+      
+      
+      
+      
+    
+  
+  
+#svg-eye
+
+    
+      
+      
+      
+      
+      
+    
+  
+
+
+
+#__navigation
+
+
+#__toc
+
+
+
+
+Skip to content
+
+
+
+
+  
+    
+      
+        
+      
+    
+    
+      Python Packaging User Guide
+    
+    
+      
+        
+          
+          
+          
+          
+        
+      
+      
+        
+      
+    
+  
+  
+    
+      
+      
+  
+  Python Packaging User Guide
+  
+
+  
+  
+  
+
+
+#searchbox
+
+  
+
+Overview of Python Packaging
+
+
+The Packaging Flow
+
+
+Tutorials
+#toctree-checkbox-1
+
+
+Installing Packages
+
+
+Managing Application Dependencies
+
+
+Packaging Python Projects
+
+
+
+
+
+Guides
+#toctree-checkbox-2
+
+
+Installation
+#toctree-checkbox-3
+
+
+Install packages in a virtual environment using pip and venv
+
+
+Installing stand alone command line tools
+
+
+Installing pip/setuptools/wheel with Linux Package Managers
+
+
+Installing scientific packages
+
+
+
+
+
+Building and Publishing
+#toctree-checkbox-4
+
+
+Writing your pyproject.toml
+
+
+Packaging and distributing projects
+
+
+Dropping support for older Python versions
+
+
+Packaging binary extensions
+
+
+Packaging namespace packages
+
+
+Creating and packaging command-line tools
+
+
+Creating and discovering plugins
+
+
+Using TestPyPI
+
+
+Making a PyPI-friendly README
+
+
+Publishing package distribution releases using GitHub Actions CI/CD workflows
+
+
+How to modernize a setup.py based project?
+
+
+Licensing examples and user scenarios
+
+
+
+
+
+Hosting
+#toctree-checkbox-5
+
+
+Package index mirrors and caches
+
+
+Hosting your own simple repository
+
+
+
+
+
+Tool recommendations
+
+
+Analyzing PyPI package downloads
+
+
+
+
+
+Discussions
+#toctree-checkbox-6
+
+
+Versioning
+
+
+Deploying Python applications
+
+
+install_requires vs requirements files
+
+
+Distribution package vs. import package
+
+
+Package Formats
+
+
+src layout vs flat layout
+
+
+Is setup.py deprecated?
+
+
+Single-sourcing the Project Version
+
+
+Supporting downstream packaging
+
+
+
+
+
+Specifications
+#toctree-checkbox-7
+
+
+Package Distribution Metadata
+#toctree-checkbox-8
+
+
+Names and normalization
+
+
+Core metadata specifications
+
+
+Version specifiers
+
+
+Dependency specifiers
+
+
+pyproject.toml specification
+
+
+Dependency Groups
+
+
+Inline script metadata
+
+
+Platform compatibility tags
+
+
+Well-known Project URLs in Metadata
+
+
+glob patterns
+
+
+License Expression
+
+
+
+
+
+Package Installation Metadata
+#toctree-checkbox-9
+
+
+Recording installed projects
+
+
+Entry points specification
+
+
+Recording the Direct URL Origin of installed distributions
+
+
+Direct URL Data Structure
+
+
+Python Virtual Environments
+
+
+Externally Managed Environments
+
+
+
+
+
+Package Distribution File Formats
+#toctree-checkbox-10
+
+
+Source distribution format
+
+
+Wheel distribution format
+
+
+
+
+
+Package Index Interfaces
+#toctree-checkbox-11
+
+
+The .pypirc file
+
+
+Simple repository API
+
+
+File Yanking
+
+
+Index hosted attestations
+
+
+Project Status Markers
+
+
+
+
+
+Python Description Formats
+#toctree-checkbox-12
+
+
+build-details.json
+#toctree-checkbox-13
+
+
+v1.0
+
+
+
+
+
+
+
+
+Reproducible Environments
+#toctree-checkbox-14
+
+
+pylock.toml Specification
+
+
+
+
+
+JSON Schemas
+
+
+
+
+
+Project Summaries
+
+
+Glossary
+
+
+How to Get Support
+
+
+Contribute to this guide
+
+
+
+
+
+
+      
+      
+    
+  
+  
+    
+      
+        
+          
+            
+          
+          Back to top
+        
+        
+          
+  
+    
+    View this page
+  
+
+  
+    
+    Edit this page
+  
+
+            
+              
+              
+              
+              
+            
+          
+          
+            
+          
+        
+        
+#furo-main-content
+
+          
+#distribution-package-vs-import-package
+
+
+#id1
+
+Distribution package vs. import package¶
+
+
+A number of different concepts are commonly referred to by the word
+“package”. This page clarifies the differences between two distinct but
+related meanings in Python packaging, “distribution package” and “import
+package”.
+
+
+#what-s-a-distribution-package
+
+
+What’s a distribution package?¶
+
+
+A distribution package is a piece of software that you can install.
+Most of the time, this is synonymous with “project”. When you type pip
+install pkg, or when you write dependencies = ["pkg"] in your
+pyproject.toml, pkg is the name of a distribution package. When
+you search or browse the PyPI, the most widely known centralized source for
+installing Python libraries and tools, what you see is a list of distribution
+packages. Alternatively, the term “distribution package” can be used to
+refer to a specific file that contains a certain version of a project.
+
+
+Note that in the Linux world, a “distribution package”,
+most commonly abbreviated as “distro package” or just “package”,
+is something provided by the system package manager of the Linux distribution,
+which is a different meaning.
+
+
+
+#what-s-an-import-package
+
+
+What’s an import package?¶
+
+
+An import package is a Python module. Thus, when you write import
+pkg or from pkg import func in your Python code, pkg is the
+name of an import package. More precisely, import packages are special
+Python modules that can contain submodules. For example, the numpy
+package contains modules like numpy.linalg and
+numpy.fft. Usually, an import package is a directory on the file
+system, containing modules as .py files and subpackages as
+subdirectories.
+
+
+You can use an import package as soon as you have installed a distribution
+package that provides it.
+
+
+
+#what-are-the-links-between-distribution-packages-and-import-packages
+
+
+What are the links between distribution packages and import packages?¶
+
+
+Most of the time, a distribution package provides one single import
+package (or non-package module), with a matching name. For example,
+pip install numpy lets you import numpy.
+
+
+However, this is only a convention. PyPI and other package indices do not
+enforce any relationship between the name of a distribution package and the
+import packages it provides. (A consequence of this is that you cannot blindly
+install the PyPI package foo if you see import foo; this may install an
+unintended, and potentially even malicious package.)
+
+
+A distribution package could provide an import package with a different
+name. An example of this is the popular Pillow library for image
+processing. Its distribution package name is Pillow, but it provides
+the import package PIL. This is for historical reasons: Pillow
+started as a fork of the PIL library, thus it kept the import name
+PIL so that existing PIL users could switch to Pillow with little
+effort. More generally, a fork of an existing library is a common reason
+for differing names between the distribution package and the import
+package.
+
+
+On a given package index (like PyPI), distribution package names must be
+unique. On the other hand, import packages have no such requirement.
+Import packages with the same name can be provided by several
+distribution packages. Again, forks are a common reason for this.
+
+
+Conversely, a distribution package can provide several import packages,
+although this is less common. An example is the attrs distribution
+package, which provides both an attrs import package with a newer
+API, and an attr import package with an older but supported API.
+
+
+
+#how-do-distribution-package-names-and-import-package-names-compare
+
+
+How do distribution package names and import package names compare?¶
+
+
+Import packages should have valid Python identifiers as their name (the
+exact rules are found in the Python
+documentation) 
+#id2
+[1]. In particular, they use underscores _ as word
+separator and they are case-sensitive.
+
+
+On the other hand, distribution packages can use hyphens - or
+underscores _. They can also contain dots ., which is sometimes
+used for packaging a subpackage of a namespace package. For most purposes, they are insensitive
+to case and to - vs.  _ differences, e.g., pip install
+Awesome_Package is the same as pip install awesome-package (the
+precise rules are given in the name normalization specification).
+
+
+
+
+#non-identifier-mod-name
+
+[1]
+
+Although it is technically possible
+to import packages/modules that do not have a valid Python identifier as
+their name, using importlib,
+this is vanishingly rare and strongly discouraged.
+
+
+
+
+
+
+        
+      
+      
+        
+        
+          
+              
+                
+                  Next
+                
+                Package Formats
+              
+              
+            
+          
+              
+              
+                
+                  Previous
+                
+                
+                install_requires vs requirements files
+                
+              
+            
+        
+        
+          
+            
+                Copyright © 2013–2020, PyPA
+            
+            Made with Sphinx and @pradyunsg's
+            
+            Furo
+            
+              Last updated on Nov 18, 2026
+          
+          
+            
+          
+        
+        
+      
+    
+    
+      
+      
+      
+        
+          
+            On this page
+          
+        
+        
+          
+            
+
+Distribution package vs. import package
+
+What’s a distribution package?
+
+
+What’s an import package?
+
+
+What are the links between distribution packages and import packages?
+
+
+How do distribution package names and import package names compare?
+
+
+
+
+
+
+          
+        
+      
+      
+      
+    
+  
+
+    
+    
+    
+    
+    
+    
+    
+    

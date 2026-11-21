@@ -1,7 +1,77 @@
-https://docs.python.org/3/reference/simple_stmts.html
 
+
+  
+
+    
 
     7. Simple statements — Python 3.15.2 documentation
+
+    
+
+#pygments_dark_css
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+      
+
+      
+
+    
+
+    
+
+#pydoctheme_dark_css
+
+    
+
+            
+
+             
+
+            
+
+  
+
+    
+#menuToggler
+
+    
+
+            
+
+        
+
+                
+
+            
+
+                
+
+                
+
+                
+
+        
+
+    
+
+            
 
     Theme
 
@@ -9,7 +79,11 @@ https://docs.python.org/3/reference/simple_stmts.html
         Light
         Dark
 
+  
+
 Table of Contents
+
+    
 
 7. Simple statements
 
@@ -51,41 +125,105 @@ Table of Contents
 
 7.14. The type statement
 
+  
+
     Previous topic
 
 6. Expressions
+
+  
 
     Next topic
 
 8. Compound statements
 
+  
+
+  
+
 This page
+
+    
 
 Report a bug
 
+      
 Improve this page
+
+      
 
         Show source
 
+      
+
+      
+
+  
+
+    
+
+  
+
+      
 Navigation
+
+      
 
           index
 
+        
+
           modules |
+
+        
 
           next |
 
+        
+
           previous |
 
+          
+
+          
 Python »
+
+          
+
+            
+
+          
+
+          
+
+              
+
+    
+#cpython-language-and-version
 
       3.15.2 documentation »
 
+          
 The Python Language Reference »
 
+        
 7. Simple statements
 
+                
+
+                    
+
+    
+
+          
+#search-box
+
+          
+
+    
                      |
+
+            
 
     Theme
 
@@ -95,14 +233,29 @@ The Python Language Reference »
 
  |
 
-SECTION simple-statements
+            
+
+        
+
+    
+
+        
+
+            
+
+#simple-statements
+
+#simple
 
 7. Simple statements¶
+
+#index-0
 
 A simple statement is comprised within a single logical line. Several simple
 statements may occur on a single line separated by semicolons.  The syntax for
 simple statements is:
 
+#grammar-token-python-grammar-simple_stmt
 simple_stmt: expression_stmt
              | assert_stmt
              | assignment_stmt
@@ -121,35 +274,52 @@ simple_stmt: expression_stmt
              | nonlocal_stmt
              | type_stmt
 
-SECTION expression-statements
+#expression-statements
+
+#exprstmts
 
 7.1. Expression statements¶
 
+#index-2
+
+#index-1
 Expression statements are used (mostly interactively) to compute and write a
 value, or (usually) to call a procedure (a function that returns no meaningful
 result; in Python, procedures return the value None).  Other uses of
 expression statements are allowed and occasionally useful.  The syntax for an
 expression statement is:
 
+#grammar-token-python-grammar-expression_stmt
 expression_stmt: starred_expression
 
 An expression statement evaluates the expression list (which may be a single
 expression).
+
+#index-3
 
 In interactive mode, if the value is not None, it is converted to a string
 using the built-in repr() function and the resulting string is written to
 standard output on a line by itself (except if the result is None, so that
 procedure calls do not cause any output.)
 
-SECTION assignment-statements
+#assignment-statements
+
+#assignment
 
 7.2. Assignment statements¶
+
+#index-4
 
 Assignment statements are used to (re)bind names to values and to modify
 attributes or items of mutable objects:
 
+#grammar-token-python-grammar-assignment_stmt
 assignment_stmt: (target_list "=")+ (starred_expression | yield_expression)
+
+#grammar-token-python-grammar-target_list
 target_list:     target ("," target)* [","]
+
+#grammar-token-python-grammar-target
 target:          identifier
                  | "(" [target_list] ")"
                  | "[" [target_list] "]"
@@ -165,12 +335,16 @@ a single expression or a comma-separated list, the latter yielding a tuple) and
 assigns the single resulting object to each of the target lists, from left to
 right.
 
+#index-5
+
 Assignment is defined recursively depending on the form of the target (list).
 When a target is part of a mutable object (an attribute reference or
 subscription), the mutable object must ultimately perform the assignment and
 decide about its validity, and may raise an exception if the assignment is
 unacceptable.  The rules observed by various types and the exceptions raised are
 given with the definition of the object types (see section The standard type hierarchy).
+
+#index-6
 
 Assignment of an object to a target list, optionally enclosed in parentheses or
 square brackets, is recursively defined as follows.
@@ -203,9 +377,13 @@ current local namespace.
 Otherwise: the name is bound to the object in the global namespace or the
 outer namespace determined by nonlocal, respectively.
 
+#index-7
+
 The name is rebound if it was already bound.  This may cause the reference
 count for the object previously bound to the name to reach zero, causing the
 object to be deallocated and its destructor (if it has one) to be called.
+
+#index-8
 
 If the target is an attribute reference: The primary expression in the
 reference is evaluated.  It should yield an object with assignable attributes;
@@ -213,6 +391,8 @@ if this is not the case, TypeError is raised.  That object is then
 asked to assign the assigned object to the given attribute; if it cannot
 perform the assignment, it raises an exception (usually but not necessarily
 AttributeError).
+
+#attr-target-note
 
 Note: If the object is a class instance and the attribute reference occurs on
 both sides of the assignment operator, the right-hand side expression, a.x can access
@@ -231,6 +411,8 @@ inst.x = inst.x + 1   # writes inst.x as 4 leaving Cls.x as 3
 This description does not necessarily apply to descriptor attributes, such as
 properties created with @property.
 
+#index-9
+
 If the target is a subscription: The primary expression in the reference is
 evaluated.
 Next, the subscript expression is evaluated.
@@ -241,6 +423,8 @@ Typically, __setitem__() is defined on mutable sequence objects
 (such as lists) and mapping objects (such as dictionaries), and behaves as
 follows.
 
+#index-10
+
 If the primary is a mutable sequence object (such as a list), the subscript
 must yield an integer.  If it is negative, the sequence’s length is added to
 it.  The resulting value must be a nonnegative integer less than the
@@ -248,11 +432,15 @@ sequence’s length, and the sequence is asked to assign the assigned object to
 its item with that index.  If the index is out of range, IndexError is
 raised (assignment to a subscripted sequence cannot add new items to a list).
 
+#index-11
+
 If the primary is a mapping object (such as a dictionary), the subscript must
 have a type compatible with the mapping’s key type, and the mapping is then
 asked to create a key/value pair which maps the subscript to the assigned
 object.  This can either replace an existing key/value pair with the same key
 value, or insert a new key/value pair (if no key with the same value existed).
+
+#index-12
 
 If the target is a slicing: The primary expression should evaluate to
 a mutable sequence object (such as a list).
@@ -279,19 +467,29 @@ print(x)
 
 See also
 
+#index-13
 PEP 3132 - Extended Iterable Unpacking
 
 The specification for the *target feature.
 
-SECTION augmented-assignment-statements
+#augmented-assignment-statements
+
+#augassign
 
 7.2.1. Augmented assignment statements¶
+
+#index-14
 
 Augmented assignment is the combination, in a single statement, of a binary
 operation and an assignment statement:
 
+#grammar-token-python-grammar-augmented_assignment_stmt
 augmented_assignment_stmt: augtarget augop (expression_list | yield_expression)
+
+#grammar-token-python-grammar-augtarget
 augtarget:                 identifier | attributeref | subscription
+
+#grammar-token-python-grammar-augop
 augop:                     "+=" | "-=" | "*=" | "@=" | "/=" | "//=" | "%=" | "**="
                            | ">>=" | "<<=" | "&=" | "^=" | "|="
 
@@ -323,13 +521,18 @@ the same as the normal binary operations.
 For targets which are attribute references, the same caveat about class
 and instance attributes applies as for regular assignments.
 
-SECTION annotated-assignment-statements
+#annotated-assignment-statements
+
+#annassign
 
 7.2.2. Annotated assignment statements¶
+
+#index-15
 
 Annotation assignment is the combination, in a single
 statement, of a variable or attribute annotation and an optional assignment statement:
 
+#grammar-token-python-grammar-annotated_assignment_stmt
 annotated_assignment_stmt: augtarget ":" expression
                            ["=" (starred_expression | yield_expression)]
 
@@ -358,12 +561,14 @@ __setitem__() or __setattr__() call.
 
 See also
 
+#index-16
 PEP 526 - Syntax for Variable Annotations
 
 The proposal that added syntax for annotating the types of variables
 (including class variables and instance variables), instead of expressing
 them through comments.
 
+#index-17
 PEP 484 - Type hints
 
 The proposal that added the typing module to provide a standard
@@ -377,13 +582,18 @@ tuple expressions) caused a syntax error.
 Changed in version 3.14: Annotations are now lazily evaluated in a separate annotation scope.
 If the assignment target is not simple, annotations are never evaluated.
 
-SECTION the-assert-statement
+#the-assert-statement
+
+#assert
 
 7.3. The assert statement¶
+
+#index-18
 
 Assert statements are a convenient way to insert debugging assertions into a
 program:
 
+#grammar-token-python-grammar-assert_stmt
 assert_stmt: "assert" expression ["," expression]
 
 The simple form, assert expression, is equivalent to
@@ -395,6 +605,8 @@ The extended form, assert expression1, expression2, is equivalent to
 
 if __debug__:
     if not expression1: raise AssertionError(expression2)
+
+#index-19
 
 These equivalences assume that __debug__ and AssertionError refer to
 the built-in variables with those names.  In the current implementation, the
@@ -408,10 +620,15 @@ as part of the stack trace.
 Assignments to __debug__ are illegal.  The value for the built-in variable
 is determined when the interpreter starts.
 
-SECTION the-pass-statement
+#the-pass-statement
+
+#pass
 
 7.4. The pass statement¶
 
+#index-20
+
+#grammar-token-python-grammar-pass_stmt
 pass_stmt: "pass"
 
 pass is a null operation — when it is executed, nothing happens.
@@ -422,10 +639,15 @@ def f(arg): pass    # a function that does nothing (yet)
 
 class C: pass       # a class with no methods (yet)
 
-SECTION the-del-statement
+#the-del-statement
+
+#del
 
 7.5. The del statement¶
 
+#index-21
+
+#grammar-token-python-grammar-del_stmt
 del_stmt: "del" target_list
 
 Deletion is recursively defined very similar to the way assignment is defined.
@@ -433,10 +655,14 @@ Rather than spelling it out in full details, here are some hints.
 
 Deletion of a target list recursively deletes each target, from left to right.
 
+#index-22
+
 Deletion of a name removes the binding of that name from the local or global
 namespace, depending on whether the name occurs in a global statement
 in the same code block.  Trying to delete an unbound name raises a
 NameError exception.
+
+#index-23
 
 Deletion of attribute references and subscriptions is passed to the
 primary object involved; deletion of a slicing is in general equivalent to
@@ -446,10 +672,15 @@ the sliced object).
 Changed in version 3.2: Previously it was illegal to delete a name from the local namespace if it
 occurs as a free variable in a nested block.
 
-SECTION the-return-statement
+#the-return-statement
+
+#return
 
 7.6. The return statement¶
 
+#index-24
+
+#grammar-token-python-grammar-return_stmt
 return_stmt: "return" [expression_list]
 
 return may only occur syntactically nested in a function definition,
@@ -459,6 +690,8 @@ If an expression list is present, it is evaluated, else None is substituted.
 
 return leaves the current function call with the expression list (or
 None) as return value.
+
+#index-25
 
 When return passes control out of a try statement with a
 finally clause, that finally clause is executed before
@@ -474,10 +707,15 @@ indicates that the asynchronous generator is done and will cause
 StopAsyncIteration to be raised.  A non-empty return
 statement is a syntax error in an asynchronous generator function.
 
-SECTION the-yield-statement
+#the-yield-statement
+
+#yield
 
 7.7. The yield statement¶
 
+#index-26
+
+#grammar-token-python-grammar-yield_stmt
 yield_stmt: yield_expression
 
 A yield statement is semantically equivalent to a yield
@@ -501,10 +739,15 @@ generator function instead of a normal function.
 For full details of yield semantics, refer to the
 Yield expressions section.
 
-SECTION the-raise-statement
+#the-raise-statement
+
+#raise
 
 7.8. The raise statement¶
 
+#index-27
+
+#grammar-token-python-grammar-raise_stmt
 raise_stmt: "raise" [expression ["from" expression]]
 
 If no expressions are present, raise re-raises the
@@ -520,6 +763,8 @@ instantiating the class with no arguments.
 The type of the exception is the exception instance’s class, the
 value is the instance itself.
 
+#index-28
+
 A traceback object is normally created automatically when an exception is raised
 and attached to it as the __traceback__ attribute.
 You can create an exception and set your own traceback in one step using the
@@ -527,6 +772,8 @@ with_traceback() exception method (which returns the
 same exception instance, with its traceback set to its argument), like so:
 
 raise Exception("foo occurred").with_traceback(tracebackobj)
+
+#index-29
 
 The from clause is used for exception chaining: if given, the second
 expression must be another exception class or instance. If the second
@@ -604,15 +851,22 @@ clause, a subsequent raise statement re-raises the exception with the
 modified traceback. Previously, the exception was re-raised with the
 traceback it had when it was caught.
 
-SECTION the-break-statement
+#the-break-statement
+
+#break
 
 7.9. The break statement¶
 
+#index-30
+
+#grammar-token-python-grammar-break_stmt
 break_stmt: "break"
 
 break may only occur syntactically nested in a for or
 while loop, but not nested in a function or class definition within
 that loop.
+
+#index-31
 
 It terminates the nearest enclosing loop, skipping the optional else
 clause if the loop has one.
@@ -620,14 +874,21 @@ clause if the loop has one.
 If a for loop is terminated by break, the loop control
 target keeps its current value.
 
+#index-32
+
 When break passes control out of a try statement with a
 finally clause, that finally clause is executed before
 really leaving the loop.
 
-SECTION the-continue-statement
+#the-continue-statement
+
+#continue
 
 7.10. The continue statement¶
 
+#index-33
+
+#grammar-token-python-grammar-continue_stmt
 continue_stmt: "continue"
 
 continue may only occur syntactically nested in a for or
@@ -638,17 +899,28 @@ When continue passes control out of a try statement with a
 finally clause, that finally clause is executed before
 really starting the next loop cycle.
 
-SECTION the-import-statement
+#the-import-statement
+
+#from
+
+#import
 
 7.11. The import statement¶
 
+#index-34
+
+#grammar-token-python-grammar-import_stmt
 import_stmt:     ["lazy"] "import" module ["as" identifier] ("," module ["as" identifier])*
                  | ["lazy"] "from" relative_module "import" identifier ["as" identifier]
                  ("," identifier ["as" identifier])*
                  | ["lazy"] "from" relative_module "import" "(" identifier ["as" identifier]
                  ("," identifier ["as" identifier])* [","] ")"
                  | "from" relative_module "import" "*"
+
+#grammar-token-python-grammar-module
 module:          (identifier ".")* identifier
+
+#grammar-token-python-grammar-relative_module
 relative_module: "."* module | "."+
 
 The basic import statement (no from clause) is executed in two
@@ -676,6 +948,8 @@ initializing the module, which includes execution of the module’s code.
 If the requested module is retrieved successfully, it will be made
 available in the local namespace in one of three ways:
 
+#index-35
+
 If the module name is followed by as, then the name
 following as is bound directly to the imported module.
 
@@ -687,6 +961,8 @@ If the module being imported is not a top level module, then the name
 of the top level package that contains the module is bound in the local
 namespace as a reference to the top level package. The imported module
 must be accessed using its full qualified name rather than directly
+
+#index-36
 
 The from form uses a slightly more complex process:
 
@@ -714,10 +990,15 @@ import foo.bar.baz as fbb  # foo, foo.bar, and foo.bar.baz imported, foo.bar.baz
 from foo.bar import baz    # foo, foo.bar, and foo.bar.baz imported, foo.bar.baz bound as baz
 from foo import attr       # foo imported and foo.attr bound as attr
 
+#index-37
+
 If the list of identifiers is replaced by a star ('*'), all public
 names defined in the module are bound in the local namespace for the scope
 where the import statement occurs.
 
+#module.__all__
+
+#index-38
 The public names defined by a module are determined by checking the module’s
 namespace for a variable named __all__; if defined, it must be a sequence
 of strings which are names defined or imported by that module.
@@ -733,6 +1014,8 @@ library modules which were imported and used within the module).
 The wild card form of import — from module import * — is only allowed at
 the module level.  Attempting to use it in class or function definitions will
 raise a SyntaxError.
+
+#index-39
 
 When specifying what module to import you do not have to specify the absolute
 name of the module. When a module or package is contained within another
@@ -753,9 +1036,15 @@ determine dynamically the modules to be loaded.
 
 Raises an auditing event import with arguments module, filename, sys.path, sys.meta_path, sys.path_hooks.
 
-SECTION lazy
+#lazy
+
+#lazy-imports
+
+#id1
 
 7.11.1. Lazy imports¶
+
+#index-40
 
 The lazy keyword is a soft keyword that
 only has special meaning when it appears immediately before an
@@ -793,13 +1082,18 @@ If an error occurs during module loading (such as ImportError or
 SyntaxError), it is raised at the point where the lazy import is first
 used, not at the import statement itself.
 
-See PEP 810 for the full specification of lazy imports.
+See 
+#index-41
+PEP 810 for the full specification of lazy imports.
 
 Added in version 3.15.
 
-SECTION compatibility-via-lazy-modules
+#compatibility-via-lazy-modules
 
+#lazy-modules-compat
 7.11.1.1. Compatibility via __lazy_modules__¶
+
+#index-42
 
 As an alternative to using the lazy keyword, a module can opt
 into lazy loading for specific imports by defining a module-level
@@ -839,9 +1133,13 @@ regardless of __lazy_modules__.
 
 Added in version 3.15.
 
-SECTION future-statements
+#future-statements
+
+#future
 
 7.11.2. Future statements¶
+
+#index-43
 
 A future statement is a directive to the compiler that a particular
 module should be compiled using syntax or semantics that will be available in a
@@ -852,10 +1150,13 @@ that introduce incompatible changes to the language.  It allows use of the new
 features on a per-module basis before the release in which the feature becomes
 standard.
 
+#grammar-token-python-grammar-future_stmt
 future_stmt: "from" "__future__" "import" feature ["as" identifier]
              ("," feature ["as" identifier])*
              | "from" "__future__" "import" "(" feature ["as" identifier]
              ("," feature ["as" identifier])* [","] ")"
+
+#grammar-token-python-grammar-feature
 feature:     identifier
 
 A future statement must appear near the top of the module.  The only lines that
@@ -870,7 +1171,9 @@ blank lines, and
 other future statements.
 
 The only feature that requires using the future statement is
-annotations (see PEP 563).
+annotations (see 
+#index-44
+PEP 563).
 
 All historical features enabled by the future statement are still recognized
 by Python 3.  The list includes absolute_import, division,
@@ -918,14 +1221,20 @@ after the script is executed.
 
 See also
 
+#index-45
 PEP 236 - Back to the __future__
 
 The original proposal for the __future__ mechanism.
 
-SECTION the-global-statement
+#the-global-statement
+
+#global
 
 7.12. The global statement¶
 
+#index-46
+
+#grammar-token-python-grammar-global_stmt
 global_stmt: "global" identifier ("," identifier)*
 
 The global statement causes the listed identifiers to be interpreted
@@ -944,6 +1253,8 @@ However, variables must still not be used or
 assigned to prior to their global declaration.
 This requirement is relaxed in the interactive prompt (REPL).
 
+#index-47
+
 Programmer’s note: global is a directive to the parser.  It
 applies only to code parsed at the same time as the global statement.
 In particular, a global statement contained in a string or code
@@ -952,10 +1263,15 @@ block containing the function call, and code contained in such a string is
 unaffected by global statements in the code containing the function
 call.  The same applies to the eval() and compile() functions.
 
-SECTION the-nonlocal-statement
+#the-nonlocal-statement
+
+#nonlocal
 
 7.13. The nonlocal statement¶
 
+#index-48
+
+#grammar-token-python-grammar-nonlocal_stmt
 nonlocal_stmt: "nonlocal" identifier ("," identifier)*
 
 When the definition of a function or class is nested (enclosed) within
@@ -973,6 +1289,7 @@ assigned to prior to its nonlocal declaration in the scope.
 
 See also
 
+#index-49
 PEP 3104 - Access to Names in Outer Scopes
 
 The specification for the nonlocal statement.
@@ -981,10 +1298,15 @@ Programmer’s note: nonlocal is a directive to the parser
 and applies only to code parsed along with it.  See the note for the
 global statement.
 
-SECTION the-type-statement
+#the-type-statement
+
+#type
 
 7.14. The type statement¶
 
+#index-50
+
+#grammar-token-python-grammar-type_stmt
 type_stmt: 'type' identifier [type_params] "=" expression
 
 The type statement declares a type alias, which is an instance
@@ -1018,12 +1340,23 @@ Added in version 3.12.
 
 See also
 
+#index-51
 PEP 695 - Type Parameter Syntax
 
 Introduced the type statement and syntax for
 generic classes and functions.
 
+            
+
+        
+
+      
+
+  
+
 Table of Contents
+
+    
 
 7. Simple statements
 
@@ -1065,43 +1398,109 @@ Table of Contents
 
 7.14. The type statement
 
+  
+
     Previous topic
 
 6. Expressions
+
+  
 
     Next topic
 
 8. Compound statements
 
+  
+
+  
+
 This page
+
+    
 
 Report a bug
 
+      
 Improve this page
+
+      
 
         Show source
 
+      
+
+      
+
+  
+
+#sidebarbutton
+
 «
 
+      
+
+      
+
+      
 Navigation
+
+      
 
           index
 
+        
+
           modules |
+
+        
 
           next |
 
+        
+
           previous |
 
+          
+
+          
 Python »
+
+          
+
+            
+
+          
+
+          
+
+              
+
+    
+#cpython-language-and-version
 
       3.15.2 documentation »
 
+          
 The Python Language Reference »
 
+        
 7. Simple statements
 
+                
+
+                    
+
+    
+
+          
+#search-box
+
+          
+
+    
                      |
+
+            
 
     Theme
 
@@ -1111,20 +1510,32 @@ The Python Language Reference »
 
  |
 
+            
+
+      
+
     © Copyright 2001 Python Software Foundation.
 
     This page is licensed under the Python Software Foundation License Version 2.
 
     Examples, recipes, and other code in the documentation are additionally licensed under the Zero Clause BSD License.
 
+    
       See History and License for more information.
+
+    
 
     The Python Software Foundation is a non-profit corporation.
 Please donate.
 
-      Last updated on Nov 19, 2026 (13:33 UTC).
+    
+      Last updated on Nov 21, 2026 (13:22 UTC).
 
       Found a bug?
 
+    
+
     Created using Sphinx 9.1.1.
+
+    
 

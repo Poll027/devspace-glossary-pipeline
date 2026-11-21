@@ -1,7 +1,77 @@
-https://docs.python.org/3/reference/compound_stmts.html
 
+
+  
+
+    
 
     8. Compound statements — Python 3.15.2 documentation
+
+    
+
+#pygments_dark_css
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+      
+
+      
+
+    
+
+    
+
+#pydoctheme_dark_css
+
+    
+
+            
+
+             
+
+            
+
+  
+
+    
+#menuToggler
+
+    
+
+            
+
+        
+
+                
+
+            
+
+                
+
+                
+
+                
+
+        
+
+    
+
+            
 
     Theme
 
@@ -9,7 +79,11 @@ https://docs.python.org/3/reference/compound_stmts.html
         Light
         Dark
 
+  
+
 Table of Contents
+
+    
 
 8. Compound statements
 
@@ -85,41 +159,105 @@ Table of Contents
 
 8.11. Annotations
 
+  
+
     Previous topic
 
 7. Simple statements
+
+  
 
     Next topic
 
 9. Top-level components
 
+  
+
+  
+
 This page
+
+    
 
 Report a bug
 
+      
 Improve this page
+
+      
 
         Show source
 
+      
+
+      
+
+  
+
+    
+
+  
+
+      
 Navigation
+
+      
 
           index
 
+        
+
           modules |
+
+        
 
           next |
 
+        
+
           previous |
 
+          
+
+          
 Python »
+
+          
+
+            
+
+          
+
+          
+
+              
+
+    
+#cpython-language-and-version
 
       3.15.2 documentation »
 
+          
 The Python Language Reference »
 
+        
 8. Compound statements
 
+                
+
+                    
+
+    
+
+          
+#search-box
+
+          
+
+    
                      |
+
+            
 
     Theme
 
@@ -129,9 +267,23 @@ The Python Language Reference »
 
  |
 
-SECTION compound-statements
+            
+
+        
+
+    
+
+        
+
+            
+
+#compound-statements
+
+#compound
 
 8. Compound statements¶
+
+#index-0
 
 Compound statements contain (groups of) other statements; they affect or control
 the execution of those other statements in some way.  In general, compound
@@ -144,6 +296,8 @@ handlers and/or cleanup code for a group of statements, while the
 with statement allows the execution of initialization and
 finalization code around a block of code.  Function and class definitions are
 also syntactically compound statements.
+
+#index-1
 
 A compound statement consists of one or more ‘clauses.’  A clause consists of a
 header and a ‘suite.’  The clause headers of a particular compound statement are
@@ -166,6 +320,7 @@ if x < y < z: print(x); print(y); print(z)
 
 Summarizing:
 
+#grammar-token-python-grammar-compound_stmt
 compound_stmt: if_stmt
                | while_stmt
                | for_stmt
@@ -177,9 +332,17 @@ compound_stmt: if_stmt
                | async_with_stmt
                | async_for_stmt
                | async_funcdef
+
+#grammar-token-python-grammar-suite
 suite:         stmt_list NEWLINE | NEWLINE INDENT statement+ DEDENT
+
+#grammar-token-python-grammar-statement
 statement:     stmt_list NEWLINE | compound_stmt
+
+#grammar-token-python-grammar-stmt_list
 stmt_list:     simple_stmt (";" simple_stmt)* [";"]
+
+#index-2
 
 Note that statements always end in a NEWLINE possibly followed by a
 DEDENT.  Also note that optional continuation clauses always begin with a
@@ -190,12 +353,21 @@ if statements to be indented).
 The formatting of the grammar rules in the following sections places each clause
 on a separate line for clarity.
 
-SECTION the-if-statement
+#the-if-statement
+
+#else
+
+#elif
+
+#if
 
 8.1. The if statement¶
 
+#index-3
+
 The if statement is used for conditional execution:
 
+#grammar-token-python-grammar-if_stmt
 if_stmt: "if" assignment_expression ":" suite
          ("elif" assignment_expression ":" suite)*
          ["else" ":" suite]
@@ -206,13 +378,18 @@ true and false); then that suite is executed (and no other part of the
 if statement is executed or evaluated).  If all expressions are
 false, the suite of the else clause, if present, is executed.
 
-SECTION the-while-statement
+#the-while-statement
+
+#while
 
 8.2. The while statement¶
+
+#index-4
 
 The while statement is used for repeated execution as long as an
 expression is true:
 
+#grammar-token-python-grammar-while_stmt
 while_stmt: "while" assignment_expression ":" suite
             ["else" ":" suite]
 
@@ -221,18 +398,25 @@ suite; if the expression is false (which may be the first time it is tested) the
 suite of the else clause, if present, is executed and the loop
 terminates.
 
+#index-5
+
 A break statement executed in the first suite terminates the loop
 without executing the else clause’s suite.  A continue
 statement executed in the first suite skips the rest of the suite and goes back
 to testing the expression.
 
-SECTION the-for-statement
+#the-for-statement
+
+#for
 
 8.3. The for statement¶
+
+#index-6
 
 The for statement is used to iterate over the elements of a sequence
 (such as a string, tuple or list) or other iterable object:
 
+#grammar-token-python-grammar-for_stmt
 for_stmt: "for" target_list "in" starred_expression_list ":" suite
           ["else" ":" suite]
 
@@ -244,6 +428,8 @@ assigned to the target list using the standard rules for assignments
 item provided by the iterator. When the iterator is exhausted,
 the suite in the else clause,
 if present, is executed, and the loop terminates.
+
+#index-7
 
 A break statement executed in the first suite terminates the loop
 without executing the else clause’s suite.  A continue
@@ -261,6 +447,8 @@ for i in range(10):
                       # because i will be overwritten with the next
                       # index in the range
 
+#index-8
+
 Names in the target list are not deleted when the loop is finished, but if the
 sequence is empty, they will not have been assigned to at all by the loop.  Hint:
 the built-in type range() represents immutable arithmetic sequences of integers.
@@ -268,22 +456,33 @@ For instance, iterating range(3) successively yields 0, 1, and then 2.
 
 Changed in version 3.11: Starred elements are now allowed in the expression list.
 
-SECTION the-try-statement
+#the-try-statement
+
+#try
 
 8.4. The try statement¶
+
+#index-9
 
 The try statement specifies exception handlers and/or cleanup code
 for a group of statements:
 
+#grammar-token-python-grammar-try_stmt
 try_stmt:  try1_stmt | try2_stmt | try3_stmt
+
+#grammar-token-python-grammar-try1_stmt
 try1_stmt: "try" ":" suite
            ("except" [expression ["as" identifier]] ":" suite)+
            ["else" ":" suite]
            ["finally" ":" suite]
+
+#grammar-token-python-grammar-try2_stmt
 try2_stmt: "try" ":" suite
            ("except" "*" expression ["as" identifier] ":" suite)+
            ["else" ":" suite]
            ["finally" ":" suite]
+
+#grammar-token-python-grammar-try3_stmt
 try3_stmt: "try" ":" suite
            "finally" ":" suite
 
@@ -291,9 +490,13 @@ Additional information on exceptions can be found in section Exceptions,
 and information on using the raise statement to generate exceptions
 may be found in section The raise statement.
 
-Changed in version 3.14: Support for optionally dropping grouping parentheses when using multiple exception types. See PEP 758.
+Changed in version 3.14: Support for optionally dropping grouping parentheses when using multiple exception types. See 
+#index-10
+PEP 758.
 
-SECTION except-clause
+#except-clause
+
+#except
 
 8.4.1. except clause¶
 
@@ -314,13 +517,17 @@ or to a tuple that contains such a class.
 
 If no except clause matches the exception,
 the search for an exception handler
-continues in the surrounding code and on the invocation stack.  [1]
+continues in the surrounding code and on the invocation stack.  
+#id1
+[1]
 
 If the evaluation of an expression
 in the header of an except clause raises an exception,
 the original search for a handler is canceled and a search starts for
 the new exception in the surrounding code and on the call stack (it is treated
 as if the entire try statement raised the exception).
+
+#index-11
 
 When a matching except clause is found,
 the exception is assigned to the target
@@ -353,6 +560,8 @@ Exceptions are cleared because with the
 traceback attached to them, they form a reference cycle with the stack frame,
 keeping all locals in that frame alive until the next garbage collection occurs.
 
+#index-12
+
 Before an except clause’s suite is executed,
 the exception is stored in the sys module, where it can be accessed
 from within the body of the except clause by calling
@@ -377,7 +586,11 @@ TypeError()
 >>> print(sys.exception())
 None
 
-SECTION except-star
+#except-star
+
+#index-13
+
+#id2
 
 8.4.2. except* clause¶
 
@@ -439,7 +652,11 @@ ExceptionGroup('', (BlockingIOError(),))
 break, continue and return
 cannot appear in an except* clause.
 
-SECTION else-clause
+#else-clause
+
+#except-else
+
+#index-14
 
 8.4.3. else clause¶
 
@@ -449,7 +666,11 @@ continue, or break statement was executed.  Exceptions in
 the else clause are not handled by the preceding except
 clauses.
 
-SECTION finally-clause
+#finally-clause
+
+#finally
+
+#index-15
 
 8.4.4. finally clause¶
 
@@ -475,6 +696,8 @@ def f():
 The exception information is not available to the program during execution of
 the finally clause.
 
+#index-16
+
 When a return, break or continue statement is
 executed in the try suite of a try…finally
 statement, the finally clause is also executed ‘on the way out.’
@@ -495,19 +718,32 @@ finally clause due to a problem with the implementation.
 
 Changed in version 3.14: The compiler emits a SyntaxWarning when a return,
 break or continue appears in a finally
-block (see PEP 765).
+block (see 
+#index-17
+PEP 765).
 
-SECTION the-with-statement
+#the-with-statement
+
+#as
+
+#with
 
 8.5. The with statement¶
+
+#index-18
 
 The with statement is used to wrap the execution of a block with
 methods defined by a context manager (see section With Statement Context Managers).
 This allows common try…except…finally
 usage patterns to be encapsulated for convenient reuse.
 
+#grammar-token-python-grammar-with_stmt
 with_stmt:          "with" ( "(" with_stmt_contents ","? ")" | with_stmt_contents ) ":" suite
+
+#grammar-token-python-grammar-with_stmt_contents
 with_stmt_contents: with_item ("," with_item)*
+
+#grammar-token-python-grammar-with_item
 with_item:          expression ["as" target]
 
 The execution of the with statement with one “item” proceeds as follows:
@@ -602,22 +838,34 @@ Changed in version 3.10: Support for using grouping parentheses to break the sta
 
 See also
 
+#index-19
 PEP 343 - The “with” statement
 
 The specification, background, and examples for the Python with
 statement.
 
-SECTION the-match-statement
+#the-match-statement
+
+#case
+
+#match
 
 8.6. The match statement¶
+
+#index-20
 
 Added in version 3.10.
 
 The match statement is used for pattern matching.  Syntax:
 
+#grammar-token-python-grammar-match_stmt
 match_stmt:   'match' subject_expr ":" NEWLINE INDENT case_block+ DEDENT
+
+#grammar-token-python-grammar-subject_expr
 subject_expr: flexible_expression "," [flexible_expression_list [',']]
               | assignment_expression
+
+#grammar-token-python-grammar-case_block
 case_block:   'case' patterns [guard] ":" suite
 
 Note
@@ -638,11 +886,13 @@ The match and case keywords are soft keywords.
 
 See also
 
+#index-21
 PEP 634 – Structural Pattern Matching: Specification
 
+#index-22
 PEP 636 – Structural Pattern Matching: Tutorial
 
-SECTION overview
+#overview
 
 8.6.1. Overview¶
 
@@ -701,10 +951,13 @@ Case 3, y: 200
 
 In this case, if flag is a guard.  Read more about that in the next section.
 
-SECTION guards
+#guards
 
 8.6.2. Guards¶
 
+#index-23
+
+#grammar-token-python-grammar-guard
 guard: "if" assignment_expression
 
 A guard (which is part of the case) must succeed for code inside
@@ -734,9 +987,13 @@ skipping case blocks whose pattern(s) don’t all succeed. (I.e.,
 guard evaluation must happen in order.) Guard evaluation must stop once a case
 block is selected.
 
-SECTION irrefutable-case-blocks
+#irrefutable-case-blocks
+
+#irrefutable-case
 
 8.6.3. Irrefutable Case Blocks¶
+
+#index-24
 
 An irrefutable case block is a match-all case block.  A match statement may have
 at most one irrefutable case block, and it must be last.
@@ -756,9 +1013,11 @@ Wildcard Patterns
 
 parenthesized irrefutable patterns
 
-SECTION patterns
+#patterns
 
 8.6.4. Patterns¶
+
+#index-25
 
 Note
 
@@ -770,8 +1029,13 @@ the notation !RULE is shorthand for a negative lookahead assertion
 
 The top-level syntax for patterns is:
 
+#grammar-token-python-grammar-patterns
 patterns:       open_sequence_pattern | pattern
+
+#grammar-token-python-grammar-pattern
 pattern:        as_pattern | or_pattern
+
+#grammar-token-python-grammar-closed_pattern
 closed_pattern: | literal_pattern
                 | capture_pattern
                 | wildcard_pattern
@@ -787,13 +1051,15 @@ inspired most of the descriptions). Note that these descriptions are purely for
 illustration purposes and may not reflect
 the underlying implementation.  Furthermore, they do not cover all valid forms.
 
-SECTION or-patterns
+#or-patterns
 
+#id3
 8.6.4.1. OR Patterns¶
 
 An OR pattern is two or more patterns separated by vertical
 bars |.  Syntax:
 
+#grammar-token-python-grammar-or_pattern
 or_pattern: "|".closed_pattern+
 
 Only the final subpattern may be irrefutable, and each
@@ -806,13 +1072,15 @@ if none of the subpatterns succeed, the OR pattern fails.
 In simple terms, P1 | P2 | ... will try to match P1, if it fails it will try to
 match P2, succeeding immediately if any succeeds, failing otherwise.
 
-SECTION as-patterns
+#as-patterns
 
+#id4
 8.6.4.2. AS Patterns¶
 
 An AS pattern matches an OR pattern on the left of the as
 keyword against a subject.  Syntax:
 
+#grammar-token-python-grammar-as_pattern
 as_pattern: or_pattern "as" capture_pattern
 
 If the OR pattern fails, the AS pattern fails.  Otherwise, the AS pattern binds
@@ -822,13 +1090,15 @@ capture_pattern cannot be a _.
 In simple terms P as NAME will match with P, and on success it will
 set NAME = <subject>.
 
-SECTION literal-patterns
+#literal-patterns
 
+#id5
 8.6.4.3. Literal Patterns¶
 
 A literal pattern corresponds to most
 literals in Python.  Syntax:
 
+#grammar-token-python-grammar-literal_pattern
 literal_pattern: signed_number
                  | signed_number "+" NUMBER
                  | signed_number "-" NUMBER
@@ -836,6 +1106,8 @@ literal_pattern: signed_number
                  | "None"
                  | "True"
                  | "False"
+
+#grammar-token-python-grammar-signed_number
 signed_number:   ["+" | "-"] NUMBER
 
 The rule strings and the token NUMBER are defined in the
@@ -850,13 +1122,15 @@ on the left and an imaginary number on the right. E.g. 3 + 4j.
 In simple terms, LITERAL will succeed only if <subject> == LITERAL. For
 the singletons None, True and False, the is operator is used.
 
-SECTION capture-patterns
+#capture-patterns
 
+#id6
 8.6.4.4. Capture Patterns¶
 
 A capture pattern binds the subject value to a name.
 Syntax:
 
+#grammar-token-python-grammar-capture_pattern
 capture_pattern: !'_' NAME
 
 A single underscore _ is not a capture pattern (this is what !'_'
@@ -867,19 +1141,23 @@ In a given pattern, a given name can only be bound once.  E.g.
 case x, x: ... is invalid while case [x] | x: ... is allowed.
 
 Capture patterns always succeed.  The binding follows scoping rules
-established by the assignment expression operator in PEP 572; the
+established by the assignment expression operator in 
+#index-26
+PEP 572; the
 name becomes a local variable in the closest containing function scope unless
 there’s an applicable global or nonlocal statement.
 
 In simple terms NAME will always succeed and it will set NAME = <subject>.
 
-SECTION wildcard-patterns
+#wildcard-patterns
 
+#id7
 8.6.4.5. Wildcard Patterns¶
 
 A wildcard pattern always succeeds (matches anything)
 and binds no name.  Syntax:
 
+#grammar-token-python-grammar-wildcard_pattern
 wildcard_pattern: '_'
 
 _ is a soft keyword within any pattern,
@@ -888,15 +1166,21 @@ match subject expressions, guards, and case blocks.
 
 In simple terms, _ will always succeed.
 
-SECTION value-patterns
+#value-patterns
 
+#id8
 8.6.4.6. Value Patterns¶
 
 A value pattern represents a named value in Python.
 Syntax:
 
+#grammar-token-python-grammar-value_pattern
 value_pattern: attr
+
+#grammar-token-python-grammar-attr
 attr:          name_or_attr "." NAME
+
+#grammar-token-python-grammar-name_or_attr
 name_or_attr:  attr | NAME
 
 The dotted name in the pattern is looked up using standard Python
@@ -913,30 +1197,42 @@ interpreter may cache the first value found and reuse it rather than repeat
 the same lookup.  This cache is strictly tied to a given execution of a
 given match statement.
 
-SECTION group-patterns
+#group-patterns
 
+#id9
 8.6.4.7. Group Patterns¶
 
 A group pattern allows users to add parentheses around patterns to
 emphasize the intended grouping.  Otherwise, it has no additional syntax.
 Syntax:
 
+#grammar-token-python-grammar-group_pattern
 group_pattern: "(" pattern ")"
 
 In simple terms (P) has the same effect as P.
 
-SECTION sequence-patterns
+#sequence-patterns
 
+#id10
 8.6.4.8. Sequence Patterns¶
 
 A sequence pattern contains several subpatterns to be matched against sequence elements.
 The syntax is similar to the unpacking of a list or tuple.
 
+#grammar-token-python-grammar-sequence_pattern
 sequence_pattern:       "[" [maybe_sequence_pattern] "]"
                         | "(" [open_sequence_pattern] ")"
+
+#grammar-token-python-grammar-open_sequence_pattern
 open_sequence_pattern:  maybe_star_pattern "," [maybe_sequence_pattern]
+
+#grammar-token-python-grammar-maybe_sequence_pattern
 maybe_sequence_pattern: ",".maybe_star_pattern+ ","?
+
+#grammar-token-python-grammar-maybe_star_pattern
 maybe_star_pattern:     star_pattern | pattern
+
+#grammar-token-python-grammar-star_pattern
 star_pattern:           "*" (capture_pattern | wildcard_pattern)
 
 There is no difference if parentheses  or square brackets
@@ -957,7 +1253,9 @@ sequence pattern.
 The following is the logical flow for matching a sequence pattern against a
 subject value:
 
-If the subject value is not a sequence [2], the sequence pattern
+If the subject value is not a sequence 
+#id11
+[2], the sequence pattern
 fails.
 
 If the subject value is an instance of str, bytes or bytearray
@@ -1011,18 +1309,26 @@ P2 matches <subject>[1] (note that this match can also bind names)
 
 … and so on for the corresponding pattern/element.
 
-SECTION mapping-patterns
+#mapping-patterns
 
+#id12
 8.6.4.9. Mapping Patterns¶
 
 A mapping pattern contains one or more key-value patterns.  The syntax is
 similar to the construction of a dictionary.
 Syntax:
 
+#grammar-token-python-grammar-mapping_pattern
 mapping_pattern:     "{" [items_pattern] "}"
+
+#grammar-token-python-grammar-items_pattern
 items_pattern:       ",".key_value_pattern+ ","?
+
+#grammar-token-python-grammar-key_value_pattern
 key_value_pattern:   (literal_pattern | value_pattern) ":" pattern
                      | double_star_pattern
+
+#grammar-token-python-grammar-double_star_pattern
 double_star_pattern: "**" capture_pattern
 
 At most one double star pattern may be in a mapping pattern.  The double star
@@ -1035,7 +1341,9 @@ raise a ValueError at runtime.
 The following is the logical flow for matching a mapping pattern against a
 subject value:
 
-If the subject value is not a mapping [3],the mapping pattern fails.
+If the subject value is not a mapping 
+#id13
+[3],the mapping pattern fails.
 
 If every key given in the mapping pattern is present in the subject mapping,
 and the pattern for each key matches the corresponding item of the subject
@@ -1063,18 +1371,28 @@ P1 matches <subject>[KEY1]
 
 … and so on for the corresponding KEY/pattern pair.
 
-SECTION class-patterns
+#class-patterns
 
+#id14
 8.6.4.10. Class Patterns¶
 
 A class pattern represents a class and its positional and keyword arguments
 (if any).  Syntax:
 
+#grammar-token-python-grammar-class_pattern
 class_pattern:       name_or_attr "(" [pattern_arguments ","?] ")"
+
+#grammar-token-python-grammar-pattern_arguments
 pattern_arguments:   positional_patterns ["," keyword_patterns]
                      | keyword_patterns
+
+#grammar-token-python-grammar-positional_patterns
 positional_patterns: ",".pattern+
+
+#grammar-token-python-grammar-keyword_patterns
 keyword_patterns:    ",".keyword_pattern+
+
+#grammar-token-python-grammar-keyword_pattern
 keyword_pattern:     NAME "=" pattern
 
 The same keyword should not be repeated in class patterns.
@@ -1186,32 +1504,63 @@ P2 matches <subject>.attr
 
 See also
 
+#index-27
 PEP 634 – Structural Pattern Matching: Specification
 
+#index-28
 PEP 636 – Structural Pattern Matching: Tutorial
 
-SECTION function-definitions
+#function-definitions
+
+#def
+
+#function
+
+#index-29
 
 8.7. Function definitions¶
+
+#index-30
 
 A function definition defines a user-defined function object (see section
 The standard type hierarchy):
 
+#grammar-token-python-grammar-funcdef
 funcdef:                   [decorators] "def" funcname [type_params] "(" [parameter_list] ")"
                            ["->" expression] ":" suite
+
+#grammar-token-python-grammar-decorators
 decorators:                decorator+
+
+#grammar-token-python-grammar-decorator
 decorator:                 "@" assignment_expression NEWLINE
+
+#grammar-token-python-grammar-parameter_list
 parameter_list:            defparameter ("," defparameter)* "," "/" ["," [parameter_list_no_posonly]]
                              | parameter_list_no_posonly
+
+#grammar-token-python-grammar-parameter_list_no_posonly
 parameter_list_no_posonly: defparameter ("," defparameter)* ["," [parameter_list_starargs]]
                            | parameter_list_starargs
+
+#grammar-token-python-grammar-parameter_list_starargs
 parameter_list_starargs:   "*" star_parameter ("," defparameter)* ["," [parameter_star_kwargs]]
                            | "*" ("," defparameter)+ ["," [parameter_star_kwargs]]
                            | parameter_star_kwargs
+
+#grammar-token-python-grammar-parameter_star_kwargs
 parameter_star_kwargs:     "**" parameter [","]
+
+#grammar-token-python-grammar-parameter
 parameter:                 identifier [":" expression]
+
+#grammar-token-python-grammar-star_parameter
 star_parameter:            identifier [":" ["*"] expression]
+
+#grammar-token-python-grammar-defparameter
 defparameter:              parameter ["=" expression]
+
+#grammar-token-python-grammar-funcname
 funcname:                  identifier
 
 A function definition is an executable statement.  Its execution binds the
@@ -1221,7 +1570,11 @@ reference to the current global namespace as the global namespace to be used
 when the function is called.
 
 The function definition does not execute the function body; this gets executed
-only when the function is called. [4]
+only when the function is called. 
+#id15
+[4]
+
+#index-31
 
 A function definition may be wrapped by one or more decorator expressions.
 Decorator expressions are evaluated when the function is defined, in the scope
@@ -1243,7 +1596,9 @@ except that the original function is not temporarily bound to the name func.
 
 Changed in version 3.9: Functions may be decorated with any valid
 assignment_expression. Previously, the grammar was
-much more restrictive; see PEP 614 for details.
+much more restrictive; see 
+#index-32
+PEP 614 for details.
 
 A list of type parameters may be given in square brackets
 between the function’s name and the opening parenthesis for its parameter list.
@@ -1253,6 +1608,8 @@ __type_params__
 attribute. See Generic functions for more.
 
 Changed in version 3.12: Type parameter lists are new in Python 3.12.
+
+#index-33
 
 When one or more parameters have the form parameter =
 expression, the function is said to have “default parameter values.”  For a
@@ -1278,6 +1635,8 @@ def whats_on_the_telly(penguin=None):
     penguin.append("property of the zoo")
     return penguin
 
+#index-34
+
 Function call semantics are described in more detail in section Calls. A
 function call always assigns values to all parameters mentioned in the parameter
 list, either from positional arguments, from keyword arguments, or from default
@@ -1291,7 +1650,11 @@ by keyword arguments.  Parameters before “/” are positional-only parameters
 and may only be passed by positional arguments.
 
 Changed in version 3.8: The / function parameter syntax may be used to indicate positional-only
-parameters. See PEP 570 for details.
+parameters. See 
+#index-35
+PEP 570 for details.
+
+#index-36
 
 Parameters may have an annotation of the form “: expression”
 following the parameter name.  Any parameter may have an annotation, even those of the form
@@ -1302,7 +1665,11 @@ any valid Python expression.  The presence of annotations does not change the
 semantics of a function. See Annotations for more information on annotations.
 
 Changed in version 3.11: Parameters of the form “*identifier” may have an annotation
-“: *expression”. See PEP 646.
+“: *expression”. See 
+#index-37
+PEP 646.
+
+#index-38
 
 It is also possible to create anonymous functions (functions not bound to a
 name), for immediate use in expressions.  This uses lambda expressions, described in
@@ -1320,37 +1687,53 @@ Naming and binding for details.
 
 See also
 
+#index-39
 PEP 3107 - Function Annotations
 
 The original specification for function annotations.
 
+#index-40
 PEP 484 - Type Hints
 
 Definition of a standard meaning for annotations: type hints.
 
+#index-41
 PEP 526 - Syntax for Variable Annotations
 
 Ability to type hint variable declarations, including class
 variables and instance variables.
 
+#index-42
 PEP 563 - Postponed Evaluation of Annotations
 
 Support for forward references within annotations by preserving
 annotations in a string form at runtime instead of eager evaluation.
 
+#index-43
 PEP 318 - Decorators for Functions and Methods
 
 Function and method decorators were introduced.
-Class decorators were introduced in PEP 3129.
+Class decorators were introduced in 
+#index-44
+PEP 3129.
 
-SECTION class-definitions
+#class-definitions
+
+#class
 
 8.8. Class definitions¶
 
+#index-45
+
 A class definition defines a class object (see section The standard type hierarchy):
 
+#grammar-token-python-grammar-classdef
 classdef:    [decorators] "class" classname [type_params] [inheritance] ":" suite
+
+#grammar-token-python-grammar-inheritance
 inheritance: "(" [argument_list] ")"
+
+#grammar-token-python-grammar-classname
 classname:   identifier
 
 A class definition is an executable statement.  The inheritance list usually
@@ -1374,7 +1757,9 @@ The class’s suite is then executed in a new execution frame (see Naming and bi
 using a newly created local namespace and the original global namespace.
 (Usually, the suite contains mostly function definitions.)  When the class’s
 suite finishes execution, its execution frame is discarded but its local
-namespace is saved. [5] A class object is then created using the inheritance
+namespace is saved. 
+#id16
+[5] A class object is then created using the inheritance
 list for the base classes and the saved local namespace for the attribute
 dictionary.  The class name is bound to this class object in the original local
 namespace.
@@ -1385,6 +1770,8 @@ after the class is created and only for classes that were defined using
 the definition syntax.
 
 Class creation can be customized heavily using metaclasses.
+
+#index-46
 
 Classes can also be decorated: just like when decorating functions,
 
@@ -1402,7 +1789,9 @@ decorators.  The result is then bound to the class name.
 
 Changed in version 3.9: Classes may be decorated with any valid
 assignment_expression. Previously, the grammar was
-much more restrictive; see PEP 614 for details.
+much more restrictive; see 
+#index-47
+PEP 614 for details.
 
 A list of type parameters may be given in square brackets
 immediately after the class’s name.
@@ -1423,18 +1812,24 @@ can be used to create instance variables with different implementation details.
 
 See also
 
+#index-48
 PEP 3115 - Metaclasses in Python 3000
 
 The proposal that changed the declaration of metaclasses to the current
 syntax, and the semantics for how classes with metaclasses are
 constructed.
 
+#index-49
 PEP 3129 - Class Decorators
 
 The proposal that added class decorators.  Function and method decorators
-were introduced in PEP 318.
+were introduced in 
+#index-50
+PEP 318.
 
-SECTION multiple-inheritance
+#multiple-inheritance
+
+#id17
 
 8.8.1. Multiple inheritance¶
 
@@ -1536,18 +1931,27 @@ Traceback (most recent call last):
   ...
 TypeError: multiple bases have instance lay-out conflict
 
-SECTION coroutines
+#coroutines
+
+#async
 
 8.9. Coroutines¶
 
 Added in version 3.5.
 
-SECTION coroutine-function-definition
+#coroutine-function-definition
+
+#async-def
+
+#index-51
 
 8.9.1. Coroutine function definition¶
 
+#grammar-token-python-grammar-async_funcdef
 async_funcdef: [decorators] "async" "def" funcname "(" [parameter_list] ")"
                ["->" expression] ":" suite
+
+#index-52
 
 Execution of Python coroutines can be suspended and resumed at many points
 (see coroutine). await expressions, async for and
@@ -1568,10 +1972,15 @@ async def func(param1, param2):
 Changed in version 3.7: await and async are now keywords; previously they were only
 treated as such inside the body of a coroutine function.
 
-SECTION the-async-for-statement
+#the-async-for-statement
+
+#async-for
+
+#index-53
 
 8.9.2. The async for statement¶
 
+#grammar-token-python-grammar-async_for_stmt
 async_for_stmt: "async" for_stmt
 
 An asynchronous iterable provides an __aiter__ method that directly
@@ -1609,10 +2018,15 @@ for __aiter__() and __anext__().
 It is a SyntaxError to use an async for statement outside the
 body of a coroutine function.
 
-SECTION the-async-with-statement
+#the-async-with-statement
+
+#async-with
+
+#index-54
 
 8.9.3. The async with statement¶
 
+#grammar-token-python-grammar-async_with_stmt
 async_with_stmt: "async" with_stmt
 
 An asynchronous context manager is a context manager that is
@@ -1650,23 +2064,39 @@ body of a coroutine function.
 
 See also
 
+#index-55
 PEP 492 - Coroutines with async and await syntax
 
 The proposal that made coroutines a proper standalone concept in Python,
 and added supporting syntax.
 
-SECTION type-parameter-lists
+#type-parameter-lists
+
+#type-params
 
 8.10. Type parameter lists¶
 
 Added in version 3.12.
 
-Changed in version 3.13: Support for default values was added (see PEP 696).
+Changed in version 3.13: Support for default values was added (see 
+#index-56
+PEP 696).
 
+#index-57
+
+#grammar-token-python-grammar-type_params
 type_params:  "[" type_param ("," type_param)* "]"
+
+#grammar-token-python-grammar-type_param
 type_param:   typevar | typevartuple | paramspec
+
+#grammar-token-python-grammar-typevar
 typevar:      identifier (":" expression)? ("=" expression)?
+
+#grammar-token-python-grammar-typevartuple
 typevartuple: "*" identifier ("=" expression)?
+
+#grammar-token-python-grammar-paramspec
 paramspec:    "**" identifier ("=" expression)?
 
 Functions (including coroutines),
@@ -1762,7 +2192,9 @@ def overly_generic[
    *e: SimpleTypeVarTuple,
 ): ...
 
-SECTION generic-functions
+#generic-functions
+
+#id18
 
 8.10.1. Generic functions¶
 
@@ -1821,7 +2253,9 @@ func = decorator(TYPE_PARAMS_OF_func())
 The capitalized names like DEFAULT_OF_arg are not actually
 bound at runtime.
 
-SECTION generic-classes
+#generic-classes
+
+#id19
 
 8.10.2. Generic classes¶
 
@@ -1862,7 +2296,9 @@ annotation-def TYPE_PARAMS_OF_Bag():
     return Bag
 Bag = decorator(TYPE_PARAMS_OF_Bag())
 
-SECTION generic-type-aliases
+#generic-type-aliases
+
+#id20
 
 8.10.3. Generic type aliases¶
 
@@ -1886,7 +2322,9 @@ Here, annotation-def (not a real keyword) indicates an
 annotation scope. The capitalized names
 like TYPE_PARAMS_OF_ListOrSet are not actually bound at runtime.
 
-SECTION annotations
+#annotations
+
+#id21
 
 8.11. Annotations¶
 
@@ -1922,18 +2360,24 @@ all annotations are instead stored as strings:
 {'param': 'annotation'}
 
 This future statement will be deprecated and removed in a future version of Python,
-but not before Python 3.13 reaches its end of life (see PEP 749).
+but not before Python 3.13 reaches its end of life (see 
+#index-58
+PEP 749).
 When it is used, introspection tools like
 annotationlib.get_annotations() and typing.get_type_hints() are
 less likely to be able to resolve annotations at runtime.
 
 Footnotes
 
+#id22
+
 [1]
 
 The exception is propagated to the invocation stack unless
 there is a finally clause which happens to raise another
 exception. That new exception causes the old one to be lost.
+
+#id23
 
 [2]
 
@@ -1966,6 +2410,8 @@ Note
 Subject values of type str, bytes, and bytearray
 do not match sequence patterns.
 
+#id24
+
 [3]
 
 In pattern matching, a mapping is defined as one of the following:
@@ -1981,11 +2427,15 @@ a class that inherits from any of the above
 The standard library classes dict and types.MappingProxyType
 are mappings.
 
+#id25
+
 [4]
 
 A string literal appearing as the first statement in the function body is
 transformed into the function’s __doc__ attribute and
 therefore the function’s docstring.
+
+#id26
 
 [5]
 
@@ -1993,7 +2443,17 @@ A string literal appearing as the first statement in the class body is
 transformed into the namespace’s __doc__ item and therefore
 the class’s docstring.
 
+            
+
+        
+
+      
+
+  
+
 Table of Contents
+
+    
 
 8. Compound statements
 
@@ -2069,43 +2529,109 @@ Table of Contents
 
 8.11. Annotations
 
+  
+
     Previous topic
 
 7. Simple statements
+
+  
 
     Next topic
 
 9. Top-level components
 
+  
+
+  
+
 This page
+
+    
 
 Report a bug
 
+      
 Improve this page
+
+      
 
         Show source
 
+      
+
+      
+
+  
+
+#sidebarbutton
+
 «
 
+      
+
+      
+
+      
 Navigation
+
+      
 
           index
 
+        
+
           modules |
+
+        
 
           next |
 
+        
+
           previous |
 
+          
+
+          
 Python »
+
+          
+
+            
+
+          
+
+          
+
+              
+
+    
+#cpython-language-and-version
 
       3.15.2 documentation »
 
+          
 The Python Language Reference »
 
+        
 8. Compound statements
 
+                
+
+                    
+
+    
+
+          
+#search-box
+
+          
+
+    
                      |
+
+            
 
     Theme
 
@@ -2115,20 +2641,32 @@ The Python Language Reference »
 
  |
 
+            
+
+      
+
     © Copyright 2001 Python Software Foundation.
 
     This page is licensed under the Python Software Foundation License Version 2.
 
     Examples, recipes, and other code in the documentation are additionally licensed under the Zero Clause BSD License.
 
+    
       See History and License for more information.
+
+    
 
     The Python Software Foundation is a non-profit corporation.
 Please donate.
 
-      Last updated on Nov 19, 2026 (13:33 UTC).
+    
+      Last updated on Nov 21, 2026 (13:22 UTC).
 
       Found a bug?
 
+    
+
     Created using Sphinx 9.1.1.
+
+    
 
