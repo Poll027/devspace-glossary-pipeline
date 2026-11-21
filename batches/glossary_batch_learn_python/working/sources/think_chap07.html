@@ -1,0 +1,1473 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Python for loops and search: loop through strings and a word list, count and update variables, use the in operator, linear search, and doctest." name="description" />
+<meta property="og:title" content="7. Iteration and Search" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://allendowney.github.io/ThinkPython/chap07.html" />
+<meta property="og:site_name" content="Think Python, 3rd edition" />
+<meta property="og:description" content="Python for loops and search: loop through strings and a word list, count and update variables, use the in operator, linear search, and doctest." />
+<meta property="og:image" content="https://raw.githubusercontent.com/AllenDowney/ThinkPython/v3/think_python_3e.jpg" />
+<meta property="og:image:alt" content="Cover of Think Python, 3rd edition, by Allen B. Downey" />
+
+    <title>7. Iteration and Search &#8212; Think Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/ethicalads.css?v=873cce02" />
+    <link rel="stylesheet" type="text/css" href="_static/support-ask.css?v=46f7634d" />
+    <link rel="stylesheet" type="text/css" href="_static/sponsor.css?v=c0cef7de" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap07';</script>
+    <link rel="canonical" href="https://allendowney.github.io/ThinkPython/chap07.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="8. Strings and Regular Expressions" href="chap08.html" />
+    <link rel="prev" title="6. Return Values" href="chap06.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Think Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Think Python, 3rd edition
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Front Matter</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chap00.html">Preface</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapters</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chap01.html">1. Programming as a way of thinking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap02.html">2. Variables and Statements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap03.html">3. Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap04.html">4. Functions and Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap05.html">5. Conditionals and Recursion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap06.html">6. Return Values</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. Iteration and Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap08.html">8. Strings and Regular Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap09.html">9. Lists</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap10.html">10. Dictionaries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap11.html">11. Tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap12.html">12. Text Analysis and Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap13.html">13. Files and Databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap14.html">14. Classes and Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap15.html">15. Classes and Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap16.html">16. Classes and Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap17.html">17. Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap18.html">18. Python Extras</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap19.html">19. Final thoughts</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">End Matter</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="blank.html">Blank Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quizzes.html">Quizzes for Instructors</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/AllenDowney/ThinkPython/tree/v3" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/chap07.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Iteration and Search</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loops-and-strings">7.1. Loops and strings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-word-list">7.2. Reading the word list</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-variables">7.3. Updating variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#looping-and-counting">7.4. Looping and counting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-in-operator">7.5. The in operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search">7.6. Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#doctest">7.7. Doctest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#glossary">7.8. Glossary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">7.9. Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ask-a-virtual-assistant">7.9.1. Ask a virtual assistant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">7.9.2. Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">7.9.3. Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">7.9.4. Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">7.9.5. Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">7.9.6. Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">7.9.7. Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">7.9.8. Exercise</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p>You can order print and ebook versions of <em>Think Python 3e</em> from
+<a class="reference external" href="https://bookshop.org/a/98697/9781098155438">Bookshop.org</a> and
+<a class="reference external" href="https://www.amazon.com/_/dp/1098155432?smid=ATVPDKIKX0DER&amp;amp;_encoding=UTF8&amp;amp;tag=greenteapre01-20&amp;amp;linkCode=ur2&amp;amp;linkId=e2a529f94920295d27ec8a06e757dc7c&amp;amp;camp=1789&amp;amp;creative=9325">Amazon</a> (affiliate links).</p>
+<p>If you find this book useful, please consider
+<a class="reference external" href="https://greenteapress.com/support/?book=tp3">supporting free, open educational materials</a>
+from Green Tea Press.</p>
+<p>And you might like this new book-in-progress by Allen Downey, <a class="reference external" href="https://leanpub.com/ywcn"><em>You Would Choose Now: Measuring America’s Progress Toward Fairness and Tolerance</em></a>.</p>
+<section id="iteration-and-search">
+<span id="chapter-search"></span><h1><span class="section-number">7. </span>Iteration and Search<a class="headerlink" href="#iteration-and-search" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/AllenDowney/ThinkPython/blob/v3/chapters/chap07.ipynb">Run this notebook on Colab</a></p>
+<p>In 1939 Ernest Vincent Wright published a 50,000 word novel called <em>Gadsby</em> that does not contain the letter “e”. Since “e” is the most common letter in English, writing even a few words without using it is difficult.
+To get a sense of how difficult, in this chapter we’ll compute the fraction of English words have at least one “e”.</p>
+<p>For that, we’ll use <code class="docutils literal notranslate"><span class="pre">for</span></code> statements to loop through the letters in a string and the words in a file, and we’ll update variables in a loop to count the number of words that contain an “e”.
+We’ll use the <code class="docutils literal notranslate"><span class="pre">in</span></code> operator to check whether a letter appears in a word, and you’ll learn a programming pattern called a “linear search”.</p>
+<p>As an exercise, you’ll use these tools to solve a word puzzle called “Spelling Bee”.</p>
+<section id="loops-and-strings">
+<h2><span class="section-number">7.1. </span>Loops and strings<a class="headerlink" href="#loops-and-strings" title="Link to this heading">#</a></h2>
+<p>In Chapter 3 we saw a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop that uses the <code class="docutils literal notranslate"><span class="pre">range</span></code> function to display a sequence of numbers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 1 2 
+</pre></div>
+</div>
+</div>
+</div>
+<p>This version uses the keyword argument <code class="docutils literal notranslate"><span class="pre">end</span></code> so the <code class="docutils literal notranslate"><span class="pre">print</span></code> function puts a space after each number rather than a newline.</p>
+<p>We can also use a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop to display the letters in a string.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="s1">&#39;Gadsby&#39;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>G a d s b y 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that I changed the name of the variable from <code class="docutils literal notranslate"><span class="pre">i</span></code> to <code class="docutils literal notranslate"><span class="pre">letter</span></code>, which provides more information about the value it refers to.
+The variable defined in a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop is called the <strong>loop variable</strong>.</p>
+<p>Now that we can loop through the letters in a word, we can check whether it contains the letter “e”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="s2">&quot;Gadsby&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">letter</span> <span class="o">==</span> <span class="s1">&#39;E&#39;</span> <span class="ow">or</span> <span class="n">letter</span> <span class="o">==</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;This word has an &quot;e&quot;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Before we go on, let’s encapsulate that loop in a function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">has_e</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="s2">&quot;Gadsby&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">letter</span> <span class="o">==</span> <span class="s1">&#39;E&#39;</span> <span class="ow">or</span> <span class="n">letter</span> <span class="o">==</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;This word has an &quot;e&quot;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And let’s make it a pure function that return <code class="docutils literal notranslate"><span class="pre">True</span></code> if the word contains an “e” and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">has_e</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="s2">&quot;Gadsby&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">letter</span> <span class="o">==</span> <span class="s1">&#39;E&#39;</span> <span class="ow">or</span> <span class="n">letter</span> <span class="o">==</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can generalize it to take the word as a parameter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">has_e</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">letter</span> <span class="o">==</span> <span class="s1">&#39;E&#39;</span> <span class="ow">or</span> <span class="n">letter</span> <span class="o">==</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can test it like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">has_e</span><span class="p">(</span><span class="s1">&#39;Gadsby&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">has_e</span><span class="p">(</span><span class="s1">&#39;Emma&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="reading-the-word-list">
+<h2><span class="section-number">7.2. </span>Reading the word list<a class="headerlink" href="#reading-the-word-list" title="Link to this heading">#</a></h2>
+<p>To see how many words contain an “e”, we’ll need a word list.
+The one we’ll use is a list of about 114,000 official crosswords; that is, words that are considered valid in crossword puzzles and other word games.</p>
+<p>The word list is in a file called <code class="docutils literal notranslate"><span class="pre">words.txt</span></code>, which is downloaded in the notebook for this chapter.
+To read it, we’ll use the built-in function <code class="docutils literal notranslate"><span class="pre">open</span></code>, which takes the name of the file as a parameter and returns a <strong>file object</strong> we can use to read the file.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_object</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;words.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The file object provides a function called <code class="docutils literal notranslate"><span class="pre">readline</span></code>, which reads characters from the file until it gets to a newline and returns the result as a string:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_object</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;aa\n&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the syntax for calling <code class="docutils literal notranslate"><span class="pre">readline</span></code> is different from functions we’ve seen so far. That’s because it is a <strong>method</strong>, which is a function associated with an object.
+In this case <code class="docutils literal notranslate"><span class="pre">readline</span></code> is associated with the file object, so we call it using the name of the object, the dot operator, and the name of the method.</p>
+<p>The first word in the list is “aa”, which is a kind of lava.
+The sequence <code class="docutils literal notranslate"><span class="pre">\n</span></code> represents the newline character that separates this word from the next.</p>
+<p>The file object keeps track of where it is in the file, so if you call
+<code class="docutils literal notranslate"><span class="pre">readline</span></code> again, you get the next word:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">line</span> <span class="o">=</span> <span class="n">file_object</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+<span class="n">line</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;aah\n&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>To remove the newline from the end of the word, we can use <code class="docutils literal notranslate"><span class="pre">strip</span></code>, which is a method associated with strings, so we can call it like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="n">word</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;aah&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">strip</span></code> removes whitespace characters – including spaces, tabs, and newlines – from the beginning and end of the string.</p>
+<p>You can also use a file object as part of a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop.
+This program reads <code class="docutils literal notranslate"><span class="pre">words.txt</span></code> and prints each word, one per line:</p>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;words.txt&#39;</span><span class="p">):</span>
+    <span class="n">word</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that we can read the word list, the next step is to count them.
+For that, we will need the ability to update variables.</p>
+</section>
+<section id="updating-variables">
+<h2><span class="section-number">7.3. </span>Updating variables<a class="headerlink" href="#updating-variables" title="Link to this heading">#</a></h2>
+<p>As you may have discovered, it is legal to make more than one assignment
+to the same variable.
+A new assignment makes an existing variable refer to a new value (and stop referring to the old value).</p>
+<p>For example, here is an initial assignment that creates a variable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5
+</pre></div>
+</div>
+</div>
+</div>
+<p>And here is an assignment that changes the value of a variable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following figure shows what these assignments looks like in a state diagram.</p>
+<div class="cell tag_remove-input tag_keep docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/5f2c6acf2632453c84d4a58782db35679dedcd804dd1683fca0560ccb15d92ea.png" src="_images/5f2c6acf2632453c84d4a58782db35679dedcd804dd1683fca0560ccb15d92ea.png" />
+</div>
+</div>
+<p>The dotted arrow indicates that <code class="docutils literal notranslate"><span class="pre">x</span></code> no longer refers to <code class="docutils literal notranslate"><span class="pre">5</span></code>.
+The solid arrow indicates that it now refers to <code class="docutils literal notranslate"><span class="pre">7</span></code>.</p>
+<p>A common kind of assignment is an <strong>update</strong>, where the new value of
+the variable depends on the old.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8
+</pre></div>
+</div>
+</div>
+</div>
+<p>This statement means “get the current value of <code class="docutils literal notranslate"><span class="pre">x</span></code>, add one, and assign the result back to <code class="docutils literal notranslate"><span class="pre">x</span></code>.”</p>
+<p>If you try to update a variable that doesn’t exist, you get an error, because Python evaluates the expression on the right before it assigns a value to the variable on the left.</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;z&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Before you can update a variable, you have to <strong>initialize</strong> it, usually
+with a simple assignment:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">z</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Increasing the value of a variable is called an <strong>increment</strong>; decreasing the value is called a <strong>decrement</strong>.
+Because these operations are so common, Python provides <strong>augmented assignment operators</strong> that update a variable more concisely.
+For example, the <code class="docutils literal notranslate"><span class="pre">+=</span></code> operator increments a variable by the given amount.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">+=</span> <span class="mi">2</span>
+<span class="n">z</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
+</pre></div>
+</div>
+</div>
+</div>
+<p>There are augmented assignment operators for the other arithmetic operators, including <code class="docutils literal notranslate"><span class="pre">-=</span></code> and <code class="docutils literal notranslate"><span class="pre">*=</span></code>.</p>
+</section>
+<section id="looping-and-counting">
+<h2><span class="section-number">7.4. </span>Looping and counting<a class="headerlink" href="#looping-and-counting" title="Link to this heading">#</a></h2>
+<p>The following program counts the number of words in the word list.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;words.txt&#39;</span><span class="p">):</span>
+    <span class="n">word</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">total</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>It starts by initializing <code class="docutils literal notranslate"><span class="pre">total</span></code> to <code class="docutils literal notranslate"><span class="pre">0</span></code>.
+Each time through the loop, it increments <code class="docutils literal notranslate"><span class="pre">total</span></code> by <code class="docutils literal notranslate"><span class="pre">1</span></code>.
+So when the loop exits, <code class="docutils literal notranslate"><span class="pre">total</span></code> refers to the total number of words.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">total</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>113783
+</pre></div>
+</div>
+</div>
+</div>
+<p>A variable like this, used to count the number of times something happens, is called a <strong>counter</strong>.</p>
+<p>We can add a second counter to the program to keep track of the number of words that contain an “e”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;words.txt&#39;</span><span class="p">):</span>
+    <span class="n">word</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">has_e</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s see how many words contain an “e”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">count</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>76162
+</pre></div>
+</div>
+</div>
+</div>
+<p>As a percentage of <code class="docutils literal notranslate"><span class="pre">total</span></code>, about two-thirds of the words use the letter “e”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">count</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>66.93618554617122
+</pre></div>
+</div>
+</div>
+</div>
+<p>So you can understand why it’s difficult to craft a book without using any such words.</p>
+</section>
+<section id="the-in-operator">
+<h2><span class="section-number">7.5. </span>The in operator<a class="headerlink" href="#the-in-operator" title="Link to this heading">#</a></h2>
+<p>The version of <code class="docutils literal notranslate"><span class="pre">has_e</span></code> we wrote in this chapter is more complicated than it needs to be.
+Python provides an operator, <code class="docutils literal notranslate"><span class="pre">in</span></code>,  that checks whether a character appears in a string.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word</span> <span class="o">=</span> <span class="s1">&#39;Gadsby&#39;</span>
+<span class="s1">&#39;e&#39;</span> <span class="ow">in</span> <span class="n">word</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<p>So we can rewrite <code class="docutils literal notranslate"><span class="pre">has_e</span></code> like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">has_e</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">word</span> <span class="ow">or</span> <span class="s1">&#39;e&#39;</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And because the conditional of the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement has a boolean value, we can eliminate the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement and return the boolean directly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">has_e</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">word</span> <span class="ow">or</span> <span class="s1">&#39;e&#39;</span> <span class="ow">in</span> <span class="n">word</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can simplify this function even more using the method <code class="docutils literal notranslate"><span class="pre">lower</span></code>, which converts the letters in a string to lowercase.
+Here’s an example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;gadsby&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lower</span></code> makes a new string – it does not modify the existing string – so the value of <code class="docutils literal notranslate"><span class="pre">word</span></code> is unchanged.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Gadsby&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s how we can use <code class="docutils literal notranslate"><span class="pre">lower</span></code> in <code class="docutils literal notranslate"><span class="pre">has_e</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">has_e</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;e&#39;</span> <span class="ow">in</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">has_e</span><span class="p">(</span><span class="s1">&#39;Gadsby&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">has_e</span><span class="p">(</span><span class="s1">&#39;Emma&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="search">
+<h2><span class="section-number">7.6. </span>Search<a class="headerlink" href="#search" title="Link to this heading">#</a></h2>
+<p>Based on this simpler version of <code class="docutils literal notranslate"><span class="pre">has_e</span></code>, let’s write a more general function called <code class="docutils literal notranslate"><span class="pre">uses_any</span></code> that takes a second parameter that is a string of letters.
+It returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the word uses any of the letters and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">uses_any</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">letters</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">letters</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s an example where the result is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uses_any</span><span class="p">(</span><span class="s1">&#39;banana&#39;</span><span class="p">,</span> <span class="s1">&#39;aeiou&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>And another where it is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uses_any</span><span class="p">(</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">uses_any</span></code> converts <code class="docutils literal notranslate"><span class="pre">word</span></code> and <code class="docutils literal notranslate"><span class="pre">letters</span></code> to lowercase, so it works with any combination of cases.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uses_any</span><span class="p">(</span><span class="s1">&#39;Banana&#39;</span><span class="p">,</span> <span class="s1">&#39;AEIOU&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>The structure of <code class="docutils literal notranslate"><span class="pre">uses_any</span></code> is similar to <code class="docutils literal notranslate"><span class="pre">has_e</span></code>.
+It loops through the letters in <code class="docutils literal notranslate"><span class="pre">word</span></code> and checks them one at a time.
+If it finds one that appears in <code class="docutils literal notranslate"><span class="pre">letters</span></code>, it returns <code class="docutils literal notranslate"><span class="pre">True</span></code> immediately.
+If it gets all the way through the loop without finding any, it returns <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<p>This pattern is called a <strong>linear search</strong>.
+In the exercises at the end of this chapter, you’ll write more functions that use this pattern.</p>
+</section>
+<section id="doctest">
+<h2><span class="section-number">7.7. </span>Doctest<a class="headerlink" href="#doctest" title="Link to this heading">#</a></h2>
+<p>In <a class="reference internal" href="chap04.html#section-docstring"><span class="std std-ref">Chapter 4</span></a> we used a docstring to document a function – that is, to explain what it does.
+It is also possible to use a docstring to <em>test</em> a function.
+Here’s a version of <code class="docutils literal notranslate"><span class="pre">uses_any</span></code> with a docstring that includes tests.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">uses_any</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">letters</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if a word uses any of a list of letters.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; uses_any(&#39;banana&#39;, &#39;aeiou&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; uses_any(&#39;apple&#39;, &#39;xyz&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">letters</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each test begins with <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code>, which is used as a prompt in some Python environments to indicate where the user can type code.
+In a doctest, the prompt is followed by an expression, usually a function call.
+The following line indicates the value the expression should have if the function works correctly.</p>
+<p>In the first example, <code class="docutils literal notranslate"><span class="pre">'banana'</span></code> uses <code class="docutils literal notranslate"><span class="pre">'a'</span></code>, so the result should be <code class="docutils literal notranslate"><span class="pre">True</span></code>.
+In the second example, <code class="docutils literal notranslate"><span class="pre">'apple'</span></code> does not use any of <code class="docutils literal notranslate"><span class="pre">'xyz'</span></code>, so the result should be <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<p>To run these tests, we have to import the <code class="docutils literal notranslate"><span class="pre">doctest</span></code> module and run a function called <code class="docutils literal notranslate"><span class="pre">run_docstring_examples</span></code>.
+To make this function easier to use, I wrote the following function, which takes a function object as an argument.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">doctest</span> <span class="kn">import</span> <span class="n">run_docstring_examples</span>
+
+<span class="k">def</span> <span class="nf">run_doctests</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="n">run_docstring_examples</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We haven’t learned about <code class="docutils literal notranslate"><span class="pre">globals</span></code> and <code class="docutils literal notranslate"><span class="pre">__name__</span></code> yet – you can ignore them.
+Now we can test <code class="docutils literal notranslate"><span class="pre">uses_any</span></code> like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run_doctests</span><span class="p">(</span><span class="n">uses_any</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">run_doctests</span></code> finds the expressions in the docstring and evaluates them.
+If the result is the expected value, the test <strong>passes</strong>.
+Otherwise it <strong>fails</strong>.</p>
+<p>If all tests pass, <code class="docutils literal notranslate"><span class="pre">run_doctests</span></code> displays no output – in that case, no news is good news.
+To see what happens when a test fails, here’s an incorrect version of <code class="docutils literal notranslate"><span class="pre">uses_any</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">uses_any_incorrect</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">letters</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if a word uses any of a list of letters.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; uses_any_incorrect(&#39;banana&#39;, &#39;aeiou&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; uses_any_incorrect(&#39;apple&#39;, &#39;xyz&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">letters</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>     <span class="c1"># INCORRECT!</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And here’s what happens when we test it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run_doctests</span><span class="p">(</span><span class="n">uses_any_incorrect</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>**********************************************************************
+File &quot;__main__&quot;, line 4, in uses_any_incorrect
+Failed example:
+    uses_any_incorrect(&#39;banana&#39;, &#39;aeiou&#39;)
+Expected:
+    True
+Got:
+    False
+</pre></div>
+</div>
+</div>
+</div>
+<p>The output includes the example that failed, the value the function was expected to produce, and the value the function actually produced.</p>
+<p>If you are not sure why this test failed, you’ll have a chance to debug it as an exercise.</p>
+</section>
+<section id="glossary">
+<h2><span class="section-number">7.8. </span>Glossary<a class="headerlink" href="#glossary" title="Link to this heading">#</a></h2>
+<p><strong>loop variable:</strong>
+A variable defined in the header of a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop.</p>
+<p><strong>file object:</strong>
+An object that represents an open file and keeps track of which parts of the file have been read or written.</p>
+<p><strong>method:</strong>
+A function that is associated with an object and called using the dot operator.</p>
+<p><strong>update:</strong>
+An assignment statement that give a new value to a variable that already exists, rather than creating a new variables.</p>
+<p><strong>initialize:</strong>
+Create a new variable and give it a value.</p>
+<p><strong>increment:</strong>
+Increase the value of a variable.</p>
+<p><strong>decrement:</strong>
+Decrease the value of a variable.</p>
+<p><strong>counter:</strong>
+A variable used to count something, usually initialized to zero and then incremented.</p>
+<p><strong>linear search:</strong>
+A computational pattern that searches through a sequence of elements and stops when it finds what it is looking for.</p>
+<p><strong>pass:</strong>
+If a test runs and the result is as expected, the test passes.</p>
+<p><strong>fail:</strong>
+If a test runs and the result is not as expected, the test fails.</p>
+</section>
+<section id="exercises">
+<h2><span class="section-number">7.9. </span>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<div class="cell tag_remove-print tag_keep docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This cell tells Jupyter to provide detailed debugging information</span>
+<span class="c1"># when a runtime error occurs. Run it before working on the exercises.</span>
+
+<span class="o">%</span><span class="k">xmode</span> Verbose
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception reporting mode: Verbose
+</pre></div>
+</div>
+</div>
+</div>
+<section id="ask-a-virtual-assistant">
+<h3><span class="section-number">7.9.1. </span>Ask a virtual assistant<a class="headerlink" href="#ask-a-virtual-assistant" title="Link to this heading">#</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">uses_any</span></code>, you might have noticed that the first <code class="docutils literal notranslate"><span class="pre">return</span></code> statement is inside the loop and the second is outside.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">uses_any</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">letters</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">letters</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>When people first write functions like this, it is a common error to put both <code class="docutils literal notranslate"><span class="pre">return</span></code> statements inside the loop, like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">uses_any_incorrect</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">letters</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">letters</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>     <span class="c1"># INCORRECT!</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ask a virtual assistant what’s wrong with this version.</p>
+</section>
+<section id="exercise">
+<h3><span class="section-number">7.9.2. </span>Exercise<a class="headerlink" href="#exercise" title="Link to this heading">#</a></h3>
+<p>Write a function named <code class="docutils literal notranslate"><span class="pre">uses_none</span></code> that takes a word and a string of forbidden letters, and returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the word does not use any of the forbidden letters.</p>
+<p>Here’s an outline of the function that includes two doctests.
+Fill in the function so it passes these tests, and add at least one more doctest.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">uses_none</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">forbidden</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks whether a word avoid forbidden letters.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; uses_none(&#39;banana&#39;, &#39;xyz&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; uses_none(&#39;apple&#39;, &#39;efg&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id1">
+<h3><span class="section-number">7.9.3. </span>Exercise<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">uses_only</span></code> that takes a word and a string of letters, and that returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the word contains only letters in the string.</p>
+<p>Here’s an outline of the function that includes two doctests.
+Fill in the function so it passes these tests, and add at least one more doctest.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">uses_only</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">available</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks whether a word uses only the available letters.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; uses_only(&#39;banana&#39;, &#39;ban&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; uses_only(&#39;apple&#39;, &#39;apl&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h3><span class="section-number">7.9.4. </span>Exercise<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">uses_all</span></code> that takes a word and a string of letters, and that returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the word contains all of the letters in the string at least once.</p>
+<p>Here’s an outline of the function that includes two doctests.
+Fill in the function so it passes these tests, and add at least one more doctest.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">uses_all</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">required</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks whether a word uses all required letters.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; uses_all(&#39;banana&#39;, &#39;ban&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; uses_all(&#39;apple&#39;, &#39;api&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id3">
+<h3><span class="section-number">7.9.5. </span>Exercise<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p><em>The New York Times</em> publishes a daily puzzle called “Spelling Bee” that challenges readers to spell as many words as possible using only seven letters, where one of the letters is required.
+The words must have at least four letters.</p>
+<p>For example, on the day I wrote this, the letters were <code class="docutils literal notranslate"><span class="pre">ACDLORT</span></code>, with <code class="docutils literal notranslate"><span class="pre">R</span></code> as the required letter.
+So “color” is an acceptable word, but “told” is not, because it does not use <code class="docutils literal notranslate"><span class="pre">R</span></code>, and “rat” is not because it has only three letters.
+Letters can be repeated, so “ratatat” is acceptable.</p>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">check_word</span></code> that checks whether a given word is acceptable.
+It should take as parameters the word to check, a string of seven available letters, and a string containing the single required letter.
+You can use the functions you wrote in previous exercises.</p>
+<p>Here’s an outline of the function that includes doctests.
+Fill in the function and then check that all tests pass.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_word</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">available</span><span class="p">,</span> <span class="n">required</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check whether a word is acceptable.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; check_word(&#39;color&#39;, &#39;ACDLORT&#39;, &#39;R&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; check_word(&#39;ratatat&#39;, &#39;ACDLORT&#39;, &#39;R&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; check_word(&#39;rat&#39;, &#39;ACDLORT&#39;, &#39;R&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; check_word(&#39;told&#39;, &#39;ACDLORT&#39;, &#39;R&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; check_word(&#39;bee&#39;, &#39;ACDLORT&#39;, &#39;R&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>According to the “Spelling Bee” rules,</p>
+<ul class="simple">
+<li><p>Four-letter words are worth 1 point each.</p></li>
+<li><p>Longer words earn 1 point per letter.</p></li>
+<li><p>Each puzzle includes at least one “pangram” which uses every letter. These are worth 7 extra points!</p></li>
+</ul>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">score_word</span></code> that takes a word and a string of available letters and returns its score.
+You can assume that the word is acceptable.</p>
+<p>Again, here’s an outline of the function with doctests.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">word_score</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">available</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the score for an acceptable word.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; word_score(&#39;card&#39;, &#39;ACDLORT&#39;)</span>
+<span class="sd">    1</span>
+<span class="sd">    &gt;&gt;&gt; word_score(&#39;color&#39;, &#39;ACDLORT&#39;)</span>
+<span class="sd">    5</span>
+<span class="sd">    &gt;&gt;&gt; word_score(&#39;cartload&#39;, &#39;ACDLORT&#39;)</span>
+<span class="sd">    15</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.9.6. </span>Exercise<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>You might have noticed that the functions you wrote in the previous exercises had a lot in common.
+In fact, they are so similar you can often use one function to write another.</p>
+<p>For example, if a word uses none of a set forbidden letters, that means it doesn’t use any. So we can write a version of <code class="docutils literal notranslate"><span class="pre">uses_none</span></code> like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">uses_none</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">forbidden</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks whether a word avoids forbidden letters.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; uses_none(&#39;banana&#39;, &#39;xyz&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; uses_none(&#39;apple&#39;, &#39;efg&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; uses_none(&#39;&#39;, &#39;abc&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">uses_any</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">forbidden</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>There is also a similarity between <code class="docutils literal notranslate"><span class="pre">uses_only</span></code> and <code class="docutils literal notranslate"><span class="pre">uses_all</span></code> that you can take advantage of.
+If you have a working version of <code class="docutils literal notranslate"><span class="pre">uses_only</span></code>, see if you can write a version of <code class="docutils literal notranslate"><span class="pre">uses_all</span></code> that calls <code class="docutils literal notranslate"><span class="pre">uses_only</span></code>.</p>
+</section>
+<section id="id5">
+<h3><span class="section-number">7.9.7. </span>Exercise<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>If you got stuck on the previous question, try asking a virtual assistant, “Given a function, <code class="docutils literal notranslate"><span class="pre">uses_only</span></code>, which takes two strings and checks that the first uses only the letters in the second, use it to write <code class="docutils literal notranslate"><span class="pre">uses_all</span></code>, which takes two strings and checks whether the first uses all the letters in the second, allowing repeats.”</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">run_doctests</span></code> to check the answer.</p>
+</section>
+<section id="id6">
+<h3><span class="section-number">7.9.8. </span>Exercise<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>Now let’s see if we can write <code class="docutils literal notranslate"><span class="pre">uses_all</span></code> based on <code class="docutils literal notranslate"><span class="pre">uses_any</span></code>.</p>
+<p>Ask a virtual assistant, “Given a function, <code class="docutils literal notranslate"><span class="pre">uses_any</span></code>, which takes two strings and checks whether the first uses any of the letters in the second, can you use it to write <code class="docutils literal notranslate"><span class="pre">uses_all</span></code>, which takes two strings and checks whether the first uses all the letters in the second, allowing repeats.”</p>
+<p>If it says it can, be sure to test the result!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here&#39;s what I got from ChatGPT 4o December 26, 2024</span>
+<span class="c1"># It&#39;s correct, but it makes multiple calls to uses_any </span>
+
+<span class="k">def</span> <span class="nf">uses_all</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if all characters in s2 are in s1, allowing repeats.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">s2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">uses_any</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">char</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://allendowney.github.io/ThinkPython/index.html">Think Python: 3rd Edition</a></p>
+<p>Copyright 2024 <a class="reference external" href="https://allendowney.com">Allen B. Downey</a></p>
+<p>Code license: <a class="reference external" href="https://mit-license.org/">MIT License</a></p>
+<p>Text license: <a class="reference external" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</a></p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  <div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item">
+<aside class="support-ask">
+  <p>If you found this chapter useful, please consider
+  <a href="https://greenteapress.com/support/?book=tp3">supporting free, open educational
+  materials</a> from Green Tea Press.</p>
+</aside></div>
+  
+</div>
+                </footer>
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chap06.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>Return Values</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chap08.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>Strings and Regular Expressions</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div id="ea-slot" class="ea-slot"></div>
+<script>
+(function () {
+  if (!window.matchMedia("(min-width: 1200px)").matches) return;
+  var ad = document.createElement("div");
+  ad.setAttribute("data-ea-publisher", "greenteapresscom");
+  ad.setAttribute("data-ea-type", "image");
+  ad.className = "flat";
+  ad.setAttribute("data-ea-dark-selector", "html[data-theme='dark']");  // follow the theme's toggle
+  ad.id = "think-python-sidebar";
+  document.getElementById("ea-slot").appendChild(ad);
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "https://media.ethicalads.io/media/client/ethicalads.min.js";
+  document.head.appendChild(s);
+})();
+</script></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loops-and-strings">7.1. Loops and strings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-word-list">7.2. Reading the word list</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-variables">7.3. Updating variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#looping-and-counting">7.4. Looping and counting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-in-operator">7.5. The in operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search">7.6. Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#doctest">7.7. Doctest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#glossary">7.8. Glossary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">7.9. Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ask-a-virtual-assistant">7.9.1. Ask a virtual assistant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">7.9.2. Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">7.9.3. Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">7.9.4. Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">7.9.5. Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">7.9.6. Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">7.9.7. Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">7.9.8. Exercise</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Allen B. Downey
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div style="text-align: left;">
+  <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <img alt="Creative Commons License" style="border-width:0"
+         src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
+  </a>
+  <br />
+  This work is licensed under a
+  <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+    Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+  </a>.
+</div>
+<script>new Image().src="https://greenteapress.com/gh.gif?u="+encodeURIComponent(location.href)+"&r="+encodeURIComponent(document.referrer)</script>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
