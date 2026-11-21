@@ -1,0 +1,15 @@
+
+### 59 aws_devops.configure_log_retention
+Inline: supplied retention requirement: Supplied scaffolding: the exercise provides retention requirement. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.; log group: A CloudWatch Logs collection whose streams share retention and access settings.
+tb1: A log group needs the approved retention interval. Verify the configured policy without expecting expired events to disappear physically at the exact expiry moment.
+tb2: CloudWatch log-group retention controls how long events remain; by default logs are retained indefinitely.
+tb3: Set the supplied retention interval with put-retention-policy and inspect the log group’s retentionInDays.
+
+Expired events are marked for deletion; physical deletion typically takes up to 72 hours, so expiry is not necessarily immediate disappearance.
+tb4: Set the supplied interval with put-retention-policy and inspect retentionInDays on the intended log group. Compare that value with the requirement. Events that expire are marked for deletion, and physical deletion typically takes up to 72 hours. If an expired event remains visible immediately after expiry, keep that delay in the interpretation instead of assuming the retention setting is absent.
+tb5: Retention expiry and physical deletion are not necessarily simultaneous. Logs are retained indefinitely by default; after a retention policy is set, expired events are marked for deletion, which typically takes up to 72 hours.
+Assess: identify_indefinite_default_retention; verify_retention_in_days_matches_supplied_requirement; distinguish_event_expiry_from_physical_deletion
+Practice: {'type': 'tool_simulation', 'objective': 'Apply the supplied retention interval to the intended log group using put-retention-policy, then inspect its retentionInDays.', 'success': "The intended log group's retentionInDays matches the supplied interval. The learner interprets expired events as marked for deletion, with physical deletion typically taking up to 72 hours rather than necessarily occurring immediately."}
+Visual: {'type': 'UI_state', 'purpose': "Make the intended log group's identity, supplied retention requirement, and inspected retentionInDays visible together so the configured value can be compared with the requirement."}
+Notes: ['Preserve typically; do not promise a hard deletion deadline beyond the brief.']
+Media: null

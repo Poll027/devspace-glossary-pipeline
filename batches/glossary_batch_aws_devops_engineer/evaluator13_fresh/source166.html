@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>OPS04-BP01 Employ and test safe deployment strategies - AWS Well-Architected Framework</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="ops04-bp01" /><meta name="default_state" content="ops04-bp01" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.md" title="Markdown version" /><meta name="description" content="Safe deployment practices control how a change reaches customers, so that a defect affects the fewest of them before you catch it. When you release changes in increments and check health at each step, you limit the scope of impact and shorten recovery time." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Well-Architected Framework" /><meta name="guide" content="Framework" /><meta name="abstract" content="The AWS Well-Architected Framework helps you understand the pros and cons of decisions you make while building systems on AWS. By using the Framework you will learn architectural best practices for designing and operating reliable, secure, efficient, cost-effective, and sustainable systems in the cloud." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/ops04-bp01.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/ops04-bp01.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/ops04-bp01.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/ops04-bp01.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/ops04-bp01.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/ops04-bp01.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/ops04-bp01.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/ops04-bp01.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/ops04-bp01.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/ops04-bp01.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/ops04-bp01.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/ops04-bp01.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/ops04-bp01.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/ops04-bp01.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/ops04-bp01.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/ops04-bp01.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/wellarchitected/latest/framework/ops04-bp01.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/wellarchitected/latest/framework/ops04-bp01.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04-bp01.html" hreflang="x-default" /><meta name="feedback-folder" content="897c6ffe-3c12-4691-9c85-dc23b20eabd4" /><meta name="this_doc_product" content="AWS Well-Architected Framework" /><meta name="this_doc_guide" content="Framework" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'wellarchitected'}"></script><meta id="panorama-serviceSubSection" value="Framework" /><meta id="panorama-serviceConsolePage" value="OPS04-BP01 Employ and test safe deployment strategies" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="ops04-bp01.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>OPS04-BP01 Employ and test safe deployment strategies - AWS Well-Architected Framework</title><meta name="pdf" content="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#ops04-bp01" /><meta name="forums" content="https://repost.aws/topics/TA5g9gZfzuQoWLsZ3wxihrgw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops04-bp01.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops04-bp01.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops04-bp01.html" /><meta name="keywords" content="AWS Well-Architected Framework,Well-Architected,cloud architecture,architecture best practices,AWS Cloud,workload design,cloud foundations,landing zone" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Well-Architected",
+        "item" : "https://aws.amazon.com/architecture/well-architected/"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Framework",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Cloud Workloads",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/workloads.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Operational excellence",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/operational-excellence.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Mitigate deployment risks",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "OPS04-BP01 Employ and test safe deployment strategies",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/ops04.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#ops04-bp01" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected</a><a href="framework.html">Framework</a></div><div id="page-toc-src"><a href="#implementation-guidance">Implementation     guidance</a><a href="#resources">Resources</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="ops04-bp01">OPS04-BP01 Employ and test safe deployment strategies</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>
+    Safe deployment practices control how a change reaches customers, so
+    that a defect affects the fewest of them before you catch it. When
+    you release changes in increments and check health at each step, you
+    limit the scope of impact and shorten recovery time.
+  </p><p>
+    <b>Desired outcome:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Your delivery pipeline releases production changes in
+        incremental stages rather than to all customers at once.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You have automated health checks at each stage that must pass
+        before the change proceeds to the next.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your deployment strategy matches each workload's fault isolation
+        boundaries, so a failed change is contained to a single host,
+        cell, or Availability Zone.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You select and apply a documented safe deployment strategy for
+        every production change.
+      </p>
+    </li></ul></div><p>
+    <b>Common anti-patterns:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Teams deploy a change to all of production at once, so a defect
+        reaches every customer at the same time.
+      </p>
+    </li><li class="listitem">
+      <p>
+        An in-place update overwrites the running version, which forces
+        a second change to restore the previous version and extends
+        recovery time.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Release coordination depends on manual planning across several
+        teams, which limits how often teams can ship features.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Deployments proceed without automated health checks, so failures
+        surface only after customers report them.
+      </p>
+    </li></ul></div><p>
+    <b>Benefits of establishing this best
+    practice:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        A defective change affects a fraction of customers instead of
+        all of them, because deployment stops before full rollout.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Recovery is faster because the previous version stays available
+        and traffic can shift back to it.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Teams deploy more often and with more confidence, because safety
+        controls reduce the cost of a failed change.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Emergency releases become rare, because most defects are caught
+        in an early stage.
+      </p>
+    </li></ul></div><p>
+    <b>Level of risk exposed if this best practice
+    is not established:</b> Medium
+  </p>
+
+  <h2 id="implementation-guidance">Implementation guidance</h2>
+
+      
+
+    <p>
+      A fractional deployment releases the change to a small portion of
+      your fleet, verifies it against health signals, then expands in
+      controlled increments.
+    </p>
+    <p>
+      Fractional deployments work best when the increments align with
+      your
+      <a href="https://docs.aws.amazon.com/whitepapers/latest/aws-fault-isolation-boundaries/abstract-and-introduction.html">fault isolation boundaries</a> — the host, cell, Availability Zone,
+      or Region that contains the effect of a failure. AWS structures
+      this as waves and stages. A <em>wave</em> is a fault
+      container, such as a Region, that deploys in parallel with other
+      containers. Within a wave, the change moves through
+      <em>stages</em>: a one-box stage that takes one host's
+      worth of traffic, then progressively larger fractions within one
+      Availability Zone. Each stage ends with <em>bake
+      time</em> to observe health metrics before the next begins.
+      Without bake time, you expand before problems surface.
+    </p>
+    <p>
+      Several strategies implement this pattern, differing in cost,
+      speed, and rollback behavior. Rolling deployments replace
+      instances in batches and use the least extra capacity, but a
+      failure can leave the fleet in a mixed-version state. Immutable
+      and blue/green deployments create a parallel set of resources
+      running the new version and shift traffic to it. Rollback shifts
+      traffic back, at the cost of running two environments during the
+      transition. Canary releases send a small share of live traffic to
+      the new version, which catches problems that appear only under
+      real load. Feature flags separate deployment from release, so you
+      can turn a change on or off without another deployment. Most teams
+      combine these.
+    </p>
+    <p>
+      Avoid in-place updates for high-risk changes. When you modify a
+      running system in place and the change fails, you have no clean
+      previous version to return to. Recovery then means applying
+      another change under pressure, which lengthens downtime.
+    </p>
+    <p>
+      Take extra care with databases and other stateful resources,
+      because you cannot discard and replace them the way you replace
+      stateless hosts. Blue/green deployments for managed databases
+      create a synchronized staging environment you can test before
+      promoting it, so you validate schema and configuration changes
+      against production-like data before they take traffic. Plan how
+      in-flight transactions and replication are handled during the
+      switch.
+    </p>
+    <p>
+      Figures 1 through 3 show the
+      <a href="https://docs.aws.amazon.com/codedeploy/latest/userguide/welcome.html">AWS CodeDeploy</a> blue/green workflow for Amazon EC2, Amazon ECS,
+      and AWS Lambda. AWS CodeDeploy automates in-place and blue/green
+      deployments across these compute types and integrates with
+      monitoring, so a failed health check can halt or reverse a
+      rollout. See
+      <a href="https://builder.aws.com/content/3ErTKQOTKc5NIw031UePBPxTQ6I/automating-safe-hands-off-deployments" rel="noopener noreferrer" target="_blank"><span>Automating safe, hands-off deployments</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> and
+      <a href="https://builder.aws.com/content/3Ev3XnnYuuBhlgnywbbVFzwibm1/my-cicd-pipeline-is-my-release-captain" rel="noopener noreferrer" target="_blank"><span>My CI/CD pipeline is my release captain</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> for how these stages
+      fit together at scale.
+    </p>
+    
+      <div id="ops04-bp01-fig1"></div> <div class="mediaobject">
+       
+        <img src="/images/wellarchitected/latest/framework/images/deployment-process-ec2.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Workflow diagram showing the AWS CodeDeploy blue/green deployment process for Amazon EC2, where a new application version is deployed to a replacement environment and traffic shifts after health checks pass." style="max-width:100%" />
+       
+       
+      <div class="caption"><p><em>AWS CodeDeploy blue/green deployment process for Amazon EC2</em></p></div>
+    </div> 
+    
+      <div id="ops04-bp01-fig2"></div> <div class="mediaobject">
+       
+        <img src="/images/wellarchitected/latest/framework/images/deployment-process-ecs.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Workflow diagram showing the AWS CodeDeploy blue/green deployment process for Amazon ECS, where a new task set is deployed and traffic shifts after health checks pass." style="max-width:100%" />
+       
+       
+      <div class="caption"><p><em>AWS CodeDeploy blue/green deployment process for Amazon ECS</em></p></div>
+    </div> 
+    
+      <div id="ops04-bp01-fig3"></div> <div class="mediaobject">
+       
+        <img src="/images/wellarchitected/latest/framework/images/deployment-process-lambda.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Workflow diagram showing the AWS CodeDeploy blue/green deployment process for AWS Lambda, where traffic shifts from the current function version to a new version according to a deployment configuration." style="max-width:100%" />
+       
+       
+      <div class="caption"><p><em>AWS CodeDeploy blue/green deployment process for AWS Lambda</em></p></div>
+    </div> 
+    <p>
+      Decouple your continuous integration (CI) pipeline from your
+      continuous delivery (CD) pipeline. Services such as
+      <a href="https://aws.amazon.com/servicecatalog/" rel="noopener noreferrer" target="_blank"><span>Service Catalog</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>,
+      <a href="https://aws.amazon.com/ecr/" rel="noopener noreferrer" target="_blank"><span>Amazon Elastic Container Registry (Amazon ECR)</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>, and
+      <a href="https://aws.amazon.com/serverless/serverlessrepo" rel="noopener noreferrer" target="_blank"><span>AWS Serverless Application Repository</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> host build artifacts that
+      CD pipelines consume. Decoupling improves resilience and
+      simplifies deploying across Regions: a single CI pipeline
+      publishes the artifact to multiple Regions or accounts, and a
+      separate instance of the CD pipeline deploys it in each Region,
+      for example through an
+      <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/what-is-cfnstacksets.html">AWS CloudFormation StackSet</a>.
+    </p>
+    <p>
+      With the pipelines decoupled, you can stage and sequence
+      deployments to fit release constraints such as change freezes and
+      release schedules. A managed service provider (MSP) or
+      software-as-a-service (SaaS) provider can then serve clients with
+      different acceptance testing and release approvals from a single
+      build.
+    </p>
+    <p>
+      Deployment windows are a separate constraint from fault isolation.
+      Some fleets accept changes only during specific hours, such as
+      Regions with restricted operating-hour windows, or teams spread
+      across time zones with no single window that works for everyone.
+      When a narrow window limits how much of your fleet you can update
+      in one pass, shorten each deployment's duration so more of the
+      fleet completes within the time available. Track how many
+      pipelines have no valid window at all, and widen those windows
+      deliberately.
+    </p>
+     
+
+  <h3 id="implementation-steps">Implementation steps</h3>
+
+      
+
+      <div class="orderedlist">
+         
+         
+         
+         
+         
+         
+         
+      <ol><li>
+          <p>
+            <b>Gate promotion to production with an
+            approval workflow:</b> Trigger the production rollout
+            sequence when a change is promoted to production, so the
+            safe deployment stages run consistently for every release.
+          </p>
+        </li><li>
+          <p>
+            <b>Automate deployments with a managed
+            deployment service:</b> Use
+            <a href="https://docs.aws.amazon.com/codedeploy/latest/userguide/welcome.html">AWS CodeDeploy</a> to run your chosen strategy. Its
+            <a href="https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-steps.html">deployment options</a> include in-place deployments for Amazon EC2
+            and on-premises instances, and blue/green deployments for
+            Amazon EC2, AWS Lambda, and Amazon ECS. Where useful,
+            <a href="https://docs.aws.amazon.com/codedeploy/latest/userguide/integrations-aws.html">integrate AWS CodeDeploy with other AWS services</a>.
+          </p>
+        </li><li>
+          <p>
+            <b>Apply blue/green deployments to
+            stateful resources:</b> Use managed blue/green
+            deployments for databases such as
+            <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/blue-green-deployments.html">Amazon Aurora</a> and
+            <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/blue-green-deployments.html">Amazon RDS</a>, so you validate changes in a synchronized
+            staging environment before promotion.
+          </p>
+        </li><li>
+          <p>
+            <b>Monitor each deployment
+            stage:</b>
+            <a href="https://docs.aws.amazon.com/codedeploy/latest/userguide/monitoring.html">Monitor deployments</a> with Amazon CloudWatch, AWS CloudTrail,
+            and Amazon Simple Notification Service (Amazon SNS)
+            notifications, so a stage that breaches its health criteria
+            stops the rollout.
+          </p>
+        </li><li>
+          <p>
+            <b>Run automated post-deployment
+            tests:</b> After each stage, run functional,
+            security, regression, integration, and load tests that
+            confirm the change behaves as expected before the next
+            increment begins.
+          </p>
+        </li><li>
+          <p>
+            <b>Establish deployment troubleshooting
+            procedures:</b> Document how to
+            <a href="https://docs.aws.amazon.com/codedeploy/latest/userguide/troubleshooting.html">troubleshoot deployment issues</a> and reverse a rollout, so
+            responders act from a known procedure rather than
+            improvising during an incident.
+          </p>
+        </li><li>
+          <p>
+            <b>Automate scheduling within
+            constrained deployment windows:</b> For fleets
+            restricted to narrow deployment windows, use
+            <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/maintenance-windows.html">AWS Systems Manager Maintenance Windows</a> to schedule
+            deployment tasks within the time available, and measure the
+            fraction of your fleet with no valid window so you can
+            prioritize automation that shortens per-deployment duration.
+          </p>
+        </li></ol></div>
+     
+   
+
+  <h2 id="resources">Resources</h2>
+
+      
+    <p>
+      <b>Related best practices:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="./ops04-bp02.html">OPS04-BP02 Automate testing and rollback</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops03-bp02.html">OPS03-BP02 Test and validate any and all changes</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops03-bp04.html">OPS03-BP04 Fully automate integration and deployment</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops06-bp01.html">OPS06-BP01 Create actionable alerts</a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related documents:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/whitepapers/latest/practicing-continuous-integration-continuous-delivery/deployment-methods.html">Practicing Continuous Integration and Continuous Delivery on AWS</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html">Working with deployment configurations in AWS CodeDeploy</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/canary-release.html">Set up an API Gateway canary release deployment</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/">Amazon ECS deployment types</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.CNAMESwap.html">Blue/green deployments with AWS Elastic Beanstalk</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/devops/fault-isolated-zonal-deployments-with-aws-codedeploy/" rel="noopener noreferrer" target="_blank"><span>Fault-isolated, zonal deployments with AWS CodeDeploy</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/aws/new-fully-managed-blue-green-deployments-in-amazon-aurora-and-amazon-rds/" rel="noopener noreferrer" target="_blank"><span>New – Fully managed blue/green deployments in Amazon Aurora and Amazon RDS</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related examples:</b>
+    </p>
+    <div class="itemizedlist">
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/codedeploy/latest/userguide/applications-create-blue-green.html">Try a sample blue/green deployment in AWS CodeDeploy</a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related workshops:</b>
+    </p>
+    <div class="itemizedlist">
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://catalog.us-east-1.prod.workshops.aws/workshops/5195ab7c-5ded-4ee2-a1c5-775300717f42/en-US" rel="noopener noreferrer" target="_blank"><span>Building CI/CD pipelines for Lambda canary deployments using AWS CDK</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./ops04.html">Mitigate deployment risks</div><div id="next" class="next-link" accesskey="n" href="./ops04-bp02.html">OPS04-BP02 Automate testing and rollback</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops04-bp01.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops04-bp01.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

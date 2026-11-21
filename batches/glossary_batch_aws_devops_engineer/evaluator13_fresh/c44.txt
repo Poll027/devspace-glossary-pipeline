@@ -1,0 +1,17 @@
+
+### 44 aws.cloudformation_drift
+Inline: out-of-band change: A live resource change made outside the configuration-management workflow.; supplied template: Supplied scaffolding: the exercise provides template. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.
+tb1: A stack's bucket property was changed outside CloudFormation in the controlled lab. Drift detection can show a declared-versus-current difference, but the operator must understand what it checked and what it did not do.
+tb2: CloudFormation drift detection compares supported explicitly declared resource properties with their current values.
+tb3: Run drift detection on the provisioned stack after the supplied out-of-band change, wait for completion and inspect the bucket’s expected and actual property values.
+
+Drift detection reports differences without repairing them; unsupported or undeclared properties may not be checked.
+tb4: Run drift detection on the provisioned stack after the supplied out-of-band change and wait for completion. Locate the bucket's result and compare its expected and actual property values. Write the difference as a pair, such as supplied declared value A and current value B, rather than saying only drifted. Detection compares supported explicitly declared properties; unsupported or undeclared properties may not be checked. Keep that scope beside the result so a lack of reported drift is not described as exhaustive verification of every property. This task observes and records the difference. It does not repair the resource merely by running detection.
+
+A useful drift record names the stack resource, the specific checked property and its expected/actual pair. If another setting is not explicitly declared or supported for comparison, do not infer its correctness from this result. This lets the next operator see exactly what detection established. Running detection again without changing the resource does not perform the missing repair; detection and approved correction are different actions.
+tb5: Drift detection reports differences without repairing them. It also does not promise to check every property: supported, explicitly declared properties are the comparison scope, and unsupported or undeclared properties may not be checked.
+Assess: identify_supported_bucket_property_difference; interpret_drift_detection_scope_and_limits
+Practice: {'type': 'tool_simulation', 'objective': "Provision one S3 bucket from the supplied CloudFormation template in a prepared sandbox. Apply the supplied out-of-band change to one supported, explicitly declared bucket property, then run stack drift detection, wait for completion, and inspect the bucket's expected and actual values.", 'success': 'The completed detection result identifies the bucket and the changed property. The learner records its expected and actual values, explains that detection did not repair the difference, and limits the conclusion to supported, explicitly declared properties.'}
+Visual: {'type': 'UI_state', 'purpose': "Show completed stack drift detection and the bucket's property-level result, with the supported, explicitly declared property's expected and actual values visible together."}
+Notes: ['Keep detection distinct from repair; do not extend drift coverage beyond supported declared properties.']
+Media: null

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Learn how EKS Pod Identity grants pods access to AWS services - Amazon EKS</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="pod-identities" /><meta name="default_state" content="pod-identities" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.md" title="Markdown version" /><meta name="description" content="Learn how to provide AWS service access to your Kubernetes workloads with Amazon EKS Pod Identities, offering least privilege access, credential isolation, and auditability for enhanced security. Discover the benefits and considerations of this identity management solution for your Amazon EKS clusters." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon EKS" /><meta name="guide" content="User Guide" /><meta name="abstract" content="This is official Amazon Web Services (AWS) documentation for Amazon Elastic Kubernetes Service (Amazon EKS). Amazon EKS is a managed service that makes it easy for you to run Kubernetes on AWS without needing to install and operate your own Kubernetes clusters. Kubernetes is an open source system for automating the deployment, scaling, and management of containerized applications." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/eks/latest/userguide/pod-identities.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/eks/latest/userguide/pod-identities.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/eks/latest/userguide/pod-identities.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/eks/latest/userguide/pod-identities.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/eks/latest/userguide/pod-identities.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/eks/latest/userguide/pod-identities.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/eks/latest/userguide/pod-identities.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/eks/latest/userguide/pod-identities.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/eks/latest/userguide/pod-identities.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/eks/latest/userguide/pod-identities.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/pod-identities.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/pod-identities.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/pod-identities.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/pod-identities.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/eks/latest/userguide/pod-identities.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/eks/latest/userguide/pod-identities.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/pod-identities.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/eks/latest/userguide/pod-identities.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html" hreflang="x-default" /><meta name="feedback-item" content="Amazon EKS" /><meta name="this_doc_product" content="Amazon EKS" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'eks'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Learn how EKS Pod Identity grants pods access to AWS services" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="pod-identities.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Learn how EKS Pod Identity grants pods access to AWS services - Amazon EKS</title><meta name="pdf" content="/pdfs/eks/latest/userguide/eks-ug.pdf#pod-identities" /><meta name="github" content="https://github.com/awsdocs/amazon-eks-user-guide/tree/mainline/latest/ug/manage-access/aws-access/pod-identities.adoc" /><meta name="rss" content="doc-history.rss" /><meta name="forums" content="https://repost.aws/tags/TA4IvCeWI1TE66q4jEj4Z9zg" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Amazon%20EKS&amp;topic_url=https://docs.aws.amazon.com/en_us/eks/latest/userguide/pod-identities.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/eks/latest/userguide/pod-identities.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/eks/latest/userguide/pod-identities.html" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon EKS",
+        "item" : "https://docs.aws.amazon.com/eks/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/eks/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Learn how access control works in Amazon EKS",
+        "item" : "https://docs.aws.amazon.com/eks/latest/userguide/cluster-auth.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Grant Kubernetes workloads access to AWS using Kubernetes Service Accounts",
+        "item" : "https://docs.aws.amazon.com/eks/latest/userguide/service-accounts.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Learn how EKS Pod Identity grants pods access to AWS services",
+        "item" : "https://docs.aws.amazon.com/eks/latest/userguide/service-accounts.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/eks/latest/userguide/eks-ug.pdf#pod-identities" target="_blank" rel="noopener noreferrer" title="Open PDF"></a><a href="https://github.com/awsdocs/amazon-eks-user-guide/tree/mainline/latest/ug/manage-access/aws-access/pod-identities.adoc" target="_blank" rel="noopener noreferrer" title="Edit this page on GitHub"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/eks/index.html">Amazon EKS</a><a href="what-is-eks.html">User Guide</a></div><div id="page-toc-src"><a href="#pod-id-benefits">Benefits of EKS Pod Identities</a><a href="#pod-id-setup-overview">Overview of setting up EKS Pod Identities</a><a href="#pod-id-limits">Limits</a><a href="#pod-id-considerations">Considerations</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><awsui-alert class="awsdocs-page-banner awsui-util-mb-l"><p>
+         <strong>Help improve this page</strong>
+      </p><p>To contribute to this user guide, choose the <strong>Edit this page on GitHub</strong> link that is located in the right pane of every page.</p></awsui-alert><h1 class="topictitle" id="pod-identities">Learn how EKS Pod Identity grants pods access to AWS services</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>EKS Pod Identity works unchanged with isolated and confidential pods that run in Nitro Sandboxes. The credential endpoint is available inside the sandbox, and your existing Pod Identity associations apply the same way as for standard pods. No additional configuration is required. For more information, see <a href="./sandboxing-metadata-credentials.html">Pod Identity and credentials</a>.</p><p>Applications in a Pod’s containers can use an AWS SDK or the AWS CLI to make API requests to AWS services using AWS Identity and Access Management (IAM) permissions. Applications must sign their AWS API requests with AWS credentials.</p><p>
+      <em>EKS Pod Identities</em> provide the ability to manage credentials for your applications, similar to the way that Amazon EC2 instance profiles provide credentials to Amazon EC2 instances. Instead of creating and distributing your AWS credentials to the containers or using the Amazon EC2 instance’s role, you associate an IAM role with a Kubernetes service account and configure your Pods to use the service account.</p><div class="mediaobject">
+       
+         <iframe width="720" height="405" frameborder="0" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" sandbox="allow-scripts allow-same-origin allow-popups" src="https://www.youtube-nocookie.com/embed/aUjJSorBE70?rel=0"></iframe>
+       
+   </div><p>Each EKS Pod Identity association maps a role to a service account in a namespace in the specified cluster. If you have the same application in multiple clusters, you can make identical associations in each cluster without modifying the trust policy of the role.</p><p>If a pod uses a service account that has an association, Amazon EKS sets environment variables in the containers of the pod. The environment variables configure the AWS SDKs, including the AWS CLI, to use the EKS Pod Identity credentials.</p>
+      <h2 id="pod-id-benefits">Benefits of EKS Pod Identities</h2>
+      <p>EKS Pod Identities provide the following benefits:</p>
+      <div class="itemizedlist">
+          
+          
+      <ul class="itemizedlist"><li class="listitem">
+            <p>
+               <strong>Least privilege</strong>
+– You can scope IAM permissions to a service account, and only Pods that use that service account have access to those permissions. This feature also eliminates the need for third-party solutions such as <code class="code">kiam</code> or <code class="code">kube2iam</code>.</p>
+         </li><li class="listitem">
+            <p>
+               <strong>Credential isolation</strong>
+– When access to the <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html">Amazon EC2 Instance Metadata Service (IMDS)</a> is restricted, a Pod’s containers can only retrieve credentials for the IAM role that’s associated with the service account that the container uses. A container never has access to credentials that are used by other containers in other Pods. If IMDS is not restricted, the Pod’s containers also have access to the <a href="./create-node-role.html">Amazon EKS node IAM role</a> and the containers may be able to gain access to credentials of IAM roles of other Pods on the same node. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/best-practices/identity-and-access-management.html#_identities_and_credentials_for_eks_pods_recommendations">Restrict access to the instance profile assigned to the worker node</a>.</p>
+         </li></ul></div>
+      <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Pods configured with <code class="code">hostNetwork: true</code> will always have IMDS access, but the AWS SDKs and CLI will use Pod Identity credentials when enabled.</p></div></div>
+      <div class="itemizedlist">
+          
+      <ul class="itemizedlist"><li class="listitem">
+            <p>
+               <strong>Auditability</strong>
+– Access and event logging is available through AWS CloudTrail to help facilitate retrospective auditing.</p>
+         </li></ul></div>
+      <div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><p>Containers are not a security boundary, and the use of Pod Identity does not change this. Pods assigned to the same node will share a kernel and potentially other resources depending on your Pod configuration. While Pods running on separate nodes will be isolated at the compute layer, there are node applications that have additional permissions in the Kubernetes API beyond the scope of an individual instance. Some examples are <code class="code">kubelet</code>, <code class="code">kube-proxy</code>, CSI storage drivers, or your own Kubernetes applications.</p></div></div>
+      <p>EKS Pod Identity is a simpler method than <a href="./iam-roles-for-service-accounts.html">IAM roles for service accounts</a>, as this method doesn’t use OIDC identity providers. EKS Pod Identity has the following enhancements:</p>
+      <div class="itemizedlist">
+          
+          
+          
+      <ul class="itemizedlist"><li class="listitem">
+            <p>
+               <strong>Independent operations</strong>
+– In many organizations, creating OIDC identity providers is a responsibility of different teams than administering the Kubernetes clusters. EKS Pod Identity has clean separation of duties, where all configuration of EKS Pod Identity associations is done in Amazon EKS and all configuration of the IAM permissions is done in IAM.</p>
+         </li><li class="listitem">
+            <p>
+               <strong>Reusability</strong>
+– EKS Pod Identity uses a single IAM principal instead of the separate principals for each cluster that IAM roles for service accounts use. Your IAM administrator adds the following principal to the trust policy of any role to make it usable by EKS Pod Identities.</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json ">            "Principal": <span>{</span>
+                "Service": "pods.eks.amazonaws.com"
+            }</code></pre>
+         </li><li class="listitem">
+            <p>
+               <strong>Scalability</strong> — Each set of temporary credentials is assumed by the EKS Auth service in EKS Pod Identity, instead of each AWS SDK that you run in each pod. Then, the Amazon EKS Pod Identity Agent that runs on each node issues the credentials to the SDKs. Thus the load is reduced to once for each node and isn’t duplicated in each pod. For more details of the process, see <a href="./pod-id-how-it-works.html">Understand how EKS Pod Identity works</a>.</p>
+         </li></ul></div>
+      <p>For more information to compare the two alternatives, see <a href="./service-accounts.html">Grant Kubernetes workloads access to AWS using Kubernetes Service Accounts</a>.</p>
+    
+      <h2 id="pod-id-setup-overview">Overview of setting up EKS Pod Identities</h2>
+      <p>Turn on EKS Pod Identities by completing the following procedures:</p>
+      <div class="orderedlist">
+          
+          
+          
+          
+      <ol style="list-style-type:arabic ! important;"><li>
+            <p>
+               <a href="./pod-id-agent-setup.html">Set up the Amazon EKS Pod Identity Agent</a> — You only complete this procedure once for each cluster. You do not need to complete this step if EKS Auto Mode is enabled on your cluster.</p>
+         </li><li>
+            <p>
+               <a href="./pod-id-association.html">Assign an IAM role to a Kubernetes service account</a> — Complete this procedure for each unique set of permissions that you want an application to have.</p>
+         </li><li>
+            <p>
+               <a href="./pod-id-configure-pods.html">Configure Pods to access AWS services with service accounts</a> — Complete this procedure for each Pod that needs access to AWS services.</p>
+         </li><li>
+            <p>
+               <a href="./pod-id-minimum-sdk.html">Use pod identity with the AWS SDK</a> — Confirm that the workload uses an AWS SDK of a supported version and that the workload uses the default credential chain.</p>
+         </li></ol></div>
+    
+      <h2 id="pod-id-limits">Limits</h2>
+      <div class="itemizedlist">
+          
+      <ul class="itemizedlist"><li class="listitem">
+            <p>Up to 5,000 EKS Pod Identity associations per cluster to map IAM roles to Kubernetes service accounts are supported.</p>
+         </li></ul></div>
+    
+      <h2 id="pod-id-considerations">Considerations</h2>
+      <div class="itemizedlist">
+          
+          
+          
+          
+      <ul class="itemizedlist"><li class="listitem">
+            <p>
+               <strong>IAM Role Association</strong>: Each Kubernetes service account in a cluster can be associated with one IAM role from the same AWS account as the cluster. To change the role, edit the EKS Pod Identity association. For cross-account access, delegate access to the role using IAM roles. To learn more, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_cross-account-with-roles.html">Delegate access across AWS accounts using IAM roles</a> in the <em>IAM User Guide</em>.</p>
+         </li><li class="listitem">
+            <p>
+               <strong>EKS Pod Identity Agent</strong>: The Pod Identity Agent is required to use EKS Pod Identity. The agent runs as a Kubernetes <code class="code">DaemonSet</code> on cluster nodes, providing credentials only to pods on the same node. It uses the node’s <code class="code">hostNetwork</code>, occupying ports <code class="code">80</code> and <code class="code">2703</code> on the link-local address (<code class="code">169.254.170.23</code> for IPv4, <code class="code">[fd00:ec2::23]</code> for IPv6). If IPv6 is disabled in your cluster, disable IPv6 for the Pod Identity Agent. To learn more, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/pod-id-agent-config-ipv6.html">Disable IPv6 in the EKS Pod Identity Agent</a>.</p>
+         </li><li class="listitem">
+            <p>
+               <strong>Eventual Consistency</strong>: EKS Pod Identity associations are eventually consistent, with potential delays of several seconds after API calls. Avoid creating or updating associations in critical, high-availability code paths. Instead, perform these actions in separate, less frequent initialization or setup routines. To learn more, see <a href="https://docs.aws.amazon.com/eks/latest/best-practices/sgpp.html">Security Groups Per Pod</a> in the <em>EKS Best Practices Guide</em>.</p>
+         </li><li class="listitem">
+            <p>
+               <strong>Proxy and Security Group Considerations</strong>: For pods using a proxy, add <code class="code">169.254.170.23</code> (IPv4) and <code class="code">[fd00:ec2::23]</code> (IPv6) to the <code class="code">no_proxy/NO_PROXY</code> environment variables to prevent failed requests to the EKS Pod Identity Agent. If using Security Groups for Pods with the AWS VPC CNI, set the <code class="code">ENABLE_POD_ENI</code> flag to ‘true’ and the <code class="code">POD_SECURITY_GROUP_ENFORCING_MODE</code> flag to ‘standard’. To learn more, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/security-groups-for-pods.html">Assign security groups to individual Pods</a>.</p>
+         </li></ul></div>
+       
+         <h3 id="pod-id-cluster-versions">EKS Pod Identity cluster versions</h3>
+         <p>To use EKS Pod Identity, the cluster must have a platform version that is the same or later than the version listed in the following table, or a Kubernetes version that is later than the versions listed in the table. To find the suggested version of the Amazon EKS Pod Identity Agent for a Kubernetes version, see <a href="./addon-compat.html">Verify Amazon EKS add-on version compatibility with a cluster</a>.</p>
+         <div class="table-container"><div class="table-contents"><table id="d0e1"><thead>
+                  <tr>
+                     <th align="left" style="text-align: left;vertical-align: top;">Kubernetes version</th>
+                     <th align="left" style="text-align: left;vertical-align: top;">Platform version</th>
+                  </tr>
+               </thead>
+                  <tr>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>Kubernetes versions not listed</p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>All platform versions support</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>
+                           <code class="code">1.28</code>
+                        </p>
+                     </td>
+                     <td align="left" style="text-align: left;vertical-align: top;" tabindex="-1">
+                        <p>
+                           <code class="code">eks.4</code>
+                        </p>
+                     </td>
+                  </tr>
+               </table></div></div>
+       
+       
+         <h3 id="pod-id-restrictions">EKS Pod Identity restrictions</h3>
+         <p>EKS Pod Identities are available on the following:</p>
+         <div class="itemizedlist">
+             
+             
+         <ul class="itemizedlist"><li class="listitem">
+               <p>Amazon EKS cluster versions listed in the previous topic <a href="#pod-id-cluster-versions">EKS Pod Identity cluster versions</a>.</p>
+            </li><li class="listitem">
+               <p>Worker nodes in the cluster that are Linux Amazon EC2 instances.</p>
+            </li></ul></div>
+         <p>EKS Pod Identities aren’t available on the following:</p>
+         <div class="itemizedlist">
+             
+             
+             
+         <ul class="itemizedlist"><li class="listitem">
+               <p>
+                  AWS Outposts.</p>
+            </li><li class="listitem">
+               <p>Amazon EKS Anywhere.</p>
+            </li><li class="listitem">
+               <p>Kubernetes clusters that you create and run on Amazon EC2. The EKS Pod Identity components are only available on Amazon EKS.</p>
+            </li></ul></div>
+         <p>You can’t use EKS Pod Identities with:</p>
+         <div class="itemizedlist">
+             
+         <ul class="itemizedlist"><li class="listitem">
+               <p>Pods that run anywhere except Linux Amazon EC2 instances. Linux and Windows pods that run on AWS Fargate (Fargate) aren’t supported. Pods that run on Windows Amazon EC2 instances aren’t supported.</p>
+            </li></ul></div>
+       
+   <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./irsa-fetch-keys.html">Fetch signing keys</div><div id="next" class="next-link" accesskey="n" href="./pod-id-how-it-works.html">How it works</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Amazon EKS&amp;topic_url=https://docs.aws.amazon.com/en_us/eks/latest/userguide/pod-identities.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Amazon EKS&amp;topic_url=https://docs.aws.amazon.com/en_us/eks/latest/userguide/pod-identities.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

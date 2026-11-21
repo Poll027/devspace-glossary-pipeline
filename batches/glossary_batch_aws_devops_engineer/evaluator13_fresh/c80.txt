@@ -1,0 +1,17 @@
+
+### 80 aws.credential_expiry
+Inline: supplied automation operation: Supplied scaffolding: the exercise provides automation operation. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.; credential expiry: The time after which a temporary credential session is no longer valid.
+tb1: An approved session expired while an operational task was being handled. Renew the credentials, but first keep the known outcome of any resource-changing request in view before deciding to retry it.
+tb2: Temporary credentials stop being usable after expiration and must be replaced with a newly authorized session.
+tb3: On an expired-session error, renew the approved session through its credential provider and use the new access key, secret key and token together.
+
+Before retrying a resource-changing operation, inspect its known outcome and use a supported idempotency token where the supplied operation offers one to avoid duplicate effects.
+tb4: On the supplied expired-session error, renew through the approved credential provider and use the new access key, secret key and session token together. For a resource-changing request, inspect its known outcome before repeating it. Use a supported idempotency token where the supplied operation offers one. Record whether the original request is known to have taken effect instead of assuming an error always means no effect occurred.
+
+Compare a known completed mutation with an operation whose result is unresolved. Renewed credentials are needed in either case, but the completed mutation should not be described as needing repetition simply because the caller later expired. For the unresolved case, inspect available outcome evidence before retrying and use the supplied operation's supported idempotency token where available. Valid identity and safe repeat behavior are separate questions.
+tb5: Renewing credentials does not settle a previous operation's outcome. Expired credentials must be replaced, but mutation retries require checking the known result and using supported idempotency where available to avoid duplicate effects.
+Assess: recognize_temporary_credential_expiry; renew_approved_session_with_complete_credentials; check_operation_outcome_before_safe_retry
+Practice: {'type': 'tool_simulation', 'objective': 'Recover one supplied resource-changing automation operation from an expired session using the approved credential provider, without extending permissions.', 'success': "Replace the expired session through the approved provider and select the new access key, secret key and session token together, using masked values. Inspect the supplied operation's outcome evidence before deciding whether to retry: do not repeat a known completed operation; for an unresolved outcome, use the supplied operation's supported idempotency token when retrying. Keep the original permission scope unchanged."}
+Visual: {'type': 'process_flow', 'purpose': "Make session renewal and operation-outcome checking visible as separate decisions: replace expired credentials as a complete set, inspect the resource-changing request's known outcome, and distinguish a completed request from an unresolved request requiring a safe retry with supported idempotency."}
+Notes: ['Do not expose credentials or claim every AWS operation supports idempotency tokens.']
+Media: null

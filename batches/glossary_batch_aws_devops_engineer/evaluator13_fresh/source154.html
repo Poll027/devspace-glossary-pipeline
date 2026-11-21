@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Subnet route tables - Amazon Virtual Private Cloud</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="subnet-route-tables" /><meta name="default_state" content="subnet-route-tables" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/vpc/latest/userguide/subnet-route-tables.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/vpc/latest/userguide/subnet-route-tables.md" title="Markdown version" /><meta name="description" content="Your VPC has an implicit router, and you use route tables to control where network traffic is directed. Each subnet in your VPC must be associated with a route table, which controls the routing for the subnet (subnet route table). You can explicitly associate a subnet with a particular route table. Otherwise, the subnet is implicitly associated with the main route table. A subnet can only be associated with one route table at a time, but you can associate multiple subnets with the same subnet route table." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Virtual Private Cloud" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Use Amazon VPC to launch AWS resources into a virtual network that is a logically isolated section of the AWS cloud. Use Amazon VPC to launch AWS resources into a virtual network that is a logically isolated section of the AWS cloud." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/vpc/latest/userguide/subnet-route-tables.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/vpc/latest/userguide/subnet-route-tables.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/vpc/latest/userguide/subnet-route-tables.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/vpc/latest/userguide/subnet-route-tables.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/vpc/latest/userguide/subnet-route-tables.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/vpc/latest/userguide/subnet-route-tables.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/vpc/latest/userguide/subnet-route-tables.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/vpc/latest/userguide/subnet-route-tables.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/vpc/latest/userguide/subnet-route-tables.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/vpc/latest/userguide/subnet-route-tables.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/vpc/latest/userguide/subnet-route-tables.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/vpc/latest/userguide/subnet-route-tables.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/vpc/latest/userguide/subnet-route-tables.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/vpc/latest/userguide/subnet-route-tables.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/vpc/latest/userguide/subnet-route-tables.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/subnet-route-tables.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/subnet-route-tables.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/vpc/latest/userguide/subnet-route-tables.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/vpc/latest/userguide/subnet-route-tables.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/vpc/latest/userguide/subnet-route-tables.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/vpc/latest/userguide/subnet-route-tables.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/vpc/latest/userguide/subnet-route-tables.html" hreflang="x-default" /><meta name="feedback-item" content="VPC" /><meta name="this_doc_product" content="Amazon Virtual Private Cloud" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'vpc'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Subnet route tables" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="subnet-route-tables.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Subnet route tables - Amazon Virtual Private Cloud</title><meta name="pdf" content="/pdfs/vpc/latest/userguide/vpc-ug.pdf#subnet-route-tables" /><meta name="rss" content="amazon-vpc-release-notes.rss" /><meta name="forums" content="https://repost.aws/tags/TATGuEiYydTVCPMhSnXFN6gA" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=VPC&amp;topic_url=https://docs.aws.amazon.com/en_us/vpc/latest/userguide/subnet-route-tables.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/vpc/latest/userguide/subnet-route-tables.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/vpc/latest/userguide/subnet-route-tables.html" /><meta name="keywords" content="VPC,Amazon VPC,network,route table,internet gateway,subnet,NAT,routing,target,destination,local route" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon VPC",
+        "item" : "https://docs.aws.amazon.com/vpc/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/vpc/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Subnets for your VPC",
+        "item" : "https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Configure route tables",
+        "item" : "https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Subnet route tables",
+        "item" : "https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/vpc/latest/userguide/vpc-ug.pdf#subnet-route-tables" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/vpc/index.html">Amazon VPC</a><a href="what-is-amazon-vpc.html">User Guide</a></div><div id="page-toc-src"><a href="#route-table-routes">Routes</a><a href="#main-route-table">Main route table</a><a href="#custom-route-tables">Custom route tables</a><a href="#route-table-assocation">Subnet route table association</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="subnet-route-tables">Subnet route tables</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>Your VPC has an implicit router, and you use route tables to control where network
+            traffic is directed. Each subnet in your VPC must be associated with a route table,
+            which controls the routing for the subnet (subnet route table). You can explicitly
+            associate a subnet with a particular route table. Otherwise, the subnet is implicitly
+            associated with the main route table. A subnet can only be associated with one route
+            table at a time, but you can associate multiple subnets with the same subnet route
+            table.</p><div class="highlights" id="inline-topiclist"><h2 class="awsdocs-topiclist-title">Contents</h2><ul><li><p><a href="#route-table-routes">Routes</a></p></li><li><p><a href="#main-route-table">Main route table</a></p></li><li><p><a href="#custom-route-tables">Custom route tables</a></p></li><li><p><a href="#route-table-assocation">Subnet route table association</a></p></li></ul></div>
+            <h2 id="route-table-routes">Routes</h2>
+            <p>Each route in a table specifies a destination and a target. For example, to enable
+                your subnet to access the internet through an internet gateway, add the following
+                route to your subnet route table. The destination for the route is <code class="code">0.0.0.0/0</code>, 
+                which represents all IPv4 addresses. The target is the internet gateway that's attached 
+                to your VPC.</p>
+            <div class="table-container"><div class="table-contents"><table id="d0e1"><thead>
+                        <tr>
+                            <th>Destination</th>
+                            <th>Target</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td tabindex="-1">0.0.0.0/0</td>
+                            <td tabindex="-1"><code class="replaceable">igw-id</code></td>
+                        </tr>
+                    </table></div></div>
+
+            <p>CIDR blocks for IPv4 and IPv6 are treated separately. For example, a route with a
+                destination CIDR of <code class="code">0.0.0.0/0</code> does not automatically include all IPv6
+                addresses. You must create a route with a destination CIDR of <code class="code">::/0</code> for
+                all IPv6 addresses.</p>
+
+            <p>If you frequently reference the same set of CIDR blocks across your AWS resources,
+                you can create a <a href="./managed-prefix-lists.html">customer-managed prefix
+                    list</a> to group them together. You can then specify the prefix list as the
+                destination in your route table entry. </p>
+
+            <p>Every route table contains a local route for communication within the VPC. This
+                route is added by default to all route tables. If your VPC has more than one IPv4
+                CIDR block, your route tables contain a local route for each IPv4 CIDR block. If
+                you've associated an IPv6 CIDR block with your VPC, your route tables contain a
+                local route for the IPv6 CIDR block. You can <a href="./replace-local-route-target.html">replace or restore</a> the target of each local route as needed.</p>
+            <div id="route-table-rule-considerations"></div>
+            <div class="itemizedlist">
+                <h6 class="awsdocs-block-title">Rules and considerations</h6>
+                 
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>You can add a route to your route tables that is more specific than the local route. 
+                        The destination must match the entire IPv4 or IPv6 CIDR block of a subnet in your VPC.
+                        The target must be a NAT gateway, network interface, or Gateway Load Balancer endpoint.</p>
+                </li><li class="listitem">
+                    <p>If your route table has multiple routes, we use the most specific route that
+                        matches the traffic (longest prefix match) to determine how to route the
+                        traffic.</p>
+                </li><li class="listitem">
+                    <p>You can't add routes to IPv4 addresses that are an exact match or a subset of the 
+                        following range: 169.254.168.0/22. This range is within the link-local address space
+                        and is reserved for use by AWS services. For example, Amazon EC2 uses addresses in this 
+                        range for services that are accessible only from EC2 instances, such as the Instance 
+                        Metadata Service (IMDS) and the Amazon DNS server. You can use a CIDR block that is 
+                        larger than but overlaps 169.254.168.0/22, but packets destined for addresses in  
+                        169.254.168.0/22 will not be forwarded.</p>
+                </li><li class="listitem">
+                    <p>You can't add routes to IPv6 addresses that are an exact match or a subset of the
+                        following range: fd00:ec2::/32. This range is within the unique local address (ULA)
+                        space and is reserved for use by AWS services. For example, Amazon EC2 uses addresses 
+                        in this range for services that are accessible only from EC2 instances, such as the 
+                        Instance Metadata Service (IMDS) and the Amazon DNS server. You can use a CIDR block 
+                        that is  larger than but overlaps fd00:ec2::/32, but packets destined for addresses in  
+                        fd00:ec2::/32 will not be forwarded.</p>
+                </li><li class="listitem">
+                    <p>You can add middlebox appliances to the routing paths for your VPC. For more
+                        information, see <a href="./route-table-options.html#route-tables-appliance-routing">Routing for a middlebox appliance</a>.</p>
+                </li></ul></div>
+
+             
+                <h6 class="awsdocs-block-title">Example</h6>
+                <p>In the following example, suppose that the VPC has both an IPv4 CIDR block and an 
+                    IPv6 CIDR block. IPv4 and IPv6 traffic are treated separately, as shown in the 
+                    following route table.</p>
+             
+            <div class="table-container"><div class="table-contents"><table id="d0e2"><thead>
+                        <tr>
+                            <th>Destination</th>
+                            <th>Target</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td tabindex="-1">10.0.0.0/16</td>
+                            <td tabindex="-1">Local</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">2001:db8:1234:1a00::/56</td>
+                            <td tabindex="-1">Local</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">172.31.0.0/16</td>
+                            <td tabindex="-1">pcx-11223344556677889</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">0.0.0.0/0</td>
+                            <td tabindex="-1">igw-12345678901234567</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">::/0</td>
+                            <td tabindex="-1">eigw-aabbccddee1122334</td>
+                        </tr>
+                    </table></div></div>
+            <div class="itemizedlist">                
+                 
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>IPv4 traffic to be routed within the VPC (10.0.0.0/16) 
+                        is covered by the Local route.</p>
+                </li><li class="listitem">
+                    <p>IPv6 traffic to be routed within the VPC (2001:db8:1234:1a00::/56) 
+                        is covered by the Local route.</p>
+                </li><li class="listitem">
+                    <p>The route for 172.31.0.0/16 sends traffic to a peering connection.</p>
+                </li><li class="listitem">
+                    <p>The route for all IPv4 traffic (0.0.0.0/0) sends traffic to an
+                        internet gateway. Therefore, all IPv4 traffic, except for traffic
+                        within the VPC and to the peering connection, is routed to the
+                        internet gateway.</p>
+                </li><li class="listitem">
+                    <p>The route for all IPv6 traffic (::/0) sends traffic to an 
+                        egress-only internet gateway. Therefore, all IPv6 traffic, except
+                        for traffic within the VPC, is routed to the egress-only internet
+                        gateway.</p>
+                </li></ul></div>
+         
+            <h2 id="main-route-table">Main route table</h2>
+            <p>When you create a VPC, it automatically has a main route table. When a subnet does not have an explicit routing table associated with it, the main routing table is used by default. 
+                On the <b>Route tables</b> page in the Amazon VPC
+                console, you can view the main route table for a VPC by looking for
+                    <b>Yes</b> in the <b>Main</b> column. </p>
+            <p>By default, when you create a nondefault VPC, the main route table contains only a
+                local route. If you <a href="./create-vpc.html">Create a VPC</a> and choose 
+                a NAT gateway, Amazon VPC  automatically adds routes to the main route table for the gateways.</p>
+            <p>The following rules apply to the main route table:</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>You can add, remove, and modify routes in the main route table.</p>
+                </li><li class="listitem">
+                    <p>You can't delete the main route table.</p>
+                </li><li class="listitem">
+                    <p>You can't set a gateway route table as the main route table.</p>
+                </li><li class="listitem">
+                    <p>You can replace the main route table by associating a custom route
+                        table with a subnet.</p>
+                </li><li class="listitem">
+                    <p>You can explicitly associate a subnet with the main route table, even if
+                        it's already implicitly associated. </p>
+                    <p>You might want to do that if you change which table is the main route
+                        table. When you change which table is the main route table, it also changes
+                        the default for additional new subnets, or for any subnets that are not
+                        explicitly associated with any other route table. For more information, see
+                            <a href="./Route_Replacing_Main_Table.html">Replace the main route table</a>.</p>
+                </li></ul></div>
+         
+            <h2 id="custom-route-tables">Custom route tables</h2>
+              <p>By default, a route table contains a local route for communication within the
+                VPC. If you <a href="./create-vpc.html">Create a VPC</a> and choose a
+                public subnet, Amazon VPC creates a custom route table and adds a route that points to
+                the internet gateway. One way to protect your VPC is to leave the main route table
+                in its original default state. Then, explicitly associate each new subnet that you
+                create with one of the custom route tables you've created. This ensures that you
+                explicitly control how each subnet routes traffic.</p>
+            <p>You can add, remove, and modify routes in a custom route table. You can delete a
+                custom route table only if it has no associations.</p>
+         
+            <h2 id="route-table-assocation">Subnet route table association</h2>
+            <p>Each subnet in your VPC must be associated with a route table. A subnet can be
+                explicitly associated with custom route table, or implicitly or explicitly
+                associated with the main route table. For more information about viewing your subnet
+                and route table associations, see <a href="./WorkWithRouteTables.html#Route_Which_Associations">Determine the explicit associations</a>.</p>
+            <p>Subnets that  are in VPCs associated with Outposts can have an additional target
+                type of a local gateway. This is the only routing difference from non-Outposts
+                subnets.</p>
+
+             
+                <h6 class="awsdocs-block-title">Example 1: Implicit and explicit subnet association</h6>
+                <p>The following diagram shows the routing for a VPC with an internet gateway, a
+                    virtual private gateway, a public subnet, and a VPN-only subnet.</p>
+             
+            
+            <div class="mediaobject">
+                 
+                    <img src="/images/vpc/latest/userguide/images/subnet-association.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Diagram of private subnet associated with main route table and public subnet with custom route table." style="max-width:100%" />
+                 
+                 
+            </div>
+
+            <p>Route table A is a custom route table that is explicitly associated with the
+                public subnet. It has a route that sends all traffic to the internet gateway, which
+                is what makes the subnet a public subnet.</p>
+            <div class="table-container"><div class="table-contents"><table id="d0e3"><thead>
+                        <tr>
+                            <th>Destination</th>
+                            <th>Target</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td tabindex="-1"><code class="replaceable">VPC CIDR</code></td>
+                            <td tabindex="-1">Local</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">0.0.0.0/0</td>
+                            <td tabindex="-1"><code class="replaceable">igw-id</code></td>
+                        </tr>
+                    </table></div></div>
+            <p>Route table B is the main route table. It is implicitly associated with the
+                private subnet. It has a route that sends all traffic to the virtual private
+                gateway, but no route to the internet gateway, which is what makes the subnet a
+                VPN-only subnet. If you create another subnet in this VPC and don't associate a
+                custom route table, the subnet will also be implicitly associated with this route
+                table because it is the main route table.</p>
+            <div class="table-container"><div class="table-contents"><table id="d0e4"><thead>
+                        <tr>
+                            <th>Destination</th>
+                            <th>Target</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td tabindex="-1"><code class="replaceable">VPC CIDR</code></td>
+                            <td tabindex="-1">Local</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">0.0.0.0/0</td>
+                            <td tabindex="-1"><code class="replaceable">vgw-id</code></td>
+                        </tr>
+                    </table></div></div>
+
+                         
+                <h6 class="awsdocs-block-title">Example 2: Replacing the main route table</h6>
+                <p>You might want to make changes to the main route table. To avoid any disruption to
+                    your traffic, we recommend that you first test the route changes using a custom
+                    route table. After you're satisfied with the testing, you can replace the main route
+                    table with the new custom table.</p>
+                         
+            <p>The following diagram shows two subnets and two route tables. Subnet A is
+                implicitly associated with route table A, the main route table. Subnet B is
+                implicitly associated with route table A. Route table B, a custom route table, isn't
+                associated with either subnet.</p>
+            <div class="mediaobject">
+                 
+                    <img src="/images/vpc/latest/userguide/images/replace-route-table-initial.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Two subnets with implicit associations with route table A, the main route table." style="max-width:50%" />
+                 
+                 
+            </div>
+            <p>To replace the main route table, start by creating an explicit association between
+                subnet B and route table B. Test route table B. </p>
+            <div class="mediaobject">
+                 
+                    <img src="/images/vpc/latest/userguide/images/replace-route-table-step1.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Subnet B is now explicitly associated with route table B, a custom route table." style="max-width:50%" />
+                 
+                 
+            </div>
+            <p>After you've tested route table B, make it the main route table. Subnet B still
+                has an explicit association with route table B. However, subnet A now has an
+                implicit association with route table B, because route table B is the new main route
+                table. Route table A is no longer associated with either subnet.</p>
+            <div class="mediaobject">
+                 
+                    <img src="/images/vpc/latest/userguide/images/replace-route-table-step2.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Diagram of Subnet A associated with main route table B and Subnet B associated with route table B." style="max-width:50%" />
+                 
+                 
+            </div>
+            <p>(Optional) If you disassociate subnet B from route table B, there is still an
+                implicit association between subnet B and route table B. If you no longer need route
+                table A, you can delete it.</p>
+            <div class="mediaobject">
+                 
+                    <img src="/images/vpc/latest/userguide/images/replace-route-table-step3.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Both subnets are implicitly associated with route table B." style="max-width:50%" />
+                 
+                 
+            </div>
+        <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./RouteTables.html">Route table concepts</div><div id="next" class="next-link" accesskey="n" href="./gateway-route-tables.html">Gateway route tables</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=VPC&amp;topic_url=https://docs.aws.amazon.com/en_us/vpc/latest/userguide/subnet-route-tables.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=VPC&amp;topic_url=https://docs.aws.amazon.com/en_us/vpc/latest/userguide/subnet-route-tables.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

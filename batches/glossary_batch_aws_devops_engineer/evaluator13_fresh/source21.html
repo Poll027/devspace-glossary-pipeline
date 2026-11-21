@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Validating CloudTrail log file integrity with the AWS CLI - AWS CloudTrail</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="cloudtrail-log-file-validation-cli" /><meta name="default_state" content="cloudtrail-log-file-validation-cli" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.md" title="Markdown version" /><meta name="description" content="This page describes how to validate CloudTrail logs by using the AWS CLI." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS CloudTrail" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Get a history of actions taken by a user, role, or an AWS service account with AWS CloudTrail." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" hreflang="x-default" /><meta name="feedback-item" content="CloudTrail" /><meta name="this_doc_product" content="AWS CloudTrail" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'cloudtrail'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Validating CloudTrail log file integrity with the AWS CLI" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="cloudtrail-log-file-validation-cli.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Validating CloudTrail log file integrity with the AWS CLI - AWS CloudTrail</title><meta name="pdf" content="/pdfs/awscloudtrail/latest/userguide/awscloudtrail-ug.pdf#cloudtrail-log-file-validation-cli" /><meta name="rss" content="aws-cloudtrail-document-history.rss" /><meta name="forums" content="https://repost.aws/tags/TAVySJwCMbS4ydy4hjQ7rI8w" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudTrail&amp;topic_url=https://docs.aws.amazon.com/en_us/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html" /><meta name="keywords" content="CloudTrail,Trail,CloudTrail Lake,CloudTrail event history,CloudTrail log files,trail logs,CloudTrail log file integrity,CloudTrail log validation,log file integrity" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS CloudTrail",
+        "item" : "https://docs.aws.amazon.com/cloudtrail/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/awscloudtrail/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Working with CloudTrail log files",
+        "item" : "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-working-with-log-files.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Validating CloudTrail log file integrity",
+        "item" : "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-intro.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Validating CloudTrail log file integrity with the AWS CLI",
+        "item" : "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-intro.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/awscloudtrail/latest/userguide/awscloudtrail-ug.pdf#cloudtrail-log-file-validation-cli" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/cloudtrail/index.html">AWS CloudTrail</a><a href="cloudtrail-user-guide.html">User Guide</a></div><div id="page-toc-src"><a href="#cloudtrail-log-file-validation-cli-prerequisites">Prerequisites</a><a href="#cloudtrail-log-file-validation-cli-validate-logs">validate-logs</a><a href="#cloudtrail-log-file-validation-cli-results">Validation results</a><a href="#cloudtrail-log-file-validation-cli-results-examples">Example outputs</a><a href="#cloudtrail-log-file-validation-cli-validate-logs-check-file">Checking whether a particular file was delivered by CloudTrail</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="cloudtrail-log-file-validation-cli">Validating CloudTrail log file integrity with the AWS CLI</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>To validate logs with the AWS Command Line Interface, use the CloudTrail <code class="code">validate-logs</code> command. The
+        command uses the digest files delivered to your Amazon S3 bucket to perform the validation. For
+        information about digest files, see <a href="./cloudtrail-log-file-validation-digest-file-structure.html">CloudTrail digest file structure</a>. </p><p>The AWS CLI allows you to detect the following types of changes:</p><div class="itemizedlist">
+         
+         
+         
+    <ul class="itemizedlist"><li class="listitem">
+            <p>Modification or deletion of CloudTrail log files</p>
+        </li><li class="listitem">
+            <p>Modification or deletion of CloudTrail digest files</p>
+        </li><li class="listitem">
+            <p>Modification or deletion of both of the above</p>
+        </li></ul></div><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>The AWS CLI validates only log files that are referenced by digest files. For more
+            information, see <a href="#cloudtrail-log-file-validation-cli-validate-logs-check-file">Checking whether a particular file was delivered by CloudTrail</a>.</p></div></div><h2 id="cloudtrail-log-file-validation-cli-prerequisites">Prerequisites</h2>
+        
+        <p>To validate log file integrity with the AWS CLI, the following conditions must be
+            met:</p>
+        <div class="itemizedlist">
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>You must have online connectivity to AWS.</p>
+            </li><li class="listitem">
+                <p>You must have read access to the Amazon S3 bucket that contains the digest and log
+                    files. </p>
+            </li><li class="listitem">
+                <p>The digest and log files must not have been moved from the original Amazon S3
+                    location where CloudTrail delivered them.</p>
+            </li><li class="listitem">
+                <p>The role executing the command must have permissions to call <code class="code">ListObjects</code>, 
+                    <code class="code">GetObject</code>, and <code class="code">GetBucketLocation</code> for each S3 bucket referenced by the trail.</p>
+            </li></ul></div>
+
+
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Log files that have been downloaded to local disk cannot be validated with the
+                AWS CLI. For guidance on creating your own tools for validation, see <a href="./cloudtrail-log-file-custom-validation.html">Custom implementations of CloudTrail log file integrity validation</a>.</p></div></div>
+    <h2 id="cloudtrail-log-file-validation-cli-validate-logs">validate-logs</h2>
+        
+
+        <h3 id="cloudtrail-log-file-validation-cli-validate-logs-syntax">Syntax</h3>
+            
+            <p>The following is the syntax for <code class="code">validate-logs</code>. Optional parameters
+                are shown in brackets.</p>
+
+            <p><code class="code">aws cloudtrail validate-logs  --trail-arn &lt;trailARN&gt; --start-time &lt;start-time&gt; [--end-time &lt;end-time&gt;] [--s3-bucket &lt;amzn-s3-demo-bucket&gt;] [--s3-prefix &lt;prefix&gt;] [--account-id &lt;account-id&gt;] [--verbose]</code>
+            </p>
+            
+            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>The <code class="code">validate-logs</code> command is Region specific. You must specify the <code class="code">--region</code> global option to validate logs for a specific AWS Region.</p></div></div>
+         
+
+        <h3 id="cloudtrail-log-file-validation-cli-validate-logs-options">Options</h3>
+            
+            <p>The following are the command-line options for <code class="code">validate-logs</code>. The
+                <code class="code">--trail-arn</code> and <code class="code">--start-time</code> options are required. The <code class="code">--account-id</code> option is additionally required for organizational trails.</p>
+            <div class="variablelist">
+                 
+            <dl>
+                    <dt><span class="term"><code class="code">--start-time</code></span></dt>
+                    <dd>
+                        <p>Specifies that log files delivered on or after the specified UTC
+                            timestamp value will be validated. Example:
+                            <code class="code">2015-01-08T05:21:42Z</code>. </p>
+                    </dd>
+                </dl></div>
+
+            <div class="variablelist">
+                 
+            <dl>
+                    <dt><span class="term"><code class="code">--end-time</code></span></dt>
+                    <dd>
+                        <p>Optionally specifies that log files delivered on or before the
+                            specified UTC timestamp value will be validated. The default value is
+                            the current UTC time (<code class="code">Date.now()</code>). Example:
+                            <code class="code">2015-01-08T12:31:41Z</code>. </p>
+                        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>For the time range specified, the <code class="code">validate-logs</code>
+                                command checks only the log files that are referenced in their
+                                corresponding digest files. No other log files in the Amazon S3 bucket
+                                are checked. For more information, see <a href="#cloudtrail-log-file-validation-cli-validate-logs-check-file">Checking whether a particular file was delivered by CloudTrail</a>. </p></div></div>
+                    </dd>
+                </dl></div>
+
+            <div class="variablelist">
+                 
+            <dl>
+                    <dt><span class="term"><code class="code">--s3-bucket</code></span></dt>
+                    <dd>
+                        <p>Optionally specifies the Amazon S3 bucket where the digest files are
+                            stored. If a bucket name is not specified, the AWS CLI will retrieve it by
+                            calling <code class="code">DescribeTrails()</code>. </p>
+                    </dd>
+                </dl></div>
+
+            <div class="variablelist">
+                 
+            <dl>
+                    <dt><span class="term"><code class="code">--s3-prefix</code></span></dt>
+                    <dd>
+                        <p>Optionally specifies the Amazon S3 prefix where the digest files are
+                            stored. If not specified, the AWS CLI will retrieve it by calling
+                            <code class="code">DescribeTrails()</code>. </p>
+                        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>You should use this option only if your current prefix is
+                                different from the prefix that was in use during the time range that
+                                you specify.</p></div></div>
+                    </dd>
+                </dl></div>
+            
+            <div class="variablelist">
+                 
+            <dl>
+                    <dt><span class="term"><code class="code">--account-id</code></span></dt>
+                    <dd>
+                        <p>Optionally specifies the account for validating
+                            logs. This parameter is required for organization trails for validating
+                            logs for the specific account inside an organization.</p>
+                    </dd>
+                </dl></div>
+
+            <div class="variablelist">
+                 
+            <dl>
+                    <dt><span class="term"><code class="code">--trail-arn</code></span></dt>
+                    <dd>
+                        <p>Specifies the Amazon Resource Name (ARN) of the trail to be validated.
+                            The format of a trail ARN follows.</p>
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight ">arn:aws:cloudtrail:us-east-2:111111111111:trail/MyTrailName</code></pre>
+                        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>To obtain the trail ARN for a trail, you can use the
+                                <code class="code">describe-trails</code> command before running
+                                <code class="code">validate-logs</code>.</p><p>You may want to specify the bucket name and prefix in addition to
+                                the trail ARN if log files have been delivered to more than one
+                                bucket in the time range that you specified, and you want to
+                                restrict the validation to the log files in only one of the buckets.
+                            </p></div></div>
+                    </dd>
+                </dl></div>
+
+            <div class="variablelist">
+                 
+            <dl>
+                    <dt><span class="term"><code class="code">--verbose</code></span></dt>
+                    <dd>
+                        <p>Optionally outputs validation information for every log or digest file
+                            in the specified time range. The output indicates whether the file
+                            remains unchanged or has been modified or deleted. In non-verbose mode
+                            (the default), information is returned only for those cases in which
+                            there was a validation failure. </p>
+                    </dd>
+                </dl></div>
+
+         
+
+
+        <h3 id="cloudtrail-log-file-validation-cli-validate-logs-example">Example</h3>
+            
+            <p>The following example validates log files from the specified start time to the
+                present, using the Amazon S3 bucket configured for the current trail and specifying
+                verbose output.</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight ">aws cloudtrail validate-logs --start-time 2015-08-27T00:00:00Z --end-time 2015-08-28T00:00:00Z --trail-arn arn:aws:cloudtrail:us-east-2:111111111111:trail/my-trail-name --verbose</code></pre>
+         
+
+         
+            <h3 id="cloudtrail-log-file-validation-cli-validate-logs-how-it-works">How <code class="code">validate-logs</code> works</h3>
+            
+
+            <p>The <code class="code">validate-logs</code> command starts by validating the most recent
+                digest file in the specified time range. First, it verifies that the digest file has
+                been downloaded from the location to which it claims to belong. In other words, if
+                the CLI downloads digest file <code class="code">df1</code> from the S3 location <code class="code">p1</code>,
+                validate-logs will verify that
+                <code class="code">p1 == df1.digestS3Bucket + '/' + df1.digestS3Object</code>.</p>
+
+            <p>If the signature of the digest file is valid, it checks the hash value of each of
+                the logs referenced in the digest file. The command then goes back in time,
+                validating the previous digest files and their referenced log files in succession.
+                It continues until the specified value for <code class="code">start-time</code> is reached, or
+                until the digest chain ends. If a digest file is missing or not valid, the time
+                range that cannot be validated is indicated in the output. The 
+                <code class="code">validate-logs</code> command first operates on the standard digest chain. 
+                After completing standard digest validation, it validates backfill digest files,
+                if present. Backfill digests form a separate validation chain and are processed 
+                independently from standard digests.</p>
+         
+
+
+
+    <h2 id="cloudtrail-log-file-validation-cli-results">Validation results</h2>
+        
+        <p>Validation results begin with a summary header in the following format:</p>
+        <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight">Validating log files for trail <code class="replaceable">trail_ARN</code>  between <code class="replaceable">time_stamp</code> and <code class="replaceable">time_stamp</code></code></pre>
+        
+        
+        <p>Each line of the main output contains the validation results for a single digest or
+            log file in the following
+            format. Lines prefixed with <code class="code">(backfill)</code> indicate backfill digest files,
+            which form a separate validation chain from the standard digest files.</p>
+        
+        
+        <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight">&lt;optional (backfill)&gt; &lt;Digest file | Log file&gt; &lt;<code class="replaceable">S3 path</code>&gt; &lt;<code class="replaceable">Validation Message</code>&gt;</code></pre>
+            
+            
+            <p>The following table describes the possible validation messages for log and digest files.</p>
+        
+                <div class="table-container"><div class="table-contents"><table id="d0e1"><thead>
+                        <tr>
+                            <th>File Type</th>
+                            <th>Validation Message</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td tabindex="-1"><code class="code">Digest file</code></td>
+                            <td tabindex="-1"><code class="code">valid</code></td>
+                            <td tabindex="-1">The digest file signature is valid. The log files it references
+                                can be checked. This message is included only in verbose
+                                mode.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1"><code class="code">Digest file</code></td>
+                            <td tabindex="-1"><code class="code">INVALID: has been moved from its original location</code></td>
+                            <td tabindex="-1">The S3 bucket or S3 object from which the digest file was
+                                retrieved do not match the S3 bucket or S3 object locations that are
+                                recorded in the digest file itself.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1"><code class="code">Digest file</code></td>
+                            <td tabindex="-1"><code class="code">INVALID: invalid format</code></td>
+                            <td tabindex="-1">The format of the digest file is invalid. The log files
+                                corresponding to the time range that the digest file represents
+                                cannot be validated.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1"><code class="code">Digest file</code></td>
+                            <td tabindex="-1"><code class="code">INVALID: not found</code></td>
+                            <td tabindex="-1">The digest file was not found. The log files corresponding to the
+                                time range that the digest file represents cannot be
+                                validated.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1"><code class="code">Digest file</code></td>
+                            <td tabindex="-1"><code class="code">INVALID: public key not found for fingerprint </code><code class="replaceable">fingerprint</code></td>
+                            <td tabindex="-1">The public key corresponding to the fingerprint recorded in the
+                                digest file was not found. The digest file cannot be
+                                validated.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1"><code class="code">Digest file</code></td>
+                            <td tabindex="-1"><code class="code">INVALID: signature verification failed</code></td>
+                            <td tabindex="-1">The digest file signature is not valid. Because the digest file
+                                is not valid, the log files it references cannot be validated, and
+                                no assertions can be made about the API activity in them.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1"><code class="code">Digest file</code></td>
+                            <td tabindex="-1"><code class="code">INVALID: Unable to load PKCS #1 key with fingerprint</code>
+                                <code class="replaceable">fingerprint</code></td>
+                            <td tabindex="-1">Because the DER encoded public key in PKCS #1 format having the
+                                specified fingerprint could not be loaded, the digest file cannot be
+                                validated.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1"><code class="code">Log file</code></td>
+                            <td tabindex="-1"><code class="code">valid</code></td>
+                            <td tabindex="-1">The log file has been validated and has not been modified since
+                                the time of delivery. This message is included only in verbose
+                                mode.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1"><code class="code">Log file</code></td>
+                            <td tabindex="-1"><code class="code">INVALID: hash value doesn't match</code></td>
+                            <td tabindex="-1">The hash for the log file does not match. The log file has been
+                                modified after delivery by CloudTrail.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1"><code class="code">Log file</code></td>
+                            <td tabindex="-1"><code class="code">INVALID: invalid format</code></td>
+                            <td tabindex="-1">The format of the log file is invalid. The log file cannot be
+                                validated.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1"><code class="code">Log file</code></td>
+                            <td tabindex="-1"><code class="code">INVALID: not found</code></td>
+                            <td tabindex="-1">The log file was not found and cannot be validated.</td>
+                        </tr>
+                    </table></div></div>
+        
+        <p>The output includes summary information about the results returned.</p>
+
+
+     
+        <h2 id="cloudtrail-log-file-validation-cli-results-examples">Example outputs</h2>
+
+
+         
+            <h3 id="cloudtrail-log-file-validation-cli-results-verbose">Verbose</h3>
+
+
+            <p>The following example <code class="code">validate-logs</code> command uses the <code class="code">--verbose</code> flag and produces the sample output that follows. <code class="code">[...]</code> indicates the sample
+                output has been abbreviated.</p>
+
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight ">aws cloudtrail validate-logs --trail-arn arn:aws:cloudtrail:us-east-2:111111111111:trail/example-trail-name --start-time 2015-08-31T22:00:00Z --end-time 2015-09-01T19:17:29Z --verbose</code></pre>
+
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight ">Validating log files for trail arn:aws:cloudtrail:us-east-2:111111111111:trail/example-trail-name between 2015-08-31T22:00:00Z and 2015-09-01T19:17:29Z
+                                       
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail-Digest/us-east-2/2015/09/01/111111111111_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20150901T201728Z.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2015/09/01/111111111111_CloudTrail_us-east-2_20150901T1925Z_WZZw1RymnjCRjxXc.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2015/09/01/111111111111_CloudTrail_us-east-2_20150901T1915Z_POuvV87nu6pfAV2W.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2015/09/01/111111111111_CloudTrail_us-east-2_20150901T1930Z_l2QgXhAKVm1QXiIA.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2015/09/01/111111111111_CloudTrail_us-east-2_20150901T1920Z_eQJteBBrfpBCqOqw.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2015/09/01/111111111111_CloudTrail_us-east-2_20150901T1950Z_9g5A6qlR2B5KaRdq.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2015/09/01/111111111111_CloudTrail_us-east-2_20150901T1920Z_i4DNCC12BuXd6Ru7.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2015/09/01/111111111111_CloudTrail_us-east-2_20150901T1915Z_Sg5caf2RH6Jdx0EJ.json.gz	valid
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail-Digest/us-east-2/2015/09/01/111111111111_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20150901T191728Z.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2015/09/01/111111111111_CloudTrail_us-east-2_20150901T1910Z_YYSFiuFQk4nrtnEW.json.gz	valid
+[...]
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail/us-east-2/2015/09/01/144218288521_CloudTrail_us-east-2_20150901T1055Z_0Sfy6m9f6iBzmoPF.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail/us-east-2/2015/09/01/144218288521_CloudTrail_us-east-2_20150901T1040Z_lLa3QzVLpOed7igR.json.gz	valid
+
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2015/09/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20150901T101728Z.json.gz	INVALID: signature verification failed
+
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2015/09/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20150901T091728Z.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail/us-east-2/2015/09/01/144218288521_CloudTrail_us-east-2_20150901T0830Z_eaFvO3dwHo4NCqqc.json.gz	valid
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2015/09/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20150901T081728Z.json.gz	valid
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2015/09/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20150901T071728Z.json.gz	valid
+[...]
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2015/08/31/111111111111_CloudTrail_us-east-2_20150831T2245Z_mbJkEO5kNcDnVhGh.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2015/08/31/111111111111_CloudTrail_us-east-2_20150831T2225Z_IQ6kXy8sKU03RSPr.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2015/08/31/111111111111_CloudTrail_us-east-2_20150831T2230Z_eRPVRTxHQ5498ROA.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2015/08/31/111111111111_CloudTrail_us-east-2_20150831T2255Z_IlWawYZGvTWB5vYN.json.gz	valid
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail-Digest/us-east-2/2015/08/31/111111111111_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20150831T221728Z.json.gz	valid
+
+Results requested for 2015-08-31T22:00:00Z to 2015-09-01T19:17:29Z
+Results found for 2015-08-31T22:17:28Z to 2015-09-01T20:17:28Z:
+
+22/23 digest files valid, 1/23 digest files INVALID
+63/63 log files valid</code></pre>
+
+        <p>The following example <code class="code">validate-logs</code> command uses the <code class="code">--verbose</code> flag on a period when backfill digest files are present and produces the sample output that follows.
+            Backfill digests appear with the <code class="code">(backfill)</code> prefix and are validated separately from the standard digest chain.
+            <code class="code">[...]</code> indicates the sample output has been abbreviated.</p>
+
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight ">aws cloudtrail validate-logs --trail-arn arn:aws:cloudtrail:us-east-2:111111111111:trail/example-trail-name --start-time 2024-07-31T22:00:00Z --end-time 2024-08-01T19:17:29Z --verbose</code></pre>
+
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight ">Validating log files for trail arn:aws:cloudtrail:us-east-2:111111111111:trail/example-trail-name between 2024-07-31T22:00:00Z and 2024-08-01T19:17:29Z
+
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail-Digest/us-east-2/2024/08/01/111111111111_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T201728Z.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2024/08/01/111111111111_CloudTrail_us-east-2_20240801T1925Z_Xm3pK9vN2wQ5rT8h.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2024/08/01/111111111111_CloudTrail_us-east-2_20240801T1915Z_Bj7cL4nM6pR9sU2v.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2024/08/01/111111111111_CloudTrail_us-east-2_20240801T1930Z_Fy1dG8kN3qT6wX0z.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2024/08/01/111111111111_CloudTrail_us-east-2_20240801T1920Z_Hn5jM2pQ7sV9yB4e.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2024/08/01/111111111111_CloudTrail_us-east-2_20240801T1950Z_Kp8rN1tW4xZ7aC3f.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2024/08/01/111111111111_CloudTrail_us-east-2_20240801T1920Z_Mq6sP9uX2yB5dE8g.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2024/08/01/111111111111_CloudTrail_us-east-2_20240801T1915Z_Rt4vQ7wZ0aC3fG6h.json.gz	valid
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail-Digest/us-east-2/2024/08/01/111111111111_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T191728Z.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2024/08/01/111111111111_CloudTrail_us-east-2_20240801T1910Z_Uw9xR2yB5dH8jK1m.json.gz	valid
+[...]
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail/us-east-2/2024/08/01/144218288521_CloudTrail_us-east-2_20240801T1055Z_Vz3aS6cE9fL2nP5q.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail/us-east-2/2024/08/01/144218288521_CloudTrail_us-east-2_20240801T1040Z_Xy7bT0dG3hM6pR9s.json.gz	valid
+
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2024/08/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T101728Z.json.gz	INVALID: signature verification failed
+
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2024/08/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T091728Z.json.gz	valid
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2024/08/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T081728Z.json.gz	valid
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2024/08/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T071728Z.json.gz	valid
+[...]
+Digest file    s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail-Digest/us-east-2/2024/07/31/111111111111_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240731T221728Z.json.gz	valid
+(backfill) Digest file    s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail-Digest/us-east-2/2024/08/01/111111111111_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T201728Z_backfill.json.gz	valid
+(backfill) Digest file    s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail-Digest/us-east-2/2024/08/01/111111111111_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T191728Z_backfill.json.gz	valid
+[...]
+
+(backfill) Digest file    s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2024/08/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T101728Z_backfill.json.gz	INVALID: signature verification failed
+
+(backfill) Digest file    s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2024/08/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T091728Z_backfill.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail/us-east-2/2024/08/01/144218288521_CloudTrail_us-east-2_20240801T0830Z_Rn6uk0wY5aD9fJ3n.json.gz	valid
+(backfill) Digest file    s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2024/08/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T081728Z_backfill.json.gz	valid
+(backfill) Digest file    s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2024/08/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T071728Z_backfill.json.gz	valid
+[...]
+(backfill) Digest file    s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail-Digest/us-east-2/2024/07/31/111111111111_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240731T221728Z_backfill.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2024/07/31/111111111111_CloudTrail_us-east-2_20240731T2145Z_Sp3vm7xZ2bE6gK0p.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2024/07/31/111111111111_CloudTrail_us-east-2_20240731T2125Z_Tq0wn4ya9cF3hL7q.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2024/07/31/111111111111_CloudTrail_us-east-2_20240731T2130Z_Ur7xp1zb6dG0jM4r.json.gz	valid
+Log file       s3://amzn-s3-demo-bucket/AWSLogs/111111111111/CloudTrail/us-east-2/2024/07/31/111111111111_CloudTrail_us-east-2_20240731T2155Z_Vs4yq8ac3eH7kN1s.json.gz	valid
+
+Results requested for 2024-07-31T22:00:00Z to 2024-08-01T19:17:29Z
+Results found for 2024-07-31T22:17:28Z to 2024-08-01T20:17:28Z:
+
+22/23 digest files valid, 1/23 digest files INVALID
+22/23 backfill digest files valid, 1/23 backfill digest files INVALID
+63/63 log files valid</code></pre>
+         
+
+
+
+         
+            <h3 id="cloudtrail-log-file-validation-cli-results-non-verbose">Non-verbose</h3>
+
+
+            <p>The following example <code class="code">validate-logs</code> command does not use the <code class="code">--verbose</code> flag. In the sample output that follows, one error was found. Only the header, error,
+                and summary information are returned.</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight ">aws cloudtrail validate-logs --trail-arn arn:aws:cloudtrail:us-east-2:111111111111:trail/example-trail-name --start-time 2015-08-31T22:00:00Z --end-time 2015-09-01T19:17:29Z</code></pre>
+
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight ">Validating log files for trail arn:aws:cloudtrail:us-east-2:111111111111:trail/example-trail-name between 2015-08-31T22:00:00Z and 2015-09-01T19:17:29Z
+
+Digest file	s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2015/09/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20150901T101728Z.json.gz	INVALID: signature verification failed
+
+(backfill) Digest file	s3://amzn-s3-demo-bucket/AWSLogs/144218288521/CloudTrail-Digest/us-east-2/2024/08/01/144218288521_CloudTrail-Digest_us-east-2_example-trail-name_us-east-2_20240801T101728Z_backfill.json.gz	INVALID: signature verification failed
+
+Results requested for 2015-08-31T22:00:00Z to 2015-09-01T19:17:29Z
+Results found for 2015-08-31T22:17:28Z to 2015-09-01T20:17:28Z:
+
+22/23 digest files valid, 1/23 digest files INVALID
+22/23 backfill digest files valid, 1/23 backfill digest files INVALID
+63/63 log files valid</code></pre>
+         
+     
+        <h2 id="cloudtrail-log-file-validation-cli-validate-logs-check-file">Checking whether a particular file was delivered by CloudTrail</h2>
+        
+        <p>To check if a particular file in your bucket was delivered by CloudTrail, run
+            <code class="code">validate-logs</code> in verbose mode for the time period that includes the file.
+            If the file appears in the output of <code class="code">validate-logs</code>, then the file was
+            delivered by CloudTrail.</p>
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./cloudtrail-log-file-validation-enabling.html">Enabling log file integrity validation for CloudTrail</div><div id="next" class="next-link" accesskey="n" href="./cloudtrail-log-file-validation-digest-file-structure.html">CloudTrail digest file structure</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudTrail&amp;topic_url=https://docs.aws.amazon.com/en_us/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudTrail&amp;topic_url=https://docs.aws.amazon.com/en_us/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-cli.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

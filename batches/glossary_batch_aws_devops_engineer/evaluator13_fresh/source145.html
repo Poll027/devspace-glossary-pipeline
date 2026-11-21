@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>AWS Systems Manager Patch Manager - AWS Systems Manager</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="patch-manager" /><meta name="default_state" content="patch-manager" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.md" title="Markdown version" /><meta name="description" content="Discover how to use Patch Manager to automate the process of patching managed nodes with both security-related updates and other types of updates for operating systems and applications." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Systems Manager" /><meta name="guide" content="User Guide" /><meta name="abstract" content="AWS Systems Manager (formerly Amazon EC2 Systems Manager) is a unified interface that lets you centralize operational data and automate tasks across your AWS resources. Systems Manager shortens the time to detect and resolve operational problems in your infrastructure. Systems Manager gives you a complete view of your infrastructure performance and configuration, simplifies resource and application management, and lets you operate and manage your infrastructure at scale." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/systems-manager/latest/userguide/patch-manager.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/systems-manager/latest/userguide/patch-manager.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/systems-manager/latest/userguide/patch-manager.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/systems-manager/latest/userguide/patch-manager.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/systems-manager/latest/userguide/patch-manager.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/systems-manager/latest/userguide/patch-manager.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/systems-manager/latest/userguide/patch-manager.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/systems-manager/latest/userguide/patch-manager.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/systems-manager/latest/userguide/patch-manager.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/systems-manager/latest/userguide/patch-manager.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/systems-manager/latest/userguide/patch-manager.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/systems-manager/latest/userguide/patch-manager.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/systems-manager/latest/userguide/patch-manager.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/systems-manager/latest/userguide/patch-manager.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/systems-manager/latest/userguide/patch-manager.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/systems-manager/latest/userguide/patch-manager.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/systems-manager/latest/userguide/patch-manager.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/systems-manager/latest/userguide/patch-manager.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" hreflang="x-default" /><meta name="feedback-item" content="Systems Manager" /><meta name="this_doc_product" content="AWS Systems Manager" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'systems-manager'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="AWS Systems Manager Patch Manager" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="patch-manager.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>AWS Systems Manager Patch Manager - AWS Systems Manager</title><meta name="pdf" content="/pdfs/systems-manager/latest/userguide/systems-manager-ug.pdf#patch-manager" /><meta name="rss" content="aws-systems-manager-user-guide-updates.rss" /><meta name="forums" content="https://repost.aws/tags/TA-UbbRGVYRWCDaCvae6itYg" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Systems%20Manager&amp;topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/patch-manager.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/patch-manager.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/patch-manager.html" /><meta name="keywords" content="EC2 Systems Manager,Simple Systems Manager,SSM,Patch Manager,Parameter Store,Maintenance Window,Run Command,State Manager,Session Manager,SSM Agent,SSM Documents,Systems Manager,AWS Resource Groups,AppConfig,OpsCenter,Explorer,Change Calendar,Quick Setup,Change Manager,Fleet Manager" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Systems Manager",
+        "item" : "https://docs.aws.amazon.com/systems-manager/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Using AWS Systems Manager tools",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-tools.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "AWS Systems Manager Node tools",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-instances-and-nodes.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "AWS Systems Manager Patch Manager",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-instances-and-nodes.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/systems-manager/latest/userguide/systems-manager-ug.pdf#patch-manager" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/systems-manager/index.html">AWS Systems Manager</a><a href="what-is-systems-manager.html">User Guide</a></div><div id="page-toc-src"><a href="#how-can-patch-manager-benefit-my-organization">How can Patch Manager benefit my organization?</a><a href="#who-should-use-patch-manager">Who should use Patch Manager?</a><a href="#what-are-the-main-features-of-patch-manager">What are the main features of Patch Manager?</a><a href="#patch-manager-definition-of-compliance">What is compliance in Patch Manager?</a><a href="#primary-components">Primary components</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="patch-manager">AWS Systems Manager Patch Manager</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>Patch Manager automates the process of patching managed nodes with both
+        security-related updates and other types of updates.</p><p>This section includes the following topics.</p><div class="itemizedlist">
+         
+                 
+             
+             
+             
+             
+             
+             
+             
+             
+             
+             
+             
+             
+             
+<ul class="itemizedlist"><li class="listitem">
+            <p><a href="./patch-manager-troubleshooting.html">Troubleshooting Patch Manager</a></p>
+        </li><li class="listitem">
+                <p><a href="./aws-runpatchbaselinewithhooks-tutorial.html">Tutorial: Update application dependencies, patch a managed node, and perform an application-specific health check using the console</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-create-a-patch-baseline.html">Working with patch baselines</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-noncompliant-nodes.html">Remediating noncompliant managed nodes with Patch Manager</a></p>
+            </li><li class="listitem">
+                <p><a href="./install-klp.html">Applying kernel live patches using Run Command</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-tutorials.html">AWS Systems Manager Patch Manager tutorials</a></p>
+            </li><li class="listitem">
+                <p><a href="./enable-klp.html">Turning on Kernel Live Patching using Run Command</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-patching-windows-applications.html">Patching applications released by Microsoft on Windows Server</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-console.html">Working with Patch Manager resources and compliance using the console</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-kernel-live-patching.html">Using Kernel Live Patching on Amazon Linux 2 managed nodes</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-view-available-patches.html">Viewing available patches</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-windows-and-linux-differences.html">Patching operation differences between Linux and Windows Server</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-create-a-patch-policy.html">Creating a patch policy</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-patching-operations.html">How Patch Manager operations work</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-update-or-delete-a-patch-baseline.html">Updating or deleting a custom patch baseline</a></p>
+            </li></ul></div><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Systems Manager provides support for <em>patch policies</em> in Quick Setup, a tool in
+            AWS Systems Manager. Using patch policies is the recommended method for configuring your patching
+            operations. Using a single patch policy configuration, you can define patching for all
+            accounts in all Regions in your organization; for only the accounts and Regions you
+            choose; or for a single account-Region pair. For more information, see <a href="./patch-manager-policies.html">Patch policy configurations in Quick Setup</a>.</p></div></div><p>You can use Patch Manager to apply patches for both operating systems and applications. (On
+        Windows Server, application support is limited to updates for applications released by Microsoft.)
+        You can use Patch Manager to install Service Packs on Windows nodes and perform minor version
+        upgrades on Linux nodes. You can patch fleets of Amazon Elastic Compute Cloud (Amazon EC2) instances, edge devices,
+        on-premises servers, and virtual machines (VMs) by operating system type. This includes
+        supported versions of several operating systems, as listed in <a href="./patch-manager-prerequisites.html">Patch Manager prerequisites</a>. You
+        can scan instances to see only a report of missing patches, or you can scan and
+        automatically install all missing patches. To get started with Patch Manager, open the <a href="https://console.aws.amazon.com/systems-manager/patch-manager" rel="noopener noreferrer" target="_blank"><span>Systems Manager console</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>. In the
+        navigation pane, choose <b>Patch Manager</b>.</p><p>AWS doesn't test patches before making them available in Patch Manager. Also, Patch Manager
+        doesn't support upgrading major versions of operating systems, such as Windows Server 2016 to
+        Windows Server 2019, or Red Hat Enterprise Linux (RHEL) 7.0 to RHEL 8.0.</p><p>For Linux-based operating system types that report a severity level for patches, Patch Manager
+        uses the severity level reported by the software publisher for the update notice or
+        individual patch. Patch Manager doesn't derive severity levels from third-party sources, such as
+        the <a href="https://www.first.org/cvss/" rel="noopener noreferrer" target="_blank"><span>Common Vulnerability Scoring System</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        (CVSS), or from metrics released by the <a href="https://nvd.nist.gov/vuln" rel="noopener noreferrer" target="_blank"><span>National
+ Vulnerability Database</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> (NVD).</p>
+        <h2 id="how-can-patch-manager-benefit-my-organization">How can Patch Manager benefit my organization?</h2>
+        <p>Patch Manager automates the process of patching managed nodes with both security-related
+            updates and other types of updates. It provides several key benefits:</p>
+        <div class="itemizedlist">
+             
+             
+             
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><b>Centralized patching control</b> –Using
+                    patch policies, you can set up recurring patching operations for all accounts in
+                    all Regions in your organization, specific accounts and Regions, or a single
+                    account-Region pair.</p>
+            </li><li class="listitem">
+                <p><b>Flexible patching operations</b> – You can
+                    choose to scan instances to see only a report of missing patches, or scan and
+                    automatically install all missing patches.</p>
+            </li><li class="listitem">
+                <p><b>Comprehensive compliance reporting</b> –
+                    After scanning operations, you can view detailed information about which managed
+                    nodes are out of patch compliance and which patches are missing.</p>
+            </li><li class="listitem">
+                <p><b>Cross-platform support</b> – Patch Manager
+                    supports multiple operating systems including various Linux distributions,
+                    macOS, and Windows Server.</p>
+            </li><li class="listitem">
+                <p><b>Custom patch baselines</b> – You can
+                    define what constitutes patch compliance for your organization through custom
+                    patch baselines that specify which patches are approved for installation.</p>
+            </li><li class="listitem">
+                <p><b>Integration with other AWS services</b>
+                    – Patch Manager integrates with AWS Organizations, AWS Security Hub CSPM, AWS CloudTrail, and AWS Config
+                    for enhanced management and security.</p>
+            </li><li class="listitem">
+                <p><b>Deterministic upgrades</b> – Support for
+                    deterministic upgrades through versioned repositories for operating systems like
+                    Amazon Linux 2023.</p>
+            </li></ul></div>
+     
+        <h2 id="who-should-use-patch-manager">Who should use Patch Manager?</h2>
+        <p>Patch Manager is designed for the following:</p>
+        <div class="itemizedlist">
+             
+             
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>IT administrators who need to maintain patch compliance across their fleet of
+                    managed nodes</p>
+            </li><li class="listitem">
+                <p>Operations managers who need visibility into patch compliance status across
+                    their infrastructure</p>
+            </li><li class="listitem">
+                <p>Cloud architects who want to implement automated patching solutions at
+                    scale</p>
+            </li><li class="listitem">
+                <p>DevOps engineers who need to integrate patching into their operational
+                    workflows</p>
+            </li><li class="listitem">
+                <p>Organizations with multi-account/multi-Region deployments who need centralized
+                    patch management</p>
+            </li><li class="listitem">
+                <p>Anyone responsible for maintaining the security posture and operational health
+                    of AWS managed nodes, edge devices, on-premises servers, and virtual
+                    machines</p>
+            </li></ul></div>
+     
+        <h2 id="what-are-the-main-features-of-patch-manager">What are the main features of Patch Manager?</h2>
+        <p>Patch Manager offers several key features:</p>
+        <div class="itemizedlist">
+             
+             
+             
+             
+             
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><b>Patch policies</b> – Configure patching
+                    operations across multiple AWS accounts and Regions using a single policy
+                    through integration with AWS Organizations.</p>
+            </li><li class="listitem">
+                <p><b>Custom patch baselines</b> – Define rules
+                    for auto-approving patches within days of their release, along with approved and
+                    rejected patch lists.</p>
+            </li><li class="listitem">
+                <p><b>Multiple patching methods</b> – Choose
+                    from patch policies, maintenance windows, or on-demand "Patch now" operations to
+                    meet your specific needs.</p>
+            </li><li class="listitem">
+                <p><b>Compliance reporting</b> – Generate
+                    detailed reports on patch compliance status that can be sent to an Amazon S3 bucket
+                    in CSV format.</p>
+            </li><li class="listitem">
+                <p><b>Cross-platform support</b> – Patch both
+                    operating systems and applications across Windows Server, various Linux distributions,
+                    and macOS.</p>
+            </li><li class="listitem">
+                <p><b>Scheduling flexibility</b> – Set different
+                    schedules for scanning and installing patches using custom CRON or Rate
+                    expressions.</p>
+            </li><li class="listitem">
+                <p><b>Lifecycle hooks</b> – Run custom scripts
+                    before and after patching operations using Systems Manager documents.</p>
+            </li><li class="listitem">
+                <p><b>Security focus</b> – By default, Patch Manager
+                    focuses on security-related updates rather than installing all available
+                    patches.</p>
+            </li><li class="listitem">
+                <p><b>Rate control</b> – Configure concurrency
+                    and error thresholds for patching operations to minimize operational
+                    impact.</p>
+            </li></ul></div>
+     
+        <h2 id="patch-manager-definition-of-compliance">What is compliance in Patch Manager?</h2>
+        <p>The benchmark for what constitutes <em>patch compliance</em>
+            for the managed nodes in your Systems Manager fleets is not defined by AWS, by operating system
+            (OS) vendors, or by third parties such as security consulting firms.</p>
+        <p>Instead, you define what patch compliance means for managed nodes in your organization
+            or account in a <em>patch baseline</em>. A patch baseline is a
+            configuration that specifies rules for which patches must be installed on a managed
+            node. A managed node is patch compliant when it is up to date with all the patches that
+            meet the approval criteria that you specify in the patch baseline. </p>
+        <p>Note that being <em>compliant</em> with a patch baseline
+            doesn't mean that a managed node is necessarily <em>secure</em>. Compliant means that the patches defined by the patch baseline
+            that are both <em>available</em> and <em>approved</em> have been installed on the node. The overall security of a
+            managed node is determined by many factors outside the scope of Patch Manager. For more
+            information, see <a href="./security.html">Security in AWS Systems Manager</a>.</p>
+        <p>Each patch baseline is a configuration for a specific supported operating system (OS)
+            type, such as Red Hat Enterprise Linux (RHEL), macOS, or Windows Server. A patch baseline can define
+            patching rules for all supported versions of an OS or be limited to only those you
+            specify, such as RHEL 7.8. and RHEL 9.3.</p>
+        <p>In a patch baseline, you could specify that all patches of certain classifications and
+            severity levels are approved for installation. For example, you might include all
+            patches classified as <code class="code">Security</code> but exclude other classifications, such as
+                <code class="code">Bugfix</code> or <code class="code">Enhancement</code>. And you could include all patches
+            with a severity of <code class="code">Critical</code> and exclude others, such as
+                <code class="code">Important</code> and <code class="code">Moderate</code>.</p>
+        <p>You can also define patches explicitly in a patch baseline by adding their IDs to
+            lists of specific patches to approve or reject, such as <code>KB2736693</code>
+            for Windows Server or <code>dbus.x86_64:1:1.12.28-1.amzn2023.0.1</code> for
+            Amazon Linux 2023 (AL2023). You can optionally specify a certain number of days to wait for
+            patching after a patch becomes available. For Linux and macOS, you have the option of
+            specifying an external list of patches for compliance (an Install Override list) instead
+            of those defined by the patch baseline rules.</p>
+        <p>When a patching operation runs, Patch Manager compares the patches currently applied to a
+            managed node to those that should be applied according to the rules set up in the patch
+            baseline or an Install Override list. You can choose for Patch Manager to show you only a
+            report of missing patches (a <code class="code">Scan</code> operation), or you can choose for
+            Patch Manager to automatically install all patches it find are missing from a managed node (a
+                <code class="code">Scan and install</code> operation).</p>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Patch compliance data represents a point-in-time snapshot from the latest
+                successful patching operation. Each compliance report contains a capture time that
+                identifies when the compliance status was calculated. When reviewing compliance
+                data, consider the capture time to determine if the operation was executed as
+                expected.</p></div></div>
+        <p>Patch Manager provides predefined patch baselines that you can use for your patching
+            operations; however, these predefined configurations are provided as examples and not as
+            recommended best practices. We recommend that you create custom patch baselines of your
+            own to exercise greater control over what constitutes patch compliance for your
+            fleet.</p>
+        <p>For more information about patch baselines, see the following topics:</p>
+        <div class="itemizedlist">
+             
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><a href="./patch-manager-predefined-and-custom-patch-baselines.html">Predefined and custom patch baselines</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-approved-rejected-package-name-formats.html">Package name formats for approved and rejected patch lists</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-view-predefined-patch-baselines.html">Viewing AWS predefined patch baselines</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-manage-patch-baselines.html">Working with custom patch baselines</a></p>
+            </li><li class="listitem">
+                <p><a href="./patch-manager-compliance-reports.html">Working with patch compliance reports</a></p>
+            </li></ul></div>
+     
+        <h2 id="primary-components">Primary components</h2>
+        <p>Before you start working with the Patch Manager tool, you should familiarize yourself with
+            some major components and features of the tool's patching operations.</p>
+         
+            <h6 class="awsdocs-block-title">Patch baselines</h6>
+            <p>Patch Manager uses <em>patch baselines</em>, which include rules for
+                auto-approving patches within days of their release, besides optional lists
+                of approved and rejected patches. When a patching operation runs, Patch Manager compares
+                the patches currently applied to a managed node to those that should be applied
+                according to the rules set up in the patch baseline. You can choose for Patch Manager to
+                show you only a report of missing patches (a <code class="code">Scan</code> operation), or you
+                can choose for Patch Manager to automatically install all patches it find are missing
+                from a managed node (a <code class="code">Scan and install</code> operation).</p>
+         
+         
+            <h6 class="awsdocs-block-title">Patching operation methods</h6>
+            <p>Patch Manager currently offers four methods for running <code class="code">Scan</code> and
+                    <code class="code">Scan and install</code> operations:</p>
+         
+        <div class="itemizedlist">
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><b>(Recommended) A patch policy configured in
+                        Quick Setup</b> – Based on integration with AWS Organizations, a single
+                    patch policy can define patching schedules and patch baselines for an entire
+                    organization, including multiple AWS accounts and all AWS Regions those
+                    accounts operate in. A patch policy can also target only some organizational
+                    units (OUs) in an organization. You can use a single patch policy to scan and
+                    install on different schedules. For more information, see <a href="./quick-setup-patch-manager.html">Configure patching for instances in an organization using a Quick Setup patch policy</a> and <a href="./patch-manager-policies.html">Patch policy configurations in Quick Setup</a>.</p>
+            </li><li class="listitem">
+                <p><b>A Host Management option configured in
+                        Quick Setup</b> – Host Management configurations are also
+                    supported by integration with AWS Organizations, making it possible to run a patching
+                    operation for up to an entire Organization. However, this option is limited to
+                    scanning for missing patches using the current default patch baseline and
+                    providing results in compliance reports. This operation method can't install
+                    patches. For more information, see <a href="./quick-setup-host-management.html">Set up Amazon EC2 host management using Quick Setup</a>.</p>
+            </li><li class="listitem">
+                <p><b>A maintenance window to run a patch <code class="code">Scan</code> or
+                            <code class="code">Install</code> task</b> – A maintenance window,
+                    which you set up in the Systems Manager tool called Maintenance Windows, can be configured to run
+                    different types of tasks on a schedule you define. A Run Command-type task can be
+                    used to run <code class="code">Scan</code> or <code class="code">Scan and install</code> tasks a set of
+                    managed nodes that you choose. Each maintenance window task can target managed
+                    nodes in only a single AWS account-AWS Region pair. For more information,
+                    see <a href="./maintenance-window-tutorial-patching.html">Tutorial: Create a maintenance window for patching using the console</a>.</p>
+            </li><li class="listitem">
+                <p><b>An on-demand <b>Patch now</b> operation in
+                        Patch Manager</b> – The <b>Patch now</b>
+                    option lets you bypass schedule setups when you need to patch managed nodes as
+                    quickly as possible. Using <b>Patch now</b>, you
+                    specify whether to run <code class="code">Scan</code> or <code class="code">Scan and install</code>
+                    operation and which managed nodes to run the operation on. You can also choose
+                    to running Systems Manager documents (SSM documents) as lifecycle hooks during the
+                    patching operation. Each <b>Patch now</b> operation
+                    can target managed nodes in only a single AWS account-AWS Region pair. For
+                    more information, see <a href="./patch-manager-patch-now-on-demand.html">Patching managed nodes on demand</a>.</p>
+            </li></ul></div>
+         
+            <h6 class="awsdocs-block-title">Compliance reporting</h6>
+            <p>After a <code class="code">Scan</code> operation, you can use the Systems Manager console to view
+                information about which of your managed nodes are out of patch compliance, and which
+                patches are missing from each of those nodes. You can also generate patch compliance
+                reports in .csv format that are sent to an Amazon Simple Storage Service (Amazon S3) bucket of your choice.
+                You can generate one-time reports, or generate reports on a regular schedule. For a
+                single managed node, reports include details of all patches for the node. For a
+                report on all managed nodes, only a summary of how many patches are missing is
+                provided. After a report is generated, you can use a tool like AWS Quick to import
+                and analyze the data. For more information, see <a href="./patch-manager-compliance-reports.html">Working with patch compliance reports</a>.</p>
+         
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>A compliance item generated through the use of a patch policy has an execution
+                type of <code class="code">PatchPolicy</code>. A compliance item not generated in a patch policy
+                operation has an execution type of <code class="code">Command</code>.</p></div></div>
+         
+            <h6 class="awsdocs-block-title">Integrations</h6>
+            <p>Patch Manager integrates with the following other AWS services: </p>
+         
+        <div class="itemizedlist">
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><b>AWS Identity and Access Management (IAM)</b> – Use IAM to
+                    control which users, groups, and roles have access to Patch Manager operations. For
+                    more information, see <a href="./security_iam_service-with-iam.html">How AWS Systems Manager works with IAM</a> and <a href="./setup-instance-permissions.html">Configure instance permissions required for Systems Manager</a>. </p>
+            </li><li class="listitem">
+                <p><b>AWS CloudTrail</b> – Use CloudTrail to record an
+                    auditable history of patching operation events initiated by users, roles, or
+                    groups. For more information, see <a href="./monitoring-cloudtrail-logs.html">Logging AWS Systems Manager API calls with AWS CloudTrail</a>.</p>
+            </li><li class="listitem">
+                <p><b>AWS Security Hub CSPM</b> – Patch compliance data from
+                    Patch Manager can be sent to AWS Security Hub CSPM. Security Hub CSPM gives you a comprehensive view of your
+                    high-priority security alerts and compliance status. It also monitors the
+                    patching status of your fleet. For more information, see <a href="./patch-manager-security-hub-integration.html">Integrating Patch Manager with AWS Security Hub CSPM</a>. </p>
+            </li><li class="listitem">
+                <p><b>AWS Config</b> – Set up recording in AWS Config to
+                    view Amazon EC2 instance management data in the Patch Manager Dashboard. For more
+                    information, see <a href="./patch-manager-view-dashboard-summaries.html">Viewing patch Dashboard summaries</a>.</p>
+            </li></ul></div>
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./syman-inventory-troubleshooting.html">Troubleshooting Inventory</div><div id="next" class="next-link" accesskey="n" href="./patch-manager-policies.html">Patch policy configurations in Quick Setup</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Systems Manager&amp;topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/patch-manager.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Systems Manager&amp;topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/patch-manager.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

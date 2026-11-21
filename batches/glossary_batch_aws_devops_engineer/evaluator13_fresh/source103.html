@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Request temporary security credentials - AWS Identity and Access Management</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="id_credentials_temp_request" /><meta name="default_state" content="id_credentials_temp_request" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.md" title="Markdown version" /><meta name="description" content="Learn how to request temporary security credentials from AWS Security Token Service." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Identity and Access Management" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Control access to your AWS resources with user identity (authentication) and with policies that define specific permissions (authorization)." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html" hreflang="x-default" /><meta name="feedback-item" content="IAM" /><meta name="this_doc_product" content="AWS Identity and Access Management" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'iam'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Request temporary security credentials" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="id_credentials_temp_request.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Request temporary security credentials - AWS Identity and Access Management</title><meta name="pdf" content="/pdfs/IAM/latest/UserGuide/iam-ug.pdf#id_credentials_temp_request" /><meta name="rss" content="aws-iam-release-notes.rss" /><meta name="forums" content="https://repost.aws/tags/TAO7Z4bI5hQVWMiYFs34QhIA" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=IAM&amp;topic_url=https://docs.aws.amazon.com/en_us/IAM/latest/UserGuide/id_credentials_temp_request.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/IAM/latest/UserGuide/id_credentials_temp_request.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/IAM/latest/UserGuide/id_credentials_temp_request.html" /><meta name="keywords" content="IAM,AWS Identity and Access Management,IAM user,user,IAM group,group,IAM role,role,permission policy,trust policy,policy,access key,password,short-term credentials,session credentials,instance identity roles,role credentials" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Identity and Access Management",
+        "item" : "https://docs.aws.amazon.com/iam/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/IAM/latest/UserGuide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "IAM Identities",
+        "item" : "https://docs.aws.amazon.com/IAM/latest/UserGuide/id.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Temporary security credentials in IAM",
+        "item" : "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Request temporary security credentials",
+        "item" : "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/IAM/latest/UserGuide/iam-ug.pdf#id_credentials_temp_request" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/iam/index.html">AWS Identity and Access Management</a><a href="introduction.html">User Guide</a></div><div id="page-toc-src"><a href="#using_sts_regions">Using AWS STS with AWS Regions</a><a href="#api_assumerole">Requesting credentials with
+        AssumeRole</a><a href="#api_assumerolewithwebidentity">Requesting credentials with
+        AssumeRoleWithWebIdentity</a><a href="#api_assumerolewithsaml">Requesting credentials with
+        AssumeRoleWithSAML</a><a href="#api_getfederationtoken">Requesting credentials with
+        GetFederationToken</a><a href="#api_getsessiontoken">Requesting credentials with
+        GetSessionToken</a><a href="#api_getscopedcredentials">Requesting credentials with
+        GetScopedCredentials</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="id_credentials_temp_request">Request temporary security credentials</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>To request temporary security credentials, you can use AWS Security Token Service (AWS STS) operations in the
+    AWS API. These include operations to create and provide trusted users with temporary security
+    credentials that can control access to your AWS resources. For more information about AWS STS,
+    see <a href="./id_credentials_temp.html">Temporary security credentials in IAM</a>. To learn about
+    the different methods that you can use to request temporary security credentials by assuming a
+    role, see <a href="./id_roles_manage-assume.html">Methods to assume a role</a>.</p><p>To call the API operations, you can use one of the <a href="http://aws.amazon.com/tools/" rel="noopener noreferrer" target="_blank"><span>AWS SDKs</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>. The SDKs are available for a variety of programming languages and
+    environments, including Java, .NET, Python, Ruby, Android, and iOS. The SDKs take care of tasks
+    such as cryptographically signing your requests, retrying requests if necessary, and handling
+    error responses. You can also use the AWS STS Query API, which is described in the
+    <a href="https://docs.aws.amazon.com/STS/latest/APIReference/">AWS Security Token Service API Reference</a>. Finally, two command line tools support the AWS STS commands: the <a href="https://aws.amazon.com/documentation/cli" rel="noopener noreferrer" target="_blank"><span>AWS Command Line Interface</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>, and the <a href="https://aws.amazon.com/documentation/powershell" rel="noopener noreferrer" target="_blank"><span>AWS Tools for Windows PowerShell</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>. </p><p>The AWS STS API operations create a new session with temporary security credentials that
+    include an access key pair and a session token. The access key pair consists of an access key ID
+    and a secret key. Users (or an application that the user runs) can use these credentials to
+    access your resources.</p><p>You can create a role session and pass session policies and session tags
+    programmatically using AWS STS API operations. The resulting session permissions are the
+    intersection of the role's identity-based policies and the session policies. For more
+    information about session policies, see <a href="./access_policies.html#policies_session">Session policies</a>. For more information about session tags, see <a href="./id_session-tags.html">Pass session tags in AWS STS</a>.</p><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>The size of the session token that AWS STS API operations return is not fixed. We strongly
+      recommend that you make no assumptions about the maximum size. The typical token size is less
+      than 4096 bytes, but that can vary.</p></div></div>
+    <h2 id="using_sts_regions">Using AWS STS with AWS Regions</h2>
+    <p>You can send AWS STS API calls either to a global endpoint or to one of the Regional
+      endpoints. If you choose an endpoint closer to you, you can reduce latency and improve the
+      performance of your API calls. You also can choose to direct your calls to an alternative
+      Regional endpoint if you can no longer communicate with the original endpoint.</p>
+    <p>If you are
+      using one of the various AWS SDKs, then use that SDK method to specify a Region before you
+      make the API call. If you manually construct HTTP API requests, then you must direct the
+      request to the correct endpoint yourself. For more information, see the <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html#sts_region">AWS STS section of <em>Regions and
+          Endpoints</em></a> and <a href="./id_credentials_temp_enable-regions.html">Manage AWS STS in an AWS Region</a>.</p>
+    <p>The following are the API operations that you can use to acquire temporary credentials for
+      use in your AWS environment and applications.</p>
+   
+    <h2 id="api_assumerole">Requesting credentials for cross-account delegation and federation through a custom identity broker</h2>
+    <p>The <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html"><code class="code">AssumeRole</code></a> API operation is useful for allowing existing IAM users
+      to access AWS resources that they don't already have access to. For example, the user might
+      need access to resources in another AWS account. It is also useful as a means to temporarily
+      gain privileged access—for example, to provide multi-factor authentication (MFA). You
+      must call this API using active credentials. To learn who can call this operation, see <a href="./id_credentials_sts-comparison.html">Compare AWS STS credentials</a>. For
+      more information, see <a href="./id_roles_create_for-user.html">Create a role to give permissions to an IAM user</a> and <a href="./id_credentials_mfa_configure-api-require.html">Secure API access with MFA</a>.</p>
+
+    <div class="procedure"><h6 class="awsdocs-block-title">To request temporary security credentials for cross-account delegation and federation through a custom identity broker</h6><ol><li>
+        <p>Authenticate with your AWS security credentials. This call must be made using valid
+          AWS security credentials.</p>
+      </li><li>
+        <p>Call the operation <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html"><code class="code">AssumeRole</code></a>.</p>
+      </li></ol></div>
+
+    <p>The following example shows a sample request and response using <code class="code">AssumeRole</code>.
+      This example request assumes the <code class="code">demo</code> role for the specified duration with the
+      included <a href="./access_policies.html#policies_session">session policy</a>, <a href="./id_session-tags.html">session tags</a>, <a href="./id_roles_common-scenarios_third-party.html">external ID</a>, and <a href="./id_credentials_temp_control-access_monitor.html">source identity</a>. The resulting
+      session is named <code class="code">John-session</code>. </p>
+    <div class="example"><h6 class="awsdocs-block-title">Example request</h6><div class="example-contents"><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (http)--><code class="http ">https://sts.amazonaws.com/
+?Version=2011-06-15
+&amp;Action=AssumeRole
+&amp;RoleSessionName=John-session
+&amp;RoleArn=arn:aws:iam::123456789012:role/demo
+&amp;Policy=%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Sid%22%3A%20%22Stmt1%22%2C%22Effect%22%3A%20%22Allow%22%2C%22Action%22%3A%20%22s3%3A*%22%2C%22Resource%22%3A%20%22*%22%7D%5D%7D
+&amp;DurationSeconds=1800
+&amp;Tags.member.1.Key=Project
+&amp;Tags.member.1.Value=Pegasus
+&amp;Tags.member.2.Key=Cost-Center
+&amp;Tags.member.2.Value=12345
+&amp;ExternalId=123ABC
+&amp;SourceIdentity=DevUser123
+&amp;AUTHPARAMS</code></pre></div></div>
+    <p>The policy value shown in the preceding example is the URL-encoded version of the
+      following policy:</p>
+    <awsdocs-tabs><dl style="display: none">
+    <dt>JSON</dt><dd tab-id="json">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term"></span></b></dt>
+        <dd>
+            
+                
+                <pre class="programlisting" data-example-id="2d590bf69bca3998b29091fc0ab0f2a532eb83de1dba831afd8eddf97a8e3d58"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><code class="userinput"><span>{</span>"Version":"2012-10-17","Statement":[<span>{</span>"Sid":"Stmt1","Effect":"Allow","Action":"s3:*","Resource":"*"}]}</code>
+</code></pre>
+            
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs>
+    <p>The <code class="code">AUTHPARAMS</code> parameter in the example is a placeholder for your
+        <em>signature</em>. A signature is the authentication information that you must
+      include with AWS HTTP API requests. We recommend using the <a href="https://aws.amazon.com/tools/" rel="noopener noreferrer" target="_blank"><span>AWS SDKs</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> to create API requests, and one benefit of
+      doing so is that the SDKs handle request signing for you. If you must create and sign API
+      requests manually, see <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html">Signing AWS Requests By
+        Using Signature Version 4</a> in the <em>Amazon Web Services General Reference</em> to learn how
+      to sign a request.</p>
+
+    <p>In addition to the temporary security credentials, the response includes the Amazon
+      Resource Name (ARN) for the federated user and the expiration time of the credentials.</p>
+    <div class="example"><h6 class="awsdocs-block-title">Example response</h6><div class="example-contents"><pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (xml)--><code class="xml ">&lt;AssumeRoleResponse xmlns="https://sts.amazonaws.com/doc/2011-06-15/"&gt;
+&lt;AssumeRoleResult&gt;
+&lt;SourceIdentity&gt;DevUser123&lt;/SourceIdentity&gt;
+&lt;Credentials&gt;
+  &lt;SessionToken&gt;
+   AQoDYXdzEPT//////////wEXAMPLEtc764bNrC9SAPBSM22wDOk4x4HIZ8j4FZTwdQW
+   LWsKWHGBuFqwAeMicRXmxfpSPfIeoIYRqTflfKD8YUuwthAx7mSEI/qkPpKPi/kMcGd
+   QrmGdeehM4IC1NtBmUpp2wUE8phUZampKsburEDy0KPkyQDYwT7WZ0wq5VSXDvp75YU
+   9HFvlRd8Tx6q6fE8YQcHNVXAkiY9q6d+xo0rKwT38xVqr7ZD0u0iPPkUL64lIZbqBAz
+   +scqKmlzm8FDrypNC9Yjc8fPOLn9FX9KSYvKTr4rvx3iSIlTJabIQwj2ICCR/oLxBA==
+  &lt;/SessionToken&gt;
+  &lt;SecretAccessKey&gt;
+   wJalrXUtnFEMI/K7MDENG/bPxRfiCYzEXAMPLEKEY
+  &lt;/SecretAccessKey&gt;
+  &lt;Expiration&gt;2019-07-15T23:28:33.359Z&lt;/Expiration&gt;
+  &lt;AccessKeyId&gt;ASIAIOSFODNN7EXAMPLE&lt;/AccessKeyId&gt;
+&lt;/Credentials&gt;
+&lt;AssumedRoleUser&gt;
+  &lt;Arn&gt;arn:aws:sts::123456789012:assumed-role/demo/John&lt;/Arn&gt;
+  &lt;AssumedRoleId&gt;AROA3XFRBF535PLBIFPI3:John&lt;/AssumedRoleId&gt;
+&lt;/AssumedRoleUser&gt;
+&lt;PackedPolicySize&gt;34&lt;/PackedPolicySize&gt;
+&lt;SessionTokenSize&gt;1428&lt;/SessionTokenSize&gt;
+&lt;SessionTokenUtilization&gt;34&lt;/SessionTokenUtilization&gt;
+&lt;/AssumeRoleResult&gt;
+&lt;ResponseMetadata&gt;
+&lt;RequestId&gt;c6104cbe-af31-11e0-8154-cbc7ccf896c7&lt;/RequestId&gt;
+&lt;/ResponseMetadata&gt;
+&lt;/AssumeRoleResponse&gt;</code></pre></div></div>
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Session policies and session tags add to the session token size. If the token
+        exceeds the size limit, your request fails, even if your plaintext is within the
+        other limits. The <code class="code">SessionTokenUtilization</code> response element shows what
+        percentage of the size limit the token uses. The <code class="code">PackedPolicySize</code>
+        response element is deprecated. Use <code class="code">SessionTokenUtilization</code>
+        instead.</p></div></div>
+   
+    <h2 id="api_assumerolewithwebidentity">Requesting credentials through an OIDC provider</h2>
+    <p>The <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRoleWithWebIdentity.html"><code class="code">AssumeRoleWithWebIdentity</code></a> API operation returns a set of temporary
+      AWS security credentials in exchange for a JSON Web Token (JWT). This includes public
+      identity providers, such as Login with Amazon, Facebook, Google, and providers that issue JWTs
+      that are compatible with OpenID Connect (OIDC) discovery, such as GitHub actions or Azure
+      Devops. For more information, see <a href="./id_roles_providers_oidc.html">OIDC federation</a>.</p>
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p><code class="code">AssumeRoleWithWebIdentity</code> requests are not signed with, and do not require
+        AWS credentials.</p></div></div>
+    <div class="procedure"><h6 class="awsdocs-block-title">Requesting credentials through an OIDC provider</h6><ol><li>
+        <p>Call the operation <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRoleWithWebIdentity.html"><code class="code">AssumeRoleWithWebIdentity</code></a>.</p>
+        <p>When you call <code class="code">AssumeRoleWithWebIdentity</code>, AWS validates the token
+          presented by verifying the digital signature using public keys made available through your
+          IdP's JSON web keyset (JWKS). If the token is valid, and all conditions set forth in the
+          IAM role trust policy are met, AWS returns the following information to you:</p>
+        <div class="itemizedlist">
+           
+           
+           
+        <ul class="itemizedlist"><li class="listitem">
+            <p>A set of temporary security credentials. These consist of an access key ID, a
+              secret access key, and a session token.</p>
+          </li><li class="listitem">
+            <p>The role ID and the ARN of the assumed role.</p>
+          </li><li class="listitem">
+            <p>A <code class="code">SubjectFromWebIdentityToken</code> value that contains the unique user
+              ID.</p>
+          </li></ul></div>
+      </li><li>
+        <p>Your application may then use the temporary security credentials that were returned in
+          the response to make AWS API calls. This is the same process as making an AWS API call
+          with long-term security credentials. The difference is that you must include the session
+          token, which lets AWS verify that the temporary security credentials are valid.</p>
+      </li></ol></div>
+    <p>Your application should cache the credentials returned by AWS STS and refresh them as
+      needed. If your application is built using an AWS SDK, the SDK has credential providers that
+      can handle calling <code class="code">AssumeRoleWithWebIdentity</code> and refreshing AWS credentials
+      before they expire. For more information, see <a href="https://docs.aws.amazon.com/sdkref/latest/guide/standardized-credentials.html">AWS SDKs and Tools standardized
+        credential providers</a> in the <em>AWS SDKs and Tools Reference
+        Guide</em>.</p>
+   
+    <h2 id="api_assumerolewithsaml">Requesting credentials through a SAML 2.0 identity provider</h2>
+    <p>The <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRoleWithSAML.html"><code class="code">AssumeRoleWithSAML</code></a> API operation returns a set of temporary security
+      credentials for SAML federated principals who are authenticated by your organization's existing identity
+      system. The users must also use <a href="https://www.oasis-open.org/standards#samlv2.0" rel="noopener noreferrer" target="_blank"><span>SAML</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> 2.0 (Security Assertion Markup Language) to pass authentication and
+      authorization information to AWS. This API operation is useful in organizations that have
+      integrated their identity systems (such as Windows Active Directory or OpenLDAP) with software
+      that can produce SAML assertions. Such an integration provides information about user identity
+      and permissions (such as Active Directory Federation Services or Shibboleth). For more
+      information, see <a href="./id_roles_providers_saml.html">SAML 2.0 federation</a>.</p>
+    <div class="procedure"><ol><li>
+        <p>Call the operation <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRoleWithSAML.html"><code class="code">AssumeRoleWithSAML</code></a>.</p>
+        <p>This is an unsigned call, meaning you do not need to authenticate AWS security
+          credentials prior to making the request.</p>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>A call to <code class="code">AssumeRoleWithSAML</code> is not signed (encrypted). Therefore, you
+            should only include optional session policies if the request is transmitted through a
+            trusted intermediary. In this case, someone could alter the policy to remove the
+            restrictions.</p></div></div>
+      </li><li>
+        <p>When you call <code class="code">AssumeRoleWithSAML</code>, AWS verifies the authenticity of the
+          SAML assertion. Assuming that the identity provider validates the assertion, AWS returns
+          the following information to you:</p>
+        <div class="itemizedlist">
+           
+           
+           
+           
+           
+           
+           
+        <ul class="itemizedlist"><li class="listitem">
+            <p>A set of temporary security credentials. These consist of an access key ID, a
+              secret access key, and a session token. </p>
+          </li><li class="listitem">
+            <p>The role ID and the ARN of the assumed role. </p>
+          </li><li class="listitem">
+            <p>An <code class="code">Audience</code> value that contains the value of the
+                <code class="code">Recipient</code> attribute of the <code class="code">SubjectConfirmationData</code> element
+              of the SAML assertion.</p>
+          </li><li class="listitem">
+            <p>An <code class="code">Issuer</code> value that contains the value of the <code class="code">Issuer</code>
+              element of the SAML assertion.</p>
+          </li><li class="listitem">
+            <p>A <code class="code">NameQualifier</code> element that contains a hash value built from the
+                <code class="code">Issuer</code> value, the AWS account ID, and the friendly name of the SAML
+              provider. When combined with the <code class="code">Subject</code> element, they can uniquely
+              identify the SAML federated principal.</p>
+          </li><li class="listitem">
+            <p>A <code class="code">Subject</code> element that contains the value of the <code class="code">NameID</code>
+              element in the <code class="code">Subject</code> element of the SAML assertion.</p>
+          </li><li class="listitem">
+            <p>A <code class="code">SubjectType</code> element that indicates the format of the
+                <code class="code">Subject</code> element. The value can be <code class="code">persistent</code>,
+                <code class="code">transient</code>, or the full <code class="code">Format</code> URI from the
+                <code class="code">Subject</code> and <code class="code">NameID</code> elements used in your SAML assertion.
+              For information about the <code class="code">NameID</code> element's <code class="code">Format</code> attribute,
+              see <a href="./id_roles_providers_create_saml_assertions.html">Configure SAML assertions for the authentication response</a>. </p>
+          </li></ul></div>
+      </li><li>
+        <p>Use the temporary security credentials returned in the response to make AWS API
+          calls. This is the same process as making an AWS API call with long-term security
+          credentials. The difference is that you must include the session token, which lets AWS
+          verify that the temporary security credentials are valid.</p>
+      </li></ol></div>
+
+    <p>Your app should cache the credentials. By default the credentials expire after an hour. If
+      you are not using the <a href="https://aws.amazon.com/blogs/mobile/using-the-amazoncredentialsprovider-protocol-in-the-aws-sdk-for-ios" rel="noopener noreferrer" target="_blank"><span>AmazonSTSCredentialsProvider</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> action in the AWS SDK, it's up to you and your app
+      to call <code class="code">AssumeRoleWithSAML</code> again. Call this operation to get a new set of
+      temporary security credentials before the old ones expire.</p>
+   
+    <h2 id="api_getfederationtoken">Requesting credentials through a custom identity broker</h2>
+    <p>The <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_GetFederationToken.html"><code class="code">GetFederationToken</code></a> API operation returns a set of temporary security
+      credentials for AWS STS federated user principals. This API differs from <code class="code">AssumeRole</code> in that the
+      default expiration period is substantially longer (12 hours instead of one hour).
+      Additionally, you can use the <code class="code">DurationSeconds</code> parameter to specify a duration for
+      the temporary security credentials to remain valid. The resulting credentials are valid for
+      the specified duration, between 900 seconds (15 minutes) to 129,600 seconds (36 hours). The
+      longer expiration period can help reduce the number of calls to AWS because you do not need
+      to get new credentials as often.</p>
+
+    <div class="procedure"><ol><li>
+        <p>Authenticate with the AWS security credentials of your specific IAM user. This
+          call must be made using valid AWS security credentials.</p>
+      </li><li>
+        <p>Call the operation <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_GetFederationToken.html"><code class="code">GetFederationToken</code></a>.</p>
+      </li></ol></div>
+
+    <p>The <code class="code">GetFederationToken</code> call returns temporary security credentials that
+      consist of the session token, access key, secret key, and expiration. You can use
+        <code class="code">GetFederationToken</code> if you want to manage permissions inside your organization
+      (for example, using the proxy application to assign permissions).</p>
+    <p>The following example shows a sample request and response that uses
+        <code class="code">GetFederationToken</code>. This example request federates the calling user for the
+      specified duration with the <a href="./access_policies.html#policies_session">session policy</a> ARN and
+        <a href="./id_session-tags.html">session tags</a>. The resulting session is named
+        <code class="code">Jane-session</code>.</p>
+    <div class="example"><h6 class="awsdocs-block-title">Example request</h6><div class="example-contents"><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (http)--><code class="http ">https://sts.amazonaws.com/
+?Version=2011-06-15
+&amp;Action=GetFederationToken
+&amp;Name=Jane-session
+&amp;PolicyArns.member.1.arn==arn%3Aaws%3Aiam%3A%3A123456789012%3Apolicy%2FRole1policy
+&amp;DurationSeconds=1800
+&amp;Tags.member.1.Key=Project
+&amp;Tags.member.1.Value=Pegasus
+&amp;Tags.member.2.Key=Cost-Center
+&amp;Tags.member.2.Value=12345
+&amp;AUTHPARAMS</code></pre></div></div>
+    <p>The policy ARN shown in the preceding example includes the following URL-encoded ARN: </p>
+    <p><code class="code">arn:aws:iam::123456789012:policy/Role1policy</code></p>
+    <p>Also, note that the <code class="code">&amp;AUTHPARAMS</code> parameter in the example is meant as a
+      placeholder for the authentication information. This is the <em>signature</em>,
+      which you must include with AWS HTTP API requests. We recommend using the <a href="https://aws.amazon.com/tools/" rel="noopener noreferrer" target="_blank"><span>AWS SDKs</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> to create API requests, and one benefit of
+      doing so is that the SDKs handle request signing for you. If you must create and sign API
+      requests manually, see <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html">Signing AWS Requests
+        By Using Signature Version 4</a> in the <em>Amazon Web Services General Reference</em> to learn
+      how to sign a request.</p>
+    <p>In addition to the temporary security credentials, the response includes the Amazon
+      Resource Name (ARN) for the federated user and the expiration time of the credentials.</p>
+    <div class="example"><h6 class="awsdocs-block-title">Example response</h6><div class="example-contents"><pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (xml)--><code class="xml ">&lt;GetFederationTokenResponse xmlns="https://sts.amazonaws.com/doc/2011-06-15/"&gt;
+&lt;GetFederationTokenResult&gt;
+&lt;Credentials&gt;
+  &lt;SessionToken&gt;
+   AQoDYXdzEPT//////////wEXAMPLEtc764bNrC9SAPBSM22wDOk4x4HIZ8j4FZTwdQW
+   LWsKWHGBuFqwAeMicRXmxfpSPfIeoIYRqTflfKD8YUuwthAx7mSEI/qkPpKPi/kMcGd
+   QrmGdeehM4IC1NtBmUpp2wUE8phUZampKsburEDy0KPkyQDYwT7WZ0wq5VSXDvp75YU
+   9HFvlRd8Tx6q6fE8YQcHNVXAkiY9q6d+xo0rKwT38xVqr7ZD0u0iPPkUL64lIZbqBAz
+   +scqKmlzm8FDrypNC9Yjc8fPOLn9FX9KSYvKTr4rvx3iSIlTJabIQwj2ICCEXAMPLE==
+  &lt;/SessionToken&gt;
+  &lt;SecretAccessKey&gt;
+  wJalrXUtnFEMI/K7MDENG/bPxRfiCYzEXAMPLEKEY
+  &lt;/SecretAccessKey&gt;
+  &lt;Expiration&gt;2019-04-15T23:28:33.359Z&lt;/Expiration&gt;
+  &lt;AccessKeyId&gt;ASIAIOSFODNN7EXAMPLE&lt;/AccessKeyId&gt;
+&lt;/Credentials&gt;
+&lt;FederatedUser&gt;
+  &lt;Arn&gt;arn:aws:sts::123456789012:federated-user/Jean&lt;/Arn&gt;
+  &lt;FederatedUserId&gt;123456789012:Jean&lt;/FederatedUserId&gt;
+&lt;/FederatedUser&gt;
+&lt;PackedPolicySize&gt;26&lt;/PackedPolicySize&gt;
+&lt;SessionTokenSize&gt;1105&lt;/SessionTokenSize&gt;
+&lt;SessionTokenUtilization&gt;26&lt;/SessionTokenUtilization&gt;
+&lt;/GetFederationTokenResult&gt;
+&lt;ResponseMetadata&gt;
+&lt;RequestId&gt;c6104cbe-af31-11e0-8154-cbc7ccf896c7&lt;/RequestId&gt;
+&lt;/ResponseMetadata&gt;
+&lt;/GetFederationTokenResponse&gt;</code></pre></div></div>
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Session policies and session tags add to the session token size. If the token
+        exceeds the size limit, your request fails, even if your plaintext is within the
+        other limits. The <code class="code">SessionTokenUtilization</code> response element shows what
+        percentage of the size limit the token uses. The <code class="code">PackedPolicySize</code>
+        response element is deprecated. Use <code class="code">SessionTokenUtilization</code>
+        instead.</p></div></div>
+    <p>AWS recommends that you grant permissions at the resource level (for example, you attach
+      a resource-based policy to an Amazon S3 bucket), you can omit the <code class="code">Policy</code> parameter.
+      However, if you do not include a policy for the AWS STS federated user principal, the temporary security
+      credentials will not grant any permissions. In this case, you <em>must</em> use resource policies to grant the federated user access to your AWS
+      resources.</p>
+    <p>For example, assume your AWS account number is 111122223333, and you have an
+      Amazon S3 bucket that you want to allow Susan to access. Susan's temporary security credentials
+      don't include a policy for the bucket. In that case, you would need to ensure that the bucket
+      has a policy with an ARN that matches Susan's ARN, such as
+        <code class="code">arn:aws:sts::111122223333:federated-user/Susan</code>. </p>
+   
+    <h2 id="api_getsessiontoken">Requesting credentials for users in untrusted environments</h2>
+    <p>The <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_GetSessionToken.html"><code class="code">GetSessionToken</code></a> API operation returns a set of temporary security
+      credentials to an existing IAM user. This is useful for providing enhanced security, such as
+      allowing AWS requests only when MFA is enabled for the IAM user. Because the credentials
+      are temporary, they provide enhanced security when you have an IAM user who accesses your
+      resources through a less secure environment. Examples of less secure environments include a
+      mobile device or web browser.</p>
+
+    <div class="procedure"><ol><li>
+        <p>Authenticate with the AWS security credentials of your specific IAM user. This
+          call must be made using valid AWS security credentials.</p>
+      </li><li>
+        <p>Call the operation <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_GetSessionToken.html"><code class="code">GetSessionToken</code></a>.</p>
+      </li><li>
+        <p><code class="code">GetSessionToken</code> returns temporary security credentials consisting of a
+          session token, an access key ID, and a secret access key.</p>
+      </li></ol></div>
+    <p>By default, temporary security credentials for an IAM user are valid for a maximum of 12
+      hours. But you can request a duration as short as 15 minutes or as long as 36 hours using the
+        <code class="code">DurationSeconds</code> parameter. For security reasons, a token for an AWS account root user is
+      restricted to a duration of one hour.</p>
+    <p>The following example shows a sample request and response using
+        <code class="code">GetSessionToken</code>. The response also includes the expiration time of the
+      temporary security credentials. </p>
+    <div class="example"><h6 class="awsdocs-block-title">Example request</h6><div class="example-contents"><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (http)--><code class="http ">https://sts.amazonaws.com/
+?Version=2011-06-15
+&amp;Action=GetSessionToken
+&amp;DurationSeconds=1800
+&amp;AUTHPARAMS</code></pre></div></div>
+    <p>The <code class="code">AUTHPARAMS</code> parameter in the example is a placeholder for your
+        <em>signature</em>. A signature is the authentication information that you must
+      include with AWS HTTP API requests. We recommend using the <a href="https://aws.amazon.com/tools/" rel="noopener noreferrer" target="_blank"><span>AWS SDKs</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> to create API requests, and one benefit of
+      doing so is that the SDKs handle request signing for you. If you must create and sign API
+      requests manually, see <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html">Signing AWS Requests
+        By Using Signature Version 4</a> in the <em>Amazon Web Services General Reference</em> to learn
+      how to sign a request.</p>
+    <div class="example"><h6 class="awsdocs-block-title">Example response</h6><div class="example-contents"><pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (xml)--><code class="xml ">&lt;GetSessionTokenResponse xmlns="https://sts.amazonaws.com/doc/2011-06-15/"&gt;
+&lt;GetSessionTokenResult&gt;
+&lt;Credentials&gt;
+  &lt;SessionToken&gt;
+   AQoEXAMPLEH4aoAH0gNCAPyJxz4BlCFFxWNE1OPTgk5TthT+FvwqnKwRcOIfrRh3c/L
+   To6UDdyJwOOvEVPvLXCrrrUtdnniCEXAMPLE/IvU1dYUg2RVAJBanLiHb4IgRmpRV3z
+   rkuWJOgQs8IZZaIv2BXIa2R4OlgkBN9bkUDNCJiBeb/AXlzBBko7b15fjrBs2+cTQtp
+   Z3CYWFXG8C5zqx37wnOE49mRl/+OtkIKGO7fAE
+  &lt;/SessionToken&gt;
+  &lt;SecretAccessKey&gt;
+  wJalrXUtnFEMI/K7MDENG/bPxRfiCYzEXAMPLEKEY
+  &lt;/SecretAccessKey&gt;
+  &lt;Expiration&gt;2011-07-11T19:55:29.611Z&lt;/Expiration&gt;
+  &lt;AccessKeyId&gt;ASIAIOSFODNN7EXAMPLE&lt;/AccessKeyId&gt;
+&lt;/Credentials&gt;
+&lt;SessionTokenSize&gt;856&lt;/SessionTokenSize&gt;
+&lt;SessionTokenUtilization&gt;20&lt;/SessionTokenUtilization&gt;
+&lt;/GetSessionTokenResult&gt;
+&lt;ResponseMetadata&gt;
+&lt;RequestId&gt;58c5dbae-abef-11e0-8cfe-09039844ac7d&lt;/RequestId&gt;
+&lt;/ResponseMetadata&gt;
+&lt;/GetSessionTokenResponse&gt;</code></pre></div></div>
+    <p>Optionally, the <code class="code">GetSessionToken</code> request can include <code class="code">SerialNumber</code>
+      and <code class="code">TokenCode</code> values for AWS multi-factor authentication (MFA) verification. If
+      the provided values are valid, AWS STS provides temporary security credentials that include
+      the state of MFA authentication. The temporary security credentials can then be used to access
+      the MFA-protected API operations or AWS websites for as long as the MFA authentication is
+      valid. </p>
+    <p>The following example shows a <code class="code">GetSessionToken</code> request that includes an MFA
+      verification code and device serial number. </p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (http)--><code class="http ">https://sts.amazonaws.com/
+?Version=2011-06-15
+&amp;Action=GetSessionToken
+&amp;DurationSeconds=7200
+&amp;SerialNumber=YourMFADeviceSerialNumber
+&amp;TokenCode=123456
+&amp;AUTHPARAMS</code></pre>
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>The call to AWS STS can be to the global endpoint or to any of the Regional endpoints that
+        you activate your AWS account. For more information, see the <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html#sts_region">AWS STS section of <em>Regions and
+            Endpoints</em></a>.</p><p>The <code class="code">AUTHPARAMS</code> parameter in the example is a placeholder for your
+          <em>signature</em>. A signature is the authentication information that you
+        must include with AWS HTTP API requests. We recommend using the <a href="https://aws.amazon.com/tools/" rel="noopener noreferrer" target="_blank"><span>AWS SDKs</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> to create API requests, and one benefit of
+        doing so is that the SDKs handle request signing for you. If you must create and sign API
+        requests manually, see <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html">Signing AWS Requests
+          By Using Signature Version 4</a> in the <em>Amazon Web Services General Reference</em> to learn
+        how to sign a request.</p></div></div>
+   
+    <h2 id="api_getscopedcredentials">Requesting credentials with scoped down permissions on an existing session</h2>
+    <p>The <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_GetScopedCredentials.html"><code class="code">GetScopedCredentials</code></a> API operation returns a set of temporary
+      security credentials that are scoped down from the caller's existing temporary security
+      credentials. <code class="code">GetScopedCredentials</code> preserves the caller's identity while
+      narrowing the permissions, shortening the session lifetime, or both.</p>
+    <p>This is useful when a workload, credential broker, or agent orchestrator needs to vend
+      least-privilege credentials from a single broader session without provisioning additional IAM
+      roles or configuring trust policies.</p>
+    <div class="procedure"><h6 class="awsdocs-block-title">To request scoped down credentials</h6><ol><li>
+        <p>Start with existing valid temporary security credentials. Long-term IAM
+          user credentials must call either <code class="code">GetFederationToken</code> or
+            <code class="code">GetSessionToken</code> first to obtain temporary security credentials.</p>
+      </li><li>
+        <p>Call the operation <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_GetScopedCredentials.html"><code class="code">GetScopedCredentials</code></a>.</p>
+      </li></ol></div>
+    <p>The following example shows a sample request and response using
+        <code class="code">GetScopedCredentials</code>.</p>
+    <div class="example"><h6 class="awsdocs-block-title">Example request</h6><div class="example-contents"><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (http)--><code class="http ">https://sts.us-east-1.amazonaws.com/
+?Version=2011-06-15
+&amp;Action=GetScopedCredentials
+&amp;Policy=%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Effect%22%3A%22Allow%22%2C%22Action%22%3A%5B%22s3%3AGetObject%22%5D%2C%22Resource%22%3A%22arn%3Aaws%3As3%3A%3A%3A%61mzn-s3-demo-bucket%2F*%22%7D%5D%7D
+&amp;DurationSeconds=900
+&amp;AUTHPARAMS</code></pre></div></div>
+    <p>The policy value shown in the preceding example is the URL-encoded version of the
+      following policy:</p>
+    <div class="example"><h6 class="awsdocs-block-title">Example Scope down policy</h6><div class="example-contents"><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Resource": "arn:aws:s3:::amzn-s3-demo-bucket/*"
+        }
+    ]
+}</code></pre></div></div>
+    <p>The <code class="code">AUTHPARAMS</code> parameter in the example is a placeholder for your
+        signature. A signature is the authentication information that you must
+      include with AWS HTTP API requests. We recommend using the <a href="https://aws.amazon.com/tools/" rel="noopener noreferrer" target="_blank"><span>AWS SDKs</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> to create API requests, and one benefit of
+      doing so is that the SDKs handle request signing for you. If you must create and sign API
+      requests manually, see <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html">Signing
+        AWS Requests By Using Signature Version 4</a> in the <em>Amazon Web Services General Reference</em>
+      to learn how to sign a request.</p>
+    <div class="example"><h6 class="awsdocs-block-title">Example response</h6><div class="example-contents"><pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (xml)--><code class="xml ">&lt;GetScopedCredentialsResponse xmlns="https://sts.amazonaws.com/doc/2011-06-15/"&gt;
+&lt;GetScopedCredentialsResult&gt;
+&lt;Credentials&gt;
+  &lt;SessionToken&gt;
+   AQoEXAMPLEH4aoAH0gNCAPyJxz4BlCFFxWNE1OPTgk5TthT+FvwqnKwRcOIfrRh3c/L
+   To6UDdyJwOOvEVPvLXCrrrUtdnniCEXAMPLE/IvU1dYUg2RVAJBanLiHb4IgRmpRV3z
+   rkuWJOgQs8IZZaIv2BXIa2R4OlgkBN9bkUDNCJiBeb/AXlzBBko7b15fjrBs2+cTQtp
+   Z3CYWFXG8C5zqx37wnOE49mRl/+OtkIKGO7fAE
+  &lt;/SessionToken&gt;
+  &lt;SecretAccessKey&gt;
+  wJalrXUtnFEMI/K7MDENG/bPxRfiCYzEXAMPLEKEY
+  &lt;/SecretAccessKey&gt;
+  &lt;Expiration&gt;2011-07-11T19:55:29.611Z&lt;/Expiration&gt;
+  &lt;AccessKeyId&gt;ASIAIOSFODNN7EXAMPLE&lt;/AccessKeyId&gt;
+&lt;/Credentials&gt;
+&lt;SessionInfo&gt;
+  &lt;Arn&gt;arn:aws:sts::123456789012:assumed-role/demo/John-session&lt;/Arn&gt;
+  &lt;ScopedSessionId&gt;AROA3XFRBF535PLBIFPI3:John-session&lt;/ScopedSessionId&gt;
+&lt;/SessionInfo&gt;
+&lt;ScopedPoliciesCount&gt;1&lt;/ScopedPoliciesCount&gt;
+&lt;SessionTokenSize&gt;960&lt;/SessionTokenSize&gt;
+&lt;SessionTokenUtilization&gt;23&lt;/SessionTokenUtilization&gt;
+&lt;/GetScopedCredentialsResult&gt;
+&lt;ResponseMetadata&gt;
+&lt;RequestId&gt;58c5dbae-abef-11e0-8cfe-09039844ac7d&lt;/RequestId&gt;
+&lt;/ResponseMetadata&gt;
+&lt;/GetScopedCredentialsResponse&gt;</code></pre></div></div>
+    <p>Important notes:</p>
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><div class="itemizedlist">
+         
+         
+         
+         
+      <ul class="itemizedlist"><li class="listitem">
+          <p>The <code class="code">SessionInfo</code> element confirms that the identity has not changed.
+            The ARN and principal ID are identical to the calling session.</p>
+        </li><li class="listitem">
+          <p><code class="code">GetScopedCredentials</code> can be called recursively. You can apply up to
+            three scope down policy layers. Calls without a policy don't add a layer.</p>
+        </li><li class="listitem">
+          <p><code class="code">ScopedPoliciesCount</code> indicates how many scope down policy layers are
+            active on this credential (increments with each recursive
+              <code class="code">GetScopedCredentials</code> call that includes a scope down policy).</p>
+        </li><li class="listitem">
+          <p>The resulting scoped down credentials cannot outlive the calling session. If
+            <code class="code">DurationSeconds</code> is not specified, the credentials inherit the calling
+            session's remaining lifetime.</p>
+        </li></ul></div></div></div>
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./id_credentials_bearer.html">Service bearer tokens</div><div id="next" class="next-link" accesskey="n" href="./id_credentials_temp_use-resources.html">Use temporary credentials with AWS resources</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=IAM&amp;topic_url=https://docs.aws.amazon.com/en_us/IAM/latest/UserGuide/id_credentials_temp_request.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=IAM&amp;topic_url=https://docs.aws.amazon.com/en_us/IAM/latest/UserGuide/id_credentials_temp_request.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

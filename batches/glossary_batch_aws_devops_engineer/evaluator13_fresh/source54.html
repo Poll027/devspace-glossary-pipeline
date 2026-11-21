@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Viewing Compliance Information and Evaluation Results for your AWS Resources with AWS Config - AWS Config</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="evaluate-config_view-compliance" /><meta name="default_state" content="evaluate-config_view-compliance" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_view-compliance.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_view-compliance.md" title="Markdown version" /><meta name="description" content="Use the AWS Config console or AWS SDKs to view the compliance information and evaluation results of your resources." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Config" /><meta name="guide" content="Developer Guide" /><meta name="abstract" content="AWS Config provides a detailed view of the configuration of AWS resources in your AWS account. This includes how the resources are related to one another and how they were configured in the past so that you can see how the configurations and relationships change over time." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_view-compliance.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_view-compliance.html" hreflang="x-default" /><meta name="feedback-item" content="AWS Config" /><meta name="this_doc_product" content="AWS Config" /><meta name="this_doc_guide" content="Developer Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'config'}"></script><meta id="panorama-serviceSubSection" value="Developer Guide" /><meta id="panorama-serviceConsolePage" value="Viewing Compliance Information and Evaluation Results for your AWS Resources with AWS Config" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="evaluate-config_view-compliance.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Viewing Compliance Information and Evaluation Results for your AWS Resources with AWS Config - AWS Config</title><meta name="pdf" content="/pdfs/config/latest/developerguide/config-dg.pdf#evaluate-config_view-compliance" /><meta name="rss" content="aws-config-document-history.rss" /><meta name="forums" content="https://repost.aws/tags/TAh2aOShjeSGiuPX-5ga8tOQ" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AWS%20Config&amp;topic_url=https://docs.aws.amazon.com/en_us/config/latest/developerguide/evaluate-config_view-compliance.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/config/latest/developerguide/evaluate-config_view-compliance.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/config/latest/developerguide/evaluate-config_view-compliance.html" /><meta name="keywords" content="AWS Config,Config,Rule,Aggregator,resource management,cloud compliance,security assessment,configuration auditing,AWS Config Compliance,Resource Compliance Monitoring,AWS Compliance Reporting,AWS Resource Evaluation" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Config",
+        "item" : "https://docs.aws.amazon.com/config/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Developer Guide",
+        "item" : "https://docs.aws.amazon.com/config/latest/developerguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Managing and Viewing AWS Resource Configurations with AWS Config",
+        "item" : "https://docs.aws.amazon.com/config/latest/developerguide/aws-config-landing-page.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Viewing Compliance Information and Evaluation Results for your AWS Resources with AWS Config",
+        "item" : "https://docs.aws.amazon.com/config/latest/developerguide/aws-config-landing-page.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/config/latest/developerguide/config-dg.pdf#evaluate-config_view-compliance" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/config/index.html">AWS Config</a><a href="WhatIsConfig.html">Developer Guide</a></div><div id="page-toc-src"><a href="#evaluate-config_view-compliance-console">Viewing compliance (Console)</a><a href="#evaluate-config_view-compliance-cli">Viewing compliance (AWS SDKs)</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="evaluate-config_view-compliance">Viewing Compliance Information and Evaluation Results for your AWS Resources with AWS Config</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><p>For accurate reporting on the compliance status, you must record the <code class="code">AWS::Config::ResourceCompliance</code> resource type.
+        For more information, see <a href="https://docs.aws.amazon.com/config/latest/developerguide/select-resources.html">Recording AWS Resources</a>.</p></div></div><p>You can use the AWS Config console or AWS SDKs to view the compliance information and the evaluation results of your resources.</p><div class="highlights" id="inline-topiclist"><h2 class="awsdocs-topiclist-title">Topics</h2><ul><li><p><a href="#evaluate-config_view-compliance-console">Viewing compliance (Console)</a></p></li><li><p><a href="#evaluate-config_view-compliance-cli">Viewing compliance (AWS SDKs)</a></p></li></ul></div>
+        <h2 id="evaluate-config_view-compliance-console">Viewing compliance (Console)</h2>
+        
+        <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="To view compliance (Console)" id="evaluate-config_view-compliance-console-collapsible" expanded="false"><div class="procedure"><ol><li><p>Sign in to the AWS Management Console and open the AWS Config console at
+         <a href="https://console.aws.amazon.com/config/home" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/config/home</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p></li><li>
+                        <p>In the AWS Management Console menu, verify that the region selector is set to a region that
+                            supports AWS Config rules. For the list of supported regions, see <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html#awsconfig_region">AWS Config Regions and Endpoints</a>
+                            in the <em>Amazon Web Services General Reference</em>.</p>
+                    </li><li>
+                        <p>In the navigation pane, choose <b>Resources</b>. On the Resource
+                            inventory page, you can filter by resource category, resource type, and
+                            compliance status. Choose <b>Include deleted resources</b> if
+                            appropriate. The table displays the resource identifier for the resource type
+                            and the resource compliance status for that resource. The resource identifier
+                            might be a resource ID or a resource name. </p>
+                    </li><li>
+                        <p>Choose a resource from the resource identifier column.</p>
+                    </li><li>
+                        <p>Choose the <b>Resource Timeline</b> button. You can
+                            filter by Configuration events, Compliance events, or CloudTrail Events.</p>
+                        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Alternatively, on the Resource inventory page, you can directly choose the
+                                resource name. To access the resource timeline from the resource details
+                                page, choose the <b>Resource Timeline</b>
+                                button.</p></div></div>
+                    </li></ol></div><p>You can also view the compliance of your resources by looking them up on the
+                    <b>Resource inventory</b> page. For more information, see <a href="./looking-up-discovered-resources.html">Looking Up Resources That Are Discovered by AWS Config</a>.</p></awsui-expandable-section></div>
+        
+     
+        <h2 id="evaluate-config_view-compliance-cli">Viewing compliance (AWS SDKs)</h2>
+           
+        <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="To get compliance information for your AWS resources" id="evaluate-config_view-compliance-sdk-compliance-resources-collapsible" expanded="false"><p>The following code examples show how to use <code class="code">DescribeComplianceByResource</code>.</p><awsdocs-tabs><dl style="display: none">
+    <dt>CLI</dt><dd tab-id="cli">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term">AWS CLI</span></b></dt>
+        <dd>
+            
+                    <p><b>To get compliance information for your AWS resources</b></p>
+            
+            
+                    <p>The following <code class="code">describe-compliance-by-resource</code> example returns compliance information for each EC2 instance that is recorded by AWS Config and that violates one or more rules.</p>
+            
+            
+                
+                <pre class="programlisting" data-example-id="78fc325bea47946126e7dab495f3e866140d942e502143a25fa11d600847212f"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (cli)--><code class="nohighlight " data-source="content"><code class="userinput">aws configservice describe-compliance-by-resource \
+    --resource-type <code class="replaceable">AWS::EC2::Instance</code> \
+    --compliance-types <code class="replaceable">NON_COMPLIANT</code></code>
+</code></pre>
+            
+            
+                    <p>In the output, the value for each <code class="code">CappedCount</code> attribute indicates how many rules the resource violates. For example, the following output indicates that instance <code class="code">i-1a2b3c4d</code> violates 2 rules.</p>
+            
+            
+                    <p>Output:</p>
+            
+            
+                    <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (none)--><code class="nohighlight"><span>{</span>
+    "ComplianceByResources": [
+        <span>{</span>
+            "ResourceType": "AWS::EC2::Instance",
+            "ResourceId": "i-1a2b3c4d",
+            "Compliance": <span>{</span>
+                "ComplianceContributorCount": <span>{</span>
+                    "CappedCount": 2,
+                    "CapExceeded": false
+                },
+                "ComplianceType": "NON_COMPLIANT"
+            }
+        },
+        <span>{</span>
+            "ResourceType": "AWS::EC2::Instance",
+            "ResourceId": "i-2a2b3c4d ",
+            "Compliance": <span>{</span>
+                "ComplianceContributorCount": <span>{</span>
+                    "CappedCount": 3,
+                    "CapExceeded": false
+                },
+                "ComplianceType": "NON_COMPLIANT"
+            }
+        }
+    ]
+}</code></pre>
+            
+            
+                    <p>For more information, see <a href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_view-compliance.html">Viewing Compliance Information and Evaluation Results for your AWS Resources with AWS Config</a> in the <em>AWS Config Developer Guide</em>.</p>
+            
+            <div class="itemizedlist">
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>
+                        For API details, see
+                        <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/configservice/describe-compliance-by-resource.html" rel="noopener noreferrer" target="_blank"><span>DescribeComplianceByResource</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+                        in <em>AWS CLI Command Reference</em>.
+                    </p>
+                </li></ul></div>
+        </dd>
+    </dl></div>
+        </dd>
+    <dt>PowerShell</dt><dd tab-id="powershell">
+            <div class="variablelist">
+     
+     
+<dl>
+        <dt><b><span class="term">Tools for PowerShell V4</span></b></dt>
+        <dd>
+            
+                    <p><b>Example 1: This example checks the <code class="code">AWS::SSM::ManagedInstanceInventory</code> resource type for 'COMPLIANT' compliance type.</b></p>
+            
+            
+                
+                <pre class="programlisting" data-example-id="c69bc65589dba9990a144a0ae994345f425b2a0a4a5691c01247a8bad503f5aa"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (powershell)--><code class="powershell ">Get-CFGComplianceByResource -ComplianceType COMPLIANT -ResourceType AWS::SSM::ManagedInstanceInventory
+</code></pre>
+            
+            
+                    <p><b>Output:</b></p>
+            
+            
+                    <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (none)--><code class="nohighlight">Compliance                            ResourceId          ResourceType
+----------                            ----------          ------------
+Amazon.ConfigService.Model.Compliance i-0123bcf4b567890e3 AWS::SSM::ManagedInstanceInventory
+Amazon.ConfigService.Model.Compliance i-0a1234f6f5d6b78f7 AWS::SSM::ManagedInstanceInventory</code></pre>
+            
+            <div class="itemizedlist">
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>
+                        For API details, see
+                        <a href="https://docs.aws.amazon.com/powershell/v4/reference">DescribeComplianceByResource</a>
+                        in <em>AWS Tools for PowerShell Cmdlet Reference (V4)</em>.
+                    </p>
+                </li></ul></div>
+        </dd>
+    
+        <dt><b><span class="term">Tools for PowerShell V5</span></b></dt>
+        <dd>
+            
+                    <p><b>Example 1: This example checks the <code class="code">AWS::SSM::ManagedInstanceInventory</code> resource type for 'COMPLIANT' compliance type.</b></p>
+            
+            
+                
+                <pre class="programlisting" data-example-id="c0992ee0a9e8dc2ecd7ff3bdd3f5bb6ea7d59e05faeb8e137564d96158ab6412"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (powershell)--><code class="powershell ">Get-CFGComplianceByResource -ComplianceType COMPLIANT -ResourceType AWS::SSM::ManagedInstanceInventory
+</code></pre>
+            
+            
+                    <p><b>Output:</b></p>
+            
+            
+                    <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (none)--><code class="nohighlight">Compliance                            ResourceId          ResourceType
+----------                            ----------          ------------
+Amazon.ConfigService.Model.Compliance i-0123bcf4b567890e3 AWS::SSM::ManagedInstanceInventory
+Amazon.ConfigService.Model.Compliance i-0a1234f6f5d6b78f7 AWS::SSM::ManagedInstanceInventory</code></pre>
+            
+            <div class="itemizedlist">
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>
+                        For API details, see
+                        <a href="https://docs.aws.amazon.com/powershell/v5/reference">DescribeComplianceByResource</a>
+                        in <em>AWS Tools for PowerShell Cmdlet Reference (V5)</em>.
+                    </p>
+                </li></ul></div>
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs></awsui-expandable-section></div>
+         
+        <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="To get the compliance summary of your AWS resources" id="evaluate-config_view-compliance-sdk-compliance-summary-resources-collapsible" expanded="false"><p>The following code examples show how to use <code class="code">GetComplianceSummaryByResourceType</code>.</p><awsdocs-tabs><dl style="display: none">
+    <dt>CLI</dt><dd tab-id="cli">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term">AWS CLI</span></b></dt>
+        <dd>
+            
+                    <p><b>Example 1: To get the compliance summary for all resource types</b></p>
+            
+            
+                    <p>The following <code class="code">get-compliance-summary-by-resource-type</code> example returns the number of AWS resources that are noncompliant and the number that are compliant.</p>
+            
+            
+                
+                <pre class="programlisting" data-example-id="7de43710fb72a2e45b6e3ab3b103c03d3e73e6b04b8a55ae328cfa1fd3df9fd3"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (cli)--><code class="nohighlight " data-source="untagged"><code class="userinput">aws configservice get-compliance-summary-by-resource-type</code>
+</code></pre>
+            
+            
+                    <p>In the output, the value for each <code class="code">CappedCount</code> attribute indicates how many resources are compliant or noncompliant.</p>
+            
+            
+                    <p>Output:</p>
+            
+            
+                    <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (none)--><code class="nohighlight"><span>{</span>
+    "ComplianceSummariesByResourceType": [
+        <span>{</span>
+            "ComplianceSummary": <span>{</span>
+                "NonCompliantResourceCount": <span>{</span>
+                    "CappedCount": 16,
+                    "CapExceeded": false
+                },
+                "ComplianceSummaryTimestamp": 1453237464.543,
+                "CompliantResourceCount": <span>{</span>
+                    "CappedCount": 10,
+                    "CapExceeded": false
+                }
+            }
+        }
+    ]
+}</code></pre>
+            
+            
+                    <p>For more information, see <a href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_view-compliance.html">Viewing Compliance Information and Evaluation Results for your AWS Resources with AWS Config</a> in the <em>AWS Config Developer Guide</em>.</p>
+            
+            
+                    <p><b>Example 2: To get the compliance summary for a specific resource type</b></p>
+            
+            
+                    <p>The following <code class="code">get-compliance-summary-by-resource-type</code> example returns the number of EC2 instances that are noncompliant and the number that are compliant.</p>
+            
+            
+                
+                <pre class="programlisting" data-example-id="7de43710fb72a2e45b6e3ab3b103c03d3e73e6b04b8a55ae328cfa1fd3df9fd3"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (cli)--><code class="nohighlight " data-source="content"><code class="userinput">aws configservice get-compliance-summary-by-resource-type \
+    --resource-types <code class="replaceable">AWS::EC2::Instance</code></code>
+</code></pre>
+            
+            
+                    <p>In the output, the value for each <code class="code">CappedCount</code> attribute indicates how many resources are compliant or noncompliant.</p>
+            
+            
+                    <p>Output:</p>
+            
+            
+                    <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (none)--><code class="nohighlight"><span>{</span>
+    "ComplianceSummariesByResourceType": [
+        <span>{</span>
+            "ResourceType": "AWS::EC2::Instance",
+            "ComplianceSummary": <span>{</span>
+                "NonCompliantResourceCount": <span>{</span>
+                    "CappedCount": 3,
+                    "CapExceeded": false
+                },
+                "ComplianceSummaryTimestamp": 1452204923.518,
+                "CompliantResourceCount": <span>{</span>
+                    "CappedCount": 7,
+                    "CapExceeded": false
+                }
+            }
+        }
+    ]
+}</code></pre>
+            
+            
+                    <p>For more information, see <a href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_view-compliance.html">Viewing Compliance Information and Evaluation Results for your AWS Resources with AWS Config</a> in the <em>AWS Config Developer Guide</em>.</p>
+            
+            <div class="itemizedlist">
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>
+                        For API details, see
+                        <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/configservice/get-compliance-summary-by-resource-type.html" rel="noopener noreferrer" target="_blank"><span>GetComplianceSummaryByResourceType</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+                        in <em>AWS CLI Command Reference</em>.
+                    </p>
+                </li></ul></div>
+        </dd>
+    </dl></div>
+        </dd>
+    <dt>PowerShell</dt><dd tab-id="powershell">
+            <div class="variablelist">
+     
+     
+<dl>
+        <dt><b><span class="term">Tools for PowerShell V4</span></b></dt>
+        <dd>
+            
+                    <p><b>Example 1: This sample returns the number of resources that are compliant or noncompliant and converts the output to json.</b></p>
+            
+            
+                
+                <pre class="programlisting" data-example-id="35bb3c8de5ced657d1ab412304624d29f184aeccace7721fdc6c7590d81572c8"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (powershell)--><code class="powershell ">Get-CFGComplianceSummaryByResourceType -Select ComplianceSummariesByResourceType.ComplianceSummary | ConvertTo-Json
+<span>{</span>
+  "ComplianceSummaryTimestamp": "2019-12-14T06:14:49.778Z",
+  "CompliantResourceCount": <span>{</span>
+    "CapExceeded": false,
+    "CappedCount": 2
+  },
+  "NonCompliantResourceCount": <span>{</span>
+    "CapExceeded": true,
+    "CappedCount": 100
+  }
+}
+</code></pre>
+            
+            <div class="itemizedlist">
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>
+                        For API details, see
+                        <a href="https://docs.aws.amazon.com/powershell/v4/reference">GetComplianceSummaryByResourceType</a>
+                        in <em>AWS Tools for PowerShell Cmdlet Reference (V4)</em>.
+                    </p>
+                </li></ul></div>
+        </dd>
+    
+        <dt><b><span class="term">Tools for PowerShell V5</span></b></dt>
+        <dd>
+            
+                    <p><b>Example 1: This sample returns the number of resources that are compliant or noncompliant and converts the output to json.</b></p>
+            
+            
+                
+                <pre class="programlisting" data-example-id="b0ce09610718a3fd48405e8dabb7bf40b8d329317eb2cb0f2157cdb35333b987"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (powershell)--><code class="powershell ">Get-CFGComplianceSummaryByResourceType -Select ComplianceSummariesByResourceType.ComplianceSummary | ConvertTo-Json
+<span>{</span>
+  "ComplianceSummaryTimestamp": "2019-12-14T06:14:49.778Z",
+  "CompliantResourceCount": <span>{</span>
+    "CapExceeded": false,
+    "CappedCount": 2
+  },
+  "NonCompliantResourceCount": <span>{</span>
+    "CapExceeded": true,
+    "CappedCount": 100
+  }
+}
+</code></pre>
+            
+            <div class="itemizedlist">
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>
+                        For API details, see
+                        <a href="https://docs.aws.amazon.com/powershell/v5/reference">GetComplianceSummaryByResourceType</a>
+                        in <em>AWS Tools for PowerShell Cmdlet Reference (V5)</em>.
+                    </p>
+                </li></ul></div>
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs></awsui-expandable-section></div>
+         
+        <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="To get the evaluation results for an AWS resource" id="evaluate-config_view-compliance-sdk-evaluation-results-resources-collapsible" expanded="false"><p>The following code examples show how to use <code class="code">GetComplianceDetailsByResource</code>.</p><awsdocs-tabs><dl style="display: none">
+    <dt>CLI</dt><dd tab-id="cli">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term">AWS CLI</span></b></dt>
+        <dd>
+            
+                    <p><b>To get the evaluation results for an AWS resource</b></p>
+            
+            
+                    <p>The following <code class="code">get-compliance-details-by-resource</code> example returns the evaluation results for each rule with which the EC2 instance <code class="code">i-1a2b3c4d</code> does not comply.</p>
+            
+            
+                
+                <pre class="programlisting" data-example-id="839cd557c9707b7756d13edf13ff7a6f829e31c823a54f49698579be1fb87dee"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (cli)--><code class="nohighlight " data-source="content"><code class="userinput">aws configservice get-compliance-details-by-resource \
+    --resource-type <code class="replaceable">AWS::EC2::Instance</code> \
+    --resource-id <code class="replaceable">i-1a2b3c4d</code> \
+    --compliance-types <code class="replaceable">NON_COMPLIANT</code></code>
+</code></pre>
+            
+            
+                    <p>Output:</p>
+            
+            
+                    <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (none)--><code class="nohighlight"><span>{</span>
+    "EvaluationResults": [
+        <span>{</span>
+            "EvaluationResultIdentifier": <span>{</span>
+                "OrderingTimestamp": 1450314635.065,
+                "EvaluationResultQualifier": <span>{</span>
+                    "ResourceType": "AWS::EC2::Instance",
+                    "ResourceId": "i-1a2b3c4d",
+                    "ConfigRuleName": "InstanceTypesAreT2micro"
+                }
+            },
+            "ResultRecordedTime": 1450314643.288,
+            "ConfigRuleInvokedTime": 1450314643.034,
+            "ComplianceType": "NON_COMPLIANT"
+        },
+        <span>{</span>
+            "EvaluationResultIdentifier": <span>{</span>
+                "OrderingTimestamp": 1450314635.065,
+                "EvaluationResultQualifier": <span>{</span>
+                    "ResourceType": "AWS::EC2::Instance",
+                    "ResourceId": "i-1a2b3c4d",
+                    "ConfigRuleName": "RequiredTagForEC2Instances"
+                }
+            },
+            "ResultRecordedTime": 1450314645.261,
+            "ConfigRuleInvokedTime": 1450314642.948,
+            "ComplianceType": "NON_COMPLIANT"
+        }
+    ]
+}</code></pre>
+            
+            
+                    <p>For more information, see <a href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_view-compliance.html">Viewing Compliance Information and Evaluation Results for your AWS Resources with AWS Config</a> in the <em>AWS Config Developer Guide</em>.</p>
+            
+            <div class="itemizedlist">
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>
+                        For API details, see
+                        <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/configservice/get-compliance-details-by-resource.html" rel="noopener noreferrer" target="_blank"><span>GetComplianceDetailsByResource</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+                        in <em>AWS CLI Command Reference</em>.
+                    </p>
+                </li></ul></div>
+        </dd>
+    </dl></div>
+        </dd>
+    <dt>PowerShell</dt><dd tab-id="powershell">
+            <div class="variablelist">
+     
+     
+<dl>
+        <dt><b><span class="term">Tools for PowerShell V4</span></b></dt>
+        <dd>
+            
+                    <p><b>Example 1: This example evaulation results for the given resource.</b></p>
+            
+            
+                
+                <pre class="programlisting" data-example-id="f3618ca71c4b129c2265b85c8a434f28bd74539a3a55b69daeb5bd926a13947b"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (powershell)--><code class="powershell ">Get-CFGComplianceDetailsByResource -ResourceId ABCD5STJ4EFGHIVEW6JAH -ResourceType 'AWS::IAM::User'
+</code></pre>
+            
+            
+                    <p><b>Output:</b></p>
+            
+            
+                    <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (none)--><code class="nohighlight">Annotation                 :
+ComplianceType             : COMPLIANT
+ConfigRuleInvokedTime      : 8/25/2019 11:34:56 PM
+EvaluationResultIdentifier : Amazon.ConfigService.Model.EvaluationResultIdentifier
+ResultRecordedTime         : 8/25/2019 11:34:56 PM
+ResultToken                :</code></pre>
+            
+            <div class="itemizedlist">
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>
+                        For API details, see
+                        <a href="https://docs.aws.amazon.com/powershell/v4/reference">GetComplianceDetailsByResource</a>
+                        in <em>AWS Tools for PowerShell Cmdlet Reference (V4)</em>.
+                    </p>
+                </li></ul></div>
+        </dd>
+    
+        <dt><b><span class="term">Tools for PowerShell V5</span></b></dt>
+        <dd>
+            
+                    <p><b>Example 1: This example evaulation results for the given resource.</b></p>
+            
+            
+                
+                <pre class="programlisting" data-example-id="8d5c55987a8dab7fbd3807abbf90034f7ce17523ffbf25e709cd6cf2e76d26a8"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (powershell)--><code class="powershell ">Get-CFGComplianceDetailsByResource -ResourceId ABCD5STJ4EFGHIVEW6JAH -ResourceType 'AWS::IAM::User'
+</code></pre>
+            
+            
+                    <p><b>Output:</b></p>
+            
+            
+                    <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (none)--><code class="nohighlight">Annotation                 :
+ComplianceType             : COMPLIANT
+ConfigRuleInvokedTime      : 8/25/2019 11:34:56 PM
+EvaluationResultIdentifier : Amazon.ConfigService.Model.EvaluationResultIdentifier
+ResultRecordedTime         : 8/25/2019 11:34:56 PM
+ResultToken                :</code></pre>
+            
+            <div class="itemizedlist">
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>
+                        For API details, see
+                        <a href="https://docs.aws.amazon.com/powershell/v5/reference">GetComplianceDetailsByResource</a>
+                        in <em>AWS Tools for PowerShell Cmdlet Reference (V5)</em>.
+                    </p>
+                </li></ul></div>
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs></awsui-expandable-section></div>
+   
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./looking-up-discovered-resources.html">Looking up Resources</div><div id="next" class="next-link" accesskey="n" href="./view-manage-resource-console.html">Viewing Compliance History</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AWS Config&amp;topic_url=https://docs.aws.amazon.com/en_us/config/latest/developerguide/evaluate-config_view-compliance.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AWS Config&amp;topic_url=https://docs.aws.amazon.com/en_us/config/latest/developerguide/evaluate-config_view-compliance.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

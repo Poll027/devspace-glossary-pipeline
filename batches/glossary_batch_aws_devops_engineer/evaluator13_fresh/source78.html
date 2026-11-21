@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Running an application as an Amazon ECS task - Amazon Elastic Container Service</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="standalone-task-create" /><meta name="default_state" content="standalone-task-create" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/standalone-task-create.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/standalone-task-create.md" title="Markdown version" /><meta name="description" content="Run an Amazon ECS task for a container application that runs once and then stops." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Elastic Container Service" /><meta name="guide" content="Developer Guide" /><meta name="abstract" content="Run, stop, and manage Docker containers on a cluster using the Amazon Elastic Container Service Developer Guide." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/standalone-task-create.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/standalone-task-create.html" hreflang="x-default" /><meta name="feedback-item" content="ECS" /><meta name="this_doc_product" content="Amazon Elastic Container Service" /><meta name="this_doc_guide" content="Developer Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'ecs'}"></script><meta id="panorama-serviceSubSection" value="Developer Guide" /><meta id="panorama-serviceConsolePage" value="Running an application as an Amazon ECS task" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="standalone-task-create.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Running an application as an Amazon ECS task - Amazon Elastic Container Service</title><meta name="pdf" content="/pdfs/AmazonECS/latest/developerguide/ecs-dg.pdf#standalone-task-create" /><meta name="rss" content="amazon-ecs-release-notes.rss" /><meta name="forums" content="https://repost.aws/tags/TAefn4YSprR-uCBYmbofOpHw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ECS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/standalone-task-create.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/standalone-task-create.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/standalone-task-create.html" /><meta name="keywords" content="ECS,Amazon ECS,Amazon Elastic Container Service,ecs task,ecs service,run ecs task" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon ECS",
+        "item" : "https://docs.aws.amazon.com/ecs/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Developer Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Schedule your containers on Amazon ECS",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Amazon ECS standalone tasks",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/standalone-tasks.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Running an application as an Amazon ECS task",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/standalone-tasks.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonECS/latest/developerguide/ecs-dg.pdf#standalone-task-create" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/ecs/index.html">Amazon ECS</a><a href="Welcome.html">Developer Guide</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="standalone-task-create">Running an application as an Amazon ECS task</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>You can create a task for a one-time process using the AWS Management Console.</p><div class="procedure"><h6 class="awsdocs-block-title">To create a standalone task (AWS Management Console)</h6><ol><li><p>Open the console at
+         <a href="https://console.aws.amazon.com/ecs/v2" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/ecs/v2</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p></li><li>
+            <p>The Amazon ECS console allows you to create a standalone task from either your cluster
+                detail page or from the task definition revision list. Use the following steps to
+                create your standalone task depending on the resource page you choose.</p>
+            <div class="table-container"><div class="table-contents"><table id="d0e1"><thead>
+                        <tr>
+                            <th>To start a service from</th>
+                            <th>Steps</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td tabindex="-1">
+                                <p>The cluster detail page</p>
+                            </td>
+                            <td tabindex="-1">
+                                <div class="orderedlist">
+                                     
+                                     
+                                <ol style="list-style-type:lower-alpha ! important;"><li>
+                                        <p>On the <b>Clusters</b> page, select the
+                                            cluster to create the service in.</p>
+                                    </li><li>
+                                        <p>From the <b>Tasks</b> tab, choose
+                                                <b>Run task</b>.</p>
+                                    </li></ol></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">The task definition revision page</td>
+                            <td tabindex="-1">
+                                <div class="orderedlist">
+                                     
+                                     
+                                     
+                                <ol style="list-style-type:lower-alpha ! important;"><li>
+                                        <p>On the <b>Task definitions</b> page,
+                                            choose the task definition family to display the
+                                            revisions for that family.</p>
+                                    </li><li>
+                                        <p>Select the revision you want to use.</p>
+                                    </li><li>
+                                        <p>From the <b>Deploy</b> menu, choose
+                                                <b>Run task</b>.</p>
+                                    </li></ol></div>
+                            </td>
+                        </tr>
+                    </table></div></div>
+        </li><li>
+            <p>For <b>Existing cluster</b>, choose the cluster.</p>
+            <p>Choose <b>Create cluster</b> to run the task on a new
+                cluster</p>
+        </li><li>
+            <p>Choose how your tasks are distributed across your cluster infrastructure. Under
+                    <b>Compute configuration</b>, choose your option.To use a capacity
+                provider strategy, you must configure your capacity providers at the cluster level. </p>
+            <p>If you haven't configured your cluster to use a capacity provider, use a launch
+                type instead.</p>
+            <p>If you want to run your workloads on Amazon ECS Managed Instances, you must use the Capacity provider strategy option.</p>
+            <div class="table-container"><div class="table-contents"><table id="d0e2"><thead>
+                        <tr>
+                            <th>Distribution method</th>
+                            <th>Steps</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td tabindex="-1">
+                                <p>Capacity provider strategy</p>
+                            </td>
+                            <td tabindex="-1">
+                                <div class="orderedlist">
+                                     
+                                     
+                                <ol style="list-style-type:lower-alpha ! important;"><li>
+                                        <p>In the <b>Compute options</b> section,
+                                            select <b>Capacity provider
+                                                strategy</b>.</p>
+                                    </li><li>
+                                        <p>Choose a strategy:</p>
+                                        <div class="itemizedlist">
+                                             
+                                             
+                                        <ul class="itemizedlist"><li class="listitem">
+                                                <p>To use the cluster's default capacity provider
+                                                    strategy, choose <b>Use cluster
+                                                        default</b>.</p>
+                                            </li><li class="listitem">
+                                                <p>If your cluster doesn't have a default
+                                                    capacity provider strategy, or to use a custom
+                                                    strategy, choose <b>Use custom</b>,
+                                                    <b>Add capacity provider
+                                                        strategy</b> and define your custom
+                                                    capacity provider strategy by specifying a
+                                                    <b>Base</b>, <b>Capacity
+                                                        provider</b>, and
+                                                    <b>Weight</b>.</p>
+                                            </li></ul></div>
+                                    </li></ol></div>
+                                <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>To use a capacity provider in a strategy, the capacity
+                                        provider must be associated with the cluster.</p></div></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">Launch type</td>
+                            <td tabindex="-1">
+                                <div class="orderedlist">
+                                     
+                                     
+                                     
+                                <ol style="list-style-type:lower-alpha ! important;"><li>
+                                        <p>In the <b>Compute options</b> section,
+                                            select <b>Launch type</b>.</p>
+                                    </li><li>
+                                        <p>For <b>Launch type</b>, choose a launch
+                                            type.</p>
+                                    </li><li>
+                                        <p>(Optional) When you use Fargate,
+                                            for <b>Platform version</b>,
+                                            specify the platform version to use. If a platform
+                                            version isn't specified, the <code class="code">LATEST</code>
+                                            platform version is used.</p>
+                                    </li></ol></div>
+                            </td>
+                        </tr>
+                    </table></div></div>
+        </li><li>
+            <p>Under <b>Deployment configuration</b>, do the following:</p>
+            <ol><li>
+                    <p>For <b>Task definition</b>, enter the task
+                        definition.</p>
+                    <div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><p>The console validates the selection to ensure that the selected task
+                            definition family and revision are compatible with the defined compute
+                            configuration.</p></div></div>
+                </li><li>
+                        <p>For <b>Desired tasks</b>, enter the number of tasks to
+                            launch.</p>
+                </li><li>
+                    <p>For <b>Task group</b>, enter the task group name.</p>
+                </li></ol>
+        </li><li>
+            <p>If your task definition uses the <code class="code">awsvpc</code> network mode, expand
+                    <b>Networking</b>. Use the following steps to specify a custom
+                configuration.</p>
+            <ol><li>
+                    <p>For <b>VPC</b>, select the VPC to use.</p>
+                </li><li>
+                    <p>For <b>Subnets</b>, select one or more subnets in the VPC
+                        that the task scheduler considers when placing your tasks.</p>
+                </li><li>
+                    <p>For <b>Security group</b>, you can either choose an existing
+                        security group or create a new one. To use an existing security group,
+                        choose the security group and move to the next step. To create a new
+                        security group, choose <b>Create a new security group</b>. You
+                        must specify a security group name, description, and then add one or more
+                        inbound rules for the security group.</p>
+                </li><li>
+                    <p>For <b>Public IP</b>, choose whether to auto-assign a public
+                        IP address to the elastic network interface (ENI) of the task.</p>
+                    <p>AWS Fargate tasks can be assigned a public IP address when run in a
+                        public subnet so they have a route to the internet. EC2 tasks
+                        can't be assigned a public IP using this field. For more information, see
+                            <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html">Amazon ECS
+                            task networking options for Fargate</a> and <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-networking-awsvpc.html">Allocate a network interface for an Amazon ECS task.</a>.</p>
+                </li></ol>
+        </li><li>
+            <p>If your task uses a data volume that's compatible with configuration at
+                deployment, you can configure the volume by expanding
+                <b>Volume</b>.</p>
+            <p>The volume name and volume type are configured when creating a task definition
+                revision and can't be changed when you run a standalone task. To update the volume
+                name and type, you must create a new task definition revision and run a task by
+                using the new revision.</p>
+            <div class="table-container"><div class="table-contents"><table id="d0e3"><thead>
+                        <tr>
+                            <th>To configure this volume type</th>
+                            <th>Do this</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td tabindex="-1">
+                                <p>Amazon EBS</p>
+                            </td>
+                            <td tabindex="-1">
+                                <div class="orderedlist">
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                <ol style="list-style-type:lower-alpha ! important;"><li>
+                                        <p>For <b>EBS volume type</b>, choose the
+                                            type of EBS volume that you want to attach to your
+                                            task.</p>
+                                    </li><li>
+                                        <p>For <b>Size (GiB)</b>, enter a valid
+                                            value for the volume size in gibibytes (GiB). You can
+                                            specify a minimum of 1 GiB and a maximum of 16,384 GiB
+                                            volume size. This value is required unless you provide a
+                                            snapshot ID. </p>
+                                    </li><li>
+                                        <p>For <b>IOPS</b>, enter the maximum
+                                            number of input/output operations (IOPS) that the volume
+                                            should provide. This value is configurable only for
+                                                <code class="code">io1</code>,<code class="code">io2</code>, and
+                                                <code class="code">gp3</code> volume types.</p>
+                                    </li><li>
+                                        <p>For <b>Throughput (MiB/s)</b>, enter the
+                                            throughput that the volume should provide, in mebibytes
+                                            per second (MiBps, or MiB/s). This value is configurable
+                                            only for the <code class="code">gp3</code> volume type.</p>
+                                    </li><li>
+                                        <p>For <b>Snapshot ID</b>, choose an
+                                            existing Amazon EBS volume snapshot or enter the ARN of a
+                                            snapshot if you want to create a volume from a snapshot.
+                                            You can also create a new, empty volume by not choosing
+                                            or entering a snapshot ID.</p>
+                                    </li><li>
+                                        <p>If you specify a <b>Snapshot ID</b>, you
+                                            can specify a <b>Volume initialization rate
+                                                (MiB/s)</b>. Enter a value between 100 and
+                                            300, in MiB/s, that will determine how fast data is
+                                            loaded from the snapshot specified using
+                                                <b>Snapshot ID</b> for volume
+                                            creation.</p>
+                                    </li><li>
+                                        <p>For <b>Termination policy</b>, deselect
+                                            the checkbox if you want the volume configured for
+                                            attachment to the task to be preserved after the task is
+                                            terminated. By default, EBS volumes that are attached to
+                                            tasks are deleted when the task is terminated.</p>
+                                    </li><li>
+                                        <p>For <b>File system type</b>, choose the
+                                            type of file system that will be used for data storage
+                                            and retrieval on the volume. You can choose either the
+                                            operating system default or a specific file system type.
+                                            The default for Linux is <code class="code">XFS</code>. For volumes
+                                            created from a snapshot, you must specify the same
+                                            filesystem type that the volume was using when the
+                                            snapshot was created. If there is a filesystem type
+                                            mismatch, the task will fail to start.</p>
+                                    </li><li>
+                                        <p>For <b>Infrastructure role</b>, choose
+                                            an IAM role with the necessary permissions that allow
+                                            Amazon ECS to manage Amazon EBS volumes for tasks. You can attach
+                                            the
+                                                <code class="code">AmazonECSInfrastructureRolePolicyForVolumes</code>
+                                            managed policy to the role, or you can use the policy as
+                                            a guide to create and attach an your own policy with
+                                            permissions that meet your specific needs. For more
+                                            information about the necessary permissions, see see
+                                                <a href="./infrastructure_IAM_role.html">Amazon ECS infrastructure IAM role</a>.</p>
+                                    </li><li>
+                                        <p>For <b>Encryption</b>, choose
+                                                <b>Default</b> if you want to use the
+                                            Amazon EBS encryption by default settings. If your account
+                                            has <a href="https://docs.aws.amazon.com/ebs/latest/userguide/encryption-by-default.html">Encryption by default</a> configured, the
+                                            volume will be encrypted with the AWS Key Management Service (AWS KMS) key
+                                            that's specified in the setting. If you choose
+                                                <b>Default</b> and Amazon EBS default
+                                            encryption isn't turned on, the volume will be
+                                            unencrypted. </p>
+                                        <p>If you choose <b>Custom</b>, you can
+                                            specify an AWS KMS key of your choice for volume
+                                            encryption. </p>
+                                        <p>If you choose <b>None</b>, the volume
+                                            will be unencrypted unless you have encryption by
+                                            default configured, or if you create a volume from an
+                                            encrypted snapshot. </p>
+                                    </li><li>
+                                        <p>If you've chosen <b>Custom</b> for
+                                                <b>Encryption</b>, you must specify
+                                            the AWS KMS key that you want to use. For
+                                                <b>KMS key</b>, choose an
+                                            AWS KMS key or enter a key ARN. If you choose to
+                                            encrypt your volume by using a symmetric customer managed key,
+                                            make sure that you have the right permissions defined in
+                                            your AWS KMS key policy. For more information, see
+                                                <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ebs-volumes.html?icmpid=docs_ecs_hp-deploy#ebs-kms-encryption">Data encryption for Amazon EBS volumes</a>. </p>
+                                    </li><li>
+                                        <p>(Optional) Under <b>Tags</b>, you can
+                                            add tags to your Amazon EBS volume by either propagating tags
+                                            from the task definition or by providing your own
+                                            tags.</p>
+                                        <p> If you want to propagate tags from the task
+                                            definition, choose <b>Task definition</b>
+                                            for <b>Propagate tags from</b>. If you
+                                            choose <b>Do not propagate</b>, or if you
+                                            don't choose a value, the tags aren't propagated.</p>
+                                        <p>If you want to provide your own tags, choose
+                                                <b>Add tag</b> and then provide the
+                                            key and value for each tag you add.</p>
+                                        <p>For more information about tagging Amazon EBS volumes, see
+                                                <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specify-ebs-config.html#ebs-volume-tagging">Tagging Amazon EBS volumes</a>.</p>
+                                    </li></ol></div></td>
+                        </tr>
+                    </table></div></div>
+        </li><li>
+                    <p>(Optional) To use a task placement strategy other than the
+                        default, expand <b>Task Placement</b>, and then choose
+                        from the following options.</p>
+                    <p> For more information, see <a href="./task-placement.html">How Amazon ECS places tasks on container instances</a>.</p>
+                    <div class="itemizedlist">
+                         
+                         
+                         
+                         
+                         
+                    <ul class="itemizedlist"><li class="listitem">
+                            <p><b>AZ Balanced Spread</b> – Distribute tasks
+                                across Availability Zones and across container instances in
+                                the Availability Zone.</p>
+                        </li><li class="listitem">
+                            <p><b>AZ Balanced BinPack</b> – Distribute
+                                tasks across Availability Zones and across container
+                                instances with the least available memory.</p>
+                        </li><li class="listitem">
+                            <p><b>BinPack</b> – Distribute tasks based on
+                                the least available amount of CPU or memory.</p>
+                        </li><li class="listitem">
+                            <p><b>One Task Per Host</b> – Place, at most,
+                                one task from the service on each container instance.</p>
+                        </li><li class="listitem">
+                            <p><b>Custom</b> – Define your own task placement strategy.
+                            </p>
+                        </li></ul></div>
+                    <p>If you chose <b>Custom</b>, define the algorithm for placing tasks and the rules that are considered during task placement.</p>
+                    <div class="itemizedlist">
+                         
+                         
+                    <ul class="itemizedlist"><li class="listitem">
+                            <p>Under <b>Strategy</b>, for <b>Type</b> and <b>Field</b>, choose the algorithm and the entity to use for the algorithm.</p>
+                            <p>You can enter a maximum of 5 strategies.</p>
+                        </li><li class="listitem">
+                            <p>Under <b>Constraint</b>, for <b>Type</b> and <b>Expression</b>, choose the rule and attribute for the constraint.</p>
+                            <p>For example, to set the constraint to place tasks on T2 instances, for the <b>Expression</b>, enter <b>attribute:ecs.instance-type =~ t2.*</b>.</p>
+                            <p>You can enter a maximum of 10 constraints.</p>
+                        </li></ul></div>
+        </li><li>
+            <p>(Optional) To override the task IAM role, or task execution role that is defined
+                in your task definition, expand <b>Task overrides</b>, and then
+                complete the following steps:</p>
+            <ol><li>
+                    <p>For <b>Task role</b>, choose an IAM role for this task.
+                        For more information, see <a href="./task-iam-roles.html">Amazon ECS task IAM role</a>.</p>
+                    <p>Only roles with the <code class="code">ecs-tasks.amazonaws.com</code> trust
+                        relationship are displayed. For instructions on how to create an IAM role
+                        for your tasks, see <a href="./task-iam-roles.html#create_task_iam_policy_and_role">Creating the task IAM role</a>.</p>
+                </li><li>
+                    <p>For <b>Task execution role</b>, choose a task execution
+                        role. For more information, see <a href="./task_execution_IAM_role.html">Amazon ECS task execution IAM role</a>.</p>
+                </li></ol>
+        </li><li>
+                                    <p>(Optional) To override the container commands and environment variables, expand <b>Container Overrides</b>, and then expand the container.</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p> To send a command to the container other than the task definition command, for <b>Command
+                                                  override</b>, enter the Docker command.</p>
+                                        </li><li class="listitem">
+                                            <p>To add an environment variable, choose <b>Add
+                                                  Environment Variable</b>. For
+                                                  <b>Key</b>, enter the name of your
+                                                environment variable. For
+                                                <b>Value</b>, enter a string value for
+                                                your environment value (without the surrounding
+                                                double quotation marks (<code class="code">" "</code>)).</p>
+                                            <p>AWS surrounds the strings with double quotation
+                                                marks (" ") and passes the string to the container
+                                                in the following format:</p>
+                                            <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli ()--><code class="">MY_ENV_VAR="This variable contains a string."</code></pre>
+                                        </li></ul></div>
+                                </li><li>
+            <p>(Optional) To help identify your task, expand the <b>Tags</b>
+                    section, and then configure your tags.</p>
+             <p>To have Amazon ECS automatically tag all newly launched tasks with the cluster name and the task definition tags, select <b>Turn on Amazon ECS managed tags</b>, and then select <b>Task definitions</b>.</p>
+             <p>Add or remove a tag.</p>
+            <div class="itemizedlist">
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>[Add a tag] Choose <b>Add tag</b>, and then do the following:</p>
+                    <div class="itemizedlist">
+                         
+                         
+                    <ul class="itemizedlist"><li class="listitem">
+                            <p>For <b>Key</b>, enter the key
+                                name.</p>
+                        </li><li class="listitem">
+                            <p>For <b>Value</b>, enter the
+                                key value.</p>
+                        </li></ul></div>
+                </li><li class="listitem">
+                    <p>[Remove a tag] Next to the tag, choose
+                        <b>Remove tag</b>.</p>
+                </li></ul></div>
+        </li><li>
+            <p>Choose <b>Create</b>.</p>
+        </li></ol></div><awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./standalone-tasks.html">Standalone tasks</div><div id="next" class="next-link" accesskey="n" href="./tasks-scheduled-eventbridge-scheduler.html">Using Amazon EventBridge Scheduler to schedule tasks</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ECS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/standalone-task-create.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ECS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/standalone-task-create.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

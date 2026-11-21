@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Health checks for Application Load Balancer target groups - Elastic Load Balancing</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="target-group-health-checks" /><meta name="default_state" content="target-group-health-checks" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.md" title="Markdown version" /><meta name="description" content="Learn how to configure the health check settings for your target groups." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Elastic Load Balancing" /><meta name="guide" content="Application Load Balancers" /><meta name="abstract" content="Use Elastic Load Balancing to distribute your incoming application traffic across multiple targets, such as EC2 instances." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html" hreflang="x-default" /><meta name="feedback-item" content="ELB" /><meta name="this_doc_product" content="Elastic Load Balancing" /><meta name="this_doc_guide" content="Application Load Balancers" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'elasticloadbalancing'}"></script><meta id="panorama-serviceSubSection" value="Application Load Balancers" /><meta id="panorama-serviceConsolePage" value="Health checks for Application Load Balancer target groups" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="target-group-health-checks.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Health checks for Application Load Balancer target groups - Elastic Load Balancing</title><meta name="pdf" content="/pdfs/elasticloadbalancing/latest/application/elb-ag.pdf#target-group-health-checks" /><meta name="rss" content="application-load-balancer-release-notes.rss" /><meta name="forums" content="https://repost.aws/tags/TAO-wqN9fYRoyrpdULLa5y7g" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ELB&amp;topic_url=https://docs.aws.amazon.com/en_us/elasticloadbalancing/latest/application/target-group-health-checks.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/elasticloadbalancing/latest/application/target-group-health-checks.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/elasticloadbalancing/latest/application/target-group-health-checks.html" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Elastic Load Balancing",
+        "item" : "https://docs.aws.amazon.com/elasticloadbalancing/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Application Load Balancers",
+        "item" : "https://docs.aws.amazon.com/elasticloadbalancing/latest/application"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Target groups for your Application Load Balancers",
+        "item" : "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Health checks for Application Load Balancer target groups",
+        "item" : "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/elasticloadbalancing/latest/application/elb-ag.pdf#target-group-health-checks" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/elasticloadbalancing/index.html">Elastic Load Balancing</a><a href="introduction.html">Application Load Balancers</a></div><div id="page-toc-src"><a href="#health-check-settings">Health check settings</a><a href="#target-health-states">Target health status</a><a href="#target-health-reason-codes">Health check reason codes</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="target-group-health-checks">Health checks for Application Load Balancer target groups</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>Your Application Load Balancer periodically sends requests to its registered targets to test their status.
+        These tests are called <em>health checks</em>.</p><p>Each load balancer node routes requests only to the healthy targets in the enabled
+        Availability Zones for the load balancer. Each load balancer node checks the health of each
+        target, using the health check settings for the target groups with which the target is
+        registered. After your target is registered, it must pass one health check to be considered
+        healthy. After each health check is completed, the load balancer node closes the connection
+        that was established for the health check.</p><p>If a target group contains only unhealthy registered targets, the load balancer routes
+        requests to all those targets, regardless of their health status. This means that if all targets
+        fail health checks at the same time in all enabled Availability Zones, the load balancer
+        fails open. The effect of the fail-open is to allow traffic to all targets in all enabled
+        Availability Zones, regardless of their health status, based on the load balancing
+        algorithm.</p><p>Health checks do not support WebSockets.</p><p>For more information, see <a href="./load-balancer-target-groups.html#target-group-health">Target group health</a>.</p><p>You can use health check logs to capture detailed information about the health checks 
+        made to your registered targets for your load balancer and store them as log files in Amazon S3. 
+        You can use these health check logs to troubleshoot issues with your targets. 
+        For more information, see <a href="./load-balancer-health-check-logs.html">Health check logs</a>.</p><div class="highlights"><h2 class="awsdocs-topiclist-title">Contents</h2><ul><li><p><a href="#health-check-settings">Health check settings</a></p></li><li><p><a href="#target-health-states">Target health status</a></p></li><li><p><a href="#target-health-reason-codes">Health check reason codes</a></p></li><li><p><a href="./check-target-health.html">Check target health</a></p></li><li><p><a href="./modify-health-check-settings.html">Update health check settings</a></p></li></ul></div>
+        <h2 id="health-check-settings">Health check settings</h2>
+
+        <p>You configure health checks for the targets in a target group as described in the
+            following table. The setting names used in the table are the names used in the API. The
+            load balancer sends a health check request to each registered target every
+                <b>HealthCheckIntervalSeconds</b> seconds, using the specified port,
+            protocol, and health check path. Each health check request is independent and the result lasts
+            for the entire interval. The time that it takes for the target to respond does not
+            affect the interval for the next health check request. If the health checks exceed
+                <b>UnhealthyThresholdCount</b> consecutive failures, the load balancer
+            takes the target out of service. When the health checks exceed
+                <b>HealthyThresholdCount</b> consecutive successes, the load balancer
+            puts the target back in service.</p>
+        <p>Note that when you deregister a target, this decreases <b>HealthyHostCount</b>
+            but does not increase <b>UnhealthyHostCount</b>.</p>
+
+        <div class="table-container"><div class="table-contents"><table id="d0e1"><thead>
+                    <tr>
+                        <th>Setting</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                    <tr>
+                        <td tabindex="-1"><p><b>HealthCheckProtocol</b></p></td>
+                        <td tabindex="-1">
+                            <p>The protocol the load balancer uses when performing health checks
+                                on targets. For Application Load Balancers the possible protocols are HTTP and HTTPS. The default
+                                is the HTTP protocol.</p>
+                            <p>These protocols use the HTTP GET method to send health check requests.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><b>HealthCheckPort</b></p></td>
+                        <td tabindex="-1">
+                            <p>The port the load balancer uses when performing health checks on
+                                targets. The default is to use the port on which each target
+                                receives traffic from the load balancer.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><b>HealthCheckPath</b></p></td>
+                        <td tabindex="-1">
+                            <p>The destination for health checks on the targets.</p>
+                            <p>If the protocol version is HTTP/1.1 or HTTP/2, specify a valid URI
+                                    (/<em>path</em>?<em>query</em>). The
+                                default is /.</p>
+                            <p>If the protocol version is gRPC, specify the path of a custom
+                                health check method with the format
+                                    <code class="code">/package.service/method</code>. The default is
+                                    <code class="code">/AWS.ALB/healthcheck</code>.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><b>HealthCheckTimeoutSeconds</b></p></td>
+                        <td tabindex="-1">
+                            <p>The amount of time, in seconds, during which no response from a
+                                target means a failed health check. The range is 2–120
+                                seconds. The default is 5 seconds if the target type is
+                                    <code class="code">instance</code> or <code class="code">ip</code> and 30 seconds if the
+                                target type is <code class="code">lambda</code>.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><b>HealthCheckIntervalSeconds</b></p></td>
+                        <td tabindex="-1">
+                            <p>The approximate amount of time, in seconds, between health checks
+                                of an individual target. The range is 5–300 seconds. The
+                                default is 30 seconds if the target type is <code class="code">instance</code> or
+                                    <code class="code">ip</code> and 35 seconds if the target type is
+                                    <code class="code">lambda</code>.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><b>HealthyThresholdCount</b></p></td>
+                        <td tabindex="-1">
+                            <p>The number of consecutive successful health checks required before
+                                considering an unhealthy target healthy. The range is 2–10.
+                                The default is 5.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><b>UnhealthyThresholdCount</b></p></td>
+                        <td tabindex="-1">
+                            <p>The number of consecutive failed health checks required before
+                                considering a target unhealthy. The range is 2–10. The default
+                                is 2.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><b>Matcher</b></p></td>
+                        <td tabindex="-1">
+                            <p>The codes to use when checking for a successful response from a
+                                target. These are called <b>Success codes</b> in the
+                                console.</p>
+                            <p>If the protocol version is HTTP/1.1 or HTTP/2, the possible values
+                                are from 200 to 499. You can specify multiple values (for example,
+                                "200,202") or a range of values (for example, "200-299"). The
+                                default value is 200.</p>
+                            <p>If the protocol version is gRPC, the possible values are from 0 to
+                                99. You can specify multiple values (for example, "0,1") or a range
+                                of values (for example, "0-5"). The default value is 12.</p>
+                        </td>
+                    </tr>
+                </table></div></div>
+
+     
+        <h2 id="target-health-states">Target health status</h2>
+
+        <p>Before the load balancer sends a health check request to a target, you must register
+            it with a target group, specify its target group in a listener rule, and ensure that the
+            Availability Zone of the target is enabled for the load balancer. Before a target can
+            receive requests from the load balancer, it must pass the initial health checks. After a
+            target passes the initial health checks, its status is <code class="code">Healthy</code>.</p>
+
+        <p>The following table describes the possible values for the health status of a
+            registered target.</p>
+
+        <div class="table-container"><div class="table-contents"><table id="d0e2"><thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">initial</code></p></td>
+                        <td tabindex="-1">
+                            <p>The load balancer is in the process of registering the target or
+                                performing the initial health checks on the target.</p>
+                            <p>Related reason codes: <code class="code">Elb.RegistrationInProgress</code> |
+                                    <code class="code">Elb.InitialHealthChecking</code></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">healthy</code></p></td>
+                        <td tabindex="-1">
+                            <p>The target is healthy.</p>
+                            <p>Related reason codes: None</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">unhealthy</code></p></td>
+                        <td tabindex="-1">
+                            <p>The target did not respond to a health check or failed the health
+                                check.</p>
+                            <p>Related reason codes: <code class="code">Target.ResponseCodeMismatch</code> |
+                                    <code class="code">Target.Timeout</code> |
+                                    <code class="code">Target.FailedHealthChecks</code> |
+                                    <code class="code">Elb.InternalError</code></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">unused</code></p></td>
+                        <td tabindex="-1">
+                            <p>The target is not registered with a target group, the target group
+                                is not used in a listener rule, the target is in an Availability
+                                Zone that is not enabled, or the target is in the stopped or
+                                terminated state.</p>
+                            <p>Related reason codes: <code class="code">Target.NotRegistered</code> |
+                                    <code class="code">Target.NotInUse</code> | <code class="code">Target.InvalidState</code>
+                                | <code class="code">Target.IpUnusable</code></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">draining</code></p></td>
+                        <td tabindex="-1">
+                            <p>The target is deregistering and connection draining is in
+                                process.</p>
+                            <p>Related reason code:
+                                <code class="code">Target.DeregistrationInProgress</code></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">unavailable</code></p></td>
+                        <td tabindex="-1">
+                            <p>Health checks are disabled for the target group.</p>
+                            <p>Related reason code:
+                                <code class="code">Target.HealthCheckDisabled</code></p>
+                        </td>
+                    </tr>
+                </table></div></div>
+
+     
+        <h2 id="target-health-reason-codes">Health check reason codes</h2>
+
+        <p>If the status of a target is any value other than <code class="code">Healthy</code>, the API
+            returns a reason code and a description of the issue, and the console displays the same
+            description. Reason codes that begin with <code class="code">Elb</code> originate on the load
+            balancer side and reason codes that begin with <code class="code">Target</code> originate on the
+            target side. For more information about possible causes for health check failures, see 
+            <a href="./load-balancer-troubleshooting.html#target-not-inservice">Troubleshooting</a>.</p>
+
+        <div class="table-container"><div class="table-contents"><table id="d0e3"><thead>
+                    <tr>
+                        <th>Reason code</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">Elb.InitialHealthChecking</code></p></td>
+                        <td tabindex="-1">
+                            <p>Initial health checks in progress</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">Elb.InternalError</code></p></td>
+                        <td tabindex="-1">
+                            <p>Health checks failed due to an internal error</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">Elb.RegistrationInProgress</code></p></td>
+                        <td tabindex="-1">
+                            <p>Target registration is in progress</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">Target.DeregistrationInProgress</code></p></td>
+                        <td tabindex="-1">
+                            <p>Target deregistration is in progress</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">Target.FailedHealthChecks</code></p></td>
+                        <td tabindex="-1">
+                            <p>Health checks failed</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">Target.HealthCheckDisabled</code></p></td>
+                        <td tabindex="-1">
+                            <p>Health checks are disabled</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">Target.InvalidState</code></p></td>
+                        <td tabindex="-1">
+                            <p>Target is in the stopped state</p>
+                            <p>Target is in the terminated state</p>
+                            <p>Target is in the terminated or stopped state</p>
+                            <p>Target is in an invalid state</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">Target.IpUnusable</code></p></td>
+                        <td tabindex="-1">
+                            <p>The IP address cannot be used as a target, as it is in use by a
+                                load balancer</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">Target.NotInUse</code></p></td>
+                        <td tabindex="-1">
+                            <p>Target group is not configured to receive traffic from the load
+                                balancer</p>
+                            <p>Target is in an Availability Zone that is not enabled for the load
+                                balancer</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">Target.NotRegistered</code></p></td>
+                        <td tabindex="-1">
+                            <p>Target is not registered to the target group</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">Target.ResponseCodeMismatch</code></p></td>
+                        <td tabindex="-1">
+                            <p>Health checks failed with these codes:
+                                [<em>code</em>]</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1"><p><code class="code">Target.Timeout</code></p></td>
+                        <td tabindex="-1">
+                            <p>Request timed out</p>
+                        </td>
+                    </tr>
+                </table></div></div>
+
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./create-target-group.html">Create a target group</div><div id="next" class="next-link" accesskey="n" href="./check-target-health.html">Check target health</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ELB&amp;topic_url=https://docs.aws.amazon.com/en_us/elasticloadbalancing/latest/application/target-group-health-checks.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ELB&amp;topic_url=https://docs.aws.amazon.com/en_us/elasticloadbalancing/latest/application/target-group-health-checks.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

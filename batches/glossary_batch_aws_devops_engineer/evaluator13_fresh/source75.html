@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Deploy Amazon ECS services by replacing tasks - Amazon Elastic Container Service</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="deployment-type-ecs" /><meta name="default_state" content="deployment-type-ecs" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.md" title="Markdown version" /><meta name="description" content="When you create a service that uses the rolling update deployment type, the Amazon ECS service scheduler replaces the currently running tasks with new tasks." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Elastic Container Service" /><meta name="guide" content="Developer Guide" /><meta name="abstract" content="Run, stop, and manage Docker containers on a cluster using the Amazon Elastic Container Service Developer Guide." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html" hreflang="x-default" /><meta name="feedback-item" content="ECS" /><meta name="this_doc_product" content="Amazon Elastic Container Service" /><meta name="this_doc_guide" content="Developer Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'ecs'}"></script><meta id="panorama-serviceSubSection" value="Developer Guide" /><meta id="panorama-serviceConsolePage" value="Deploy Amazon ECS services by replacing tasks" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="deployment-type-ecs.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Deploy Amazon ECS services by replacing tasks - Amazon Elastic Container Service</title><meta name="pdf" content="/pdfs/AmazonECS/latest/developerguide/ecs-dg.pdf#deployment-type-ecs" /><meta name="rss" content="amazon-ecs-release-notes.rss" /><meta name="forums" content="https://repost.aws/tags/TAefn4YSprR-uCBYmbofOpHw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ECS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/deployment-type-ecs.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/deployment-type-ecs.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/deployment-type-ecs.html" /><meta name="keywords" content="ECS,Amazon ECS,Amazon Elastic Container Service,ecs task,ecs service,ecs services,ecs rolling update deployment,rolling update container image tag resolution,ecs software version consistency" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon ECS",
+        "item" : "https://docs.aws.amazon.com/ecs/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Developer Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Schedule your containers on Amazon ECS",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Amazon ECS services",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Amazon ECS service deployment controllers and strategies",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_service-options.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "Deploy Amazon ECS services by replacing tasks",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_service-options.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonECS/latest/developerguide/ecs-dg.pdf#deployment-type-ecs" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/ecs/index.html">Amazon ECS</a><a href="Welcome.html">Developer Guide</a></div><div id="page-toc-src"><a href="#deployment-container-image-stability">Container image resolution</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="deployment-type-ecs">Deploy Amazon ECS services by replacing tasks</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>When you create a service which uses the <em>rolling update</em>
+            (<code class="code">ECS</code>) deployment type, the Amazon ECS service scheduler replaces the currently
+        running tasks with new tasks. The number of tasks that Amazon ECS adds or removes from the
+        service during a rolling update is controlled by the service deployment configuration. </p><p>Amazon ECS uses the following parameters to determine the number of tasks:</p><div class="itemizedlist">
+         
+         
+    <ul class="itemizedlist"><li class="listitem">
+            <p>The <code class="code">minimumHealthyPercent</code> represents the lower limit on the number of
+                tasks that should be running and healthy for a service during a rolling deployment or when a container
+                instance is draining, as a percent of the desired number of tasks for the service.
+                This value is rounded up. For example if the minimum healthy percent is
+                    <code class="code">50</code> and the desired task count is four, then the scheduler can stop
+                two existing tasks before starting two new tasks. Likewise, if the minimum healthy
+                percent is 75% and the desired task count is two, then the scheduler can't stop any
+                tasks due to the resulting value also being two.</p>
+        </li><li class="listitem">
+            <p>The <code class="code">maximumPercent</code> represents the upper limit on the number of tasks
+                that should be running for a service during a rolling deployment or when a container
+                instance is draining, as a percent of the desired number of tasks for a service.
+                This value is rounded down. For example if the maximum percent is <code class="code">200</code>
+                and the desired task count is four, then the scheduler can start four new tasks
+                before stopping four existing tasks. Likewise, if the maximum percent is
+                    <code class="code">125</code> and the desired task count is three, the scheduler can't start
+                any tasks due to the resulting value also being three.</p>
+        </li></ul></div><p>During a rolling deployment, when tasks become unhealthy, Amazon ECS replaces them to 
+        maintain your service's <code class="code">minimumHealthyPercent</code> and protect availability. 
+        Unhealthy tasks are replaced using the same service revision they belong to. This 
+        ensures that unhealthy task replacement in the source revision is independent from 
+        task failures in the target revision. When the <code class="code">maximumPercent</code> setting 
+        allows, the scheduler launches replacement tasks before stopping unhealthy ones. If 
+        the <code class="code">maximumPercent</code> parameter limits the scheduler from starting a 
+        replacement task first, the scheduler stops one unhealthy task at a time to free 
+        capacity before launching a replacement task.</p><div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><p>When setting a minimum healthy percent or a maximum percent, you should ensure that
+            the scheduler can stop or start at least one task when a deployment is initiated. If
+            your service has a deployment that is stuck due to an invalid deployment configuration,
+            a service event message will be sent. For more information, see <a href="./service-event-messages-list.html#service-event-messages-7">service (service-name) was unable to stop or start tasks during a deployment because of the service deployment configuration. Update the minimumHealthyPercent or maximumPercent value and try again.</a>.</p></div></div><p>Rolling deployments have 2 methods which provide a way to quickly identify when a service
+        deployment has failed:</p><div class="itemizedlist">
+         
+         
+    <ul class="itemizedlist"><li class="listitem">
+            <p><a href="./deployment-circuit-breaker.html">How the Amazon ECS deployment circuit breaker detects failures</a></p>
+        </li><li class="listitem">
+            <p><a href="./deployment-alarm-failure.html">How CloudWatch alarms detect Amazon ECS deployment failures</a></p>
+        </li></ul></div><p>The methods can be used separately or together. When both methods are used, the deployment
+        is set to failed as soon as the failure criteria for either failure method is met.</p><p>Use the following guidelines to help determine which method to use:</p><div class="itemizedlist">
+         
+         
+    <ul class="itemizedlist"><li class="listitem">
+            <p>Circuit breaker - Use this method when you want to stop a deployment when the
+                tasks can't start.</p>
+        </li><li class="listitem">
+            <p>CloudWatch alarms - Use this method when you want to stop a deployment based on
+                application metrics.</p>
+        </li></ul></div><p>Both methods support rolling back to the previous service revision.</p><p>You can configure early success criteria to have Amazon ECS complete a rolling deployment when a
+        percentage of tasks that you define are healthy on the target service revision. For more
+        information, see <a href="./early-success-criteria.html">Complete Amazon ECS rolling deployments early with early success criteria</a>.</p>
+        <h2 id="deployment-container-image-stability">Container image resolution</h2>
+        <p>By default, Amazon ECS resolves container image tags specified in the task
+            definition to container image digests. If you create a service that runs and maintains a
+            single task, that task is used to establish image digests for the containers in the task.
+            If you create a service that runs and maintains multiple tasks, the first task started
+            by the service scheduler during deployment is used to establish the image digests for
+            the containers in the tasks.</p>
+        <p>If three or more attempts at establishing the container image digests fail, the
+            deployment continues without image digest resolution. If the deployment circuit breaker
+            is enabled, the deployment is additionally failed and rolled back.</p>
+        <p>After the container image digests have been established, Amazon ECS uses the digests to
+            start any other desired tasks, and for any future service updates. This leads to all
+            tasks in a service always running identical container images, resulting in version
+            consistency for your software.</p>
+        <p>You can configure this behavior for each container in your
+            task by using the <code class="code">versionConsistency</code> parameter in the container definition.
+            For more information, see <a href="./task_definition_parameters.html#ContainerDefinition-versionconsistency">versionConsistency</a>.</p>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><div class="itemizedlist">
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+
+               
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>Amazon ECS Agent versions lower than <code class="code">1.31.0</code> don't support image digest
+                        resolution. Agent versions <code class="code">1.31.0</code> to <code class="code">1.69.0</code> support image
+                        digest resolution only for images pushed to Amazon ECR repositories. Agent versions
+                        <code class="code">1.70.0</code> or higher support image digest resolution for all images.
+                        </p>
+                </li><li class="listitem">
+                    <p>The minimum Fargate Linux platform version for image digest resolution is
+                        <code class="code">1.3.0</code>. The minimum Fargate Windows platform version for image digest
+                        resolution is <code class="code">1.0.0</code>.</p>
+                </li><li class="listitem">
+                    <p>Amazon ECS doesn't capture digests of sidecar containers managed by Amazon ECS, such
+                        as the Amazon GuardDuty security agent or Service Connect proxy.</p>
+                </li><li class="listitem">
+                    <p>To reduce potential latency associated with container image resolution in
+                        services with multiple tasks, run Amazon ECS agent version <code class="code">1.83.0</code> or
+                        higher on EC2 container instances. To avoid potential latency, specify container image digests in your task definition.</p>
+                </li><li class="listitem">
+                    <p>If you create a service with a desired task count of zero, Amazon ECS can't
+                        establish container digests until you trigger another deployment of the
+                        service with a desired task count greater than zero.</p>
+                </li><li class="listitem">
+                    <p>To establish updated image digests, you can force a new deployment. The
+                        updated digests will be used to start new tasks and will not affect already
+                        running tasks. For more information about forcing new deployments, see
+                            <a href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_UpdateService.html#ECS-UpdateService-request-forceNewDeployment">forceNewDeployment</a> in the <em>Amazon ECS API
+                            reference</em>.</p>
+                </li><li class="listitem">
+                    <p>When using EC2 capacity providers, if there is insufficient capacity to
+                        start a task during the initial deployment, software version consistency may
+                        fail. To ensure version consistency is maintained even when capacity is
+                        limited, explicitly set <code class="code">versionConsistency: "enabled"</code> in your task
+                        definition container configuration rather than relying on the default
+                        behavior. This causes Amazon ECS to wait until capacity becomes available before
+                        proceeding with the deployment.</p>
+                </li></ul></div></div></div>
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./stop-service-deployment.html">Stopping service deployments</div><div id="next" class="next-link" accesskey="n" href="./service-options.html">Service parameters best practices</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ECS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/deployment-type-ecs.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ECS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/deployment-type-ecs.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

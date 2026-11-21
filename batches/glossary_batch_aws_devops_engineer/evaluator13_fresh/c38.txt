@@ -1,0 +1,19 @@
+
+### 38 aws_devops.publish_a_container_image_to_ecr
+Inline: supplied already-built image: Supplied scaffolding: already-built image. The exercise provides this input or setup; independent implementation is not required.; image digest: An immutable content identifier used to verify the pushed and pulled image is identical.; supplied built image: Supplied scaffolding: the exercise provides built image. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.
+tb1: An already-built container image must reach an approved repository and then be retrieved as the exact published content. Keep the publication reference and the content digest separate in the evidence.
+tb2: ECR stores container images in repositories and assigns image digests that identify image content.
+tb3: Authenticate Docker with aws ecr get-login-password --region REGION piped to docker login --username AWS --password-stdin REGISTRY.
+
+Tag the already-built image with REGISTRY/REPOSITORY:TAG and run docker push with that reference.
+
+Use docker pull REGISTRY/REPOSITORY@sha256:DIGEST to retrieve the exact image and verify publisher and consumer access with their approved identities.
+tb4: Substitute the supplied Region and registry in the authentication pipeline from get-login-password to docker login. Tag the already-built image with the approved REGISTRY/REPOSITORY:TAG and push that reference. Record the published image digest, then use the supplied digest in docker pull REGISTRY/REPOSITORY@sha256:DIGEST for the consumer test. Verify publisher and consumer access with their respective approved identities rather than using one identity for both roles. The digest identifies image content, while the repository and tag provide the publication reference in this exercise. The task begins with a built image and does not ask for Dockerfile authoring or a new container build process.
+
+Write the publication and consumption references side by side: the push uses REGISTRY/REPOSITORY:TAG, and the exact-content pull uses REGISTRY/REPOSITORY@sha256:DIGEST. Verify that the digest is the one recorded after publishing. Testing publisher push permission does not establish consumer pull permission, so preserve both identity-specific outcomes. This separates content identity from the two access roles without rebuilding the supplied image.
+tb5: Publication is not the same as verified consumption. Push with the approved publisher, then retrieve the exact digest under the approved consumer and check its access. Do not substitute a convenient tag for the stated exact-content retrieval test.
+Assess: verify_approved_publisher_push_access; verify_supplied_consumer_pull_access_to_exact_digest
+Practice: {'type': 'tool_simulation', 'objective': 'Authenticate Docker, tag and push one already-built image to a supplied sandbox ECR repository using the approved publisher identity. Then authenticate in the supplied consumer environment and pull the published image by its exact digest using the approved consumer identity.', 'success': 'The publisher successfully authenticates and pushes REGISTRY/REPOSITORY:TAG. The published digest is recorded, and the supplied consumer successfully pulls REGISTRY/REPOSITORY@sha256:DIGEST with that same digest. Evidence preserves the publication reference, exact-content retrieval reference, and separate identity-specific outcomes.'}
+Visual: {'type': 'comparison', 'purpose': "Show the publisher's tagged push reference beside the consumer's digest-based pull reference, with the recorded published digest and each approved identity's access outcome visible."}
+Notes: ['Require external Docker and shell-pipe preparation; commands are supplied-value templates.']
+Media: null

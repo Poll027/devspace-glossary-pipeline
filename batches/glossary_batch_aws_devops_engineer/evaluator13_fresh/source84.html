@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Assign an IAM role to a Kubernetes service account - Amazon EKS</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="pod-id-association" /><meta name="default_state" content="pod-id-association" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/eks/latest/userguide/pod-id-association.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/eks/latest/userguide/pod-id-association.md" title="Markdown version" /><meta name="description" content="Learn how to configure a Kubernetes service account to assume an AWS IAM role with Amazon EKS Pod Identity for securely accessing AWS services from your pods." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon EKS" /><meta name="guide" content="User Guide" /><meta name="abstract" content="This is official Amazon Web Services (AWS) documentation for Amazon Elastic Kubernetes Service (Amazon EKS). Amazon EKS is a managed service that makes it easy for you to run Kubernetes on AWS without needing to install and operate your own Kubernetes clusters. Kubernetes is an open source system for automating the deployment, scaling, and management of containerized applications." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/eks/latest/userguide/pod-id-association.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/eks/latest/userguide/pod-id-association.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/eks/latest/userguide/pod-id-association.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/eks/latest/userguide/pod-id-association.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/eks/latest/userguide/pod-id-association.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/eks/latest/userguide/pod-id-association.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/eks/latest/userguide/pod-id-association.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/eks/latest/userguide/pod-id-association.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/eks/latest/userguide/pod-id-association.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/eks/latest/userguide/pod-id-association.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/eks/latest/userguide/pod-id-association.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/eks/latest/userguide/pod-id-association.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/eks/latest/userguide/pod-id-association.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/pod-id-association.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/pod-id-association.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/pod-id-association.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/pod-id-association.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/eks/latest/userguide/pod-id-association.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/eks/latest/userguide/pod-id-association.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/pod-id-association.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/eks/latest/userguide/pod-id-association.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/eks/latest/userguide/pod-id-association.html" hreflang="x-default" /><meta name="feedback-item" content="Amazon EKS" /><meta name="this_doc_product" content="Amazon EKS" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'eks'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Assign an IAM role to a Kubernetes service account" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="pod-id-association.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Assign an IAM role to a Kubernetes service account - Amazon EKS</title><meta name="pdf" content="/pdfs/eks/latest/userguide/eks-ug.pdf#pod-id-association" /><meta name="github" content="https://github.com/awsdocs/amazon-eks-user-guide/tree/mainline/latest/ug/manage-access/aws-access/pod-id-association.adoc" /><meta name="rss" content="doc-history.rss" /><meta name="forums" content="https://repost.aws/tags/TA4IvCeWI1TE66q4jEj4Z9zg" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Amazon%20EKS&amp;topic_url=https://docs.aws.amazon.com/en_us/eks/latest/userguide/pod-id-association.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/eks/latest/userguide/pod-id-association.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/eks/latest/userguide/pod-id-association.html" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon EKS",
+        "item" : "https://docs.aws.amazon.com/eks/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/eks/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Learn how access control works in Amazon EKS",
+        "item" : "https://docs.aws.amazon.com/eks/latest/userguide/cluster-auth.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Grant Kubernetes workloads access to AWS using Kubernetes Service Accounts",
+        "item" : "https://docs.aws.amazon.com/eks/latest/userguide/service-accounts.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Learn how EKS Pod Identity grants pods access to AWS services",
+        "item" : "https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "Assign an IAM role to a Kubernetes service account",
+        "item" : "https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/eks/latest/userguide/eks-ug.pdf#pod-id-association" target="_blank" rel="noopener noreferrer" title="Open PDF"></a><a href="https://github.com/awsdocs/amazon-eks-user-guide/tree/mainline/latest/ug/manage-access/aws-access/pod-id-association.adoc" target="_blank" rel="noopener noreferrer" title="Edit this page on GitHub"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/eks/index.html">Amazon EKS</a><a href="what-is-eks.html">User Guide</a></div><div id="page-toc-src"><a href="#pod-id-association-create">Create a Pod Identity association (AWS Console)</a><a href="#create_a_pod_identity_association_shared_aws_cli">Create a Pod Identity association (AWS CLI)</a><a href="#pod-id-confirm-role-configuration">Confirm configuration</a><a href="#_next_steps">Next Steps</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><awsui-alert class="awsdocs-page-banner awsui-util-mb-l"><p>
+         <strong>Help improve this page</strong>
+      </p><p>To contribute to this user guide, choose the <strong>Edit this page on GitHub</strong> link that is located in the right pane of every page.</p></awsui-alert><h1 class="topictitle" id="pod-id-association">Assign an IAM role to a Kubernetes service account</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>This topic covers how to configure a Kubernetes service account to assume an AWS Identity and Access Management (IAM) role with EKS Pod Identity. Any Pods that are configured to use the service account can then access any AWS service that the role has permissions to access.</p><p>To create an EKS Pod Identity association, there is only a single step; you create the association in EKS through the AWS Management Console, AWS CLI, AWS SDKs, AWS CloudFormation and other tools. There isn’t any data or metadata about the associations inside the cluster in any Kubernetes objects and you don’t add any annotations to the service accounts.</p><p>
+      <strong>Prerequisites</strong>
+   </p><div class="itemizedlist">
+       
+       
+       
+       
+       
+   <ul class="itemizedlist"><li class="listitem">
+         <p>An existing cluster. If you don’t have one, you can create one by following one of the guides in <a href="./getting-started.html">Get started with Amazon EKS</a>.</p>
+      </li><li class="listitem">
+         <p>The IAM principal that is creating the association must have <code class="code">iam:PassRole</code>.</p>
+      </li><li class="listitem">
+         <p>The latest version of the AWS CLI installed and configured on your device or AWS CloudShell. You can check your current version with <code class="code">aws --version | cut -d / -f2 | cut -d ' ' -f1</code>. Package managers such as <code class="code">yum</code>, <code class="code">apt-get</code>, or Homebrew for macOS are often several versions behind the latest version of the AWS CLI. To install the latest version, see <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html">Installing</a> and <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config">Quick configuration with aws configure</a> in the AWS Command Line Interface User Guide. The AWS CLI version installed in the AWS CloudShell may also be several versions behind the latest version. To update it, see <a href="https://docs.aws.amazon.com/cloudshell/latest/userguide/vm-specs.html#install-cli-software">Installing AWS CLI to your home directory</a> in the AWS CloudShell User Guide.</p>
+      </li><li class="listitem">
+         <p>The <code class="code">kubectl</code> command line tool is installed on your device or AWS CloudShell. The version can be the same as or up to one minor version earlier or later than the Kubernetes version of your cluster. For example, if your cluster version is <code class="code">1.29</code>, you can use <code class="code">kubectl</code> version <code class="code">1.28</code>, <code class="code">1.29</code>, or <code class="code">1.30</code> with it. To install or upgrade <code class="code">kubectl</code>, see <a href="./install-kubectl.html">Set up kubectl and eksctl</a>.</p>
+      </li><li class="listitem">
+         <p>An existing <code class="code">kubectl</code>
+            <code class="code">config</code> file that contains your cluster configuration. To create a <code class="code">kubectl</code>
+            <code class="code">config</code> file, see <a href="./create-kubeconfig.html">Connect kubectl to an EKS cluster by creating a kubeconfig file</a>.</p>
+      </li></ul></div>
+      <h2 id="pod-id-association-create">Create a Pod Identity association (AWS Console)</h2>
+      <div class="orderedlist">
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      <ol style="list-style-type:arabic ! important;"><li>
+            <p>Open the <a href="https://console.aws.amazon.com/eks/home#/clusters" rel="noopener noreferrer" target="_blank"><span>Amazon EKS console</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+         </li><li>
+            <p>In the left navigation pane, select <strong>Clusters</strong>, and then select the name of the cluster that you want to configure the EKS Pod Identity Agent add-on for.</p>
+         </li><li>
+            <p>In the left navigation pane, choose <strong>Access</strong>, then choose the <strong>Pod Identity</strong> tab.</p>
+         </li><li>
+            <p>In the <strong>Pod Identity associations</strong>, choose <strong>Create</strong>.</p>
+         </li><li>
+            <p>For the <strong>IAM role</strong>, select the IAM role with the permissions that you want the workload to have.</p>
+            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>The list only contains roles that have the following trust policy which allows EKS Pod Identity to use them.</p></div></div>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version":"2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Sid": "AllowEksAuthToAssumeRoleForPodIdentity",
+            "Effect": "Allow",
+            "Principal": <span>{</span>
+                "Service": "pods.eks.amazonaws.com"
+            },
+            "Action": [
+                "sts:AssumeRole",
+                "sts:TagSession"
+            ]
+        }
+    ]
+}</code></pre>
+            <p>
+               <code class="code">sts:AssumeRole</code> — EKS Pod Identity uses <code class="code">AssumeRole</code> to assume the IAM role before passing the temporary credentials to your pods.</p>
+            <p>
+               <code class="code">sts:TagSession</code> — EKS Pod Identity uses <code class="code">TagSession</code> to include <em>session tags</em> in the requests to AWS STS.</p>
+            <p>You can use these tags in the <em>condition keys</em> in the trust policy to restrict which service accounts, namespaces, and clusters can use this role.</p>
+            <p>For a list of Amazon EKS condition keys, see <a href="https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonelastickubernetesservice.html#amazonelastickubernetesservice-policy-keys">Conditions defined by Amazon Elastic Kubernetes Service</a> in the <em>Service Authorization Reference</em>. To learn which actions and resources you can use a condition key with, see <a href="https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonelastickubernetesservice.html#amazonelastickubernetesservice-actions-as-permissions">Actions defined by Amazon Elastic Kubernetes Service</a>.</p>
+         </li><li>
+            <p>For the <strong>Kubernetes namespace</strong>, select the Kubernetes namespace that contains the service account and workload. Optionally, you can specify a namespace by name that doesn’t exist in the cluster.</p>
+         </li><li>
+            <p>For the <strong>Kubernetes service account</strong>, select the Kubernetes service account to use. The manifest for your Kubernetes workload must specify this service account. Optionally, you can specify a service account by name that doesn’t exist in the cluster.</p>
+         </li><li>
+            <p>(Optional) Select <strong>Disable session tags</strong> to disable the default session tags that Pod Identity automatically adds when it assumes the role.</p>
+         </li><li>
+            <p>(Optional) Toggle <strong>Configure session policy</strong> to configure an IAM policy to apply additional restrictions to this Pod Identity association beyond the permissions defined in the IAM policy attached to the IAM role.</p>
+            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>A session policy can only be applied when the <strong>Disable session tags</strong> setting is checked.</p></div></div>
+         </li><li>
+            <p>(Optional) For the <strong>Tags</strong>, choose <strong>Add tag</strong> to add metadata in a key and value pair. These tags are applied to the association and can be used in IAM policies.</p>
+            <p>You can repeat this step to add multiple tags.</p>
+         </li><li>
+            <p>Choose <strong>Create</strong>.</p>
+         </li></ol></div>
+    
+      <h2 id="create_a_pod_identity_association_shared_aws_cli">Create a Pod Identity association (AWS CLI)</h2>
+      <div class="orderedlist">
+          
+          
+      <ol style="list-style-type:arabic ! important;"><li>
+            <p>If you want to associate an existing IAM policy to your IAM role, skip to the next step.</p>
+            <p>Create an IAM policy. You can create your own policy, or copy an AWS managed policy that already grants some of the permissions that you need and customize it to your specific requirements. For more information, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_create.html">Creating IAM policies</a> in the <em>IAM User Guide</em>.</p>
+            <div class="orderedlist">
+                
+                
+            <ol style="list-style-type:lower-alpha ! important;"><li>
+                  <p>Create a file that includes the permissions for the AWS services that you want your Pods to access. For a list of all actions for all AWS services, see the <a href="https://docs.aws.amazon.com/service-authorization/latest/reference/">Service Authorization Reference</a>.</p>
+                  <p>You can run the following command to create an example policy file that allows read-only access to an Amazon S3 bucket. You can optionally store configuration information or a bootstrap script in this bucket, and the containers in your Pod can read the file from the bucket and load it into your application. If you want to create this example policy, copy the following contents to your device. Replace <code class="replaceable">my-pod-secrets-bucket</code> with your bucket name and run the command.</p>
+                  <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version":"2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::my-pod-secrets-bucket"
+        }
+    ]
+}</code></pre>
+               </li><li>
+                  <p>Create the IAM policy.</p>
+                  <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">aws iam create-policy --policy-name my-policy --policy-document file://my-policy.json</code></pre>
+               </li></ol></div>
+         </li><li>
+            <p>Create an IAM role and associate it with a Kubernetes service account.</p>
+            <div class="orderedlist">
+                
+                
+                
+                
+                
+            <ol style="list-style-type:lower-alpha ! important;"><li>
+                  <p>If you have an existing Kubernetes service account that you want to assume an IAM role, then you can skip this step.</p>
+                  <p>Create a Kubernetes service account. Copy the following contents to your device. Replace <code class="replaceable">my-service-account</code> with your desired name and <code class="replaceable">default</code> with a different namespace, if necessary. If you change <code class="replaceable">default</code>, the namespace must already exist.</p>
+                  <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (yaml)--><code class="yaml ">cat &gt;my-service-account.yaml &lt;&lt;EOF
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: my-service-account
+  namespace: default
+EOF
+kubectl apply -f my-service-account.yaml</code></pre>
+                  <p>Run the following command.</p>
+                  <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (yaml)--><code class="yaml ">kubectl apply -f my-service-account.yaml</code></pre>
+               </li><li>
+                  <p>Run the following command to create a trust policy file for the IAM role.</p>
+                  <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version":"2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Sid": "AllowEksAuthToAssumeRoleForPodIdentity",
+            "Effect": "Allow",
+            "Principal": <span>{</span>
+                "Service": "pods.eks.amazonaws.com"
+            },
+            "Action": [
+                "sts:AssumeRole",
+                "sts:TagSession"
+            ]
+        }
+    ]
+}</code></pre>
+               </li><li>
+                  <p>Create the role. Replace <code class="replaceable">my-role</code> with a name for your IAM role, and <code class="replaceable">my-role-description</code> with a description for your role.</p>
+                  <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">aws iam create-role --role-name my-role --assume-role-policy-document file://trust-relationship.json --description "my-role-description"</code></pre>
+               </li><li>
+                  <p>Attach an IAM policy to your role. Replace <code class="replaceable">my-role</code> with the name of your IAM role and <code class="replaceable">my-policy</code> with the name of an existing policy that you created.</p>
+                  <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">aws iam attach-role-policy --role-name my-role --policy-arn=arn:aws:iam::111122223333:policy/my-policy</code></pre>
+                  <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Unlike IAM roles for service accounts, EKS Pod Identity doesn’t use an annotation on the service account.</p></div></div>
+               </li><li>
+                  <p>Run the following command to create the association. Replace <code class="code">my-cluster</code> with the name of the cluster, replace <code class="replaceable">my-service-account</code> with your desired name and <code class="replaceable">default</code> with a different namespace, if necessary.</p>
+                  <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">aws eks create-pod-identity-association --cluster-name my-cluster --role-arn arn:aws:iam::111122223333:role/my-role --namespace default --service-account my-service-account</code></pre>
+                  <p>An example output is as follows.</p>
+                  <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "association": <span>{</span>
+        "clusterName": "my-cluster",
+        "namespace": "default",
+        "serviceAccount": "my-service-account",
+        "roleArn": "arn:aws:iam::111122223333:role/my-role",
+        "associationArn": "arn:aws::111122223333:podidentityassociation/my-cluster/a-abcdefghijklmnop1",
+        "associationId": "a-abcdefghijklmnop1",
+        "tags": <span>{</span>},
+        "createdAt": 1700862734.922,
+        "modifiedAt": 1700862734.922
+    }
+}</code></pre>
+                  <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>You can specify a namespace and service account by name that doesn’t exist in the cluster. You must create the namespace, service account, and the workload that uses the service account for the EKS Pod Identity association to function.</p></div></div>
+               </li></ol></div>
+         </li></ol></div>
+    
+      <h2 id="pod-id-confirm-role-configuration">Confirm configuration</h2>
+      <div class="orderedlist">
+          
+          
+          
+          
+          
+      <ol style="list-style-type:arabic ! important;"><li>
+            <p>Confirm that the IAM role’s trust policy is configured correctly.</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">aws iam get-role --role-name my-role --query Role.AssumeRolePolicyDocument</code></pre>
+            <p>An example output is as follows.</p>
+            <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version":"2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Principal": <span>{</span>
+                "Service": "pods.eks.amazonaws.com"
+            },
+            "Action": [
+                "sts:AssumeRole",
+                "sts:TagSession"
+            ]
+        }
+    ]
+}</code></pre>
+         </li><li>
+            <p>Confirm that the policy that you attached to your role in a previous step is attached to the role.</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">aws iam list-attached-role-policies --role-name my-role --query 'AttachedPolicies[].PolicyArn' --output text</code></pre>
+            <p>An example output is as follows.</p>
+            <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (json)--><code class="json ">
+               arn:aws:iam::111122223333:policy/my-policy</code></pre>
+         </li><li>
+            <p>Set a variable to store the Amazon Resource Name (ARN) of the policy that you want to use. Replace <code class="replaceable">my-policy</code> with the name of the policy that you want to confirm permissions for.</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">export policy_arn=arn:aws:iam::111122223333:policy/my-policy</code></pre>
+         </li><li>
+            <p>View the default version of the policy.</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">aws iam get-policy --policy-arn $policy_arn</code></pre>
+            <p>An example output is as follows.</p>
+            <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Policy": <span>{</span>
+        "PolicyName": "my-policy",
+        "PolicyId": "EXAMPLEBIOWGLDEXAMPLE",
+        "Arn": "arn:aws:iam::111122223333:policy/my-policy",
+        "Path": "/",
+        "DefaultVersionId": "v1",
+        [...]
+    }
+}</code></pre>
+         </li><li>
+            <p>View the policy contents to make sure that the policy includes all the permissions that your Pod needs. If necessary, replace <code class="replaceable">1</code> in the following command with the version that’s returned in the previous output.</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">aws iam get-policy-version --policy-arn $policy_arn --version-id v1</code></pre>
+            <p>An example output is as follows.</p>
+            <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version":"2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::my-pod-secrets-bucket"
+        }
+    ]
+}</code></pre>
+            <p>If you created the example policy in a previous step, then your output is the same. If you created a different policy, then the <code class="replaceable">example</code> content is different.</p>
+         </li></ol></div>
+    
+      <h2 id="_next_steps">Next Steps</h2>
+      <p>
+         <a href="./pod-id-configure-pods.html">Configure Pods to access AWS services with service accounts</a>
+      </p>
+   <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./pod-id-agent-setup.html">Set up the Agent</div><div id="next" class="next-link" accesskey="n" href="./pod-id-assign-target-role.html">Assign Target IAM role</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Amazon EKS&amp;topic_url=https://docs.aws.amazon.com/en_us/eks/latest/userguide/pod-id-association.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Amazon EKS&amp;topic_url=https://docs.aws.amazon.com/en_us/eks/latest/userguide/pod-id-association.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

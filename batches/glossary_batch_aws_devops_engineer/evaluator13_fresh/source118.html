@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Connecting to an Amazon RDS DB instance - Amazon Relational Database Service</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="CHAP_CommonTasks.Connect" /><meta name="default_state" content="CHAP_CommonTasks.Connect" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.md" title="Markdown version" /><meta name="description" content="Learn how to connect to an Amazon RDS DB instance." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Relational Database Service" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Amazon Web Services (AWS) documentation to help you set up, operate, and scale a relational database in the AWS Cloud using Amazon Relational Database Service (Amazon RDS). You can create DB instances that run Amazon Aurora, MariaDB, Microsoft SQL Server, MySQL, Oracle, and PostgreSQL." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" hreflang="x-default" /><meta name="feedback-item" content="RDS" /><meta name="this_doc_product" content="Amazon Relational Database Service" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'rds'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Connecting to an Amazon RDS DB instance" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="CHAP_CommonTasks.Connect.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Connecting to an Amazon RDS DB instance - Amazon Relational Database Service</title><meta name="pdf" content="/pdfs/AmazonRDS/latest/UserGuide/rds-ug.pdf#CHAP_CommonTasks.Connect" /><meta name="rss" content="rdsupdates.rss" /><meta name="forums" content="https://repost.aws/tags/TAsibBK6ZeQYihN9as4S_psg" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=RDS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html" /><meta name="keywords" content="Amazon Relational Database Service,RDS,DB Instance" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon RDS",
+        "item" : "https://docs.aws.amazon.com/rds/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Configuring an Amazon RDS DB instance",
+        "item" : "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_RDS_Configuring.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Connecting to an Amazon RDS DB instance",
+        "item" : "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_RDS_Configuring.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonRDS/latest/UserGuide/rds-ug.pdf#CHAP_CommonTasks.Connect" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/rds/index.html">Amazon RDS</a><a href="Welcome.html">User Guide</a></div><div id="page-toc-src"><a href="#RDS.Connecting.Drivers">Connecting to DB instances with the AWS drivers</a><a href="#CHAP_CommonTasks.Connect.DBEngine">Connecting to a DB instance running a specific DB engine</a><a href="#CHAP_CommonTasks.Connect.RDSProxy">Managing connections with RDS Proxy</a><a href="#CHAP_CommonTasks.Connect.DatabaseAuthentication">Database authentication options</a><a href="#CHAP_CommonTasks.Connect.EncryptedConnections">Encrypted connections</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="CHAP_CommonTasks.Connect">Connecting to an Amazon RDS DB instance</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p> Before you can connect to a DB instance, you must create the DB instance. For
+        information, see <a href="./USER_CreateDBInstance.html">Creating an Amazon RDS DB instance</a>. After Amazon RDS provisions your DB instance, use any standard client application or utility
+        for your DB engine to connect to the DB instance. In the connection string, specify the DNS
+        address from the DB instance endpoint as the host parameter. Also, specify the port number
+        from the DB instance endpoint as the port parameter. </p><p>For more information about finding connection information for an Amazon RDS DB instance or scenarios for accessing a DB instance in a VPC, see the following topics.</p><div class="itemizedlist">
+         
+         
+    <ul class="itemizedlist"><li class="listitem"><p><a href="./CHAP_CommonTasks.Connect.EndpointAndPort.html">Finding the connection information for an Amazon RDS DB instance</a></p></li><li class="listitem"><p><a href="./CHAP_CommonTasks.Connect.ScenariosForAccess.html">Scenarios for accessing a DB instance in a VPC</a></p></li></ul></div>
+        <h2 id="RDS.Connecting.Drivers">Connecting to DB instances with the AWS drivers</h2>
+        <p>The AWS suite of drivers has been designed to provide support for faster switchover
+            and failover times, and authentication with AWS Secrets Manager, AWS Identity and Access Management (IAM), and Federated
+            Identity. The AWS drivers rely on monitoring DB instance status and being aware of the
+            instance topology to determine the new primary instance. This approach reduces
+            switchover and failover times to single-digit seconds, compared to tens of seconds for
+            open-source drivers.</p>
+        <p>The following table lists the features supported for each of the drivers. As new
+            service features are introduced, the goal of the AWS suite of drivers is to have
+            built-in support for these service features.</p>
+        <div class="table-container"><div class="table-contents"><table id="d0e1"><thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th><a href="https://github.com/awslabs/aws-advanced-jdbc-wrapper" rel="noopener noreferrer" target="_blank"><span>AWS JDBC Driver</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></th>
+                        <th><a href="https://github.com/awslabs/aws-advanced-python-wrapper" rel="noopener noreferrer" target="_blank"><span>AWS Python Driver</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></th>
+                        <th><a href="https://github.com/aws/aws-mysql-odbc" rel="noopener noreferrer" target="_blank"><span>AWS ODBC Driver for MySQL</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></th>
+                    </tr>
+                </thead>
+                    <tr>
+                        <td tabindex="-1">Failover support</td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-jdbc-wrapper/blob/main/docs/using-the-jdbc-driver/using-plugins/UsingTheFailoverPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-python-wrapper/blob/main/docs/using-the-python-driver/using-plugins/UsingTheFailoverPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1"><a href="https://github.com/aws/aws-mysql-odbc/blob/main/docs/using-the-aws-driver/UsingTheAwsDriver.md#failover-process" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Enhanced failover monitoring</td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-jdbc-wrapper/blob/main/docs/using-the-jdbc-driver/using-plugins/UsingTheHostMonitoringPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-python-wrapper/blob/main/docs/using-the-python-driver/using-plugins/UsingTheHostMonitoringPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1"><a href="https://github.com/aws/aws-mysql-odbc/blob/main/docs/using-the-aws-driver/HostMonitoring.md#enhanced-failure-monitoring" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Read/write splitting</td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-jdbc-wrapper/blob/main/docs/using-the-jdbc-driver/using-plugins/UsingTheReadWriteSplittingPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-python-wrapper/blob/main/docs/using-the-python-driver/using-plugins/UsingTheReadWriteSplittingPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1">No</td>
+
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Driver metadata connection</td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-jdbc-wrapper/blob/main/docs/using-the-jdbc-driver/using-plugins/UsingTheDriverMetadataConnectionPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1">N/A</td>
+                        <td tabindex="-1">N/A</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Telemetry</td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-jdbc-wrapper/blob/main/docs/using-the-jdbc-driver/Telemetry.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1"><a href="https://github.com/aws/aws-advanced-python-wrapper/blob/main/docs/using-the-python-driver/Telemetry.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1">No</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Secrets Manager</td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-jdbc-wrapper/blob/main/docs/using-the-jdbc-driver/using-plugins/UsingTheAwsSecretsManagerPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-python-wrapper/blob/main/docs/using-the-python-driver/using-plugins/UsingTheAwsSecretsManagerPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1"><a href="https://github.com/aws/aws-mysql-odbc/blob/main/docs/using-the-aws-driver/UsingTheAwsDriver.md#secrets-manager-authentication" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">IAM authentication</td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-jdbc-wrapper/blob/main/docs/using-the-jdbc-driver/using-plugins/UsingTheIamAuthenticationPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-python-wrapper/blob/main/docs/using-the-python-driver/using-plugins/UsingTheIamAuthenticationPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1"><a href="https://github.com/aws/aws-mysql-odbc/blob/main/docs/using-the-aws-driver/UsingTheAwsDriver.md#iam-authentication" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Federated Identity (AD FS)</td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-jdbc-wrapper/blob/main/docs/using-the-jdbc-driver/using-plugins/UsingTheFederatedAuthPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-python-wrapper/blob/main/docs/using-the-python-driver/using-plugins/UsingTheFederatedAuthenticationPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1">No</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Federated Identity (Okta)</td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-jdbc-wrapper/blob/main/docs/using-the-jdbc-driver/using-plugins/UsingTheFederatedAuthPlugin.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1">No</td>
+                        <td tabindex="-1">No</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Multi-AZ DB clusters</td>
+                        <td tabindex="-1"><a href="https://github.com/awslabs/aws-advanced-jdbc-wrapper/blob/main/docs/using-the-jdbc-driver/SupportForRDSMultiAzDBCluster.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1"><a href="https://github.com/aws/aws-advanced-python-wrapper/blob/main/docs/using-the-python-driver/SupportForRDSMultiAzDBCluster.md" rel="noopener noreferrer" target="_blank"><span>Yes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a></td>
+                        <td tabindex="-1">No</td>
+                    </tr>
+                </table></div></div>
+        <p>For more information on the AWS drivers, see the corresponding language driver for
+            your <a href="./MariaDB.Connecting.Drivers.html#MariaDB.Connecting.JDBCDriver">RDS for MariaDB</a>, <a href="./MySQL.Connecting.Drivers.html#MySQL.Connecting.JDBCDriver">RDS for MySQL</a>, or <a href="./PostgreSQL.Connecting.JDBCDriver.html">RDS for PostgreSQL</a> DB instance.</p>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>The only features supported for RDS for MariaDB are authentication with AWS Secrets Manager,
+                AWS Identity and Access Management (IAM), and Federated Identity.</p></div></div>
+     
+        <h2 id="CHAP_CommonTasks.Connect.DBEngine">Connecting to a DB instance that's running a specific DB engine</h2>
+        
+        <p>To learn how to connect to a DB instance that is running a specific DB engine, follow
+            the instructions for your DB engine:</p>
+        
+        <div class="itemizedlist">
+                
+                         
+                         
+                         
+                         
+                         
+        <ul class="itemizedlist"><li class="listitem"><p><a href="./USER_ConnectToDb2DBInstance.html">RDS for Db2</a></p></li><li class="listitem"><p><a href="./USER_ConnectToMariaDBInstance.html">RDS for MariaDB</a></p></li><li class="listitem"><p><a href="./USER_ConnectToMicrosoftSQLServerInstance.html">RDS for SQL Server</a></p></li><li class="listitem"><p><a href="./USER_ConnectToInstance.html">RDS for MySQL</a></p></li><li class="listitem"><p><a href="./USER_ConnectToOracleInstance.html">RDS for Oracle</a></p></li><li class="listitem"><p><a href="./USER_ConnectToPostgreSQLInstance.html">RDS for PostgreSQL</a></p></li></ul></div>
+           
+     
+        <h2 id="CHAP_CommonTasks.Connect.RDSProxy">Managing connections with RDS Proxy</h2>
+        
+        <p>You can also use Amazon RDS Proxy to manage connections to RDS for MariaDB, RDS for Microsoft SQL Server, RDS for MySQL, and RDS for PostgreSQL DB instances. 
+            RDS Proxy allows applications to pool and share database connections to improve scalability. For more information, see 
+            <a href="./rds-proxy.html">Amazon RDS Proxy</a>.</p>
+            
+     
+        <h2 id="CHAP_CommonTasks.Connect.DatabaseAuthentication">Database authentication options</h2>
+        
+        <p>Amazon RDS supports the following ways to authenticate database users:</p>   
+        
+        <div class="itemizedlist">
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><b>Password authentication</b> – Your DB instance performs all administration of user accounts. 
+                    You create users and specify passwords with SQL statements. The SQL statements you can use depend on your DB engine.</p>
+            </li><li class="listitem">
+                <p><b>AWS Identity and Access Management (IAM) database authentication</b> – You don't need to use a password when you connect to a DB 
+                    instance. Instead, you use an authentication token.</p>
+            </li><li class="listitem">
+                <p><b>Kerberos authentication</b> – You use external authentication of database users using Kerberos and Microsoft
+                    Active Directory. Kerberos is a network authentication protocol that uses tickets and
+                    symmetric-key cryptography to eliminate the need to transmit passwords over the network.
+                    Kerberos has been built into Active Directory and is designed to authenticate users to
+                    network resources, such as databases.</p>
+            </li></ul></div>
+        
+        <p>IAM database authentication and Kerberos authentication are available only for
+            specific DB engines and versions.</p>
+        
+        <p>For more information, see <a href="./database-authentication.html">Database authentication with Amazon RDS </a>.</p>
+        
+     
+        <h2 id="CHAP_CommonTasks.Connect.EncryptedConnections">Encrypted connections</h2>
+        
+        <p>You can use Secure Socket Layer (SSL) or Transport Layer Security (TLS) from your application to encrypt a 
+            connection to a DB instance. Each DB engine has its own process for implementing SSL/TLS. For more information, 
+            see <a href="./UsingWithRDS.SSL.html">Using SSL/TLS to encrypt a connection to a DB instance or cluster </a>.</p>   
+        
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./creating-resources-with-cloudformation.html">Creating resources with AWS CloudFormation</div><div id="next" class="next-link" accesskey="n" href="./CHAP_CommonTasks.Connect.EndpointAndPort.html">Finding the connection information</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=RDS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=RDS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

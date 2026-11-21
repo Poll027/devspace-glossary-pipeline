@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>OPS05-BP01 Develop and test runbooks to perform procedures - AWS Well-Architected Framework</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="ops05-bp01" /><meta name="default_state" content="ops05-bp01" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05-bp01.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05-bp01.md" title="Markdown version" /><meta name="description" content="A runbook is a documented procedure that produces the same outcome every time, no matter who runs it. Teams use runbooks for routine and high-stakes work, from onboarding an engineer to deploying a release or recovering from an incident. Without them, operations depend on memory and habit, which produces inconsistent results and more errors." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Well-Architected Framework" /><meta name="guide" content="Framework" /><meta name="abstract" content="The AWS Well-Architected Framework helps you understand the pros and cons of decisions you make while building systems on AWS. By using the Framework you will learn architectural best practices for designing and operating reliable, secure, efficient, cost-effective, and sustainable systems in the cloud." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05-bp01.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/ops05-bp01.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/ops05-bp01.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/ops05-bp01.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/ops05-bp01.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05-bp01.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05-bp01.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/ops05-bp01.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/ops05-bp01.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/ops05-bp01.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/ops05-bp01.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/ops05-bp01.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/ops05-bp01.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/ops05-bp01.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/ops05-bp01.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/ops05-bp01.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/ops05-bp01.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/ops05-bp01.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/ops05-bp01.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/wellarchitected/latest/framework/ops05-bp01.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/wellarchitected/latest/framework/ops05-bp01.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05-bp01.html" hreflang="x-default" /><meta name="feedback-folder" content="897c6ffe-3c12-4691-9c85-dc23b20eabd4" /><meta name="this_doc_product" content="AWS Well-Architected Framework" /><meta name="this_doc_guide" content="Framework" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'wellarchitected'}"></script><meta id="panorama-serviceSubSection" value="Framework" /><meta id="panorama-serviceConsolePage" value="OPS05-BP01 Develop and test runbooks to perform procedures" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="ops05-bp01.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>OPS05-BP01 Develop and test runbooks to perform procedures - AWS Well-Architected Framework</title><meta name="pdf" content="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#ops05-bp01" /><meta name="forums" content="https://repost.aws/topics/TA5g9gZfzuQoWLsZ3wxihrgw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops05-bp01.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops05-bp01.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops05-bp01.html" /><meta name="keywords" content="AWS Well-Architected Framework,Well-Architected,cloud architecture,architecture best practices,AWS Cloud,workload design,cloud foundations,landing zone" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Well-Architected",
+        "item" : "https://aws.amazon.com/architecture/well-architected/"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Framework",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Cloud Workloads",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/workloads.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Operational excellence",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/operational-excellence.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Establish workload supportability for production",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "OPS05-BP01 Develop and test runbooks to perform procedures",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/ops05.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#ops05-bp01" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected</a><a href="framework.html">Framework</a></div><div id="page-toc-src"><a href="#implementation-guidance">Implementation     guidance</a><a href="#resources">Resources</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="ops05-bp01">OPS05-BP01 Develop and test runbooks to perform procedures</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>
+    A runbook is a documented procedure that produces the same outcome
+    every time, no matter who runs it. Teams use runbooks for routine
+    and high-stakes work, from onboarding an engineer to deploying a
+    release or recovering from an incident. Without them, operations
+    depend on memory and habit, which produces inconsistent results and
+    more errors.
+  </p><p>
+    <b>Desired outcome:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Your team maintains a library of step-by-step runbooks, each
+        stating a desired outcome, the required tools and permissions,
+        and the error-handling and escalation path.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your runbooks live in a central, version-controlled location
+        that all team members can find and use.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your runbook content stays current because updates follow your
+        change management process as procedures evolve.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You automate your frequently used runbooks, so routine work runs
+        consistently with little manual effort.
+      </p>
+    </li></ul></div><p>
+    <b>Common anti-patterns:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Team members rely on memory to complete each step of a recurring
+        process.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Engineers deploy changes manually without a checklist or
+        documented procedure.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Two people perform the same task and produce different results
+        because the steps are undocumented.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Runbooks drift out of sync with the systems and automation they
+        describe.
+      </p>
+    </li></ul></div><p>
+    <b>Benefits of establishing this best
+    practice:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Manual tasks produce fewer errors because every step is written
+        down and validated.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Operations run consistently no matter who performs them.
+      </p>
+    </li><li class="listitem">
+      <p>
+        New team members become productive sooner by following
+        documented procedures.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Automating runbooks reduces repetitive manual work and frees
+        engineers for higher-value tasks.
+      </p>
+    </li></ul></div><p>
+    <b>Level of risk exposed if this best practice
+    is not established:</b> Medium
+  </p>
+
+  <h2 id="implementation-guidance">Implementation guidance</h2>
+
+      
+
+    <p>
+      When you create a runbook, state the desired outcome first, then
+      list the tools, permissions, and steps needed to reach it. Name an
+      owner so responsibility for keeping the runbook current is clear.
+    </p>
+    <p>
+      Start with text runbooks and plan to automate. Every manual run is
+      a chance for a skipped or misread step, so automating short,
+      frequently used procedures first returns the investment quickly
+      and builds the skill to automate harder cases. Keep judgment
+      calls, rare procedures, and steps that need human approval manual
+      while you automate the repetitive core.
+    </p>
+    <p>
+      Drift is common, as the system and automation might change while
+      the runbook does not and someone follows the stale version during
+      an incident. Tie runbook updates to your change management process
+      to keep them current. Include error handling for when a step fails
+      and an escalation path for when the procedure cannot resolve the
+      problem.
+    </p>
+    <p>
+      Runbooks and playbooks pair together but solve different problems.
+      A runbook executes a known procedure to reach a known outcome. A
+      playbook guides investigation when the outcome is not yet known,
+      such as diagnosing why a deployment failed. When a playbook
+      identifies a root cause, it points to the runbook that resolves
+      it. Keep the two separate so a runbook does not become an
+      open-ended troubleshooting guide.
+    </p>
+    <p>
+      On AWS, use
+      <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-automation.html">AWS Systems Manager Automation</a> to turn documented procedures
+      into automation runbooks that run against your workload, on demand
+      or in response to events. Use the low-code
+      <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-visual-designer.html">visual design experience</a> to build them. For common operational
+      issues, Support maintains
+      <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-tutorial-support-runbooks.html">Support self-service runbooks</a> that troubleshoot resources,
+      monitor for network issues, and collect logs.
+    </p>
+     
+
+  <h3 id="implementation-steps">Implementation steps</h3>
+
+      
+
+      <div class="orderedlist">
+         
+         
+         
+         
+         
+         
+      <ol><li>
+          <p>
+            <b>Choose a central
+            repository:</b> Use your existing documentation wiki
+            or version control system as the home for your runbook
+            library. Version control gives you history, review, and
+            rollback for procedures, and a single known location stops
+            copies from drifting apart. Create a new repository only if
+            no suitable store exists.
+          </p>
+        </li><li>
+          <p>
+            <b>Select a procedure to document
+            first:</b> Pick a process that runs semi-regularly,
+            has a small number of steps, and fails with low impact.
+            Starting small builds the habit and the template before you
+            tackle recovery or deployment procedures where mistakes are
+            costly.
+          </p>
+        </li><li>
+          <p>
+            <b>Draft the runbook from a standard
+            template:</b> Create a document from a shared
+            template so every runbook records the same structure and
+            metadata. Fill in the title, the runbook info, and each step
+            in order. Keeping the runbook in Markdown makes it portable
+            across most automation systems.
+          </p>
+          <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (markdown)--><code class="markdown ">
+# Runbook title
+## Runbook info
+| Runbook ID | Description | Tools used | Special permissions | Author | Last updated | Escalation contact |
+|---|---|---|---|---|---|---|
+| RUN001 | What is this runbook for and what outcome does it produce? | Tools | Permissions | Your name | 2026-01-01 | Escalation name |
+## Steps
+1. Step one
+2. Step two
+</code></pre>
+        </li><li>
+          <p>
+            <b>Validate the runbook with a
+            peer:</b> Give the draft to a team member who did not
+            write it and have them perform the procedure using only the
+            written steps. Update anything that is missing, ambiguous,
+            or out of order. This confirms the runbook works without the
+            author present.
+          </p>
+        </li><li>
+          <p>
+            <b>Publish and announce the
+            runbook:</b> Publish the validated runbook to your
+            central store and tell your team and stakeholders where to
+            find it. Record the owner so responsibility for keeping it
+            current is clear.
+          </p>
+        </li><li>
+          <p>
+            <b>Automate mature runbooks:</b>
+            As your library grows, convert stable, frequently used text
+            runbooks into automation with
+            <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-automation.html">AWS Systems Manager Automation</a>. The low-code
+            <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-visual-designer.html">visual design experience</a> helps you build automation
+            runbooks, and you can run them in response to events to
+            reduce manual effort. Keep the automated version and its
+            documentation in sync.
+            <a href="https://kiro.dev/" rel="noopener noreferrer" target="_blank"><span>Kiro</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> can be used
+            accelerate the development of runbooks and help to keep the
+            documentation consistent.
+          </p>
+        </li></ol></div>
+     
+   
+
+  <h2 id="resources">Resources</h2>
+
+      
+    <p>
+      <b>Related best practices:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="./ops05-bp02.html">OPS05-BP02 Develop and test playbooks to respond to incidents</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops06-bp02.html">OPS06-BP02 Automate responses to events</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops07-bp03.html">OPS07-BP03 Perform knowledge management</a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related documents:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-documents.html">AWS Systems Manager: Working with runbooks</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/application-manager-working-runbooks.html">Use Automation runbooks to remediate application issues</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-tutorial-support-runbooks.html">Support self-service runbooks</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-migration-playbook/task-four-migration-runbooks.html">Migration playbook for AWS large migrations - Task 4: Improving your migration runbooks</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/mt/use-aws-systems-manager-automation-runbooks-to-resolve-operational-tasks/" rel="noopener noreferrer" target="_blank"><span>Use AWS Systems Manager Automation runbooks to resolve operational tasks</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/mt/achieving-operational-excellence-using-automated-playbook-and-runbook/" rel="noopener noreferrer" target="_blank"><span>Achieving operational excellence using automated playbook and runbook</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://builder.aws.com/content/3BwfBZFrDhkdkreoBmmTQsP0z2D/generating-operational-runbooks-with-kiro-a-practical-guide-for-sres" rel="noopener noreferrer" target="_blank"><span>Generating Operational Runbooks with Kiro: A Practical Guide for SREs</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related examples:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-tutorials.html">AWS Systems Manager: Automation walkthroughs</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-document-instance-recovery-example.html">AWS Systems Manager: Restore a root volume from the latest snapshot runbook</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/mt/build-aws-systems-manager-automation-runbooks-using-aws-cdk/" rel="noopener noreferrer" target="_blank"><span>Build AWS Systems Manager Automation runbooks using AWS CDK</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-document-builder.html">Using Document Builder to create a custom runbook</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://gitlab.com/gitlab-com/runbooks" rel="noopener noreferrer" target="_blank"><span>GitLab - Runbooks</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://github.com/Nurtch/rubix" rel="noopener noreferrer" target="_blank"><span>Rubix - a Python library for building runbooks in Jupyter notebooks</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related services:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-automation.html">AWS Systems Manager Automation</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://kiro.dev/" rel="noopener noreferrer" target="_blank"><span>Kiro</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./ops05.html">Establish workload supportability for production</div><div id="next" class="next-link" accesskey="n" href="./ops05-bp02.html">OPS05-BP02 Develop and test playbooks to respond to incidents</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops05-bp01.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops05-bp01.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

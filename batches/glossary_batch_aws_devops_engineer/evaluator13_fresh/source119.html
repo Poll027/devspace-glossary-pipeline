@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Creating a DB snapshot for a Single-AZ DB instance for Amazon RDS - Amazon Relational Database Service</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="USER_CreateSnapshot" /><meta name="default_state" content="USER_CreateSnapshot" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.md" title="Markdown version" /><meta name="description" content="Create a DB snapshot by identifying which DB instance you are going to back up and give that DB snapshot a name." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Relational Database Service" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Amazon Web Services (AWS) documentation to help you set up, operate, and scale a relational database in the AWS Cloud using Amazon Relational Database Service (Amazon RDS). You can create DB instances that run Amazon Aurora, MariaDB, Microsoft SQL Server, MySQL, Oracle, and PostgreSQL." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" hreflang="x-default" /><meta name="feedback-item" content="RDS" /><meta name="this_doc_product" content="Amazon Relational Database Service" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'rds'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Creating a DB snapshot for a Single-AZ DB instance for Amazon RDS" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="USER_CreateSnapshot.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Creating a DB snapshot for a Single-AZ DB instance for Amazon RDS - Amazon Relational Database Service</title><meta name="pdf" content="/pdfs/AmazonRDS/latest/UserGuide/rds-ug.pdf#USER_CreateSnapshot" /><meta name="rss" content="rdsupdates.rss" /><meta name="forums" content="https://repost.aws/tags/TAsibBK6ZeQYihN9as4S_psg" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=RDS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html" /><meta name="keywords" content="Amazon Relational Database Service,RDS,DB Instance" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon RDS",
+        "item" : "https://docs.aws.amazon.com/rds/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Backing up, restoring, and exporting data",
+        "item" : "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.BackupRestore.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Managing manual backups",
+        "item" : "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ManagingManualBackups.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Creating a DB snapshot for a Single-AZ DB instance for Amazon RDS",
+        "item" : "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ManagingManualBackups.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonRDS/latest/UserGuide/rds-ug.pdf#USER_CreateSnapshot" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/rds/index.html">Amazon RDS</a><a href="Welcome.html">User Guide</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="USER_CreateSnapshot">Creating a DB snapshot for a Single-AZ DB instance for Amazon RDS</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>Amazon RDS creates a storage volume snapshot of your DB instance, backing up the entire DB instance and not just individual databases.
+        Creating this DB snapshot on a Single-AZ DB instance results in a brief I/O suspension that can last from a few seconds to a few
+        minutes, depending on the size and class of your DB instance. For MariaDB, MySQL, Oracle, and PostgreSQL, I/O activity is not
+        suspended on your primary during backup for Multi-AZ deployments, because the backup is taken from the standby. For SQL Server, I/O
+        activity is suspended briefly during backup for Multi-AZ deployments.</p><p>When you create a DB snapshot, you need to identify which DB instance you are going to back up, and then give your DB snapshot a name
+        so you can restore from it later. The amount of time it takes to create a snapshot varies with the size of your databases. Since the
+        snapshot includes the entire storage volume, the size of files, such as temporary files, also affects the amount of time it takes to
+        create the snapshot.</p><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Your DB instance must be in the <code class="code">available</code> state to take a DB snapshot.</p><p>For PostgreSQL DB instances, data in unlogged tables might not be restored from snapshots.
+			For more information, see <a href="./CHAP_BestPractices.html#CHAP_BestPractices.PostgreSQL">Best practices for working with PostgreSQL</a>.</p></div></div><p>Unlike automated backups, manual snapshots aren't subject to the backup retention period. Snapshots don't expire.</p><p>For very long-term backups of MariaDB, MySQL, and PostgreSQL data, we recommend exporting snapshot data to Amazon S3. If the major 
+		version of your DB engine is no longer supported, you can't restore to that version from a snapshot. For more information, see 
+		<a href="./USER_ExportSnapshot.html">Exporting DB snapshot data to Amazon S3 for Amazon RDS</a>.</p><p>You can create a DB snapshot using the AWS Management Console, the AWS CLI, or the RDS API.</p><div class="collapsible" data-expand-section="USER_CreateSnapshot.CON"><awsui-expandable-section variant="container" header="Console" id="USER_CreateSnapshot.CON" expanded="true"><div class="procedure"><h6 class="awsdocs-block-title">To create a DB snapshot</h6><ol><li>
+				<p>Sign in to the AWS Management Console and open the Amazon RDS console at
+         <a href="https://console.aws.amazon.com/rds/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/rds/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+			</li><li>
+				<p>In the navigation pane, choose <b>Snapshots</b>.</p>
+                    <p>The <b>Manual snapshots</b> list appears.</p>
+			</li><li>
+				<p>Choose <b>Take snapshot</b>.</p>
+				<p>The <b>Take DB snapshot</b> window appears.</p>
+                    <div class="mediaobject">
+                         
+                            <img src="/images/AmazonRDS/latest/UserGuide/images/take_db_snapshot.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Take DB snapshot." />
+                         
+                         
+                    </div>
+			</li><li>
+                    <p>Choose the <b>DB instance</b> for which you want to take a snapshot.</p>
+                </li><li>
+				<p>Enter the <b>Snapshot name</b>.</p>
+			</li><li>
+				<p>Choose <b>Take snapshot</b>.</p>
+			</li></ol></div><p>The <b>Manual snapshots</b> list appears, with the new DB snapshot's status shown as <code class="code">Creating</code>.
+                After its status is <code class="code">Available</code>, you can see its creation time.</p></awsui-expandable-section><awsui-expandable-section variant="container" header="AWS CLI" id="USER_CreateSnapshot.CLI" expanded="false"><p>When you create a DB snapshot using the AWS CLI, you need to identify which DB instance you
+			are going to back up, and then give your DB snapshot a name so you can restore from it
+			later. You can do this by using the AWS CLI <a href="https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-snapshot.html"><code class="code">create-db-snapshot</code></a> command with the following
+			parameters:</p><div class="itemizedlist">
+			 
+			 
+		<ul class="itemizedlist"><li class="listitem">
+				<p><code class="code">--db-instance-identifier</code></p></li><li class="listitem">
+				<p><code class="code">--db-snapshot-identifier</code></p></li></ul></div><p>In this example, you create a DB snapshot called <code class="replaceable">mydbsnapshot</code> for
+			a DB instance called <code class="replaceable">mydbinstance</code>.</p><div class="example"><h6 class="awsdocs-block-title">Example</h6><div class="example-contents"><p>For Linux, macOS, or Unix:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight">aws rds create-db-snapshot \
+    --db-instance-identifier <code class="replaceable">mydbinstance</code> \
+    --db-snapshot-identifier <code class="replaceable">mydbsnapshot</code> </code></pre><p>For Windows:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight">aws rds create-db-snapshot ^
+    --db-instance-identifier <code class="replaceable">mydbinstance</code> ^
+    --db-snapshot-identifier <code class="replaceable">mydbsnapshot</code> </code></pre></div></div></awsui-expandable-section><awsui-expandable-section variant="container" header="RDS API" id="USER_CreateSnapshot.API" expanded="false"><p>When you create a DB snapshot using the Amazon RDS API, you need to identify which DB instance
+			you are going to back up, and then give your DB snapshot a name so you can restore from
+			it later. You can do this by using the Amazon RDS API <a href="https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_CreateDBSnapshot.html"><code class="code">CreateDBSnapshot</code></a> command with the following
+			parameters:</p><div class="itemizedlist">
+			 
+			 
+		<ul class="itemizedlist"><li class="listitem">
+				<p><code class="code">DBInstanceIdentifier</code></p></li><li class="listitem">
+				<p><code class="code">DBSnapshotIdentifier</code></p></li></ul></div></awsui-expandable-section></div><awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./USER_ManagingManualBackups.html">Managing manual backups</div><div id="next" class="next-link" accesskey="n" href="./USER_CreateMultiAZDBClusterSnapshot.html">Creating a Multi-AZ DB cluster snapshot</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=RDS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=RDS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

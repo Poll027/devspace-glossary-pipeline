@@ -1,0 +1,119 @@
+
+AmWnWfuSTfQ:196-504
+193.52: solution in your Dev environment today
+195.96: so let's go back to my code this is
+198.0: terraform and I have that Dynamo DB
+200.16: table I want to get rid of it so I
+202.4: simply say let me remove
+205.12: it and I say use log
+208.76: file they want it
+211.64: true I want to enable that mechanism
+214.68: that's all it is so now I will just
+216.4: command
+217.68: s and my S3 bucket for the back end is
+221.36: called Mar bucket for TF State I have
+223.76: just created this just for this reason
+225.96: just to show you how it works so if we
+227.76: go to S3 buckets as you can see this is
+229.72: the bucket Mark bucket for TF state if I
+232.32: click on it it's currently empty there
+234.4: is nothing in this bucket and every time
+236.96: when you change the backend
+238.32: configuration you have to run terraform
+240.76: in it anyways so you run
+243.64: terraform in it click
+248.04: enter and it's been successfully
+250.52: initialized the first line said
+253.64: initializing the back end which means
+255.84: this S3 bucket can be used also for that
+258.76: log file now let's test it Let Me Maybe
+261.4: clear
+263.6: that and I say terraform
+268.12: apply it says free to add because I've
+271.0: got server subnet and
+273.92: VPC if we have a look theform indeed
+276.68: tries to create the
+278.6: server the subnet and the
+281.72: VPC but before I say
+284.8: yes let's have a look what's in the
+287.2: bucket there is no TF State file yet but
+290.64: we already see TF State TF lock file
+294.2: this is our locking mechanism a TF State
+296.92: file will only be created now when I say
+299.4: yes
+300.48: let's say
+303.28: yes it's been added I mean all my
+305.92: resources have been added if I go back
+307.84: to my bucket if I refresh it now we've
+311.28: got TF state but we don't have TF lock
+314.28: that's because my TF State file doesn't
+317.04: have to be locked because terraform
+319.0: already completed its work we can even
+321.08: check I've got let's maybe instead of
+323.4: duplicating let's try
+326.24: here ec2 we can see we've got virtual
+329.92: server
+331.32: running this is my server it's been
+333.8: created together with subnet and VPC so
+336.52: let's now destroy it let's clear first
+339.88: again data form
+344.6: destroy yes I want to destroy
+353.56: everything all resources have now been
+356.16: destroyed so if I go to my instances and
+358.64: refresh we can see it's not running but
+360.6: if I remove this filter we can see it
+362.96: but in instance State terminated and if
+365.6: we go back to my bucket if I refresh my
+368.04: bucket this terraform TF state will now
+370.96: stay here and it will always be there
+373.6: regardless of if I have some resources
+376.0: or if I don't have any resources in the
+378.24: cloud but now if we go back to vs code
+381.92: let's clear again and I want to
+384.0: terraform apply again let's click enter
+387.28: so I want to build my infrastructure
+389.32: again and terraform asks me if I want to
+392.12: perform these actions I will not say
+394.24: anything yet but I will open Terminal so
+397.32: let's imagine this is a second person
+399.32: trying to apply the same changes at the
+402.04: same
+403.08: time I'm now basically in the same in
+406.16: the same folder as here yes I can see
+408.56: provider server subnet blah blah and I
+410.64: run terraform apply
+412.96: here and also run the same command I get
+416.6: the error and the error says error
+418.96: acquiring the state log because if we go
+421.68: to this S3 bucket and refresh now we've
+424.48: got both TF State because it will always
+426.96: be here from now on and we have the lock
+429.72: file which tells me that somebody else
+432.88: is working on this infrastructure at
+435.4: exactly the same time as I want to do it
+437.68: so I won't be able to run anything until
+440.28: this log is removed so let me go back to
+443.08: terraform to vs code sorry I say yes
+446.48: let's build that infrastructure again
+451.64: and now it's been created again so now
+454.44: if I go back to my terminal if I run
+456.76: terraform apply again and click enter I
+459.4: shouldn't get any errors this time it
+461.76: now tells me your infrastructure matches
+464.56: the configuration it now can run
+466.92: terraform apply because it checks if the
+469.44: lock file exists if I refresh it
+471.48: shouldn't be there yes there is no TF
+473.92: log file there is only TF State file so
+476.48: terraform checks this TF State file it
+478.8: sees that all the resources that are
+480.84: supposed to be built are have already
+483.08: been built so there is nothing for it to
+485.12: do it says your infrastructure much as
+487.2: the configuration because if I run it
+489.16: here in vs code perform apply I will get
+492.36: the same
+493.72: message my infrastructure matches the
+496.16: configuration so I can destroy now and I
+498.88: hope that makes sense and you don't need
+501.6: to manage that Dynamo DB table anymore

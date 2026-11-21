@@ -1,0 +1,15 @@
+
+### 41 aws_devops.retrieve_a_managed_workload_secret
+Inline: supplied runtime secret consumer: Supplied scaffolding: runtime secret consumer. The exercise provides this input or setup; independent implementation is not required.; managed secret: Protected stored data delivered only to an authorized runtime consumer without logging the value.; supplied runtime consumer: Supplied scaffolding: the exercise provides runtime consumer. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.
+tb1: A runtime consumer needs a managed secret, but the operator must verify use without revealing the value. Check the consumer's safe result rather than displaying the secret.
+tb2: Secrets Manager stores protected secret values and returns them to authorized consumers at runtime.
+tb3: Retrieve a secret through GetSecretValue using the supplied secret identifier and approved runtime identity, with secretsmanager:GetSecretValue permission.
+
+Use the retrieved value in the runtime consumer without writing it into source code or logs; verify success through the consumer’s safe result rather than displaying the value.
+tb4: Use GetSecretValue with the supplied secret identifier under the approved runtime identity with secretsmanager:GetSecretValue permission. Feed the returned value to the supplied consumer and inspect its safe success result. Keep the secret out of source code and logs. The example verifies authorized runtime retrieval and use; it does not require copying the value into a debugging transcript.
+tb5: Displaying a secret is not necessary evidence of successful retrieval. Use the consumer's safe result to verify success and do not write the value into source code or logs.
+Assess: identify_authorized_runtime_secret_consumption; verify_secret_identifier_runtime_identity_and_retrieval_permission; verify_safe_consumer_success_without_persisting_or_logging_secret_value
+Practice: {'type': 'tool_simulation', 'objective': 'Retrieve one sandbox secret through GetSecretValue using the supplied secret identifier and approved runtime identity, then pass the returned value directly to the supplied runtime consumer.', 'success': 'The approved runtime identity has secretsmanager:GetSecretValue permission, the supplied consumer reports safe success, and the secret value is neither displayed nor written into source code or logs.'}
+Visual: {'type': 'process_flow', 'purpose': 'Show the supplied secret identifier and approved runtime identity used for GetSecretValue, the protected value passed directly to the runtime consumer, and a safe success result. Do not show a secret value.'}
+Notes: ['Do not teach managed-secret rotation; do not show example secret values.']
+Media: null

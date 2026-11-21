@@ -1,0 +1,15 @@
+
+### 61 aws_devops.configure_scoped_log_access
+Inline: supplied operational role: Supplied scaffolding: the exercise provides operational role. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.
+tb1: A reader needs approved access to a particular log group. Collection settings do not grant that reader access, so test authorization under the intended identities.
+tb2: CloudWatch Logs uses IAM policies to authorize log-group and log-stream operations.
+tb3: Grant the approved reader the required read actions on the intended log-group resources and remove unnecessary broader grants; some operations require resource scope *.
+
+Test the approved and unapproved principals against the intended read operations because collecting logs does not itself grant reader access.
+tb4: Grant the supplied reader the required read actions on the intended resources and remove unnecessary broader grants. Preserve the qualification that some operations require resource scope *. Test the intended read operations under the approved and unapproved principals. Record action, resource scope and identity with each result so the test demonstrates the requested access boundary rather than the collector's ability to write logs.
+tb5: Collecting logs does not itself grant reader access. CloudWatch Logs authorization uses IAM policies, and some operations need resource scope *. Do not force a narrower unsupported scope just to make the policy look uniform.
+Assess: distinguish_approved_log_readers_from_denied_principals; verify_log_read_authorization_under_approved_and_unapproved_principals
+Practice: {'type': 'tool_simulation', 'objective': 'Restrict access to one supplied log group to the supplied operational reader role using supplied read actions and supported resource scopes. Remove unnecessary broader grants and test the intended read operations under approved and unapproved principals.', 'success': 'The approved role can perform the intended read operations on the supplied log group, while the unapproved principal cannot. Unnecessary broader grants are removed, operations requiring resource scope * retain that scope, and each test result records the action, resource scope, and identity.'}
+Visual: {'type': 'comparison', 'purpose': 'Make the authorization boundary visible by showing the supplied read actions and supported resource scopes alongside approved-role and unapproved-principal test results for the same intended log-group operations.'}
+Notes: ['Use supplied read actions and supported scopes; do not invent action-to-resource support rules.']
+Media: null

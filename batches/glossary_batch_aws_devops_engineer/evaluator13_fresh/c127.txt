@@ -1,0 +1,15 @@
+
+### 127 recovery.endpoint_cutover
+Inline: supplied endpoint switch: Supplied scaffolding: endpoint switch. The exercise provides this input or setup; independent implementation is not required.; validated target: The restored service whose supplied readiness checks pass before endpoint cutover.; supplied endpoint: Supplied scaffolding: the exercise provides endpoint. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.
+tb1: A restored target has passed its readiness checks, and clients now need to reach it through the approved endpoint change. Verify convergence rather than assuming every client immediately follows the new setting.
+tb2: Recovery procedures include restoring service and directing clients to the recovered environment.
+tb3: Confirm the restored target’s supplied readiness checks pass, perform the approved DNS or application endpoint switch and verify clients reach the restored target.
+
+For DNS cutover, account for cached answers and TTL when testing client convergence rather than assuming every client immediately uses the new endpoint.
+tb4: Confirm the restored target's supplied readiness checks before the approved DNS or application-endpoint switch. Perform that switch through the supplied procedure and test that clients reach the restored target. For a DNS switch, account for cached answers and TTL while checking client convergence. A changed DNS setting and an old client answer can coexist during caching; retain the actual client-target evidence instead of declaring all clients moved at the update request.
+tb5: Endpoint configuration is not the same as verified client convergence. For DNS, cached answers and TTL matter; test clients reaching the ready restored target rather than assuming an immediate universal switch.
+Assess: verify_client_reachability_after_approved_endpoint_cutover; evaluate_dns_client_convergence_using_cache_and_ttl_evidence
+Practice: {'type': 'tool_simulation', 'objective': 'Confirm the supplied readiness checks pass for a restored sandbox service, then switch one supplied DNS endpoint to it using the approved procedure and test client reachability.', 'success': 'The endpoint switch occurs only after readiness checks pass and follows the supplied approval and procedure. Client-target evidence confirms tested clients reach the restored service, with cached answers and the supplied TTL accounted for before declaring convergence.'}
+Visual: {'type': 'diagram', 'purpose': 'Show a ready restored target, the approved DNS endpoint change, and a client-cache timeline where old cached answers temporarily coexist with the new setting. Distinguish endpoint configuration from evidence that tested clients reach the restored target.'}
+Notes: ['Use approved cutover procedure only after readiness; do not invent DNS record commands or TTL defaults.']
+Media: null

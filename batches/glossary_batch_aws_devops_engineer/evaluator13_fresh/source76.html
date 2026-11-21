@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Amazon ECS services - Amazon Elastic Container Service</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="ecs_services" /><meta name="default_state" content="ecs_services" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.md" title="Markdown version" /><meta name="description" content="You can use an Amazon ECS service to run and maintain a specified number of instances of a task definition simultaneously in an Amazon ECS cluster. If one of your tasks fails or stops, the Amazon ECS service scheduler launches another instance of your task definition to replace it." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Elastic Container Service" /><meta name="guide" content="Developer Guide" /><meta name="abstract" content="Run, stop, and manage Docker containers on a cluster using the Amazon Elastic Container Service Developer Guide." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonECS/latest/developerguide/ecs_services.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonECS/latest/developerguide/ecs_services.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonECS/latest/developerguide/ecs_services.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonECS/latest/developerguide/ecs_services.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonECS/latest/developerguide/ecs_services.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonECS/latest/developerguide/ecs_services.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonECS/latest/developerguide/ecs_services.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonECS/latest/developerguide/ecs_services.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonECS/latest/developerguide/ecs_services.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonECS/latest/developerguide/ecs_services.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/ecs_services.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/ecs_services.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/ecs_services.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/ecs_services.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonECS/latest/developerguide/ecs_services.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonECS/latest/developerguide/ecs_services.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonECS/latest/developerguide/ecs_services.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonECS/latest/developerguide/ecs_services.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html" hreflang="x-default" /><meta name="feedback-item" content="ECS" /><meta name="this_doc_product" content="Amazon Elastic Container Service" /><meta name="this_doc_guide" content="Developer Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'ecs'}"></script><meta id="panorama-serviceSubSection" value="Developer Guide" /><meta id="panorama-serviceConsolePage" value="Amazon ECS services" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="ecs_services.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Amazon ECS services - Amazon Elastic Container Service</title><meta name="pdf" content="/pdfs/AmazonECS/latest/developerguide/ecs-dg.pdf#ecs_services" /><meta name="rss" content="amazon-ecs-release-notes.rss" /><meta name="forums" content="https://repost.aws/tags/TAefn4YSprR-uCBYmbofOpHw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ECS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/ecs_services.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/ecs_services.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/ecs_services.html" /><meta name="keywords" content="ECS,Amazon ECS,Amazon Elastic Container Service,ecs task,ecs service,ecs services" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon ECS",
+        "item" : "https://docs.aws.amazon.com/ecs/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Developer Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Schedule your containers on Amazon ECS",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Amazon ECS services",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonECS/latest/developerguide/ecs-dg.pdf#ecs_services" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/ecs/index.html">Amazon ECS</a><a href="Welcome.html">Developer Guide</a></div><div id="page-toc-src"><a href="#service-conmpute-options">Infrastructure compute option</a><a href="#service-auto-scaling-options">Service auto scaling</a><a href="#service-load-balancing-options">Service load balancing</a><a href="#service-connecting-options">Interconecting services</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="ecs_services">Amazon ECS services</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>You can use an Amazon ECS service to run and maintain a specified number of instances of a task
+        definition simultaneously in an Amazon ECS cluster. If one of your tasks fails or stops, the
+        Amazon ECS service scheduler launches another instance of your task definition to replace it.
+        This helps maintain your desired number of tasks in the service.</p><p>You can also optionally run your service behind a load balancer. The load balancer
+        distributes traffic across the tasks that are associated with the service.</p><p>We recommend that you use the service scheduler for long running stateless services
+            and applications. The service scheduler ensures that the scheduling strategy that you
+            specify is followed and reschedules tasks when a task fails. For example, if the
+            underlying infrastructure fails, the service scheduler reschedules a task. You can use
+            task placement strategies and constraints to customize how the scheduler places and
+            terminates tasks. If a task in a service stops, the scheduler launches a new task to
+            replace it. This process continues until your service reaches your desired number of
+            tasks based on the scheduling strategy that the service uses.</p><p>The service scheduler also replaces tasks determined to be unhealthy after a container health check or a load balancer target group health check fails. This replacement depends on the <code class="code">maximumPercent</code> and <code class="code">desiredCount</code> service definition parameters.
+            If a task is marked unhealthy, the service scheduler will first start a replacement task. Then, the following happens.</p><div class="itemizedlist">
+             
+             
+            <ul class="itemizedlist"><li class="listitem"><p>If the replacement task has a health status of <code class="code">HEALTHY</code>, the service scheduler stops the unhealthy task</p></li><li class="listitem"><p>If the replacement task has a health status of <code class="code">UNHEALTHY</code>, the scheduler will stop either the unhealthy replacement task or the existing unhealthy task to get the total task count to equal <code class="code">desiredCount</code>.</p></li></ul></div><p>If the <code class="code">maximumPercent</code> parameter limits the scheduler from starting a replacement task first, the scheduler will stop an unhealthy task one at a time at random to free up capacity, and then start a replacement task.
+             The start and stop process continues until all unhealthy tasks are replaced with healthy tasks. Once all unhealthy tasks have been replaced and only healthy tasks are running, if the total task count exceeds the <code class="code">desiredCount</code>, healthy tasks are stopped at random until the total task count equals <code class="code">desiredCount</code>. For more information about <code class="code">maximumPercent</code> and <code class="code">desiredCount</code>, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service_definition_parameters.html">Service definition parameters</a>.</p><p>The service scheduler includes logic that throttles how often tasks are restarted if
+            tasks repeatedly fail to start. If a task is stopped without having entered a
+                <code class="code">RUNNING</code> state, the service scheduler starts to slow down the launch
+            attempts and sends out a service event message. This behavior prevents unnecessary
+            resources from being used for failed tasks before you can resolve the issue. After the
+            service is updated, the service scheduler resumes normal scheduling behavior. For more
+            information, see <a href="./service-throttle-logic.html">Amazon ECS service throttle logic</a> and <a href="./service-event-messages.html">Viewing Amazon ECS service event messages</a>.</p>
+        <h2 id="service-conmpute-options">Infrastructure compute option</h2>
+        <p>There are two compute options that distribute your tasks.</p>
+        <div class="itemizedlist">
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>A capacity provider strategy causes Amazon ECS to distribute
+                    your tasks in one or across multiple capacity providers. </p>
+                <p>If you want to run your workloads on Amazon ECS Managed Instances, you must use the Capacity provider strategy option.</p>
+                <p>For the <b>capacity provider strategy</b>, the console selects a
+                    compute option by default. The following describes the order that the console uses
+                    to select a default:</p>
+                <div class="itemizedlist">
+                     
+                     
+                     
+                     
+                <ul class="itemizedlist"><li class="listitem">
+                        <p>If your cluster has a default capacity provider strategy defined, it is
+                            selected.</p>
+                    </li><li class="listitem">
+                        <p>If your cluster doesn't have a default capacity provider strategy defined
+                            but you have the Fargate capacity providers added to the
+                            cluster, a custom capacity provider strategy that uses the
+                            <code class="code">FARGATE</code> capacity provider is selected.</p>
+                    </li><li class="listitem">
+                        <p>If your cluster doesn't have a default capacity provider strategy defined
+                            but you have one or more Auto Scaling group capacity providers added to the cluster, the
+                            <b>Use custom (Advanced)</b> option is selected and you
+                            need to manually define the strategy.</p>
+                    </li><li class="listitem">
+                        <p>If your cluster doesn't have a default capacity provider strategy defined
+                            and no capacity providers added to the cluster, the Fargate
+                            launch type is selected.</p>
+                    </li></ul></div>
+            </li><li class="listitem">
+                <p>A launch type causes Amazon ECS to launch our tasks directly
+                    on either Fargate or on the EC2 instances registered to your clusters.</p>
+                <p>If you want to run your workloads on Amazon ECS Managed Instances, you must use the Capacity provider strategy option.</p>
+                <p>By default the service starts in the subnets in your cluster VPC.</p>
+            </li></ul></div>
+     
+        <h2 id="service-auto-scaling-options">Service auto scaling</h2>
+        <p>Service auto scaling is the ability to increase or
+            decrease the desired number of tasks in your Amazon ECS service automatically. Amazon ECS leverages
+            the Application Auto Scaling service to provide this functionality.</p>
+        <p>For more information, see <a href="./service-auto-scaling.html">Automatically scale your Amazon ECS service</a>.</p>
+     
+        <h2 id="service-load-balancing-options">Service load balancing</h2>
+        <p>Amazon ECS services hosted on AWS Fargate support the Application Load Balancers, Network Load Balancers, and Gateway Load Balancers. Use the
+            following table to learn about what type of load balancer to use.</p>
+        <div class="table-container"><div class="table-contents"><table id="d0e1"><thead>
+                    <tr>
+                        <th>Load Balancer type</th>
+                        <th>Use in these cases</th>
+                    </tr>
+                </thead>
+                    <tr>
+                        <td tabindex="-1">
+                            <p>Application Load Balancer</p>
+                        </td>
+                        <td tabindex="-1">Route HTTP/HTTPS (or layer 7) traffic.<p>Application Load Balancers offer several
+                                features that make them attractive for use with Amazon ECS
+                                services:</p>
+                            <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                            <ul class="itemizedlist"><li class="listitem">
+                                    <p>Each service can serve traffic from multiple load
+                                        balancers and expose multiple load balanced ports by
+                                        specifying multiple target groups.</p>
+                                </li><li class="listitem">
+                                    <p>They are supported by tasks hosted on both
+                                        Fargate and EC2
+                                        instances.</p>
+                                </li><li class="listitem">
+                                    <p>Application Load Balancers allow containers to use dynamic host port mapping
+                                        (so that multiple tasks from the same service are allowed
+                                        per container instance).</p>
+                                </li><li class="listitem">
+                                    <p>Application Load Balancers support path-based routing and priority rules (so
+                                        that multiple services can use the same listener port on a
+                                        single Application Load Balancer).</p>
+                                </li></ul></div></td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Network Load Balancer</td>
+                        <td tabindex="-1">Route TCP or UDP (or layer 4) traffic.</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Gateway Load Balancer</td>
+                        <td tabindex="-1">Route TCP or UDP (or layer 4) traffic.<p> Use virtual appliances,
+                                such as firewalls, intrusion detection and prevention systems, and
+                                deep packet inspection systems.</p></td>
+                    </tr>
+                </table></div></div>
+        <p>For more information, see <a href="./service-load-balancing.html">Use load balancing to distribute Amazon ECS service traffic</a>.</p>
+     
+        <h2 id="service-connecting-options">Interconecting services</h2>
+        <p>If you need an application to connect to other applications that run as Amazon ECS services, Amazon ECS provides the following ways to do this without a load balancer:</p>
+        <div class="itemizedlist">
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>Service Connect - Allows for service-to-service communications with automatic
+                    discovery using short names and standard ports.</p>
+            </li><li class="listitem">
+                <p>Service discovery - Service discovery uses Route 53 to
+                    create a namespace for your service, which allows it to be discoverable through
+                    DNS.</p>
+            </li><li class="listitem">
+                <p>Amazon VPC Lattice - VPC Lattice is a fully managed application networking service to
+                    connect, secure, and monitor your services across multiple accounts and VPCs.
+                    There is a cost associated with it.</p>
+            </li></ul></div>
+        <p>For more information, see <a href="./interconnecting-services.html">Interconnect Amazon ECS services</a>.</p>
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./standalone-task-stop.html">Stopping a task</div><div id="next" class="next-link" accesskey="n" href="./ecs_service-options.html">Service deployment controllers and strategies</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ECS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/ecs_services.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ECS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/ecs_services.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

@@ -1,0 +1,15 @@
+
+### 104 recovery.credential_readiness
+Inline: supplied backup and recovery resource checks: Supplied scaffolding: backup and recovery resource checks. The exercise provides this input or setup; independent implementation is not required.; supplied recovery session and resources: Supplied scaffolding: the exercise provides recovery session and resources. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.
+tb1: Recovery rehearsal needs a valid session that can perform the required work. Check lifetime and authorization independently before using it for restoration.
+tb2: Recovery execution needs a valid, unexpired session with the permissions required for backup access and resource creation.
+tb3: Establish the approved recovery session, inspect its identity and expiry, and test the supplied backup-read and recovery-resource operations before rehearsal.
+
+A valid credential lifetime does not prove sufficient authorization; verify both access outcomes and lifetime.
+tb4: Establish the approved recovery session and inspect its identity and expiry. Test the supplied backup-read and recovery-resource operations. Record both outcomes alongside the credential lifetime. If the credentials are unexpired but the backup-read test is denied, they are not ready for the required recovery. Conversely, permission evidence does not remove the need for a valid session during execution.
+tb5: Unexpired credentials do not prove sufficient authorization. Recovery readiness needs both valid lifetime and successful required access tests for backup reading and resource creation.
+Assess: verify_recovery_session_identity_and_lifetime; verify_backup_access_and_recovery_resource_authorization; distinguish_session_validity_from_authorization
+Practice: {'type': 'tool_simulation', 'objective': 'Test one approved recovery session before rehearsal: establish it through the supplied session provider, inspect its identity and expiry, and run the supplied safe backup-read and recovery-resource operations without exposing credentials.', 'success': 'The session identity matches the supplied recovery role, its expiry confirms it is unexpired for the required execution period, and both supplied operations succeed. Record lifetime and each access outcome separately; an unexpired session with either operation denied is not ready.'}
+Visual: {'type': 'UI_state', 'purpose': 'Show the recovery session identity and expiry alongside separate outcomes for the supplied backup-read and recovery-resource operations, without displaying credential secrets.'}
+Notes: ['Use approved session provider and safe supplied tests; do not expose credentials.']
+Media: null

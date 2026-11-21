@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Setting an S3 Lifecycle configuration on a bucket - Amazon Simple Storage Service</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="how-to-set-lifecycle-configuration-intro" /><meta name="default_state" content="how-to-set-lifecycle-configuration-intro" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.md" title="Markdown version" /><meta name="description" content="Learn how to set an Amazon S3 Lifecycle configuration on a bucket programmatically or by using the Amazon S3 console." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Simple Storage Service" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Learn how to use Amazon Simple Storage Service (Amazon S3) to store and retrieve any amount of data from anywhere. This guide explains Amazon S3 concepts, such as buckets, objects, and related configurations, and includes code examples for common operations." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" hreflang="x-default" /><meta name="feedback-item" content="S3" /><meta name="this_doc_product" content="Amazon Simple Storage Service" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'s3'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Setting an S3 Lifecycle configuration on a bucket" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="how-to-set-lifecycle-configuration-intro.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Setting an S3 Lifecycle configuration on a bucket - Amazon Simple Storage Service</title><meta name="pdf" content="/pdfs/AmazonS3/latest/userguide/s3-userguide.pdf#how-to-set-lifecycle-configuration-intro" /><meta name="rss" content="s3-userguide-rss-updates.rss" /><meta name="forums" content="https://repost.aws/tags/TADSTjraA0Q4-a1dxk6eUYaw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=S3&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html" /><meta name="keywords" content="S3,Amazon S3,S3 User Guide,Amazon S3 User Guide,Amazon User Guide,s3 bucket,s3 object,cloud storage,data storage,setting an S3 Lifecycle configuration programmatically,setting an S3 Lifecycle configuration using the console,considerations for S3 Lifecycle configuration" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon Simple Storage Service (S3)",
+        "item" : "https://docs.aws.amazon.com/s3/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonS3/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Cost optimization",
+        "item" : "https://docs.aws.amazon.com/AmazonS3/latest/userguide/cost-optimization.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Managing the lifecycle of objects",
+        "item" : "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Setting an S3 Lifecycle configuration on a bucket",
+        "item" : "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonS3/latest/userguide/s3-userguide.pdf#how-to-set-lifecycle-configuration-intro" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/s3/index.html">Amazon Simple Storage Service (S3)</a><a href="Welcome.html">User Guide</a></div><div id="page-toc-src"><a href="#lifecycle-considerations">S3 Lifecycle considerations</a><a href="#how-to-set-lifecycle-configuration">How to set an S3 Lifecycle configuration</a><a href="#lifecycle-troubleshoot">Troubleshooting S3 Lifecycle</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="how-to-set-lifecycle-configuration-intro">Setting an S3 Lifecycle configuration on a bucket</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>You can set an Amazon S3 Lifecycle configuration on a bucket by using the Amazon S3 console,
+        the AWS Command Line Interface (AWS CLI), the AWS SDKs, or the Amazon S3 REST API. For information about
+        S3 Lifecycle configuration, see <a href="./object-lifecycle-mgmt.html">Managing the lifecycle of objects</a>.</p><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>To view or edit the lifecycle configuration for a directory bucket, use the AWS CLI, AWS SDKs, or the Amazon S3 REST API. For more information, see <a href="./directory-buckets-objects-lifecycle.html">Working with S3 Lifecycle for directory buckets</a>.</p></div></div><p>In your S3 Lifecycle configuration, you use <em>lifecycle
+            rules</em> to define actions that you want Amazon S3 to take during an object's
+        lifetime. For example, you can define rules to transition objects to another storage class,
+        archive objects, or expire (delete) objects after a specified period of time.</p>
+        <h2 id="lifecycle-considerations">S3 Lifecycle considerations</h2>
+        <p>Before you set a lifecycle configuration, note the following:</p>
+            
+             <h6 class="awsdocs-block-title">Lifecycle configuration propagation delay</h6>
+                <p>When you add an S3 Lifecycle configuration to a bucket, there is usually some
+                lag before a new or updated Lifecycle configuration is fully propagated to all the
+                Amazon S3 systems. Expect a delay of a few minutes before the configuration fully takes
+                effect. This delay can also occur when you delete an S3 Lifecycle
+                configuration.</p>
+            
+     
+        <h6 class="awsdocs-block-title"><div id="lifecycle-action-delay"></div>Transition or expiration delay</h6>
+        <p>There's a delay between when a lifecycle rule is satisfied and when the action for the
+            rule is completed. For example, suppose that a set of objects is expired by a lifecycle
+            rule on January 1. Even though the expiration rule has been satisfied on January 1, Amazon S3
+            might not actually delete these objects until days or even weeks later. This delay
+            occurs because S3 Lifecycle queues objects for transitions or expirations asynchronously.
+            S3 Lifecycle doesn't guarantee a completion time for transition or expiration actions. To
+            track progress for your bucket, see <a href="./troubleshoot-lifecycle.html#troubleshoot-lifecycle-2">How do I monitor the actions taken by my lifecycle rules?</a> When you add or modify a Lifecycle rule, S3 Lifecycle may begin processing eligible objects immediately or with some delay. When S3 Lifecycle creates a delete marker or transitions an object, the timestamp is set to midnight UTC on the day the action occurred, regardless of the actual time the action was taken.
+            A delay doesn't affect your bill. Changes in billing are applied when the object
+            becomes eligible for the lifecycle action, even if the action isn't complete. The one
+            exception is transitions to S3 Intelligent-Tiering, which are billed after the transition
+            completes. For more information, see <a href="#lifecycle-billing">Changes in
+                billing</a>.</p>
+     
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>We don't recommend relying on S3 Lifecycle alone for deletions that must complete by
+            a fixed deadline, such as a regulatory or contractual data-retention requirement. Use an
+                <a href="./storage-inventory.html">Cataloging and analyzing your data with S3 Inventory</a> report with
+            the Lifecycle Expiration Date field to identify objects that are
+            past their expiration date but haven't been removed yet, and delete any objects that
+            must be removed by your deadline.</p></div></div>
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>When a lifecycle rule is created or modified, objects that already meet the eligibility criteria may be processed immediately.</p></div></div>
+    
+             
+                <h6 class="awsdocs-block-title">Updating, disabling, or deleting lifecycle rules</h6>
+                <p>When you disable or delete lifecycle rules, Amazon S3 stops scheduling new objects
+            for deletion or transition after a small delay. Any objects that were already scheduled
+            are unscheduled and are not deleted or transitioned.</p>
+             
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Before updating, disabling, or deleting lifecycle rules, use the <code class="code">LIST</code> API
+            operations (such as <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html">ListObjectsV2</a>, <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectVersions.html">ListObjectVersions</a>, and <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListMultipartUploads.html">ListMultipartUploads</a>) or <a href="./storage-inventory.html">Cataloging and analyzing your data with S3 Inventory</a> to verify that Amazon S3
+            has transitioned and expired eligible objects based on your use cases. If you're
+            experiencing any issues with updating, disabling, or deleting lifecycle rules, see <a href="./troubleshoot-lifecycle.html">Troubleshooting Amazon S3 Lifecycle issues</a>.</p></div></div>
+     
+        <h6 class="awsdocs-block-title">Existing and new objects</h6>
+        <p>When you add a Lifecycle configuration to a bucket, the configuration rules apply to
+            both existing objects and objects that you add later. For example, if you add a
+            Lifecycle configuration rule today with an expiration action that causes objects with a
+            specific prefix to expire 30 days after creation, Amazon S3 will queue for removal any
+            existing objects that are more than 30 days old and that have the specified
+            prefix.</p>
+     
+     
+        <h6 class="awsdocs-block-title"><div id="lifecycle-monitoring"></div>Monitoring the effect of lifecycle rules</h6>
+        <p>To monitor the effect of updates made by active lifecycle rules, see <a href="./troubleshoot-lifecycle.html#troubleshoot-lifecycle-2">How do I monitor the actions taken by my lifecycle rules?</a></p>
+     
+     
+                <h6 class="awsdocs-block-title"><div id="lifecycle-billing"></div>Changes in billing</h6>
+            <p>There might be a lag between when the Lifecycle configuration rules are satisfied
+            and when the action triggered by satisfying the rule is taken. However, changes in
+            billing happen as soon as the Lifecycle configuration rule is satisfied, even if the
+            action isn't yet taken.</p>
+             
+    <p>For example, after the object expiration time, you aren't charged for storage, even if the
+        object isn't deleted immediately. Likewise, as soon as the object transition time elapses,
+        you're charged S3 Glacier Flexible Retrieval storage rates, even if the object isn't
+        immediately transitioned to the S3 Glacier Flexible Retrieval storage class. </p>
+    <p>However, lifecycle transitions to the S3 Intelligent-Tiering storage class are the
+        exception. Changes in billing don't happen until after the object has transitioned into the
+        S3 Intelligent-Tiering storage class. </p>
+    <p>For transitions to S3 Glacier Flexible Retrieval and S3 Glacier Deep Archive, the per-object storage
+        overhead (40 KB per object) and minimum storage duration charges (90 days for
+        S3 Glacier Flexible Retrieval, 180 days for S3 Glacier Deep Archive) also begin when the lifecycle rule
+        is satisfied, regardless of when the physical transition occurs. For more information about
+        Glacier storage overhead, see <a href="./archival-storage.html#before-deciding-to-archive-objects">Cost considerations</a>.</p>
+     
+        <h6 class="awsdocs-block-title">Multiple or conflicting rules</h6>
+        <p>When you have multiple rules in an S3 Lifecycle configuration, an object can become
+            eligible for multiple S3 Lifecycle actions on the same day. In such cases, Amazon S3 follows
+            these general rules:</p>
+     
+    <div class="itemizedlist">
+         
+         
+         
+    <ul class="itemizedlist"><li class="listitem">
+            <p>Permanent deletion takes precedence over transition.</p>
+        </li><li class="listitem">
+            <p>Transition takes precedence over creation of <a href="./DeleteMarker.html">delete
+                    markers</a>.</p>
+        </li><li class="listitem">
+            <p>When an object is eligible for both an S3 Glacier Flexible Retrieval and an
+                S3 Standard-IA (or an S3 One Zone-IA) transition, Amazon S3 chooses the
+                S3 Glacier Flexible Retrieval transition.</p>
+        </li></ul></div>
+    <p> For examples, see <a href="./lifecycle-conflicts.html#lifecycle-config-conceptual-ex5">Examples of overlapping filters and conflicting lifecycle actions</a>. </p>
+     
+        <h2 id="how-to-set-lifecycle-configuration">How to set an S3 Lifecycle configuration</h2>
+        <p>You can set an Amazon S3 Lifecycle configuration on a general purpose bucket by using the Amazon S3 console,
+            the AWS Command Line Interface (AWS CLI), the AWS SDKs, or the Amazon S3 REST API. </p>
+        <p>For information about AWS CloudFormation templates and examples, see <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-guide.html">Working with AWS CloudFormation templates</a> and <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-s3-bucket.html#aws-resource-s3-bucket--examples">AWS::S3::Bucket</a> in the <em>CloudFormation User
+                Guide</em>.</p>
+ 
+    <div class="collapsible" data-expand-section="_collapse_all"><awsui-expandable-section variant="container" header="Using the S3 console" id="create-lifecycle" expanded="false"><p>You can define lifecycle rules for all objects or a subset of objects in a bucket by using a
+    shared prefix (objects names that begin with a common string) or a tag. In your lifecycle rule,
+    you can define actions specific to current and noncurrent object versions. For more information,
+    see the following:</p><div class="itemizedlist">
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p><a href="./object-lifecycle-mgmt.html">Managing the lifecycle of objects</a></p>
+    </li><li class="listitem">
+      <p><a href="./Versioning.html">Retaining multiple versions of objects with S3 Versioning</a></p>
+    </li></ul></div><div class="procedure"><h6 class="awsdocs-block-title">To create a lifecycle rule</h6><ol><li> <p>Sign in to the AWS Management Console and open the Amazon S3 console at
+         <a href="https://console.aws.amazon.com/s3/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/s3/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p> </li><li>
+      <p>In the left navigation pane, choose <b>General purpose buckets</b>.</p>
+    </li><li>
+      <p>In the buckets list, choose the name of the bucket that you want to
+        create a lifecycle rule for.</p>
+    </li><li>
+      <p>Choose the <b>Management</b> tab, and choose <b>Create lifecycle
+          rule</b>.</p>
+    </li><li>
+      <p>In <b>Lifecycle rule name</b>, enter a name for your rule. </p>
+      <p>The name must be unique within the bucket. </p>
+    </li><li>
+      <p>Choose the scope of the lifecycle rule: </p>
+      <div class="itemizedlist">
+         
+         
+      <ul class="itemizedlist"><li class="listitem">
+          <p>To apply this lifecycle rule to <em>all objects with a specific prefix or
+              tag</em>, choose <b>Limit the scope to specific prefixes or
+              tags</b>. </p>
+          <div class="itemizedlist">
+             
+             
+          <ul class="itemizedlist"><li class="listitem">
+              <p>To limit the scope by prefix, in <b>Prefix</b>, enter the prefix.
+              </p>
+            </li><li class="listitem">
+              <p>To limit the scope by tag, choose <b>Add tag</b>, and enter the
+                tag key and value.</p>
+            </li></ul></div>
+          <p>For more information about object name prefixes, see <a href="./object-keys.html">Naming Amazon S3 objects</a>. For more information about object tags, see <a href="./object-tagging.html">Tagging your objects</a>. </p>
+
+        </li><li class="listitem">
+          <p>To apply this lifecycle rule to <em>all objects in the bucket</em>,
+            choose <b>This rule applies to <em>all</em> objects in the
+              bucket</b>, and then choose <b>I acknowledge that this rule applies to
+              all objects in the bucket</b>.</p>
+        </li></ul></div>
+    </li><li>
+      <p>To filter a rule by object size, you can select <b>Specify minimum object
+          size</b>, <b>Specify maximum object size</b>, or both options.</p>
+      <div class="itemizedlist">
+         
+         
+      <ul class="itemizedlist"><li class="listitem">
+          <p>When you're specifying a value for <b>Minimum object size</b> or
+              <b>Maximum object size</b>, the value must be larger than 0 bytes and up
+            to 50 TB. You can specify this value in bytes, KB, MB, or GB.</p>
+        </li><li class="listitem">
+          <p>When you're specifying both values, the maximum object size must be larger than the
+            minimum object size.</p>
+          <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>The <b>Minimum object size</b> and <b>Maximum object
+                size</b> filters exclude the specified values. For example, if you set a
+              filter to expire objects that have a <b>Minimum object size</b> of 128
+              KB, objects that are exactly 128 KB don't expire. Instead, the rule applies only to
+              objects that are greater than 128 KB in size.</p></div></div>
+        </li></ul></div>
+    </li><li>
+      <p>Under <b>Lifecycle rule actions</b>, choose the actions that you want your
+        lifecycle rule to perform:</p>
+      <div class="itemizedlist">
+         
+         
+         
+         
+         
+      <ul class="itemizedlist"><li class="listitem">
+          <p>Transition <em>current</em> versions of objects between
+            storage classes</p>
+        </li><li class="listitem">
+          <p>Transition <em>previous</em> versions of objects between
+            storage classes</p>
+        </li><li class="listitem">
+          <p>Expire <em>current</em> versions of objects</p>
+          <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>For buckets that don't have <a href="./Versioning.html">S3 Versioning</a>
+              enabled, expiring current versions causes Amazon S3 to permanently delete the objects. For
+              more information, see <a href="./intro-lifecycle-rules.html#lifecycle-actions-bucket-versioning-state">Lifecycle actions and bucket versioning state</a>.</p></div></div>
+        </li><li class="listitem">
+          <p>Permanently delete <em>previous</em> versions of
+            objects</p>
+        </li><li class="listitem">
+          <p>Delete expired delete markers or incomplete multipart uploads </p>
+        </li></ul></div>
+      <p>Depending on the actions that you choose, different options appear.</p>
+    </li><li>
+      <p>To transition <em>current</em> versions of objects between
+        storage classes, under <b>Transition current versions of objects between storage
+          classes</b>, do the following:</p>
+      <ol><li>
+          <p>In <b>Storage class transitions</b>, choose the storage class to
+            transition to. For a list of possible transitions, see <a href="./lifecycle-transition-general-considerations.html#supported-lifecycle-transitions">Supported lifecycle transitions</a>. You can choose from the following storage
+            classes:</p>
+          <div class="itemizedlist">
+             
+             
+             
+             
+             
+             
+          <ul class="itemizedlist"><li class="listitem">
+              <p>S3 Standard-IA</p>
+            </li><li class="listitem">
+              <p>S3 Intelligent-Tiering</p>
+            </li><li class="listitem">
+              <p>S3 One Zone-IA</p>
+            </li><li class="listitem">
+              <p>S3 Glacier Instant Retrieval</p>
+            </li><li class="listitem">
+                <p>S3 Glacier Flexible Retrieval</p>
+            </li><li class="listitem">
+              <p>S3 Glacier Deep Archive</p>
+            </li></ul></div>
+        </li><li>
+          <p>In <b>Days after object creation</b>, enter the number of days after
+            creation to transition the object.</p>
+        </li></ol>
+      <p>For more information about storage classes, see <a href="./storage-class-intro.html">Understanding and managing Amazon S3 storage classes</a>. You can define transitions for current or previous
+        object versions or for both current and previous versions. Versioning enables you to keep
+        multiple versions of an object in one bucket. For more information about versioning, see
+          <a href="./manage-versioning-examples.html#enable-versioning">Using the S3 console</a>.</p>
+      <div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><p>When you choose the S3 Glacier Instant Retrieval, S3 Glacier Flexible Retrieval, or
+          Glacier Deep Archive storage class, your objects remain in Amazon S3. You cannot access them
+          directly through the separate Amazon Glacier service. For more information, see <a href="./lifecycle-transition-general-considerations.html">Transitioning objects using Amazon S3 Lifecycle</a>. </p></div></div>
+    </li><li>
+      <p>To transition <em>noncurrent</em> versions of objects between
+        storage classes, under <b>Transition noncurrent versions of objects between storage
+          classes</b>, do the following:</p>
+      <ol><li>
+          <p>In <b>Storage class transitions</b>, choose the storage class to
+            transition to. For a list of possible transitions, see <a href="./lifecycle-transition-general-considerations.html#supported-lifecycle-transitions">Supported lifecycle transitions</a>. You can choose from the following storage
+            classes:</p>
+          <div class="itemizedlist">
+             
+             
+             
+             
+             
+             
+          <ul class="itemizedlist"><li class="listitem">
+              <p>S3 Standard-IA</p>
+            </li><li class="listitem">
+              <p>S3 Intelligent-Tiering</p>
+            </li><li class="listitem">
+              <p>S3 One Zone-IA</p>
+            </li><li class="listitem">
+              <p>S3 Glacier Instant Retrieval</p>
+            </li><li class="listitem">
+              <p>S3 Glacier Flexible Retrieval</p>
+            </li><li class="listitem">
+              <p>S3 Glacier Deep Archive</p>
+            </li></ul></div>
+        </li><li>
+          <p>In <b>Days after object becomes noncurrent</b>, enter the number of
+            days after creation to transition the object.</p>
+        </li></ol>
+    </li><li>
+      <p>To expire <em>current</em> versions of objects, under
+          <b>Expire current versions of objects</b>, in <b>Number of days after
+          object creation</b>, enter the number of days.</p>
+      <div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><p>In a nonversioned bucket, the expiration action results in Amazon S3 permanently removing
+          the object. For more information about lifecycle actions, see <a href="./intro-lifecycle-rules.html#intro-lifecycle-rules-actions">Elements to describe lifecycle actions</a>.</p></div></div>
+    </li><li>
+      <p>To permanently delete previous versions of objects, under <b>Permanently delete
+          noncurrent versions of objects</b>, in <b>Days after objects become
+          noncurrent</b>, enter the number of days. You can optionally specify the number of
+        newer versions to retain by entering a value under <b>Number of newer versions to
+          retain</b>.</p>
+    </li><li>
+      <p>Under <b>Delete expired delete markers or incomplete multipart
+        uploads</b>, choose <b>Delete expired object delete markers</b> and
+          <b>Delete incomplete multipart uploads</b>. Then, enter the number of days
+        after the multipart upload initiation that you want to end and clean up incomplete multipart
+        uploads.</p>
+      <p>For more information about multipart uploads, see <a href="./mpuoverview.html">Uploading and copying objects using multipart upload in Amazon S3</a>.</p>
+    </li><li>
+      <p>Choose <b>Create rule</b>.</p>
+      <p>If the rule does not contain any errors, Amazon S3 enables it, and you can see it on the
+          <b>Management</b> tab under <b>Lifecycle rules</b>.</p>
+    </li></ol></div></awsui-expandable-section><awsui-expandable-section variant="container" header="Using the AWS CLI" id="set-lifecycle-cli" expanded="false"><p>You can use the following AWS CLI commands to manage S3 Lifecycle configurations:</p><div class="itemizedlist">
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><code class="code">put-bucket-lifecycle-configuration</code></p>
+                </li><li class="listitem">
+                    <p><code class="code">get-bucket-lifecycle-configuration</code></p>
+                </li><li class="listitem">
+                    <p><code class="code">delete-bucket-lifecycle</code></p>
+                </li></ul></div><p>For instructions on setting up the AWS CLI, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/setup-aws-cli.html">Developing with Amazon S3 using the AWS CLI</a> in the <em>Amazon S3 API Reference</em>.</p><p>The Amazon S3 Lifecycle configuration is an XML file. But when you're using the AWS CLI, you
+                cannot specify the XML format. You must specify the JSON format instead. The
+                following are example XML lifecycle configurations and the equivalent JSON
+                configurations that you can specify in an AWS CLIcommand.</p><p>Consider the following example S3 Lifecycle configuration.</p><div class="example"><h6 class="awsdocs-block-title">Example 1</h6><div class="example-contents"><div class="example"><h6 class="awsdocs-block-title">Example</h6><div class="example-contents"><awsdocs-tabs><dl style="display: none">
+                        <dt>XML</dt><dd tab-id="xml">
+                                <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (xml)--><code class="xml ">&lt;LifecycleConfiguration&gt;
+    &lt;Rule&gt;
+        &lt;ID&gt;ExampleRule&lt;/ID&gt;
+        &lt;Filter&gt;
+           &lt;Prefix&gt;documents/&lt;/Prefix&gt;
+        &lt;/Filter&gt;
+        &lt;Status&gt;Enabled&lt;/Status&gt;
+        &lt;Transition&gt;        
+           &lt;Days&gt;365&lt;/Days&gt;        
+           &lt;StorageClass&gt;GLACIER&lt;/StorageClass&gt;
+        &lt;/Transition&gt;    
+        &lt;Expiration&gt;
+             &lt;Days&gt;3650&lt;/Days&gt;
+        &lt;/Expiration&gt;
+    &lt;/Rule&gt;
+&lt;/LifecycleConfiguration&gt;</code></pre>
+                            </dd>
+                    </dl></awsdocs-tabs></div></div><awsdocs-tabs><dl style="display: none">
+                    <dt>JSON</dt><dd tab-id="json">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Rules": [
+        <span>{</span>
+            "Filter": <span>{</span>
+                "Prefix": "documents/"
+            },
+            "Status": "Enabled",
+            "Transitions": [
+                <span>{</span>
+                    "Days": 365,
+                    "StorageClass": "GLACIER"
+                }
+            ],
+            "Expiration": <span>{</span>
+                "Days": 3650
+            },
+            "ID": "ExampleRule"
+        }
+    ]
+}</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs></div></div><div class="example"><h6 class="awsdocs-block-title">Example 2</h6><div class="example-contents"><div class="example"><h6 class="awsdocs-block-title">Example</h6><div class="example-contents"><awsdocs-tabs><dl style="display: none">
+                        <dt>XML</dt><dd tab-id="xml">
+                                <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (xml)--><code class="xml ">&lt;LifecycleConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/"&gt;
+    &lt;Rule&gt;
+        &lt;ID&gt;id-1&lt;/ID&gt;
+        &lt;Expiration&gt;
+            &lt;Days&gt;1&lt;/Days&gt;
+        &lt;/Expiration&gt;
+        &lt;Filter&gt;
+            &lt;And&gt;
+                &lt;Prefix&gt;myprefix&lt;/Prefix&gt;
+                &lt;Tag&gt;
+                    &lt;Key&gt;mytagkey1&lt;/Key&gt;
+                    &lt;Value&gt;mytagvalue1&lt;/Value&gt;
+                &lt;/Tag&gt;
+                &lt;Tag&gt;
+                    &lt;Key&gt;mytagkey2&lt;/Key&gt;
+                    &lt;Value&gt;mytagvalue2&lt;/Value&gt;
+                &lt;/Tag&gt;
+            &lt;/And&gt;
+        &lt;/Filter&gt;
+        &lt;Status&gt;Enabled&lt;/Status&gt;    
+    &lt;/Rule&gt;
+&lt;/LifecycleConfiguration&gt;</code></pre>
+                            </dd>
+                    </dl></awsdocs-tabs></div></div><awsdocs-tabs><dl style="display: none">
+                    <dt>JSON</dt><dd tab-id="json">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Rules": [
+        <span>{</span>
+            "ID": "id-1",
+            "Filter": <span>{</span>
+                "And": <span>{</span>
+                    "Prefix": "myprefix", 
+                    "Tags": [
+                        <span>{</span>
+                            "Value": "mytagvalue1", 
+                            "Key": "mytagkey1"
+                        }, 
+                        <span>{</span>
+                            "Value": "mytagvalue2", 
+                            "Key": "mytagkey2"
+                        }
+                    ]
+                }
+            }, 
+            "Status": "Enabled", 
+            "Expiration": <span>{</span>
+                "Days": 1
+            }
+        }
+    ]
+}</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs></div></div><p>You can test the <code class="code">put-bucket-lifecycle-configuration</code> as follows.</p><div class="procedure"><h6 class="awsdocs-block-title">To test the configuration</h6><ol><li>
+                <p>Save the JSON Lifecycle configuration in a file (for example,
+                                <code class="replaceable"><code>lifecycle.json</code></code>). </p>
+            </li><li>
+                <p>Run the following AWS CLI command to set the Lifecycle configuration on your
+                        bucket. Replace the <code class="code"><code class="replaceable">user input
+                            placeholders</code></code> with your own information.</p>
+                <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (cli)--><code class="nohighlight " data-source="content"><code class="prompt" copy="false">$ </code>aws s3api put-bucket-lifecycle-configuration  \
+--bucket <code class="replaceable">amzn-s3-demo-bucket</code>  \
+--lifecycle-configuration file://<code class="replaceable">lifecycle.json</code> </code></pre>
+            </li><li>
+                <p>To verify, retrieve the S3 Lifecycle configuration by using the
+                            <code class="code">get-bucket-lifecycle-configuration</code> AWS CLI command as
+                        follows:</p>
+              
+                    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (cli)--><code class="nohighlight " data-source="content"><code class="prompt" copy="false">$ </code>aws s3api get-bucket-lifecycle-configuration  \
+--bucket <code class="replaceable">amzn-s3-demo-bucket</code>  </code></pre>
+                <div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><p>The output of <code class="code">get-bucket-lifecycle-configuration</code> includes
+                            <code class="code">TransitionDefaultMinimumObjectSize</code> as a top-level field
+                        alongside <code class="code">Rules</code>. This field is not part of the
+                            <code class="code">LifecycleConfiguration</code> JSON schema accepted by
+                            <code class="code">put-bucket-lifecycle-configuration</code>. If you use the GET output
+                        directly as the PUT input, the command fails with a validation error. To copy a
+                        lifecycle configuration between buckets, you must either remove
+                            <code class="code">TransitionDefaultMinimumObjectSize</code> from the JSON file or use
+                        the <code class="code">--query '<span>{</span>Rules: Rules}'</code> parameter with the GET command to
+                        extract only the rules. If you need to preserve the
+                            <code class="code">TransitionDefaultMinimumObjectSize</code> value, pass it separately
+                        using the <code class="code">--transition-default-minimum-object-size</code>
+                        parameter.</p></div></div>
+            </li><li>
+                <p>To delete the S3 Lifecycle configuration, use the
+                            <code class="code">delete-bucket-lifecycle</code> AWS CLI command as follows:</p>
+      
+                    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">aws s3api delete-bucket-lifecycle \
+--bucket <code class="replaceable">amzn-s3-demo-bucket</code></code></pre>
+                
+            </li></ol></div></awsui-expandable-section><awsui-expandable-section variant="container" header="Using the AWS SDKs" id="manage-lifecycle-using-sdk" expanded="false"><awsdocs-tabs><dl style="display: none">
+            <dt>Java</dt><dd tab-id="java">
+                            <p>You can use the AWS SDK for Java to manage the S3 Lifecycle configuration of a bucket. For more information about managing S3 Lifecycle configuration, see <a href="./object-lifecycle-mgmt.html">Managing the lifecycle of objects</a>.</p>
+                            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>When you add an S3 Lifecycle configuration to a bucket, Amazon S3 replaces the bucket's current Lifecycle configuration, if there is one. To update a configuration, you retrieve it, make the desired changes, and then add the revised configuration to the bucket.</p></div></div>
+                            <p>To manage lifecycle configuration using the AWS SDK for Java, you can:</p>
+                            <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                            <ul class="itemizedlist"><li class="listitem">
+                                    <p>Add a Lifecycle configuration to a bucket.</p>
+                                </li><li class="listitem">
+                                    <p>Retrieve the Lifecycle configuration and update it by adding another rule.</p>
+                                </li><li class="listitem">
+                                    <p>Add the modified Lifecycle configuration to the bucket. Amazon S3 replaces the existing configuration.</p>
+                                </li><li class="listitem">
+                                    <p>Retrieve the configuration again and verify that it has the right number of rules by printing the number of rules.</p>
+                                </li><li class="listitem">
+                                    <p>Delete the Lifecycle configuration and verify that it has been deleted by attempting to retrieve it again.</p>
+                                </li></ul></div>
+                            <p>For examples of how to set lifecycle configuration on a bucket with the AWS SDK for Java, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/s3_example_s3_PutBucketLifecycleConfiguration_section.html">Set lifecycle configuration on a bucket</a> in the <em>Amazon S3 API Reference</em>.</p>
+                        </dd>
+            <dt>.NET</dt><dd tab-id=".net">
+                    <p>You can use the AWS SDK for .NET to manage the S3 Lifecycle configuration on a bucket. For
+                        more information about managing Lifecycle configuration, see <a href="./object-lifecycle-mgmt.html">Managing the lifecycle of objects</a>. </p>
+                    
+                    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>When you add a Lifecycle configuration, Amazon S3 replaces the existing configuration
+                            on the specified bucket. To update a configuration, you must first retrieve the
+                            Lifecycle configuration, make the changes, and then add the revised Lifecycle
+                            configuration to the bucket.</p></div></div>
+                    
+                    <p>The following example shows how to use the AWS SDK for .NET to add, update, and
+                                delete a bucket's Lifecycle configuration. The code example does the
+                                following:</p>
+                    
+                    <div class="itemizedlist">
+                         
+                         
+                         
+                         
+                         
+                    <ul class="itemizedlist"><li class="listitem">
+                            <p>Adds a Lifecycle configuration to a bucket. </p>
+                        </li><li class="listitem">
+                            <p>Retrieves the Lifecycle configuration and updates it by adding another
+                                rule. </p>
+                        </li><li class="listitem">
+                            <p>Adds the modified Lifecycle configuration to the bucket. Amazon S3 replaces the
+                                existing Lifecycle configuration.</p>
+                        </li><li class="listitem">
+                            <p>Retrieves the configuration again and verifies it by printing the number
+                                of rules in the configuration.</p>
+                        </li><li class="listitem">
+                            <p>Deletes the Lifecycle configuration and verifies the
+                                    deletion.</p>
+                        </li></ul></div>
+                    
+                    
+                    <p>For information about setting up and running the code examples, see <a href="https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config.html">Getting
+                                    Started with the AWS SDK for .NET</a> in the <em>AWS SDK for .NET
+                                    Developer Guide</em>. </p>
+                    
+                    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (cs)--><code class="cs ">using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Amazon.DocSamples.S3
+<span>{</span>
+    class LifecycleTest
+    <span>{</span>
+        private const string bucketName = "*** bucket name ***";
+        // Specify your bucket region (an example region is shown).
+        private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USWest2;
+        private static IAmazonS3 client;
+        public static void Main()
+        <span>{</span>
+            client = new AmazonS3Client(bucketRegion);
+            AddUpdateDeleteLifecycleConfigAsync().Wait();
+        }
+
+        private static async Task AddUpdateDeleteLifecycleConfigAsync()
+        <span>{</span>
+            try
+            <span>{</span>
+                var lifeCycleConfiguration = new LifecycleConfiguration()
+                <span>{</span>
+                    Rules = new List&lt;LifecycleRule&gt;
+                        <span>{</span>
+                            new LifecycleRule
+                            <span>{</span>
+                                 Id = "Archive immediately rule",
+                                 Filter = new LifecycleFilter()
+                                 <span>{</span>
+                                     LifecycleFilterPredicate = new LifecyclePrefixPredicate()
+                                     <span>{</span>
+                                         Prefix = "glacierobjects/"
+                                     }
+                                 },
+                                 Status = LifecycleRuleStatus.Enabled,
+                                 Transitions = new List&lt;LifecycleTransition&gt;
+                                 <span>{</span>
+                                      new LifecycleTransition
+                                      <span>{</span>
+                                           Days = 0,
+                                           StorageClass = S3StorageClass.Glacier
+                                      }
+                                  },
+                            },
+                            new LifecycleRule
+                            <span>{</span>
+                                 Id = "Archive and then delete rule",
+                                  Filter = new LifecycleFilter()
+                                 <span>{</span>
+                                     LifecycleFilterPredicate = new LifecyclePrefixPredicate()
+                                     <span>{</span>
+                                         Prefix = "projectdocs/"
+                                     }
+                                 },
+                                 Status = LifecycleRuleStatus.Enabled,
+                                 Transitions = new List&lt;LifecycleTransition&gt;
+                                 <span>{</span>
+                                      new LifecycleTransition
+                                      <span>{</span>
+                                           Days = 30,
+                                           StorageClass = S3StorageClass.StandardInfrequentAccess
+                                      },
+                                      new LifecycleTransition
+                                      <span>{</span>
+                                        Days = 365,
+                                        StorageClass = S3StorageClass.Glacier
+                                      }
+                                 },
+                                 Expiration = new LifecycleRuleExpiration()
+                                 <span>{</span>
+                                       Days = 3650
+                                 }
+                            }
+                        }
+                };
+
+                // Add the configuration to the bucket. 
+                await AddExampleLifecycleConfigAsync(client, lifeCycleConfiguration);
+
+                // Retrieve an existing configuration. 
+                lifeCycleConfiguration = await RetrieveLifecycleConfigAsync(client);
+
+                // Add a new rule.
+                lifeCycleConfiguration.Rules.Add(new LifecycleRule
+                <span>{</span>
+                    Id = "NewRule",
+                    Filter = new LifecycleFilter()
+                    <span>{</span>
+                        LifecycleFilterPredicate = new LifecyclePrefixPredicate()
+                        <span>{</span>
+                            Prefix = "YearlyDocuments/"
+                        }
+                    },
+                    Expiration = new LifecycleRuleExpiration()
+                    <span>{</span>
+                        Days = 3650
+                    }
+                });
+
+                // Add the configuration to the bucket. 
+                await AddExampleLifecycleConfigAsync(client, lifeCycleConfiguration);
+
+                // Verify that there are now three rules.
+                lifeCycleConfiguration = await RetrieveLifecycleConfigAsync(client);
+                Console.WriteLine("Expected # of rulest=3; found:<span>{</span>0}", lifeCycleConfiguration.Rules.Count);
+
+                // Delete the configuration.
+                await RemoveLifecycleConfigAsync(client);
+
+                // Retrieve a nonexistent configuration.
+                lifeCycleConfiguration = await RetrieveLifecycleConfigAsync(client);
+
+            }
+            catch (AmazonS3Exception e)
+            <span>{</span>
+                Console.WriteLine("Error encountered ***. Message:'<span>{</span>0}' when writing an object", e.Message);
+            }
+            catch (Exception e)
+            <span>{</span>
+                Console.WriteLine("Unknown encountered on server. Message:'<span>{</span>0}' when writing an object", e.Message);
+            }
+        }
+
+        static async Task AddExampleLifecycleConfigAsync(IAmazonS3 client, LifecycleConfiguration configuration)
+        <span>{</span>
+
+            PutLifecycleConfigurationRequest request = new PutLifecycleConfigurationRequest
+            <span>{</span>
+                BucketName = bucketName,
+                Configuration = configuration
+            };
+            var response = await client.PutLifecycleConfigurationAsync(request);
+        }
+
+        static async Task&lt;LifecycleConfiguration&gt; RetrieveLifecycleConfigAsync(IAmazonS3 client)
+        <span>{</span>
+            GetLifecycleConfigurationRequest request = new GetLifecycleConfigurationRequest
+            <span>{</span>
+                BucketName = bucketName
+            };
+            var response = await client.GetLifecycleConfigurationAsync(request);
+            var configuration = response.Configuration;
+            return configuration;
+        }
+
+        static async Task RemoveLifecycleConfigAsync(IAmazonS3 client)
+        <span>{</span>
+            DeleteLifecycleConfigurationRequest request = new DeleteLifecycleConfigurationRequest
+            <span>{</span>
+                BucketName = bucketName
+            };
+            await client.DeleteLifecycleConfigurationAsync(request);
+        }
+    }
+}
+</code></pre>
+                </dd>
+            <dt>Ruby</dt><dd tab-id="ruby">
+                            <p>You can use the AWS SDK for Ruby to manage an S3 Lifecycle configuration
+                                on a bucket by using the class <a href="https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/S3/BucketLifecycle.html">AWS::S3::BucketLifecycleConfiguration</a>.
+                                For more information about managing S3 Lifecycle configuration, see
+                                    <a href="./object-lifecycle-mgmt.html">Managing the lifecycle of objects</a>. </p>
+                        </dd>
+        </dl></awsdocs-tabs></awsui-expandable-section><awsui-expandable-section variant="container" header="Using the REST API" id="manage-lifecycle-using-rest" expanded="false"><p>The following topics in the <em>Amazon Simple Storage Service API Reference</em> describe the REST
+                    API operations related to S3 Lifecycle configuration: </p><div class="itemizedlist">
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketLifecycleConfiguration.html">PutBucketLifecycleConfiguration</a></p>
+                </li><li class="listitem">
+                    <p><a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketLifecycleConfiguration.html">GetBucketLifecycleConfiguration</a></p>
+                </li><li class="listitem">
+                    <p><a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteBucketLifecycle.html">DeleteBucketLifecycle</a></p>
+                </li></ul></div></awsui-expandable-section></div>
+        
+     
+        <h2 id="lifecycle-troubleshoot">Troubleshooting S3 Lifecycle</h2>
+        <p>For common issues that might occur when working with S3 Lifecycle, see <a href="./troubleshoot-lifecycle.html">Troubleshooting Amazon S3 Lifecycle issues</a>.</p>
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./lifecycle-expire-general-considerations.html">Expiring objects</div><div id="next" class="next-link" accesskey="n" href="./lifecycle-and-other-bucket-config.html">Using other bucket configurations</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=S3&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=S3&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

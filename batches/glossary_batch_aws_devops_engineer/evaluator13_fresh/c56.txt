@@ -1,0 +1,15 @@
+
+### 56 aws_devops.configure_artifact_repository_access
+Inline: repository policy: An AWS resource policy granting or restricting publication and consumption of repository images.; supplied repository policy: Supplied scaffolding: the exercise provides repository policy. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.
+tb1: An ECR repository needs separate approved publisher and consumer access. Check repository operations and the identity-side authentication requirement rather than assuming one policy covers both.
+tb2: An ECR repository policy grants specified principals repository operations such as pulling images or uploading image layers.
+tb3: Scope the supplied policy’s principals and actions to approved publishers and consumers, then test push and pull and an unapproved principal.
+
+ECR authentication also requires ecr:GetAuthorizationToken through an identity policy; repository permissions alone do not grant that action.
+tb4: Scope the supplied repository policy to approved principals and push/pull operations. Test push under the publisher, pull under the consumer and the supplied unapproved-principal case. Also inspect ecr:GetAuthorizationToken in the identity policy, because repository permissions alone do not grant that authentication action. Keep the policy scopes and test identities with the observed results.
+tb5: Repository permissions alone do not grant ecr:GetAuthorizationToken. Authentication requires that action through an identity policy, while the repository policy covers the specified repository operations.
+Assess: verify_approved_publisher_push_and_consumer_pull; verify_unapproved_principal_is_denied; verify_identity_policy_allows_ecr_authentication
+Practice: {'type': 'tool_simulation', 'objective': 'Apply and test one supplied ECR repository access policy using the supplied publisher, consumer and unapproved-principal identities.', 'success': 'The repository policy scopes principals and actions to the approved publisher and consumer. The publisher push and consumer pull succeed, and the supplied unapproved-principal test is denied. The identity policies are checked separately for ecr:GetAuthorizationToken, and policy scopes, test identities and observed results are retained without broadening access to resolve an unexplained denial.'}
+Visual: {'type': 'comparison', 'purpose': "Show the supplied repository policy's approved principals and repository operations alongside the separate identity-policy authentication permission, with expected and observed results for publisher push, consumer pull and the unapproved-principal test."}
+Notes: ['Use supplied publisher/consumer roles; do not broaden repository scope to fix an unexplained denial.']
+Media: null

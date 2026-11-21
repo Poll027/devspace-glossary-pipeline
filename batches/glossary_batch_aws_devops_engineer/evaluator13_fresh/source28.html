@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Working with log groups and log streams - Amazon CloudWatch Logs</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="Working-with-log-groups-and-streams" /><meta name="default_state" content="Working-with-log-groups-and-streams" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.md" title="Markdown version" /><meta name="description" content="Explains how to create and tag log groups, encrypt log data using AWS KMS, and change log retention in CloudWatch Logs." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon CloudWatch Logs" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Monitor and store your log files from AWS sources. You can then retrieve the associated log data from CloudWatch Logs." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" hreflang="x-default" /><meta name="feedback-item" content="CloudWatch Logs" /><meta name="this_doc_product" content="Amazon CloudWatch Logs" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'cloudwatch'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Working with log groups and log streams" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="Working-with-log-groups-and-streams.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Working with log groups and log streams - Amazon CloudWatch Logs</title><meta name="pdf" content="/pdfs/AmazonCloudWatch/latest/logs/cwl-ug.pdf#Working-with-log-groups-and-streams" /><meta name="rss" content="amazon-cloudwatch-logs-document-history.rss" /><meta name="forums" content="https://repost.aws/tags/TArz36ydKETWeIc1aO7QuRFw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch%20Logs&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon CloudWatch",
+        "item" : "https://docs.aws.amazon.com/cloudwatch/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Working with log groups and log streams",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonCloudWatch/latest/logs/cwl-ug.pdf#Working-with-log-groups-and-streams" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/cloudwatch/index.html">Amazon CloudWatch</a><a href="WhatIsCloudWatchLogs.html">User Guide</a></div><div id="page-toc-src"><a href="#Create-Log-Group">Create a log group</a><a href="#SendingLogData">Send logs to a log group</a><a href="#ViewingLogData">View log data</a><a href="#SttingLogRetention">Change log data retention</a><a href="#account-level-retention-policies">Account-level retention policies</a><a href="#protecting-log-groups-from-deletion-overview">Protect log groups from deletion</a><a href="#log-group-tagging">Tag log groups</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="Working-with-log-groups-and-streams">Working with log groups and log streams</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>
+          A log stream is a sequence of log events that share the same source. 
+          Each separate source of logs in CloudWatch Logs makes up a separate log stream.
+      </p><p>
+           A log group is a group of log streams that  share the same retention, monitoring, and access control settings. 
+           You can define log groups and specify which streams to put into each group. 
+           There is no limit on the number of log streams that can belong to one log group.
+       </p><p>For organizations that need to consolidate log data from multiple accounts and regions, 
+           you can use CloudWatch Logs Centralization to automatically replicate log groups to a central account. 
+           For more information, see <a href="./CloudWatchLogs_Centralization.html">Cross-account cross-Region log centralization</a>.</p><p>
+            You can use the procedures in this section to work with log groups and log streams.
+        </p>
+    
+        <h2 id="Create-Log-Group">Create a log group in CloudWatch Logs</h2>
+        
+        
+        
+        <p>When you install the CloudWatch Logs agent on an Amazon EC2 instance using the steps in previous sections of the Amazon CloudWatch Logs User Guide, the log group is created as 
+        part of that process. You can also create a log group directly in the CloudWatch console.</p>
+        
+       <div class="procedure"><h6 class="awsdocs-block-title">To create a log group</h6><ol><li>
+                <p>Open the CloudWatch console at
+         <a href="https://console.aws.amazon.com/cloudwatch/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/cloudwatch/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+            </li><li>
+                <p>
+                    In the navigation pane, 
+                    choose <b>Log Management</b>.
+                </p>
+            </li><li>
+                <p>
+                    Choose <b>Actions</b>, 
+                    and then choose <b>Create log group</b>.
+                </p>
+            </li><li>
+                <p>
+                    Enter a name 
+                    for the log group, 
+                    and then choose <b>Create log group</b>.
+                </p>                
+            </li></ol></div>
+       <div class="awsdocs-note awsdocs-tip"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Tip</div></div><div class="awsdocs-note-text"><p>
+               You can favorite log groups, as well as dashboards and alarms, 
+               from the <b><em>Favorites and recents</em></b> menu 
+               in the navigation pane. 
+               Under the <b><em>Recently visited</em></b> column, 
+               hover 
+               over the log group 
+               that you want to favorite, 
+               and choose the star symbol next
+               to it.
+           </p></div></div>
+       <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Log groups can't be renamed</div></div><div class="awsdocs-note-text"><p>You can't rename an existing log group. To use a different name, create a new log
+               group. You also can't re-ingest historical log events into the new log group. When you
+               call the <a href="https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutLogEvents.html">PutLogEvents</a>
+               API, CloudWatch Logs rejects any log event with a timestamp more than 14 days in the past or more
+               than 2 hours in the future.</p></div></div>
+     
+        <h2 id="SendingLogData">Send logs to a log group</h2>
+        <p>CloudWatch Logs automatically receives log events from several AWS services. You can also
+        send other log events to CloudWatch Logs using one of the following methods:</p>
+        <div class="itemizedlist">
+             
+             
+        <ul class="itemizedlist"><li class="listitem"><p><b>CloudWatch agent</b>— The unified CloudWatch agent can send both metrics and logs
+                to CloudWatch Logs. For information about installing and using the CloudWatch agent, see 
+                <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html">
+                    Collecting Metrics and Logs from Amazon EC2 Instances and On-Premises Servers with the CloudWatch Agent</a> in the 
+                <em>Amazon CloudWatch User Guide</em>.</p></li><li class="listitem"><p><b>AWS CLI</b>—The <a href="https://docs.aws.amazon.com/cli/latest/reference/logs/put-log-events.html">put-log-events</a> 
+                uploads batches of log events to CloudWatch Logs.</p></li><li class="listitem"><p><b>Programmatically</b>— The <a href="https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutLogEvents.html">PutLogEvents</a>
+                API enables you to programmatically upload batches of log events to CloudWatch Logs. </p></li></ul></div>
+     
+        <h2 id="ViewingLogData">View log data sent to CloudWatch Logs</h2>
+        
+        
+
+        <p>You can view and scroll through log data on a stream-by-stream basis as sent to CloudWatch Logs
+            by the CloudWatch Logs agent. You can specify the time range for the log data to view.</p>
+
+        <div class="procedure"><h6 class="awsdocs-block-title">To view log data</h6><ol><li><p>Open the CloudWatch console at
+         <a href="https://console.aws.amazon.com/cloudwatch/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/cloudwatch/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p></li><li>
+                <p>In the navigation pane, choose <b>Log Management</b>.</p>
+            </li><li>
+                <p>For <b>Log Groups</b>, choose the log group to view the streams.</p>
+            </li><li>
+                <p>In the list of log groups, choose the name of the log group that you want to view.</p>
+            </li><li>
+                <p>In the list of log streams, choose the name of the log stream that you want to view.</p>
+            </li><li>
+                <p>To change how the log data is displayed, do one of the following:</p>
+                
+                <div class="itemizedlist">
+                     
+                     
+                     
+                     
+                <ul class="itemizedlist"><li class="listitem">
+                        <p>To expand a single log event, choose the arrow next to that log event.</p>
+                    </li><li class="listitem">
+                        <p>To expand all log events and view them as plain text, above the list
+                            of log events, choose <b>Text</b>.</p>
+                    </li><li class="listitem">
+                        <p>To filter the log events, enter the desired search filter in the search field. 
+                            For more information, see <a href="./MonitoringLogData.html">Creating metrics from log events using filters</a>.</p>
+                    </li><li class="listitem">
+                        <p>To view log data for a specified date and time range, next to the
+                            search filter, choose the arrow next to the date and time.  To specify a
+                            date and time range, choose <b>Absolute</b>. To choose a
+                            predefined number of minutes, hours, days, or weeks, choose
+                                <b>Relative</b>. You can also switch between UTC and
+                            local time zone.</p>
+                    </li></ul></div>
+            </li></ol></div>
+
+     
+        <h2 id="SttingLogRetention">Change log data retention in CloudWatch Logs</h2>
+        
+        
+
+        <p>By default, log data is stored in CloudWatch Logs indefinitely. However, you can configure how
+            long to store log data in a log group. Any data older than the current retention setting
+            is deleted. You can change the log retention for each log group at any
+            time.</p>
+
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>An account-level retention policy overrides the retention setting of the log
+            group. For more information, see <a href="#account-level-retention-policies">Set log data retention for your account with account-level retention policies</a>.</p></div></div>
+        
+      <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>CloudWatch Logs doesn’t immediately delete log events when they reach their retention setting. 
+            It typically takes up to 72 hours after that before log events are deleted, but in rare situations might take longer.</p><p>This means that if you change a log group to have a longer retention setting when it contains log events 
+                that are past the expiration date, but haven’t been actually deleted, those log events will take 
+                up to 72 hours to be deleted after the new retention date is reached. To make sure 
+                that log data is deleted permanently, keep a log group at its lower retention setting until 72 hours has passed
+                after the end of the previous
+                retention period, or you have confirmed that the older log events are deleted.
+            </p><p>When log events reach their retention setting they are marked for deletion. After
+              they are marked for deletion, they do not add to your archival storage costs anymore, even if 
+              they are not actually deleted until later. These log events marked for deletion are also not 
+              included when you use an API to retrieve the <code class="code">storedBytes</code> value to see how many bytes a log group is storing.</p></div></div>  
+
+        <div class="procedure"><h6 class="awsdocs-block-title">To change the logs retention setting</h6><ol><li> <p>Open the CloudWatch console at
+         <a href="https://console.aws.amazon.com/cloudwatch/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/cloudwatch/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p> </li><li>
+                <p>In the navigation pane, choose <b>Logs</b>, <b>Log groups</b>.</p>
+            </li><li><p>Find the log group to update.</p></li><li>
+                <p>In the <b>Retention</b> column for that log group,
+                    choose the current retention setting, such as <b>Never
+                    Expire</b>.</p>
+            </li><li>
+                <p>In <b>Retention setting</b>, for <b>Expire events after</b>,
+                    choose a log retention value, and then choose <b>Save</b>.</p>
+            </li></ol></div>
+     
+        <h2 id="account-level-retention-policies">Set log data retention for your account with account-level retention policies</h2>
+
+        <p>Use the steps in this section to create a retention policy that applies to all log groups
+            in the account, or to log groups that have log group names that start with the same string
+            (prefix). You can have as many as 20 account-level retention policies in a Region. An
+            account-level retention policy overrides the retention setting of the log group.</p>
+
+        <p>A retention policy sets the retention period for the log groups that it applies to, and
+            CloudWatch Logs deletes log events that are older than that retention period. A policy must specify
+            the following two values.</p>
+
+        <div class="itemizedlist">
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>The retention period, in days. Valid values are 30, 60, 90, 120, 150, 180, 365,
+                    400, 545, 731, 1096, 1827, 2192, 2557, 2922, 3288, and 3653. To retain log events
+                    indefinitely, specify <code class="code">NEVER_EXPIRE</code>. Account-level retention policies
+                    require a minimum retention period of 30 days.</p>
+            </li><li class="listitem">
+                <p>The enforcement mode. Specify <code class="code">RETROACTIVE</code> to apply the policy to
+                    every log group that matches the prefix, including log groups that existed before
+                    you created the policy. Specify <code class="code">NEW_ONLY</code> to apply the policy only to
+                    log groups that are created after you create the policy.</p>
+            </li></ul></div>
+
+        <p>To scope a policy to a subset of log groups, specify a log group name prefix. Retention
+            policies support log group name prefixes only. If you do not specify a prefix, the policy
+            applies to all log groups in the account.</p>
+
+        <p>Retention policies can apply to overlapping sets of log groups. When more than one policy
+            applies to a log group, the policy with the longest retention period is used, and a policy
+            that specifies <code class="code">NEVER_EXPIRE</code> is treated as the longest retention period. This
+            lets you set a baseline retention period for the account. You can then apply longer
+            retention periods to specific log groups, or exempt specific log groups from expiring at
+            all.</p>
+
+        <div class="awsdocs-note awsdocs-warning"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Warning</div></div><div class="awsdocs-note-text"><p>An account-level retention policy replaces the retention period set on a log group,
+                including when the log group's own retention period is longer. For example, suppose a
+                log group is set to retain log events for 10 years. If you create a retention policy
+                that sets a 90-day retention period for that log group, CloudWatch Logs deletes the log events
+                in that log group that are older than 90 days. Use a dry run to see which log groups
+                would have a shorter retention period before you create or update a policy.</p></div></div>
+
+        <p>A dry run does not create, update, or delete the policy. It returns the number of log
+            groups that would have a longer, a shorter, or an unchanged retention period. It also
+            returns the 20 log groups in the scope of the policy that store the most data.</p>
+
+        <p>A dry run requires the same permissions as the operation that it previews.</p>
+
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>A retention policy takes effect 24 hours after you create it. If you update a policy,
+                the new retention period takes effect 24 hours after the update, and the previous
+                retention period stays in effect until then.</p></div></div>
+
+        <p>For more information about the API for account-level retention policies, see <a href="https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutAccountPolicy.html">PutAccountPolicy</a> in the <em>Amazon CloudWatch Logs API Reference</em>.</p>
+
+         
+            <h3 id="account-level-retention-policies-permissions">Permissions required for account-level retention policies</h3>
+
+            <div class="table-container"><div class="table-contents disable-scroll"><table id="d0e1"><thead>
+                        <tr>
+                            <th>Operation</th>
+                            <th>IAM permissions needed</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td tabindex="-1"><p>Create or update a retention policy</p></td>
+                            <td tabindex="-1"><p><code class="code">logs:PutAccountPolicy</code> and
+                                <code class="code">logs:PutRetentionPolicy</code></p></td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1"><p>Delete a retention policy</p></td>
+                            <td tabindex="-1"><p><code class="code">logs:DeleteAccountPolicy</code> and
+                                <code class="code">logs:DeleteRetentionPolicy</code></p></td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1"><p>View retention policies</p></td>
+                            <td tabindex="-1"><p><code class="code">logs:DescribeAccountPolicies</code></p></td>
+                        </tr>
+                    </table></div></div>
+
+            <p>To preview an operation with a dry run, you need the same permissions as the
+                operation itself.</p>
+         
+
+         
+            <h3 id="account-level-retention-policies-cli">Manage account-level retention policies with the AWS CLI</h3>
+
+            <div class="procedure"><h6 class="awsdocs-block-title">To create or update a retention policy</h6><ul><li>
+                    <p>Enter a command similar to the following. To preview the impact of the policy
+                        without creating it, add <code class="code">--dry-run</code>.</p>
+                    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (cli)--><code class="nohighlight " data-source="untagged">aws logs put-account-policy \
+    --policy-name LambdaRetentionPolicy \
+    --policy-type RETENTION_POLICY \
+    --policy-document '<span>{</span>"retentionInDays": 90, "enforcementMode": "RETROACTIVE"}' \
+    --selection-criteria 'LogGroupNamePrefix="/aws/lambda"'</code></pre>
+                </li></ul></div>
+
+            <div class="procedure"><h6 class="awsdocs-block-title">To view retention policies</h6><ul><li>
+                    <p>Enter the following command.</p>
+                    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (cli)--><code class="nohighlight " data-source="untagged">aws logs describe-account-policies --policy-type RETENTION_POLICY</code></pre>
+                </li></ul></div>
+
+            <div class="procedure"><h6 class="awsdocs-block-title">To delete a retention policy</h6><ul><li>
+                    <p>Enter the following command. To preview the impact of deleting the policy, add
+                        <code class="code">--dry-run</code>.</p>
+                    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (cli)--><code class="nohighlight " data-source="untagged">aws logs delete-account-policy \
+    --policy-name LambdaRetentionPolicy \
+    --policy-type RETENTION_POLICY</code></pre>
+                </li></ul></div>
+         
+     
+        <h2 id="protecting-log-groups-from-deletion-overview">Protecting log groups from deletion</h2>
+        
+        <p>You can optionally enable deletion protection to prevent accidental deletion of important log groups. 
+        For detailed information about deletion protection, see <a href="./protecting-log-groups-from-deletion.html">Protecting log groups from deletion</a>.</p>
+        
+     
+        <h2 id="log-group-tagging">Tag log groups in Amazon CloudWatch Logs</h2>
+        
+        
+        
+        <p>You can assign your own metadata to the log groups you create in Amazon CloudWatch Logs in the form of
+            <em>tags</em>. A tag is a key-value pair that you define for a log group. Using
+            tags is a simple yet powerful way to manage AWS resources and organize data, including
+            billing data.</p>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>You can use tags to control access to CloudWatch Logs resources, including log groups and 
+            destinations. Access to log streams is controlled at the log group level, because of the hierarchical relation
+            between log groups and log streams. For more information about using tags to control access, see 
+ <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_tags.html">Controlling access to Amazon Web Services resources using tags</a>.</p></div></div>
+        <div class="highlights" id="inline-topiclist"><h2 class="awsdocs-topiclist-title">Contents</h2><ul><li><p><a href="#tagging-basics">Tag basics</a></p></li><li><p><a href="#tagging-billing">Tracking costs using tagging</a></p></li><li><p><a href="#tagging-restrictions">Tag restrictions</a></p></li><li><p><a href="#log-group-tagging-cli">Tagging log groups using the AWS CLI</a></p></li><li><p><a href="#log-group-tagging-api">Tagging log groups using the CloudWatch Logs API</a></p></li></ul></div>
+        
+        <h3 id="tagging-basics">Tag basics</h3>
+            
+            
+            <p>You use AWS CloudFormation the AWS CLI, or CloudWatch Logs API to complete the following tasks:</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>Add tags to a log group when you create it.</p>
+                </li><li class="listitem">
+                    <p>Add tags to an existing log group.</p>
+                </li><li class="listitem">
+                    <p>List the tags for a log group.</p>
+                </li><li class="listitem">
+                    <p>Remove tags from a log group.</p>
+                </li></ul></div>
+            
+            <p>You can use tags to categorize your log groups. For example, you can categorize them
+                by purpose, owner, or environment. Because you define the key and value for each tag,
+                you can create a custom set of categories to meet your specific needs. For example, you
+                might define a set of tags that helps you track log groups by owner and associated
+                application. Here are several examples of tags:</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>Project: Project name</p>
+                </li><li class="listitem">
+                    <p>Owner: Name</p>
+                </li><li class="listitem">
+                    <p>Purpose: Load testing</p>
+                </li><li class="listitem">
+                    <p>Application: Application name</p>
+                </li><li class="listitem">
+                    <p>Environment: Production</p>
+                </li></ul></div>
+            
+         
+        
+        <h3 id="tagging-billing">Tracking costs using tagging</h3>
+            
+            <p>You can use tags to categorize and track your AWS costs. When you apply tags to your
+                AWS resources, including log groups, your AWS cost allocation report includes usage and
+                costs aggregated by tags. You can apply tags that represent business categories (such as
+                cost centers, application names, or owners) to organize your costs across multiple
+                services. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Use
+                Cost Allocation Tags for Custom Billing Reports</a> in the
+                <em>AWS Billing User Guide</em>.</p>
+         
+        
+        <h3 id="tagging-restrictions">Tag restrictions</h3>
+            
+            
+            <p>The following restrictions apply to tags.</p>
+            
+            <div class="itemizedlist">
+                <h6 class="awsdocs-block-title">Basic restrictions</h6>
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>The maximum number of tags per log group is 50.</p>
+                </li><li class="listitem">
+                    <p>Tag keys and values are case sensitive.</p>
+                </li><li class="listitem">
+                    <p>You can't change or edit tags for a deleted log group.</p>
+                </li></ul></div>
+            
+            <div class="itemizedlist">
+                <h6 class="awsdocs-block-title">Tag key restrictions</h6>
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>Each tag key must be unique. If you add a tag with a key that's already in
+                        use, your new tag overwrites the existing key-value pair.</p>
+                </li><li class="listitem">
+                    <p>You can't start a tag key with <code class="code">aws:</code> because this prefix is
+                        reserved for use by AWS. AWS creates tags that begin with this prefix on your
+                        behalf, but you can't edit or delete them.</p>
+                </li><li class="listitem">
+                    <p>Tag keys must be between 1 and 128 Unicode characters in length.</p>
+                </li><li class="listitem">
+                    <p>Tag keys must consist of the following characters: Unicode letters, digits,
+                        white space, and the following special characters: <code class="code">_ . / = + -
+                            @</code>.</p>
+                </li></ul></div>
+            
+            <div class="itemizedlist">
+                <h6 class="awsdocs-block-title">Tag value restrictions</h6>
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>Tag values must be between 0 and 255 Unicode characters in length.</p>
+                </li><li class="listitem">
+                    <p>Tag values can be blank. Otherwise, they must consist of the following
+                        characters: Unicode letters, digits, white space, and any of the following
+                        special characters: <code class="code">_ . / = + - @</code>.</p>
+                </li></ul></div>
+         
+        
+        <h3 id="log-group-tagging-cli">Tagging log groups using the AWS CLI</h3>
+            
+            
+            <p>You can add, list, and remove tags using the AWS CLI. For examples, see the following
+                documentation:</p>
+            
+            <div class="variablelist">
+                 
+                 
+                 
+                 
+            <dl>
+                    <dt><span class="term"><a href="https://docs.aws.amazon.com/cli/latest/reference/logs/create-log-group.html">create-log-group</a></span></dt>
+                    <dd>
+                        <p>Creates a log group. You can optionally add tags when you create the log group.</p>
+                    </dd>
+                 
+                    <dt><span class="term"><a href="https://docs.aws.amazon.com/cli/latest/reference/logs/tag-resource.html">tag-resource</a></span></dt>
+                    <dd>
+                        <p>Assigns one or more tags (key-value pairs) to the specified CloudWatch Logs resource.</p>
+                    </dd>
+                 
+                    <dt><span class="term"><a href="https://docs.aws.amazon.com/cli/latest/reference/logs/list-tags-for-resource.html">list-tags-for-resource</a></span></dt>
+                    <dd>
+                        <p>Displays the tags the are associated with a CloudWatch Logs resource.</p>
+                    </dd>
+                 
+                    <dt><span class="term"><a href="https://docs.aws.amazon.com/cli/latest/reference/logs/untag-log-group.html">untag-resource</a></span></dt>
+                    <dd>
+                        <p>Removes one or more tags from the specified CloudWatch Logs resource.</p>
+                    </dd>
+                </dl></div>
+         
+        
+        <h3 id="log-group-tagging-api">Tagging log groups using the CloudWatch Logs API</h3>
+            
+            
+            <p>You can add, list, and remove tags using the CloudWatch Logs API. For examples, see the
+                following documentation:</p>
+            
+            <div class="variablelist">
+                 
+                 
+                 
+                 
+            <dl>
+                    <dt><span class="term"><a href="https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_CreateLogGroup.html">CreateLogGroup</a></span></dt>
+                    <dd>
+                        <p>Creates a log group. You can optionally add tags when you create the log group.</p>
+                    </dd>
+                 
+                    <dt><span class="term"><a href="https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_TagResource.html">TagResource</a></span></dt>
+                    <dd>
+                        <p>Assigns one or more tags (key-value pairs) to the specified CloudWatch Logs resource.</p>
+                    </dd>
+                 
+                    <dt><span class="term"><a href="https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_ListTagsForResource.html">ListTagsForResource</a></span></dt>
+                    <dd>
+                        <p>Displays the tags the are associated with a CloudWatch Logs resource.</p>
+                    </dd>
+                 
+                    <dt><span class="term"><a href="https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_UntagLogGroup.html">UntagResource</a></span></dt>
+                    <dd>
+                        <p>Removes one or more tags from the specified CloudWatch Logs resource.</p>
+                    </dd>
+                </dl></div>
+         
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./CloudWatchLogs_Centralization.html">Cross-account cross-Region log centralization</div><div id="next" class="next-link" accesskey="n" href="./SearchDataFilterPattern.html">Search log data using filter patterns</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch Logs&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch Logs&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

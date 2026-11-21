@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Amazon ECS task execution IAM role - Amazon Elastic Container Service</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="task_execution_IAM_role" /><meta name="default_state" content="task_execution_IAM_role" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.md" title="Markdown version" /><meta name="description" content="Learn when to use a task execution AWS Identity and Access Management (IAM) role and how to create and use such a role." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Elastic Container Service" /><meta name="guide" content="Developer Guide" /><meta name="abstract" content="Run, stop, and manage Docker containers on a cluster using the Amazon Elastic Container Service Developer Guide." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html" hreflang="x-default" /><meta name="feedback-item" content="ECS" /><meta name="this_doc_product" content="Amazon Elastic Container Service" /><meta name="this_doc_guide" content="Developer Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'ecs'}"></script><meta id="panorama-serviceSubSection" value="Developer Guide" /><meta id="panorama-serviceConsolePage" value="Amazon ECS task execution IAM role" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="task_execution_IAM_role.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Amazon ECS task execution IAM role - Amazon Elastic Container Service</title><meta name="pdf" content="/pdfs/AmazonECS/latest/developerguide/ecs-dg.pdf#task_execution_IAM_role" /><meta name="rss" content="amazon-ecs-release-notes.rss" /><meta name="forums" content="https://repost.aws/tags/TAefn4YSprR-uCBYmbofOpHw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ECS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/task_execution_IAM_role.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/task_execution_IAM_role.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/task_execution_IAM_role.html" /><meta name="keywords" content="ECS,Amazon ECS,Amazon Elastic Container Service,ecs security overview,iam ecs,ecs iam roles,Amazon ECS task execution role,ECS task execution role,task execution role,task execution IAM role,ecs create task execution role,ecs private registry authentication permissions,ecs secrets required permissions,ecs permissions fargate tasks ecr images interface endpoints" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon ECS",
+        "item" : "https://docs.aws.amazon.com/ecs/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Developer Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Security in Amazon Elastic Container Service",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/security.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Identity and Access Management for Amazon Elastic Container Service",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/security-iam.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "IAM roles for Amazon ECS",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/security-ecs-iam-role-overview.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "Amazon ECS task execution IAM role",
+        "item" : "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/security-ecs-iam-role-overview.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonECS/latest/developerguide/ecs-dg.pdf#task_execution_IAM_role" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/ecs/index.html">Amazon ECS</a><a href="Welcome.html">Developer Guide</a></div><div id="page-toc-src"><a href="#create-task-execution-role">Creating the task execution role</a><a href="#task-execution-private-auth">Private registry authentication permissions</a><a href="#task-execution-secrets">Secrets Manager or Systems Manager permissions</a><a href="#task-execution-ecr-conditionkeys">Fargate tasks pulling Amazon ECR images over interface endpoints permissions</a><a href="#task-execution-ecr-permissions">Amazon ECR permissions</a><a href="#s3-required">Amazon S3 file storage permissions</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="task_execution_IAM_role">Amazon ECS task execution IAM role</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>The task execution role grants the Amazon ECS container and Fargate agents permission to make
+        AWS API calls on your behalf. The task execution IAM role is required depending on the
+        requirements of your task. You can have multiple task execution roles for different purposes
+        and services associated with your account.</p><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>These permissions are made available to the agent running on your instance by Amazon ECS
+            periodically sending it the role's temporary credentials, but they aren't directly
+            accessible by the containers in the task. For the IAM permissions that your
+            application code inside the container needs to run, see <a href="./task-iam-roles.html">Amazon ECS task IAM role</a>. </p></div></div><p>The following are common use cases for a task execution IAM role:</p><div class="itemizedlist">
+         
+         
+    <ul class="itemizedlist"><li class="listitem">
+            <p>Your task is hosted on AWS Fargate<span>, Amazon ECS Managed Instances, or an external
+                    instance</span> and:</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>pulls a container image from an Amazon ECR private repository.</p>
+                </li><li class="listitem">
+                    <p>pulls a container image from an Amazon ECR private repository in a different
+                        account from the account that runs the task.</p>
+                </li><li class="listitem">
+                    <p>sends container logs to CloudWatch Logs using the <code class="code">awslogs</code> log driver.
+                        For more information, see <a href="./using_awslogs.html">Send Amazon ECS logs to CloudWatch</a>.</p>
+                </li></ul></div>
+        </li><li class="listitem">
+            <p>Your tasks are hosted on either AWS Fargate or Amazon EC2 instances and:</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>uses private registry authentication. For more information, see <a href="#task-execution-private-auth">Private registry authentication permissions</a>.</p>
+                </li><li class="listitem">
+                    <p>uses Runtime Monitoring.</p>
+                </li><li class="listitem">
+                    <p>the task definition references sensitive data using Secrets Manager secrets or AWS
+                        Systems Manager Parameter Store parameters. For more information, see <a href="#task-execution-secrets">Secrets Manager or Systems Manager permissions</a>.</p>
+                </li></ul></div>
+        </li></ul></div><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>The task execution role is supported by Amazon ECS container agent version 1.16.0 and
+            later.</p></div></div><p>Amazon ECS provides the managed policy named <code class="code">AmazonECSTaskExecutionRolePolicy</code>
+        which contains the permissions the common use cases previously described require. For more
+        information, see <a href="https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonECSTaskExecutionRolePolicy.html">AmazonECSTaskExecutionRolePolicy</a> in the <em>AWS Managed
+            Policy Reference Guide</em>. It might be necessary to add inline policies to your
+        task execution role for special use cases</p><p>The Amazon ECS console creates a task execution role. You can manually attach the managed IAM
+        policy for tasks to allow Amazon ECS to add permissions for future features and enhancements as
+        they are introduced. You can use IAM console search to search for
+            <code class="code">ecsTaskExecutionRole</code> and see if your account already has the task execution
+        role. For more information, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/console_search.html">IAM console search</a> in the
+            <em>IAM user guide</em>.</p><p>If you pull images as an authenticated user, you're less likely to be
+            impacted by the changes that occurred to <a href="https://docs.docker.com/docker-hub/usage/" rel="noopener noreferrer" target="_blank"><span>Docker Hub
+                usage and limits</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>. For more information see, <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth-container-instances.html">Private registry authentication for container instances</a>.</p><p>By using Amazon ECR and Amazon ECR Public, you can avoid the limits imposed by Docker.
+            If you pull images from Amazon ECR, this also helps shorten network pull times and
+            reduces data transfer changes when traffic leaves your VPC.</p><p>When you use Fargate, you must authenticate to a private image registry
+            using <code class="code">repositoryCredentials</code>. It's not possible to set the Amazon ECS
+            container agent environment variables <code class="code">ECS_ENGINE_AUTH_TYPE</code> or
+            <code class="code">ECS_ENGINE_AUTH_DATA</code> or modify the <code class="code">ecs.config</code> file
+            for tasks hosted on Fargate. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth.html">Private registry authentication for tasks</a>.</p>
+        <h2 id="create-task-execution-role">Creating the task execution role</h2>
+        <p>If your account doesn't already have a task execution role, use the following steps
+            to create the role.</p>
+        <awsdocs-tabs><dl style="display: none">
+            <dt>AWS Management Console</dt><dd tab-id="aws-management-console"> 
+                   
+                       
+
+<div class="procedure"><h6 class="awsdocs-block-title">To create the service role for Elastic Container Service (IAM console)</h6><ol><li><p>Sign in to the AWS Management Console and open the IAM console at <a href="https://console.aws.amazon.com/iam/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/iam/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p></li><li>
+<p>In the navigation pane of the IAM console, choose <b>Roles</b>, and
+then choose <b>Create role</b>.</p>
+</li><li>
+<p>For <b>Trusted entity type</b>, choose <b>AWS service</b>.</p>
+</li><li>
+<p>For <b>Service or use case</b>, choose <b>Elastic Container Service</b>, and then choose the <b>Elastic Container Service Task</b> use case.</p>
+</li><li>
+<p>Choose <b>Next</b>.</p>
+</li><li>
+<p>In the <b>Add permissions</b> section, search for <b>AmazonECSTaskExecutionRolePolicy</b>, then
+                            select the policy.</p>
+                   
+</li><li>
+  <p>Choose <b>Next</b>.</p>
+</li><li>
+<p> For <b>Role name</b>, enter <b>ecsTaskExecutionRole</b>.</p>
+</li><li>
+<p>Review the role, and then choose <b>Create role</b>.</p>
+</li></ol></div>
+
+                </dd>
+            <dt>AWS CLI</dt><dd tab-id="aws-cli"><div class="procedure"><p>Replace all <code class="replaceable">user input</code> with your own information.</p><ol><li>
+                        <p>Create a file named <code class="code">ecs-tasks-trust-policy.json</code> that contains the
+                            trust policy to use for the IAM role. The file should contain the
+                            following:</p>
+                         
+<div class="option container"><div class="optionselector"><span class="optionanchor" id=""><span class="option  selected" data-tab="json">JSON</span></span></div><dl><dt>JSON</dt><dd class="selected" data-tab="json"><div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term"></span></b></dt>
+        <dd>
+            
+                
+                <pre class="programlisting" data-example-id="1691f3370446b513ad7be3b9c31c225d9a30c17adfbd9fa1dc538ce92603ceca"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><code class="userinput"><span>{</span>
+  "Version":"2012-10-17",
+  "Statement": [
+    <span>{</span>
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": <span>{</span>
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}</code>
+</code></pre>
+            
+        </dd>
+    </dl></div></dd></dl></div>
+                    </li><li>
+                        <p>Create an IAM role named <code class="code">ecsTaskExecutionRole</code> using the trust
+                            policy created in the previous step.</p>
+                        <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="userinput">aws iam create-role \
+      --role-name <code class="replaceable">ecsTaskExecutionRole</code> \
+      --assume-role-policy-document file://<code class="replaceable">ecs-tasks-trust-policy.json</code></code></code></pre>
+                    </li><li>
+                        <p>Attach the AWS managed <code class="code">AmazonECSTaskExecutionRolePolicy</code> policy
+                            to the <code class="code">ecsTaskExecutionRole</code> role.</p>
+                        <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="userinput">aws iam attach-role-policy \
+      --role-name <code class="replaceable">ecsTaskExecutionRole</code> \
+      --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy</code></code></pre>
+                    </li></ol></div></dd>
+        </dl></awsdocs-tabs> 
+        <p>After you create the role, add additional permissions to the role for the following
+            features.</p>
+        <div class="table-container"><div class="table-contents disable-scroll"><table id="d0e1"><thead>
+                    <tr>
+                        <th>
+                            Feature
+                        </th>
+                        <th>
+                          Additional permissions
+                        </th>
+                    </tr>
+                </thead>
+                    <tr>
+                        <td tabindex="-1">
+                            <p>Pull container images from private registries outside of AWS (such as Docker Hub, Quay.io, or your own private registry) using Secrets Manager credentials</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p><a href="#task-execution-private-auth">Private registry authentication permissions</a></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Pass sensitive data with Systems Manager or Secrets Manager</td>
+                        <td tabindex="-1"><p><a href="#task-execution-secrets">Secrets Manager or Systems Manager permissions</a></p></td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Have Fargate tasks pull Amazon ECR images over interface
+                            endpoints</td>
+                        <td tabindex="-1"><p><a href="#task-execution-ecr-conditionkeys">Fargate tasks pulling Amazon ECR images over interface endpoints permissions</a></p></td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Host configuration files in an Amazon S3 bucket</td>
+                        <td tabindex="-1"><p><a href="#s3-required">Amazon S3 file storage permissions</a></p></td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">Configure
+                            Container Insights to view Amazon ECS lifecycle events</td>
+                        <td tabindex="-1">
+                            <p><a href="./console-permissions.html#required-permissions-configure">Permissions required for enabling Amazon ECS lifecycle events in Container Insights</a></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">View Amazon ECS
+                            lifecycle events in Container Insights</td>
+                        <td tabindex="-1">
+                            <p><a href="./console-permissions.html#required-permissions-view">Permissions required to view Amazon ECS lifecycle events in Container Insights</a></p>
+                        </td>
+                    </tr>
+                </table></div></div>
+     
+        <h2 id="task-execution-private-auth">Private registry authentication permissions</h2>
+          
+        <p>Private registry authentication allows your Amazon ECS tasks to pull container images from private registries outside of AWS (such as Docker Hub, Quay.io, or your own private registry) that require authentication credentials. This feature uses Secrets Manager to securely store your registry credentials, which are then referenced in your task definition using the <code class="code">repositoryCredentials</code> parameter.</p>
+        <p>For more information about configuring private registry authentication, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth.html">Using non-AWS container images in Amazon ECS</a>.</p>
+        <p>To provide access to the secrets that contain your private registry credentials, add the following permissions as an inline policy to the task execution role. For more information, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html">Adding and
+                Removing IAM Policies</a>.</p>
+        <div class="itemizedlist">
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><code class="code">secretsmanager:GetSecretValue</code>—Required to retrieve the private registry credentials from Secrets Manager.</p>
+            </li><li class="listitem">
+                <p><code class="code">kms:Decrypt</code>—Required only if your secret uses a custom
+                    KMS key and not the default key. The Amazon Resource Name (ARN) for your
+                    custom key must be added as a resource.</p>
+            </li></ul></div>
+        <p>The following is an example inline policy that adds the permissions.</p>
+        
+ <awsdocs-tabs><dl style="display: none">
+    <dt>JSON</dt><dd tab-id="json">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term"></span></b></dt>
+        <dd>
+            
+                
+                <pre class="programlisting" data-example-id="a4688d6f4c6af22efcee6a903ee3cc647f92dd769f9d1adb50e567b887d7ea65"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><code class="userinput"><span>{</span>
+    "Version":"2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "kms:Decrypt",
+                "secretsmanager:GetSecretValue"
+            ],
+            "Resource": [
+                "arn:aws:secretsmanager:us-east-1:<code class="replaceable">111122223333</code>:secret:secret_name",
+                "arn:aws:kms:us-east-1:<code class="replaceable">111122223333</code>:key/key_id"
+            ]
+        }
+    ]
+}</code>
+</code></pre>
+            
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs>
+        
+     
+        <h2 id="task-execution-secrets">Secrets Manager or Systems Manager permissions</h2>
+        <p>The permission to allow the container agent to pull the necessary AWS Systems Manager or Secrets Manager
+            resources. For more information, see <a href="./specifying-sensitive-data.html">Pass sensitive data to an Amazon ECS container</a>.</p>
+        <p><b>Using Secrets Manager </b></p>
+          
+       <p>To provide access to the Secrets Manager secrets that you create, manually add the following
+					permission to the task execution role. For information about how to manage
+					permissions, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html">Adding and
+						Removing IAM identity permissions</a> in the <em>IAM User Guide</em>.</p>
+						<div class="itemizedlist">
+							 
+						<ul class="itemizedlist"><li class="listitem">
+								<p><code class="code">secretsmanager:GetSecretValue</code>– Required if you are referencing a
+							Secrets Manager secret. Adds the permission to retrieve the secret from
+							Secrets Manager.</p>
+							</li></ul></div>
+						<p>The following example policy adds the required
+							permissions.</p>
+						
+<awsdocs-tabs><dl style="display: none">
+    <dt>JSON</dt><dd tab-id="json">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term"></span></b></dt>
+        <dd>
+            
+                
+                <pre class="programlisting" data-example-id="bbf9d32fbfbbb70dee27453da7add585d66457e430d21fc66d30317b657c4ac1"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><code class="userinput"><span>{</span>
+  "Version":"2012-10-17",
+  "Statement": [
+    <span>{</span>
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": [
+        "arn:aws:secretsmanager:<code class="replaceable">us-east-1</code>:<code class="replaceable">111122223333</code>:secret:<code class="replaceable">secret_name</code>"
+      ]
+    }
+  ]
+}</code>
+</code></pre>
+            
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs>
+
+        <p><b>Using Systems Manager</b></p>
+          
+       <div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><p>For tasks that use the EC2 launch type, you must use
+								the ECS agent configuration variable
+									<code class="code">ECS_ENABLE_AWSLOGS_EXECUTIONROLE_OVERRIDE=true</code> to
+								use this feature. You can add it to the
+									<code class="code">./etc/ecs/ecs.config</code> file during container instance
+								creation or you can add it to an existing instance and then restart
+								the ECS agent. For more information, see <a href="./ecs-agent-config.html">Amazon ECS container agent configuration</a>.</p></div></div>
+						<p>To provide access to the Systems Manager Parameter Store parameters that you create, manually add
+					the following permissions as a policy to the task execution role. For
+					information about how to manage permissions, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html">Adding and
+						Removing IAM identity permissions</a> in the <em>IAM User Guide</em>.</p>
+						<div class="itemizedlist">
+							 
+							 
+							 
+						<ul class="itemizedlist"><li class="listitem">
+								<p><code class="code">ssm:GetParameters</code> — Required if you are referencing a Systems Manager
+							Parameter Store parameter in a task definition. Adds the permission to
+							retrieve Systems Manager parameters.</p>
+							</li><li class="listitem">
+								<p><code class="code">secretsmanager:GetSecretValue</code> — Required if you are referencing a
+							Secrets Manager secret either directly or if your Systems Manager Parameter Store parameter
+							is referencing a Secrets Manager secret in a task definition. Adds the permission
+							to retrieve the secret from Secrets Manager.</p>
+							</li><li class="listitem">
+								<p><code class="code">kms:Decrypt</code> — Required only if your secret uses a customer managed key and
+							not the default key. The ARN for your custom key should be added as a
+							resource. Adds the permission to decrypt the customer managed key .</p>
+							</li></ul></div>
+						<p>The following example policy adds the required permissions:</p>
+						
+<awsdocs-tabs><dl style="display: none">
+    <dt>JSON</dt><dd tab-id="json">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term"></span></b></dt>
+        <dd>
+            
+                
+                <pre class="programlisting" data-example-id="7ad747941716c0ef5295e3ca34d14814064b3b8bac8af2790be046f19d29f49b"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><code class="userinput"><span>{</span>
+  "Version":"2012-10-17",
+  "Statement": [
+    <span>{</span>
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameters",
+        "secretsmanager:GetSecretValue",
+        "kms:Decrypt"
+      ],
+      "Resource": [
+        "arn:aws:ssm:<code class="replaceable">us-east-1</code>:<code class="replaceable">111122223333</code>:parameter/<code class="replaceable">parameter_name</code>",
+        "arn:aws:secretsmanager:<code class="replaceable">us-east-1</code>:<code class="replaceable">111122223333</code>:secret:<code class="replaceable">secret_name</code>",
+        "arn:aws:kms:<code class="replaceable">us-east-1</code>:<code class="replaceable">111122223333</code>:key/<code class="replaceable">key_id</code>"
+      ]
+    }
+  ]
+}</code>
+</code></pre>
+            
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs>
+
+     
+        <h2 id="task-execution-ecr-conditionkeys">Fargate tasks pulling Amazon ECR images over interface endpoints permissions</h2>
+        <p>When launching tasks that use Fargate that pull images
+            from Amazon ECR when Amazon ECR is configured to use an interface VPC endpoint, you can restrict
+            the tasks access to a specific VPC or VPC endpoint. Do this by creating a task execution
+            role for the tasks to use that use IAM condition keys.</p>
+        <p>Use the following IAM global condition keys to restrict access to a specific VPC or
+            VPC endpoint. For more information, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html">AWS Global Condition
+                Context Keys</a>.</p>
+        <div class="itemizedlist">
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><code class="code">aws:SourceVpc</code>—Restricts access to a specific VPC. You can
+                    restrict the VPC to the VPC that hosts the task and endpoint.</p>
+            </li><li class="listitem">
+                <p><code class="code">aws:SourceVpce</code>—Restricts access to a specific VPC
+                    endpoint.</p>
+            </li></ul></div>
+        <p>The following task execution role policy provides an example for adding condition
+            keys:</p>
+        <awsdocs-tabs><dl style="display: none">
+    <dt>JSON</dt><dd tab-id="json">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term"></span></b></dt>
+        <dd>
+            
+                
+                <pre class="programlisting" data-example-id="ab5818b00d197e0d4146919b8dc4ef25569c8d6c46dd2514ada1cc47509b2960"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><code class="userinput"><span>{</span>
+    "Version":"2012-10-17",
+    "Statement": [
+            <span>{</span>
+                "Effect": "Allow",
+                "Action": [
+                    "ecr:GetAuthorizationToken",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                ],
+                "Resource": "*"
+            },
+            <span>{</span>
+                "Effect": "Allow",
+                "Action": [
+                    "ecr:BatchCheckLayerAvailability",
+                    "ecr:GetDownloadUrlForLayer",
+                    "ecr:BatchGetImage"
+                ],
+                "Resource": "arn:aws:ecr:*:*:repository/*",
+                "Condition": <span>{</span>
+                    "StringEquals": <span>{</span>
+                            "aws:sourceVpce": "vpce-0123456789abcdef0"
+                    }
+                }
+            }
+    ]
+}</code>
+</code></pre>
+            
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs>
+     
+        <h2 id="task-execution-ecr-permissions">Amazon ECR permissions</h2>
+        <p>The following permissions are required when you need to pull container images from Amazon ECR private repositories. The task execution role should have these permissions to allow the Amazon ECS container and Fargate agents to pull container images on your behalf. For basic ECS implementations, these permissions should be added to the task execution role rather than the task IAM role.</p>
+        <p>The Amazon ECS task execution role managed policy (<code class="code">AmazonECSTaskExecutionRolePolicy</code>) includes the necessary permissions for pulling images from Amazon ECR. If you're using the managed policy, you don't need to add these permissions separately.</p>
+        <p>If you're creating a custom policy, include the following permissions to allow pulling images from Amazon ECR:</p>
+        <awsdocs-tabs><dl style="display: none">
+    <dt>JSON</dt><dd tab-id="json">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term"></span></b></dt>
+        <dd>
+            
+                
+                <pre class="programlisting" data-example-id="6f6113aaf58380314a52c379ad8631c567259b189212ca58d1ee00f2e7bd9b6c"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><code class="userinput"><span>{</span>
+    "Version":"2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "ecr:BatchGetImage",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:GetAuthorizationToken"
+            ],
+            "Resource": "*"
+        }
+    ]
+}</code>
+</code></pre>
+            
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs>
+        <p>Note that these permissions are different from the permissions that might be required in the task IAM role if your application code needs to interact with Amazon ECR APIs directly. For information about task IAM role permissions for Amazon ECR, see <a href="./task-iam-roles.html#ecr-required-iam-permissions">Amazon ECR permissions</a>.</p>
+     
+        <h2 id="s3-required">Amazon S3 file storage permissions</h2>
+        <p>When you specify a configuration file that's hosted in Amazon S3, the task execution role
+            must include the <code class="code">s3:GetObject</code> permission for the configuration file and the
+                <code class="code">s3:GetBucketLocation</code> permission on the Amazon S3 bucket that the file is in.
+            For more information, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/security_iam_service-with-iam.html#security_iam_service-with-iam-id-based-policies-actions">Policy actions for Amazon S3</a> in the <em>Amazon Simple Storage Service User Guide</em>.</p>
+        <p>The following example policy adds the required permissions for retrieving a file from
+            Amazon S3. Specify the name of your Amazon S3 bucket and configuration file name.</p>
+        <awsdocs-tabs><dl style="display: none">
+    <dt>JSON</dt><dd tab-id="json">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term"></span></b></dt>
+        <dd>
+            
+                
+                <pre class="programlisting" data-example-id="ba431168696b348d418f53f6b630c890028f6f458bc6fedc96562e45b602c238"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><code class="userinput"><span>{</span>
+  "Version":"2012-10-17",
+  "Statement": [
+    <span>{</span>
+      "Effect": "Allow",
+      "Action": [
+        "<code class="replaceable">s3:GetObject</code>"
+      ],
+      "Resource": [
+        "arn:aws:s3:::<code class="replaceable">amzn-s3-demo-bucket</code>/<code class="replaceable">folder_name</code>/<code class="replaceable">config_file_name</code>"
+      ]
+    },
+    <span>{</span>
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketLocation"
+      ],
+      "Resource": [
+        "arn:aws:s3:::<code class="replaceable">amzn-s3-demo-bucket</code>"
+      ]
+    }
+  ]
+}</code>
+</code></pre>
+            
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs>
+         
+            <h3 id="s3-required-considerations">Important Security Consideration</h3>
+            <p>
+                When using Amazon ECS features that integrate with Amazon S3 buckets, implement bucket ownership validation to prevent bucket takeover attacks. 
+                Without proper validation, if an Amazon S3 bucket is deleted and recreated by a malicious actor with the same name, your tasks may unknowingly 
+                load malicious configurations or send sensitive data to attacker-controlled buckets.
+            </p>
+            <p><b>Recommended IAM Policy Condition:</b></p>
+            <pre class="programlisting"><div class="code-btn-container"></div><!--DEBUG: cli (json)--><code class="json ">
+               "Condition": <span>{</span>
+                 "StringEquals": <span>{</span>
+                   "aws:ResourceAccount": "<code class="replaceable">TRUSTED-ACCOUNT-ID</code>"
+                 }
+               }
+            </code></pre>
+            <p>Replace <code class="replaceable">TRUSTED-ACCOUNT-ID</code> with the AWS account ID that owns the S3 bucket.</p>
+            <p>This condition ensures your task execution role can only access Amazon S3 buckets owned by the specified trusted account.</p>
+         
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./security-iam-roles.html">Best practices for IAM roles</div><div id="next" class="next-link" accesskey="n" href="./task-iam-roles.html">Task IAM role</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ECS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/task_execution_IAM_role.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ECS&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonECS/latest/developerguide/task_execution_IAM_role.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

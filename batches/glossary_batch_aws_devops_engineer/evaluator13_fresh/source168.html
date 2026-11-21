@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>OPS06-BP01 Create actionable alerts - AWS Well-Architected Framework</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="ops06-bp01" /><meta name="default_state" content="ops06-bp01" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06-bp01.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06-bp01.md" title="Markdown version" /><meta name="description" content="When each alert maps to a defined response, operators know what to do when it fires, and important signals aren't lost in low-value noise." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Well-Architected Framework" /><meta name="guide" content="Framework" /><meta name="abstract" content="The AWS Well-Architected Framework helps you understand the pros and cons of decisions you make while building systems on AWS. By using the Framework you will learn architectural best practices for designing and operating reliable, secure, efficient, cost-effective, and sustainable systems in the cloud." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06-bp01.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/ops06-bp01.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/ops06-bp01.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/ops06-bp01.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/ops06-bp01.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06-bp01.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06-bp01.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/ops06-bp01.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/ops06-bp01.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/ops06-bp01.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/ops06-bp01.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/ops06-bp01.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/ops06-bp01.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/ops06-bp01.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/ops06-bp01.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/ops06-bp01.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/ops06-bp01.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/ops06-bp01.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/ops06-bp01.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/wellarchitected/latest/framework/ops06-bp01.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/wellarchitected/latest/framework/ops06-bp01.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06-bp01.html" hreflang="x-default" /><meta name="feedback-folder" content="897c6ffe-3c12-4691-9c85-dc23b20eabd4" /><meta name="this_doc_product" content="AWS Well-Architected Framework" /><meta name="this_doc_guide" content="Framework" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'wellarchitected'}"></script><meta id="panorama-serviceSubSection" value="Framework" /><meta id="panorama-serviceConsolePage" value="OPS06-BP01 Create actionable alerts" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="ops06-bp01.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>OPS06-BP01 Create actionable alerts - AWS Well-Architected Framework</title><meta name="pdf" content="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#ops06-bp01" /><meta name="forums" content="https://repost.aws/topics/TA5g9gZfzuQoWLsZ3wxihrgw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops06-bp01.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops06-bp01.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops06-bp01.html" /><meta name="keywords" content="AWS Well-Architected Framework,Well-Architected,cloud architecture,architecture best practices,AWS Cloud,workload design,cloud foundations,landing zone" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Well-Architected",
+        "item" : "https://aws.amazon.com/architecture/well-architected/"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Framework",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Cloud Workloads",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/workloads.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Operational excellence",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/operational-excellence.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Create an effective event response",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "OPS06-BP01 Create actionable alerts",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/ops06.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#ops06-bp01" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected</a><a href="framework.html">Framework</a></div><div id="page-toc-src"><a href="#implementation-guidance">Implementation     guidance</a><a href="#resources">Resources</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="ops06-bp01">OPS06-BP01 Create actionable alerts</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>
+    When each alert maps to a defined response, operators know what to
+    do when it fires, and important signals aren't lost in low-value
+    noise.
+  </p><p>
+    <b>Desired outcome:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Your alerts fire on conditions that represent problems, such as
+        an objective at risk, not on every raw metric deviation.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Each of your alerts maps to a specific, documented response, and
+        where possible you automate that response.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Each of your alerts has a clear owner and a defined escalation
+        path, so no notification is left unattended.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your alerts link to current runbooks or playbooks, so any
+        operator can respond the same way.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your alert volume stays low enough that operators treat each
+        alert as meaningful rather than background noise.
+      </p>
+    </li></ul></div><p>
+    <b>Common anti-patterns:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Teams raise alerts that describe a symptom but carry no defined
+        response, so operators improvise during incidents.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Monitoring generates so many low-value alerts that operators
+        overlook the ones that matter.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Alerts have no assigned owner, so handling depends on whoever
+        happens to notice.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Operators respond to the same alert differently each time
+        because no shared response process exists.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Alerts fire on raw metrics without correlation, producing a
+        burst of notifications for a single underlying problem.
+      </p>
+    </li></ul></div><p>
+    <b>Benefits of establishing this best
+    practice:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Operators experience less alert fatigue because only actionable
+        alerts reach them.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Mean time to resolution (MTTR) drops because each alert carries
+        a known response.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Mean time to investigate (MTTI) drops, which further reduces
+        MTTR.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Operational responses scale because responses are documented and
+        often automated.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Incident handling stays consistent and reliable across teams and
+        shifts.
+      </p>
+    </li></ul></div><p>
+    <b>Level of risk exposed if this best practice
+    is not established:</b> High
+  </p>
+
+  <h2 id="implementation-guidance">Implementation guidance</h2>
+
+      
+
+    <p>
+      An actionable alert tells an operator what is wrong and what to do
+      about it. Monitoring can emit a signal for almost any state
+      change, but few of those signals need human attention. If an alert
+      fires, someone or something must act. Signals that carry no
+      response belong on a dashboard or in a log. The alerting signal
+      can be a metric, a service level objective, or a recurring log
+      signal turned into a metric
+      (<a href="./ops02-bp04.html">OPS02-BP04 Regularly analyze workload logs</a>).
+    </p>
+    <p>
+      Alert fatigue is the dominant failure mode, where operators
+      receive hundreds of notifications a day and learn to ignore them.
+      Then, the one alert that signals a real incident is lost with the
+      rest. The usual cause is alerting on raw metrics. Instead, alert
+      on conditions that represent actual problems. A single failing
+      dependency can trip a dozen metric thresholds, producing many
+      alerts for one root cause. Aggregating related signals into a
+      composite condition reduces alert fatigue and produces one
+      actionable alert.
+    </p>
+    <p>
+      Every threshold is a trade-off between sensitivity and precision.
+      A tight threshold can miss early warnings of a developing problem,
+      while a loose one can bury operators in false positives. Tune
+      thresholds against historical data, and revisit them as the
+      workload changes. An alert that is useful at launch can become
+      useless a year later depending on changes to your workload. Some
+      metrics have no fixed threshold, and their normal range might
+      shift with time of day or day of week. Anomaly detection alarms
+      learn each metric's normal band and fire on deviations.
+    </p>
+    <p>
+      For workloads instrumented with OpenTelemetry,
+      <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/omni-alerts.html">CloudWatch Omni alerts</a> add timing controls such as a pending duration,
+      so a single spike does not send an alert, and a recovery duration,
+      so a flapping signal does not resolve and fire again. One Omni
+      alert also contains warning and critical tiers, each routable to a
+      destination, so the same condition can warn a team channel before
+      its critical tier reaches an on-call engineer. Omni alerts are
+      separate from CloudWatch alarms, which continue to work unchanged.
+    </p>
+    <p>
+      Alert conditions form a hierarchy, and you should start at the
+      top. Business outcome metrics, for example the KPIs from
+      <a href="./ops02-bp01.html">OPS02-BP01 Develop key performance indicators</a>, and RED metrics (rate, errors,
+      duration) are closest to what users experience. They move only
+      when something important is at stake, so they produce the least
+      noise. Where service-level objectives exist, alarm on the error
+      budget burn rate, or how fast the service is consuming its
+      allowance for failure. A fast burn demands interruption, and a
+      slow burn can wait for review. The alert carries its own urgency,
+      and its threshold reflects the objective (for more detail, see
+      <a href="./ops02-bp05.html">OPS02-BP05 Regularly analyze workload traces</a>).
+    </p>
+    <p>
+      Work down the stack deliberately. Application metrics, then
+      infrastructure metrics, then the metrics of the underlying compute
+      and storage each add diagnostic detail. Each layer down fires more
+      often and means less on its own — a busy processor does not
+      comprise a problem unless something above it slows down. Alert at
+      the top of the hierarchy by default, and keep the lower layers on
+      dashboards for diagnosis. Alert low in the stack only where a hard
+      limit is real, such as a disk that must not fill.
+    </p>
+    <div class="mediaobject">
+       
+        <img src="/images/wellarchitected/latest/framework/images/metrics-pyramid.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Pyramid diagram showing monitoring layers stacked from application metrics at the top down to infrastructure metrics and then compute and storage metrics at the base." style="max-width:100%" />
+       
+       
+      <div class="caption"><p><em>Monitoring metrics pyramid from application down to compute and storage</em></p></div>
+    </div>
+    <p>
+      Each alert needs an owner and an escalation path for when the
+      first responder cannot resolve it. Link each alert to a current
+      runbook or playbook so any operator can respond the same way,
+      keeping handling consistent across shifts. Recurring incidents
+      point at a problem worth removing (for more detail, see
+      <a href="./ops07-bp01.html">OPS07-BP01 Perform post-incident analysis</a>).
+    </p>
+    <p>
+      You can automate the first minutes after an alert. Configure an
+      alarm to start a
+      <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Investigations.html">CloudWatch investigation</a> when it fires; the investigation correlates
+      related telemetry and recent changes into a probable-cause
+      hypothesis before the responder arrives.
+      <a href="https://docs.aws.amazon.com/devopsagent/latest/userguide/">AWS DevOps Agent</a> can be triggered from a ticket, a webhook, or
+      its own monitoring, and it then investigates autonomously and
+      returns root cause analyses and mitigation plans to the channel
+      that raised the alert. The alert's named owner remains accountable
+      for the response.
+    </p>
+    <p>
+      Provider-side service events and planned lifecycle changes — such
+      as a required version upgrade before automatic enforcement — can
+      affect availability even when your code is unchanged. Track these
+      events through an authoritative health signal, and route them into
+      the same response process as internal alerts.
+    </p>
+     
+
+  <h3 id="implementation-steps">Implementation steps</h3>
+
+      
+
+      <div class="orderedlist">
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+      <ol><li>
+          <p>
+            <b>Alert on the objectives users
+            feel:</b> Where Application Signals tracks your
+            <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-ServiceLevelObjectives.html">service level objectives</a>, create alarms on error budget burn
+            rate over more than one look-back window: a short window
+            that catches a fast burn and interrupts the on-call, and a
+            long window that surfaces a slow steady burn as a work item.
+            A burn-rate alert is actionable by construction, because it
+            fires only when the objective is at risk.
+          </p>
+        </li><li>
+          <p>
+            <b>Let alarms learn what normal looks
+            like:</b> Create
+            <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Anomaly_Detection_Alarm.html">anomaly detection alarms</a> for metrics whose normal shifts with
+            traffic, so the alarm follows the learned band. Anomalies in
+            trace data alert through
+            <a href="https://docs.aws.amazon.com/xray/latest/devguide/xray-console-insights.html">X-Ray insights notifications</a>. Keep static thresholds for
+            limits that do not move, and revisit both as the workload
+            changes.
+          </p>
+        </li><li>
+          <p>
+            <b>Reduce noise with composite
+            alarms:</b> Group related alarms into
+            <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Composite_Alarm.html">composite alarms</a> in Amazon CloudWatch so that a single root
+            cause produces one meaningful alert rather than many. Base
+            each composite condition on the failure it represents, not
+            on individual metrics. For OpenTelemetry workloads monitored
+            in CloudWatch Omni, an
+            <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/omni-alerts.html">Omni alert</a> tracks each service as a contributor when it
+            receives one result per service. As a result, one alert
+            covers the fleet, and the alert's detail view identifies the
+            services that are breaching.
+          </p>
+        </li><li>
+          <p>
+            <b>Track provider-side events with AWS Health:</b> Use
+            <a href="https://docs.aws.amazon.com/health/latest/ug/what-is-aws-health.html">AWS Health</a> as the authoritative source for service events
+            and upcoming changes that can affect your resources.
+          </p>
+          <div class="orderedlist">
+             
+             
+             
+          <ol style="list-style-type:arabic ! important;"><li>
+              <p>
+                Route
+                <a href="https://docs.aws.amazon.com/health/latest/ug/">purpose-fit Health notifications</a> to email and chat channels,
+                and integrate programmatically
+                <a href="https://docs.aws.amazon.com/health/latest/ug/cloudwatch-events-health.html">through Amazon EventBridge</a>.
+              </p>
+            </li><li>
+              <p>
+                Track events that need action in the change management
+                or ITSM tools you already use, such as
+                <a href="https://docs.aws.amazon.com/smc/latest/ag/cloud-sys-health.html">Jira</a>
+                or
+                <a href="https://docs.aws.amazon.com/smc/latest/ag/sn-aws-health.html">ServiceNow</a>.
+              </p>
+            </li><li>
+              <p>
+                If you use AWS Organizations, enable organizational view
+                to
+                <a href="https://docs.aws.amazon.com/health/latest/ug/aggregate-events.html">aggregate Health events across accounts</a>.
+              </p>
+            </li></ol></div>
+        </li><li>
+          <p>
+            <b>Create work items automatically from
+            alarms:</b> Configure CloudWatch alarms to
+            <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/OpsCenter-create-OpsItems-from-CloudWatch-Alarms.html">create OpsItems in AWS Systems Manager OpsCenter</a> so that a
+            threshold breach starts a tracked response without manual
+            handoff. If your organization runs incidents in the tooling
+            from step 7, route the alarm there instead. The principle is
+            that no alert lands without a work item.
+          </p>
+        </li><li>
+          <p>
+            <b>Create work items from events with
+            EventBridge:</b>
+            <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/OpsCenter-automatically-create-OpsItems-2.html">Create EventBridge rules that open OpsItems</a> for operational
+            events that need action but arrive without an alarm.
+          </p>
+        </li><li>
+          <p>
+            <b>Route alerts into the tools your
+            organization already uses:</b> Send
+            <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Notify_Users_Alarm_Changes.html">alarm notifications</a> to your paging tools, such as
+            <a href="https://support.atlassian.com/opsgenie/docs/integrate-opsgenie-with-amazon-cloudwatch/" rel="noopener noreferrer" target="_blank"><span>Opsgenie</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+            and
+            <a href="https://docs.pagerduty.com/integrations/amazon-cloudwatch-integration-guide" rel="noopener noreferrer" target="_blank"><span>PagerDuty</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>,
+            track the response in the incident management tooling your
+            teams already work in, such as
+            <a href="https://www.servicenow.com/docs/r/zurich/integrate-applications/integration-hub/amazon-cloudwatch.html" rel="noopener noreferrer" target="_blank"><span>ServiceNow</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+            or
+            <a href="https://support.atlassian.com/jira-service-management-cloud/docs/integrate-with-amazon-cloudwatch/" rel="noopener noreferrer" target="_blank"><span>Jira Service Management</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>, and relay alerts into
+            <a href="https://docs.aws.amazon.com/chatbot/latest/adminguide/what-is.html">chat channels</a> where teams live in Slack or Microsoft
+            Teams. An alert that arrives in an unmonitored tool is not
+            actionable, however good its condition.
+          </p>
+        </li><li>
+          <p>
+            <b>Hand the first minutes to
+            assistants:</b> Configure alarms to
+            <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Investigations-configure-alarms.html">create investigations</a>, so CloudWatch investigations
+            correlates related telemetry and recent changes into a
+            hypothesis of the probable cause while responders are still
+            being notified. Use
+            <a href="https://docs.aws.amazon.com/devopsagent/latest/userguide/">AWS DevOps Agent</a> for autonomous incident response:
+            triggered from your ticketing system, a webhook, or its own
+            proactive monitoring, it investigates and returns root cause
+            analyses and mitigation plans to the originating ticket.
+            Once your Omni space is connected to DevOps Agent, you can
+            start the investigation yourself from a firing Omni alert,
+            which arrives seeded with the alert's context. Assistants
+            complement the response plans in these steps, while the
+            owner named in each alert is accountable for the response.
+          </p>
+        </li><li>
+          <p>
+            <b>Compose the full path for new
+            incidents:</b> A single alarm can do all of the first
+            minute's work:
+            <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Notify_Users_Alarm_Changes.html">notify</a>
+            the on-call, open the incident ticket, and
+            <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Start-Investigation-Alarm.html">start an investigation</a> in the same action. An
+            <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/">EventBridge rule</a> matching the investigation's status changes then
+            writes its findings into the ticket as they arrive, so the
+            person that picks up the ticket finds a root cause
+            hypothesis within. This is how AWS and Amazon run their own
+            operations, and every part of it is available to your
+            workload.
+          </p>
+        </li><li>
+          <p>
+            <b>Document a response plan for each
+            alert type:</b> For each class of alert, record the
+            owner, the escalation path, and the expected actions
+            alongside the runbooks and playbooks that
+            <a href="./ops05-bp01.html">OPS05-BP01 Develop and test runbooks to perform procedures</a> develops.
+            Escalation paths themselves are the practice of
+            <a href="./ops06-bp03.html">OPS06-BP03 Define escalation paths</a>.
+          </p>
+        </li><li>
+          <p>
+            <b>Attach automation runbooks to the
+            response:</b> Associate
+            <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-automation.html">Systems Manager Automation runbooks</a> with your work items so
+            that
+            <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/OpsCenter-remediating.html">common remediation runs</a> as soon as one opens.
+          </p>
+        </li></ol></div>
+     
+   
+
+  <h2 id="resources">Resources</h2>
+
+      
+    <p>
+      <b>Related best practices:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="./ops06-bp02.html">OPS06-BP02 Automate responses to events</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops06-bp03.html">OPS06-BP03 Define escalation paths</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops05-bp01.html">OPS05-BP01 Develop and test runbooks to perform procedures</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops02-bp01.html">OPS02-BP01 Develop key performance indicators</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops02-bp04.html">OPS02-BP04 Regularly analyze workload logs</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops02-bp05.html">OPS02-BP05 Regularly analyze workload traces</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops07-bp01.html">OPS07-BP01 Perform post-incident analysis</a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related documents:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Alarms.html">Using Amazon CloudWatch alarms</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/OpsCenter.html">AWS Systems Manager OpsCenter</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-ServiceLevelObjectives.html">Service level objectives (SLOs)</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Anomaly_Detection_Alarm.html">Create a CloudWatch alarm based on anomaly detection</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/omni-alerts.html">CloudWatch Omni alerts</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Investigations-configure-alarms.html">Configure alarms to create investigations</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Investigations.html">CloudWatch investigations</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/devopsagent/latest/userguide/">AWS DevOps Agent User Guide</a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related videos:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://www.youtube.com/watch?v=PcbOQAtT13I" rel="noopener noreferrer" target="_blank"><span>Incident Investigation with AWS DevOps Agent - AWS Tech Tales</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://www.youtube.com/watch?v=lt7wcPDgZhk" rel="noopener noreferrer" target="_blank"><span>AWS re:Invent 2025 - Version lifecycle management at scale with AWS Health (SPS326)</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related workshops:</b>
+    </p>
+    <div class="itemizedlist">
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://catalog.workshops.aws/observability/en-US/intro" rel="noopener noreferrer" target="_blank"><span>One Observability Workshop</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related services:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/systems-manager/" rel="noopener noreferrer" target="_blank"><span>AWS Systems Manager</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/cloudwatch/" rel="noopener noreferrer" target="_blank"><span>Amazon CloudWatch</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/eventbridge/" rel="noopener noreferrer" target="_blank"><span>Amazon EventBridge</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/devops-agent/" rel="noopener noreferrer" target="_blank"><span>AWS DevOps Agent</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./ops06.html">Create an effective event response</div><div id="next" class="next-link" accesskey="n" href="./ops06-bp02.html">OPS06-BP02 Automate responses to events</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops06-bp01.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops06-bp01.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>CloudWatch Logs Insights language query syntax - Amazon CloudWatch Logs</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="CWL_QuerySyntax" /><meta name="default_state" content="CWL_QuerySyntax" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.md" title="Markdown version" /><meta name="description" content="This section provides details about the Logs Insights QL. The query syntax supports different functions and operations that include but aren't limited to general functions, arithmetic and comparison operations, and regular expressions." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon CloudWatch Logs" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Monitor and store your log files from AWS sources. You can then retrieve the associated log data from CloudWatch Logs." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" hreflang="x-default" /><meta name="feedback-item" content="CloudWatch Logs" /><meta name="this_doc_product" content="Amazon CloudWatch Logs" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'cloudwatch'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="CloudWatch Logs Insights language query syntax" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="CWL_QuerySyntax.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>CloudWatch Logs Insights language query syntax - Amazon CloudWatch Logs</title><meta name="pdf" content="/pdfs/AmazonCloudWatch/latest/logs/cwl-ug.pdf#CWL_QuerySyntax" /><meta name="rss" content="amazon-cloudwatch-logs-document-history.rss" /><meta name="forums" content="https://repost.aws/tags/TArz36ydKETWeIc1aO7QuRFw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch%20Logs&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon CloudWatch",
+        "item" : "https://docs.aws.amazon.com/cloudwatch/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Analyzing log data with CloudWatch Logs Insights",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Supported query languages",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_AnalyzeLogData_Languages.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "CloudWatch Logs Insights query language (Logs Insights QL)",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_AnalyzeLogData_LogsInsights.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "CloudWatch Logs Insights language query syntax",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_AnalyzeLogData_LogsInsights.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonCloudWatch/latest/logs/cwl-ug.pdf#CWL_QuerySyntax" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/cloudwatch/index.html">Amazon CloudWatch</a><a href="WhatIsCloudWatchLogs.html">User Guide</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="CWL_QuerySyntax">CloudWatch Logs Insights language query syntax</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p> This section provides details about the Logs Insights QL. The query syntax
+                    supports different functions and operations that include but aren't limited to
+                    general functions, arithmetic and comparison operations, and regular
+                    expressions.</p><div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><p>To avoid incurring excessive charges by running large queries, keep in
+                        mind the following best practices:</p><div class="itemizedlist">
+                         
+                         
+                         
+                         
+                    <ul class="itemizedlist"><li class="listitem">
+                            <p>Select only the necessary log groups for each query.</p>
+                        </li><li class="listitem">
+                            <p>Always specify the narrowest possible time range for your
+                                queries.</p>
+                        </li><li class="listitem">
+                            <p>When you use the console to run queries, cancel all your queries
+                                before you close the CloudWatch Logs Insights console page. Otherwise, queries
+                                continue to run until completion.</p>
+                        </li><li class="listitem">
+                            <p>When you add a CloudWatch Logs Insights widget to a dashboard, ensure that the
+                                dashboard is not refreshing at a high frequency, because each
+                                refresh starts a new query.</p>
+                        </li></ul></div></div></div><p>To create queries that contain multiple commands, separate the commands with
+                    the pipe character (<b>|</b>).</p><p>To create queries that contain comments, set off the comments with the hash
+                    character (<b>#</b>). </p><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p> CloudWatch Logs Insights automatically discovers fields for different log types and
+                        generates fields that start with the <b>@</b> character. For
+                        more information about these fields, see <a href="https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/logs/CWL_AnalyzeLogData-discoverable-fields.html"> Supported logs and discovered fields</a> in the <em>Amazon CloudWatch
+                            User Guide</em>. </p></div></div><p>The following table briefly describes each command. Following this table is a
+                    more comprehensive description of each command, with examples.</p><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>All Logs Insights QL query commands are supported on log groups in the
+                        Standard log class. Log groups in the Essentials log class (formerly Infrequent Access) support
+                        all Logs Insights QL query commands except <code class="code">pattern</code>,
+                            <code class="code">diff</code>, and <code class="code">unmask</code>.</p></div></div><div class="table-container" id="CWL_QuerySyntax-intro-table"><div class="table-contents disable-scroll"><table id="d0e1">
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Addtotals.html">addtotals</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Computes row totals and column totals for numeric
+                                        fields. </p></td>
+
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Anomaly.html">anomaly</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Identifies unusual patterns in your log data using
+                                        machine learning. </p></td>
+
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Display.html">display</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p> Displays a specific field or fields in query results.
+                                    </p></td>
+
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Fields.html">fields</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p> Displays specific fields in query results and supports
+                                        functions and operations you can use to modify field values
+                                        and create new fields to use in your query. </p></td>
+
+
+                            </tr>
+
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Filter.html">filter</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p> Filters the query to return only the log events that
+                                        match one or more conditions. </p></td>
+                            </tr>
+
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-FilterIndex.html">filterIndex</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p> Forces a query to attempt to scan only the log groups
+                                        that are both indexed on the field mentioned in a field
+                                        index and also contain a value for that field index.
+                                        This reduces scanned volume by attempting to scan only log
+                                        events from these log groups that contain the value
+                                        specified in the query for this field index. </p>
+                                    <p>This command is not supported for log groups in the
+                                        Essentials log class (formerly Infrequent Access).</p></td>
+                            </tr>
+
+
+
+
+
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Pattern.html">pattern</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Automatically clusters your log data into patterns. A
+                                        pattern is shared text structure that recurs among your log
+                                        fields. CloudWatch Logs Insights provides ways for you to analyze the
+                                        patterns found in your log events. For more information, see
+                                            <a href="./CWL_AnalyzeLogData_Patterns.html">Pattern analysis</a>.</p></td>
+
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Diff.html">diff</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Compares the log events found in your requested time
+                                        period with the log events from a previous time period of
+                                        equal length, so that you can look for trends and find out
+                                        if certain log events are new.</p>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Parse.html">parse</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p> Extracts data from a log field to create an extracted
+                                        field that you can process in your query.
+                                                <b><code class="code">parse</code></b> supports
+                                        both glob mode using wildcards, and regular expressions.
+                                    </p></td>
+
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Sort.html">sort</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Displays the returned log events in ascending
+                                            (<code class="code">asc</code>) or descending (<code class="code">desc</code>)
+                                        order. </p></td>
+
+                            </tr>
+
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Source.html">SOURCE</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Including <code class="code">SOURCE</code> in a query is a useful
+                                        way to specify a large amount of log groups to include in a query 
+                                        based on log group name prefix, account identifiers, log group 
+                                        class, data sources, or log group tags. 
+                                        This command is supported only when you  create a query in the AWS CLI or 
+                                        programmatically, not in the CloudWatch console. </p></td>
+
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Stats.html">stats</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p> Calculate aggregate statistics using values in the log
+                                        fields. </p></td>
+
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Limit.html">limit</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Specifies a maximum number of log events that you want
+                                        your query to return. Useful with
+                                                <b><code class="code">sort</code></b> to return
+                                        "top 20" or "most recent 20" results. Use
+                                                <code class="code">limit any</code> to stop scanning early once
+                                        enough results are found.</p></td>
+
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Dedup.html">dedup</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p> Removes duplicate results based on specific values in
+                                        fields that you specify.</p></td>
+
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Unmask.html">unmask</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p> Displays all the content of a log event that has some
+                                        content masked because of a data protection policy. For more
+                                        information about data protection in log groups, see <a href="./mask-sensitive-log-data.html">Help protect sensitive log data with masking</a>.
+                                    </p></td>
+
+                            </tr>
+                            <tr>
+                                <td tabindex="-1">
+                                    <p>
+                                        <b><code class="code"><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax-Unnest.html">unnest</a></code></b>
+                                    </p>
+                                </td>
+                                <td tabindex="-1">
+                                    <p> Flattens a list taken as input to produce multiple
+                                        records with a single record for each element in the list.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Lookup.html">lookup</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Enriches log events with data from a lookup table
+                                        by matching field values. Use lookup tables to add
+                                        reference data such as user details, application names,
+                                        or product information to your query results.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Join.html">join</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Combines log events from a source log group with events 
+                                        from another log group or query result based on a matching field. 
+                                        Use the join command to correlate related log events across different 
+                                        sources using keys common across them such as matching request 
+                                        identifiers or transaction IDs.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Subqueries.html">subqueries</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>A subquery is a nested Logs Insights query that can be used 
+                                        as an input to another query. Subqueries can be used to derive 
+                                        intermediate result sets that are then consumed by subsequent commands.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Autoregress.html">autoregress</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Creates lagged (previous-row) copies of a field's values.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Logcompare.html">logcompare</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Compares the current time window against a baseline window shifted back by a duration.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Filldown.html">filldown</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Carries the last non-null value forward to fill gaps.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Fillmissing.html">fillmissing</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Inserts rows for empty time bins after stats by bin(), optionally filling fields with a constant.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Cidrlookup.html">cidrlookup</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Enriches events by matching an IP field against CIDR ranges in a lookup table.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Outlier.html">outlier</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Detects statistical outliers based on the interquartile range (IQR) and can remove or transform outlier rows.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Accum.html">accum</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Computes a running cumulative sum of a numeric field.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Appendcols.html">appendcols</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Appends columns from a sub-query to the current results by positional row matching.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Sessionize.html">sessionize</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Groups events into sessions by identity fields and inactivity gap.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-CountFrequent.html">countFrequent</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Returns an approximate count of each unique field-value combination, sorted in descending order.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b><code class="code">
+                                                <a href="./CWL_QuerySyntax-Where.html">where</a></code></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Acts as a grammar alias for the <code class="code">filter</code> command and accepts identical syntax.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b>
+                                                <a href="./CWL_QuerySyntax-Estimate.html">estimate</a></b></p>
+                                </td>
+                                <td tabindex="-1"><p>Returns the estimated bytes that the query would scan
+                                        over the selected log groups and time range, without running
+                                        the query.</p></td>
+                            </tr>
+                            <tr>
+                                <td tabindex="-1"><p><b>
+                                            <a href="./CWL_QuerySyntax-operations-functions.html">Other operations and
+                                        functions</a></b></p>
+                                </td>
+                                <td tabindex="-1"><p>CloudWatch Logs Insights also supports many comparison, arithmetic,
+                                        datetime, numeric, string, IP address, and general functions
+                                        and operations. </p></td>
+
+                            </tr>
+                        </table></div></div><p>The following sections provide more details about the CloudWatch Logs Insights query
+                    commands.</p><div class="highlights"><h2 class="awsdocs-topiclist-title">Topics</h2><ul><li><p><a href="./CWL_AnalyzeLogData_Classes.html">Logs Insights QL commands supported in log classes</a></p></li><li><p><a href="./CWL_QuerySyntax-Addtotals.html">addtotals</a></p></li><li><p><a href="./CWL_QuerySyntax-Anomaly.html">anomaly</a></p></li><li><p><a href="./CWL_QuerySyntax-Display.html">display</a></p></li><li><p><a href="./CWL_QuerySyntax-Fields.html">fields</a></p></li><li><p><a href="./CWL_QuerySyntax-Filter.html">filter</a></p></li><li><p><a href="./CWL_QuerySyntax-FilterIndex.html">filterIndex</a></p></li><li><p><a href="./CWL_QuerySyntax-Source.html">SOURCE</a></p></li><li><p><a href="./CWL_QuerySyntax-Pattern.html">pattern</a></p></li><li><p><a href="./CWL_QuerySyntax-Diff.html">diff</a></p></li><li><p><a href="./CWL_QuerySyntax-Parse.html">parse</a></p></li><li><p><a href="./CWL_QuerySyntax-RelevantFields.html">relevantfields</a></p></li><li><p><a href="./CWL_QuerySyntax-Expand.html">expand</a></p></li><li><p><a href="./CWL_QuerySyntax-Sort.html">sort</a></p></li><li><p><a href="./CWL_QuerySyntax-Stats.html">stats</a></p></li><li><p><a href="./CWL_QuerySyntax-Limit.html">limit</a></p></li><li><p><a href="./CWL_QuerySyntax-Dedup.html">dedup</a></p></li><li><p><a href="./CWL_QuerySyntax-Unmask.html">unmask</a></p></li><li><p><a href="./CWL_QuerySyntax-Unnest.html">unnest</a></p></li><li><p><a href="./CWL_QuerySyntax-Lookup.html">lookup</a></p></li><li><p><a href="./CWL_QuerySyntax-Join.html">join</a></p></li><li><p><a href="./CWL_QuerySyntax-Subqueries.html">subqueries</a></p></li><li><p><a href="./CWL_QuerySyntax-Autoregress.html">autoregress</a></p></li><li><p><a href="./CWL_QuerySyntax-Logcompare.html">logcompare</a></p></li><li><p><a href="./CWL_QuerySyntax-Filldown.html">filldown</a></p></li><li><p><a href="./CWL_QuerySyntax-Fillmissing.html">fillmissing</a></p></li><li><p><a href="./CWL_QuerySyntax-Cidrlookup.html">cidrlookup</a></p></li><li><p><a href="./CWL_QuerySyntax-Outlier.html">outlier</a></p></li><li><p><a href="./CWL_QuerySyntax-Accum.html">accum</a></p></li><li><p><a href="./CWL_QuerySyntax-Appendcols.html">appendcols</a></p></li><li><p><a href="./CWL_QuerySyntax-Sessionize.html">sessionize</a></p></li><li><p><a href="./CWL_QuerySyntax-CountFrequent.html">countFrequent</a></p></li><li><p><a href="./CWL_QuerySyntax-Where.html">where</a></p></li><li><p><a href="./CWL_QuerySyntax-Estimate.html">estimate</a></p></li><li><p><a href="./CWL_QuerySyntax-operations-functions.html">Boolean, comparison, numeric, datetime, and other functions</a></p></li><li><p><a href="./CWL_QuerySyntax-hash-functions.html">Hashing functions</a></p></li><li><p><a href="./CWL_QuerySyntax-timeseries-functions.html">Time-series functions</a></p></li><li><p><a href="./CWL_QuerySyntax-Guidelines.html">Fields that contain special characters</a></p></li><li><p><a href="./CWL_QuerySyntax-alias.html">Use aliases and comments in queries</a></p></li></ul></div><awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./CWL_AnalyzeLogData_LogsInsights.html">CloudWatch Logs Insights query language (Logs Insights QL)</div><div id="next" class="next-link" accesskey="n" href="./CWL_AnalyzeLogData_Classes.html">Logs Insights QL commands supported in log classes</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch Logs&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch Logs&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

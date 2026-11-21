@@ -1,0 +1,17 @@
+
+### 70 aws_devops.plan_infrastructure_and_data_restoration_in_dependency_order
+Inline: supplied restoration steps: Supplied scaffolding: the exercise provides restoration steps. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.; dependency order: Restore prerequisites before their consumers; delete consumers before their prerequisites.
+tb1: A recovery plan can name all components yet still put them in an unusable order. Build the sequence from supplied dependencies and require evidence that each prerequisite is ready before its dependent work resumes.
+tb2: A workload recovery plan must account for dependencies and the recovery capabilities needed to satisfy its objectives.
+tb3: List the supplied infrastructure, data and service dependencies and place each prerequisite restoration before the steps that depend on it.
+
+Include verification points before dependent services resume so incomplete restoration is not mistaken for usable recovery.
+tb4: Suppose the supplied dependency record says the application needs a restored database and the database needs prepared infrastructure. Put infrastructure restoration before database restoration and database verification before application resumption. These dependencies are example exercise inputs, not a universal AWS recovery sequence. Add the supplied verification point before each dependent service proceeds. If an earlier restoration step is incomplete, the plan should not present its dependent service as ready merely because that later step was scheduled. Compare the complete ordered plan with the stated recovery objectives and capabilities. The useful output is an evidence-checkable dependency order, not an unrelated checklist of resources.
+
+Read each dependency edge as a precondition: a dependent step cannot be considered usable until its prerequisite restoration passes the supplied verification. If independent branches exist in the supplied record, avoid inventing an order between them that the dependencies do not require. The final plan should still make every dependent service's readiness checkpoint explicit and be compared with the stated recovery objectives.
+tb5: Listing dependencies is not the same as ordering them. Each prerequisite restoration belongs before dependent steps, and verification belongs before dependent services resume. Incomplete restoration must not be treated as usable recovery.
+Assess: identify_restoration_prerequisites_for_a_dependent_service; identify_required_verification_before_service_resumption
+Practice: {'type': 'ordering', 'objective': "Order the supplied infrastructure restoration, database restoration, verification, and application resumption steps using one workload's supplied dependency record and recovery objectives.", 'success': 'Every prerequisite restoration precedes its dependent step, and every supplied readiness verification precedes dependent service resumption. The plan accounts for the supplied recovery capabilities and objectives without imposing an unsupported order on independent steps.'}
+Visual: {'type': 'diagram', 'purpose': 'Make the supplied infrastructure-to-database-to-application dependencies visible, with readiness verification checkpoints between prerequisite restoration and dependent work. Distinguish dependency-required ordering from any independent branches.'}
+Notes: ['Use supplied dependency graph and objectives; do not invent a mandatory service-wide recovery ordering.']
+Media: null

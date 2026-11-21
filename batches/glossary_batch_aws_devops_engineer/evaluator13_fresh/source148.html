@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Walkthrough: Use the AWS CLI with Run Command - AWS Systems Manager</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="walkthrough-cli" /><meta name="default_state" content="walkthrough-cli" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/walkthrough-cli.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/walkthrough-cli.md" title="Markdown version" /><meta name="description" content="Use the AWS CLI to view information about commands and command parameters, how to run commands, and how to view the status of those commands." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Systems Manager" /><meta name="guide" content="User Guide" /><meta name="abstract" content="AWS Systems Manager (formerly Amazon EC2 Systems Manager) is a unified interface that lets you centralize operational data and automate tasks across your AWS resources. Systems Manager shortens the time to detect and resolve operational problems in your infrastructure. Systems Manager gives you a complete view of your infrastructure performance and configuration, simplifies resource and application management, and lets you operate and manage your infrastructure at scale." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/walkthrough-cli.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/walkthrough-cli.html" hreflang="x-default" /><meta name="feedback-item" content="Systems Manager" /><meta name="this_doc_product" content="AWS Systems Manager" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'systems-manager'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Walkthrough: Use the AWS CLI with Run Command" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="walkthrough-cli.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Walkthrough: Use the AWS CLI with Run Command - AWS Systems Manager</title><meta name="pdf" content="/pdfs/systems-manager/latest/userguide/systems-manager-ug.pdf#walkthrough-cli" /><meta name="rss" content="aws-systems-manager-user-guide-updates.rss" /><meta name="forums" content="https://repost.aws/tags/TA-UbbRGVYRWCDaCvae6itYg" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Systems%20Manager&amp;topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/walkthrough-cli.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/walkthrough-cli.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/walkthrough-cli.html" /><meta name="keywords" content="EC2 Systems Manager,Simple Systems Manager,SSM,Patch Manager,Parameter Store,Maintenance Window,Run Command,State Manager,Session Manager,SSM Agent,SSM Documents,Systems Manager,AWS Resource Groups,AppConfig,OpsCenter,Explorer,Change Calendar,Quick Setup,Change Manager,Fleet Manager" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Systems Manager",
+        "item" : "https://docs.aws.amazon.com/systems-manager/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Using AWS Systems Manager tools",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-tools.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "AWS Systems Manager Node tools",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-instances-and-nodes.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "AWS Systems Manager Run Command",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "Run Command walkthroughs",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command-walkthroughs.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 8,
+        "name" : "Walkthrough: Use the AWS CLI with Run Command",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command-walkthroughs.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/systems-manager/latest/userguide/systems-manager-ug.pdf#walkthrough-cli" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/systems-manager/index.html">AWS Systems Manager</a><a href="what-is-systems-manager.html">User Guide</a></div><div id="page-toc-src"><a href="#walkthrough-cli-settings">Step 1: Getting started</a><a href="#walkthrough-cli-run-scripts">Step 2: Run shell scripts to view resource details</a><a href="#walkthrough-cli-example-1">Step 3: Send simple commands using the AWS-RunShellScript document</a><a href="#walkthrough-cli-example-2">Step 4: Run a simple Python script using Run Command</a><a href="#walkthrough-cli-example-3">Step 5: Run a Bash script using Run Command</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="walkthrough-cli">Walkthrough: Use the AWS CLI with Run Command</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>The following sample walkthrough shows you how to use the AWS Command Line Interface (AWS CLI) to
+                view information about commands and command parameters, how to run commands, and how
+                to view the status of those commands. </p><div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><p>Only trusted administrators should be allowed to use AWS Systems Manager pre-configured
+                    documents shown in this topic. The commands or scripts specified in Systems Manager
+                    documents run with administrative permissions on your managed nodes. If a user
+                    has permission to run any of the pre-defined Systems Manager documents (any document that
+                    begins with <code class="code">AWS-</code>), then that user also has administrator access to
+                    the node. For all other users, you should create restrictive documents and share
+                    them with specific users.</p></div></div>
+                <h2 id="walkthrough-cli-settings">Step 1: Getting started</h2>
+                <p>You must either have administrator permissions on the managed node you want to
+                    configure or you must have been granted the appropriate permission in AWS Identity and Access Management
+                    (IAM). Also note, this example uses the US East (Ohio) Region (us-east-2). Run Command
+                    is available in the AWS Regions listed in <a href="https://docs.aws.amazon.com/general/latest/gr/ssm.html#ssm_region">Systems Manager service endpoints</a> in the
+        <em>Amazon Web Services General Reference</em>. For more
+                    information, see <a href="./systems-manager-setting-up-nodes.html">Setting up managed nodes for AWS Systems Manager</a>.</p>
+                <div class="procedure"><h6 class="awsdocs-block-title">To run commands using the AWS CLI</h6><ol><li><p>Install and configure the AWS Command Line Interface (AWS CLI), if you haven't already.</p>
+    <p>For information, see <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">Installing or updating the
+            latest version of the AWS CLI</a>.</p></li><li>
+                        <p>List all available documents.</p>
+                        <p>This command lists all of the documents available for your account
+                            based on IAM permissions. </p>
+                        <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm list-documents</code></pre>
+                    </li><li>
+                        <p>Verify that an managed node is ready to receive commands.</p>
+                        <p>The output of the following command shows if managed nodes are
+                            online.</p>
+                        <awsdocs-tabs><dl style="display: none">
+                            <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                                    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm describe-instance-information \
+    --output text --query "InstanceInformationList[*]"</code></pre>
+                                </dd>
+                            <dt>Windows</dt><dd tab-id="windows">
+                                    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm describe-instance-information ^
+    --output text --query "InstanceInformationList[*]"</code></pre>
+                                </dd>
+                        </dl></awsdocs-tabs>
+                    </li><li>
+                        <p>Run the following command to view details about a particular managed
+                            node.</p>
+                        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>To run the commands in this walkthrough, replace the instance and
+                                command IDs. For managed AWS IoT Greengrass core devices, use the
+                                    mi-<code class="replaceable">ID_number</code> for instance ID. The
+                                command ID is returned as a response to
+                                    <b>send-command</b>. Instance IDs are available from
+                                Fleet Manager.</p></div></div>
+                        <awsdocs-tabs><dl style="display: none">
+                            <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                                    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm describe-instance-information \
+    --instance-information-filter-list key=InstanceIds,valueSet=<code class="replaceable">instance-ID</code></code></pre>
+                                </dd>
+                            <dt>Windows</dt><dd tab-id="windows">
+                                    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm describe-instance-information ^
+    --instance-information-filter-list key=InstanceIds,valueSet=<code class="replaceable">instance-ID</code></code></pre>
+                                </dd>
+                        </dl></awsdocs-tabs>
+                    </li></ol></div>
+             
+                <h2 id="walkthrough-cli-run-scripts">Step 2: Run shell scripts to view resource details</h2>
+                <p>Using Run Command and the <code class="code">AWS-RunShellScript</code> document, you can run
+                    any command or script on a managed node as if you were logged on locally.</p>
+                <p><b>View the description and available
+                    parameters</b></p>
+                <p>Run the following command to view a description of the Systems Manager JSON
+                    document.</p>
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm describe-document \
+    --name "AWS-RunShellScript" \
+    --query "[Document.Name,Document.Description]"</code></pre>
+                        </dd>
+                    <dt>Windows</dt><dd tab-id="windows">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm describe-document ^
+    --name "AWS-RunShellScript" ^
+    --query "[Document.Name,Document.Description]"</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs>
+                <p>Run the following command to view the available parameters and details about
+                    those parameters.</p>
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm describe-document \
+    --name "AWS-RunShellScript" \
+    --query "Document.Parameters[*]"</code></pre>
+                        </dd>
+                    <dt>Windows</dt><dd tab-id="windows">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm describe-document ^
+    --name "AWS-RunShellScript" ^
+    --query "Document.Parameters[*]"</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs>
+             
+                <h2 id="walkthrough-cli-example-1">Step 3: Send simple commands using the <code class="code">AWS-RunShellScript</code> document</h2>
+                <p>Run the following command to get IP information for a Linux managed
+                    node.</p>
+                <p>If you're targeting a Windows Server managed node, change the
+                        <code class="code">document-name</code> to <code class="code">AWS-RunPowerShellScript</code> and
+                    change the <code class="code">command</code> from <code class="code">ifconfig</code> to
+                        <code class="code">ipconfig</code>.</p>
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm send-command \
+    --instance-ids "<code class="replaceable">instance-ID</code>" \
+    --document-name "AWS-RunShellScript" \
+    --comment "IP config" \
+    --parameters commands=ifconfig \
+    --output text</code></pre>
+                        </dd>
+                    <dt>Windows</dt><dd tab-id="windows">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm send-command ^
+    --instance-ids "<code class="replaceable">instance-ID</code>" ^
+    --document-name "AWS-RunShellScript" ^
+    --comment "IP config" ^
+    --parameters commands=ifconfig ^
+    --output text</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs>
+                 
+                    <h6 class="awsdocs-block-title">Get command information with response data</h6>
+                    <p>The following command uses the Command ID that was returned from the
+                        previous command to get the details and response data of the command
+                        execution. The system returns the response data if the command completed. If
+                        the command execution shows <code class="code">"Pending"</code> or
+                            <code class="code">"InProgress"</code> you run this command again to see the response
+                        data.</p>
+                 
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm list-command-invocations \
+    --command-id $<code class="replaceable">sh-command-id</code> \
+    --details</code></pre>
+                        </dd>
+                    <dt>Windows</dt><dd tab-id="windows">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm list-command-invocations ^
+    --command-id $<code class="replaceable">sh-command-id</code> ^
+    --details</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs>
+                <p><b>Identify user</b></p>
+                <p>The following command displays the default user running the commands. </p>
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">sh_command_id=$(aws ssm send-command \
+    --instance-ids "<code class="replaceable">instance-ID</code>" \
+    --document-name "AWS-RunShellScript" \
+    --comment "Demo run shell script on Linux managed node" \
+    --parameters commands=whoami \
+    --output text \
+    --query "Command.CommandId")</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs>
+                 
+                    <h6 class="awsdocs-block-title">Get command status</h6>
+                    <p>The following command uses the Command ID to get the status of the command
+                        execution on the managed node. This example uses the Command ID that was
+                        returned in the previous command. </p>
+                 
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm list-commands \
+    --command-id "<code class="replaceable">command-ID</code>"</code></pre>
+                        </dd>
+                    <dt>Windows</dt><dd tab-id="windows">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm list-commands ^
+    --command-id "<code class="replaceable">command-ID</code>"</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs>
+                 
+                    <h6 class="awsdocs-block-title">Get command details</h6>
+                    <p>The following command uses the Command ID from the previous command to get
+                        the status of the command execution on a per managed node basis.</p>
+                 
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm list-command-invocations \
+    --command-id "<code class="replaceable">command-ID</code>" \
+    --details</code></pre>
+                        </dd>
+                    <dt>Windows</dt><dd tab-id="windows">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm list-command-invocations ^
+    --command-id "<code class="replaceable">command-ID</code>" ^
+    --details</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs>
+                 
+                    <h6 class="awsdocs-block-title">Get command information with response data for a specific managed node</h6>
+                    <p>The following command returns the output of the original <code class="code">aws ssm
+                            send-command</code> request for a specific managed node. </p>
+                 
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm list-command-invocations \
+    --instance-id <code class="replaceable">instance-ID</code> \
+    --command-id "<code class="replaceable">command-ID</code>" \
+    --details</code></pre>
+                        </dd>
+                    <dt>Windows</dt><dd tab-id="windows">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm list-command-invocations ^
+    --instance-id <code class="replaceable">instance-ID</code> ^
+    --command-id "<code class="replaceable">command-ID</code>" ^
+    --details</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs>
+                <p><b>Display Python version</b></p>
+                <p>The following command returns the version of Python running on a node.</p>
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">sh_command_id=$(aws ssm send-command \
+    --instance-ids "<code class="replaceable">instance-ID</code>" \
+    --document-name "AWS-RunShellScript" \
+    --comment "Demo run shell script on Linux Instances" \
+    --parameters commands='python -V' \
+    --output text --query "Command.CommandId") \
+    sh -c 'aws ssm list-command-invocations \
+    --command-id "$sh_command_id" \
+    --details \
+    --query "CommandInvocations[].CommandPlugins[].<span>{</span>Status:Status,Output:Output}"' </code></pre>
+                        </dd>
+                </dl></awsdocs-tabs>
+             
+                <h2 id="walkthrough-cli-example-2">Step 4: Run a simple Python script using Run Command</h2>
+                <p>The following command runs a simple Python "Hello World" script using
+                    Run Command.</p>
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">sh_command_id=$(aws ssm send-command \
+    --instance-ids "<code class="replaceable">instance-ID</code>" \
+    --document-name "AWS-RunShellScript" \
+    --comment "Demo run shell script on Linux Instances" \
+    --parameters '<span>{</span>"commands":["#!/usr/bin/python","print \"Hello World from python\""]}' \
+    --output text \
+    --query "Command.CommandId") \
+    sh -c 'aws ssm list-command-invocations \
+    --command-id "$sh_command_id" \
+    --details \
+    --query "CommandInvocations[].CommandPlugins[].<span>{</span>Status:Status,Output:Output}"'</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs>
+             
+                <h2 id="walkthrough-cli-example-3">Step 5: Run a Bash script using Run Command</h2>
+                <p>The examples in this section demonstrate how to run the following bash script
+                    using Run Command.</p>
+                <p>For examples of using Run Command to run scripts stored in remote locations, see
+                        <a href="./integration-s3.html">Running scripts from Amazon S3</a> and <a href="./integration-remote-scripts.html">Running scripts from GitHub</a>.</p>
+                <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (bash)--><code class="bash ">#!/bin/bash
+yum -y update
+yum install -y ruby
+cd /home/ec2-user
+curl -O https://aws-codedeploy-us-east-2.s3.amazonaws.com/latest/install
+chmod +x ./install
+./install auto</code></pre>
+                <p>This script installs the AWS CodeDeploy agent on Amazon Linux and Red Hat Enterprise Linux (RHEL)
+                    instances, as described in <a href="https://docs.aws.amazon.com/codedeploy/latest/userguide/instances-ec2-create.html">Create an Amazon EC2
+ instance for CodeDeploy</a> in the
+                    <em>AWS CodeDeploy User Guide</em>.</p>
+                <p>The script installs the CodeDeploy agent from an AWS managed S3 bucket in thee
+                    US East (Ohio) Region (us-east-2),
+                    <code>aws-codedeploy-us-east-2</code>.</p>
+                <p><b>Run a bash script in an AWS CLI command</b></p>
+                <p>The following sample demonstrates how to include the bash script in a CLI
+                    command using the <code class="code">--parameters</code> option.</p>
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm send-command \
+    --document-name "AWS-RunShellScript" \
+    --targets '[<span>{</span>"Key":"InstanceIds","Values":["<code class="replaceable">instance-id</code>"]}]' \
+    --parameters '<span>{</span>"commands":["#!/bin/bash","yum -y update","yum install -y ruby","cd /home/ec2-user","curl -O https://aws-codedeploy-us-east-2.s3.amazonaws.com/latest/install","chmod +x ./install","./install auto"]}'</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs>
+                <p><b>Run a bash script in a JSON file</b></p>
+                <p>In the following example, the content of the bash script is stored in a JSON
+                    file, and the file is included in the command using the
+                        <code class="code">--cli-input-json</code> option.</p>
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Linux &amp; macOS</dt><dd tab-id="linux-&amp;-macos">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm send-command \
+    --document-name "AWS-RunShellScript" \
+    --targets "Key=InstanceIds,Values=<code class="replaceable">instance-id</code>" \
+    --cli-input-json file://installCodeDeployAgent.json</code></pre>
+                        </dd>
+                    <dt>Windows</dt><dd tab-id="windows">
+                            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (sh)--><code class="sh ">aws ssm send-command ^
+    --document-name "AWS-RunShellScript" ^
+    --targets "Key=InstanceIds,Values=<code class="replaceable">instance-id</code>" ^
+    --cli-input-json file://installCodeDeployAgent.json</code></pre>
+                        </dd>
+                </dl></awsdocs-tabs>
+                <p>The contents of the referenced
+                        <code>installCodeDeployAgent.json</code> file is shown in the
+                    following example.</p>
+                <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Parameters": <span>{</span>
+        "commands": [
+            "#!/bin/bash",
+            "yum -y update",
+            "yum install -y ruby",
+            "cd /home/ec2-user",
+            "curl -O https://aws-codedeploy-us-east-2.s3.amazonaws.com/latest/install",
+            "chmod +x ./install",
+            "./install auto"
+        ]
+    }
+}</code></pre>
+            <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./run-command-tutorial-update-software.html">Updating software using Run Command</div><div id="next" class="next-link" accesskey="n" href="./walkthrough-powershell.html">Use the Tools for Windows PowerShell</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Systems Manager&amp;topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/walkthrough-cli.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Systems Manager&amp;topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/walkthrough-cli.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

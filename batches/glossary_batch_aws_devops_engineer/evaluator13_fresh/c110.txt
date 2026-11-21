@@ -1,0 +1,29 @@
+
+### 110 terraform.backend_configuration
+Inline: supplied Terraform bootstrap and bucket protections: Supplied scaffolding: Terraform bootstrap and bucket protections. The exercise provides this input or setup; independent implementation is not required.; backend bucket/key and state migration: The S3 bucket and key locate Terraform state; initialization and migration move the exercise state from local storage into that backend.; supplied bootstrap and protection settings: Supplied scaffolding: the exercise provides bootstrap and protection settings. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.
+tb1: Terraform's remote state bucket must already exist before it can store state for the configuration that manages exercise resources. Keep backend bootstrap, backend selection and migration distinct.
+tb2: The S3 backend stores Terraform state in a specified bucket and key, separate from the configuration that declares managed resources.
+tb3: Provision the protected backend bucket with the supplied local-state bootstrap configuration before selecting it as the backend.
+
+Configure the already-provisioned backend using line-separated HCL arguments:
+
+```hcl
+terraform {
+  backend "s3" {
+    bucket = "BUCKET"
+    key = "KEY"
+    region = "REGION"
+  }
+}
+```
+
+Use the supplied bucket, key, Region and protection settings.
+
+Run terraform init -migrate-state after changing the backend, approve the supplied migration and verify state is at the intended bucket/key.
+tb4: Provision the protected backend bucket with the supplied local-state bootstrap configuration. Substitute the actual supplied bucket, key and Region in the line-separated backend block. The block configures state storage; it is not the resource declaration that creates the bucket. After changing the backend, run terraform init -migrate-state, approve the supplied migration and verify state at the intended bucket/key. Keep the bootstrap result and migrated-state location with the record so the workflow does not assume a backend can create itself before initialization. Apply the supplied protection settings without introducing a new backend design or another storage service.
+tb5: Backend configuration names an already-provisioned state location; it is separate from managed-resource declarations. Provision the backend bucket first, then initialize/migrate and verify the intended bucket/key rather than treating the HCL block as bucket creation.
+Assess: verify_initialized_backend_bucket_and_state_key; verify_bootstrap_precedes_backend_selection_and_migration
+Practice: {'type': 'live_code', 'objective': 'Use the supplied local-state Terraform bootstrap configuration to provision one protected S3 backend bucket. Configure the already-provisioned S3 backend with the supplied bucket, key and Region, retain the supplied protection settings, then initialize and approve migration of the exercise state.', 'success': 'The protected bucket exists before backend selection, the backend arguments match the supplied destination, and the approved migration places the exercise state at the intended S3 bucket/key.', 'live_code': {'required_skill': 'Apply a supplied Terraform bootstrap configuration, edit line-separated S3 backend arguments, and initialize with state migration.', 'allowed_syntax': ['terraform { backend "s3" { ... } }', 'bucket = "BUCKET"', 'key = "KEY"', 'region = "REGION"', 'terraform init', 'terraform plan', 'terraform apply', 'terraform init -migrate-state'], 'blocked_syntax': ['terraform apply -replace', 'terraform plan -replace', 'replace_triggered_by', 'create_before_destroy', 'terraform force-unlock'], 'starter_state_intent': 'Provide the supplied local-state bootstrap configuration for one S3 bucket, its fixed protection settings, and the intended BUCKET, KEY and REGION values. Leave the S3 backend unselected until the bucket has been provisioned.', 'observable_success': 'The bootstrap result confirms that the protected S3 bucket exists. The line-separated backend block matches the supplied bucket, key and Region. Initialization with -migrate-state completes after migration approval, and inspection of the intended S3 bucket/key confirms the exercise state is present.'}}
+Visual: {'type': 'process_flow', 'purpose': 'Make the three transitions visible: provision the protected bucket using local state, select that existing bucket and key in the line-separated backend block, then initialize with migration and verify the resulting S3 state location. Distinguish the bucket resource declaration from the backend configuration.'}
+Notes: ['Show line-separated HCL, not comma-separated shorthand; use supplied bootstrap and migrate-state approval.']
+Media: null

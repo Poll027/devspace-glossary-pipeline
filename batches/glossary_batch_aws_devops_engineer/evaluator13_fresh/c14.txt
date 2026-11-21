@@ -1,0 +1,17 @@
+
+### 14 aws_devops.publish_workload_metrics_with_interpretable_dimensions
+Inline: supplied application metric emitter: Supplied scaffolding: application metric emitter. The exercise provides this input or setup; independent implementation is not required.; dimension cardinality: The number of distinct metric label combinations; unbounded combinations fragment series and raise cost.; supplied metric: Supplied scaffolding: the exercise provides metric. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.
+tb1: An orders workload reports a metric, but the operator must select the same series that was published. The metric name is only part of that identity. Namespace and the full dimension combination also matter.
+tb2: A custom CloudWatch metric is identified by its namespace, name and dimension combination.
+tb3: Publish a metric with put-metric-data, specifying namespace, metric name, value and the intended dimensions.
+
+Each distinct dimension combination identifies a distinct metric; query the same combination that was published to select the intended series.
+tb4: Suppose the supplied metric is QueueDepth in namespace Lab/Orders with dimensions Environment=sandbox and Service=orders. Publish the supplied value with put-metric-data using that namespace, name and dimension combination. When querying, select that same combination. A second publication with Environment=staging and Service=orders identifies a distinct metric, even though its name is also QueueDepth. In the exercise record, write the namespace, name and dimensions beside the observed value. That makes the comparison about a particular series rather than a name shared by several series. These dimension values are illustrative workload labels; do not add new dimension combinations just to make the example more elaborate.
+
+Consider a query using Environment=sandbox but omitting the supplied Service=orders dimension. It is not the same dimension combination as the example publication, so it does not identify that series by the stated identity rule. Compare complete combinations in the evidence record. This prevents a result from the staging series or another published combination from being described as the sandbox orders value.
+tb5: Querying by a familiar metric name is not enough to establish that you selected the intended series. Each distinct dimension combination identifies a distinct metric. Compare the published and queried combinations, not just the displayed metric name.
+Assess: verify_query_matches_published_workload_series
+Practice: {'type': 'tool_simulation', 'objective': 'Emit the supplied QueueDepth value in namespace Lab/Orders using put-metric-data with exactly Environment=sandbox and Service=orders as its dimensions.', 'success': 'The submitted put-metric-data operation contains the supplied value, namespace Lab/Orders, metric name QueueDepth, and exactly the two supplied dimension name-value pairs, without adding another dimension combination.'}
+Visual: {'type': 'comparison', 'purpose': 'Make the published and queried namespace, metric name, and full dimension combination visible side by side for QueueDepth in Lab/Orders. Contrast the matching sandbox orders combination with the staging orders combination and a query that omits Service=orders.'}
+Notes: ['Do not introduce dimension-cost claims or alarm thresholds not present in the brief.']
+Media: null

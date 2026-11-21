@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Object Lock considerations - Amazon Simple Storage Service</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="object-lock-managing" /><meta name="default_state" content="object-lock-managing" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-managing.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-managing.md" title="Markdown version" /><meta name="description" content="You can use replication, delete markers, object lifecycle configurations, events, and notifications with Amazon S3 Object Lock." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Simple Storage Service" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Learn how to use Amazon Simple Storage Service (Amazon S3) to store and retrieve any amount of data from anywhere. This guide explains Amazon S3 concepts, such as buckets, objects, and related configurations, and includes code examples for common operations." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-managing.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-managing.html" hreflang="x-default" /><meta name="feedback-item" content="S3" /><meta name="this_doc_product" content="Amazon Simple Storage Service" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'s3'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Object Lock considerations" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="object-lock-managing.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Object Lock considerations - Amazon Simple Storage Service</title><meta name="pdf" content="/pdfs/AmazonS3/latest/userguide/s3-userguide.pdf#object-lock-managing" /><meta name="rss" content="s3-userguide-rss-updates.rss" /><meta name="forums" content="https://repost.aws/tags/TADSTjraA0Q4-a1dxk6eUYaw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=S3&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonS3/latest/userguide/object-lock-managing.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonS3/latest/userguide/object-lock-managing.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonS3/latest/userguide/object-lock-managing.html" /><meta name="keywords" content="S3,Amazon S3,S3 User Guide,Amazon S3 User Guide,Amazon User Guide,s3 bucket,s3 object,cloud storage,data storage,prevent data loss in Amazon S3,Amazon S3 data redundancy,Amazon S3 backup for objects,replicate Amazon S3data,lock objects in Amazon S3,keep multiple versions of objects in Amazon S3,failover controls for Amazon S3,disaster recovery in Amazon S3,high availability in Amazon S3,resiliency in Amazon S3,business continuity in Amazon S3,Prevent object delete,Prevent object overwritten,Lock or place a legal hold on an object,Object Lock details,Object Lock permissions,How Object Lock works with other AWS services" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon Simple Storage Service (S3)",
+        "item" : "https://docs.aws.amazon.com/s3/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonS3/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Data protection in Amazon S3",
+        "item" : "https://docs.aws.amazon.com/AmazonS3/latest/userguide/data-protection.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Locking objects with Object Lock",
+        "item" : "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Object Lock considerations",
+        "item" : "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonS3/latest/userguide/s3-userguide.pdf#object-lock-managing" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/s3/index.html">Amazon Simple Storage Service (S3)</a><a href="Welcome.html">User Guide</a></div><div id="page-toc-src"><a href="#object-lock-managing-view">Permissions for viewing lock information</a><a href="#object-lock-managing-bypass">Bypassing governance mode</a><a href="#object-lock-managing-replication">Using Object Lock with S3 Replication</a><a href="#object-lock-managing-encryption">Using Object Lock with encryption</a><a href="#object-lock-inv-report">Using Object Lock with Amazon S3 Inventory</a><a href="#object-lock-managing-lifecycle">Managing S3 Lifecycle policies with Object Lock</a><a href="#object-lock-managing-delete-markers">Managing delete markers with Object Lock</a><a href="#object-lock-storage-lens">Using S3 Storage Lens with Object Lock</a><a href="#object-lock-put-object">Uploading objects to an Object Lock enabled bucket</a><a href="#object-lock-managing-events">Configuring events and notifications</a><a href="#object-lock-managing-retention-limits">Setting limits on retention periods with a bucket policy</a><a href="#object-lock-managing-variable-retention-troubleshooting">Troubleshooting variable retention</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="object-lock-managing">Object Lock considerations</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>Amazon S3 Object Lock can help prevent objects from being deleted or overwritten for a fixed
+        amount of time or indefinitely.</p><p>You can use the Amazon S3 console, AWS Command Line Interface (AWS CLI), AWS SDKs, or Amazon S3 REST API to view or
+        set Object Lock information. For general information about S3 Object Lock capabilities,
+        see <a href="./object-lock.html">Locking objects with Object Lock</a>.</p><div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><div class="itemizedlist">
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>After you enable Object Lock on a bucket, you can't disable Object Lock or
+                    suspend versioning for that bucket. </p>
+            </li><li class="listitem">
+                <p>S3 buckets with Object Lock can't be used as destination buckets for server
+                    access logs. For more information, see <a href="./ServerLogs.html">Logging requests with server access logging</a>.</p>
+            </li></ul></div></div></div><div class="highlights" id="inline-topiclist"><h2 class="awsdocs-topiclist-title">Topics</h2><ul><li><p><a href="#object-lock-managing-view">Permissions for viewing lock information</a></p></li><li><p><a href="#object-lock-managing-bypass">Bypassing governance mode</a></p></li><li><p><a href="#object-lock-managing-replication">Using Object Lock with S3 Replication</a></p></li><li><p><a href="#object-lock-managing-encryption">Using Object Lock with encryption</a></p></li><li><p><a href="#object-lock-inv-report">Using Object Lock with Amazon S3 Inventory</a></p></li><li><p><a href="#object-lock-managing-lifecycle">Managing S3 Lifecycle policies with Object Lock</a></p></li><li><p><a href="#object-lock-managing-delete-markers">Managing delete markers with Object Lock</a></p></li><li><p><a href="#object-lock-storage-lens">Using S3 Storage Lens with Object Lock</a></p></li><li><p><a href="#object-lock-put-object">Uploading objects to an Object Lock enabled bucket</a></p></li><li><p><a href="#object-lock-managing-events">Configuring events and notifications</a></p></li><li><p><a href="#object-lock-managing-retention-limits">Setting limits on retention periods with a bucket policy</a></p></li><li><p><a href="#object-lock-managing-variable-retention-troubleshooting">Troubleshooting variable retention</a></p></li></ul></div>
+        <h2 id="object-lock-managing-view">Permissions for viewing lock information</h2>
+        <p>You can programmatically view the Object Lock status of an Amazon S3 object version by
+            using the <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadObject.html">HeadObject</a> or <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObject.html">GetObject</a>
+            operations. Both operations return the retention mode, retain until date, and legal hold
+            status for the specified object version. Additionally, you can view the Object Lock
+            status for multiple objects in your S3 bucket using S3 Inventory. </p>
+        <p>To view an object version's retention mode and retention period, you must have the
+                <code class="code">s3:GetObjectRetention</code> permission. To view an object version's legal
+            hold status, you must have the <code class="code">s3:GetObjectLegalHold</code> permission. To view a
+            bucket's default retention configuration, you must have the
+                <code class="code">s3:GetBucketObjectLockConfiguration</code> permission. If you make a request
+            for an Object Lock configuration on a bucket that doesn't have S3 Object Lock
+            enabled, Amazon S3 returns an error. For information about setting a bucket default, see
+                <a href="./object-lock-configure.html">Configuring S3 Object Lock</a>.</p>
+     
+        <h2 id="object-lock-managing-bypass">Bypassing governance mode</h2>
+        <p>If you have the <code class="code">s3:BypassGovernanceRetention</code> permission, you can perform
+            operations on object versions that are locked in governance mode as if they were
+            unprotected. These operations include deleting an object version, shortening the
+            retention period, or removing the Object Lock retention period by placing a new
+                <code class="code">PutObjectRetention</code> request with empty parameters. </p>
+        <p>To bypass governance mode, you must explicitly indicate in your request that you want
+            to bypass this mode. To do this, include the
+                <code class="code">x-amz-bypass-governance-retention:true</code> header with your
+                <code class="code">PutObjectRetention</code> API operation request, or use the equivalent
+            parameter with requests made through the AWS CLI or AWS SDKs. The S3 console
+            automatically applies this header for requests made through the S3 console if you have
+            the <code class="code">s3:BypassGovernanceRetention</code> permission.</p>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Bypassing governance mode doesn't affect an object version's legal hold status. If
+                an object version has a legal hold enabled, the legal hold remains and prevents
+                requests to overwrite or delete the object version.</p></div></div>
+     
+        <h2 id="object-lock-managing-replication">Using Object Lock with S3 Replication</h2>
+        <p>You can use Object Lock with S3 Replication to enable automatic, asynchronous
+            copying of locked objects and their retention metadata, across S3 buckets. This means
+            that for replicated objects, Amazon S3 takes the object lock configuration of the source
+            bucket. In other words, if the source bucket has Object Lock
+            enabled, the destination buckets must also have Object Lock enabled. If an object is directly uploaded to the destination bucket (outside of
+            S3 Replication), it takes the Object Lock set on the destination bucket. When you use
+            replication, objects in a <em>source bucket</em> are replicated to one or
+            more <em>destination buckets</em>. </p>
+        <p>To set up replication on a bucket with Object Lock enabled, you can use the S3
+            console, AWS CLI, Amazon S3 REST API, or AWS SDKs.</p>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>To use Object Lock with replication, you must grant two additional permissions on
+                the source S3 bucket in the AWS Identity and Access Management (IAM) role that you use to set up
+                replication. The two additional permissions are <code class="code">s3:GetObjectRetention</code>
+                and <code class="code">s3:GetObjectLegalHold</code>. If the role has an <code class="code">s3:Get*</code>
+                permission statement, that statement satisfies the requirement. For more
+                information, see <a href="./setting-repl-config-perm-overview.html">Setting up permissions for live replication</a>.</p><p>For general information about S3 Replication, see <a href="./replication.html">Replicating objects within and across Regions</a>.</p><p>For examples of setting up S3 Replication, see <a href="./replication-example-walkthroughs.html">Examples for configuring live replication</a>.</p></div></div>
+        <p>Amazon S3 replicates variable retention settings—event hold and event hold
+            duration—along with other Object Lock metadata. Both source and destination
+            buckets must have Object Lock enabled. When an event hold is released on the source,
+            Amazon S3 replicates the release to the destination, and the destination sets its own final
+            retain-until-date based on the configured duration and the time of replication.</p>
+     
+        <h2 id="object-lock-managing-encryption">Using Object Lock with encryption</h2>
+        <p>Amazon S3 encrypts all new objects by default. You can use Object Lock with your encrypted
+            objects. For more information, see <a href="./UsingEncryption.html">Protecting data with encryption</a>.</p>
+        <p>While Object Lock can help prevent Amazon S3 objects from being deleted or
+            overwritten, it does not protect against losing access to the encryption keys or
+            encryption keys being deleted. For example, if you encrypt your objects with AWS KMS
+            server-side encryption and your AWS KMS key is deleted your objects may become
+            unreadable.</p>
+     
+        <h2 id="object-lock-inv-report">Using Object Lock with Amazon S3 Inventory</h2>
+        <p>You can configure Amazon S3 Inventory to create lists of the objects in an S3 bucket on a
+            defined schedule. You can configure Amazon S3 Inventory to include the following Object Lock
+            metadata for your objects:</p>
+        <div class="itemizedlist">
+             
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>The retain until date</p>
+            </li><li class="listitem">
+                <p>The retention mode</p>
+            </li><li class="listitem">
+                <p>The legal hold status</p>
+            </li><li class="listitem">
+                <p>The event hold status</p>
+            </li><li class="listitem">
+                <p>The event hold duration</p>
+            </li></ul></div>
+        <p>While an event hold is on, the <code class="code">GetObjectRetention</code>,
+                <code class="code">HeadObject</code>, and <code class="code">GetObject</code> operations return the computed
+            retain-until-date. If you specified a retain-until-date, the returned value is not
+            earlier than that date.</p>
+        <p>For objects with an active event hold, Amazon S3 Inventory reports a dynamic
+            retain-until-date based on when Amazon S3 generates the report. For objects with a released
+            event hold or fixed retention, the retain-until-date is fixed. Inventory reports can
+            take up to 48 hours to generate. Therefore, the retain-until-date reflects the report
+            generation time, not the current time. For the most current value, query the object's
+            retention metadata directly by using <code class="code">GetObjectRetention</code>.</p>
+        <p>For more information, see <a href="./storage-inventory.html">Cataloging and analyzing your data with S3 Inventory</a>.</p>
+     
+        <h2 id="object-lock-managing-lifecycle">Managing S3 Lifecycle policies with Object Lock</h2>
+        <p>Object lifecycle management configurations continue to function normally on protected
+            objects, including placing delete markers. However, a locked version of an object cannot
+            be deleted by a S3 Lifecycle expiration policy. Object Lock is maintained regardless of
+            which storage class the object resides in and throughout S3 Lifecycle transitions between
+            storage classes.</p>
+        <p>For more information about managing object lifecycles, see <a href="./object-lifecycle-mgmt.html">Managing the lifecycle of objects</a>.</p>
+     
+        <h2 id="object-lock-managing-delete-markers">Managing delete markers with Object Lock</h2>
+        <p>Although you can't delete a protected object version, you can still create a delete
+            marker for that object. Placing a delete marker on an object doesn't delete the object
+            or its object versions. However, it makes Amazon S3 behave in most ways as though the object
+            has been deleted. For more information, see <a href="./DeleteMarker.html">Working with delete markers</a>.</p>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Delete markers are not WORM-protected, regardless of any retention period or legal
+                hold in place on the underlying object.</p></div></div>
+     
+        <h2 id="object-lock-storage-lens">Using S3 Storage Lens with Object Lock</h2>
+        <p>To see metrics for Object Lock-enabled storage bytes and object count, you can use
+            Amazon S3 Storage Lens. S3 Storage Lens is a cloud-storage analytics feature that you can use to gain organization-wide
+    visibility into object-storage usage and activity.</p>
+        <p>For more information, see <a href="./storage-lens-data-protection.html">Using S3 Storage Lens to protect your data</a>.</p>
+        <p>For a complete list of metrics, see <a href="./storage_lens_metrics_glossary.html">Amazon S3 Storage Lens metrics glossary</a>.</p>
+     
+        <h2 id="object-lock-put-object">Uploading objects to an Object Lock enabled bucket</h2>
+        <p>The <code class="code">Content-MD5</code> or <code class="code">x-amz-sdk-checksum-algorithm</code> header is
+            required for any request to upload an object with a retention period configured using
+            Object Lock. Theses headers are a way to verify the integrity of your object during
+            upload.</p>
+        <p>When uploading an object with the Amazon S3 console, S3 automatically adds the
+                <code class="code">Content-MD5</code> header. You can optionally specify an additional checksum
+            function and checksum value through the console as the
+                <code class="code">x-amz-sdk-checksum-algorithm</code> header. If you use the <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html">PutObject</a>
+            API you must specify the <code class="code">Content-MD5</code> header, the
+                <code class="code">x-amz-sdk-checksum-algorithm</code> header, or both to configure the
+            Object Lock retention period.</p>
+        <p>For more information, see <a href="./checking-object-integrity.html">Checking object integrity in Amazon S3</a>.</p>
+     
+        <h2 id="object-lock-managing-events">Configuring events and notifications</h2>
+        <p>You can use Amazon S3 Event Notifications to track access and changes to your Object Lock
+            configurations and data by using AWS CloudTrail. For information about CloudTrail, see <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html">What
+                is AWS CloudTrail?</a> in the <em>AWS CloudTrail User
+                    Guide</em>.</p>
+        <p>You can also use Amazon CloudWatch to generate alerts based on this data. For information about
+            CloudWatch, see the <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html">What
+                is Amazon CloudWatch?</a> in the <em>Amazon CloudWatch User
+                    Guide</em>.</p>
+        <p>Amazon S3 publishes an <code class="code">s3:ObjectRetention:Put</code> event notification for explicit
+            <code class="code">PutObjectRetention</code> calls. This includes setting fixed or variable
+            retention, releasing an event hold, modifying the duration, and extending a
+            retain-until-date.</p>
+     
+        <h2 id="object-lock-managing-retention-limits">Setting limits on retention periods with a bucket policy</h2>
+        <p>You can set minimum and maximum allowable retention periods for a bucket by using a
+            bucket policy. The maximum retention period is 100 years.</p>
+        <p>The following example shows a bucket policy that uses the
+            <code class="code">s3:object-lock-remaining-retention-days</code> condition key to set a maximum
+            retention period of 10 days.</p>
+        <awsdocs-tabs><dl style="display: none">
+    <dt>JSON</dt><dd tab-id="json">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term"></span></b></dt>
+        <dd>
+            
+                
+                <pre class="programlisting" data-example-id="ec165e6860c88ed95cca11b0c627382047a52fc63189b6a0b1d573be45ea028a"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><code class="userinput"><span>{</span>
+    "Version":"2012-10-17",
+    "Id": "<code class="replaceable">SetRetentionLimits</code>",
+    "Statement": [
+        <span>{</span>
+            "Sid": "<code class="replaceable">SetRetentionPeriod</code>",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+                "s3:PutObjectRetention"
+            ],
+            "Resource": "arn:aws:s3:::<code class="replaceable">amzn-s3-demo-bucket1</code>/*",
+            "Condition": <span>{</span>
+                "NumericGreaterThan": <span>{</span>
+                    "s3:object-lock-remaining-retention-days": "10"
+                }
+            }
+        }
+    ]
+}</code>
+</code></pre>
+            
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>If your bucket is the destination bucket for a replication configuration, you can
+                set up minimum and maximum allowable retention periods for object replicas that are
+                created by using replication. To do so, you must allow the
+                <code class="code">s3:ReplicateObject</code> action in your bucket policy. For more
+                information about replication permissions, see <a href="./setting-repl-config-perm-overview.html">Setting up permissions for live replication</a>. </p></div></div>
+        <p>For variable retention, you can control event holds and durations with the following
+            condition keys. Amazon S3 evaluates these keys against the values in a request. They don't
+            apply to an event hold or duration that Amazon S3 applies from a bucket's default retention
+            configuration. For more information, see <a href="./object-lock-configure.html#object-lock-configure-set-variable-retention-bucket">Set or modify a default variable retention period on an S3 bucket</a>. To restrict
+            bucket defaults, deny the <code class="code">s3:PutBucketObjectLockConfiguration</code> action.</p>
+        <div class="itemizedlist">
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><code class="code">s3:object-lock-event-hold</code> – Restricts who can set or
+                    release event holds. Values: <code class="code">ON</code>, <code class="code">OFF</code>.</p>
+            </li><li class="listitem">
+                <p><code class="code">s3:object-lock-event-hold-duration-days</code> – Lets you enforce
+                    a minimum or maximum event hold duration, in days.</p>
+            </li></ul></div>
+        <p>The following example denies any <code class="code">PutObjectRetention</code> request that sets an
+            event hold duration of less than 90 days:</p>
+        <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Sid": "RequireMinimumEventHoldDuration",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:PutObjectRetention",
+            "Resource": "arn:aws:s3:::amzn-s3-demo-bucket1/*",
+            "Condition": <span>{</span>
+                "NumericLessThan": <span>{</span>
+                    "s3:object-lock-event-hold-duration-days": "90"
+                }
+            }
+        }
+    ]
+}</code></pre>
+        <p>The following example denies any request that sets an event hold on this bucket:</p>
+        <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Sid": "DenyEventHolds",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+                "s3:PutObject",
+                "s3:PutObjectRetention"
+            ],
+            "Resource": "arn:aws:s3:::amzn-s3-demo-bucket1/*",
+            "Condition": <span>{</span>
+                "StringEquals": <span>{</span>
+                    "s3:object-lock-event-hold": "ON"
+                }
+            }
+        }
+    ]
+}</code></pre>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>A bucket policy that uses the <code class="code">s3:object-lock-remaining-retention-days</code>
+                condition key denies a <code class="code">PutObjectRetention</code> request when the retention
+                period that you specify exceeds your limit. While an event hold is active, Amazon S3
+                recalculates the retain-until-date on the service side. The date can move past a
+                limit that the policy enforces at request time. If you don't want this behavior,
+                also restrict the <code class="code">s3:object-lock-event-hold</code> condition key to control
+                who can enable event holds.</p></div></div>
+        <p>For more information about bucket policies, see the following topics:</p>
+        <div class="itemizedlist">
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html">
+                    Actions, resources, and condition keys for Amazon S3</a> in the <em>Service Authorization 
+                        Reference</em></p>
+                <p>For more information about the permissions to S3 API operations by S3 resource types, see <a href="./using-with-s3-policy-actions.html">Required permissions for Amazon S3 API operations</a>.</p>
+                
+            </li><li class="listitem">
+                <p><a href="./security_iam_service-with-iam.html#using-with-s3-actions-related-to-objects">Object operations</a></p>
+            </li><li class="listitem">
+                <p><a href="./amazon-s3-policy-keys.html">Bucket policy examples using condition keys</a></p>
+            </li></ul></div>
+     
+        <h2 id="object-lock-managing-variable-retention-troubleshooting">Troubleshooting variable retention</h2>
+        <p>Use the following information to diagnose and resolve common issues with variable
+            retention and event holds.</p>
+         
+            <h3 id="object-lock-troubleshooting-request-rejected">Request that sets an event hold is rejected</h3>
+            <p>A request that sets or modifies an event hold fails with a <code class="code">400 Bad
+                    Request</code> response.</p>
+            <p>Common causes and actions:</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><b>No retention mode</b> – An event hold
+                        requires a retention mode. Specify either <code class="code">GOVERNANCE</code> or
+                        <code class="code">COMPLIANCE</code>.</p>
+                </li><li class="listitem">
+                    <p><b>Missing or duplicate duration</b> – An
+                        event hold that is set to <code class="code">ON</code> requires exactly one event hold
+                        duration. Specify the duration in either days or years, but not both.</p>
+                </li><li class="listitem">
+                    <p><b>Duration specified with an event hold that is set to
+                            OFF</b> – Don't specify an event hold duration when you
+                        release an event hold. Amazon S3 computes the final retain-until-date from the
+                        duration that is already configured on the object version.</p>
+                </li><li class="listitem">
+                    <p><b>No retain-until-date with an event hold that is set
+                            to OFF</b> – When the event hold is off, the object version
+                        must have a retain-until-date. Amazon S3 sets this date in one of two ways. It
+                        computes the date when you release an active event hold (a transition from
+                        <code class="code">ON</code> to <code class="code">OFF</code>). Or, you provide an explicit
+                        retain-until-date, which is fixed retention. To protect an object with
+                        variable retention, create it with the event hold set to <code class="code">ON</code> and
+                        a duration.</p>
+                </li><li class="listitem">
+                    <p><b>Duration outside the allowed range</b>
+                        – An event hold duration must be a positive integer, up to a maximum
+                        of 36,500 days or 100 years.</p>
+                </li></ul></div>
+         
+         
+            <h3 id="object-lock-troubleshooting-years-condition-key">Bucket policy doesn't match a duration that is set in years</h3>
+            <p>There is no years-based condition key. When you set a duration in years, Amazon S3
+                converts it to days for evaluation against the
+                <code class="code">s3:object-lock-event-hold-duration-days</code> condition key. Amazon S3 counts 1
+                year as 365 days and doesn't count leap years. Express the limits in your bucket
+                policy in days, and account for this conversion. For example, Amazon S3 evaluates a
+                duration of 1 year as 365 days.</p>
+         
+         
+            <h3 id="object-lock-troubleshooting-inventory-stale">Amazon S3 Inventory report shows an outdated retain-until-date</h3>
+            <p>While an event hold is active, Amazon S3 dynamically computes the retain-until-date.
+                Amazon S3 Inventory reports are generated periodically and can be up to 48 hours old. As
+                a result, a report might not show the current computed retain-until-date. For the
+                current value, use <code class="code">GetObjectRetention</code> or
+                <code class="code">HeadObject</code>.</p>
+         
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./object-lock.html">Locking objects</div><div id="next" class="next-link" accesskey="n" href="./object-lock-configure.html">Configuring Object Lock</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=S3&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonS3/latest/userguide/object-lock-managing.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=S3&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonS3/latest/userguide/object-lock-managing.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

@@ -1,0 +1,17 @@
+
+### 35 aws_devops.operate_an_eks_pod_using_supplied_cluster_access_setup
+Inline: supplied cluster access and image: Supplied scaffolding: the exercise provides cluster access and image. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.; Pod lifecycle: Pod status, events and logs describe the runtime unit independently of the Deployment controller.
+tb1: A supplied EKS workload has a Pod that appears to be running. The operator still needs evidence about its containers and events. Pod phase is one lifecycle observation, not a complete health diagnosis.
+tb2: A Pod groups containers with shared networking and storage and has a lifecycle distinct from the controller that may replace it.
+tb3: Pod phases include Pending, Running, Succeeded, Failed and Unknown; phase alone is not a complete diagnosis of container health.
+
+Use kubectl get pod NAME, kubectl describe pod NAME and kubectl logs NAME -c CONTAINER to inspect status, scheduling or runtime events and container output.
+tb4: Using the supplied cluster access setup, substitute the approved Pod name into kubectl get pod NAME. Record its phase, then inspect kubectl describe pod NAME for scheduling or runtime events. Use kubectl logs NAME -c CONTAINER for the intended container's output. Suppose the phase reads Running while the supplied events and logs show a container problem. Preserve those observations together rather than deciding that Running settles health. A Pod groups containers with shared networking and storage; its lifecycle is distinct from a controller that may replace it. This exercise inspects the Pod and its container output, not the controller's desired-replica reconciliation or cluster administration.
+
+If the Pod is Pending, use its described scheduling events as evidence rather than applying a correction inferred from the phase label alone. If it is Running, inspect the intended container's runtime events and output. The same inspection sequence accommodates different phases because it records what happened at the Pod and container boundaries. An unrelated container's output is not evidence about the one named in the exercise.
+tb5: Running is a Pod phase, not a complete diagnosis of container health. Other phases include Pending, Succeeded, Failed and Unknown, but the phase list does not replace inspection of events and the intended container's logs.
+Assess: distinguish_pod_lifecycle_from_controller_lifecycle; interpret_pod_phase_without_assuming_container_health; identify_pod_failure_from_status_events_and_container_logs
+Practice: {'type': 'tool_simulation', 'objective': 'Inspect one seeded failing Pod using supplied cluster access, an already supplied image, and the approved Pod and container names. Use kubectl get pod NAME, kubectl describe pod NAME and kubectl logs NAME -c CONTAINER to collect evidence.', 'success': "Record the Pod phase, relevant scheduling or runtime events, and the intended container's output. Identify the seeded failure using those observations together, without treating Running as proof of container health or changing the workload."}
+Visual: {'type': 'UI_state', 'purpose': "Make the supplied Pod's status, described events and named container's logs visible together, showing how a Running phase can coexist with evidence of a container problem."}
+Notes: ['Use supplied cluster access; leave Deployment reconciliation and self-managed cluster administration out of scope.']
+Media: null

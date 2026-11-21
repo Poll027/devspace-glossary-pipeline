@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Evaluating Resources with AWS Config Rules - AWS Config</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="evaluate-config" /><meta name="default_state" content="evaluate-config" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config.md" title="Markdown version" /><meta name="description" content="Use AWS Config to evaluate the configuration settings of your AWS resources by creating rules." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Config" /><meta name="guide" content="Developer Guide" /><meta name="abstract" content="AWS Config provides a detailed view of the configuration of AWS resources in your AWS account. This includes how the resources are related to one another and how they were configured in the past so that you can see how the configurations and relationships change over time." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/config/latest/developerguide/evaluate-config.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/config/latest/developerguide/evaluate-config.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/config/latest/developerguide/evaluate-config.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/config/latest/developerguide/evaluate-config.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/config/latest/developerguide/evaluate-config.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/config/latest/developerguide/evaluate-config.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/config/latest/developerguide/evaluate-config.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/config/latest/developerguide/evaluate-config.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/config/latest/developerguide/evaluate-config.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/config/latest/developerguide/evaluate-config.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/config/latest/developerguide/evaluate-config.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/config/latest/developerguide/evaluate-config.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/config/latest/developerguide/evaluate-config.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/config/latest/developerguide/evaluate-config.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/config/latest/developerguide/evaluate-config.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/config/latest/developerguide/evaluate-config.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/config/latest/developerguide/evaluate-config.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/config/latest/developerguide/evaluate-config.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config.html" hreflang="x-default" /><meta name="feedback-item" content="AWS Config" /><meta name="this_doc_product" content="AWS Config" /><meta name="this_doc_guide" content="Developer Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'config'}"></script><meta id="panorama-serviceSubSection" value="Developer Guide" /><meta id="panorama-serviceConsolePage" value="Evaluating Resources with AWS Config Rules" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="evaluate-config.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Evaluating Resources with AWS Config Rules - AWS Config</title><meta name="pdf" content="/pdfs/config/latest/developerguide/config-dg.pdf#evaluate-config" /><meta name="rss" content="aws-config-document-history.rss" /><meta name="forums" content="https://repost.aws/tags/TAh2aOShjeSGiuPX-5ga8tOQ" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AWS%20Config&amp;topic_url=https://docs.aws.amazon.com/en_us/config/latest/developerguide/evaluate-config.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/config/latest/developerguide/evaluate-config.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/config/latest/developerguide/evaluate-config.html" /><meta name="keywords" content="AWS Config,Config,Rule,Aggregator,AWS Config rules,resource configuration management,AWS compliance,managed rules AWS,cloud security monitoring" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Config",
+        "item" : "https://docs.aws.amazon.com/config/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Developer Guide",
+        "item" : "https://docs.aws.amazon.com/config/latest/developerguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Evaluating Resources with AWS Config Rules",
+        "item" : "https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/config/latest/developerguide/config-dg.pdf#evaluate-config" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/config/index.html">AWS Config</a><a href="WhatIsConfig.html">Developer Guide</a></div><div id="page-toc-src"><a href="#evaluate-config-considerations">Considerations</a><a href="#region-support-config-rules">Region Support</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="evaluate-config">Evaluating Resources with AWS Config Rules</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>Use AWS Config to evaluate the configuration settings of your AWS resources. You do this by
+        creating AWS Config rules, which represent your ideal configuration settings. AWS Config provides
+        customizable, predefined rules called managed rules to help you get started.</p><div class="highlights"><h2 class="awsdocs-topiclist-title">Topics</h2><ul><li><p><a href="#evaluate-config-considerations">Considerations</a></p></li><li><p><a href="#region-support-config-rules">Region Support</a></p></li><li><p><a href="./evaluate-config_components.html">Components of a Rule</a></p></li><li><p><a href="./evaluate-config_use-managed-rules.html">Managed Rules</a></p></li><li><p><a href="./evaluate-config_develop-rules.html">Custom Rules</a></p></li><li><p><a href="./service-linked-awsconfig-rules.html">Service-Linked Rules</a></p></li><li><p><a href="./config-rule-multi-account-deployment.html">Organizational Rules</a></p></li><li><p><a href="./evaluate-config_add-rules.html">Adding Rules</a></p></li><li><p><a href="./evaluate-config_update-rules.html">Updating Rules</a></p></li><li><p><a href="./evaluate-config_delete-rules.html">Deleting Rules</a></p></li><li><p><a href="./evaluate-config_view-rules.html">Viewing Rules</a></p></li><li><p><a href="./evaluate-config_turn-on-proactive-rules.html">Turning on Proactive Evaluation</a></p></li><li><p><a href="./setting-up-aws-config-rules-with-console-integration.html">Sending Evaluations to Security Hub CSPM</a></p></li><li><p><a href="./evaluating-your-resources.html">Evaluating Resources with Rules</a></p></li><li><p><a href="./deleting-evaluations-results.html">Deleting Evaluation Results</a></p></li><li><p><a href="./troubleshooting-rules.html">Troubleshooting</a></p></li></ul></div>
+        <h2 id="evaluate-config-considerations">Considerations</h2>
+        
+        
+        <awsdocs-tabs><dl style="display: none">
+            <dt>Cost Considerations</dt><dd tab-id="config-cost-considerations"><p>For details about the costs associated with resource recording, see <a href="https://aws.amazon.com/config/pricing/" rel="noopener noreferrer" target="_blank"><span>AWS Config pricing</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+                    
+                    <p><b>Recommendation: Consider excluding the
+                        <code class="code">AWS::Config::ResourceCompliance</code> resource type from recording
+                        before deleting rules</b></p>
+                    
+                    <p>Deleting rules creates configuration items (CIs) for
+                        <code class="code">AWS::Config::ResourceCompliance</code> that can affect your costs for the
+                        configuration recorder. If you are deleting rules which evaluate a large number of
+                        resource types, this can lead to a spike in the number of CIs recorded.</p>
+                    
+                    <p>To avoid the associated costs, you can opt to disable recording for the
+                        <code class="code">AWS::Config::ResourceCompliance</code> resource type before deleting
+                        rules, and re-enable recording after the rules have been deleted.</p>
+                    
+                    <p>However, since deleting rules is an asynchronous process, it might take an hour or
+                        more to complete. During the time when recording is disabled for
+                        <code class="code">AWS::Config::ResourceCompliance</code>, rule evaluations will not be
+                        recorded in the associated resource’s history.</p>
+                    
+                    <p>AWS Config recommends that you weigh these factors on a case-by-case basis before
+                        deciding how to proceed with deleting rules.</p>
+                    
+                    <p><b>Recommendation: Add logic to handle the evaluation of deleted resources
+                        for custom lambda rules</b></p>
+                    
+                    <p>When creating AWS Config custom lambda rules, it is highly recommended that you add
+                        logic to handle the evaluation of deleted resources.</p>
+                    
+                    <p>When evaluation results are marked as <code class="code">NOT_APPLICABLE</code>, they will be
+                        marked for deletion and cleaned up. If they're NOT marked as
+                        <code class="code">NOT_APPLICABLE</code>, the evaluation results will remain unchanged until
+                        the rule is deleted, which can cause an unexpected spike in the creation of CIs for
+                        <code class="code">AWS::Config::ResourceCompliance</code> upon rule deletion.</p>
+                    
+                    <p>For information on how to set AWS Config custom lambda rules to return
+                        <code class="code">NOT_APPLICABLE</code> for deleted resources, see <a href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_develop-rules.html#evaluate-config_develop-rules-delete">Managing deleted resources with AWS Config custom lambda rules</a>.</p>
+                    
+                    <p><b>Recommendation: Provide the resources in scope for custom lambda
+                        rules</b></p>
+                    
+                    <p>AWS Config Custom Lambda Rules can cause a high number of Lambda function invocations if
+                        the rule is not scoped to one or more resource types. To avoid increased activity
+                        associated with your account, it is highly recommended to provide resources in scope
+                        for your Custom Lambda rules. If no resource types are selected, the rule will
+                        invoke the Lambda function for all resources in the account.</p>
+                </dd>
+            <dt>Other considerations</dt><dd tab-id="evaluate-config_use-managed-rules-considerations">            <p><b>Defaut Values for Managed Rules</b></p>
+                    
+                    <p>The default values specified for managed rules are pre-populated only when using
+                        the AWS console. Default values are not supplied for the API, CLI, or SDK.</p>
+                    
+                    <p><b>Configuration Item Recording Delays</b></p>
+                    
+                    <p>AWS Config usually records configuration changes to your resources right after a change
+                        is detected, or at the frequency that you specify. However, this is on a best effort
+                        basis and can take longer at times. For example, a resource type with known delays is
+                        <code class="code">AWS::SecretsManager::Secret</code>. This
+                        resource type is an example, and this list is non-exhaustive.</p>
+                    
+                    <p><b>Policies and compliance results</b></p>
+                    <p><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html">IAM
+                        policies</a> and <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies.html">other policies
+                            managed in AWS Organizations</a> can impact whether AWS Config has permissions to record
+                        configuration changes for your resources. Additionally, rules directly evaluate the
+                        configuration of a resource and rules don't take into account these policies when
+                        running evaluations. Make sure that the policies in effect align with how you intend
+                        to use AWS Config.</p>
+                    
+                    
+                    <p><b>Tagging support for resource types</b></p>
+                    
+                    <p>If a resource type does not support tagging or does not include tag information in its
+                        describe API response, AWS Config won't capture tag data in the configuration items (CIs) for that
+                        resource type. AWS Config will still record these resources. However, any functionality that relies
+                        on tag data won't work. This affects tag-based filtering, grouping, or compliance evaluation
+                        that relies on tag data.</p>
+                    
+                    <p><b>Directory Buckets Are Not Supported</b></p>
+                    
+                    <p>Managed rules only support general purpose buckets when evaluating Amazon Simple Storage Service (Amazon S3)
+                        resources. For more
+                        information on general purpose buckets and directory buckets, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingBucket.html">Buckets
+                            overview</a> and <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/directory-buckets-overview.html">Directory
+                                buckets</a> in the Amazon S3 User Guide.</p>
+                    
+                    <p><b>Managed Rules and Global IAM Resource Types</b></p>
+                    
+                    <p>The global IAM resource types onboarded before February 2022
+                        (<code class="code">AWS::IAM::Group</code>, <code class="code">AWS::IAM::Policy</code>,
+                        <code class="code">AWS::IAM::Role</code>, and <code class="code">AWS::IAM::User</code>) can only be
+                        recorded by AWS Config in AWS Regions where AWS Config was available before February 2022.
+                        These resource types cannot be recorded in Regions supported by AWS Config after February
+                        2022. For a list of those Regions, see <a href="https://docs.aws.amazon.com/config/latest/developerguide/select-resources.html#select-resources-all">Recording AWS Resources | Global Resources</a>.</p>
+                    
+                    <p>If you record a global IAM resource type in at least one Region, periodic rules
+                        that report compliance on the global IAM resource type will run evaluations in all
+                        Regions where the periodic rule is added, even if you have not enabled the recording
+                        of the global IAM resource type in the Region where the periodic rule was
+                        added.</p>
+                    
+                    <p>To avoid unnecessary evaluations, you should only deploy periodic rules that
+                        report compliance on a global IAM resource type to one of the supported Regions.
+                        For a list of which managed rules are supported in which Regions, see <a href="https://docs.aws.amazon.com/config/latest/developerguide/managing-rules-by-region-availability.html">List of AWS Config Managed Rules by Region Availability</a>.</p>
+                </dd>
+        </dl></awsdocs-tabs>
+
+     
+
+        <h2 id="region-support-config-rules">Region Support</h2>
+
+        <p>Currently, the AWS Config Rule feature is supported in the following AWS regions. For a
+            list of which individual AWS Config rules are supported in which Regions, see <a href="https://docs.aws.amazon.com/config/latest/developerguide/managing-rules-by-region-availability.html">List of AWS Config Managed
+                Rules by Region Availability</a>.</p>
+        
+
+<div class="table-container"><div class="table-contents"><table id="d0e1"><thead>
+         <tr>
+            <th>Region Name</th>
+            <th>Region</th>
+            <th>Endpoint</th>
+            <th>Protocol</th>
+            
+         </tr>
+      </thead>
+         <tr>
+            <td tabindex="-1">US East (Ohio)</td>
+            <td tabindex="-1">us-east-2</td>
+            <td tabindex="-1">
+               <p>
+                  config.us-east-2.amazonaws.com
+               </p>
+               <p>
+                  config-fips.us-east-2.amazonaws.com
+               </p>
+            </td>
+            <td tabindex="-1">
+               <p>HTTPS</p>
+               <p>HTTPS</p>
+            </td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">US East (N. Virginia)</td>
+            <td tabindex="-1">us-east-1</td>
+            <td tabindex="-1">
+               <p>
+                  config.us-east-1.amazonaws.com
+               </p>
+               <p>
+                  config-fips.us-east-1.amazonaws.com
+               </p>
+            </td>
+            <td tabindex="-1">
+               <p>HTTPS</p>
+               <p>HTTPS</p>
+            </td>
+            
+         </tr>
+         
+         
+         
+         
+         
+         
+         <tr>
+            <td tabindex="-1">US West (N. California)</td>
+            <td tabindex="-1">us-west-1</td>
+            <td tabindex="-1">
+               <p>
+                  config.us-west-1.amazonaws.com
+               </p>
+               <p>
+                  config-fips.us-west-1.amazonaws.com
+               </p>
+            </td>
+            <td tabindex="-1">
+               <p>HTTPS</p>
+               <p>HTTPS</p>
+            </td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">US West (Oregon)</td>
+            <td tabindex="-1">us-west-2</td>
+            <td tabindex="-1">
+               <p>
+                  config.us-west-2.amazonaws.com
+               </p>
+               <p>
+                  config-fips.us-west-2.amazonaws.com
+               </p>
+            </td>
+            <td tabindex="-1">
+               <p>HTTPS</p>
+               <p>HTTPS</p>
+            </td>
+            
+         </tr>
+         
+         <tr>
+            <td tabindex="-1">Africa (Cape Town)</td>
+            <td tabindex="-1">af-south-1</td>
+            <td tabindex="-1">
+               config.af-south-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Hong Kong)</td>
+            <td tabindex="-1">ap-east-1</td>
+            <td tabindex="-1">
+               config.ap-east-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Hyderabad)</td>
+            <td tabindex="-1">ap-south-2</td>
+            <td tabindex="-1">
+               config.ap-south-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Jakarta)</td>
+            <td tabindex="-1">ap-southeast-3</td>
+            <td tabindex="-1">
+               config.ap-southeast-3.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Malaysia)</td>
+            <td tabindex="-1">ap-southeast-5</td>
+            <td tabindex="-1">
+               config.ap-southeast-5.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Melbourne)</td>
+            <td tabindex="-1">ap-southeast-4</td>
+            <td tabindex="-1">
+               config.ap-southeast-4.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Mumbai)</td>
+            <td tabindex="-1">ap-south-1</td>
+            <td tabindex="-1">
+               config.ap-south-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (New Zealand)</td>
+            <td tabindex="-1">ap-southeast-6</td>
+            <td tabindex="-1">
+               config.ap-southeast-6.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Osaka)</td>
+            <td tabindex="-1">ap-northeast-3</td>
+            <td tabindex="-1">
+               config.ap-northeast-3.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Seoul)</td>
+            <td tabindex="-1">ap-northeast-2</td>
+            <td tabindex="-1">
+               config.ap-northeast-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Singapore)</td>
+            <td tabindex="-1">ap-southeast-1</td>
+            <td tabindex="-1">
+               config.ap-southeast-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Sydney)</td>
+            <td tabindex="-1">ap-southeast-2</td>
+            <td tabindex="-1">
+               config.ap-southeast-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Taipei)</td>
+            <td tabindex="-1">ap-east-2</td>
+            <td tabindex="-1">
+               config.ap-east-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Thailand)</td>
+            <td tabindex="-1">ap-southeast-7</td>
+            <td tabindex="-1">
+               config.ap-southeast-7.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Tokyo)</td>
+            <td tabindex="-1">ap-northeast-1</td>
+            <td tabindex="-1">
+               config.ap-northeast-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Canada (Central)</td>
+            <td tabindex="-1">ca-central-1</td>
+            <td tabindex="-1">
+               config.ca-central-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Canada West (Calgary)</td>
+            <td tabindex="-1">ca-west-1</td>
+            <td tabindex="-1">
+               config.ca-west-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         
+         
+         
+         <tr>
+            <td tabindex="-1">Europe (Frankfurt)</td>
+            <td tabindex="-1">eu-central-1</td>
+            <td tabindex="-1">
+               config.eu-central-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (Ireland)</td>
+            <td tabindex="-1">eu-west-1</td>
+            <td tabindex="-1">
+               config.eu-west-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (London)</td>
+            <td tabindex="-1">eu-west-2</td>
+            <td tabindex="-1">
+               config.eu-west-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (Milan)</td>
+            <td tabindex="-1">eu-south-1</td>
+            <td tabindex="-1">
+               config.eu-south-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (Paris)</td>
+            <td tabindex="-1">eu-west-3</td>
+            <td tabindex="-1">
+               config.eu-west-3.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (Spain)</td>
+            <td tabindex="-1">eu-south-2</td>
+            <td tabindex="-1">
+               config.eu-south-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (Stockholm)</td>
+            <td tabindex="-1">eu-north-1</td>
+            <td tabindex="-1">
+               config.eu-north-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (Zurich)</td>
+            <td tabindex="-1">eu-central-2</td>
+            <td tabindex="-1">
+               config.eu-central-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Israel (Tel Aviv)</td>
+            <td tabindex="-1">il-central-1</td>
+            <td tabindex="-1">
+               config.il-central-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Mexico (Central)</td>
+            <td tabindex="-1">mx-central-1</td>
+            <td tabindex="-1">
+               config.mx-central-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Middle East (Bahrain)</td>
+            <td tabindex="-1">me-south-1</td>
+            <td tabindex="-1">
+               config.me-south-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         
+         <tr>
+            <td tabindex="-1">Middle East (UAE)</td>
+            <td tabindex="-1">me-central-1</td>
+            <td tabindex="-1">
+               config.me-central-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         
+         <tr>
+            <td tabindex="-1">South America (São Paulo)</td>
+            <td tabindex="-1">sa-east-1</td>
+            <td tabindex="-1">
+               config.sa-east-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">
+               AWS GovCloud (US-East)</td>
+            <td tabindex="-1">us-gov-east-1</td>
+            <td tabindex="-1">
+               config.us-gov-east-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">
+               AWS GovCloud (US-West)</td>
+            <td tabindex="-1">us-gov-west-1</td>
+            <td tabindex="-1">
+               config.us-gov-west-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+      </table></div></div>
+
+        <p>Deploying AWS Config Rules across member accounts in an AWS Organization is supported in
+            the following Regions.</p>
+        
+
+<div class="table-container"><div class="table-contents"><table id="d0e2"><thead>
+         <tr>
+            <th>Region Name</th>
+            <th>Region</th>
+            <th>Endpoint</th>
+            <th>Protocol</th>
+            
+         </tr>
+      </thead>
+         <tr>
+            <td tabindex="-1">US East (Ohio)</td>
+            <td tabindex="-1">us-east-2</td>
+            <td tabindex="-1">
+               config.us-east-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">US East (N. Virginia)</td>
+            <td tabindex="-1">us-east-1</td>
+            <td tabindex="-1">
+               config.us-east-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         
+         
+         
+         
+         
+         
+         <tr>
+            <td tabindex="-1">US West (N. California)</td>
+            <td tabindex="-1">us-west-1</td>
+            <td tabindex="-1">
+               config.us-west-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">US West (Oregon)</td>
+            <td tabindex="-1">us-west-2</td>
+            <td tabindex="-1">
+               config.us-west-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         
+         <tr>
+            <td tabindex="-1">Africa (Cape Town)</td>
+            <td tabindex="-1">af-south-1</td>
+            <td tabindex="-1">
+               config.af-south-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Hong Kong)</td>
+            <td tabindex="-1">ap-east-1</td>
+            <td tabindex="-1">
+               config.ap-east-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Hyderabad)</td>
+            <td tabindex="-1">ap-south-2</td>
+            <td tabindex="-1">
+               config.ap-south-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Jakarta)</td>
+            <td tabindex="-1">ap-southeast-3</td>
+            <td tabindex="-1">
+               config.ap-southeast-3.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Malaysia)</td>
+            <td tabindex="-1">ap-southeast-5</td>
+            <td tabindex="-1">
+               config.ap-southeast-5.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Melbourne)</td>
+            <td tabindex="-1">ap-southeast-4</td>
+            <td tabindex="-1">
+               config.ap-southeast-4.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Mumbai)</td>
+            <td tabindex="-1">ap-south-1</td>
+            <td tabindex="-1">
+               config.ap-south-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (New Zealand)</td>
+            <td tabindex="-1">ap-southeast-6</td>
+            <td tabindex="-1">
+               config.ap-southeast-6.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Osaka)</td>
+            <td tabindex="-1">ap-northeast-3</td>
+            <td tabindex="-1">
+               config.ap-northeast-3.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Seoul)</td>
+            <td tabindex="-1">ap-northeast-2</td>
+            <td tabindex="-1">
+               config.ap-northeast-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Singapore)</td>
+            <td tabindex="-1">ap-southeast-1</td>
+            <td tabindex="-1">
+               config.ap-southeast-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Sydney)</td>
+            <td tabindex="-1">ap-southeast-2</td>
+            <td tabindex="-1">
+               config.ap-southeast-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Taipei)</td>
+            <td tabindex="-1">ap-east-2</td>
+            <td tabindex="-1">
+               config.ap-east-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Thailand)</td>
+            <td tabindex="-1">ap-southeast-7</td>
+            <td tabindex="-1">
+               config.ap-southeast-7.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Asia Pacific (Tokyo)</td>
+            <td tabindex="-1">ap-northeast-1</td>
+            <td tabindex="-1">
+               config.ap-northeast-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Canada (Central)</td>
+            <td tabindex="-1">ca-central-1</td>
+            <td tabindex="-1">
+               config.ca-central-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Canada West (Calgary)</td>
+            <td tabindex="-1">ca-west-1</td>
+            <td tabindex="-1">
+               config.ca-west-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         
+         
+         
+         <tr>
+            <td tabindex="-1">Europe (Frankfurt)</td>
+            <td tabindex="-1">eu-central-1</td>
+            <td tabindex="-1">
+               config.eu-central-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (Ireland)</td>
+            <td tabindex="-1">eu-west-1</td>
+            <td tabindex="-1">
+               config.eu-west-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (London)</td>
+            <td tabindex="-1">eu-west-2</td>
+            <td tabindex="-1">
+               config.eu-west-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (Milan)</td>
+            <td tabindex="-1">eu-south-1</td>
+            <td tabindex="-1">
+               config.eu-south-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (Paris)</td>
+            <td tabindex="-1">eu-west-3</td>
+            <td tabindex="-1">
+               config.eu-west-3.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (Spain)</td>
+            <td tabindex="-1">eu-south-2</td>
+            <td tabindex="-1">
+               config.eu-south-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (Stockholm)</td>
+            <td tabindex="-1">eu-north-1</td>
+            <td tabindex="-1">
+               config.eu-north-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Europe (Zurich)</td>
+            <td tabindex="-1">eu-central-2</td>
+            <td tabindex="-1">
+               config.eu-central-2.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Israel (Tel Aviv)</td>
+            <td tabindex="-1">il-central-1</td>
+            <td tabindex="-1">
+               config.il-central-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Mexico (Central)</td>
+            <td tabindex="-1">mx-central-1</td>
+            <td tabindex="-1">
+               config.mx-central-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Middle East (Bahrain)</td>
+            <td tabindex="-1">me-south-1</td>
+            <td tabindex="-1">
+               config.me-south-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">Middle East (UAE)</td>
+            <td tabindex="-1">me-central-1</td>
+            <td tabindex="-1">
+               config.me-central-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">South America (São Paulo)</td>
+            <td tabindex="-1">sa-east-1</td>
+            <td tabindex="-1">
+               config.sa-east-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">
+               AWS GovCloud (US-East)</td>
+            <td tabindex="-1">us-gov-east-1</td>
+            <td tabindex="-1">
+               config.us-gov-east-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+         <tr>
+            <td tabindex="-1">
+               AWS GovCloud (US-West)</td>
+            <td tabindex="-1">us-gov-west-1</td>
+            <td tabindex="-1">
+               config.us-gov-west-1.amazonaws.com
+            </td>
+            <td tabindex="-1">HTTPS</td>
+            
+         </tr>
+      </table></div></div>
+
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./tagging.html">Tagging Your Resources</div><div id="next" class="next-link" accesskey="n" href="./evaluate-config_components.html">Components of a Rule</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AWS Config&amp;topic_url=https://docs.aws.amazon.com/en_us/config/latest/developerguide/evaluate-config.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AWS Config&amp;topic_url=https://docs.aws.amazon.com/en_us/config/latest/developerguide/evaluate-config.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

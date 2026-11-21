@@ -1,0 +1,1108 @@
+
+
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Extensibility guide" href="events.html" /><link rel="prev" title="Error handling" href="error-handling.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
+        <title>Retries - Boto3 1.44.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=5c2e0e83" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/dark_light_mode.css?v=33639cc8" />
+    
+    
+<script src="https://a0.awsstatic.com/s_code/js/3.0/awshome_s_code.js"></script>
+<script src="https://prod.assets.shortbread.aws.dev/shortbread.js"></script>
+<link href="https://prod.assets.shortbread.aws.dev/shortbread.css" rel="stylesheet">
+</head>
+  <body>
+     
+<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path class="icon-opacity" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line class="icon-opacity" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line class="icon-opacity" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line class="icon-opacity" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line class="icon-opacity" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line class="icon-opacity" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line class="icon-opacity" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line class="icon-opacity" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line class="icon-opacity" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle class="icon-opacity" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
+    <symbol id="svg-close" viewBox="0 0 24 24">
+        <title>Close Menu</title>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor"
+          stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+            <line x1="2" y1="22" x2="22" y2="2"/>
+            <line x1="2" y1="2" x2="22" y2="22"/>
+        </svg>
+    </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" id="nav-menu-open" for="__navigation" tabindex="0">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Boto3 1.44.9 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" id="toc-menu-open-sm" for="__toc" tabindex="0">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-div show-div-sm justify-content-right">
+    <label class="nav-close-icon" id="nav-menu-close" for="__navigation" tabindex="0">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-close"></use></svg></i>
+    </label>
+</div><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../_static/logos/aws_light_theme_logo.svg" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../_static/logos/aws_dark_theme_logo.svg" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Boto3 1.44.9 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-div">
+    <p class="sidebar-heading">Feedback</p>
+    <p class="sidebar-text">
+        Do you have a suggestion to improve this website or boto3?
+        <a href="https://github.com/boto/boto3/issues">Give us feedback</a>.
+    </p>
+</div><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sqs.html">A Sample Tutorial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Code Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Code Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="cw-examples.html">Amazon CloudWatch examples</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Amazon CloudWatch examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="cw-example-creating-alarms.html">Creating alarms in Amazon CloudWatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cw-example-using-alarms.html">Using alarm actions in Amazon CloudWatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cw-example-metrics.html">Getting metrics from Amazon CloudWatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cw-example-events.html">Sending events to Amazon CloudWatch Events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cw-example-subscription-filters.html">Using subscription filters in Amazon CloudWatch Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamodb.html">Amazon DynamoDB</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ec2-examples.html">Amazon EC2 examples</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Amazon EC2 examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="ec2-example-managing-instances.html">Managing Amazon EC2 instances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ec2-example-key-pairs.html">Working with Amazon EC2 key pairs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ec2-example-regions-avail-zones.html">Describe Amazon EC2 Regions and Availability Zones</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ec2-example-security-group.html">Working with security groups in Amazon EC2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ec2-example-elastic-ip-addresses.html">Using Elastic IP addresses in Amazon EC2</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="iam-examples.html">AWS Identity and Access Management examples</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of AWS Identity and Access Management examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="iam-example-managing-users.html">Managing IAM users</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iam-example-policies.html">Working with IAM policies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iam-example-managing-access-keys.html">Managing IAM access keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iam-example-server-certificates.html">Working with IAM server certificates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iam-example-managing-account-aliases.html">Managing IAM account aliases</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="kms-examples.html">AWS Key Management Service (AWS KMS) examples</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of AWS Key Management Service (AWS KMS) examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="kms-example-encrypt-decrypt-file.html">Encrypt and decrypt a file</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="s3-examples.html">Amazon S3 examples</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Amazon S3 examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3-example-creating-buckets.html">Amazon S3 buckets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3-uploading-files.html">Uploading files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3-example-download-file.html">Downloading files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html">File transfer configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3-presigned-urls.html">Presigned URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3-example-bucket-policies.html">Bucket policies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3-example-access-permissions.html">Access permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3-example-static-web-host.html">Using an Amazon S3 bucket as a static web host</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3-example-configuring-buckets.html">Bucket CORS configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3-example-mrap.html">Multi-Region Access Points</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3-example-privatelink.html">AWS PrivateLink for Amazon S3</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="secrets-manager.html">AWS Secrets Manager</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ses-examples.html">Amazon SES examples</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Amazon SES examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="ses-verify.html">Verifying email addresses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ses-template.html">Working with email templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ses-filters.html">Managing email filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ses-rules.html">Using email rules</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="sqs-examples.html">Amazon SQS examples</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Amazon SQS examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="sqs-example-using-queues.html">Using queues in Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sqs-example-sending-receiving-msgs.html">Sending and receiving messages in Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sqs-example-visibility-timeout.html">Managing visibility timeout in Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sqs-example-long-polling.html">Enabling long polling in Amazon SQS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sqs-example-dead-letter-queue.html">Using dead-letter queues in Amazon SQS</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Developer Guide</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Developer Guide</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="credentials.html">Credentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clients.html">Low-level clients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session.html">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collections.html">Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paginators.html">Paginators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error-handling.html">Error handling</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Retries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html">Extensibility guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud9.html">Cloud9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new.html">What’s new</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="migration.html">Migrating from Boto 2.x</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Migrating from Boto 2.x</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="migrations3.html">Amazon S3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="migrationec2.html">Amazon EC2</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="migrationpy3.html">Migrating to Python 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html">Upgrading notes</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security</a></li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/services/index.html">Available Services</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Available Services</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/abuse-signal.html">AbuseSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/accessanalyzer.html">AccessAnalyzer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/account.html">Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/account-access.html">AccountAccess</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/account-access-runtime.html">AccountAccessRuntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/acm.html">ACM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/acm-pca.html">ACMPCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/agent-discovery.html">AgentDiscovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/agent-registry.html">AgentRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/agent-registry-control.html">AgentRegistryControl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/aiops.html">AIOps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/amp.html">PrometheusService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/amplify.html">Amplify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/amplifybackend.html">AmplifyBackend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/amplifyuibuilder.html">AmplifyUIBuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/apigateway.html">APIGateway</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/apigatewaymanagementapi.html">ApiGatewayManagementApi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/apigatewayv2.html">ApiGatewayV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/apiportal.html">APIPortal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/appconfig.html">AppConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/appconfigdata.html">AppConfigData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/appfabric.html">AppFabric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/appflow.html">Appflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/appintegrations.html">AppIntegrationsService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/application-autoscaling.html">ApplicationAutoScaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/application-insights.html">ApplicationInsights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/application-signals.html">CloudWatchApplicationSignals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/applicationcostprofiler.html">ApplicationCostProfiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/appmesh.html">AppMesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/apprunner.html">AppRunner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/appstream.html">AppStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/appsync.html">AppSync</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/arc-region-switch.html">ARCRegionswitch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/arc-zonal-shift.html">ARCZonalShift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/artifact.html">Artifact</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/athena.html">Athena</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/auditmanager.html">AuditManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/autoscaling.html">AutoScaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/autoscaling-plans.html">AutoScalingPlans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/b2bi.html">B2BI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/backup.html">Backup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/backup-gateway.html">BackupGateway</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/backupsearch.html">BackupSearch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/batch.html">Batch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/bcm-dashboards.html">BillingandCostManagementDashboards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/bcm-data-exports.html">BillingandCostManagementDataExports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/bcm-pricing-calculator.html">BillingandCostManagementPricingCalculator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/bcm-recommended-actions.html">BillingandCostManagementRecommendedActions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/bedrock.html">Bedrock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/bedrock-agent.html">AgentsforBedrock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/bedrock-agent-runtime.html">AgentsforBedrockRuntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/bedrock-agentcore.html">BedrockAgentCore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/bedrock-agentcore-control.html">BedrockAgentCoreControl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/bedrock-data-automation.html">DataAutomationforBedrock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/bedrock-data-automation-runtime.html">RuntimeforBedrockDataAutomation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/bedrock-runtime.html">BedrockRuntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/billing.html">Billing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/billingconductor.html">BillingConductor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/braket.html">Braket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/budgets.html">Budgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ce.html">CostExplorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/chatbot.html">Chatbot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/chime.html">Chime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/chime-sdk-identity.html">ChimeSDKIdentity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/chime-sdk-media-pipelines.html">ChimeSDKMediaPipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/chime-sdk-meetings.html">ChimeSDKMeetings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/chime-sdk-messaging.html">ChimeSDKMessaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/chime-sdk-voice.html">ChimeSDKVoice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cleanrooms.html">CleanRoomsService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cleanroomsml.html">CleanRoomsML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloud9.html">Cloud9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloudcontrol.html">CloudControlApi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/clouddirectory.html">CloudDirectory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloudformation.html">CloudFormation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloudfront.html">CloudFront</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloudfront-keyvaluestore.html">CloudFrontKeyValueStore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloudhsm.html">CloudHSM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloudhsmv2.html">CloudHSMV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloudsearch.html">CloudSearch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloudsearchdomain.html">CloudSearchDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloudtrail.html">CloudTrail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloudtrail-data.html">CloudTrailDataService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloudwatch.html">CloudWatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cloudwatchomni.html">CloudWatchOmni</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/codeartifact.html">CodeArtifact</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/codebuild.html">CodeBuild</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/codecatalyst.html">CodeCatalyst</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/codecommit.html">CodeCommit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/codeconnections.html">CodeConnections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/codedeploy.html">CodeDeploy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/codeguru-reviewer.html">CodeGuruReviewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/codeguru-security.html">CodeGuruSecurity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/codeguruprofiler.html">CodeGuruProfiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/codepipeline.html">CodePipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/codestar-connections.html">CodeStarconnections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/codestar-notifications.html">CodeStarNotifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cognito-identity.html">CognitoIdentity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cognito-idp.html">CognitoIdentityProvider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cognito-sync.html">CognitoSync</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/comprehend.html">Comprehend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/comprehendmedical.html">ComprehendMedical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/compute-optimizer.html">ComputeOptimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/compute-optimizer-automation.html">ComputeOptimizerAutomation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/config.html">ConfigService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/connect.html">Connect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/connect-contact-lens.html">ConnectContactLens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/connectcampaigns.html">ConnectCampaignService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/connectcampaignsv2.html">ConnectCampaignServiceV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/connectcases.html">ConnectCases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/connecthealth.html">ConnectHealth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/connectparticipant.html">ConnectParticipant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/connectscheduling.html">ConnectScheduling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/continuum.html">Continuum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/controlcatalog.html">ControlCatalog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/controltower.html">ControlTower</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cost-optimization-hub.html">CostOptimizationHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/cur.html">CostandUsageReportService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/customer-profiles.html">CustomerProfiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/databrew.html">GlueDataBrew</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/dataexchange.html">DataExchange</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/datapipeline.html">DataPipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/datasync.html">DataSync</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/datazone.html">DataZone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/dax.html">DAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/deadline.html">DeadlineCloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/detective.html">Detective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/devicefarm.html">DeviceFarm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/devops-agent.html">DevOpsAgentService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/devops-guru.html">DevOpsGuru</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/directconnect.html">DirectConnect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/discovery.html">ApplicationDiscoveryService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/dlm.html">DLM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/dms.html">DatabaseMigrationService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/docdb.html">DocDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/docdb-elastic.html">DocDBElastic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/drs.html">drs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ds.html">DirectoryService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ds-data.html">DirectoryServiceData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/dsql.html">AuroraDSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/dynamodb.html">DynamoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/dynamodbstreams.html">DynamoDBStreams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ebs.html">EBS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ec2.html">EC2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ec2-instance-connect.html">EC2InstanceConnect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ecr.html">ECR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ecr-public.html">ECRPublic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ecs.html">ECS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/efs.html">EFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/eks.html">EKS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/eks-auth.html">EKSAuth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/elasticache.html">ElastiCache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/elasticbeanstalk.html">ElasticBeanstalk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/elb.html">ElasticLoadBalancing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/elbv2.html">ElasticLoadBalancingv2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/elementalinference.html">ElementalInference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/emr.html">EMR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/emr-containers.html">EMRContainers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/emr-serverless.html">EMRServerless</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/endusermessaging.html">EndUserMessaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/entityresolution.html">EntityResolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/es.html">ElasticsearchService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/eventbridgev2.html">EventBridgeV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/events.html">EventBridge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/evs.html">EVS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/firehose.html">Firehose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/fis.html">FIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/fms.html">FMS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/forecast.html">ForecastService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/forecastquery.html">ForecastQueryService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/frauddetector.html">FraudDetector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/freetier.html">FreeTier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/fsx.html">FSx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/gamelift.html">GameLift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/gameliftstreams.html">GameLiftStreams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/geo-maps.html">LocationServiceMapsV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/geo-places.html">LocationServicePlacesV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/geo-routes.html">LocationServiceRoutesV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/glacier.html">Glacier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/globalaccelerator.html">GlobalAccelerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/glue.html">Glue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/grafana.html">ManagedGrafana</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/greengrass.html">Greengrass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/greengrassv2.html">GreengrassV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/groundstation.html">GroundStation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/guardduty.html">GuardDuty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/health.html">Health</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/healthlake.html">HealthLake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iam.html">IAM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iam-toolbox.html">IAMToolboxPreview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/identitystore.html">IdentityStore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/imagebuilder.html">imagebuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/importexport.html">ImportExport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/inspector.html">Inspector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/inspector-scan.html">inspectorscan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/inspector2.html">Inspector2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/interconnect.html">Interconnect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/internetmonitor.html">CloudWatchInternetMonitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/invoicing.html">Invoicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iot.html">IoT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iot-data.html">IoTDataPlane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iot-jobs-data.html">IoTJobsDataPlane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iot-managed-integrations.html">ManagedintegrationsforIoTDeviceManagement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iotdeviceadvisor.html">IoTDeviceAdvisor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iotfleetwise.html">IoTFleetWise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iotsecuretunneling.html">IoTSecureTunneling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iotsitewise.html">IoTSiteWise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iotthingsgraph.html">IoTThingsGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iottwinmaker.html">IoTTwinMaker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/iotwireless.html">IoTWireless</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ivs.html">IVS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ivs-realtime.html">ivsrealtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ivschat.html">ivschat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kafka.html">Kafka</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kafkaconnect.html">KafkaConnect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kendra.html">kendra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kendra-ranking.html">KendraRanking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/keyspaces.html">Keyspaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/keyspacesstreams.html">KeyspacesStreams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kinesis.html">Kinesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kinesis-video-archived-media.html">KinesisVideoArchivedMedia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kinesis-video-media.html">KinesisVideoMedia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kinesis-video-signaling.html">KinesisVideoSignalingChannels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kinesis-video-webrtc-storage.html">KinesisVideoWebRTCStorage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kinesisanalytics.html">KinesisAnalytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kinesisanalyticsv2.html">KinesisAnalyticsV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kinesisvideo.html">KinesisVideo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/kms.html">KMS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/lakeformation.html">LakeFormation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/lambda.html">Lambda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/lambda-core.html">LambdaCore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/lambda-microvms.html">LambdaMicroVMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/lambda-web.html">LambdaWeb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/launch-wizard.html">LaunchWizard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/lex-models.html">LexModelBuildingService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/lex-runtime.html">LexRuntimeService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/lexv2-models.html">LexModelsV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/lexv2-runtime.html">LexRuntimeV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/license-manager.html">LicenseManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/license-manager-linux-subscriptions.html">LicenseManagerLinuxSubscriptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/license-manager-user-subscriptions.html">LicenseManagerUserSubscriptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/lightsail.html">Lightsail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/location.html">LocationService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/logs.html">CloudWatchLogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/lookoutequipment.html">LookoutEquipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/m2.html">MainframeModernization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/machinelearning.html">MachineLearning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/macie2.html">Macie2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mailmanager.html">MailManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/managedblockchain.html">ManagedBlockchain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/managedblockchain-query.html">ManagedBlockchainQuery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/marketplace-agreement.html">AgreementService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/marketplace-catalog.html">MarketplaceCatalog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/marketplace-deployment.html">MarketplaceDeploymentService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/marketplace-discovery.html">MarketplaceDiscovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/marketplace-entitlement.html">MarketplaceEntitlementService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/marketplace-reporting.html">MarketplaceReportingService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/marketplacecommerceanalytics.html">MarketplaceCommerceAnalytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mediaconnect.html">MediaConnect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mediaconvert.html">MediaConvert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/medialive.html">MediaLive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mediapackage.html">MediaPackage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mediapackage-vod.html">MediaPackageVod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mediapackagev2.html">mediapackagev2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mediastore.html">MediaStore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mediastore-data.html">MediaStoreData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mediatailor.html">MediaTailor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/medical-imaging.html">HealthImaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/memorydb.html">MemoryDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/meteringmarketplace.html">MarketplaceMetering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mgh.html">MigrationHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mgn.html">mgn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/migration-hub-refactor-spaces.html">MigrationHubRefactorSpaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/migrationhub-config.html">MigrationHubConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/migrationhuborchestrator.html">MigrationHubOrchestrator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/migrationhubstrategy.html">MigrationHubStrategyRecommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mpa.html">MultipartyApproval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mq.html">MQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mturk.html">MTurk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mwaa.html">MWAA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/mwaa-serverless.html">MWAAServerless</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/neptune.html">Neptune</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/neptune-graph.html">NeptuneGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/neptunedata.html">NeptuneData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/network-firewall.html">NetworkFirewall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/network-security-manager.html">NetworkSecurityManagerCustomerAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/networkflowmonitor.html">NetworkFlowMonitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/networkmanager.html">NetworkManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/networkmonitor.html">CloudWatchNetworkMonitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/notifications.html">UserNotifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/notificationscontacts.html">UserNotificationsContacts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/nova-act.html">NovaActService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/oam.html">CloudWatchObservabilityAccessManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/observabilityadmin.html">CloudWatchObservabilityAdminService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/odb.html">odb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/omics.html">Omics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/opensearch.html">OpenSearchService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/opensearchmemory.html">OpenSearchMemory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/opensearchserverless.html">OpenSearchServiceServerless</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/organizations.html">Organizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/osis.html">OpenSearchIngestion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/outposts.html">Outposts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/partnercentral-account.html">PartnerCentralAccountAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/partnercentral-benefits.html">PartnerCentralBenefits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/partnercentral-channel.html">PartnerCentralChannelAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/partnercentral-marketing.html">PartnerCentralMarketing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/partnercentral-revenue-measurement.html">PartnerCentralRevenueMeasurementAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/partnercentral-selling.html">PartnerCentralSellingAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/payment-cryptography.html">PaymentCryptographyControlPlane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/payment-cryptography-data.html">PaymentCryptographyDataPlane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/payments.html">Payments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/pca-connector-ad.html">PcaConnectorAd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/pca-connector-scep.html">PrivateCAConnectorforSCEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/pcs.html">ParallelComputingService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/personalize.html">Personalize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/personalize-events.html">PersonalizeEvents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/personalize-runtime.html">PersonalizeRuntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/pi.html">PI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/pinpoint.html">Pinpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/pinpoint-email.html">PinpointEmail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/pinpoint-sms-voice.html">PinpointSMSVoice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/pinpoint-sms-voice-v2.html">PinpointSMSVoiceV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/pipes.html">EventBridgePipes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/polly.html">Polly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/pricing.html">Pricing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/pricing-plan-manager.html">PricingPlanManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/proton.html">Proton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/qapps.html">QApps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/qbusiness.html">QBusiness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/qconnect.html">QConnect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/quicksight.html">QuickSight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ram.html">RAM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/rbin.html">RecycleBin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/rds.html">RDS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/rds-data.html">RDSDataService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/redshift.html">Redshift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/redshift-data.html">RedshiftDataAPIService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/redshift-serverless.html">RedshiftServerless</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/rekognition.html">Rekognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/repostspace.html">rePostPrivate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/resiliencehub.html">ResilienceHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/resiliencehubv2.html">ResilienceHubV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/resource-explorer-2.html">ResourceExplorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/resource-groups.html">ResourceGroups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/resourcegroupstaggingapi.html">ResourceGroupsTaggingAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/rolesanywhere.html">IAMRolesAnywhere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/route53.html">Route53</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/route53-recovery-cluster.html">Route53RecoveryCluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/route53-recovery-control-config.html">Route53RecoveryControlConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/route53-recovery-readiness.html">Route53RecoveryReadiness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/route53domains.html">Route53Domains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/route53globalresolver.html">Route53GlobalResolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/route53profiles.html">Route53Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/route53resolver.html">Route53Resolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/rtbfabric.html">RTBFabric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/rum.html">CloudWatchRUM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/s3.html">S3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/s3control.html">S3Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/s3files.html">S3Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/s3outposts.html">S3Outposts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/s3tables.html">S3Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/s3vectors.html">S3Vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sagemaker.html">SageMaker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sagemaker-a2i-runtime.html">AugmentedAIRuntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sagemaker-edge.html">SagemakerEdgeManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sagemaker-featurestore-runtime.html">SageMakerFeatureStoreRuntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sagemaker-gateway-runtime.html">SageMakerGatewayRuntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sagemaker-geospatial.html">SageMakergeospatialcapabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sagemaker-inference-router-runtime.html">SageMakerInferenceRouterRuntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sagemaker-metrics.html">SageMakerMetrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sagemaker-runtime.html">SageMakerRuntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sagemakerjobruntime.html">SagemakerJobRuntimeService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sagemakertrainingsessionruntime.html">SageMakerTrainingSessionRuntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/savingsplans.html">SavingsPlans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/scheduler.html">EventBridgeScheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/schemas.html">Schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sdb.html">SimpleDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/secretsmanager.html">SecretsManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/security-ir.html">SecurityIncidentResponse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/securityagent.html">SecurityAgent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/securityhub.html">SecurityHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/securitylake.html">SecurityLake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/serverlessrepo.html">ServerlessApplicationRepository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/service-quotas.html">ServiceQuotas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/servicecatalog.html">ServiceCatalog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/servicecatalog-appregistry.html">AppRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/servicediscovery.html">ServiceDiscovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ses.html">SES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sesv2.html">SESV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/shield.html">Shield</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/signer.html">signer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/signer-data.html">SignerDataPlane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/signin.html">SignInService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/simpledbv2.html">SimpleDBv2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/snow-device-management.html">SnowDeviceManagement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/snowball.html">Snowball</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sns.html">SNS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/socialmessaging.html">EndUserMessagingSocial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sqs.html">SQS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ssm.html">SSM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ssm-contacts.html">SSMContacts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ssm-guiconnect.html">SSMGUIConnect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ssm-incidents.html">SSMIncidents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ssm-quicksetup.html">SystemsManagerQuickSetup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/ssm-sap.html">SsmSap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sso.html">SSO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sso-admin.html">SSOAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sso-oidc.html">SSOOIDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/stepfunctions.html">SFN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/storagegateway.html">StorageGateway</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sts.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/supplychain.html">SupplyChain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/support.html">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/support-app.html">SupportApp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/supportauthz.html">SupportAuthZ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/sustainability.html">Sustainability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/swf.html">SWF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/synthetics.html">Synthetics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/taxsettings.html">TaxSettings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/textract.html">Textract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/timestream-influxdb.html">TimestreamInfluxDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/timestream-query.html">TimestreamQuery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/timestream-write.html">TimestreamWrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/transcribe.html">TranscribeService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/transfer.html">Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/translate.html">Translate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/trustedadvisor.html">TrustedAdvisorPublicAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/uxc.html">UserExperienceCustomization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/verifiedpermissions.html">VerifiedPermissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/voice-id.html">VoiceID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/vpc-lattice.html">VPCLattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/waf.html">WAF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/waf-regional.html">WAFRegional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/wafv2.html">WAFV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/wellarchitected.html">WellArchitected</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/wickr.html">WickrAdminAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/wisdom.html">ConnectWisdomService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/workdocs.html">WorkDocs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/workmail.html">WorkMail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/workmailmessageflow.html">WorkMailMessageFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/workspaces.html">WorkSpaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/workspaces-instances.html">WorkspacesInstances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/workspaces-thin-client.html">WorkSpacesThinClient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/workspaces-web.html">WorkSpacesWeb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/services/xray.html">XRay</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/core/index.html">Core References</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Core References</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/core/boto3.html">Boto3 reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/core/collections.html">Collections reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/core/resources.html">Resources reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/core/session.html">Session reference</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/customizations/index.html">Customization References</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of Customization References</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/customizations/dynamodb.html">DynamoDB customization reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/customizations/s3.html">S3 customization reference</a></li>
+</ul>
+</li>
+</ul>
+
+</div></div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" id="toc-menu-open-md" for="__toc" tabindex="0">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="retries">
+<span id="guide-retries"></span><h1>Retries<a class="headerlink" href="#retries" title="Link to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>Your AWS client might see calls to AWS services fail due to unexpected issues on the client side. Or calls might fail due to rate limiting from the AWS service you’re attempting to call. In either case, these kinds of failures often don’t require special handling and the call should be made again, often after a brief waiting period. Boto3 provides many features to assist in retrying client calls to AWS services when these kinds of errors or exceptions are experienced.</p>
+<p>This guide provides you with details on the following:</p>
+<ul class="simple">
+<li><p>How to find the available retry modes and the differences between each mode</p></li>
+<li><p>How to configure your client to use each retry mode and other retry configurations</p></li>
+<li><p>How to validate if your client performs a retry attempt</p></li>
+</ul>
+</section>
+<section id="available-retry-modes">
+<h2>Available retry modes<a class="headerlink" href="#available-retry-modes" title="Link to this heading">¶</a></h2>
+<section id="legacy-retry-mode">
+<h3>Legacy retry mode<a class="headerlink" href="#legacy-retry-mode" title="Link to this heading">¶</a></h3>
+<p>Legacy mode was the default mode for Boto3 clients before standard mode became the default. As its name implies, <code class="docutils literal notranslate"><span class="pre">legacy</span> <span class="pre">mode</span></code> uses an older (v1) retry handler that has limited functionality. To keep using it, set <code class="docutils literal notranslate"><span class="pre">retry_mode</span> <span class="pre">=</span> <span class="pre">legacy</span></code> in your AWS config file, set the <code class="docutils literal notranslate"><span class="pre">AWS_RETRY_MODE=legacy</span></code> environment variable, or pass <code class="docutils literal notranslate"><span class="pre">Config(retries={'mode':</span> <span class="pre">'legacy'})</span></code> to your client. See <a class="reference internal" href="#configuring-a-retry-mode">Configuring a retry mode</a> for more information.</p>
+<h3>Legacy mode’s functionality includes:</h3>
+<ul>
+<li><p>A default value of 5 for maximum attempts (including the initial request). See <a class="reference internal" href="#available-configuration-options">Available configuration options</a> for more information on overwriting this value.</p></li>
+<li><p>Retry attempts for a limited number of errors/exceptions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># General socket/connection errors</span>
+<span class="ne">ConnectionError</span>
+<span class="n">ConnectionClosedError</span>
+<span class="n">ReadTimeoutError</span>
+<span class="n">EndpointConnectionError</span>
+
+<span class="c1"># Service-side throttling/limit errors and exceptions</span>
+<span class="n">Throttling</span>
+<span class="n">ThrottlingException</span>
+<span class="n">ThrottledException</span>
+<span class="n">RequestThrottledException</span>
+<span class="n">ProvisionedThroughputExceededException</span>
+</pre></div>
+</div>
+</li>
+<li><p>Retry attempts on several HTTP status codes, including 429, 500, 502, 503, 504, and 509.</p></li>
+<li><p>Any retry attempt will include an exponential backoff by a base factor of 2.</p></li>
+</ul>
+<div class="admonition note">
+<h3 class='admonition-title'> Note</h3><p>For more information about additional service-specific retry policies, see the following <a class="reference external" href="https://github.com/boto/botocore/blob/develop/botocore/data/_retry.json">botocore references in GitHub</a>.</p>
+</div>
+</section>
+<section id="standard-retry-mode">
+<h3>Standard retry mode<a class="headerlink" href="#standard-retry-mode" title="Link to this heading">¶</a></h3>
+<p>Standard mode is the default mode used by any Boto3 client you create. It uses the updated retry handler (v2). This mode is a standardization of retry logic and behavior that is consistent with other AWS SDKs. In addition to this standardization, this mode also extends the functionality of retries over that found in legacy mode.</p>
+<h3>Standard mode’s functionality includes:</h3>
+<ul>
+<li><p>A default value of 3 for maximum attempts (including the initial request). Amazon DynamoDB and Amazon DynamoDB Streams clients default to 4. See <a class="reference internal" href="#available-configuration-options">Available configuration options</a> for more information on overwriting this value.</p></li>
+<li><p>Circuit-breaking functionality to prevent retry attempts during service outages.</p></li>
+<li><p>Retry attempts for an expanded list of errors/exceptions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Transient errors/exceptions</span>
+<span class="n">RequestTimeout</span>
+<span class="n">RequestTimeoutException</span>
+<span class="n">PriorRequestNotComplete</span>
+<span class="ne">ConnectionError</span>
+<span class="n">HTTPClientError</span>
+
+<span class="c1"># Service-side throttling/limit errors and exceptions</span>
+<span class="n">Throttling</span>
+<span class="n">ThrottlingException</span>
+<span class="n">ThrottledException</span>
+<span class="n">RequestThrottledException</span>
+<span class="n">TooManyRequestsException</span>
+<span class="n">ProvisionedThroughputExceededException</span>
+<span class="n">TransactionInProgressException</span>
+<span class="n">RequestLimitExceeded</span>
+<span class="n">BandwidthLimitExceeded</span>
+<span class="n">LimitExceededException</span>
+<span class="n">RequestThrottled</span>
+<span class="n">SlowDown</span>
+<span class="n">EC2ThrottledException</span>
+</pre></div>
+</div>
+</li>
+<li><p>Retry attempts on nondescriptive, transient error codes. Specifically, these HTTP status codes: 500, 502, 503, 504.</p></li>
+<li><p>Any retry attempt will include an exponential backoff by a base factor of 2 for a maximum backoff time of 20 seconds, starting from 50 milliseconds for transient errors (25 milliseconds for Amazon DynamoDB and Amazon DynamoDB Streams) and 1 second for throttling errors.</p></li>
+<li><p>If a response includes an <code class="docutils literal notranslate"><span class="pre">x-amz-retry-after</span></code> header, the retry delay is raised to at least the value of that header, up to 5 seconds more than the computed backoff.</p></li>
+<li><p>For long-polling operations (such as Amazon SQS <code class="docutils literal notranslate"><span class="pre">ReceiveMessage</span></code>), the computed backoff is still applied when circuit breaking stops further retries.</p></li>
+</ul>
+</section>
+<section id="adaptive-retry-mode">
+<h3>Adaptive retry mode<a class="headerlink" href="#adaptive-retry-mode" title="Link to this heading">¶</a></h3>
+<p>Adaptive retry mode is an experimental retry mode that includes all the features of standard mode. In addition to the standard mode features, adaptive mode also introduces client-side rate limiting through the use of a token bucket and rate-limit variables that are dynamically updated with each retry attempt. This mode offers flexibility in client-side retries that adapts to the error/exception state response from an AWS service.</p>
+<p>With each new retry attempt, adaptive mode modifies the rate-limit variables based on the error, exception, or HTTP status code presented in the response from the AWS service. These rate-limit variables are then used to calculate a new call rate for the client. Each exception/error or non-success HTTP response (provided in the list above) from an AWS service updates the rate-limit variables as retries occur until success is reached, the token bucket is exhausted, or the configured maximum attempts value is reached.</p>
+<div class="admonition note">
+<h3 class='admonition-title'> Note</h3><p>Adaptive mode is an experimental mode and is subject to change, both in features and behavior.</p>
+</div>
+</section>
+</section>
+<section id="configuring-a-retry-mode">
+<h2>Configuring a retry mode<a class="headerlink" href="#configuring-a-retry-mode" title="Link to this heading">¶</a></h2>
+<p>Boto3 includes a variety of both retry configurations as well as configuration methods to consider when creating your client object.</p>
+<section id="available-configuration-options">
+<h3>Available configuration options<a class="headerlink" href="#available-configuration-options" title="Link to this heading">¶</a></h3>
+<p>In Boto3, users can customize retry configurations:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">retry_mode</span></code> - This tells Boto3 which retry mode to use. As described previously, there are three retry modes available: legacy, standard (default), and adaptive.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_attempts</span></code> - This provides Boto3’s retry handler with a value of maximum attempts. <strong>Important</strong>: The behavior differs depending on how it’s configured:</p>
+<ul class="simple">
+<li><p>When set in your AWS config file or using the <code class="docutils literal notranslate"><span class="pre">AWS_MAX_ATTEMPTS</span></code> environment variable: <code class="docutils literal notranslate"><span class="pre">max_attempts</span></code> includes the initial request (total requests)</p></li>
+<li><p>When set in a <code class="docutils literal notranslate"><span class="pre">Config</span></code> object: <code class="docutils literal notranslate"><span class="pre">max_attempts</span></code> excludes the initial request (retries only)</p></li>
+</ul>
+<h3>Examples:</h3>
+<ul class="simple">
+<li><p>AWS config file with <code class="docutils literal notranslate"><span class="pre">max_attempts</span> <span class="pre">=</span> <span class="pre">3</span></code>: 1 initial request + 2 retries = 3 total attempts</p></li>
+<li><p>Environment variable <code class="docutils literal notranslate"><span class="pre">AWS_MAX_ATTEMPTS=3</span></code>: 1 initial request + 2 retries = 3 total attempts</p></li>
+<li><p>Config object with <code class="docutils literal notranslate"><span class="pre">max_attempts:</span> <span class="pre">3</span></code>: 1 initial request + 3 retries = 4 total attempts</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">total_max_attempts</span></code> - Available only in <code class="docutils literal notranslate"><span class="pre">Config</span></code> objects, this always represents total requests including the initial call. This parameter was introduced to provide consistent behavior with the <code class="docutils literal notranslate"><span class="pre">max_attempts</span></code> setting used in AWS config files and environment variables. Note that <code class="docutils literal notranslate"><span class="pre">total_max_attempts</span></code> is not supported as an environment variable or in AWS config files.</p></li>
+</ul>
+<p>For consistency, consider using <code class="docutils literal notranslate"><span class="pre">total_max_attempts</span></code> in <code class="docutils literal notranslate"><span class="pre">Config</span></code> objects instead of <code class="docutils literal notranslate"><span class="pre">max_attempts</span></code>.</p>
+</section>
+<section id="defining-a-retry-configuration-in-your-aws-configuration-file">
+<h3>Defining a retry configuration in your AWS configuration file<a class="headerlink" href="#defining-a-retry-configuration-in-your-aws-configuration-file" title="Link to this heading">¶</a></h3>
+<p>This first way to define your retry configuration is to update your global AWS configuration file. The default location for your AWS config file is <code class="docutils literal notranslate"><span class="pre">~/.aws/config</span></code>. Here’s an example of an AWS config file with the retry configuration options used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">myConfigProfile</span><span class="p">]</span>
+<span class="n">region</span> <span class="o">=</span> <span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">max_attempts</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">retry_mode</span> <span class="o">=</span> <span class="n">standard</span>
+</pre></div>
+</div>
+<p>Any Boto3 script or code that uses your AWS config file inherits these configurations when using your profile, unless otherwise explicitly overwritten by a <code class="docutils literal notranslate"><span class="pre">Config</span></code> object when instantiating your client object at runtime. If no configuration options are set, the default retry mode value is <code class="docutils literal notranslate"><span class="pre">standard</span></code>, and the default <code class="docutils literal notranslate"><span class="pre">max_attempts</span></code> value is 3 (total attempts including initial request), or 4 for Amazon DynamoDB and Amazon DynamoDB Streams.</p>
+</section>
+<section id="defining-a-retry-configuration-in-a-config-object-for-your-boto3-client">
+<h3>Defining a retry configuration in a Config object for your Boto3 client<a class="headerlink" href="#defining-a-retry-configuration-in-a-config-object-for-your-boto3-client" title="Link to this heading">¶</a></h3>
+<p>The second way to define your retry configuration is to use botocore to enable more flexibility for you to specify your retry configuration using a <code class="docutils literal notranslate"><span class="pre">Config</span></code> object that you can pass to your client at runtime. This method is useful if you don’t want to configure retry behavior globally with your AWS config file</p>
+<p>Additionally, if your AWS configuration file is configured with retry behavior, but you want to override those global settings, you can use the <code class="docutils literal notranslate"><span class="pre">Config</span></code> object to override an individual client object at runtime.</p>
+<p>As shown in the following example, the <code class="docutils literal notranslate"><span class="pre">Config</span></code> object takes a <code class="docutils literal notranslate"><span class="pre">retries</span></code> dictionary where you can supply configuration options such as <code class="docutils literal notranslate"><span class="pre">total_max_attempts</span></code> and <code class="docutils literal notranslate"><span class="pre">mode</span></code>, and the values for each.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+   <span class="n">retries</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s1">'total_max_attempts'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="s1">'mode'</span><span class="p">:</span> <span class="s1">'standard'</span>
+   <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<h3 class='admonition-title'> Note</h3><p>The AWS configuration file uses <code class="docutils literal notranslate"><span class="pre">retry_mode</span></code> and the <code class="docutils literal notranslate"><span class="pre">Config</span></code> object uses <code class="docutils literal notranslate"><span class="pre">mode</span></code>. Although named differently, they both refer to the same retry configuration whose options are legacy, standard (default), and adaptive.</p>
+</div>
+<p>The following is an example of instantiating a <code class="docutils literal notranslate"><span class="pre">Config</span></code> object and passing it into an Amazon EC2 client to use at runtime.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">boto3</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">botocore.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+   <span class="n">retries</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s1">'total_max_attempts'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="s1">'mode'</span><span class="p">:</span> <span class="s1">'standard'</span>
+   <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">ec2</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">'ec2'</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<h3 class='admonition-title'> Note</h3><p>As mentioned previously, if no configuration options are set, the default mode is <code class="docutils literal notranslate"><span class="pre">standard</span></code> and the default <code class="docutils literal notranslate"><span class="pre">total_max_attempts</span></code> is 3 (total attempts including initial request), or 4 for Amazon DynamoDB and Amazon DynamoDB Streams.</p>
+</div>
+</section>
+</section>
+<section id="validating-retry-attempts">
+<h2>Validating retry attempts<a class="headerlink" href="#validating-retry-attempts" title="Link to this heading">¶</a></h2>
+<p>To ensure that your retry configuration is correct and working properly, there are a number of ways you can validate that your client’s retries are occurring.</p>
+<section id="checking-retry-attempts-in-your-client-logs">
+<h3>Checking retry attempts in your client logs<a class="headerlink" href="#checking-retry-attempts-in-your-client-logs" title="Link to this heading">¶</a></h3>
+<p>If you enable Boto3’s logging, you can validate and check your client’s retry attempts in your client’s logs. Notice, however, that you need to enable <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> mode in your logger to see any retry attempts. The client log entries for retry attempts will appear differently, depending on which retry mode you’ve configured.</p>
+<h3>If legacy mode is enabled:</h3>
+<p>Retry messages are generated by <code class="docutils literal notranslate"><span class="pre">botocore.retryhandler</span></code>. You’ll see one of three messages:</p>
+<ul class="simple">
+<li><p><em>No retry needed</em></p></li>
+<li><p><em>Retry needed, action of: &lt;action_value&gt;</em></p></li>
+<li><p><em>Reached the maximum number of retry attempts: &lt;attempt_num&gt;</em></p></li>
+</ul>
+<h3>If standard or adaptive mode is enabled:</h3>
+<p>Retry messages are generated by <code class="docutils literal notranslate"><span class="pre">botocore.retries.standard</span></code>. You’ll see one of three messages:</p>
+<ul class="simple">
+<li><p><em>Not retrying request</em></p></li>
+<li><p><em>Retry needed, retrying request after delay of: &lt;delay_value&gt;</em></p></li>
+<li><p><em>Retry needed but retry quota reached, not retrying request</em></p></li>
+</ul>
+</section>
+<section id="checking-retry-attempts-in-an-aws-service-response">
+<h3>Checking retry attempts in an AWS service response<a class="headerlink" href="#checking-retry-attempts-in-an-aws-service-response" title="Link to this heading">¶</a></h3>
+<p>You can check the number of retry attempts your client has made by parsing the response botocore provides when making a call to an AWS service API. Responses are handled by an underlying botocore module, and formatted into a dictionary that’s part of the JSON response object. You can access the number of retry attempts your client has taken by calling the <code class="docutils literal notranslate"><span class="pre">RetryAttempts</span></code> key in the <code class="docutils literal notranslate"><span class="pre">ResponseMetaData</span></code> dictionary:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">'ResponseMetadata'</span><span class="p">:</span> <span class="p">{</span>
+   <span class="s1">'RequestId'</span><span class="p">:</span> <span class="s1">'1234567890ABCDEF'</span><span class="p">,</span>
+   <span class="s1">'HostId'</span><span class="p">:</span> <span class="s1">'host ID data will appear here as a hash'</span><span class="p">,</span>
+   <span class="s1">'HTTPStatusCode'</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+   <span class="s1">'HTTPHeaders'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'header metadata key/values will appear here'</span><span class="p">},</span>
+   <span class="s1">'RetryAttempts'</span><span class="p">:</span> <span class="mi">4</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="events.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Extensibility guide</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="error-handling.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Error handling</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Amazon Web Services, Inc
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+            
+            <div class="legal-info">
+                <a href="https://aws.amazon.com/privacy">Privacy</a> | 
+                <a href="https://aws.amazon.com/terms">Site Terms</a> | 
+                <a href="#" id="cookie-button-link">Cookie preferences</a>
+            </div>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/boto/boto3" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="sidebar-div show-div-md justify-content-left">
+            <label class="nav-close-icon" id="toc-menu-close" for="__toc" tabindex="0">
+                <div class="visually-hidden">Toggle site table of content right sidebar</div>
+                <i class="icon"><svg><use href="#svg-close"></use></svg></i>
+            </label>
+        </div>
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Retries</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#available-retry-modes">Available retry modes</a><ul>
+<li><a class="reference internal" href="#legacy-retry-mode">Legacy retry mode</a></li>
+<li><a class="reference internal" href="#standard-retry-mode">Standard retry mode</a></li>
+<li><a class="reference internal" href="#adaptive-retry-mode">Adaptive retry mode</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuring-a-retry-mode">Configuring a retry mode</a><ul>
+<li><a class="reference internal" href="#available-configuration-options">Available configuration options</a></li>
+<li><a class="reference internal" href="#defining-a-retry-configuration-in-your-aws-configuration-file">Defining a retry configuration in your AWS configuration file</a></li>
+<li><a class="reference internal" href="#defining-a-retry-configuration-in-a-config-object-for-your-boto3-client">Defining a retry configuration in a Config object for your Boto3 client</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#validating-retry-attempts">Validating retry attempts</a><ul>
+<li><a class="reference internal" href="#checking-retry-attempts-in-your-client-logs">Checking retry attempts in your client logs</a></li>
+<li><a class="reference internal" href="#checking-retry-attempts-in-an-aws-service-response">Checking retry attempts in an AWS service response</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=df35e598"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=5eb1bb1e"></script>
+    <script src="../_static/js/custom.js?v=8eb636f1"></script>
+    </body>
+</html>

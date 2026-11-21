@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Using an IAM role in the AWS CLI - AWS Command Line Interface</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="cli-configure-role" /><meta name="default_state" content="cli-configure-role" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-role.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-role.md" title="Markdown version" /><meta name="description" content="Configure the AWS CLI to use a role defined in AWS Identity and Access Management." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Command Line Interface" /><meta name="guide" content="User Guide for Version 2" /><meta name="abstract" content="The AWS CLI is an open source tool that provides commands for interacting with AWS services. It is built using botocore, the low-level Python library that also underpins the AWS SDK for Python (Boto3). With minimal configuration, you can start using all of the functionality provided by the AWS Management Console from your favorite terminal program. This guide provides instructions for installing, configuring, and using the AWS CLI on Windows, macOS, and Linux. Learn how to use the AWS CLI to access the public API of any AWS service and write scripts to manage your AWS resources." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-role.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/cli/latest/userguide/cli-configure-role.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/cli/latest/userguide/cli-configure-role.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/cli/latest/userguide/cli-configure-role.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/cli/latest/userguide/cli-configure-role.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-role.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-role.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/cli/latest/userguide/cli-configure-role.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/cli/latest/userguide/cli-configure-role.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/cli/latest/userguide/cli-configure-role.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/cli/latest/userguide/cli-configure-role.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/cli/latest/userguide/cli-configure-role.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/cli/latest/userguide/cli-configure-role.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/cli-configure-role.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/cli-configure-role.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-role.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-role.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/cli/latest/userguide/cli-configure-role.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/cli/latest/userguide/cli-configure-role.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/cli/latest/userguide/cli-configure-role.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/cli/latest/userguide/cli-configure-role.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-role.html" hreflang="x-default" /><meta name="feedback-item" content="AWS Command Line Interface" /><meta name="this_doc_product" content="AWS Command Line Interface" /><meta name="this_doc_guide" content="User Guide for Version 2" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'cli'}"></script><meta id="panorama-serviceSubSection" value="User Guide for Version 2" /><meta id="panorama-serviceConsolePage" value="Using an IAM role in the AWS CLI" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="cli-configure-role.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Using an IAM role in the AWS CLI - AWS Command Line Interface</title><meta name="pdf" content="/pdfs/cli/latest/userguide/aws-cli.pdf#cli-configure-role" /><meta name="rss" content="aws-cli-user-guide-updates.rss" /><meta name="forums" content="https://repost.aws/tags/TASjhA8h35SAyOPVeqNO2b4Q" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AWS%20Command%20Line%20Interface&amp;topic_url=https://docs.aws.amazon.com/en_us/cli/latest/userguide/cli-configure-role.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/cli/latest/userguide/cli-configure-role.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/cli/latest/userguide/cli-configure-role.html" /><meta name="keywords" content="AWS CLI,AWS Command Line Interface,AWS CLI configuration,AWS Command Line Interface configuration,AWS CLI authentication,AWS Command Line Interface authentication,AWS CLI access credentials,AWS Command Line Interface access credentials,AWS CLI configuration credential precedence,AWS Command Line Interface configuration credential precedence,AWS CLI IAM role,AWS Command Line Interface IAM role,AWS CLI configure role,AWS Command Line Interface configure role" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Command Line Interface",
+        "item" : "https://docs.aws.amazon.com/cli/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide for Version 2",
+        "item" : "https://docs.aws.amazon.com/cli/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Authentication and access credentials for the AWS CLI",
+        "item" : "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Using an IAM role in the AWS CLI",
+        "item" : "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/cli/latest/userguide/aws-cli.pdf#cli-configure-role" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/cli/index.html">AWS Command Line Interface</a><a href="cli-chap-welcome.html">User Guide for Version 2</a></div><div id="page-toc-src"><a href="#cli-role-prereqs">Prerequisites</a><a href="#cli-role-overview">Overview of using IAM roles</a><a href="#cli-role-prepare">Configuring and using a role</a><a href="#cli-configure-role-mfa">Using MFA</a><a href="#cli-configure-role-xaccount">Cross-account roles and external ID</a><a href="#cli-configure-role-session-name">Specifying a role session name for easier auditing</a><a href="#cli-configure-role-oidc">Assume role with web identity</a><a href="#cli-configure-role-cache">Clearing cached credentials</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="cli-configure-role">Using an IAM role in the AWS CLI</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>An <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html">AWS Identity and Access Management (IAM) role</a> is an
+    authorization tool that lets a user gain additional (or different) permissions, or get
+    permissions to perform actions in a different AWS account. </p><div class="highlights" id="inline-topiclist"><h2 class="awsdocs-topiclist-title">Topics</h2><ul><li><p><a href="#cli-role-prereqs">Prerequisites</a></p></li><li><p><a href="#cli-role-overview">Overview of using IAM roles</a></p></li><li><p><a href="#cli-role-prepare">Configuring and using a role</a></p></li><li><p><a href="#cli-configure-role-mfa">Using multi-factor authentication</a></p></li><li><p><a href="#cli-configure-role-xaccount">Cross-account roles and external ID</a></p></li><li><p><a href="#cli-configure-role-session-name">Specifying a role session name for easier auditing</a></p></li><li><p><a href="#cli-configure-role-oidc">Assume role with web identity</a></p></li><li><p><a href="#cli-configure-role-cache">Clearing cached credentials</a></p></li></ul></div>
+    <h2 id="cli-role-prereqs">Prerequisites</h2>
+    <p>To run the <code class="code">iam</code> commands, you need to install and configure the AWS CLI. This
+      includes setting up a configured profile, as assuming a role is paired with another credential
+      method. For more information, see
+        <a href="./getting-started-install.html">Installing or updating to the latest version of the AWS CLI</a>. </p>
+   
+    <h2 id="cli-role-overview">Overview of using IAM roles</h2>
+    <p>You can configure the AWS Command Line Interface (AWS CLI) to use an IAM role by defining a profile for the
+      role in the <code>~/.aws/config</code> file. </p>
+    <p>The following example shows a role profile named <code class="code">marketingadmin</code>. If you run
+      commands with <code class="code">--profile marketingadmin</code> (or specify it with the <a href="./cli-configure-envvars.html">AWS_PROFILE environment variable</a>), the AWS CLI uses the
+      credentials defined in a separate profile <code class="code">user1</code> to assume the role with the
+      Amazon Resource Name (ARN)
+          <code class="code">arn:aws:iam::<code class="replaceable">123456789012</code>:role/<code class="replaceable">marketingadminrole</code></code>.
+      You can run any operations that are allowed by the permissions assigned to that role.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight">[profile <code class="replaceable">marketingadmin</code>]
+role_arn = arn:aws:iam::<code class="replaceable">123456789012</code>:role/<code class="replaceable">marketingadminrole</code>
+source_profile = user1</code></pre>
+    <p>You can then specify a <code class="code">source_profile</code> that points to a separate named profile
+      that contains user credentials with permission to use the role. In the previous example, the
+        <code class="code">marketingadmin</code> profile uses the credentials in the <code class="code">user1</code> profile.
+      When you specify that an AWS CLI command is to use the profile <code class="code">marketingadmin</code>, the
+      AWS CLI automatically looks up the credentials for the linked <code class="code">user1</code> profile and
+      uses them to request temporary credentials for the specified IAM role. The CLI uses the
+        <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html">sts:AssumeRole</a> operation in the
+      background to accomplish this. Those temporary credentials are then used to run the requested
+      AWS CLI command. The specified role must have attached IAM permission policies that allow the
+      requested AWS CLI command to run.</p>
+    <p>To run a AWS CLI command from within an Amazon Elastic Compute Cloud (Amazon EC2) instance or an Amazon Elastic Container Service (Amazon ECS)
+      container, you can use an IAM role attached to the instance profile or the container. If you
+      specify no profile or set no environment variables, that role is used directly. This enables
+      you to avoid storing long-lived access keys on your instances. You can also use those instance
+      or container roles only to get credentials for another role. To do this, you use
+        <code class="code">credential_source</code> (instead of <code class="code">source_profile</code>) to specify how to
+      find the credentials. The <code class="code">credential_source</code> attribute supports the following
+      values:</p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p><code class="code">Environment</code> – Retrieves the source credentials from environment
+          variables.</p>
+      </li><li class="listitem">
+        <p><code class="code">Ec2InstanceMetadata</code> – Uses the IAM role attached to the Amazon EC2
+          instance profile.</p>
+      </li><li class="listitem">
+        <p><code class="code">EcsContainer</code> – Uses the IAM role attached to the Amazon ECS
+          container.</p>
+      </li></ul></div>
+    <p>The following example shows the same <code class="code">marketingadminrole</code> role used by
+      referencing an Amazon EC2 instance profile.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (INI)--><code class="INI ">[profile marketingadmin]
+role_arn = arn:aws:iam::123456789012:role/marketingadminrole
+credential_source = Ec2InstanceMetadata</code></pre>
+    <p>When you invoke a role, you have additional options that you can require, such as the use
+      of multi-factor authentication and an External ID (used by third-party companies to access
+      their clients' resources). You can also specify unique role session names that can be more
+      easily audited in AWS CloudTrail logs.</p>
+   
+    <h2 id="cli-role-prepare">Configuring and using a role</h2>
+    <p>When you run commands using a profile that specifies an IAM role, the AWS CLI uses the source profile's credentials to call AWS Security Token Service (AWS STS) and
+      request temporary credentials for the specified role. The user in the source profile must have permission to call <code class="code">sts:assume-role</code> for the
+      role in the specified profile. The role must have a trust relationship that allows the user in the source profile to use the role. The process of
+      retrieving and then using temporary credentials for a role is often referred to as <em>assuming the role</em>.</p>
+    <p>You can create a role in IAM with the permissions that you want users to assume by
+      following the procedure under <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html">Creating
+        a Role to Delegate Permissions to an IAM user</a> in the <em>AWS Identity and Access Management User
+        Guide</em>. If the role and the source profile's user are in the same account, you can
+      enter your own account ID when configuring the role's trust relationship.</p>
+    <p>After creating the role, modify the trust relationship to allow the user to assume it. </p>
+    <p>The following example shows a trust policy that you could attach to a role. This policy
+      allows the role to be assumed by any user in the account 123456789012, <b><em>if</em></b> the administrator of that
+      account explicitly grants the <code class="code">sts:AssumeRole</code> permission to the user.</p>
+    <awsdocs-tabs><dl style="display: none">
+    <dt>JSON</dt><dd tab-id="json">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term"></span></b></dt>
+        <dd>
+            
+                
+                <pre class="programlisting" data-example-id="18bbe9bfb86a18a14e45f90e721f716e13980220b64d1a6d63a69ac34653c42a"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><code class="userinput"><span>{</span>
+  "Version":"2012-10-17",
+  "Statement": [
+    <span>{</span>
+      "Effect": "Allow",
+      "Principal": <span>{</span>
+        "AWS": "arn:aws:iam::<code class="replaceable">123456789012</code>:root"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}</code>
+</code></pre>
+            
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs>
+    <p>The trust policy doesn't actually grant permissions. The administrator of the account must
+      delegate the permission to assume the role to individual users by attaching a policy with the
+      appropriate permissions. The following example shows a policy that you can attach to a user
+      that allows the user to assume only the <code class="code">marketingadminrole</code> role. For more
+      information about granting a user access to assume a role, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_permissions-to-switch.html">Granting a User Permission to
+        Switch Roles</a> in the <em>IAM User Guide</em>.</p>
+    <awsdocs-tabs><dl style="display: none">
+    <dt>JSON</dt><dd tab-id="json">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term"></span></b></dt>
+        <dd>
+            
+                
+                <pre class="programlisting" data-example-id="37d9b43aa2a9599046735eeb4338cd84b13217181d0473ffee6158e518ae3b9c"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><code class="userinput"><span>{</span>
+  "Version":"2012-10-17",
+  "Statement": [
+    <span>{</span>
+      "Effect": "Allow",
+      "Action": "sts:AssumeRole",
+      "Resource": "arn:aws:iam::<code class="replaceable">123456789012</code>:role/<code class="replaceable">marketingadminrole</code>"
+    }
+  ]
+}</code>
+</code></pre>
+            
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs>
+    <p>The user doesn't need to have additional permissions to run the AWS CLI commands using the
+      role profile. Instead, the permissions to run the command come from those attached to the
+        <em>role</em>. You attach permission policies to the role to
+      specify which actions can be performed against which AWS resources. For more information
+      about attaching permissions to a role (which works identically to a user), see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_change-permissions.html">Changing Permissions for an
+        IAM user</a> in the <em>IAM User Guide</em>.</p>
+    <p>Now that you have the role profile, role permissions, role trust relationship, and user
+            permissions correctly configured, you can use the role at the command line by invoking
+            the <code class="code">--profile</code> option. For example, the following calls the Amazon S3
+                <code class="code">ls</code> command using the permissions attached to the
+                <code class="code">marketingadmin</code> role as defined by the example at the beginning of this
+            topic.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (BASH)--><code class="BASH "><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 ls --profile <code class="replaceable">marketingadmin</code></code></code></pre>
+    <p>To use the role for several calls, you can set the <code class="code">AWS_PROFILE</code> environment
+      variable for the current session from the command line. While that environment variable is
+      defined, you don't have to specify the <code class="code">--profile</code> option on each command. </p>
+    <p><b>Linux or macOS</b></p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (BASH)--><code class="BASH "><code class="prompt" copy="false">$ </code><code class="userinput">export AWS_PROFILE=marketingadmin</code></code></pre>
+    <p><b>Windows</b></p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (BASH)--><code class="BASH "><code class="prompt" copy="false">C:\&gt; </code><code class="userinput">setx AWS_PROFILE marketingadmin</code></code></pre>
+    <p>For more information about configuring users and roles, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id.html">IAM Identities (users, user groups, and roles)</a> and <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id-roles.html">IAM roles</a> in the <em>IAM User Guide</em>.</p>
+   
+    <h2 id="cli-configure-role-mfa">Using multi-factor authentication</h2>
+    <p>For additional security, you can require that users provide a one-time key generated from a multi-factor authentication (MFA) device, a U2F device, or
+      mobile app when they attempt to make a call using the role profile.</p>
+    <p>First, you can choose to modify the trust relationship on the IAM role to require MFA.
+      This prevents anyone from using the role without first authenticating by using MFA. For an
+      example, see the <code class="code">Condition</code> line in the following example. This policy allows the
+      user named <code class="code">anika</code> to assume the role the policy is attached to, but only if they
+      authenticate by using MFA. </p>
+    <awsdocs-tabs><dl style="display: none">
+    <dt>JSON</dt><dd tab-id="json">
+            <div class="variablelist">
+     
+<dl>
+        <dt><b><span class="term"></span></b></dt>
+        <dd>
+            
+                
+                <pre class="programlisting" data-example-id="b9b35bd36bf1352e0702fad2a4196c51d67955afab72381ae0b42ba77983b43c"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><code class="userinput"><span>{</span>
+  "Version":"2012-10-17",
+  "Statement": [
+    <span>{</span>
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": <span>{</span> "AWS": "arn:aws:iam::123456789012:user/anika" },
+      "Action": "sts:AssumeRole",
+      "Condition": <span>{</span> "Bool": <span>{</span> "aws:multifactorAuthPresent": true } }
+    }
+  ]
+}</code>
+</code></pre>
+            
+        </dd>
+    </dl></div>
+        </dd>
+</dl></awsdocs-tabs>
+    <p>Next, add a line to the role profile that specifies the ARN of the user's MFA device. The
+      following sample <code>config</code> file entries show two role profiles that both use
+      the access keys for the user <code class="code">anika</code> to request temporary credentials for the role
+        <code class="code">cli-role</code>. The user <code class="code">anika</code> has permissions to assume the role,
+      granted by the role's trust policy.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (INI)--><code class="INI ">[profile role-without-mfa]
+region = us-west-2
+role_arn= arn:aws:iam::128716708097:role/cli-role
+source_profile=cli-user
+
+[profile role-with-mfa]
+region = us-west-2
+role_arn= arn:aws:iam::128716708097:role/cli-role
+source_profile = cli-user
+mfa_serial = arn:aws:iam::128716708097:mfa/cli-user
+
+[profile cli-user]
+region = us-west-2
+output = json</code></pre>
+    <p>The <code class="code">mfa_serial</code> setting can take an ARN, as shown, or the serial number of a hardware MFA token.</p>
+    <p>The first profile, <code class="code">role-without-mfa</code>, doesn't require MFA. However, because the previous example trust policy attached to the role
+      requires MFA, any attempt to run a command with this profile fails.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (BASH)--><code class="BASH "><code class="prompt" copy="false">$ </code><code class="userinput">aws iam list-users --profile role-without-mfa</code><code class="computeroutput" copy="false">
+
+An error occurred (AccessDenied) when calling the AssumeRole operation: Access denied</code></code></pre>
+    <p>The second profile entry, <code class="code">role-with-mfa</code>, identifies an MFA device to use.
+      When the user attempts to run a AWS CLI command with this profile, the AWS CLI prompts the user to
+      enter the one-time password (OTP) that the MFA device provides. If the MFA authentication
+      succeeds, the command performs the requested operation. The OTP is not displayed on the
+      screen.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws iam list-users --profile role-with-mfa</code><code class="computeroutput" copy="false">
+Enter MFA code for arn:aws:iam::123456789012:mfa/cli-user:
+<span>{</span>
+    "Users": [
+        <span>{</span>
+            ...</code></code></pre>
+   
+    <h2 id="cli-configure-role-xaccount">Cross-account roles and external ID</h2>
+    <p>You can enable users to use roles that belong to different accounts by configuring the
+      role as a cross-account role. During role creation, set the role type to <b>Another
+        AWS account</b>, as described in <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html">Creating a Role to Delegate Permissions to
+        an IAM user</a>. Optionally, select <b>Require MFA</b>.
+        <b>Require MFA</b> configures the appropriate condition in the trust
+      relationship, as described in <a href="#cli-configure-role-mfa">Using multi-factor authentication</a>.</p>
+    <p>If you use an <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html">external ID</a> to provide additional control over who can use a
+      role across accounts, you must also add the <code class="code">external_id</code> parameter to the role profile. You typically use this only when the other account is
+      controlled by someone outside your company or organization.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (INI)--><code class="INI ">[profile crossaccountrole]
+role_arn = arn:aws:iam::<code class="replaceable">234567890123</code>:role/<code class="replaceable">SomeRole</code>
+source_profile = default
+mfa_serial = arn:aws:iam::<code class="replaceable">123456789012</code>:mfa/<code class="replaceable">saanvi</code>
+<code class="userinput">external_id = <code class="replaceable">123456</code></code></code></pre>
+   
+    <h2 id="cli-configure-role-session-name">Specifying a role session name for easier auditing</h2>
+    <p>When many individuals share a role, auditing becomes more of a challenge. You want to
+            associate each operation invoked with the individual who invoked the action. However,
+            when the individual uses a role, the assumption of the role by the individual is a
+            separate action from the invoking of an operation, and you must manually correlate the
+            two.</p>
+    <p>You can simplify this by specifying unique role session names when users assume a role. You do this by adding a <code class="code">role_session_name</code>
+      parameter to each named profile in the <code>config</code> file that specifies a role. The <code class="code">role_session_name</code> value is passed to the
+        <code class="code">AssumeRole</code> operation and becomes part of the ARN for the role session. It is also included in the AWS CloudTrail logs for all logged
+      operations.</p>
+    <p>For example, you could create a role-based profile as follows. </p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (INI)--><code class="INI ">[profile namedsessionrole]
+role_arn = arn:aws:iam::<code class="replaceable">234567890123</code>:role/<code class="replaceable">SomeRole</code>
+source_profile = default
+role_session_name = <code class="replaceable">Session_Maria_Garcia</code></code></pre>
+    <p>This results in the role session having the following ARN.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (NONE)--><code class="NONE ">arn:aws:iam::<code class="replaceable">234567890123</code>:assumed-role/<code class="replaceable">SomeRole</code>/<code class="replaceable">Session_Maria_Garcia</code></code></pre>
+    <p>Also, all AWS CloudTrail logs include the role session name in the information captured for each operation.</p>
+   
+        <h2 id="cli-configure-role-oidc">Assume role with web identity</h2>
+        <p>You can configure a profile to indicate that the AWS CLI should assume a role using
+                <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc.html">web identity federation and
+                Open ID Connect (OIDC)</a>. When you specify this in a profile, the AWS CLI
+            automatically makes the corresponding AWS STS <code class="code">AssumeRoleWithWebIdentity</code> call
+            for you.</p>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>When you specify a profile that uses an IAM role, the AWS CLI makes the
+                appropriate calls to retrieve temporary credentials. These credentials are stored in
+                    <code>~/.aws/cli/cache</code>. Subsequent AWS CLI commands that specify
+                the same profile use the cached temporary credentials until they expire. At that
+                point, the AWS CLI automatically refreshes the credentials.</p></div></div>
+        <p>To retrieve and use temporary credentials using web identity federation, you can
+            specify the following configuration values in a shared profile.</p>
+        <div class="variablelist">
+             
+             
+             
+        <dl>
+                <dt><span class="term"><a href="./cli-configure-role.html">role_arn</a></span></dt>
+                <dd>
+                    <p>Specifies the ARN of the role to assume.</p>
+                </dd>
+             
+                <dt><span class="term">web_identity_token_file</span></dt>
+                <dd>
+                    <p>Specifies the path to a file which contains an OAuth 2.0 access token or
+                        OpenID Connect ID token that is provided by the identity provider. The AWS CLI
+                        loads this file and passes its content as the <code class="code">WebIdentityToken</code>
+                        argument of the <code class="code">AssumeRoleWithWebIdentity</code> operation.</p>
+                </dd>
+             
+                <dt><span class="term"><a href="#cli-configure-role-session-name">role_session_name</a></span></dt>
+                <dd>
+                    <p>Specifies an optional name applied to this assume-role session.</p>
+                </dd>
+            </dl></div>
+        <p>The following is an example of the minimal amount of configuration needed to configure
+            an assume role with web identity profile.</p>
+        <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"># In ~/.aws/config
+
+[profile web-identity]
+role_arn=arn:aws:iam:<code class="replaceable">123456789012</code>:role/<code class="replaceable">RoleNameToAssume</code>
+web_identity_token_file=<code class="replaceable">/path/to/a/token</code></code></pre>
+        <p>You can also provide this configuration by using <a href="./cli-configure-envvars.html">environment variables</a>.</p>
+        <div class="variablelist">
+             
+             
+             
+        <dl>
+                <dt><span class="term">AWS_ROLE_ARN</span></dt>
+                <dd>
+                    <p>The ARN of the role to assume.</p>
+                </dd>
+             
+                <dt><span class="term">AWS_WEB_IDENTITY_TOKEN_FILE</span></dt>
+                <dd>
+                    <p>The path to the web identity token file.</p>
+                </dd>
+             
+                <dt><span class="term">AWS_ROLE_SESSION_NAME</span></dt>
+                <dd>
+                    <p>The name applied to this assume-role session.</p>
+                </dd>
+            </dl></div>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>These environment variables currently apply only to the assume role with web
+                identity provider. They don't apply to the general assume role provider
+                configuration.</p></div></div>
+     
+    <h2 id="cli-configure-role-cache">Clearing cached credentials</h2>
+    <p>When you use a role, the AWS CLI caches the temporary credentials locally until they expire. The next time you try to use them, the AWS CLI attempts to
+      renew them on your behalf. </p>
+    <p>If your role's temporary credentials are <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_revoke-sessions.html">revoked</a>, they are not renewed
+      automatically, and attempts to use them fail. However, you can delete the cache to force the AWS CLI to retrieve new credentials.</p>
+    <p><b>Linux or macOS</b></p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (BASH)--><code class="BASH "><code class="prompt" copy="false">$ </code><code class="userinput">rm -r ~/.aws/cli/cache</code></code></pre>
+    <p><b>Windows</b></p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (BASH)--><code class="BASH "><code class="prompt" copy="false">C:\&gt; </code><code class="userinput">del /s /q %UserProfile%\.aws\cli\cache</code></code></pre>
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./cli-authentication-short-term.html">Short-term credentials</div><div id="next" class="next-link" accesskey="n" href="./cli-authentication-user.html">IAM users</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AWS Command Line Interface&amp;topic_url=https://docs.aws.amazon.com/en_us/cli/latest/userguide/cli-configure-role.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AWS Command Line Interface&amp;topic_url=https://docs.aws.amazon.com/en_us/cli/latest/userguide/cli-configure-role.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

@@ -1,0 +1,15 @@
+
+### 11 aws_devops.match_operational_events_with_eventbridge_rules
+Inline: supplied event samples: Supplied scaffolding: the exercise provides event samples. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.; event pattern: A predicate over event fields, taught by testing supplied matching and nonmatching samples.
+tb1: An event rule should select the intended operational events without selecting unrelated examples. Build the matching requirement from named event fields, then test the boundary with examples that should pass and examples that should not.
+tb2: An EventBridge event pattern describes event fields and values that an event must match.
+tb3: Write a JSON object containing the fields to filter and arrays of acceptable values; fields omitted from the pattern are not required to match.
+
+Test a pattern against both matching and nonmatching sample events with the EventBridge sandbox or TestEventPattern before using it in a rule.
+tb4: Suppose the lab supplies events with source and detail-type fields. The intended pattern accepts source value lab.orders and detail-type value OrderReady. Represent each acceptable value in an array under its field in the JSON pattern. Test an event carrying those values, then change detail-type to OrderCancelled in a second sample and test again. Also test a sample that varies a field omitted from the pattern: omitted fields are not required to match. Compare each test result with the intended requirement before using the pattern in a rule. The names here are invented sample data; the event bus and real operational event fields must come from the supplied exercise. This stage teaches selection, not target execution permissions.
+tb5: A pattern is not a requirement that every field in the event be identical to a sample. Fields omitted from the pattern are not required to match. Positive and negative tests make the intended field-level selection explicit.
+Assess: predict_event_pattern_matches; interpret_matching_and_nonmatching_test_results
+Practice: {'type': 'tool_simulation', 'objective': 'Write a JSON event pattern accepting source lab.orders and detail-type OrderReady, with acceptable values represented as arrays. Use an EventBridge sandbox simulation to test a matching sample, a sample with detail-type OrderCancelled, and a sample that changes a supplied field omitted from the pattern.', 'success': 'The pattern accepts the lab.orders/OrderReady sample, rejects the lab.orders/OrderCancelled sample, and still accepts the matching sample when only an omitted field changes. All test results agree with the predicted matches before the pattern is used in a rule.'}
+Visual: {'type': 'comparison', 'purpose': 'Show the JSON pattern beside the matching and nonmatching sample events and their sandbox results. Highlight the source and detail-type value checks and show that changing a field omitted from the pattern does not change the matching result.'}
+Notes: ['Keep target authorization and delivery retries for their later concepts.']
+Media: null

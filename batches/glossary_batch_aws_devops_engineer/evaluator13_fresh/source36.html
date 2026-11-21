@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Metrics concepts - Amazon CloudWatch</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="cloudwatch_concepts" /><meta name="default_state" content="cloudwatch_concepts" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.md" title="Markdown version" /><meta name="description" content="Describes the fundamentals, concepts, and terminology you need to know for working with Amazon CloudWatch metrics." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon CloudWatch" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Monitor your AWS services, collect and track metrics from AWS services and your own applications, and set alarms based on data from those metrics." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" hreflang="x-default" /><meta name="feedback-item" content="CloudWatch" /><meta name="this_doc_product" content="Amazon CloudWatch" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'cloudwatch'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Metrics concepts" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="cloudwatch_concepts.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Metrics concepts - Amazon CloudWatch</title><meta name="pdf" content="/pdfs/AmazonCloudWatch/latest/monitoring/acw-ug.pdf#cloudwatch_concepts" /><meta name="rss" content="amazon-cloudwatch-document-history.rss" /><meta name="forums" content="https://repost.aws/tags/TArz36ydKETWeIc1aO7QuRFw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html" /><meta name="keywords" content="metrics,OpenTelemetry,PromQL,CloudWatch Metrics Insights,monitor,CloudWatch,PutMetricData,Metrics Insights,classic,namespaces,dimensions,resolution,statistics,percentiles,terms,terminology,concept" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon CloudWatch",
+        "item" : "https://docs.aws.amazon.com/cloudwatch/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Metrics in Amazon CloudWatch",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "CloudWatch Metrics (Classic)",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/metrics-classic.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Metrics concepts",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/metrics-classic.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonCloudWatch/latest/monitoring/acw-ug.pdf#cloudwatch_concepts" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/cloudwatch/index.html">Amazon CloudWatch</a><a href="WhatIsCloudWatch.html">User Guide</a></div><div id="page-toc-src"><a href="#Namespace">Namespaces</a><a href="#Metric">Metrics</a><a href="#Dimension">Dimensions</a><a href="#Resolution_definition">Resolution</a><a href="#Statistic">Statistics</a><a href="#Unit">Units</a><a href="#CloudWatchPeriods">Periods</a><a href="#CloudWatchAggregation">Aggregation</a><a href="#Percentiles">Percentiles</a><a href="#CloudWatchAlarms">Alarms</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="cloudwatch_concepts">Metrics concepts</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>The following terminology and concepts are central to your understanding and use of
+    Amazon CloudWatch:</p><div class="itemizedlist">
+     
+     
+     
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p><a href="#Namespace">Namespaces</a></p>
+    </li><li class="listitem">
+      <p><a href="#Metric">Metrics</a></p>
+    </li><li class="listitem">
+      <p><a href="#Dimension">Dimensions</a></p>
+    </li><li class="listitem">
+      <p><a href="#Resolution_definition">Resolution</a></p>
+    </li><li class="listitem">
+      <p><a href="#Statistic">Statistics</a></p>
+    </li><li class="listitem">
+      <p><a href="#Percentiles">Percentiles</a></p>
+    </li><li class="listitem">
+      <p><a href="#CloudWatchAlarms">Alarms</a></p>
+    </li></ul></div><p> For information about the service quotas for CloudWatch metrics, alarms, API requests, and
+    alarm email notifications, see <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_limits.html">CloudWatch service quotas</a>. </p>
+    <h2 id="Namespace">Namespaces</h2>
+
+
+    <p>A <em>namespace</em> is a container for CloudWatch metrics. Metrics in different
+      namespaces are isolated from each other, so that metrics from different applications are not
+      mistakenly aggregated into the same statistics.</p>
+
+    <p>There is no default namespace. You must specify a namespace for each data point you
+      publish to CloudWatch. You can specify a namespace name when you create a metric. These names must
+      contain valid ASCII characters, and be 255 or fewer characters. Possible characters are:
+      alphanumeric characters (0-9A-Za-z), period (.), hyphen (-), underscore (_), forward slash
+      (/), hash (#), colon (:), and the space character. A namespace must contain at least one
+      non-whitespace character.</p>
+
+    <p>The AWS namespaces typically use the following naming convention:
+          <code class="code">AWS/<code class="replaceable">service</code></code>. For example, Amazon EC2 uses the
+        <code class="code">AWS/EC2</code> namespace. For the list of AWS namespaces, see <a href="./aws-services-cloudwatch-metrics.html">AWS services that publish CloudWatch metrics</a>.</p>
+
+   
+    <h2 id="Metric">Metrics</h2>
+
+
+    <p><em>Metrics</em> are the fundamental concept in CloudWatch. A metric represents a
+      time-ordered set of data points that are published to CloudWatch. Think of a metric as a variable
+      to monitor, and the data points as representing the values of that variable over time. For
+      example, the CPU usage of a particular EC2 instance is one metric provided by Amazon EC2. The
+      data points themselves can come from any application or business activity from which you
+      collect data.</p>
+    <p>By default, many AWS services provide metrics at no charge for resources (such as
+      Amazon EC2 instances, Amazon EBS volumes, and Amazon RDS DB instances). For a charge, you can also enable
+      detailed monitoring for some resources, such as your Amazon EC2 instances, or publish your own
+      application metrics. For custom metrics, you can add the data points in any order, and at
+      any rate you choose. You can retrieve statistics about those data points as an ordered set
+      of time-series data.</p>
+    <p>Metrics exist only in the Region in which they are created. Metrics cannot be deleted,
+      but they automatically expire after 15 months if no new data is published to them. Data
+      points older than 15 months expire on a rolling basis; as new data points come in, data
+      older than 15 months is dropped.</p>
+
+    <p>Metrics are uniquely defined by a name, a namespace, and zero or more dimensions. Each
+      data point in a metric has a time stamp, and (optionally) a unit of measure. You can
+      retrieve statistics from CloudWatch for any metric.</p>
+
+    <p>For more information, see <a href="./viewing_metrics_with_cloudwatch.html">View available metrics</a> and <a href="./publishingMetrics.html">Publish custom metrics (PutMetricData / EMF)</a>.</p>
+
+     
+      <h3 id="about_timestamp">Time stamps</h3>
+
+      <p>Each metric data point must be associated with a time stamp. The time stamp can be up
+        to two weeks in the past and up to two hours into the future. If you do not provide a time
+        stamp, CloudWatch creates a time stamp for you based on the time the data point was received. </p>
+      <p>Time stamps are <code class="code">dateTime</code> objects, with the complete date plus hours,
+        minutes, and seconds (for example, 2016-10-31T23:59:59Z). For more information, see <a href="http://www.w3.org/TR/xmlschema-2/#dateTime" rel="noopener noreferrer" target="_blank"><span>dateTime</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>. Although it is not
+        required, we recommend that you use UTC. When you retrieve statistics from CloudWatch, all times 
+        are in UTC.</p>
+
+      <p>CloudWatch alarms check metrics based on the current time in UTC. Custom metrics sent to
+        CloudWatch with time stamps other than the current UTC time can cause alarms to display the
+          <b>Insufficient Data</b> state or result in delayed alarms.</p>
+     
+
+
+     
+      <h3 id="metrics-retention">Metrics retention</h3>
+
+      <p>CloudWatch retains metric data as follows:</p>
+
+
+      <div class="itemizedlist">
+         
+         
+         
+         
+      <ul class="itemizedlist"><li class="listitem">
+          <p>Data points with a period of less than 60 seconds are available for 3 hours. These
+            data points are high-resolution custom metrics. </p>
+        </li><li class="listitem">
+          <p>Data points with a period of 60 seconds (1 minute) are available for 15
+            days</p>
+        </li><li class="listitem">
+          <p>Data points with a period of 300 seconds (5 minutes) are available for 63
+            days</p>
+        </li><li class="listitem">
+          <p>Data points with a period of 3600 seconds (1 hour) are available for 455 days (15
+            months)</p>
+        </li></ul></div>
+      <p>Data points that are initially published with a shorter period are aggregated together
+        for long-term storage. For example, if you collect data using a period of 1 minute, the
+        data remains available for 15 days with 1-minute resolution. After 15 days this data is
+        still available, but is aggregated and is retrievable only with a resolution of 5 minutes.
+        After 63 days, the data is further aggregated and is available with a resolution of 1
+        hour. </p>
+
+      <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Metrics that have not had any new data points in the past two weeks do not appear in
+          the console. They also do not appear when you type their metric name or dimension names
+          in the search box in the <b>Browse</b> tab in the console. They
+          are not returned in the results of a <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/list-metrics.html">list-metrics</a> command. The best
+          way to retrieve these metrics is with the <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/get-metric-data.html">get-metric-data</a> or <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/get-metric-statistics.html">get-metric-statistics</a>
+          commands in the AWS CLI.</p></div></div>
+
+      
+
+     
+
+   
+    <h2 id="Dimension">Dimensions</h2>
+
+
+    <p>A <em>dimension</em> is a name/value pair that is part of the identity of a
+      metric. You can assign up to 30 dimensions to a metric.</p>
+    <p>Every metric has specific characteristics that describe it, and you can think of
+      dimensions as categories for those characteristics. Dimensions help you design a structure
+      for your statistics plan. Because dimensions are part of the unique identifier for a metric,
+      whenever you add a unique name/value pair to one of your metrics, you are creating a new
+      variation of that metric.</p>
+
+    <p>AWS services that send data to CloudWatch attach dimensions to each metric. You can use
+      dimensions to filter the results that CloudWatch returns. For example, you can get statistics for
+      a specific EC2 instance by specifying the <code class="code">InstanceId</code> dimension when you search
+      for metrics.</p>
+
+    <p>For metrics produced by certain AWS services, such as Amazon EC2, CloudWatch can aggregate data
+      across dimensions. For example, if you search for metrics in the <code class="code">AWS/EC2</code>
+      namespace but do not specify any dimensions, CloudWatch aggregates all data for the specified
+      metric to create the statistic that you requested. CloudWatch does not aggregate across dimensions
+      for your custom metrics.</p>
+
+     
+      <h3 id="dimension-combinations">Dimension combinations</h3>
+
+
+      <p>CloudWatch treats each unique combination of dimensions as a separate metric, even if the
+        metrics have the same metric name. You can only retrieve statistics using combinations of
+        dimensions that you specifically published. When you retrieve statistics, specify the same
+        values for the namespace, metric name, and dimension parameters that were used when the
+        metrics were created. You can also specify the start and end times for CloudWatch to use for
+        aggregation.</p>
+
+      <p>For example, suppose that you publish four distinct metrics named ServerStats in the
+        DataCenterMetric namespace with the following properties:</p>
+      <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="">Dimensions: Server=Prod, Domain=Frankfurt, Unit: Count, Timestamp: 2016-10-31T12:30:00Z, Value: 105
+Dimensions: Server=Beta, Domain=Frankfurt, Unit: Count, Timestamp: 2016-10-31T12:31:00Z, Value: 115
+Dimensions: Server=Prod, Domain=Rio,       Unit: Count, Timestamp: 2016-10-31T12:32:00Z, Value: 95
+Dimensions: Server=Beta, Domain=Rio,       Unit: Count, Timestamp: 2016-10-31T12:33:00Z, Value: 97</code></pre>
+
+      <p>If you publish only those four metrics, you can retrieve statistics for these
+        combinations of dimensions:</p>
+      <div class="itemizedlist">
+         
+         
+         
+         
+      <ul class="itemizedlist"><li class="listitem">
+          <p><code class="code">Server=Prod,Domain=Frankfurt</code></p>
+        </li><li class="listitem">
+          <p><code class="code">Server=Prod,Domain=Rio</code></p>
+        </li><li class="listitem">
+          <p><code class="code">Server=Beta,Domain=Frankfurt</code></p>
+        </li><li class="listitem">
+          <p><code class="code">Server=Beta,Domain=Rio</code></p>
+        </li></ul></div>
+
+      <p>You can't retrieve statistics for the following dimensions or if you specify no
+        dimensions. (The exception is by using the metric math <b>SEARCH</b>
+        function, which can retrieve statistics for multiple metrics. For more information, see
+          <a href="./using-search-expressions.html">Use search expressions in graphs</a>.)</p>
+
+      <div class="itemizedlist">
+         
+         
+         
+         
+      <ul class="itemizedlist"><li class="listitem">
+          <p><code class="code">Server=Prod</code></p>
+        </li><li class="listitem">
+          <p><code class="code">Server=Beta</code></p>
+        </li><li class="listitem">
+          <p><code class="code">Domain=Frankfurt</code></p>
+        </li><li class="listitem">
+          <p><code class="code">Domain=Rio</code></p>
+        </li></ul></div>
+     
+
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>OpenTelemetry metrics use labels instead of dimensions. Labels serve a similar purpose
+        but follow OpenTelemetry semantic conventions and support up to 150 labels per metric. For
+        more information, see <a href="./metrics-otel-recommended.html">OpenTelemetry Metrics (Recommended)</a>.</p></div></div>
+   
+    <h2 id="Resolution_definition">Resolution</h2>
+
+    <p>Each metric is one of the following:</p>
+    <div class="itemizedlist">
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>Standard resolution, with data having a one-minute granularity</p>
+      </li><li class="listitem">
+        <p>High resolution, with data at a granularity of one second</p>
+      </li></ul></div>
+    <p>Metrics produced by AWS services are standard resolution by default. When you publish
+      a custom metric, you can define it as either standard resolution or high resolution. When
+      you publish a high-resolution metric, CloudWatch stores it with a resolution of 1 second, and you
+      can read and retrieve it with a period of 1 second, 5 seconds, 10 seconds, 30 seconds, or
+      any multiple of 60 seconds.</p>
+    <p>High-resolution metrics can give you more immediate insight into your application's
+      sub-minute activity. Keep in mind that every <code class="code">PutMetricData</code> call for a custom
+      metric is charged, so calling <code class="code">PutMetricData</code> more often on a high-resolution
+      metric can lead to higher charges. For more information about CloudWatch pricing, see <a href="https://aws.amazon.com/cloudwatch/pricing/" rel="noopener noreferrer" target="_blank"><span>Amazon CloudWatch Pricing</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+    <p>If you set an alarm on a high-resolution metric, you can specify a high-resolution alarm
+      with a period of 10 seconds or 30 seconds, or you can set a regular alarm with a period of
+      any multiple of 60 seconds. There is a higher charge for high-resolution alarms with a
+      period of 10 or 30 seconds.</p>
+
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>OpenTelemetry metrics are ingested at the resolution they are sent, with no minimum
+        granularity restriction. Resolution and rollup behavior for OpenTelemetry metrics differs
+        from traditional CloudWatch metrics.</p></div></div>
+
+   
+    <h2 id="Statistic">Statistics</h2>
+
+
+    <p><em>Statistics</em> are metric data aggregations over
+      specified periods of time. CloudWatch provides statistics based on the metric data points provided
+      by your custom data or provided by other AWS services to CloudWatch. Aggregations are made using
+      the namespace, metric name, dimensions, and the data point unit of measure, within the time
+      period you specify.</p>
+    <p>For detailed definitions of the statistics supported by CloudWatch, see <a href="./Statistics-definitions.html">CloudWatch statistics definitions</a>.</p>
+
+    
+
+   
+    <h2 id="Unit">Units</h2>
+
+
+    <p>Each statistic has a unit of measure. Example units include <code class="code">Bytes</code>,
+        <code class="code">Seconds</code>, <code class="code">Count</code>, and <code class="code">Percent</code>. For the complete list
+      of the units that CloudWatch supports, see the <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricDatum.html">MetricDatum</a> data type in the <em>Amazon CloudWatch API Reference</em>.</p>
+    <p>You can specify a unit when you create a custom metric. If you do not specify a unit,
+      CloudWatch uses <code class="code">None</code> as the unit. Units help provide conceptual meaning to your data.
+      Though CloudWatch attaches no significance to a unit internally, other applications can derive
+      semantic information based on the unit.</p>
+    <p>Metric data points that specify a unit of measure are aggregated separately. When you
+      get statistics without specifying a unit, CloudWatch aggregates all data points of the same unit
+      together. If you have two otherwise identical metrics with different units, two separate
+      data streams are returned, one for each unit.</p>
+   
+    <h2 id="CloudWatchPeriods">Periods</h2>
+
+
+    <p>A <em>period</em> is the length of time associated with a specific Amazon CloudWatch
+      statistic. Each statistic represents an aggregation of the metrics data collected for a
+      specified period of time. Periods are defined in numbers of seconds, and valid values for
+      period are 1, 5, 10, 30, or any multiple of 60. For example, to specify a period of six
+      minutes, use 360 as the period value. You can adjust how the data is aggregated by varying
+      the length of the period. The default value of a period is 60 seconds. A period can be as
+      short as one second, and must be a multiple of 60 if it is greater than the default value of
+      60 seconds. </p>
+    <p>Only custom metrics that you define with a storage resolution of 1 second support
+      sub-minute periods. Even though the option to set a period below 60 is always available in
+      the console, you should select a period that aligns to how the metric is stored. For more
+      information about metrics that support sub-minute periods, see <a href="./publishingMetrics.html#high-resolution-metrics">High-resolution metrics</a>.</p>
+
+
+    <p>When you retrieve statistics, you can specify a period, start time, and end time. These
+      parameters determine the overall length of time associated with the statistics. The default
+      values for the start time and end time get you the last hour's worth of statistics. The
+      values that you specify for the start time and end time determine how many periods CloudWatch
+      returns. For example, retrieving statistics using the default values for the period, start
+      time, and end time returns an aggregated set of statistics for each minute of the previous
+      hour. If you prefer statistics aggregated in ten-minute blocks, specify a period of 600. For
+      statistics aggregated over the entire hour, specify a period of 3600.</p>
+
+    <p>When statistics are aggregated over a period of time, they are stamped with the time
+      corresponding to the beginning of the period. For example, data aggregated from 7:00pm to
+      8:00pm is stamped as 7:00pm. Additionally, data aggregated between 7:00pm and 8:00pm begins
+      to be visible at 7:00pm, then the values of that aggregated data may change as CloudWatch
+      collects more samples during the period.</p>
+
+    <p>Periods are also important for CloudWatch alarms. When you create an alarm to monitor a
+      specific metric, you are asking CloudWatch to compare that metric to the threshold value that you
+      specified. You have extensive control over how CloudWatch makes that comparison. Not only can you
+      specify the period over which the comparison is made, but you can also specify how many
+      evaluation periods are used to arrive at a conclusion. For example, if you specify three
+      evaluation periods, CloudWatch compares a window of three data points. CloudWatch only notifies you if
+      the oldest data point is breaching and the others are breaching or missing.</p>
+   
+    <h2 id="CloudWatchAggregation">Aggregation</h2>
+
+
+    <p>Amazon CloudWatch aggregates statistics according to the period length that you specify when
+      retrieving statistics. You can publish as many data points as you want with the same or
+      similar time stamps. CloudWatch aggregates them according to the specified period length. CloudWatch
+      does not automatically aggregate data across Regions, but you can use metric math to
+      aggregate metrics from different Regions.</p>
+
+    <p>You can publish data points for a metric that share not only the same time stamp, but
+      also the same namespace and dimensions. CloudWatch returns aggregated statistics for those data
+      points. You can also publish multiple data points for the same or different metrics, with
+      any time stamp.</p>
+    <p>For large datasets, you can insert a pre-aggregated dataset called a <em>statistic
+        set</em>. With statistic sets, you give CloudWatch the Min, Max, Sum, and SampleCount for
+      a number of data points. This is commonly used when you need to collect data many times in a
+      minute. For example, suppose you have a metric for the request latency of a web page. It
+      doesn't make sense to publish data with every web page hit. Consider collecting the
+      latency of all hits to that web page, aggregate them once a minute, and send that statistic
+      set to CloudWatch.</p>
+    <p>Amazon CloudWatch doesn't differentiate the source of a metric. If you publish a metric with the
+      same namespace and dimensions from different sources, CloudWatch treats this as a single metric.
+      This can be useful for service metrics in a distributed, scaled system. For example, all the
+      hosts in a web server application could publish identical metrics representing the latency
+      of requests they are processing. CloudWatch treats these as a single metric, allowing you to get
+      the statistics for minimum, maximum, average, and sum of all requests across your
+      application.</p>
+   
+    <h2 id="Percentiles">Percentiles</h2>
+
+    <p>A <em>percentile</em> indicates the relative standing of a value in a
+      dataset. For example, the 95th percentile means that 95 percent of the data is lower than
+      this value and 5 percent of the data is higher than this value. Percentiles help you get a
+      better understanding of the distribution of your metric data.</p>
+    <p>Percentiles are often used to isolate anomalies. In a normal distribution, 95 percent of
+      the data is within two standard deviations from the mean and 99.7 percent of the data is
+      within three standard deviations from the mean. Any data that falls outside three standard
+      deviations is often considered to be an anomaly because it differs so greatly from the
+      average value. For example, suppose that you are monitoring the CPU utilization of your EC2
+      instances to make sure that your customers have a good experience. If you monitor the average,
+      this can hide anomalies. If you monitor the maximum, a single anomaly can skew the results.
+      Using percentiles, you can monitor the 95th percentile of CPU utilization to check for
+      instances with an unusually heavy load.</p>
+    <p>Some CloudWatch metrics support percentiles as a statistic. For these metrics, you can monitor
+      your system and applications using percentiles as you would when using the other CloudWatch
+      statistics (Average, Minimum, Maximum, and Sum). For example, when you create an alarm, you
+      can use percentiles as the statistical function. You can specify the percentile with up to
+      ten decimal places (for example, p95.0123456789).</p>
+    <p>Percentile statistics are available for custom metrics as long as you publish the raw,
+      unsummarized data points for your custom metric. Percentile statistics are not available for
+      metrics when any of the metric values are negative numbers.</p>
+    <p>CloudWatch needs raw data points to calculate percentiles. If you publish data using a
+      statistic set instead, you can only retrieve percentile statistics for this data if one of
+      the following conditions is true:</p>
+    <div class="itemizedlist">
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>The SampleCount value of the statistic set is 1 and Min, Max, and Sum are all
+          equal.</p>
+      </li><li class="listitem">
+        <p>The Min and Max are equal, and Sum is equal to Min multiplied by SampleCount.</p>
+      </li></ul></div>
+    <p>The following AWS services include metrics that support percentile statistics.</p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>API Gateway</p>
+      </li><li class="listitem">
+        <p>Application Load Balancer</p>
+      </li><li class="listitem">
+        <p>Amazon EC2</p>
+      </li><li class="listitem">
+        <p>Elastic Load Balancing</p>
+      </li><li class="listitem">
+        <p>Kinesis</p>
+      </li><li class="listitem">
+        <p>Lambda</p>
+      </li><li class="listitem">
+        <p>Amazon RDS</p>
+      </li></ul></div>
+    <p>CloudWatch also supports trimmed mean and other performance statistics, which can have a
+      similar use as percentiles. For more information, see <a href="./Statistics-definitions.html">CloudWatch statistics definitions</a>.</p>
+   
+    <h2 id="CloudWatchAlarms">Alarms</h2>
+
+
+    <p>You can use an <em>alarm</em> to automatically initiate actions on your
+      behalf. An alarm watches a single metric over a specified time period, and performs one or
+      more specified actions, based on the value of the metric relative to a threshold over time.
+      The action is a notification sent to an Amazon SNS topic or an Auto Scaling policy. You can also add
+      alarms to dashboards.</p>
+
+    <p>Alarms invoke actions for sustained state changes only. CloudWatch alarms do not invoke
+      actions simply because they are in a particular state. The state must have changed and been
+      maintained for a specified number of periods.</p>
+
+    <p>When creating an alarm, select an alarm monitoring period that is greater than or equal
+      to the metrics resolution. For example, basic monitoring for Amazon EC2 provides metrics for your
+      instances every 5 minutes. When setting an alarm on a basic monitoring metric, select a
+      period of at least 300 seconds (5 minutes). Detailed monitoring for Amazon EC2 provides metrics
+      for your instances with a resolution of 1 minute. When setting an alarm on a detailed
+      monitoring metric, select a period of at least 60 seconds (1 minute).</p>
+    <p> If you set an alarm on a high-resolution metric, you can specify a high-resolution
+      alarm with a period of 10 seconds or 30 seconds, or you can set a regular alarm with a
+      period of any multiple of 60 seconds. There is a higher charge for high-resolution alarms.
+      For more information about high-resolution metrics, see <a href="./publishingMetrics.html">Publish custom metrics (PutMetricData / EMF)</a>.</p>
+
+    <p>For more information, see <a href="./CloudWatch_Alarms.html">Using Amazon CloudWatch alarms</a> and <a href="./create_alarm_metric_graph.html">Create an alarm from a metric on a graph</a>.</p>
+
+    <p>For OpenTelemetry metrics, you can create PromQL-based CloudWatch Alarms. These alarms use
+      PromQL queries to define alarm conditions, using the same query language available in CloudWatch
+      Query Studio.</p>
+
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./metrics-classic.html">CloudWatch Metrics (Classic)</div><div id="next" class="next-link" accesskey="n" href="./cloudwatch-metrics-basic-detailed.html">Basic and detailed monitoring</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

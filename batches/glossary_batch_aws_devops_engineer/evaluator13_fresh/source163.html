@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>COST06-BP02 Select resource type, size, and number based on data - AWS Well-Architected Framework</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="cost06-bp02" /><meta name="default_state" content="cost06-bp02" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/cost06-bp02.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/cost06-bp02.md" title="Markdown version" /><meta name="description" content="Base the type, size, and number of resources on evidence of the workload's compute, memory, throughput, and storage demands. Draw that evidence from a prior version of the workload, vendor documentation, published benchmarks, or a cost model." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Well-Architected Framework" /><meta name="guide" content="Framework" /><meta name="abstract" content="The AWS Well-Architected Framework helps you understand the pros and cons of decisions you make while building systems on AWS. By using the Framework you will learn architectural best practices for designing and operating reliable, secure, efficient, cost-effective, and sustainable systems in the cloud." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/cost06-bp02.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/cost06-bp02.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/cost06-bp02.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/cost06-bp02.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/cost06-bp02.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/cost06-bp02.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/cost06-bp02.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/cost06-bp02.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/cost06-bp02.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/cost06-bp02.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/cost06-bp02.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/cost06-bp02.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/cost06-bp02.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/cost06-bp02.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/cost06-bp02.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/cost06-bp02.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/cost06-bp02.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/cost06-bp02.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/cost06-bp02.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/wellarchitected/latest/framework/cost06-bp02.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/wellarchitected/latest/framework/cost06-bp02.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/cost06-bp02.html" hreflang="x-default" /><meta name="feedback-folder" content="897c6ffe-3c12-4691-9c85-dc23b20eabd4" /><meta name="this_doc_product" content="AWS Well-Architected Framework" /><meta name="this_doc_guide" content="Framework" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'wellarchitected'}"></script><meta id="panorama-serviceSubSection" value="Framework" /><meta id="panorama-serviceConsolePage" value="COST06-BP02 Select resource type, size, and number based on data" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="cost06-bp02.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>COST06-BP02 Select resource type, size, and number based on data - AWS Well-Architected Framework</title><meta name="pdf" content="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#cost06-bp02" /><meta name="forums" content="https://repost.aws/topics/TA5g9gZfzuQoWLsZ3wxihrgw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/cost06-bp02.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/cost06-bp02.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/cost06-bp02.html" /><meta name="keywords" content="AWS Well-Architected Framework,Well-Architected,cloud architecture,architecture best practices,AWS Cloud,workload design,cloud foundations,landing zone" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Well-Architected",
+        "item" : "https://aws.amazon.com/architecture/well-architected/"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Framework",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Cloud Workloads",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/workloads.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Cost optimization",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/cost-optimization.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Select the correct resource type, size, and number",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/cost06.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "COST06-BP02 Select resource type, size, and number based on data",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/cost06.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#cost06-bp02" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected</a><a href="framework.html">Framework</a></div><div id="page-toc-src"><a href="#implementation-guidance">Implementation     guidance</a><a href="#resources">Resources</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="cost06-bp02">COST06-BP02 Select resource type, size, and number based on data</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>
+    Base the type, size, and number of resources on evidence of the
+    workload's compute, memory, throughput, and storage demands. Draw
+    that evidence from a prior version of the workload, vendor
+    documentation, published benchmarks, or a cost model.
+  </p><p>
+    <b>Desired outcome:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        You size resources from measured or documented workload
+        characteristics rather than estimates.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your sizing decisions account for multiple dimensions, including
+        compute, memory, storage, and network, not a single dimension.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You match workloads to purpose-built resource types when the
+        workload profile justifies them.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your resource selections trace back to a named data source that
+        another engineer can review.
+      </p>
+    </li></ul></div><p>
+    <b>Common anti-patterns:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Allocating resources from unsubstantiated estimates.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Sizing on a single characteristic, such as CPU, while ignoring
+        memory, storage, or network.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Choosing the largest available resource to avoid any risk of
+        under-provisioning.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Reusing a resource type from an unrelated workload because it is
+        familiar.
+      </p>
+    </li></ul></div><p>
+    <b>Benefits of establishing this best
+    practice:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Workloads perform well under load without paying for capacity
+        they do not use.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Sizing decisions are defensible because they rest on documented
+        evidence.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Purpose-built resource types deliver better price performance
+        than general-purpose equivalents for the workloads that fit
+        them.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Multi-dimensional analysis helps prevent a single overlooked
+        requirement from causing a bottleneck.
+      </p>
+    </li></ul></div><p>
+    <b>Level of risk exposed if this best practice
+    is not established:</b> Medium
+  </p>
+
+  <h2 id="implementation-guidance">Implementation guidance</h2>
+
+      
+
+    <p>
+      A workload's profile spans compute, memory, storage, throughput,
+      and network demands. Match resources to that profile without
+      excess. The profile is rarely obvious before the workload runs, so
+      without data, sizing tends toward the largest option.
+    </p>
+    <p>
+      Sizing on one visible dimension, such as high CPU, can miss the
+      dimension that actually constrains the workload, such as memory.
+      Resource families each target a different bottleneck: general
+      purpose, compute optimized, memory optimized, storage optimized,
+      and accelerated. To select the family, first identify the
+      constraining dimension by evaluating all dimensions together.
+    </p>
+    <p>
+      The strongest evidence comes from a prior version of the workload,
+      whether on-premises or in another environment, because it reflects
+      real behavior. Without one, vendor documentation and published
+      benchmarks provide a starting point. A cost model from earlier
+      analysis maps expected usage to specific resource dimensions. With
+      weaker sources, choose more conservatively and validate against
+      real measurements sooner.
+    </p>
+    <p>
+      Many processor and instance types target specific workload shapes,
+      such as machine learning training, high-throughput storage, or
+      particular instruction sets. They deliver better price performance
+      than general-purpose resources for those workloads. The cost is
+      reduced flexibility, a purpose-built resource that no longer
+      matches the workload is harder to repurpose. Prefer specialized
+      options for stable, well-understood profiles. Keep general purpose
+      when the profile is uncertain or changing.
+    </p>
+    <p>
+      Serverless and managed components expose fewer sizing knobs, and
+      those knobs still drive cost.
+      <a href="https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html">AWS Lambda</a> cost scales with allocated memory. Test to find the
+      best cost-performance setting. If a prior version of the function
+      is already running,
+      <a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/supported-resources.html">AWS Compute Optimizer</a> recommends a memory size, narrowing the
+      range to test.
+      <a href="https://aws.amazon.com/ec2/graviton/" rel="noopener noreferrer" target="_blank"><span>AWS Graviton</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> (Arm) processors lower cost for the same work on
+      Lambda, AWS Fargate, and many instance families where your runtime
+      supports Arm.
+    </p>
+    <p>
+      This best practice covers initial resource selection from data. To
+      keep resources correctly sized as demand changes, see
+      <a href="./cost06-bp03.html">COST06-BP03 Select resource type, size, and number automatically based on metrics</a>. For
+      each resource family's characteristics and use cases, see the
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Amazon EC2 instance types documentation</a>.
+    </p>
+     
+
+  <h3 id="implementation-steps">Implementation steps</h3>
+
+      
+
+      <div class="orderedlist">
+         
+         
+         
+         
+         
+      <ol><li>
+          <p>
+            <b>Gather workload system
+            requirements:</b> Document the workload's technical
+            profile, including operating system, CPU and GPU core
+            counts, system memory, storage type and capacity, network
+            bandwidth, and any required processor type. Record the
+            source for each figure so reviewers can judge its
+            reliability.
+          </p>
+        </li><li>
+          <p>
+            <b>Identify the constraining
+            dimension:</b> Analyze the requirements together to
+            find which dimension limits the workload, rather than
+            reacting to the most visible one. Use this to select the
+            resource family, such as general purpose, compute optimized,
+            memory optimized, storage optimized, or accelerated
+            computing.
+          </p>
+        </li><li>
+          <p>
+            <b>Select type and size from
+            data:</b> Use your cost model and workload data to
+            choose a specific type and size within the family, setting
+            virtual CPU count, memory, local and
+            <a href="https://docs.aws.amazon.com/ebs/latest/userguide/what-is-ebs.html">Amazon EBS</a> storage, and network performance to match the
+            required data transfer rate. Estimate the number of
+            resources needed for the anticipated load.
+          </p>
+        </li><li>
+          <p>
+            <b>Prefer purpose-built resources for
+            stable profiles:</b> When a
+            <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#instance-types-processors">purpose-built processor or instance type</a> matches a well-understood
+            workload, select it over a general-purpose equivalent for
+            better price performance. Keep general purpose where the
+            profile is uncertain or likely to change.
+          </p>
+        </li><li>
+          <p>
+            <b>Validate against cost and
+            performance:</b> Confirm the selection against the
+            cost model and, where possible, a benchmark under predicted
+            load. Adjust the type, size, or number if measured behavior
+            differs from the source data.
+          </p>
+        </li></ol></div>
+     
+   
+
+  <h2 id="resources">Resources</h2>
+
+      
+    <p>
+      <b>Related best practices:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="./cost06-bp01.html">COST06-BP01 Perform cost modeling</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./cost06-bp03.html">COST06-BP03 Select resource type, size, and number automatically based on metrics</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./cost05-bp03.html">COST05-BP03 Analyze the total cost of ownership of each component</a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related documents:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Amazon EC2 instance types</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#instance-types-processors">Amazon EC2 processor types</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/cost-management/latest/userguide/ce-rightsizing.html">Optimizing your cost with rightsizing recommendations</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/cloudwatch/features/" rel="noopener noreferrer" target="_blank"><span>Amazon CloudWatch features</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related videos:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://www.youtube.com/watch?v=sc_3hfucTnY" rel="noopener noreferrer" target="_blank"><span>AWS re:Invent 2025 - How well do you know EC2? (CMP356)</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://www.youtube.com/watch?v=jH0qCvMP7ms" rel="noopener noreferrer" target="_blank"><span>How to use AWS Compute Optimizers new features</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related examples:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/decision-guides/latest/decision-guides/choosing-aws-compute-service.html">Choosing an AWS compute service</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/decision-guides/latest/decision-guides/choosing-aws-storage-service.html">Choosing an AWS storage service</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/decision-guides/latest/decision-guides/databases-on-aws-how-to-choose.html">Choosing an AWS database service</a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related workshops:</b>
+    </p>
+    <div class="itemizedlist">
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://catalog.workshops.aws/awscff/en-US/playbooks/compute/ec2" rel="noopener noreferrer" target="_blank"><span>CFM TIPs: Amazon EC2 compute playbook</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./cost06-bp01.html">COST06-BP01 Perform cost modeling</div><div id="next" class="next-link" accesskey="n" href="./cost06-bp03.html">COST06-BP03 Select resource type, size, and number automatically based on metrics</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/cost06-bp02.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/cost06-bp02.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

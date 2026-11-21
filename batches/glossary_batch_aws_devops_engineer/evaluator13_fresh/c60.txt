@@ -1,0 +1,17 @@
+
+### 60 aws_devops.configure_managed_database_backups
+Inline: supplied existing network setup: Supplied scaffolding: existing network setup. The exercise provides this input or setup; independent implementation is not required.; supplied recovery marker: Supplied scaffolding: recovery marker. The exercise provides this input or setup; independent implementation is not required.; RDS snapshot: A recoverable database image whose restoration creates a separate RDS instance.; supplied existing network setup and data marker: Supplied scaffolding: the exercise provides existing network setup and data marker. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.
+tb1: A database snapshot should support a verified restoration, not merely appear in a backup list. Follow the intended source snapshot into a separate restored instance and inspect its data marker.
+tb2: An RDS DB snapshot captures the database instance for later restoration.
+tb3: Create a manual snapshot for the intended DB instance and wait until its snapshot status is available.
+
+Restore the snapshot to a new DB instance identifier using the supplied network settings; restoration creates a separate instance rather than overwriting the source.
+
+Wait for the restored instance to become available, connect to its endpoint and run the supplied query to verify the recovery marker.
+tb4: Create the manual snapshot for the supplied DB instance and wait until the snapshot is available. Restore it with a new DB instance identifier and the supplied network settings. Wait for the restored instance to become available, then connect to that instance's endpoint and run the supplied recovery-marker query. Record the source, snapshot and restored identifier together. The restore creates a separate instance; it does not overwrite the original database.
+tb5: An available snapshot is not the entire recovery verification. Restoration creates a separate instance, and the supplied query checks its marker after availability. Do not accidentally test the source endpoint and label that as restored-data evidence.
+Assess: verify_recovery_marker_on_restored_instance
+Practice: {'type': 'tool_simulation', 'objective': 'Create a manual RDS snapshot of the supplied DB instance, wait for the snapshot to become available, and restore it to a new DB instance identifier using the supplied network settings. After the restored instance becomes available, connect to its endpoint and run the supplied recovery-marker query.', 'success': "The snapshot and restored instance both reach available status. The restored instance has a different identifier from the source, and the supplied query returns the expected recovery marker when run against the restored instance's endpoint. No routing or security-group configuration or new SQL is required."}
+Visual: {'type': 'UI_state', 'purpose': 'Make visible the available manual snapshot linked to its source DB instance, the separate restored instance with its new identifier and available status, and the supplied query result showing the recovery marker at the restored endpoint.'}
+Notes: ['Use supplied network settings and query; do not author new SQL or database backup policy.']
+Media: null

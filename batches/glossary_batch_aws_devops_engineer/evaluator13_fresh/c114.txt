@@ -1,0 +1,17 @@
+
+### 114 aws_devops.diagnose_a_failed_delivery_pipeline_action
+Inline: supplied failure logs: Supplied scaffolding: the exercise provides failure logs. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.; first failing action: The earliest failed pipeline action whose inputs and execution evidence explain the break in progression.
+tb1: A pipeline has stopped, and several later actions did not run. Start with the first failing action in the selected execution instead of treating every unrun dependent action as an independent failure.
+tb2: Pipeline execution and action history identify failed actions and their error details.
+tb3: Find the first failing action in the selected execution, inspect its input artifact revision and linked service logs, and use the error evidence to identify the correction.
+
+Retest after the approved correction and verify that action succeeds before investigating later dependent actions that did not run.
+tb4: Open the supplied execution and action history. Identify the first failing action, inspect its input artifact revision and follow its linked service logs. Use the error details to select the approved correction. Retest and verify that action succeeds before investigating later dependent actions that did not run. Keep execution and revision identities with the evidence so a successful retry of a different input is not mistaken for correcting this failure. The example follows the pipeline's dependency break and service evidence; it does not guess the cause from the name of a later blocked stage.
+
+If the source action succeeded and the build action failed, start with the build input revision and build logs rather than diagnosing the deployment action that never ran. After the approved correction, verify the same required action can succeed with the intended input. That progression follows the execution's evidence and dependency structure, instead of turning every later unrun action into a separate root cause.
+tb5: Not run is not the same evidence as failed with an error. Find the first failing action and its input/logs, retest the approved correction and verify success before investigating dependent actions that could not progress.
+Assess: identify_first_failing_action_from_execution_evidence; select_evidence_supported_correction; verify_corrected_action_before_investigating_unrun_dependencies
+Practice: {'type': 'tool_simulation', 'objective': 'Diagnose one seeded CodePipeline action failure using supplied execution history, action error details, input artifact revision and linked service logs. Select an evidence-supported correction from supplied approved options, then retest the action.', 'success': 'The learner identifies the first failing action in the selected execution, records its input revision and relevant error evidence, selects the approved correction supported by that evidence, and verifies that the action succeeds with the intended input before investigating later dependent actions that did not run.'}
+Visual: {'type': 'UI_state', 'purpose': "Make visible the selected execution identity, action history showing the first failed action and later unrun dependent actions, the failed action's input artifact revision and linked service error details, and its successful retest after the approved correction."}
+Notes: ['Use supplied logs/error evidence; do not invent corrective commands or unsupported causes.']
+Media: null

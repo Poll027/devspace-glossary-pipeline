@@ -1,0 +1,186 @@
+
+R8_veQiYBjI:738-1230
+734.22: obviously you can make your own workflow
+736.44: with different combination and adjust it
+738.12: so let's create a build workflow for our
+740.64: Java Gradle application and obviously I
+743.16: will choose the Java Gradle workflow
+745.08: template and let's see what the workflow
+747.3: file looks like
+749.64: and see what happens it automatically
+752.46: creates this configuration view in my
+755.82: project or my repository it creates this
+758.52: path dot GitHub workflows and this is
+762.66: the file that basically holds my
+765.18: workflow logic it is written in yaml
+767.82: it's a yaml format and what's great with
+770.76: this list of workflow suggestions is
+772.98: that you get a pre-configured workflow
+776.7: that you may need to adjust just a
+779.1: little bit but most of the stuff is
+781.2: already here so you don't have to start
+783.3: from blank file so let's go through the
+786.3: syntax of this workflow file in detail
+789.78: so that we understand how to write our
+792.3: own workflows so I'm gonna copy this in
+795.84: my editor so we can see better so first
+798.72: of all we have the name of the workflow
+801.42: this is basically for you to describe
+803.94: what the workflow is doing these are the
+807.54: events that I mentioned so every time an
+810.66: event happens or events happen we can
+813.96: trigger a certain workflow so this is a
+816.18: section where we Define events that
+818.28: should trigger the following workflow
+820.62: and I think it's pretty intuitive every
+823.56: time someone pushes to master Branch we
+827.04: want to trigger this workflow or every
+829.32: time a pull request gets created with
+831.24: Master Branch as a Target
+833.34: this workflow will get executed which in
+836.04: this case makes sense because every time
+837.96: something gets pushed into a master or
+841.14: you want to merge something into Master
+842.9: it makes sense to run tests or to test
+846.72: our application to make sure that it's
+849.12: mergeable so to say or that we didn't
+851.66: break something in the master branch
+854.64: so that's pretty straightforward other
+856.8: examples that I mentioned could be
+858.36: creating an issue or a contributor
+861.24: joining this will be all events listed
+864.66: here you have a complete list of such
+867.0: events documented on this page so here
+869.58: you see the list and here you see some
+871.5: more detailed explanation and also the
+874.2: usage and as always I will put all the
+877.02: relevant links for this tutorial in the
+879.42: video description and this is a part
+881.52: that gets executed whenever these events
+885.36: happen
+886.62: so we have jobs these are the names of
+889.38: the job this could be arbitrary just
+891.18: like the name of the workflow so you can
+893.76: name it yourself and job basically
+896.4: groups a set of actions that will be
+900.78: executed right
+902.52: so as I mentioned events trigger a chain
+904.8: of actions or combination of actions and
+907.98: these are defined here so let's look at
+910.92: the first one pretty logical whenever we
+913.44: want to build application or run tests
+916.68: we need to check out the repository or
+918.96: the code first so how does this get
+922.32: executed or what is behind this syntax
+924.78: so the actions path in GitHub is where
+928.88: pre-created or predefined actions are
+931.8: hosted so basically you can assume that
+934.8: everybody who uses a CI CD pipeline in
+937.44: GitHub actions will need to use checkout
+940.5: Command right so instead of letting
+942.96: everybody do that on their own they're
+944.52: creating an action called checkout that
+947.28: people can use so if I go to GitHub
+951.78: slash actions
+953.76: I will see list of repositories that
+956.88: contain all those actions so let's look
+960.0: for our checkout
+962.1: action so these are all these actions
+964.92: are basically repositories let's go
+966.78: inside and here you have action yemo so
+970.2: this is a normal repository with some
+973.08: code in it and we have action EML file
+976.26: here this is basically what checkout
+979.26: action does in the background or the
+982.44: logic that people already wrote so you
+984.36: don't have to write it in your workflow
+986.88: and just reuse it and each action in the
+990.9: repository will have some sort of
+993.06: documentation where you see if you can
+995.22: configure some additional parameters for
+998.4: this checkout action and this here is
+1001.94: version of that action so to say because
+1004.94: as I said these are simple repositories
+1007.04: that are built and released and have
+1010.16: versioning
+1011.42: so this is our checkout step
+1014.24: and whenever you're using an action that
+1017.12: is already available either at slash
+1019.94: actions or maybe some other community or
+1022.7: team has created one you can basically
+1025.34: use any such action using the uses
+1028.1: attribute so these are the official ones
+1030.82: but whenever someone creates an action
+1033.92: basically a repository with action yaml
+1036.68: file you can use it here
+1039.38: using the uses attribute
+1042.08: so the second one second step is action
+1046.34: called setup Java which is another
+1049.88: repository in this actions list and what
+1052.7: it does is basically prepares your
+1054.68: environment with Java with a version
+1057.98: that you defined here and this is the
+1060.32: part where I mentioned that you don't
+1061.76: have to install or configure anything
+1063.5: like in Jenkins for example you would go
+1065.96: and configure job version here you just
+1068.66: Define that you want to use environment
+1072.26: with Java on it so Java version 1.8 will
+1076.46: be installed and available there the
+1079.28: next one is a command so here you see
+1082.76: the difference whenever we are referring
+1084.8: to action in repository we use this
+1088.34: attribute whenever we're running a
+1090.38: command just like a Linux command for
+1092.3: example command line command we are
+1094.34: using run attribute so this basically
+1097.36: just changes the permissions of Gradle
+1100.64: file
+1101.66: and the next step just calls Gradle
+1105.14: build and all of this is done in the
+1107.12: same environment so your code gets
+1109.28: checked out Java version gets installed
+1111.62: and then you call Gradle build in the
+1114.26: same environment
+1115.7: so obviously for this to work you have
+1118.1: to have Java application that is built
+1120.92: with cradle and now let's actually go
+1122.9: ahead and execute this workflow for our
+1125.42: Java project
+1126.86: the name of the yaml file is also
+1129.08: something that you can decide for
+1130.82: yourself we can actually call it CI and
+1135.2: start commit let's create a new branch
+1141.5: and create a pull request that will be
+1143.78: merged into Master branch
+1148.46: and here you see that the workflow got
+1151.82: triggered because our event matched to
+1156.14: what just happened so we created a pull
+1157.94: request against must branch and that
+1160.88: triggered the workflow this is in
+1162.74: progress and if I go into details we're
+1165.86: gonna see what is actually happening
+1169.7: so the bill completed so let's actually
+1171.98: look at the steps that got executed
+1175.4: setup job which basically prepares the
+1178.16: job environment for executing the
+1180.56: workflow here you see for example this
+1182.9: action repositories got downloaded so
+1185.6: that it can be used here you see the
+1187.88: checkout action and you actually see
+1190.82: pretty helpful information in all these
+1194.06: steps and they also highlight the
+1196.22: comment that gets executed so that you
+1198.98: can easily see first of all the command
+1201.56: and differentiate it from the logs and
+1203.6: also see how they kind of interpret your
+1206.84: comments for example with the options
+1208.88: and flags and environmental variables
+1210.86: and so on then we have the setup jdk
+1213.86: again these are the commands that are
+1215.84: got executed and some log files this is
+1218.84: where the build the actual build
+1220.4: happened build successful and then we
+1222.92: have some post build actions which we
+1225.5: didn't Define these are out of the box
+1227.3: things get cleaned up so in my opinion

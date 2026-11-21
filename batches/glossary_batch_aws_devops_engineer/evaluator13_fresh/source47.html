@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>How pipeline executions work - AWS CodePipeline</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="concepts-how-it-works" /><meta name="default_state" content="concepts-how-it-works" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/codepipeline/latest/userguide/concepts-how-it-works.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/codepipeline/latest/userguide/concepts-how-it-works.md" title="Markdown version" /><meta name="description" content="This section provides an overview of the way CodePipeline processes a set of changes. CodePipeline tracks each pipeline execution that starts when a pipeline is started manually or a change is made to the source code. CodePipeline uses the following execution modes to handle the way each execution progresses through the pipeline. For more information, see" /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS CodePipeline" /><meta name="guide" content="User Guide" /><meta name="abstract" content="A user guide that describes how developers can use AWS CodePipeline to model, visualize, and automate the steps required to release software." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/codepipeline/latest/userguide/concepts-how-it-works.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/codepipeline/latest/userguide/concepts-how-it-works.html" hreflang="x-default" /><meta name="feedback-item" content="CodePipeline" /><meta name="this_doc_product" content="AWS CodePipeline" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'codepipeline'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="How pipeline executions work" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="concepts-how-it-works.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>How pipeline executions work - AWS CodePipeline</title><meta name="pdf" content="/pdfs/codepipeline/latest/userguide/codepipeline-user.pdf#concepts-how-it-works" /><meta name="rss" content="aws-codepipeline-user-guide-updates.rss" /><meta name="forums" content="https://repost.aws/tags/TAD_CcYa8ASIKYqZ_uXiwwgA" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CodePipeline&amp;topic_url=https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/concepts-how-it-works.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/concepts-how-it-works.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/concepts-how-it-works.html" /><meta name="keywords" content="CodePipeline,Continuous Delivery,Continuous Deployment,pipeline,automated build,automated deployment" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS CodePipeline",
+        "item" : "https://docs.aws.amazon.com/codepipeline/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/codepipeline/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "What is AWS CodePipeline?",
+        "item" : "https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "How pipeline executions work",
+        "item" : "https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/codepipeline/latest/userguide/codepipeline-user.pdf#concepts-how-it-works" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/codepipeline/index.html">AWS CodePipeline</a><a href="welcome.html">User Guide</a></div><div id="page-toc-src"><a href="#concepts-how-it-works-starting">How pipeline executions are started</a><a href="#concepts-how-revisions-processed">How source revisions are processed in pipeline executions</a><a href="#concepts-how-source-overrides-work">How source overrides work with the EventBridge input transformer</a><a href="#concepts-how-it-works-stopping">How pipeline executions are stopped</a><a href="#concepts-how-it-works-executions">How executions are processed in SUPERSEDED mode</a><a href="#concepts-how-it-works-executions-queued">How executions are processed in QUEUED mode</a><a href="#concepts-how-it-works-executions-parallel">How executions are processed in PARALLEL mode</a><a href="#concepts-how-it-works-transitions-approvals">Managing Pipeline Flow</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="concepts-how-it-works">How pipeline executions work</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>This section provides an overview of the way CodePipeline processes a set of changes. CodePipeline
+            tracks each pipeline execution that starts when a pipeline is started manually or a
+            change is made to the source code. CodePipeline uses the following execution modes to handle
+            the way each execution progresses through the pipeline. For more information, see <a href="./execution-modes.html">Set or change the pipeline execution mode</a>.</p><div class="itemizedlist">
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>SUPERSEDED mode: A more recent execution can overtake an older one. This is
+                    the default.</p>
+            </li><li class="listitem">
+                <p>QUEUED mode: Executions are processed one by one in the order that they are
+                    queued. This requires pipeline type V2.</p>
+            </li><li class="listitem">
+                <p>PARALLEL mode: In PARALLEL mode, executions run simultaneously and
+                    independently of one another. Executions don't wait for other runs to complete
+                    before starting or finishing. This requires pipeline type V2.</p>
+                <div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><p>For pipelines in PARALLEL mode, stage rollback is not available.
+                        Similarly, failure conditions with a rollback result type cannot be added to
+                        a PARALLEL mode pipeline.</p></div></div>
+            </li></ul></div>
+            <h2 id="concepts-how-it-works-starting">How pipeline executions are started</h2>
+            <p>You can start an execution when you change your source code or manually start the
+                pipeline. You can also trigger an execution through an Amazon CloudWatch Events rule that you
+                schedule. For example, when a source code change is pushed to a repository
+                configured as the pipeline's source action, the pipeline detects the change and
+                starts an execution.</p>
+            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>If a pipeline contains multiple source actions, all of them run again, even if
+                    a change is detected for one source action only.</p></div></div>
+         
+            <h2 id="concepts-how-revisions-processed">How source revisions are processed in pipeline executions</h2>
+            <p>For each pipeline execution that starts with source code changes (source
+                revisions), source revisions are determined as follows.</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>For pipelines with a CodeCommit source, the HEAD is cloned by CodePipeline
+                        at the moment that the commit is pushed. For example, a commit is pushed,
+                        which starts the pipeline for execution 1. At the moment a second commit is
+                        pushed, this starts the pipeline for execution 2. </p>
+                    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>For pipelines in PARALLEL mode with a CodeCommit source, regardless of
+                            the commit that triggered the pipeline execution, the source action will
+                            always clone the HEAD at the time it is started. For more information,
+                            see <a href="./troubleshooting.html#troubleshooting-revisions-parallel">CodeCommit or S3 source revisions in PARALLEL mode might not match EventBridge event</a>.</p></div></div>
+                </li><li class="listitem">
+                    <p>For pipelines with an S3 source, the EventBridge event for the S3 bucket
+                        update is used. For example, the event is generated when a file is updated
+                        in the source bucket, which starts the pipeline for execution 1. At the
+                        moment that the event for a second bucket update is made, this starts the
+                        pipeline for execution 2. </p>
+                    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>For pipelines in PARALLEL mode with an S3 source, regardless of the
+                            image tag that triggered the execution, the source action will always
+                            start with the latest image tag. For more information, see <a href="./troubleshooting.html#troubleshooting-revisions-parallel">CodeCommit or S3 source revisions in PARALLEL mode might not match EventBridge event</a>.</p></div></div>
+                </li><li class="listitem">
+                    <p>For pipelines with a connections source, such as to Bitbucket, the HEAD is
+                        cloned by CodePipeline at the moment that the commit is pushed. For example,
+                        for a pipeline in PARALLEL mode, a commit is pushed, which starts the
+                        pipeline for execution 1, and the second pipeline execution uses the second
+                        commit.</p>
+                </li></ul></div>
+         
+            <h2 id="concepts-how-source-overrides-work">How source overrides work with the EventBridge input transformer</h2>
+              <p>You can use overrides to start a pipeline with a specific source revision ID that you
+            provide for the pipeline execution. For example, if you want to start a pipeline that
+            will process a specific commit ID from your CodeCommit source, you can add the commit ID as
+            an override when you start your pipeline.</p>
+        <p>There are four types of source revision for <code class="code">revisionType</code>: </p>
+        <div class="itemizedlist">
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><code class="code">COMMIT_ID</code></p>
+            </li><li class="listitem">
+                <p><code class="code">IMAGE_DIGEST</code></p>
+            </li><li class="listitem">
+                <p><code class="code">S3_OBJECT_VERSION_ID</code></p>
+            </li><li class="listitem">
+                <p><code class="code">S3_OBJECT_KEY</code></p>
+            </li></ul></div>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>For the <code class="code">COMMIT_ID</code> and  <code class="code">IMAGE_DIGEST</code> types of source
+                revisions, the source revision ID applies to all content in the repository, across
+                all branches.</p></div></div>
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>For the <code class="code">S3_OBJECT_VERSION_ID</code> and <code class="code">S3_OBJECT_KEY</code> types of
+                source revisions, either of the types can be used independently, or they can be used
+                together to override the source with a specific ObjectKey and VersionID. For
+                    <code class="code">S3_OBJECT_KEY</code>, the configuration parameter
+                    <code class="code">AllowOverrideForS3ObjectKey</code> needs to be set to <code class="code">true</code>.
+                For more information on S3 source configuration parameters, see <a href="./action-reference-S3.html#action-reference-S3-config">Configuration parameters</a>.</p></div></div>
+            <p>You can specify source overrides using the input transformer in EventBridge. Use
+                the input transformer to pass the data as one of the following:</p>
+
+            <div class="itemizedlist">
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>You can use the input transformer to pass the data as JSON
+                        parameters.</p>
+                </li><li class="listitem">
+                    <p>You can use the input transformer to pass pipeline variables.</p>
+                </li></ul></div>
+
+            <p>For examples of passing the data as JSON parameters, see <a href="./create-cwe-ecr-source.html">Amazon ECR source actions and EventBridge resources</a>, <a href="./create-cloudtrail-S3-source.html">Connecting to Amazon S3 source actions that use EventBridge and AWS CloudTrail</a> for S3, and <a href="./triggering.html">CodeCommit source actions and EventBridge</a> for CodeCommit.</p>
+
+         
+            <h2 id="concepts-how-it-works-stopping">How pipeline executions are stopped</h2>
+            <p>To use the console to stop a pipeline execution, you can choose <b>Stop
+                    execution</b> on the pipeline visualization page, on the execution
+                history page, or on the detailed history page. To use the CLI to stop a pipeline
+                execution, you use the <code class="code">stop-pipeline-execution</code> command. For more
+                information, see <a href="./pipelines-stop.html">Stop a pipeline execution in CodePipeline</a>.</p>
+            <p>There are two ways to stop a pipeline execution:</p>
+            <div class="itemizedlist">
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><b>Stop and wait:</b> All in-progress action
+                        executions are allowed to complete, and subsequent actions are not started.
+                        The pipeline execution does not continue to subsequent stages. You cannot
+                        use this option on an execution that is already in a <code class="code">Stopping</code>
+                        state.</p>
+                </li><li class="listitem">
+                    <p><b>Stop and abandon:</b> All in-progress action
+                        executions are abandoned and do not complete, and subsequent actions are not
+                        started. The pipeline execution does not continue to subsequent stages. You
+                        can use this option on an execution that is already in a
+                            <code class="code">Stopping</code> state.</p>
+                    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>This option can lead to failed tasks or out of sequence tasks.</p></div></div>
+                </li></ul></div>
+            <p>Each option results in a different sequence of pipeline and action execution
+                phases, as follows.</p>
+            <p><b>Option 1: Stop and wait</b></p>
+            <p>When you choose to stop and wait, the selected execution continues until
+                in-progress actions are completed. For example, the following pipeline execution was
+                stopped while the build action was in progress. </p>
+            <div class="orderedlist">
+                 
+                 
+            <ol><li>
+                    <p>In the pipeline view, the success message banner is displayed, and the
+                        build action continues until it is completed. The pipeline execution status
+                        is <b>Stopping</b>.</p>
+                    <p>In the history view, the status for in-progress actions, such as the build
+                        action, is <b>In progress</b> until the build action is
+                        completed. While actions are in progress, the pipeline execution status is
+                            <b>Stopping</b>.</p>
+                </li><li>
+                    <p>The execution stops when the stopping process is complete. If the build
+                        action is completed successfully, its status is
+                            <b>Succeeded</b>, and the pipeline execution shows a
+                        status of <b>Stopped</b>. Subsequent actions do not start. The
+                            <b>Retry</b> button is enabled. </p>
+                    <p>In the history view, the execution status is <b>Stopped</b>
+                        after the in-progress action is completed.</p>
+                    <div class="mediaobject">
+                         
+                            <img src="/images/codepipeline/latest/userguide/images/stop-exec-wait-hist-1.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Image showing the history view where the execution status is Stopped after the in-progress action is completed" />
+                         
+                        
+                        
+                         
+                    </div>
+                </li></ol></div>
+            <p><b>Option 2: Stop and abandon</b></p>
+            <p>When you choose to stop and abandon, the selected execution does not wait for
+                in-progress actions to complete. The actions are abandoned. For example, the
+                following pipeline execution was stopped and abandoned while the build action was in
+                progress.</p>
+            <div class="orderedlist">
+                 
+                 
+                 
+            <ol><li>
+                    <p>In the pipeline view, the success banner message is displayed, the build
+                        action shows a status of <b>In progress</b>, and the pipeline
+                        execution shows a status of <b>Stopping</b>.</p>
+                </li><li>
+                    <p>After the pipeline execution stops, the build action shows a status of
+                            <b>Abandoned</b>, and the pipeline execution shows a
+                        status of <b>Stopped</b>. Subsequent actions do not start. The
+                            <b>Retry</b> button is enabled.</p>
+                </li><li>
+                    <p>In the history view, the execution status is
+                        <b>Stopped</b>.</p>
+                    <div class="mediaobject">
+                         
+                            <img src="/images/codepipeline/latest/userguide/images/stop-exec-abandon-hist-1.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Image showing the history view where the execution status is Stopped" />
+                         
+                        
+                        
+                         
+                    </div>
+                </li></ol></div>
+            <p><b>Use cases for stopping a pipeline
+                execution</b></p>
+            <p>We recommend that you use the stop and wait option to stop a pipeline execution.
+                This option is safer because it avoids possible failed or out-of-sequence tasks in
+                your pipeline. When an action is abandoned in CodePipeline, the action provider continues
+                any tasks related to the action. In the case of an CloudFormation action, the deployment
+                action in the pipeline is abandoned, but the stack update might continue and result
+                in a failed update. </p>
+            <p>As an example of abandoned actions that can result in out-of-sequence tasks, if
+                you are deploying a large file (1GB) through an S3 deployment action, and you choose
+                to stop and abandon the action while the deployment is already in progress, the
+                action is abandoned in CodePipeline, but continues in Amazon S3. Amazon S3 does not encounter any
+                instruction to cancel the upload. Next, if you start a new pipeline execution with a
+                very small file, there are now two deployments in progress. Because the file size of
+                the new execution is small, the new deployment completes while the old deployment is
+                still uploading. When the old deployment completes, the new file is overwritten by
+                the old file.</p>
+            <p>You might want to use the stop and abandon option in the case where you have a
+                custom action. For example, you can abandon a custom action with work that does not
+                need to finish before starting a new execution for a bug fix.</p>
+         
+            <h2 id="concepts-how-it-works-executions">How executions are processed in SUPERSEDED mode</h2>
+            <p>The default mode for processing executions is SUPERSEDED mode. An execution
+                consists of a set of changes picked up and processed by the execution. Pipelines can
+                process multiple executions at the same time. Each execution is run through the
+                pipeline separately. The pipeline processes each execution in order and might
+                supersede an earlier execution with a later one. The following rules are used to
+                process executions in a pipeline for SUPERSEDED mode.</p>
+            <p><b>Rule 1: Stages are locked when an execution is being
+                    processed</b></p>
+            <p>Because each stage can process only one execution at a time, the stage is locked
+                while in progress. When the execution completes a stage, it transitions to the next
+                stage in the pipeline.</p>
+            <div class="mediaobject">
+                 
+                    <img src="/images/codepipeline/latest/userguide/images/Promotion.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Image showing the stages locked while in progress" />
+                 
+                
+                
+                 
+                <div class="caption"><b>Before: </b>Stage 1 is locked as Execution 1
+                    enters. <b>After:</b> Stage 2 is locked as Execution 1
+                    enters.</div>
+            </div>
+            <p><b>Rule 2: Subsequent executions wait for the stage to be
+                    unlocked</b></p>
+            <p>While a stage is locked, waiting executions are held in front of the locked stage.
+                All actions configured for a stage must be completed successfully before the stage
+                is considered complete. A failure releases the lock on the stage. When an execution
+                is stopped, the execution does not continue in a stage and the stage is
+                unlocked.</p>
+            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Before you stop an execution, we recommend that you disable the transition in
+                    front of the stage. This way, when the stage is unlocked due to the stopped
+                    execution, the stage does not accept a subsequent pipeline execution.</p></div></div>
+            <div class="mediaobject">
+                 
+                    <img src="/images/codepipeline/latest/userguide/images/Waiting.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Image showing how the waiting execution waits between stages when Stage 2 is locked" />
+                 
+                
+                
+                 
+                <div class="caption"><b>Before:</b> Stage 2 is locked as Execution 1
+                    enters. <b>After:</b> Execution 2 exits Stage 1 and
+                    waits between stages.</div>
+            </div>
+            <p><b>Rule 3: Waiting executions are superseded by more recent
+                    executions</b></p>
+            <p>Executions are only superseded in between stages. A locked stage holds one
+                execution at the front of the stage awaiting the stage to complete. A more recent
+                execution overtakes a waiting execution and continues to the next stage as soon as
+                the stage is unlocked. The superseded execution does not continue. In this example,
+                Execution 2 has been superseded by Execution 3 while awaiting the locked stage.
+                Execution 3 enters the stage next.</p>
+            <div class="mediaobject">
+                 
+                    <img src="/images/codepipeline/latest/userguide/images/Batching.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Image showing how the waiting execution is superseded by execution 3" />
+                 
+                
+                
+                 
+                <div class="caption">
+                    <p><b>Before:</b> execution 2 waits between stages
+                        while execution 3 enters stage 1. <b>after:</b>
+                        execution 3 exits stage 1. execution 2 is superseded by execution 3.</p>
+                </div>
+            </div>
+            <p>For more information about considerations for viewing and switching between
+                execution modes, see <a href="./execution-modes.html">Set or change the pipeline execution mode</a>. For more information about quotas with execution modes, see <a href="./limits.html">Quotas in AWS CodePipeline</a>.</p>
+         
+            <h2 id="concepts-how-it-works-executions-queued">How executions are processed in QUEUED mode</h2>
+            <p>For pipelines in QUEUED mode, stages are locked when an execution is being
+                processed; however, waiting executions do not overtake executions that have already
+                started.</p>
+            <p>Waiting executions gather at the entry points to locked stages in the order that
+                they reach the stage, forming a queue of waiting executions. With QUEUED mode, you
+                can have multiple queues in the same pipeline. When a queued execution enters a
+                stage, the stage is locked and no other executions can enter. This behavior remains
+                the same as SUPERSEDED mode. When the execution finishes the stage, the stage
+                becomes unlocked and ready for the next execution.</p>
+            <p>The following diagram shows how stages in a QUEUED mode pipeline process
+                executions. For example, while the Source stage processes execution 5, the
+                executions for 6 and 7 form Queue #1 and wait at the stage entry point. The next
+                execution in the queue will be processed after the stage unlocks. </p>
+            <div class="mediaobject">
+                 
+                    <img src="/images/codepipeline/latest/userguide/images/Queued-Execution-Mode.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="A diagram showing executions in a pipeline set for QUEUED mode." />
+                 
+                
+                
+                 
+            </div>
+            <p>For more information about considerations for viewing and switching between
+                execution modes, see <a href="./execution-modes.html">Set or change the pipeline execution mode</a>. For more information about quotas with execution modes, see <a href="./limits.html">Quotas in AWS CodePipeline</a>.</p>
+         
+            <h2 id="concepts-how-it-works-executions-parallel">How executions are processed in PARALLEL mode</h2>
+            <p>For pipelines in PARALLEL mode, executions are independent of one another and
+                don't wait for other executions to complete before starting. There are no queues. To
+                view parallel executions in the pipeline, use the execution history view.</p>
+            <p>Use PARALLEL mode in development environments where each feature has its own
+                feature branch and deploys to targets that are not shared by other users.</p>
+            <p>For more information about considerations for viewing and switching between
+                execution modes, see <a href="./execution-modes.html">Set or change the pipeline execution mode</a>. For more information about quotas with execution modes, see <a href="./limits.html">Quotas in AWS CodePipeline</a>.</p>
+         
+            <h2 id="concepts-how-it-works-transitions-approvals">Managing Pipeline Flow</h2>
+            <p></p>
+            <p>The flow of pipeline executions can be controlled by:</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>A <em>transition</em>, which controls the flow of executions
+                        into the stage. Transitions can be enabled or disabled. When a transition is
+                        disabled, pipeline executions cannot enter the stage. The pipeline execution
+                        waiting to enter a stage where the transition is disabled is called the
+                        inbound execution. After you enable the transition, an inbound execution
+                        moves into the stage and locks it.</p>
+                    <p>Similar to executions awaiting a locked stage, when a transition is
+                        disabled, the execution waiting to enter the stage can still be superseded
+                        by a new execution. When a disabled transition is re-enabled, the latest
+                        execution, including any that superseded older executions while the
+                        transition was disabled, enters the stage.</p>
+                </li><li class="listitem">
+                    <p>An <em>approval action</em>, which prevents a pipeline from
+                        transitioning to the next action until permission is granted (for example,
+                        through manual approval from an authorized identity). You might use an
+                        approval action when you want to control the time at which a pipeline
+                        transitions to a final <b>Production</b> stage, for
+                        example.</p>
+                    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>A stage with an approval action is locked until the approval action is
+                            approved or rejected or has timed out. A timed-out approval action is
+                            processed in the same way as a failed action.</p></div></div>
+                </li><li class="listitem">
+                    <p>A <em>failure</em>, when an action in a stage does not
+                        complete successfully. The revision does not transition to the next action
+                        in the stage or the next stage in the pipeline. The following can
+                        occur:</p>
+                    <div class="itemizedlist">
+                         
+                         
+                    <ul class="itemizedlist"><li class="listitem">
+                            <p>You manually retry the stage that contains the failed actions.
+                                This resumes the execution (it retries failed actions and, if they
+                                succeed, continues in the stage/pipeline).</p>
+                        </li><li class="listitem">
+                            <p>Another execution enters the failed stage and supersedes the
+                                failed execution. At this point, the failed execution cannot be
+                                retried.</p>
+                        </li></ul></div>
+                </li></ul></div>
+             
+                <h3 id="concepts-recommended-pipeline-method">Recommended pipeline structure</h3>
+                <p>When deciding how a code change should flow through your pipeline, it is best
+                    to group related actions within a stage so that, when the stage locks, the
+                    actions all process the same execution. You might create a stage for each
+                    application environment, AWS Region, or Availability Zone, and so on. A
+                    pipeline with too many stages (that is, too granular) can allow too many
+                    concurrent changes, while a pipeline with many actions in a large stage (too
+                    coarse) can take too long to release a change.</p>
+                <p>As an example, a test action after a deployment action in the same stage is
+                    guaranteed to test the same change that was deployed. In this example, a change
+                    is deployed to a Test environment and then tested, and then the latest change
+                    from the test environment is deployed to a Production environment. In the
+                    recommended example, the Test environment and the Prod environment are separate
+                    stages. </p>
+                <div class="mediaobject">
+                     
+                        <img src="/images/codepipeline/latest/userguide/images/structure-example-recommended-notrecommended.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Image showing two types of grouping for actions in stages, with the recommended option being on the left" />
+                     
+                    
+                    
+                     
+                    <div class="caption">
+                        <p><b>Left:</b> related test, deploy, and
+                            approval actions grouped together (recommended). <b>Right:</b> related actions in separate stages (not
+                            recommended).</p>
+                    </div>
+                </div>
+             
+             
+                <h3 id="how-it-works-inbound-executions">How Inbound Executions Work</h3>
+                <p>An inbound execution is an execution that is waiting for an unavailable stage,
+                    transition, or action to become available before it moves forward. The next
+                    stage, transition, or action might be unavailable because: </p>
+                <div class="itemizedlist">
+                     
+                     
+                <ul class="itemizedlist"><li class="listitem">
+                        <p>Another execution has already entered the next stage and locked
+                            it.</p>
+                    </li><li class="listitem">
+                        <p>The transition to enter the next stage is disabled.</p>
+                    </li></ul></div>
+                <p>You might disable a transition to hold an inbound execution if you want to
+                    control whether a current execution has time to complete in subsequent stages,
+                    or if you want to stop all actions at a certain point. To determine if you have
+                    an inbound execution, you can view the pipeline in the console or view the
+                    output from the <b>get-pipeline-state</b> command.</p>
+                <p>Inbound executions operate with the following considerations:</p>
+                <div class="itemizedlist">
+                     
+                     
+                     
+                <ul class="itemizedlist"><li class="listitem">
+                        <p>As soon as the action, transition, or locked stage becomes available,
+                            the in-progress inbound execution enters the stage and continues through
+                            the pipeline.</p>
+                    </li><li class="listitem">
+                        <p>While the inbound execution is waiting, it can be manually stopped. An
+                            inbound execution can have an <code class="code">InProgress</code>,
+                                <code class="code">Stopped</code>, or <code class="code">Failed</code> state.</p>
+                    </li><li class="listitem">
+                        <p>When an inbound execution has been stopped or has failed, it cannot be
+                            retried because there are no failed actions to retry. When an inbound
+                            execution has been stopped, and the transition is enabled, the stopped
+                            inbound execution does not continue into the stage.</p>
+                    </li></ul></div>
+                <p>You can view or stop an inbound execution.</p>
+             
+        <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./concepts-devops-example.html">DevOps pipeline example</div><div id="next" class="next-link" accesskey="n" href="./welcome-introducing-artifacts.html">Input and output artifacts</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CodePipeline&amp;topic_url=https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/concepts-how-it-works.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CodePipeline&amp;topic_url=https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/concepts-how-it-works.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

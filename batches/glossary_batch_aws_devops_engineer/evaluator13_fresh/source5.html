@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Using high-level (s3) commands in the AWS CLI - AWS Command Line Interface</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="cli-services-s3-commands" /><meta name="default_state" content="cli-services-s3-commands" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.md" title="Markdown version" /><meta name="description" content="Use the high-level Amazon S3 commands in the aws s3 namespace to manage buckets and objects using the AWS CLI." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Command Line Interface" /><meta name="guide" content="User Guide for Version 2" /><meta name="abstract" content="The AWS CLI is an open source tool that provides commands for interacting with AWS services. It is built using botocore, the low-level Python library that also underpins the AWS SDK for Python (Boto3). With minimal configuration, you can start using all of the functionality provided by the AWS Management Console from your favorite terminal program. This guide provides instructions for installing, configuring, and using the AWS CLI on Windows, macOS, and Linux. Learn how to use the AWS CLI to access the public API of any AWS service and write scripts to manage your AWS resources." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/cli/latest/userguide/cli-services-s3-commands.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/cli/latest/userguide/cli-services-s3-commands.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/cli/latest/userguide/cli-services-s3-commands.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/cli/latest/userguide/cli-services-s3-commands.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/cli/latest/userguide/cli-services-s3-commands.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/cli/latest/userguide/cli-services-s3-commands.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/cli/latest/userguide/cli-services-s3-commands.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/cli/latest/userguide/cli-services-s3-commands.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/cli/latest/userguide/cli-services-s3-commands.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/cli/latest/userguide/cli-services-s3-commands.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/cli-services-s3-commands.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/cli-services-s3-commands.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/cli/latest/userguide/cli-services-s3-commands.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/cli/latest/userguide/cli-services-s3-commands.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/cli/latest/userguide/cli-services-s3-commands.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/cli/latest/userguide/cli-services-s3-commands.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html" hreflang="x-default" /><meta name="feedback-item" content="AWS Command Line Interface" /><meta name="this_doc_product" content="AWS Command Line Interface" /><meta name="this_doc_guide" content="User Guide for Version 2" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'cli'}"></script><meta id="panorama-serviceSubSection" value="User Guide for Version 2" /><meta id="panorama-serviceConsolePage" value="Using high-level (s3) commands in the AWS CLI" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="cli-services-s3-commands.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Using high-level (s3) commands in the AWS CLI - AWS Command Line Interface</title><meta name="pdf" content="/pdfs/cli/latest/userguide/aws-cli.pdf#cli-services-s3-commands" /><meta name="rss" content="aws-cli-user-guide-updates.rss" /><meta name="forums" content="https://repost.aws/tags/TASjhA8h35SAyOPVeqNO2b4Q" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AWS%20Command%20Line%20Interface&amp;topic_url=https://docs.aws.amazon.com/en_us/cli/latest/userguide/cli-services-s3-commands.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/cli/latest/userguide/cli-services-s3-commands.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/cli/latest/userguide/cli-services-s3-commands.html" /><meta name="keywords" content="AWS CLI,AWS Command Line Interface,AWS CLI code examples,AWS Command Line Interface code examples,AWS CLI command examples,AWS Command Line Interface command examples,AWS CLI examples,AWS Command Line Interface examples,AWS CLI tutorials,AWS Command Line Interface tutorials,AWS CLI Amazon S3,AWS Command Line Interface Amazon S3,AWS CLI s3 examples,AWS Command Line Interface s3 examples,AWS CLI s3,AWS Command Line Interface s3,AWS CLI s3 command examples,AWS Command Line Interface s3 command examples" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Command Line Interface",
+        "item" : "https://docs.aws.amazon.com/cli/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide for Version 2",
+        "item" : "https://docs.aws.amazon.com/cli/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Examples for the AWS CLI",
+        "item" : "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-code-examples.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Guided command examples for the AWS CLI",
+        "item" : "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-services.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Using Amazon S3 in the AWS CLI",
+        "item" : "https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "Using high-level (s3) commands in the AWS CLI",
+        "item" : "https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/cli/latest/userguide/aws-cli.pdf#cli-services-s3-commands" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/cli/index.html">AWS Command Line Interface</a><a href="cli-chap-welcome.html">User Guide for Version 2</a></div><div id="page-toc-src"><a href="#using-s3-commands-prereqs">Prerequisites</a><a href="#using-s3-commands-before">Before you start</a><a href="#using-s3-commands-managing-buckets-creating">Create a bucket</a><a href="#using-s3-commands-listing-buckets">List buckets and objects</a><a href="#using-s3-commands-delete-buckets">Delete buckets</a><a href="#using-s3-commands-delete-objects">Delete objects</a><a href="#using-s3-commands-managing-objects-move">Move objects</a><a href="#using-s3-commands-managing-objects-copy">Copy objects</a><a href="#using-s3-commands-managing-objects-sync">Sync objects</a><a href="#using-s3-commands-managing-objects-param">Frequently used options for s3 commands</a><a href="#using-s3-commands-managing-buckets-references">Resources</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="cli-services-s3-commands">Using high-level (s3) commands in the AWS CLI</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>This topic describes some of the commands you can use to manage Amazon S3 buckets and objects
+    using the
+      <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/index.html"><code class="code">aws s3</code></a>
+    commands in the AWS CLI. For commands not covered in this topic and additional command examples,
+    see the
+      <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/index.html"><code class="code">aws s3</code></a>
+    commands in the <em>AWS CLI Reference</em>.</p><p>The high-level <code class="code">aws s3</code> commands simplify managing Amazon S3 objects. These commands
+    enable you to manage the contents of Amazon S3 within itself and with local directories.</p><div class="highlights" id="inline-topiclist"><h2 class="awsdocs-topiclist-title">Topics</h2><ul><li><p><a href="#using-s3-commands-prereqs">Prerequisites</a></p></li><li><p><a href="#using-s3-commands-before">Before you start</a></p></li><li><p><a href="#using-s3-commands-managing-buckets-creating">Create a bucket</a></p></li><li><p><a href="#using-s3-commands-listing-buckets">List buckets and objects</a></p></li><li><p><a href="#using-s3-commands-delete-buckets">Delete buckets</a></p></li><li><p><a href="#using-s3-commands-delete-objects">Delete objects</a></p></li><li><p><a href="#using-s3-commands-managing-objects-move">Move objects</a></p></li><li><p><a href="#using-s3-commands-managing-objects-copy">Copy objects</a></p></li><li><p><a href="#using-s3-commands-managing-objects-sync">Sync objects</a></p></li><li><p><a href="#using-s3-commands-managing-objects-param">Frequently used options for s3 commands</a></p></li><li><p><a href="#using-s3-commands-managing-buckets-references">Resources</a></p></li></ul></div>
+    <h2 id="using-s3-commands-prereqs">Prerequisites</h2>
+    <p>To run the <code class="code">s3</code> commands, you need to:</p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem"><p>Install and configure the AWS CLI. For more information, see
+                        <a href="./getting-started-install.html">Installing or updating to the latest version of the AWS CLI</a> and <a href="./cli-chap-authentication.html">Authentication and access credentials for the AWS CLI</a>.</p></li><li class="listitem">
+        <p>The profile that you use must have permissions that allow the AWS operations
+          performed by the examples.</p>
+      </li><li class="listitem">
+        <p>Understand these Amazon S3 terms:</p>
+        <div class="itemizedlist">
+           
+           
+           
+        <ul class="itemizedlist"><li class="listitem">
+            <p><span class="topcom">Bucket</span> – A top-level Amazon S3 folder.</p>
+          </li><li class="listitem">
+            <p><span class="topcom">Prefix</span> – An Amazon S3 folder in a bucket.</p>
+          </li><li class="listitem">
+            <p><span class="topcom">Object</span> – Any item that's hosted in an Amazon S3
+              bucket.</p>
+          </li></ul></div>
+      </li></ul></div>
+   
+    <h2 id="using-s3-commands-before">Before you start</h2>
+    <p>This section describes a few things to note before you use <code class="code">aws s3</code>
+      commands.</p>
+     
+      <h3 id="using-s3-commands-before-large">Large object uploads</h3>
+      <p>When you use <code class="code">aws s3</code> commands to upload large objects to an Amazon S3 bucket, the
+        AWS CLI automatically performs a multipart upload. You can't resume a failed upload when using
+        these <code class="code">aws s3</code> commands. </p>
+      <p>If the multipart upload fails due to a timeout, or if you manually canceled in the
+        AWS CLI, the AWS CLI stops the upload and cleans up any files that were created. This process
+        can take several minutes. </p>
+      <p>If the multipart upload or cleanup process is canceled by a kill command or system
+        failure, the created files remain in the Amazon S3 bucket. To clean up the multipart upload, use
+        the
+          <a href="https://docs.aws.amazon.com/cli/latest/reference/s3api/abort-multipart-upload.html">s3api abort-multipart-upload</a> command.</p>
+     
+     
+      <h3 id="using-s3-commands-before-tags">File properties and tags in multipart copies</h3>
+      <p>When you use the AWS CLI version 1 version of commands in the <code class="code">aws s3</code> namespace to
+        copy a file from one Amazon S3 bucket location to another Amazon S3 bucket location, and that
+        operation uses <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/CopyingObjctsMPUapi.html">multipart copy</a>, no
+        file properties from the source object are copied to the destination object.</p>
+      
+        <p>By
+          default, the AWS CLI version 2 commands in the <code class="code">s3</code> namespace that perform multipart
+          copies transfers all tags and the following set of properties from the source to the
+          destination copy: <code class="code">content-type</code>, <code class="code">content-language</code>,
+            <code class="code">content-encoding</code>, <code class="code">content-disposition</code>,
+            <code class="code">cache-control</code>, <code class="code">expires</code>, and <code class="code">metadata</code>.</p>
+        <p>This can result in additional AWS API calls to the Amazon S3 endpoint that would not have
+          been made if you used AWS CLI version 1. These can include: <code class="code">HeadObject</code>,
+            <code class="code">GetObjectTagging</code>, and <code class="code">PutObjectTagging</code>.</p>
+        <p>If you need to change this default behavior in AWS CLI version 2 commands, use the
+            <code class="code">--copy-props</code> parameter to specify one of the following options:</p>
+        <div class="itemizedlist">
+           
+           
+           
+        <ul class="itemizedlist"><li class="listitem">
+            <p><b>default</b> – The default value. Specifies
+              that the copy includes all tags attached to the source object and the properties
+              encompassed by the <code class="code">--metadata-directive</code> parameter used for non-multipart
+              copies: <code class="code">content-type</code>, <code class="code">content-language</code>,
+                <code class="code">content-encoding</code>, <code class="code">content-disposition</code>,
+                <code class="code">cache-control</code>, <code class="code">expires</code>, and <code class="code">metadata</code>.</p>
+          </li><li class="listitem">
+            <p><b>metadata-directive</b> – Specifies that the
+              copy includes only the properties that are encompassed by the
+                <code class="code">--metadata-directive</code> parameter used for non-multipart copies. It
+              doesn't copy any tags.</p>
+          </li><li class="listitem">
+            <p><b>none</b> – Specifies that the copy includes
+              none of the properties from the source object.</p>
+          </li></ul></div>
+      
+     
+   
+    <h2 id="using-s3-commands-managing-buckets-creating">Create a bucket</h2>
+    <p>Use the
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/mb.html"><code class="code">s3 mb</code></a> command
+      to make a bucket. Bucket names must be <b><em>globally</em></b> unique (unique across all of Amazon S3) and should be DNS
+      compliant. </p>
+    <p>Bucket names can contain lowercase letters, numbers, hyphens, and periods. Bucket names
+      can start and end only with a letter or number, and cannot contain a period next to a hyphen
+      or another period. </p>
+    <p><b>Syntax</b></p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 mb &lt;target&gt; [--options]</code></code></pre>
+    <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="s3 mb examples" id="using-s3-commands-managing-buckets-creating-examples" expanded="false"><p>The following example creates the <code class="code">s3://amzn-s3-demo-bucket</code> bucket.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 mb s3://<code class="replaceable">amzn-s3-demo-bucket</code></code></code></pre></awsui-expandable-section></div>
+   
+    <h2 id="using-s3-commands-listing-buckets">List buckets and objects</h2>
+    <p>To list your buckets, folders, or objects, use the
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/ls.html"><code class="code">s3 ls</code></a> command.
+      Using the command without a target or options lists all buckets. </p>
+    <p><b>Syntax</b></p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 ls &lt;target&gt; [--options]</code></code></pre>
+    <p>For a few common options to use with this command, and examples, see <a href="#using-s3-commands-managing-objects-param">Frequently used options for s3 commands</a>. For a complete list of available
+      options, see
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/ls.html"><code class="code">s3 ls</code></a> in the
+        <em>AWS CLI Command Reference</em>.</p>
+    <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="s3 ls examples" id="using-s3-commands-managing-objects-list-examples" expanded="false"><p>The following example lists all of your Amazon S3 buckets.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 ls</code><code class="computeroutput" copy="false">
+2018-12-11 17:08:50 amzn-s3-demo-bucket1
+2018-12-14 14:55:44 amzn-s3-demo-bucket2</code></code></pre><p>The following command lists all objects and prefixes in a bucket. In this example
+          output, the prefix <code class="code">example/</code> has one file named
+            <code>MyFile1.txt</code>.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 ls <code class="replaceable">s3://amzn-s3-demo-bucket</code></code><code class="computeroutput" copy="false">
+                           PRE example/
+2018-12-04 19:05:48          3 MyFile1.txt</code></code></pre><p>You can filter the output to a specific prefix by including it in the command. The
+          following command lists the objects in <code class="replaceable">bucket-name/example/</code>
+          (that is, objects in <code class="replaceable">bucket-name</code> filtered by the prefix
+            <code class="replaceable">example/</code>).</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 ls <code class="replaceable">s3://amzn-s3-demo-bucket/example/</code></code><code class="computeroutput" copy="false">
+2018-12-06 18:59:32          3 MyFile1.txt</code></code></pre><p>To display only the buckets and objects in a specific region, use the
+            <code class="code">--region</code> options</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 ls <code class="replaceable">--region us-east-2</code></code><code class="computeroutput" copy="false">
+2018-12-06 18:59:32          3 MyFile1.txt</code></code></pre><p>If you have a large list of buckets and objects, you can paginated the results using
+          the <code class="code">--max-items</code> or <code class="code">--page-size</code> options. The
+            <code class="code">--max-items</code> option limits how many total buckets and objects are returned
+          in a call and the <code class="code">--page-size</code> option limits how many of those are listed on a
+          page.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 ls <code class="replaceable">--max-items 100 --page-size 10</code></code></code></pre><p>For more information on pagination, see <a href="./cli-usage-pagination.html#cli-usage-pagination-pagesize">How to use the --page-size parameter</a> and <a href="./cli-usage-pagination.html#cli-usage-pagination-maxitems">How to use the --max-items parameter</a>.</p></awsui-expandable-section></div>
+   
+    <h2 id="using-s3-commands-delete-buckets">Delete buckets</h2>
+    <p>To delete a bucket, use the
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/rb.html"><code class="code">s3 rb</code></a> command. </p>
+     
+      <p><b>Syntax</b></p>
+     
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 rb &lt;target&gt; [--options]</code></code></pre>
+    <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="s3 rb examples" id="using-s3-commands-removing-buckets-examples" expanded="false"><p>The following example removes the <code class="code">s3://amzn-s3-demo-bucket</code> bucket.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 rb <code class="replaceable">s3://amzn-s3-demo-bucket</code></code></code></pre><p>By default, the bucket must be empty for the operation to succeed. To remove a bucket
+          that's not empty, you need to include the <code class="code">--force</code> option. If you're using a
+          versioned bucket that contains previously deleted—but retained—objects, this
+          command does <em>not</em> allow you to remove the bucket. You must first
+          remove all of the content.</p><p>The following example deletes all objects and prefixes in the bucket, and then deletes
+          the bucket.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 rb <code class="replaceable">s3://amzn-s3-demo-bucket</code> --force</code></code></pre></awsui-expandable-section></div>
+   
+    <h2 id="using-s3-commands-delete-objects">Delete objects</h2>
+    <p>To delete objects in a bucket or your local directory, use the
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/rm.html"><code class="code">s3 rm</code></a> command. </p>
+    <p><b>Syntax</b></p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 rm  &lt;target&gt; [--options]</code></code></pre>
+    <p>For a few common options to use with this command, and examples, see <a href="#using-s3-commands-managing-objects-param">Frequently used options for s3 commands</a>. For a complete list of options,
+      see
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/rm.html"><code class="code">s3 rm</code></a> in the
+        <em>AWS CLI Command Reference</em>.</p>
+    <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="s3 rm examples" id="using-s3-commands-delete-objects-examples" expanded="false"><p>The following example deletes <code>filename.txt</code> from
+            <code>s3://amzn-s3-demo-bucket/example</code>.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 rm s3://amzn-s3-demo-bucket/example/filename.txt</code></code></pre><p>The following example deletes all objects from
+            <code>s3://amzn-s3-demo-bucket/example</code> using the <code class="code">--recursive</code>
+          option.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 rm s3://amzn-s3-demo-bucket/example --recursive</code></code></pre></awsui-expandable-section></div>
+   
+    <h2 id="using-s3-commands-managing-objects-move">Move objects</h2>
+    <p>Use the
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/mv.html"><code class="code">s3 mv</code></a> command
+      to move objects from a bucket or a local directory. The <code class="code">s3 mv</code> command copies the
+      source object or file to the specified destination and then deletes the source object or
+      file.</p>
+    <p><b>Syntax</b></p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 mv &lt;source&gt; &lt;target&gt; [--options]</code></code></pre>
+    <p>For a few common options to use with this command, and examples, see <a href="#using-s3-commands-managing-objects-param">Frequently used options for s3 commands</a>. For a complete list of available
+      options, see
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/mv.html"><code class="code">s3 mv</code></a> in the
+        <em>AWS CLI Command Reference</em>.</p>
+    <div class="awsdocs-note awsdocs-warning"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Warning</div></div><div class="awsdocs-note-text"><p>If you are using any type of access point ARNs or access point aliases in your Amazon S3
+        source or destination URIs, you must take extra care that your source and destination Amazon S3
+        URIs resolve to different underlying buckets. If the source and destination buckets are the
+        same, the source file or object can be moved onto itself, which can result in accidental
+        deletion of your source file or object. To verify that the source and destination buckets
+        are not the same, use the <code class="code">--validate-same-s3-paths</code> parameter, or set the
+        environment variable <code class="code"><a href="./cli-configure-envvars.html#envvars-list-AWS_CLI_S3_MV_VALIDATE_SAME_S3_PATHS">AWS_CLI_S3_MV_VALIDATE_SAME_S3_PATHS</a></code> to
+        <code class="code">true</code>.</p></div></div>
+    
+    <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="s3 mv examples" id="using-s3-commands-managing-objects-move-examples" expanded="false"><p>The following example moves all objects from
+            <code>s3://amzn-s3-demo-bucket/example</code> to
+            <code class="code">s3://amzn-s3-demo-bucket/</code>.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 mv s3://amzn-s3-demo-bucket/example s3://amzn-s3-demo-bucket/</code></code></pre><p>The following example moves a local file from your current working directory to the
+          Amazon S3 bucket with the <code class="code">s3 mv</code> command.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 mv filename.txt s3://amzn-s3-demo-bucket</code></code></pre><p>The following example moves a file from your Amazon S3 bucket to your current working
+          directory, where <code class="code">./</code> specifies your current working directory.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 mv s3://amzn-s3-demo-bucket/filename.txt ./</code></code></pre></awsui-expandable-section></div>
+   
+    <h2 id="using-s3-commands-managing-objects-copy">Copy objects</h2>
+    <p>Use the
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/cp.html"><code class="code">s3 cp</code></a> command
+      to copy objects from a bucket or a local directory. </p>
+    <p><b>Syntax</b></p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp &lt;source&gt; &lt;target&gt; [--options]</code></code></pre>
+    <p>You can use the dash parameter for file streaming to standard input (<code class="code">stdin</code>)
+      or standard output (<code class="code">stdout</code>). </p>
+    <div class="awsdocs-note awsdocs-warning"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Warning</div></div><div class="awsdocs-note-text"><p>If you're using PowerShell, the shell might alter the encoding of a CRLF or add a CRLF
+        to piped input or output, or redirected output.</p></div></div>
+    <p>The <code class="code">s3 cp</code> command uses the following syntax to upload a file stream from
+        <code class="code">stdin</code> to a specified bucket.</p>
+    <p><b>Syntax</b></p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp - &lt;target&gt; [--options]</code></code></pre>
+    <p>The <code class="code">s3 cp</code> command uses the following syntax to download an Amazon S3 file stream
+      for <code class="code">stdout</code>.</p>
+    <p><b>Syntax</b></p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp &lt;target&gt; [--options] -</code></code></pre>
+    <p>For a few common options to use with this command, and examples, see <a href="#using-s3-commands-managing-objects-param">Frequently used options for s3 commands</a>. For the complete list of
+      options, see
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/cp.html"><code class="code">s3 cp</code></a> in the
+        <em>AWS CLI Command Reference</em>.</p>
+    <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="s3 cp examples" id="using-s3-commands-managing-objects-copy-examples" expanded="false"><p>The following example copies all objects from
+            <code class="code">s3://amzn-s3-demo-bucket/example</code> to
+          <code class="code">s3://amzn-s3-demo-bucket/</code>.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp s3://amzn-s3-demo-bucket/example s3://amzn-s3-demo-bucket/</code></code></pre><p>The following example copies a local file from your current working directory to the
+          Amazon S3 bucket with the <code class="code">s3 cp</code> command.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp filename.txt s3://amzn-s3-demo-bucket</code></code></pre><p>The following example copies a file from your Amazon S3 bucket to your current working
+          directory, where <code class="code">./</code> specifies your current working directory.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp s3://amzn-s3-demo-bucket/filename.txt ./</code></code></pre><p>The following example uses echo to stream the text "hello world" to the
+            <code>s3://bucket-name/filename.txt</code> file.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">echo "hello world" | aws s3 cp - s3://amzn-s3-demo-bucket/filename.txt</code></code></pre><p>The following example streams the
+            <code>s3://amzn-s3-demo-bucket/filename.txt</code> file to <code class="code">stdout</code>
+          and prints the contents to the console.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp s3://amzn-s3-demo-bucket/filename.txt -</code>
+<code class="computeroutput" copy="false">hello world</code></code></pre><p>The following example streams the contents of <code class="code">s3://bucket-name/pre</code> to
+            <code class="code">stdout</code>, uses the <code class="code">bzip2</code> command to compress the files, and
+          uploads the new compressed file named <code>key.bz2</code> to
+            <code>s3://bucket-name</code>.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp s3://amzn-s3-demo-bucket/pre - | bzip2 --best | aws s3 cp - s3://amzn-s3-demo-bucket/key.bz2</code></code></pre></awsui-expandable-section></div>
+   
+    <h2 id="using-s3-commands-managing-objects-sync">Sync objects</h2>
+    <p>The
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html"><code class="code">s3 sync</code></a>
+      command synchronizes the contents of a bucket and a directory, or the contents of two buckets.
+      Typically, <code class="code">s3 sync</code> copies missing or outdated files or objects between the source
+      and target. However, you can also supply the <code class="code">--delete</code> option to remove files or
+      objects from the target that are not present in the source. </p>
+    <p><b>Syntax</b></p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight">$ <code class="userinput">aws s3 sync &lt;source&gt; &lt;target&gt; [--options]</code></code></pre>
+    <p>For a few common options to use with this command, and examples, see <a href="#using-s3-commands-managing-objects-param">Frequently used options for s3 commands</a>. For a complete list of options,
+      see
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html"><code class="code">s3 sync</code></a> in
+      the <em>AWS CLI Command Reference</em>.</p>
+    <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="s3 sync examples" id="using-s3-commands-managing-objects-sync-examples" expanded="false"><p>The following example synchronizes the contents of an Amazon S3 prefix named
+            <em>path</em> in the bucket named <em>amzn-s3-demo-bucket</em> with the
+          current working directory. </p><p><code class="code">s3 sync</code> updates any files that have a size or modified time that are
+          different from files with the same name at the destination. The output displays specific
+          operations performed during the sync. Notice that the operation recursively synchronizes
+          the subdirectory <code>MySubdirectory</code> and its contents with
+            <code>s3://amzn-s3-demo-bucket/path/MySubdirectory</code>.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 sync . s3://amzn-s3-demo-bucket/path</code><code class="computeroutput" copy="false">
+upload: MySubdirectory\MyFile3.txt to s3://amzn-s3-demo-bucket/path/MySubdirectory/MyFile3.txt
+upload: MyFile2.txt to s3://amzn-s3-demo-bucket/path/MyFile2.txt
+upload: MyFile1.txt to s3://amzn-s3-demo-bucket/path/MyFile1.txt</code></code></pre><p>The following example, which extends the previous one, shows how to use the
+            <code class="code">--delete</code> option.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="computeroutput" copy="false">// Delete local file
+</code><code class="prompt" copy="false">$ </code><code class="userinput">rm ./MyFile1.txt</code><code class="computeroutput" copy="false">
+
+// Attempt sync without --delete option - nothing happens
+</code><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 sync . s3://amzn-s3-demo-bucket/path</code><code class="computeroutput" copy="false">
+
+// Sync with deletion - object is deleted from bucket
+</code><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 sync . s3://amzn-s3-demo-bucket/path --delete</code><code class="computeroutput" copy="false">
+delete: s3://amzn-s3-demo-bucket/path/MyFile1.txt
+
+// Delete object from bucket
+</code><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 rm s3://amzn-s3-demo-bucket/path/MySubdirectory/MyFile3.txt</code><code class="computeroutput" copy="false">
+delete: s3://amzn-s3-demo-bucket/path/MySubdirectory/MyFile3.txt
+
+// Sync with deletion - local file is deleted
+</code><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 sync s3://amzn-s3-demo-bucket/path . --delete</code><code class="computeroutput" copy="false">
+delete: MySubdirectory\MyFile3.txt
+
+// Sync with Infrequent Access storage class
+</code><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 sync . s3://amzn-s3-demo-bucket/path --storage-class STANDARD_IA</code></code></pre><p>When using the <code class="code">--delete</code> option, the <code class="code">--exclude</code> and
+            <code class="code">--include</code> options can filter files or objects to delete during an <code class="code">s3
+            sync</code> operation. In this case, the parameter string must specify files to exclude
+          from, or include for, deletion in the context of the target directory or bucket. The
+          following shows an example.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="computeroutput" copy="false">Assume local directory and s3://amzn-s3-demo-bucket/path currently in sync and each contains 3 files:
+MyFile1.txt
+MyFile2.rtf
+MyFile88.txt
+'''</code><code class="computeroutput" copy="false">
+
+// Sync with delete, excluding files that match a pattern. MyFile88.txt is deleted, while remote MyFile1.txt is not.
+</code><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 sync . s3://amzn-s3-demo-bucket/path --delete --exclude "path/MyFile?.txt"</code><code class="computeroutput" copy="false">
+delete: s3://amzn-s3-demo-bucket/path/MyFile88.txt
+'''</code><code class="computeroutput" copy="false">
+
+// Sync with delete, excluding MyFile2.rtf - local file is NOT deleted
+</code><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 sync s3://amzn-s3-demo-bucket/path . --delete --exclude "./MyFile2.rtf"</code><code class="computeroutput" copy="false">
+download: s3://amzn-s3-demo-bucket/path/MyFile1.txt to MyFile1.txt
+'''
+
+// Sync with delete, local copy of MyFile2.rtf is deleted
+</code><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 sync s3://amzn-s3-demo-bucket/path . --delete</code><code class="computeroutput" copy="false">
+delete: MyFile2.rtf</code></code></pre></awsui-expandable-section></div>
+   
+    <h2 id="using-s3-commands-managing-objects-param">Frequently used options for s3 commands</h2>
+    <p>The following options are frequently used for the commands described in this topic. For a
+      complete list of options you can use on a command, see the specific command in the
+        <a href="https://docs.aws.amazon.com/cli/latest/reference/index.html">AWS CLI version 2 reference
+      guide</a>.</p>
+    <div class="variablelist">
+       
+       
+       
+       
+       
+       
+    <dl>
+        <dt><b><span class="term">acl</span></b></dt>
+        <dd>
+          <p><code class="code">s3 sync</code> and <code class="code">s3 cp</code> can use the <code class="code">--acl</code> option.
+            This enables you to set the access permissions for files copied to Amazon S3. The
+              <code class="code">--acl</code> option accepts <code class="code">private</code>, <code class="code">public-read</code>, and
+              <code class="code">public-read-write</code> values. For more information, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl">Canned
+              ACL</a> in the <em>Amazon S3 User Guide</em>.</p>
+          <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 sync . s3://amzn-s3-demo-bucket/path --acl public-read</code></code></pre>
+        </dd>
+      
+        <dt><b><span class="term">exclude</span></b></dt>
+        <dd>
+          <p>When you use the <code class="code">s3 cp</code>, <code class="code">s3 mv</code>, <code class="code">s3 sync</code>, or
+              <code class="code">s3 rm</code> command, you can filter the results by using the
+              <code class="code">--exclude</code> or <code class="code">--include</code> option. The <code class="code">--exclude</code>
+            option sets rules to only exclude objects from the command, and the options apply in the
+            order specified. This is shown in the following example.</p>
+          <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="computeroutput" copy="false">Local directory contains 3 files:
+MyFile1.txt
+MyFile2.rtf
+MyFile88.txt
+
+<code class="computeroutput" copy="false">// Exclude all .txt files, resulting in only MyFile2.rtf being copied</code>
+</code><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp . s3://amzn-s3-demo-bucket/path --exclude "*.txt"</code>
+
+<code class="computeroutput" copy="false">// Exclude all .txt files but include all files with the "MyFile*.txt" format, resulting in, MyFile1.txt, MyFile2.rtf, MyFile88.txt being copied</code>
+<code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp . s3://amzn-s3-demo-bucket/path --exclude "*.txt" --include "MyFile*.txt"</code>
+
+<code class="computeroutput" copy="false">// Exclude all .txt files, but include all files with the "MyFile*.txt" format, but exclude all files with the "MyFile?.txt" format resulting in, MyFile2.rtf and MyFile88.txt being copied</code>
+<code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp . s3://amzn-s3-demo-bucket/path --exclude "*.txt" --include "MyFile*.txt" --exclude "MyFile?.txt"</code></code></pre>
+        </dd>
+      
+        <dt><b><span class="term">include</span></b></dt>
+        <dd>
+          <p>When you use the <code class="code">s3 cp</code>, <code class="code">s3 mv</code>, <code class="code">s3 sync</code>, or
+              <code class="code">s3 rm</code> command, you can filter the results using the
+              <code class="code">--exclude</code> or <code class="code">--include</code> option. The <code class="code">--include</code>
+            option sets rules to only include objects specified for the command, and the options
+            apply in the order specified. This is shown in the following example.</p>
+          <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="computeroutput" copy="false">Local directory contains 3 files:
+MyFile1.txt
+MyFile2.rtf
+MyFile88.txt
+
+<code class="computeroutput" copy="false">// Include all .txt files, resulting in MyFile1.txt and MyFile88.txt being copied</code>
+</code><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp . s3://amzn-s3-demo-bucket/path --include "*.txt"</code>
+
+<code class="computeroutput" copy="false">// Include all .txt files but exclude all files with the "MyFile*.txt" format, resulting in no files being copied</code>
+<code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp . s3://amzn-s3-demo-bucket/path --include "*.txt" --exclude "MyFile*.txt"</code>
+
+<code class="computeroutput" copy="false">// Include all .txt files, but exclude all files with the "MyFile*.txt" format, but include all files with the "MyFile?.txt" format resulting in MyFile1.txt being copied</code>
+
+<code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp . s3://amzn-s3-demo-bucket/path --include "*.txt" --exclude "MyFile*.txt" --include "MyFile?.txt"</code></code></pre>
+        </dd>
+      
+        <dt><b><span class="term">grant</span></b></dt>
+        <dd>
+          <p>The <code class="code">s3 cp</code>, <code class="code">s3 mv</code>, and <code class="code">s3 sync</code> commands
+            include a <code class="code">--grants</code> option that you can use to grant permissions on the
+            object to specified users or groups. Set the <code class="code">--grants</code> option to a list of
+            permissions using the following syntax. Replace <code class="code">Permission</code>,
+              <code class="code">Grantee_Type</code>, and <code class="code">Grantee_ID</code> with your own values.</p>
+          <p><b>Syntax</b></p>
+          <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight">--grants <code class="replaceable">Permission</code>=<code class="replaceable">Grantee_Type</code>=<code class="replaceable">Grantee_ID</code>
+         [<code class="replaceable">Permission</code>=<code class="replaceable">Grantee_Type</code>=<code class="replaceable">Grantee_ID</code> ...]</code></pre>
+          <p>Each value contains the following elements:</p>
+          <div class="itemizedlist">
+             
+             
+             
+          <ul class="itemizedlist"><li class="listitem">
+              <p><code class="replaceable">Permission</code> – Specifies the granted permissions.
+                Can be set to <code class="code">read</code>, <code class="code">readacl</code>, <code class="code">writeacl</code>, or
+                  <code class="code">full</code>.</p>
+            </li><li class="listitem">
+              <p><code class="replaceable">Grantee_Type</code> – Specifies how to identify the
+                grantee. Can be set to <code class="code">uri</code>, <code class="code">emailaddress</code>, or
+                  <code class="code">id</code>.</p>
+            </li><li class="listitem">
+              <p><code class="replaceable">Grantee_ID</code> – Specifies the grantee based on
+                  <code class="replaceable">Grantee_Type</code>.</p>
+              <div class="itemizedlist">
+                 
+                 
+                 
+              <ul class="itemizedlist"><li class="listitem">
+                  <p><code class="code">uri</code> – The group's URI. For more information, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/ACLOverview.html#SpecifyingGrantee">Who is a
+                    grantee?</a></p>
+                </li><li class="listitem">
+                  <p><code class="code">emailaddress</code> – The account's email address.</p>
+                </li><li class="listitem">
+                  <p><code class="code">id</code> – The account's canonical ID.</p>
+                </li></ul></div>
+            </li></ul></div>
+          <p>For more information about Amazon S3 access control, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingAuthAccess.html">Access control</a>.</p>
+          <p>The following example copies an object into a bucket. It grants <code class="code">read</code>
+            permissions on the object to everyone, and <code class="code">full</code> permissions
+              (<code class="code">read</code>, <code class="code">readacl</code>, and <code class="code">writeacl</code>) to the account
+            associated with <code class="code">user@example.com</code>. </p>
+          <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp file.txt s3://amzn-s3-demo-bucket/ --grants <code class="replaceable">read=uri=http://acs.amazonaws.com/groups/global/AllUsers full=emailaddress=user@example.com</code></code></code></pre>
+          <p>You can also specify a nondefault storage class (<code class="code">REDUCED_REDUNDANCY</code> or
+              <code class="code">STANDARD_IA</code>) for objects that you upload to Amazon S3. To do this, use the
+              <code class="code">--storage-class</code> option.</p>
+          <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp file.txt s3://amzn-s3-demo-bucket/ <code class="replaceable">--storage-class REDUCED_REDUNDANCY</code></code></code></pre>
+        </dd>
+      
+        <dt><b><span class="term">no-overwrite</span></b></dt>
+        <dd>
+          <p>The <code class="code">s3 cp</code>, <code class="code">s3 mv</code>, and <code class="code">s3 sync</code> commands
+            include a <code class="code">--no-overwrite</code> option that you can use to prevent overwriting
+            objects that already exist at the destination.</p>
+          <p>The following example copies an object from a bucket to the local directory only
+          if it does not already exist in the local directory.</p>
+          <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp --no-overwrite s3://amzn-s3-demo-bucket/file.txt file.txt</code></code></pre>
+          <p>The following example recursively copies files from a local directory to a bucket. It will only
+          copy files that do not already exist in the bucket.</p>
+          <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 cp --recursive --no-overwrite /path/to/demo-files/ s3://amzn-s3-demo-bucket/demo-files/</code></code></pre>
+          <p>The following example moves an object from a local directory to a bucket only if
+          it does not already exist in the bucket destination location.</p>
+          <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 mv --no-overwrite file.txt s3://amzn-s3-demo-bucket/file.txt</code></code></pre>
+          <p>The following example syncs files from a local directory to a bucket. It will only
+          sync files that do not already exist in the destination bucket.</p>
+          <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 sync --no-overwrite /path/to/demo-files/ s3://amzn-s3-demo-bucket/demo-files/</code></code></pre>
+        </dd>
+      
+        <dt><b><span class="term">recursive</span></b></dt>
+        <dd>
+          <p>When you use this option, the command is performed on all files or objects under the
+            specified directory or prefix. The following example deletes
+              <code>s3://amzn-s3-demo-bucket/path</code> and all of its contents.</p>
+          <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><code class="prompt" copy="false">$ </code><code class="userinput">aws s3 rm s3://amzn-s3-demo-bucket/path --recursive</code></code></pre>
+        </dd>
+      </dl></div>
+   
+    <h2 id="using-s3-commands-managing-buckets-references">Resources</h2>
+    <p><b>AWS CLI reference:</b></p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p><a href="https://docs.aws.amazon.com/cli/latest/reference/s3/index.html"><code class="code">aws
+          s3</code></a></p>
+      </li><li class="listitem">
+        <p><a href="https://docs.aws.amazon.com/cli/latest/reference/s3/cp.html"><code class="code">aws s3
+          cp</code></a></p>
+      </li><li class="listitem">
+        <p><a href="https://docs.aws.amazon.com/cli/latest/reference/s3/mb.html"><code class="code">aws s3
+          mb</code></a></p>
+      </li><li class="listitem">
+        <p><a href="https://docs.aws.amazon.com/cli/latest/reference/s3/mv.html"><code class="code">aws s3
+          mv</code></a></p>
+      </li><li class="listitem">
+        <p><a href="https://docs.aws.amazon.com/cli/latest/reference/s3/ls.html"><code class="code">aws s3
+          ls</code></a></p>
+      </li><li class="listitem">
+        <p><a href="https://docs.aws.amazon.com/cli/latest/reference/s3/rb.html"><code class="code">aws s3
+          rb</code></a></p>
+      </li><li class="listitem">
+        <p><a href="https://docs.aws.amazon.com/cli/latest/reference/s3/rm.html"><code class="code">aws s3
+          rm</code></a></p>
+      </li><li class="listitem">
+        <p><a href="https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html"><code class="code">aws s3
+            sync</code></a></p>
+      </li></ul></div>
+    <p><b>Service reference:</b></p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingBucket.html">Working with
+            Amazon S3 buckets</a> in the <em>Amazon S3 User Guide</em></p>
+      </li><li class="listitem">
+        <p><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingObjects.html">Working with
+            Amazon S3 objects</a> in the <em>Amazon S3 User Guide</em></p>
+      </li><li class="listitem">
+        <p><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/ListingKeysHierarchy.html">Listing keys
+            hierarchically using a prefix and delimiter</a> in the
+            <em>Amazon S3 User Guide</em></p>
+      </li><li class="listitem">
+        <p><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/LLAbortMPUnet.html">Abort multipart
+            uploads to an S3 bucket using the AWS SDK for .NET (low-level)</a> in the
+            <em>Amazon S3 User Guide</em></p>
+      </li></ul></div>
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./cli-services-s3.html">Amazon S3</div><div id="next" class="next-link" accesskey="n" href="./cli-services-s3-apicommands.html">API-level (s3 api) commands</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AWS Command Line Interface&amp;topic_url=https://docs.aws.amazon.com/en_us/cli/latest/userguide/cli-services-s3-commands.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AWS Command Line Interface&amp;topic_url=https://docs.aws.amazon.com/en_us/cli/latest/userguide/cli-services-s3-commands.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

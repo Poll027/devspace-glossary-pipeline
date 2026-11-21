@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>OPS07-BP01 Perform post-incident analysis - AWS Well-Architected Framework</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="ops07-bp01" /><meta name="default_state" content="ops07-bp01" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07-bp01.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07-bp01.md" title="Markdown version" /><meta name="description" content="A structured post-incident analysis examines the contributing factors behind a customer-impacting event and converts those findings into changes that reduce the chance of recurrence." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Well-Architected Framework" /><meta name="guide" content="Framework" /><meta name="abstract" content="The AWS Well-Architected Framework helps you understand the pros and cons of decisions you make while building systems on AWS. By using the Framework you will learn architectural best practices for designing and operating reliable, secure, efficient, cost-effective, and sustainable systems in the cloud." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07-bp01.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/ops07-bp01.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/ops07-bp01.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/ops07-bp01.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/ops07-bp01.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07-bp01.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07-bp01.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/ops07-bp01.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/ops07-bp01.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/ops07-bp01.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/ops07-bp01.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/ops07-bp01.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/ops07-bp01.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/ops07-bp01.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/ops07-bp01.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/ops07-bp01.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/ops07-bp01.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/ops07-bp01.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/ops07-bp01.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/wellarchitected/latest/framework/ops07-bp01.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/wellarchitected/latest/framework/ops07-bp01.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07-bp01.html" hreflang="x-default" /><meta name="feedback-folder" content="897c6ffe-3c12-4691-9c85-dc23b20eabd4" /><meta name="this_doc_product" content="AWS Well-Architected Framework" /><meta name="this_doc_guide" content="Framework" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'wellarchitected'}"></script><meta id="panorama-serviceSubSection" value="Framework" /><meta id="panorama-serviceConsolePage" value="OPS07-BP01 Perform post-incident analysis" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="ops07-bp01.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>OPS07-BP01 Perform post-incident analysis - AWS Well-Architected Framework</title><meta name="pdf" content="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#ops07-bp01" /><meta name="forums" content="https://repost.aws/topics/TA5g9gZfzuQoWLsZ3wxihrgw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops07-bp01.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops07-bp01.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops07-bp01.html" /><meta name="keywords" content="AWS Well-Architected Framework,Well-Architected,cloud architecture,architecture best practices,AWS Cloud,workload design,cloud foundations,landing zone" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Well-Architected",
+        "item" : "https://aws.amazon.com/architecture/well-architected/"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Framework",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Cloud Workloads",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/workloads.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Operational excellence",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/operational-excellence.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Learn and evolve from events",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "OPS07-BP01 Perform post-incident analysis",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/ops07.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#ops07-bp01" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected</a><a href="framework.html">Framework</a></div><div id="page-toc-src"><a href="#implementation-guidance">Implementation     guidance</a><a href="#resources">Resources</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="ops07-bp01">OPS07-BP01 Perform post-incident analysis</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>
+    A structured post-incident analysis examines the contributing
+    factors behind a customer-impacting event and converts those
+    findings into changes that reduce the chance of recurrence.
+  </p><p>
+    <b>Desired outcome:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        You run a consistent post-incident analysis for every
+        customer-impacting event, triggered by your incident management
+        process.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your analysis identifies the multiple contributing factors
+        behind an incident rather than a single root cause.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You capture the telemetry and timeline data needed to
+        reconstruct what happened and when, and you automate its
+        assembly so responders spend their time interpreting evidence
+        rather than collecting it.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your findings become tracked corrective actions with named
+        owners and due dates, and a person remains accountable for each
+        decision even when automation proposed it.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You share learnings across teams, so other workloads benefit
+        from each incident.
+      </p>
+    </li></ul></div><p>
+    <b>Common anti-patterns:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Teams treat post-incident analysis as a search for who to blame,
+        which discourages honest disclosure and hides the real
+        contributing factors.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Responders resolve an incident and move on without recording the
+        timeline, so the same failure recurs later with wider impact.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Organizations document a single root cause and stop, missing the
+        chain of conditions that allowed the incident to happen.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Corrective actions are identified but never tracked to
+        completion, so the analysis produces no lasting change.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Analysis happens only for the largest incidents, so smaller
+        recurring incidents accumulate unaddressed.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Teams accept an automated root cause summary as the finished
+        analysis, leaving the remaining contributing factors unexamined
+        and the corrective actions unowned.
+      </p>
+    </li></ul></div><p>
+    <b>Benefits of establishing this best
+    practice:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        You identify the components, conditions, and actions that
+        contributed to an incident, which reveals concrete opportunities
+        for improvement.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You reduce recurrence because corrective actions address
+        contributing factors instead of symptoms.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You shorten future detection and recovery times by improving
+        alarms, runbooks, and escalation paths based on evidence.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You build trust because a blameless approach encourages people
+        to share what they observed.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You spread knowledge across teams, so improvements from one
+        incident protect other workloads.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You complete analyses sooner, and for more incidents, because
+        automation absorbs the evidence gathering while your team's
+        effort goes to judgment and deciding what to change.
+      </p>
+    </li></ul></div><p>
+    <b>Level of risk exposed if this best practice
+    is not established:</b> High
+  </p>
+
+  <h2 id="implementation-guidance">Implementation guidance</h2>
+
+      
+
+    <p>
+      A deployment, a latent configuration error, a missing alarm, and a
+      slow escalation can combine into an event that no single fix could
+      avoid. Look for the <em>contributing factors</em> —
+      the set of conditions and actions that together allowed the
+      incident.
+    </p>
+    <p>
+      When people expect blame, they withhold detail, and the analysis
+      lacks the information it needs. A <em>blameless</em>
+      approach assumes responders acted reasonably on what they knew at
+      the time and focuses on the system and process gaps that allowed
+      the incident. Amazon uses a structured Correction of Error (COE)
+      process built on this principle.
+    </p>
+    <p>
+      Reconstruct the timeline and record key measurements. Detection
+      time is the gap between when the incident began and when an alarm
+      or person noticed. Time to engage is how long it took to get the
+      right responders involved. Time to mitigate and time to resolve
+      measure how long customers felt the impact. These intervals let
+      you ask whether detection was slow or the response was slow once
+      detected. Your observability and logging must capture the
+      underlying timestamps.
+    </p>
+    <div class="table-container"><div class="table-contents"><table id="d0e1"><thead>
+          <tr>
+            <th>
+              Timeline point
+            </th>
+            <th>
+              What it marks
+            </th>
+          </tr>
+        </thead>
+          <tr>
+            <td tabindex="-1">
+              Incident start
+            </td>
+            <td tabindex="-1">
+              When customer impact actually began
+            </td>
+          </tr>
+          <tr>
+            <td tabindex="-1">
+              Detection
+            </td>
+            <td tabindex="-1">
+              When an alarm or person first noticed the impact
+            </td>
+          </tr>
+          <tr>
+            <td tabindex="-1">
+              Engagement
+            </td>
+            <td tabindex="-1">
+              When the right responders were involved
+            </td>
+          </tr>
+          <tr>
+            <td tabindex="-1">
+              Mitigation
+            </td>
+            <td tabindex="-1">
+              When customer impact was halted or reduced
+            </td>
+          </tr>
+          <tr>
+            <td tabindex="-1">
+              Resolution
+            </td>
+            <td tabindex="-1">
+              When the incident was fully resolved
+            </td>
+          </tr>
+        </table></div></div>
+    <p>
+      Decide who facilitates the analysis, on what cadence you review
+      findings, and which incidents warrant a full analysis. Analyzing
+      every minor incident is expensive and dilutes attention. Ignoring
+      small recurring incidents is dangerous, because a pattern of small
+      failures often precedes a large one. By default, analyze every
+      customer-impacting incident and any near miss that could have been
+      severe. Tailor what you share to the audience: give engineering
+      teams the technical detail, and give business stakeholders the
+      impact and remediation.
+    </p>
+    <p>
+      Split the work: automation collects evidence, people apply
+      judgment. Assembling the timeline, correlating deployments and
+      configuration changes with the incident window, and pulling logs
+      and metrics is mechanical, time-consuming work suited to
+      automation. Judgment and accountability stay with named people.
+      They decide which conditions contributed, judge what is worth
+      changing, weigh a fix's cost against the risk it removes, and
+      commit to own that fix.
+    </p>
+    <p>
+      Treat an agent's probable-cause summary as a starting hypothesis
+      backed by evidence. Keep a human review step that asks what else
+      had to be true for this incident to happen, and record the
+      corrective actions under the names of the people who will complete
+      them.
+    </p>
+    <p>
+      Use your team's existing incident tracking system. Trigger the
+      analysis consistently, reconstruct the timeline from evidence, and
+      track corrective actions to completion in that system.
+      <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/OpsCenter.html">AWS Systems Manager OpsCenter</a> can hold corrective actions as
+      OpsItems alongside your other operational work. Many teams use a
+      third-party incident management or ticketing system instead.
+    </p>
+    <p>
+      Use the Operational Readiness Review (ORR) approach to feed
+      incident findings back into your readiness criteria.
+      <a href="https://docs.aws.amazon.com/wellarchitected/latest/operational-readiness-reviews/appendix-a-creating-orr-guidance-from-an-incident.html">Creating ORR guidance from an incident</a> walks through turning a
+      single incident into a reusable readiness question. AWS
+      <a href="https://docs.aws.amazon.com/wellarchitected/latest/operational-readiness-reviews/iteration.html">couples its COE process to its ORR checklists</a> so each incident
+      produces new readiness checks.
+    </p>
+     
+
+  <h3 id="implementation-steps">Implementation steps</h3>
+
+      
+
+      <div class="orderedlist">
+         
+         
+         
+         
+         
+         
+         
+      <ol><li>
+          <p>
+            <b>Trigger the analysis from your
+            incident process:</b> Make post-incident analysis a
+            defined step in incident management, so it starts once a
+            customer-impacting incident is closed rather than depending
+            on manual follow-up. Confirm the scope criteria that decide
+            which incidents and near misses receive a full analysis, and
+            name who facilitates.
+          </p>
+        </li><li>
+          <p>
+            <b>Reconstruct the timeline with
+            metrics:</b> Collect the deployment changes,
+            configuration changes, incident start time, alarm time,
+            engagement time, mitigation start time, and resolution time.
+            Correlating deployment and infrastructure change events with
+            the incident window cuts the manual effort of evaluating
+            potential causes.
+            <a href="https://aws.amazon.com/devops-agent/" rel="noopener noreferrer" target="_blank"><span>AWS DevOps Agent</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> can do much of this correlation for you,
+            <a href="https://docs.aws.amazon.com/devopsagent/latest/userguide/">investigating an incident</a> across metrics, logs, and API change
+            history and maintaining an investigation timeline you can
+            carry into the analysis. Place these points on a single
+            timeline so that detection, engagement, mitigation, and
+            resolution intervals are visible and comparable.
+          </p>
+        </li><li>
+          <p>
+            <b>Identify contributing factors
+            without blame:</b> Work through the timeline to find
+            the conditions and actions that combined to produce the
+            incident. Assume responders acted reasonably on the
+            information available, and document system and process gaps
+            rather than individual fault. Amazon's
+            <a href="https://aws.amazon.com/blogs/mt/why-you-should-develop-a-correction-of-error-coe/" rel="noopener noreferrer" target="_blank"><span>Correction of Error (COE)</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> process is a working example of this
+            blameless approach. Bring in all parties connected to the
+            incident, including the people who support the system,
+            customer advocates, and those affected internally, and
+            <a href="https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/o.cm.3-conduct-post-incident-analysis-for-continuous-improvement.html">anonymize the findings</a> so the record cannot be read as
+            assigning blame.
+          </p>
+          <p>
+            Where an agent has already investigated, open the discussion
+            with its output rather than a blank page. DevOps Agent
+            publishes a root cause summary with the observations
+            supporting it and the investigation gaps it encountered.
+            Read the gaps as carefully as the conclusion, and have the
+            group work outward from that hypothesis to the other
+            conditions that had to hold for the incident to occur.
+          </p>
+        </li><li>
+          <p>
+            <b>Ask targeted improvement
+            questions:</b> Once the timeline is settled, work
+            through four areas of questioning, following the structure
+            Amazon uses in its
+            <a href="https://aws.amazon.com/blogs/mt/why-you-should-develop-a-correction-of-error-coe/" rel="noopener noreferrer" target="_blank"><span>COE process</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>. For <em>detection</em>, ask when
+            and how you learned there was customer impact, and what
+            would halve the time to detect. For
+            <em>diagnosis</em>, ask what underlying
+            condition caused the impact and what would halve the time to
+            diagnose. For <em>mitigation</em>, ask how you
+            determined where to intervene, how you knew service was
+            restored, and what would halve the time to mitigate. For
+            <em>prevention</em>, ask not just what happened
+            but why the underlying causes were possible.
+          </p>
+        </li><li>
+          <p>
+            <b>Drive prevention questions past the
+            first answer:</b> Apply the
+            <a href="https://aws.amazon.com/blogs/mt/why-you-should-develop-a-correction-of-error-coe/" rel="noopener noreferrer" target="_blank"><span>5 Whys</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> to each candidate cause, asking why at each
+            level until you have the full chain of conditions rather
+            than the first plausible explanation. Keep it blame-free by
+            pursuing why rather than who. Where an answer is
+            "human error," treat that as a signal to ask
+            why the error was possible, since it usually indicates a
+            missing validation or fail-safe. Continue past five whys if
+            the chain demands it, and plan a remediation for each
+            answer, not only the last one.
+          </p>
+        </li><li>
+          <p>
+            <b>Create and track corrective
+            actions:</b> Convert each finding into a specific
+            action stating its priority, the person responsible, and a
+            due date, and track it to completion in your normal
+            work-tracking system so it competes for priority alongside
+            other work. Amazon's COEs average six to eight action items
+            against an internal SLA measured in weeks, which is a useful
+            sanity check on whether your analysis produced a realistic
+            amount of work. Treat unfinished actions as open risk,
+            because an analysis that produces no completed change
+            delivers no value.
+          </p>
+        </li><li>
+          <p>
+            <b>Communicate findings to the right
+            audiences:</b> Publish the analysis where teams can
+            find it, and tailor the message to each audience. Give
+            engineering teams the technical detail and contributing
+            factors, and give business stakeholders the customer impact
+            and the remediation plan. The
+            <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/resilience-lifecycle-framework/stage-5.html">resilience lifecycle "Respond and learn" stage</a>
+            describes sharing these reports widely across the business
+            so other teams benefit.
+          </p>
+        </li></ol></div>
+     
+   
+
+  <h2 id="resources">Resources</h2>
+
+      
+    <p>
+      <b>Related best practices:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="./ops07-bp02.html">OPS07-BP02 Identify and drive improvements</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops06-bp01.html">OPS06-BP01 Create actionable alerts</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops05-bp01.html">OPS05-BP01 Develop and test runbooks to perform procedures</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops05-bp02.html">OPS05-BP02 Develop and test playbooks to respond to incidents</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops02-bp01.html">OPS02-BP01 Develop key performance indicators</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./rel12-bp02.html">REL12-BP02 Perform post-incident analysis</a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related documents:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/wellarchitected/latest/devops-guidance/o.cm.3-conduct-post-incident-analysis-for-continuous-improvement.html">O.CM.3 Conduct post-incident analysis for continuous improvement</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/devopsagent/latest/userguide/">AWS DevOps Agent: Incident response</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/devopsagent/latest/userguide/">AWS DevOps Agent: Starting investigations</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/resilience-lifecycle-framework/stage-5.html">Resilience lifecycle framework: Stage 5, Respond and learn</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/wellarchitected/latest/operational-readiness-reviews/appendix-a-creating-orr-guidance-from-an-incident.html">Creating ORR guidance from an incident</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/wellarchitected/latest/operational-readiness-reviews/iteration.html">Operational Readiness Reviews (ORR): Iteration</a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related examples:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/mt/why-you-should-develop-a-correction-of-error-coe/" rel="noopener noreferrer" target="_blank"><span>Why you should develop a correction of error (COE)</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/mt/announcing-general-availability-of-aws-devops-agent/" rel="noopener noreferrer" target="_blank"><span>Announcing general availability of AWS DevOps Agent</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/devops/leverage-agentic-ai-for-autonomous-incident-response-with-aws-devops-agent/" rel="noopener noreferrer" target="_blank"><span>Leverage agentic AI for autonomous incident response with AWS DevOps Agent</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related services:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/devops-agent/" rel="noopener noreferrer" target="_blank"><span>AWS DevOps Agent</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/OpsCenter.html">AWS Systems Manager OpsCenter</a>
+        </p>
+      </li></ul></div>
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./ops07.html">Learn and evolve from events</div><div id="next" class="next-link" accesskey="n" href="./ops07-bp02.html">OPS07-BP02 Identify and drive improvements</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops07-bp01.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops07-bp01.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

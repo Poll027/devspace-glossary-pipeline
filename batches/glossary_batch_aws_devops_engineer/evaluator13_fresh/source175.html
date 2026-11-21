@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>REL13-BP02 Use defined recovery strategies to meet the recovery objectives - AWS Well-Architected Framework</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="rel13-bp02" /><meta name="default_state" content="rel13-bp02" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.md" title="Markdown version" /><meta name="description" content="A workload needs a planned way to run from a recovery site when its primary location cannot serve it. Choosing that plan is a trade-off between how fast you recover and how much standing infrastructure you pay for and operate. Define a strategy for each workload, drawn from a small set of reusable patterns." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Well-Architected Framework" /><meta name="guide" content="Framework" /><meta name="abstract" content="The AWS Well-Architected Framework helps you understand the pros and cons of decisions you make while building systems on AWS. By using the Framework you will learn architectural best practices for designing and operating reliable, secure, efficient, cost-effective, and sustainable systems in the cloud." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/rel13-bp02.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/rel13-bp02.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/rel13-bp02.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/rel13-bp02.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/rel13-bp02.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/rel13-bp02.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/rel13-bp02.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/rel13-bp02.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/rel13-bp02.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/rel13-bp02.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/rel13-bp02.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/rel13-bp02.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/rel13-bp02.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/rel13-bp02.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/rel13-bp02.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/rel13-bp02.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/wellarchitected/latest/framework/rel13-bp02.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/wellarchitected/latest/framework/rel13-bp02.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13-bp02.html" hreflang="x-default" /><meta name="feedback-folder" content="897c6ffe-3c12-4691-9c85-dc23b20eabd4" /><meta name="this_doc_product" content="AWS Well-Architected Framework" /><meta name="this_doc_guide" content="Framework" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'wellarchitected'}"></script><meta id="panorama-serviceSubSection" value="Framework" /><meta id="panorama-serviceConsolePage" value="REL13-BP02 Use defined recovery strategies to meet the recovery objectives" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="rel13-bp02.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>REL13-BP02 Use defined recovery strategies to meet the recovery objectives - AWS Well-Architected Framework</title><meta name="pdf" content="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#rel13-bp02" /><meta name="forums" content="https://repost.aws/topics/TA5g9gZfzuQoWLsZ3wxihrgw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/rel13-bp02.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/rel13-bp02.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/rel13-bp02.html" /><meta name="keywords" content="AWS Well-Architected Framework,Well-Architected,cloud architecture,architecture best practices,AWS Cloud,workload design,cloud foundations,landing zone" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Well-Architected",
+        "item" : "https://aws.amazon.com/architecture/well-architected/"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Framework",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Cloud Workloads",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/workloads.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Reliability",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/reliability.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Plan for Disaster Recovery (DR)",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "REL13-BP02 Use defined recovery strategies to meet the recovery objectives",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/rel13.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#rel13-bp02" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected</a><a href="framework.html">Framework</a></div><div id="page-toc-src"><a href="#implementation-guidance">Implementation     guidance</a><a href="#resources">Resources</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="rel13-bp02">REL13-BP02 Use defined recovery strategies to meet the recovery objectives</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>
+    A workload needs a planned way to run from a recovery site when its
+    primary location cannot serve it. Choosing that plan is a trade-off
+    between how fast you recover and how much standing infrastructure
+    you pay for and operate. Define a strategy for each workload, drawn
+    from a small set of reusable patterns.
+  </p><p>
+    <b>Desired outcome:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Each workload has a defined, implemented disaster recovery
+        strategy that meets its recovery objectives.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Workloads with similar objectives reuse the same recovery
+        patterns and tooling.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your strategy accounts for both service failover and the
+        protection of data against corruption.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You have a documented plan for returning operation to the
+        primary site after an event.
+      </p>
+    </li></ul></div><p>
+    <b>Common anti-patterns:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Teams implement inconsistent recovery procedures for workloads
+        that share the same objectives.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Recovery is left to be improvised when a disaster occurs, with
+        no strategy defined in advance.
+      </p>
+    </li><li class="listitem">
+      <p>
+        A workload has no disaster recovery plan at all.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Recovery depends on control plane operations that may be
+        unavailable during the event.
+      </p>
+    </li></ul></div><p>
+    <b>Benefits of establishing this best
+    practice:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Common tooling and test procedures become possible because
+        recovery follows defined patterns.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Teams share knowledge and implement recovery more consistently
+        across the workloads they own.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Recovery objectives are more likely to be met because the
+        strategy is planned, implemented, and tested.
+      </p>
+    </li></ul></div><p>
+    <b>Level of risk exposed if this best practice
+    is not established:</b> High. Without a planned, implemented,
+    and tested strategy, you are unlikely to meet recovery objectives
+    during a disaster.
+  </p>
+
+  <h2 id="implementation-guidance">Implementation guidance</h2>
+
+      
+
+    <p>
+      The recovery site can be a separate set of Availability Zones
+      within one AWS Region or a separate Region. Multiple Availability
+      Zones protect against localized events such as fires, floods, and
+      power loss. A separate Region protects against the rare event that
+      makes an entire Region unavailable, though regulatory
+      data-residency rules sometimes rule this out.
+    </p>
+    <p>
+      The following figure lists the four strategies in increasing order
+      of cost and decreasing order of RTO and RPO.
+    </p>
+    <div class="orderedlist">
+       
+       
+       
+       
+    <ol style="list-style-type:arabic ! important;"><li>
+        <p>
+          <em>Backup and restore</em> copies data and
+          applications to the recovery site and rebuilds on demand,
+          giving an RPO in hours and an RTO of up to a day.
+        </p>
+      </li><li>
+        <p>
+          <em>Pilot light</em> keeps core data replicated
+          and always on while compute stays dormant until needed,
+          reaching an RPO in minutes and an RTO in tens of minutes.
+        </p>
+      </li><li>
+        <p>
+          <em>Warm standby</em> runs a scaled-down but fully
+          functional copy that you scale up on failover, reaching an RPO
+          in seconds and an RTO in minutes.
+        </p>
+      </li><li>
+        <p>
+          <em>Multi-site active-active</em> serves live
+          traffic from more than one Region, pushing RPO and RTO toward
+          zero at the highest operational cost.
+        </p>
+      </li></ol></div>
+    
+      <div class="mediaobject">
+       
+        <img src="/images/wellarchitected/latest/framework/images/disaster-recovery-strategies.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Diagram comparing four disaster recovery strategies — backup and restore, pilot light, warm standby, and multi-site active-active — along axes of recovery time, recovery point, and cost." style="max-width:100%" />
+       
+       
+      <div class="caption"><p><em>Disaster recovery strategies from backup and restore to multi-site active-active</em></p></div>
+    </div> 
+    <p>
+      Pilot light and warm standby both keep a copy of primary-site
+      assets in the recovery site with data replicated and live. The
+      difference is readiness. A pilot light cannot serve requests until
+      you start and scale compute, while a warm standby already handles
+      reduced traffic and only needs to scale up. Pilot light costs less
+      and recovers more slowly. When a warm standby is fully scaled and
+      serving full production load, it becomes hot standby.
+    </p>
+    <p>
+      Match the strategy to the recovery objectives you already defined.
+      Avoid choosing one more stringent than the business requires,
+      because standing capacity and cross-Region complexity carry
+      ongoing cost. The following figure shows how a maximum acceptable
+      RTO and a spending limit together narrow the field to the
+      strategies that satisfy both. Where you want warm-standby recovery
+      times closer to pilot-light cost, a purpose-built replication
+      service can continuously protect data and orchestrate compute
+      recovery on failover.
+    </p>
+    
+      <div class="mediaobject">
+       
+        <img src="/images/wellarchitected/latest/framework/images/choosing-a-dr-strategy.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Decision diagram showing how a maximum acceptable RTO and a spending limit together narrow disaster recovery strategies to the options that satisfy both constraints." style="max-width:100%" />
+       
+       
+      <div class="caption"><p><em>Choosing a disaster recovery strategy by RTO and cost</em></p></div>
+    </div> 
+    <p>
+      Replication alone does not make a workload recoverable. Continuous
+      replication copies corruption and deletion to the recovery site as
+      faithfully as it copies good data. Every strategy therefore needs
+      point-in-time backups or versioning in addition to replication, so
+      you can recover to a moment before the data was damaged.
+    </p>
+    <p>
+      Recovery is not complete when the recovery site takes over.
+      Failback returns operation to the primary site, where data is the
+      problem, and the recovery site now holds the current data.
+      Resynchronize the primary site from it before switching back,
+      sometimes by rebuilding the primary database as a replica of the
+      recovery one. Some organizations avoid a rushed failback by
+      promoting the recovery site to primary and rotating the roles on a
+      schedule.
+    </p>
+     
+
+  <h3 id="implementation-steps">Implementation steps</h3>
+
+      
+
+      <div class="orderedlist">
+         
+         
+         
+         
+         
+         
+      <ol><li>
+          <p>
+            <b>Select a strategy that meets the
+            objectives:</b> Compare your workload's RTO and RPO
+            against the four strategies and choose the least costly one
+            that satisfies both. Plot the target RTO against your cost
+            ceiling, as shown in Figure 2, to see which strategies
+            qualify. Avoid provisioning against objectives the business
+            has not set. For the reasoning behind this choice, see
+            <a href="https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/business-continuity-plan-bcp.html">Business Continuity Plan (BCP)</a>.
+          </p>
+        </li><li>
+          <p>
+            <b>Implement the pattern for your
+            chosen strategy:</b> Build the recovery site
+            according to the strategy you selected, from cross-site
+            backups for backup and restore, to replicated data with
+            dormant compute for pilot light, to a scaled-down live stack
+            for warm standby, to live regional stacks for active-active.
+            Use infrastructure as code so the recovery site is
+            reproducible and consistent with the primary. For Amazon EC2-based workloads that suit a pilot-light cost profile
+            with warm-standby speed, evaluate
+            <a href="https://docs.aws.amazon.com/drs/latest/userguide/what-is-drs.html">AWS Elastic Disaster Recovery</a>.
+          </p>
+        </li><li>
+          <p>
+            <b>Define the standing state of
+            recovery-site resources:</b> Decide what runs in the
+            recovery site during normal operation. Use
+            <a href="https://aws.amazon.com/cloudformation" rel="noopener noreferrer" target="_blank"><span>AWS CloudFormation</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> to provision infrastructure and
+            <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/what-is-cfnstacksets.html">AWS CloudFormation StackSets</a> to deploy across accounts
+            and Regions in one operation. Replicate data resources such
+            as <a href="https://aws.amazon.com/rds" rel="noopener noreferrer" target="_blank"><span>Amazon RDS</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> databases or
+            <a href="https://aws.amazon.com/dynamodb" rel="noopener noreferrer" target="_blank"><span>Amazon DynamoDB</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> tables for pilot light, warm standby, and
+            active-active so they are live in the recovery site. Use
+            <a href="https://aws.amazon.com/backup/" rel="noopener noreferrer" target="_blank"><span>AWS Backup</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> to schedule and monitor cross-Region backups.
+          </p>
+        </li><li>
+          <p>
+            <b>Prepare the recovery site for
+            failover:</b> Determine the actions needed to make
+            the recovery site production-ready during an event. For
+            pilot light and warm standby, deploy or scale the missing
+            compute, and reserve capacity in advance with
+            <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-capacity-reservations.html">Amazon EC2 capacity reservations</a> or
+            <a href="https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html">AWS Lambda provisioned concurrency</a> where needed. For all
+            strategies, promote replica databases to primary as
+            required. For backup and restore, restore data and rebuild
+            infrastructure and code. Automate these actions so failover
+            is repeatable.
+          </p>
+        </li><li>
+          <p>
+            <b>Implement traffic
+            redirection:</b> Decide how to reroute traffic to the
+            recovery site, and prefer manually initiated failover with
+            automated steps so a false alarm does not trigger an
+            unnecessary, costly switch. For warm standby and multi-site
+            active/active patterns, use
+            <a href="https://docs.aws.amazon.com/r53recovery/latest/dg/region-switch.html">ARC Region Switch</a> to orchestrate the failover as a single
+            operator-initiated operation with pre-flight checks and
+            health validation. This is exactly the pattern of
+            human-triggered but fully orchestrated failover. For complex
+            multi-cell topologies requiring independent per-service
+            routing decisions, use
+            <a href="https://docs.aws.amazon.com/r53recovery/latest/dg/routing-control.html">Amazon Application Recovery Controller routing controls</a>. Use
+            data plane operations during failover and avoid control
+            plane dependencies, as described in
+            <a href="./rel11-bp04.html">REL11-BP04 Rely on the data plane and not the control plane during recovery</a>.
+          </p>
+        </li><li>
+          <p>
+            <b>Design and document
+            failback:</b> Plan how you return to the primary site
+            once the event is over, focusing on resynchronizing data
+            from the recovery site to the primary. Note where managed
+            replication restores the topology automatically, such as
+            <a href="https://aws.amazon.com/dynamodb/global-tables/" rel="noopener noreferrer" target="_blank"><span>Amazon DynamoDB global tables</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> or
+            <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database-disaster-recovery.html#aurora-global-database-disaster-recovery.managed-failover">Amazon Aurora Global Database managed planned failover</a>, and
+            where you must rebuild manually. Capture the full failover
+            and failback sequence in a playbook that the team reviews
+            periodically.
+          </p>
+        </li></ol></div>
+     
+   
+
+  <h2 id="resources">Resources</h2>
+
+      
+    <p>
+      <b>Related best practices:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="./rel13-bp01.html">REL13-BP01 Define recovery objectives for downtime and data loss</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./rel13-bp03.html">REL13-BP03 Test disaster recovery implementation to validate the implementation</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./rel09-bp01.html">REL09-BP01 Identify and back up all data that needs to be backed up, or reproduce the data from sources</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./rel11-bp04.html">REL11-BP04 Rely on the data plane and not the control plane during recovery</a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related documents:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-workloads-on-aws.html">Disaster Recovery of Workloads on AWS: Recovery in the Cloud</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html">Disaster recovery options in the cloud</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/architecture/tag/creating-a-multi-region-application-with-aws-services-series/" rel="noopener noreferrer" target="_blank"><span>Creating a Multi-Region Application with AWS Services series</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/architecture/tag/disaster-recovery-series/" rel="noopener noreferrer" target="_blank"><span>Disaster Recovery Series</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html#USER_ReadRepl.XRgn">Working with DB instance read replicas</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-failover-configuring.html">Configuring DNS failover</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html">Replicating objects within and across Regions</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html">What is AWS Backup?</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/r53recovery/latest/dg/what-is-route53-recovery.html">What is ARC?</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/drs/latest/userguide/failback-performing-main.html">Performing a failback with Elastic Disaster Recovery</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/compute/building-resilient-multi-region-serverless-applications-on-aws/" rel="noopener noreferrer" target="_blank"><span>Building resilient multi-Region Serverless applications on AWS</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/architecture/implementing-multi-region-disaster-recovery-using-event-driven-architecture" rel="noopener noreferrer" target="_blank"><span>Implementing Multi-Region Disaster Recovery Using Event-Driven Architecture</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://partners.amazonaws.com/search/partners?keyword=Disaster+Recovery" rel="noopener noreferrer" target="_blank"><span>APN Partner: partners that can help with disaster recovery</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/marketplace/search/results?searchTerms=Disaster+recovery" rel="noopener noreferrer" target="_blank"><span>AWS Marketplace: products that can be used for disaster recovery</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related videos:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://www.youtube.com/watch?v=cJZw5mrxryA" rel="noopener noreferrer" target="_blank"><span>Disaster Recovery of Workloads on AWS | AWS Events</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://www.youtube.com/watch?v=GAMUCIJR5as" rel="noopener noreferrer" target="_blank"><span>Get Started with AWS Elastic Disaster Recovery | Amazon Web Services</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://www.youtube.com/watch?v=Gd7U-zGeZEo" rel="noopener noreferrer" target="_blank"><span>AWS re:Invent 2024 - Backup and disaster recovery strategies for increased resilience (COP319)</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./rel13-bp01.html">REL13-BP01 Define recovery objectives for downtime and data loss</div><div id="next" class="next-link" accesskey="n" href="./rel13-bp03.html">REL13-BP03 Test disaster recovery implementation to validate the implementation</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/rel13-bp02.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/rel13-bp02.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

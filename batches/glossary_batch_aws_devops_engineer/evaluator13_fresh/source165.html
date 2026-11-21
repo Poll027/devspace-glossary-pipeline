@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>OPS03-BP02 Test and validate any and all changes - AWS Well-Architected Framework</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="ops03-bp02" /><meta name="default_state" content="ops03-bp02" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops03-bp02.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops03-bp02.md" title="Markdown version" /><meta name="description" content="Test every change before it reaches production, including application code, infrastructure, configuration, security controls, and operational procedures. When you run tests immediately after each change, defects are cheap to fix and developers get fast feedback." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Well-Architected Framework" /><meta name="guide" content="Framework" /><meta name="abstract" content="The AWS Well-Architected Framework helps you understand the pros and cons of decisions you make while building systems on AWS. By using the Framework you will learn architectural best practices for designing and operating reliable, secure, efficient, cost-effective, and sustainable systems in the cloud." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops03-bp02.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/ops03-bp02.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/ops03-bp02.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/ops03-bp02.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/ops03-bp02.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops03-bp02.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops03-bp02.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/ops03-bp02.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/ops03-bp02.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/ops03-bp02.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/ops03-bp02.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/ops03-bp02.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/ops03-bp02.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/ops03-bp02.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/ops03-bp02.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/ops03-bp02.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/ops03-bp02.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/ops03-bp02.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/ops03-bp02.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/wellarchitected/latest/framework/ops03-bp02.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/wellarchitected/latest/framework/ops03-bp02.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/ops03-bp02.html" hreflang="x-default" /><meta name="feedback-folder" content="897c6ffe-3c12-4691-9c85-dc23b20eabd4" /><meta name="this_doc_product" content="AWS Well-Architected Framework" /><meta name="this_doc_guide" content="Framework" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'wellarchitected'}"></script><meta id="panorama-serviceSubSection" value="Framework" /><meta id="panorama-serviceConsolePage" value="OPS03-BP02 Test and validate any and all changes" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="ops03-bp02.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>OPS03-BP02 Test and validate any and all changes - AWS Well-Architected Framework</title><meta name="pdf" content="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#ops03-bp02" /><meta name="forums" content="https://repost.aws/topics/TA5g9gZfzuQoWLsZ3wxihrgw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops03-bp02.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops03-bp02.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops03-bp02.html" /><meta name="keywords" content="AWS Well-Architected Framework,Well-Architected,cloud architecture,architecture best practices,AWS Cloud,workload design,cloud foundations,landing zone" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Well-Architected",
+        "item" : "https://aws.amazon.com/architecture/well-architected/"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Framework",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Cloud Workloads",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/workloads.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Operational excellence",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/operational-excellence.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Adopt change flow processes with quality gates",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/ops03.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "OPS03-BP02 Test and validate any and all changes",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/ops03.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#ops03-bp02" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected</a><a href="framework.html">Framework</a></div><div id="page-toc-src"><a href="#implementation-guidance">Implementation     guidance</a><a href="#resources">Resources</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="ops03-bp02">OPS03-BP02 Test and validate any and all changes</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>
+    Test every change before it reaches production, including
+    application code, infrastructure, configuration, security controls,
+    and operational procedures. When you run tests immediately after
+    each change, defects are cheap to fix and developers get fast
+    feedback.
+  </p><p>
+    <b>Desired outcome:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Your changes are tested before they are delivered, and your
+        pipeline blocks any change that fails.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your developers see test results quickly and act on them without
+        leaving their workflow.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your testing covers application code, infrastructure,
+        configuration, and security controls, not code alone.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Every artifact meets your shared testing standard before it is
+        promoted.
+      </p>
+    </li></ul></div><p>
+    <b>Common anti-patterns:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Teams deploy a change with no tests, and it fails in production
+        and causes an incident.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Teams deploy new security group rules without testing them, and
+        the change makes the application unreachable for customers.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Developers modify a method that has no unit test, and the defect
+        surfaces only after release.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Testing happens manually at the end of the process, so feedback
+        arrives too late to be cheap to act on.
+      </p>
+    </li></ul></div><p>
+    <b>Benefits of establishing this best
+    practice:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Change failure rate drops because defects are caught before
+        release.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Software quality improves as tests document expected behavior
+        and guard against regression.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Developers gain confidence in their changes through fast,
+        automated feedback.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Security and compliance controls roll out with evidence that
+        they work as intended.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Infrastructure changes such as scaling policy updates are
+        validated before they affect live traffic.
+      </p>
+    </li></ul></div><p>
+    <b>Level of risk exposed if this best practice
+    is not established:</b> High
+  </p>
+
+  <h2 id="implementation-guidance">Implementation guidance</h2>
+
+      
+
+    <p>
+      The earlier a test runs, the cheaper the defect is to fix, because
+      less work has been built on top of it.
+    </p>
+    <p>
+      Unit tests check a single function in isolation and run in
+      milliseconds. Integration and end-to-end tests exercise components
+      together and take longer. Static analysis and software composition
+      analysis (SCA) inspect code and dependencies for known
+      vulnerabilities without running the software. Weight your test
+      suite toward fast, narrow tests and use slower, broad tests
+      sparingly. A suite that takes an hour to run gets skipped under
+      deadline pressure.
+    </p>
+    <p>
+      Test infrastructure definitions, configuration, security controls,
+      and operational procedures the same way you test code. Code tests
+      never catch security group rules that block legitimate traffic, a
+      scaling policy that fails under load, or a runbook that no longer
+      matches reality. Treat every artifact that can change production
+      behavior as something to test.
+    </p>
+    <p>
+      Automated tests remove manual effort and human error, and give
+      developers fast feedback. Automate everything repetitive, and
+      reserve human judgment for work such as exploratory testing,
+      usability review, or security assessment of a novel design.
+      Publish results to developers immediately. Agree on a testing
+      standard with stakeholders that defines which tests every artifact
+      must pass and who is notified when they complete.
+    </p>
+    <p>
+      Use <a href="https://kiro.dev/" rel="noopener noreferrer" target="_blank"><span>Kiro</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> to write code
+      artifacts, find and resolve bugs, and develop unit tests across
+      large codebases.
+      <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/welcome.html">AWS CodeBuild</a> runs tests on each artifact, and
+      <a href="https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html">AWS CodePipeline</a> sequences those tests into gates a change must
+      clear before promotion. The
+      <a href="https://aws-samples.github.io/aws-deployment-pipeline-reference-architecture/" rel="noopener noreferrer" target="_blank"><span>AWS Deployment Pipeline Reference Architecture</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> catalogs the
+      test types you can place at each stage.
+    </p>
+     
+
+  <h3 id="implementation-steps">Implementation steps</h3>
+
+      
+
+      <div class="orderedlist">
+         
+         
+         
+         
+         
+      <ol><li>
+          <p>
+            <b>Define a testing standard with your
+            stakeholders:</b> Agree on which tests every artifact
+            must pass, the compliance and governance requirements to
+            cover, and who is notified when tests complete. Use the
+            <a href="https://aws-samples.github.io/aws-deployment-pipeline-reference-architecture/" rel="noopener noreferrer" target="_blank"><span>AWS Deployment Pipeline Reference Architecture</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> as an
+            authoritative list of test types to include.
+          </p>
+        </li><li>
+          <p>
+            <b>Instrument artifacts with automated
+            tests:</b> Add the tests your standard requires so
+            they run as part of the integration pipeline, and keep each
+            suite within a predictable duration, such as under ten
+            minutes. Use
+            <a href="https://kiro.dev/" rel="noopener noreferrer" target="_blank"><span>Kiro</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> to generate
+            unit tests with boundary conditions and to find defects.
+          </p>
+        </li><li>
+          <p>
+            <b>Run tests automatically in the
+            pipeline:</b> Configure
+            <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/welcome.html">AWS CodeBuild</a> to run your tests on each change, and use
+            <a href="https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html">AWS CodePipeline</a> to order them into gates that block
+            promotion on failure.
+          </p>
+        </li><li>
+          <p>
+            <b>Test infrastructure and security
+            changes the same way:</b> Validate infrastructure
+            definitions, configuration, and security controls in a
+            pre-production environment before they reach production.
+            Apply the same automated gates to these artifacts that you
+            apply to application code.
+          </p>
+        </li><li>
+          <p>
+            <b>Publish results and store validated
+            artifacts:</b> Send test outcomes to developers as
+            each gate passes, so feedback is immediate. Promote only
+            artifacts that clear every gate, and store them in an
+            artifact repository for deployment.
+          </p>
+        </li></ol></div>
+     
+   
+
+  <h2 id="resources">Resources</h2>
+
+      
+    <p>
+      <b>Related best practices:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="./ops03-bp03.html">OPS03-BP03 Implement practices to improve code quality</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops03-bp04.html">OPS03-BP04 Fully automate integration and deployment</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops03-bp01.html">OPS03-BP01 Adopt a configuration, build, and release pipeline</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./ops04-bp02.html">OPS04-BP02 Automate testing and rollback</a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related documents:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/whitepapers/latest/practicing-continuous-integration-continuous-delivery/welcome.html">Practicing continuous integration and continuous delivery on AWS</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://builder.aws.com/content/3Ev3XnnYuuBhlgnywbbVFzwibm1/my-cicd-pipeline-is-my-release-captain" rel="noopener noreferrer" target="_blank"><span>My CI/CD pipeline is my release captain</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://builder.aws.com/content/2gBZtC94gPzaCQRnt4P0rIYWuBx/shift-left-workload-leveraging-ai-for-test-creation" rel="noopener noreferrer" target="_blank"><span>Shift-Left Workload, leveraging AI for test creation</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related videos:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://www.youtube.com/watch?v=4qcWgPb-8Fk" rel="noopener noreferrer" target="_blank"><span>AWS re:Invent 2025 - Spec-driven development with Kiro (DEV314)</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://www.youtube.com/watch?v=ht68gwyD4ZU" rel="noopener noreferrer" target="_blank"><span>The Tale of Building with Kiro</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related examples:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://aws-samples.github.io/aws-deployment-pipeline-reference-architecture/application-pipeline/index.html" rel="noopener noreferrer" target="_blank"><span>AWS Deployment Pipeline Reference Architecture - Application</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://github.com/aws-samples/devsecops-cicd-containers" rel="noopener noreferrer" target="_blank"><span>AWS Kubernetes DevSecOps pipeline</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related services:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://kiro.dev/" rel="noopener noreferrer" target="_blank"><span>Kiro</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/welcome.html">AWS CodeBuild</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html">AWS CodePipeline</a>
+        </p>
+      </li></ul></div>
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./ops03-bp01.html">OPS03-BP01 Adopt a configuration, build, and release pipeline</div><div id="next" class="next-link" accesskey="n" href="./ops03-bp03.html">OPS03-BP03 Implement practices to improve code quality</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops03-bp02.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/ops03-bp02.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

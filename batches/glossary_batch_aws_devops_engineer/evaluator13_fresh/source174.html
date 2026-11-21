@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>REL12-BP04 Test resilience using chaos engineering - AWS Well-Architected Framework</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="rel12-bp04" /><meta name="default_state" content="rel12-bp04" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/rel12-bp04.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/rel12-bp04.md" title="Markdown version" /><meta name="description" content="Chaos engineering injects controlled faults into a system to verify that it withstands and recovers from real-world disruptions. Running these experiments regularly, in or close to production, builds confidence that recovery mechanisms work." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Well-Architected Framework" /><meta name="guide" content="Framework" /><meta name="abstract" content="The AWS Well-Architected Framework helps you understand the pros and cons of decisions you make while building systems on AWS. By using the Framework you will learn architectural best practices for designing and operating reliable, secure, efficient, cost-effective, and sustainable systems in the cloud." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/rel12-bp04.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/rel12-bp04.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/wellarchitected/latest/framework/rel12-bp04.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/rel12-bp04.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/wellarchitected/latest/framework/rel12-bp04.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/rel12-bp04.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/rel12-bp04.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/rel12-bp04.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/wellarchitected/latest/framework/rel12-bp04.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/rel12-bp04.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/wellarchitected/latest/framework/rel12-bp04.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/rel12-bp04.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/wellarchitected/latest/framework/rel12-bp04.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/rel12-bp04.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/wellarchitected/latest/framework/rel12-bp04.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/rel12-bp04.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/wellarchitected/latest/framework/rel12-bp04.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/rel12-bp04.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/wellarchitected/latest/framework/rel12-bp04.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/wellarchitected/latest/framework/rel12-bp04.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/wellarchitected/latest/framework/rel12-bp04.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/wellarchitected/latest/framework/rel12-bp04.html" hreflang="x-default" /><meta name="feedback-folder" content="897c6ffe-3c12-4691-9c85-dc23b20eabd4" /><meta name="this_doc_product" content="AWS Well-Architected Framework" /><meta name="this_doc_guide" content="Framework" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'wellarchitected'}"></script><meta id="panorama-serviceSubSection" value="Framework" /><meta id="panorama-serviceConsolePage" value="REL12-BP04 Test resilience using chaos engineering" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="rel12-bp04.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>REL12-BP04 Test resilience using chaos engineering - AWS Well-Architected Framework</title><meta name="pdf" content="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#rel12-bp04" /><meta name="forums" content="https://repost.aws/topics/TA5g9gZfzuQoWLsZ3wxihrgw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/rel12-bp04.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/rel12-bp04.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/rel12-bp04.html" /><meta name="keywords" content="AWS Well-Architected Framework,Well-Architected,cloud architecture,architecture best practices,AWS Cloud,workload design,cloud foundations,landing zone" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Well-Architected",
+        "item" : "https://aws.amazon.com/architecture/well-architected/"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Framework",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Cloud Workloads",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/workloads.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Reliability",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/reliability.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Test reliability",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/rel12.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "REL12-BP04 Test resilience using chaos engineering",
+        "item" : "https://docs.aws.amazon.com/wellarchitected/latest/framework/rel12.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf#rel12-bp04" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected</a><a href="framework.html">Framework</a></div><div id="page-toc-src"><a href="#implementation-guidance">Implementation     guidance</a><a href="#resources">Resources</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="rel12-bp04">REL12-BP04 Test resilience using chaos engineering</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>
+    Chaos engineering injects controlled faults into a system to verify
+    that it withstands and recovers from real-world disruptions. Running
+    these experiments regularly, in or close to production, builds
+    confidence that recovery mechanisms work.
+  </p><p>
+    <b>Desired outcome:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        You verify workload resilience regularly through fault injection
+        experiments and injection of unexpected load.
+      </p>
+    </li><li class="listitem">
+      <p>
+        You combine chaos engineering with resilience testing that
+        validates known, expected behavior during an event.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Your experiments run both inside the delivery pipeline and
+        outside deployments, under real-world conditions and load.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Successful experiments become automated regression tests that
+        guard resilience over time.
+      </p>
+    </li></ul></div><p>
+    <b>Common anti-patterns:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Teams design for resilience but never verify how the whole
+        workload behaves when faults occur.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Experiments never run under real-world conditions or expected
+        load.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Experiments are not treated as code or maintained through the
+        development cycle.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Chaos experiments run only in the pipeline, or only outside it,
+        but not both.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Teams ignore past post-incident analyses when choosing which
+        faults to inject.
+      </p>
+    </li></ul></div><p>
+    <b>Benefits of establishing this best
+    practice:</b>
+  </p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>
+        Recovery procedures are proven against real faults, not assumed
+        to work.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Hidden weaknesses surface in a controlled setting where you can
+        address them safely.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Alerting and notification paths are validated as part of each
+        experiment.
+      </p>
+    </li><li class="listitem">
+      <p>
+        Resilience improves continually as experiments become permanent
+        regression tests.
+      </p>
+    </li></ul></div><p>
+    <b>Level of risk exposed if this best practice
+    is not established:</b> Medium
+  </p>
+
+  <h2 id="implementation-guidance">Implementation guidance</h2>
+
+      
+
+    <p>
+      The <a href="https://principlesofchaos.org/" rel="noopener noreferrer" target="_blank"><span>Principles of Chaos Engineering</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> define the discipline as experimenting
+      on a system to build confidence in its ability to withstand
+      turbulent conditions in production. Focus experiments on
+      <em>known-unknowns</em> (things you are aware of but
+      do not understand) and <em>unknown-unknowns</em>
+      (things you are neither aware of nor understand). Discover the
+      failure modes your design did not anticipate while keeping the
+      blast radius small and controlled.
+    </p>
+    <p>
+      <em>Steady state</em> is a measurable output that
+      indicates normal behavior, such as processing 300 transactions per
+      second at a 99 percent success rate with a 500 ms round-trip time.
+      A <em>hypothesis</em> predicts that steady state will
+      hold under a specific fault, because the workload's mitigations
+      handle it. Define both before you inject a fault: the steady-state
+      metric is your baseline, and the hypothesis is the claim the
+      experiment tests. Post-incident analyses are a strong source of
+      both the faults worth injecting and the metrics worth watching.
+    </p>
+    <p>
+      Guardrails keep experiments safe. Define stop conditions on the
+      metrics that represent steady state and on the components you are
+      injecting faults into, so an experiment halts automatically before
+      it causes unacceptable impact. Include a synthetic monitor, or
+      user canary, as a proxy for customer experience. Simulate faults
+      in a non-production environment first to confirm that stop
+      conditions activate and observability catches exceptions, then
+      move toward production, where real load reveals behavior that no
+      lower environment reproduces. Run first experiments during
+      off-peak hours, and use synthetic traffic against control and
+      experimental deployments when customer traffic poses too much
+      risk.
+    </p>
+    
+      <div class="mediaobject">
+       
+        <img src="/images/wellarchitected/latest/framework/images/fault-injection-simulator.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Architecture diagram showing AWS Fault Injection Service injecting faults across resource types including Amazon EC2, Amazon ECS, Amazon EKS, Amazon RDS, Amazon DynamoDB, AWS Lambda, Amazon S3, and networking services." style="max-width:100%" />
+       
+       
+      <div class="caption"><p><em>AWS Fault Injection Service running experiments across resource types</em></p></div>
+    </div> 
+    <p>
+      The preceding figure shows
+      <a href="https://docs.aws.amazon.com/fis/latest/userguide/what-is.html">AWS Fault Injection Service (AWS FIS)</a>, a managed service for
+      running experiments inside or outside your delivery pipeline. AWS
+      FIS introduces faults across resource types including Amazon EC2,
+      Amazon ECS, Amazon EKS, Amazon RDS, Amazon DynamoDB, AWS Lambda,
+      Amazon S3, and networking services. Fault types include:
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          Instance termination
+        </p>
+      </li><li class="listitem">
+        <p>
+          Forced failover
+        </p>
+      </li><li class="listitem">
+        <p>
+          CPU and memory stress
+        </p>
+      </li><li class="listitem">
+        <p>
+          Throttling
+        </p>
+      </li><li class="listitem">
+        <p>
+          Latency
+        </p>
+      </li><li class="listitem">
+        <p>
+          Packet loss
+        </p>
+      </li><li class="listitem">
+        <p>
+          Full-AZ interruption scenarios
+        </p>
+      </li><li class="listitem">
+        <p>
+          Network disruptions between AZs, VPCs, or specific services
+        </p>
+      </li></ul></div>
+    <p>
+      Use multi-step experiment workflows to sequence actions and model
+      cascading failures. Use cross-account experiments to run scenarios
+      against resources in multiple accounts from a central account. The
+      <a href="https://docs.aws.amazon.com/fis/latest/userguide/">experiment templates library</a> provides pre-built scenarios for common
+      resilience patterns such as AZ failover, Region failover, and
+      dependency failure.
+      <a href="https://docs.aws.amazon.com/resilience-hub/latest/userguide/what-is.html">AWS Resilience Hub</a> recommends and can trigger FIS experiments
+      based on resilience assessment findings. AWS FIS integrates with
+      Amazon CloudWatch alarms for stop conditions that roll back an
+      experiment on unexpected impact. Open-source tools such as Chaos
+      Toolkit, Chaos Mesh, and Litmus Chaos, and commercial tools such
+      as Gremlin, extend the range of faults. AWS FIS coordinates
+      workflows across several of these tools.
+    </p>
+    
+      <div class="mediaobject">
+       
+        <img src="/images/wellarchitected/latest/framework/images/chaos-engineering-flywheel.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Flywheel diagram showing the continuous resilience loop: define steady state, form a hypothesis, run the experiment, verify the result, and improve the design before running again." style="max-width:100%" />
+       
+       
+      <div class="caption"><p><em>Continuous resilience flywheel for chaos engineering</em></p></div>
+    </div> 
+    <p>
+      The experiment loop follows the continuous resilience flywheel in
+      the preceding figure: define steady state, form a hypothesis, run
+      the experiment, verify the result, and improve the design before
+      running again. When a workload survives an experiment, keep it as
+      an automated regression test in your systems development lifecycle
+      and delivery pipeline, so a future change cannot silently
+      reintroduce the weakness. A fault design or a failed experiment
+      can leave a workload in an unexpected state. Give every experiment
+      a rollback path, such as an AWS FIS post action, and document it
+      in a playbook.
+    </p>
+     
+
+  <h3 id="implementation-steps">Implementation steps</h3>
+
+      
+
+      <div class="orderedlist">
+         
+         
+         
+         
+         
+         
+         
+         
+      <ol><li>
+          <p>
+            <b>Determine which faults to experiment
+            with:</b> Assess your workload design for resilience
+            and list each element intended to maintain it, along with
+            the faults it mitigates. Draw on critical dependencies, past
+            events, known issues, and compliance requirements. The
+            Failure Modes and Effects Analysis (FMEA) process gives you
+            a framework for component-level analysis of failures and
+            their impact. Start with the
+            <a href="https://docs.aws.amazon.com/fis/latest/userguide/">AWS FIS experiment templates library</a> for pre-built
+            scenarios covering common resilience patterns, and review
+            <a href="https://docs.aws.amazon.com/resilience-hub/latest/userguide/what-is.html">AWS Resilience Hub</a> assessment recommendations for
+            targeted experiments specific to your application.
+          </p>
+        </li><li>
+          <p>
+            <b>Prioritize each fault:</b>
+            Categorize faults as high, medium, or low priority using
+            frequency and impact. Estimate frequency from historical
+            data for this workload, or from similar workloads when none
+            exists. Weigh impact by the scope of the fault and the
+            workload's purpose, and use post-incident analyses to ground
+            both estimates.
+          </p>
+        </li><li>
+          <p>
+            <b>Define steady state and form a
+            hypothesis:</b> Confirm the workload is healthy, then
+            define steady state as a measurable output such as a success
+            rate and latency percentile. Write a hypothesis stating
+            that, given a specific fault, the workload maintains steady
+            state because of specific mitigations. Specify the fault
+            type and the mitigating controls.
+          </p>
+        </li><li>
+          <p>
+            <b>Run the experiment with
+            guardrails:</b> Inject the fault using
+            <a href="https://docs.aws.amazon.com/fis/latest/userguide/what-is.html">AWS FIS</a> actions or custom actions defined in
+            <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/documents.html">AWS Systems Manager documents</a>. Set
+            <a href="https://docs.aws.amazon.com/fis/latest/userguide/stop-conditions.html">stop conditions</a> on steady-state and component metrics,
+            include a
+            <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Synthetics_Canaries.html">synthetic monitor</a> as a user proxy, and run in a non-production
+            environment before production. Inform operations,
+            reliability, and support teams before you begin.
+          </p>
+        </li><li>
+          <p>
+            <b>Verify the hypothesis:</b>
+            Compare the measured output against the steady-state metrics
+            you defined. Focus on customer-facing signals such as
+            server-side error rates and failed requests, supplemented by
+            the direct consequence of the fault. If steady state held,
+            the hypothesis is confirmed.
+          </p>
+        </li><li>
+          <p>
+            <b>Improve the design and
+            re-run:</b> If steady state was not maintained,
+            investigate how to strengthen the design, applying the best
+            practices of the Reliability pillar and resources in the
+            <a href="https://builder.aws.com/learn/topics/builders-library" rel="noopener noreferrer" target="_blank"><span>AWS Builders' Library</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>. After implementing changes, run
+            the experiment again to confirm they work.
+          </p>
+        </li><li>
+          <p>
+            <b>Automate and run experiments
+            regularly:</b> Once a workload meets a hypothesis,
+            automate the experiment as a regression test in your
+            delivery pipeline and run it on a regular cadence. Use FIS
+            <a href="https://docs.aws.amazon.com/fis/latest/userguide/">scheduled experiments</a> to run tests on a recurring schedule
+            without requiring pipeline integration for every execution.
+            Include fault injection in your game days so teams rehearse
+            the response as if a real event occurred.
+          </p>
+        </li><li>
+          <p>
+            <b>Capture and store
+            results:</b> Persist each experiment's results with
+            enough context to analyze trends later, including time,
+            workload, and conditions. Use
+            <a href="https://docs.aws.amazon.com/fis/latest/userguide/monitoring-logging.html">experiment logging with AWS FIS</a> alongside dashboards and
+            recorded observations.
+          </p>
+        </li></ol></div>
+     
+   
+
+  <h2 id="resources">Resources</h2>
+
+      
+    <p>
+      <b>Related best practices:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="./rel12-bp05.html">REL12-BP05 Conduct game days regularly</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./rel08-bp03.html">REL08-BP03 Integrate resilience testing as part of your deployment</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./rel13-bp03.html">REL13-BP03 Test disaster recovery implementation to validate the implementation</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="./rel12-bp01.html">REL12-BP01 Use playbooks to investigate failures</a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related documents:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/fis/latest/userguide/what-is.html">What is AWS Fault Injection Service?</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/resilience-hub/latest/userguide/what-is.html">What is AWS Resilience Hub?</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://principlesofchaos.org/" rel="noopener noreferrer" target="_blank"><span>PRINCIPLES OF CHAOS ENGINEERING - Principles of chaos engineering</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://builder.aws.com/content/3EuS9Sakq7L3VLQIF3qzfMfke1Y/avoiding-fallback-in-distributed-systems" rel="noopener noreferrer" target="_blank"><span>Avoiding fallback in distributed systems</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/chaos-engineering-on-aws/implementation.html">Implementing chaos engineering on AWS</a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/blogs/architecture/verify-the-resilience-of-your-workloads-using-chaos-engineering" rel="noopener noreferrer" target="_blank"><span>Verify the resilience of your workloads using Chaos Engineering</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://github.com/ldomb/ChaosEngineeringPublicStories" rel="noopener noreferrer" target="_blank"><span>GitHub - ldomb/ChaosEngineeringPublicStories: This Repository holds a list of public Chaos Engineering stories from major institutions around the world</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related videos:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://www.youtube.com/watch?v=MjPRd_UWCS0" rel="noopener noreferrer" target="_blank"><span>AWS re:Invent 2024 - Chaos engineering: A proactive approach to system resilience (ARC326)</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://www.youtube.com/watch?v=aG033p7YP7w" rel="noopener noreferrer" target="_blank"><span>AWS re:Invent 2025 - AI-powered resilience testing and disaster recovery (COP420)</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://www.youtube.com/watch?v=AnegpGnS-cY" rel="noopener noreferrer" target="_blank"><span>AWS re:Invent 2025 - Resilience testing and AWS Lambda actions under the hood (COP414)</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related tools:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://aws.amazon.com/fis/" rel="noopener noreferrer" target="_blank"><span>AWS Fault Injection Service</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://chaostoolkit.org/" rel="noopener noreferrer" target="_blank"><span>Chaos Toolkit - The chaos engineering toolkit for developers</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://chaos-mesh.org/" rel="noopener noreferrer" target="_blank"><span>Chaos Mesh: A Powerful Chaos Engineering Platform for Kubernetes</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://litmuschaos.io/" rel="noopener noreferrer" target="_blank"><span>LitmusChaos - Open Source Chaos Engineering Platform</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+    <p>
+      <b>Related workshops:</b>
+    </p>
+    <div class="itemizedlist">
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>
+          <a href="https://catalog.us-east-1.prod.workshops.aws/workshops/eb89c4d5-7c9a-40e0-b0bc-1cde2df1cb97/en-US" rel="noopener noreferrer" target="_blank"><span>Chaos Engineering on AWS lab</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li><li class="listitem">
+        <p>
+          <a href="https://catalog.us-east-1.prod.workshops.aws/workshops/2a54eaaf-51ee-4373-a3da-2bf4e8bb6dd3/en-US" rel="noopener noreferrer" target="_blank"><span>AWS Resilience Hub Workshop</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>
+        </p>
+      </li></ul></div>
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./rel12-bp03.html">REL12-BP03 Test scalability and performance requirements</div><div id="next" class="next-link" accesskey="n" href="./rel12-bp05.html">REL12-BP05 Conduct game days regularly</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/rel12-bp04.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?feedback_destination_id=897c6ffe-3c12-4691-9c85-dc23b20eabd4&amp;topic_url=https://docs.aws.amazon.com/en_us/wellarchitected/latest/framework/rel12-bp04.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Add a manual approval action to a stage - AWS CodePipeline</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="approvals" /><meta name="default_state" content="approvals" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals.md" title="Markdown version" /><meta name="description" content="Learn how to create and manage manual approval requests and Amazon SNS notifications for CodePipeline stages." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS CodePipeline" /><meta name="guide" content="User Guide" /><meta name="abstract" content="A user guide that describes how developers can use AWS CodePipeline to model, visualize, and automate the steps required to release software." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/codepipeline/latest/userguide/approvals.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/codepipeline/latest/userguide/approvals.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/codepipeline/latest/userguide/approvals.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/codepipeline/latest/userguide/approvals.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/codepipeline/latest/userguide/approvals.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/codepipeline/latest/userguide/approvals.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/codepipeline/latest/userguide/approvals.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/codepipeline/latest/userguide/approvals.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/codepipeline/latest/userguide/approvals.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/codepipeline/latest/userguide/approvals.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/codepipeline/latest/userguide/approvals.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/codepipeline/latest/userguide/approvals.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/codepipeline/latest/userguide/approvals.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/codepipeline/latest/userguide/approvals.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/codepipeline/latest/userguide/approvals.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/codepipeline/latest/userguide/approvals.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/codepipeline/latest/userguide/approvals.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/codepipeline/latest/userguide/approvals.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals.html" hreflang="x-default" /><meta name="feedback-item" content="CodePipeline" /><meta name="this_doc_product" content="AWS CodePipeline" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'codepipeline'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Add a manual approval action to a stage" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="approvals.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Add a manual approval action to a stage - AWS CodePipeline</title><meta name="pdf" content="/pdfs/codepipeline/latest/userguide/codepipeline-user.pdf#approvals" /><meta name="rss" content="aws-codepipeline-user-guide-updates.rss" /><meta name="forums" content="https://repost.aws/tags/TAD_CcYa8ASIKYqZ_uXiwwgA" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CodePipeline&amp;topic_url=https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/approvals.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/approvals.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/approvals.html" /><meta name="keywords" content="CodePipeline,Continuous Delivery,Continuous Deployment,pipeline,automated build,automated deployment" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS CodePipeline",
+        "item" : "https://docs.aws.amazon.com/codepipeline/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/codepipeline/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Use action types, custom actions, and approval actions",
+        "item" : "https://docs.aws.amazon.com/codepipeline/latest/userguide/actions.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Add a manual approval action to a stage",
+        "item" : "https://docs.aws.amazon.com/codepipeline/latest/userguide/actions.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/codepipeline/latest/userguide/codepipeline-user.pdf#approvals" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/codepipeline/index.html">AWS CodePipeline</a><a href="welcome.html">User Guide</a></div><div id="page-toc-src"><a href="#approvals-configuration-options">Configuration options for manual approval actions</a><a href="#approvals-overview">Setup and workflow overview for approval actions</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="approvals">Add a manual approval action to a stage</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>In AWS CodePipeline, you can add an approval action to a stage in a pipeline at the point where
+        you want the pipeline execution to stop so that someone with the required AWS Identity and Access Management
+        permissions can approve or reject the action. </p><p>If the action is approved, the pipeline execution resumes. If the action is
+        rejected—or if no one approves or rejects the action within seven days of the
+        pipeline reaching the action and stopping—the result is the same as an action
+        failing, and the pipeline execution does not continue.</p><p>You might use manual approvals for these reasons:</p><div class="itemizedlist">
+         
+         
+         
+    <ul class="itemizedlist"><li class="listitem">
+            <p>You want someone to perform a code review or change management review before a
+                revision is allowed into the next stage of a pipeline.</p>
+        </li><li class="listitem">
+            <p>You want someone to perform manual quality assurance testing on the latest version
+                of an application, or to confirm the integrity of a build artifact, before it is
+                released.</p>
+        </li><li class="listitem">
+            <p>You want someone to review new or updated text before it is published to a company
+                website.</p>
+        </li></ul></div>
+        <h2 id="approvals-configuration-options">Configuration options for manual approval actions in CodePipeline</h2>
+
+
+        <p>CodePipeline provides three configuration options you can use to tell approvers about the
+            approval action. </p>
+        <p><b>Publish Approval Notifications</b> You can configure an
+            approval action to publish a message to an Amazon Simple Notification Service topic when the pipeline stops at
+            the action. Amazon SNS delivers the message to every endpoint subscribed to the topic. You
+            must use a topic created in the same AWS Region as the pipeline that will include the
+            approval action. When you create a topic, we recommend you give it a name that will
+            identify its purpose, in formats such as
+            <code class="code">MyFirstPipeline-us-east-2-approval</code>. </p>
+        <p>When you publish approval notifications to Amazon SNS topics, you can choose from formats
+            such as email or SMS recipients, SQS queues, HTTP/HTTPS endpoints, or AWS Lambda
+            functions you invoke using Amazon SNS. For information about Amazon SNS topic notifications, see
+            the following topics:</p>
+        <div class="itemizedlist">
+             
+             
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/sns/latest/dg/welcome.html">What Is Amazon Simple Notification Service?</a></p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/sns/latest/dg/CreateTopic.html">Create a Topic in
+                    Amazon SNS</a></p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/sns/latest/dg/SendMessageToSQS.html">Sending Amazon SNS Messages to
+                        Amazon SQS Queues</a></p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqssubscribe.html">Subscribing a Queue to an Amazon
+                        SNS Topic</a></p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.html">Sending Amazon SNS Messages to
+                        HTTP/HTTPS Endpoints</a></p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/sns/latest/dg/sns-lambda.html">Invoking Lambda Functions Using
+                        Amazon SNS Notifications</a></p>
+            </li></ul></div>
+        <p>For the structure of the JSON data generated for an approval action notification, see
+                <a href="./approvals-json-format.html">JSON data format for manual approval notifications in CodePipeline</a>.</p>
+        <p><b>Specify a URL for Review</b> As part of the configuration
+            of the approval action, you can specify a URL to be reviewed. The URL might be a link to
+            a web application you want approvers to test or a page with more information about your
+            approval request. The URL is included in the notification that is published to the Amazon SNS
+            topic. Approvers can use the console or CLI to view it. </p>
+        <p><b>Enter Comments for Approvers</b> When you create an
+            approval action, you can also add comments that are displayed to those who receive the
+            notifications or those who view the action in the console or CLI response.</p>
+        <p><b>No Configuration Options</b> You can also choose not to
+            configure any of these three options. You might not need them if, for example, you can
+            notify someone directly that the action is ready for their review, or you simply want
+            the pipeline to stop until you decide to approve the action yourself. </p>
+     
+        <h2 id="approvals-overview">Setup and workflow overview for approval actions in CodePipeline</h2>
+
+
+        <p>The following is an overview for setting up and using manual approvals. </p>
+        <div class="orderedlist">
+             
+             
+             
+             
+             
+             
+             
+        <ol><li>
+                <p>You grant the IAM permissions required for approving or rejecting approval
+                    actions to one or more IAM roles in your organization. </p>
+            </li><li>
+                <p>(Optional) If you are using Amazon SNS notifications, you ensure that the service
+                    role you use in your CodePipeline operations has permission to access Amazon SNS resources.
+                </p>
+            </li><li>
+                <p>(Optional) If you are using Amazon SNS notifications, you create an Amazon SNS topic and
+                    add one or more subscribers or endpoints to it. </p>
+            </li><li>
+                <p>When you use the AWS CLI to create the pipeline or after you have used the CLI
+                    or console to create the pipeline, you add an approval action to a stage in the
+                    pipeline. </p>
+                <p>If you are using notifications, you include the Amazon Resource Name (ARN) of
+                    the Amazon SNS topic in the configuration of the action. (An ARN is a unique
+                    identifier for an Amazon resource. ARNs for Amazon SNS topics are structured like
+                        <code class="replaceable">arn:aws:sns:us-east-2:80398EXAMPLE:MyApprovalTopic</code>.
+                    For more information, see <a href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html">Amazon Resource Names (ARNs) and AWS service namespaces</a> in the
+                        <em>Amazon Web Services General Reference</em>.)</p>
+            </li><li>
+                <p>The pipeline stops when it reaches the approval action. If an Amazon SNS topic ARN
+                    was included in the configuration of the action, a notification is published to
+                    the Amazon SNS topic, and a message is delivered to any subscribers to the topic or
+                    subscribed endpoints, with a link to review the approval action in the
+                    console.</p>
+            </li><li>
+                <p>An approver examines the target URL and reviews comments, if any.</p>
+            </li><li>
+                <p>Using the console, CLI, or SDK, the approver provides a summary comment and
+                    submits a response:</p>
+                <div class="itemizedlist">
+                     
+                     
+                <ul class="itemizedlist"><li class="listitem">
+                        <p>Approved: The pipeline execution resumes.</p>
+                    </li><li class="listitem">
+                        <p>Rejected: The stage status is changed to "Failed" and the pipeline
+                            execution does not resume. </p>
+                    </li></ul></div>
+                <p>If no response is submitted within seven days, the action is marked as
+                    "Failed."</p>
+            </li></ol></div>
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./actions-invoke-lambda-function.html">Invoke a Lambda function in a pipeline</div><div id="next" class="next-link" accesskey="n" href="./approvals-iam-permissions.html">Grant approval permissions to an IAM user in CodePipeline</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CodePipeline&amp;topic_url=https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/approvals.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CodePipeline&amp;topic_url=https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/approvals.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

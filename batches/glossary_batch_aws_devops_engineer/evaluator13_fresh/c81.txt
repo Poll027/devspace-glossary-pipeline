@@ -1,0 +1,15 @@
+
+### 81 aws.ecs_task_identity
+Inline: supplied ECS task: Supplied scaffolding: ECS task. The exercise provides this input or setup; independent implementation is not required.; task role versus execution role: The task role authorizes application AWS calls; the execution role authorizes ECS startup work such as image pulls and log setup.; supplied task: Supplied scaffolding: the exercise provides task. Independent creation or implementation of this input is not assumed; separately declared skills still must be mastered.
+tb1: An ECS task starts, yet its application still needs AWS permissions. Separate the task execution role's startup work from the task role used by application containers.
+tb2: The ECS task role supplies credentials for AWS calls made by the application containers.
+tb3: The task execution role authorizes ECS startup work such as pulling an image and publishing logs; it is distinct from application AWS permissions.
+
+Set taskRoleArn to the approved least-privilege application role in the task definition and test allowed and denied application operations from the task.
+tb4: In the supplied task definition, set taskRoleArn to the approved least-privilege application role. From the task, test the supplied allowed and denied application operations. Inspect those results under the task's application identity. The execution role covers startup work such as image pulling and log publication; those capabilities do not substitute for the application role's permissions.
+tb5: The task execution role is not the task role. Successful image pulling or log publication does not establish application AWS access. Set and test the approved taskRoleArn for application calls.
+Assess: distinguish_application_task_role_permissions_from_execution_role_startup_permissions
+Practice: {'type': 'tool_simulation', 'objective': 'In a supplied ECS task definition, set taskRoleArn to the approved least-privilege application role. Use the supplied task-running setup to test one allowed and one denied AWS operation from the application container.', 'success': 'The task definition references the approved application role through taskRoleArn, with the execution role unchanged. Results from the task show that the supplied allowed application operation succeeds and the supplied denied operation is denied.'}
+Visual: {'type': 'diagram', 'purpose': 'Show two distinct permission paths: the task execution role authorizes ECS image pulling and log publication, while the task role selected through taskRoleArn supplies credentials for application AWS calls.'}
+Notes: ['Do not broaden startup permissions to cover application work; use approved roles.']
+Media: null

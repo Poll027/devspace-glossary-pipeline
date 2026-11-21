@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Target groups for your Application Load Balancers - Elastic Load Balancing</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="load-balancer-target-groups" /><meta name="default_state" content="load-balancer-target-groups" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.md" title="Markdown version" /><meta name="description" content="Learn how to configure target groups for your Application Load Balancer." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Elastic Load Balancing" /><meta name="guide" content="Application Load Balancers" /><meta name="abstract" content="Use Elastic Load Balancing to distribute your incoming application traffic across multiple targets, such as EC2 instances." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html" hreflang="x-default" /><meta name="feedback-item" content="ELB" /><meta name="this_doc_product" content="Elastic Load Balancing" /><meta name="this_doc_guide" content="Application Load Balancers" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'elasticloadbalancing'}"></script><meta id="panorama-serviceSubSection" value="Application Load Balancers" /><meta id="panorama-serviceConsolePage" value="Target groups for your Application Load Balancers" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="load-balancer-target-groups.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Target groups for your Application Load Balancers - Elastic Load Balancing</title><meta name="pdf" content="/pdfs/elasticloadbalancing/latest/application/elb-ag.pdf#load-balancer-target-groups" /><meta name="rss" content="application-load-balancer-release-notes.rss" /><meta name="forums" content="https://repost.aws/tags/TAO-wqN9fYRoyrpdULLa5y7g" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ELB&amp;topic_url=https://docs.aws.amazon.com/en_us/elasticloadbalancing/latest/application/load-balancer-target-groups.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/elasticloadbalancing/latest/application/load-balancer-target-groups.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/elasticloadbalancing/latest/application/load-balancer-target-groups.html" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Elastic Load Balancing",
+        "item" : "https://docs.aws.amazon.com/elasticloadbalancing/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "Application Load Balancers",
+        "item" : "https://docs.aws.amazon.com/elasticloadbalancing/latest/application"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Target groups for your Application Load Balancers",
+        "item" : "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/elasticloadbalancing/latest/application/elb-ag.pdf#load-balancer-target-groups" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/elasticloadbalancing/index.html">Elastic Load Balancing</a><a href="introduction.html">Application Load Balancers</a></div><div id="page-toc-src"><a href="#target-group-routing-configuration">Routing configuration</a><a href="#target-type">Target type</a><a href="#target-group-ip-address-type">IP address type</a><a href="#target-group-protocol-version">Protocol version</a><a href="#registered-targets">Registered targets</a><a href="#target-optimizer">Target Optimizer</a><a href="#target-group-attributes">Target group attributes</a><a href="#target-group-health">Target group health</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="load-balancer-target-groups">Target groups for your Application Load Balancers</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>Target groups route requests to individual registered targets, such as EC2 instances, 
+        using the protocol and port number that you specify. You can register a target with multiple 
+        target groups. You can configure health checks on a per target group basis. Health checks are 
+        performed on all targets registered to a target group that is specified in a listener rule for 
+        your load balancer.</p><p>Each target group is used to route requests to one or more registered targets. When you
+        create each listener rule, you specify a target group and conditions. When a rule condition
+        is met, traffic is forwarded to the corresponding target group. You can create different
+        target groups for different types of requests. For example, create one target group for
+        general requests and other target groups for requests to the microservices for your
+        application. You can use each target group with only one load balancer. For more
+        information, see <a href="./introduction.html#application-load-balancer-components">Application Load Balancer components</a>.</p><p>You define health check settings for your load balancer on a per target group basis. Each
+        target group uses the default health check settings, unless you override them when you
+        create the target group or modify them later on. After you specify a target group in a rule
+        for a listener, the load balancer continually monitors the health of all targets registered
+        with the target group that are in an Availability Zone enabled for the load balancer. The
+        load balancer routes requests to the registered targets that are healthy.</p><div class="highlights"><h2 class="awsdocs-topiclist-title">Contents</h2><ul><li><p><a href="#target-group-routing-configuration">Routing configuration</a></p></li><li><p><a href="#target-type">Target type</a></p></li><li><p><a href="#target-group-ip-address-type">IP address type</a></p></li><li><p><a href="#target-group-protocol-version">Protocol version</a></p></li><li><p><a href="#registered-targets">Registered targets</a></p></li><li><p><a href="#target-optimizer">Target Optimizer</a></p></li><li><p><a href="#target-group-attributes">Target group attributes</a></p></li><li><p><a href="#target-group-health">Target group health</a></p></li><li><p><a href="./create-target-group.html">Create a target group</a></p></li><li><p><a href="./target-group-health-checks.html">Configure health checks</a></p></li><li><p><a href="./edit-target-group-attributes.html">Edit target group attributes</a></p></li><li><p><a href="./target-group-register-targets.html">Register targets</a></p></li><li><p><a href="./lambda-functions.html">Use Lambda functions as targets</a></p></li><li><p><a href="./target-group-tags.html">Tag a target group</a></p></li><li><p><a href="./delete-target-group.html">Delete a target group</a></p></li></ul></div>
+        <h2 id="target-group-routing-configuration">Routing configuration</h2>
+
+        <p>By default, a load balancer routes requests to its targets using the protocol and port
+            number that you specified when you created the target group. Alternatively, you can
+            override the port used for routing traffic to a target when you register it with the
+            target group.</p>
+
+        <p>Target groups support the following protocols and ports:</p>
+        <div class="itemizedlist">
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><b>Protocols</b>: HTTP, HTTPS</p>
+            </li><li class="listitem">
+                <p><b>Ports</b>: 1-65535</p>
+            </li></ul></div>
+
+        <p>When a target group is configured with the HTTPS protocol or uses HTTPS health checks, 
+            if any HTTPS listener is using a TLS 1.3 security policy, the 
+            <code class="code">ELBSecurityPolicy-TLS13-1-0-2021-06</code> security policy will be used for target 
+            connections. Otherwise, the <code class="code">ELBSecurityPolicy-2016-08</code> security policy is used. 
+            The load balancer establishes TLS connections with the targets using certificates that you 
+            install on the targets. The load balancer does not validate these certificates. Therefore, 
+            you can use self-signed certificates or certificates that have expired. Because the load 
+            balancer, and its targets are in a virtual private cloud (VPC), traffic between the load 
+            balancer and the targets is authenticated at the packet level, so it is not at risk of 
+            man-in-the-middle attacks or spoofing even if the certificates on the targets are not 
+            valid. Traffic that leaves AWS will not have these same protections, and additional 
+            steps may be needed to secure traffic further.</p>
+
+     
+        <h2 id="target-type">Target type</h2>
+
+        <p>When you create a target group, you specify its target type, which determines the type
+            of target you specify when registering targets with this target group. After you create
+            a target group, you can't change its target type.</p>
+        <p>The following are the possible target types:</p>
+        <div class="variablelist">
+             
+             
+             
+        <dl>
+                <dt><span class="term"><code class="code">instance</code></span></dt>
+                <dd>
+                    <p>The targets are specified by instance ID.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">ip</code></span></dt>
+                <dd>
+                    <p>The targets are IP addresses.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">lambda</code></span></dt>
+                <dd>
+                    <p>The target is a Lambda function.</p>
+                </dd>
+            </dl></div>
+
+        <p>When the target type is <code class="code">ip</code>, you can specify IP addresses from one of the
+            following CIDR blocks:</p>
+        <div class="itemizedlist">
+             
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>The subnets of the VPC for the target group</p>
+            </li><li class="listitem">
+                <p>10.0.0.0/8 (<a href="https://tools.ietf.org/html/rfc1918" rel="noopener noreferrer" target="_blank"><span>RFC
+                    1918</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>)</p>
+            </li><li class="listitem">
+                <p>100.64.0.0/10 (<a href="https://tools.ietf.org/html/rfc6598" rel="noopener noreferrer" target="_blank"><span>RFC
+                        6598</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>)</p>
+            </li><li class="listitem">
+                <p>172.16.0.0/12 (RFC 1918)</p>
+            </li><li class="listitem">
+                <p>192.168.0.0/16 (RFC 1918)</p>
+            </li></ul></div>
+
+        <div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><div class="awsdocs-block-title">Important</div></div><div class="awsdocs-note-text"><p>You can't specify publicly routable IP addresses.</p></div></div>
+
+        <p>All of the supported CIDR blocks enable you to register the following targets with a target group: </p>
+        <div class="itemizedlist">
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>Instances in a VPC that is peered to the load balancer VPC (same Region or different Region).</p>
+            </li><li class="listitem">
+                <p>AWS resources that are addressable by IP address and port (for example,
+                    databases).</p>
+            </li><li class="listitem">
+                <p>On-premises resources linked to AWS through Direct Connect or a Site-to-Site VPN
+                    connection.</p>
+            </li></ul></div>
+        
+        <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>For Application Load Balancers deployed within a Local Zone, the <code class="code">ip</code> targets must be in the same Local Zone to receive traffic.</p><p>For more information, see <a href="https://docs.aws.amazon.com/local-zones/latest/ug/getting-started.html">What is AWS Local Zones?</a></p></div></div>
+
+        <p>If you specify targets using an instance ID, traffic is routed to instances using the
+            primary private IP address specified in the primary network interface for the instance.
+            If you specify targets using IP addresses, you can route traffic to an instance using
+            any private IP address from one or more network interfaces. This enables multiple
+            applications on an instance to use the same port. Each network interface can have its
+            own security group.</p>
+
+        <p>If the target type of your target group is <code class="code">lambda</code>, you can register a
+            single Lambda function. When the load balancer receives a request for the Lambda
+            function, it invokes the Lambda function. For more information, see <a href="./lambda-functions.html">Use Lambda functions as targets of an Application Load Balancer</a>.</p>
+        
+        <p>You can configure Amazon Elastic Container Service (Amazon ECS) as a target of your Application Load Balancer. For more information, 
+            see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/alb.html">Use an Application Load Balancer for Amazon ECS</a> in the <em>Amazon Elastic Container Service Developer Guide</em>.</p>
+
+     
+        <h2 id="target-group-ip-address-type">IP address type</h2>
+        <p>When creating a new target group, you can select the IP address type of your target
+            group. This controls the IP version used to communicate with targets and check their
+            health status.</p>
+        <p>Target groups for your Application Load Balancers support the following IP address types:</p>
+        <div class="variablelist">
+             
+             
+        <dl>
+                <dt><b><span class="term"><code class="code">ipv4</code></span></b></dt>
+                <dd>
+                    <p>The load balancer communicates with targets using IPv4.</p>
+                </dd>
+            
+                <dt><b><span class="term"><code class="code">ipv6</code></span></b></dt>
+                <dd>
+                    <p>The load balancer communicates with targets using IPv6.</p>
+                </dd>
+            </dl></div>
+        <div class="itemizedlist">
+            <h6 class="awsdocs-block-title">Considerations</h6>
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>The load balancer communicates with targets based on the IP address type of
+                    the target group. The targets of an IPv4 target group must accept IPv4
+                    traffic from the load balancer and the targets of an IPv6 target group must 
+                    accept IPv6 traffic from the load balancer.</p>
+            </li><li class="listitem">
+                <p>You can't use an IPv6 target group with an <code class="code">ipv4</code> load balancer.</p>
+            </li><li class="listitem">
+                <p>You can't register a Lambda function with an IPv6 target group.</p>
+            </li></ul></div>
+     
+        <h2 id="target-group-protocol-version">Protocol version</h2>
+
+        <p>By default, Application Load Balancers send requests to targets using HTTP/1.1. You can use the protocol
+            version to send requests to targets using HTTP/2 or gRPC.</p>
+        <p>The following table summarizes the result for the combinations of request protocol and
+            target group protocol version.</p>
+        <div class="table-container"><div class="table-contents"><table id="d0e1"><thead>
+                    <tr>
+                        <th>Request protocol</th>
+                        <th>Protocol version</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                    <tr>
+                        <td tabindex="-1">HTTP/1.1</td>
+                        <td tabindex="-1">HTTP/1.1</td>
+                        <td tabindex="-1">Success</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">HTTP/2</td>
+                        <td tabindex="-1">HTTP/1.1</td>
+                        <td tabindex="-1">Success</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">gRPC</td>
+                        <td tabindex="-1">HTTP/1.1</td>
+                        <td tabindex="-1">Error</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">HTTP/1.1</td>
+                        <td tabindex="-1">HTTP/2</td>
+                        <td tabindex="-1">Error</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">HTTP/2</td>
+                        <td tabindex="-1">HTTP/2</td>
+                        <td tabindex="-1">Success</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">gRPC</td>
+                        <td tabindex="-1">HTTP/2</td>
+                        <td tabindex="-1">Success if targets support gRPC</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">HTTP/1.1</td>
+                        <td tabindex="-1">gRPC</td>
+                        <td tabindex="-1">Error</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">HTTP/2</td>
+                        <td tabindex="-1">gRPC</td>
+                        <td tabindex="-1">Success if a POST request</td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">gRPC</td>
+                        <td tabindex="-1">gRPC</td>
+                        <td tabindex="-1">Success</td>
+                    </tr>
+                </table></div></div>
+
+        <div class="itemizedlist">
+            <h6 class="awsdocs-block-title">Considerations for the gRPC protocol version</h6>
+             
+             
+             
+             
+             
+             
+             
+             
+
+        <ul class="itemizedlist"><li class="listitem">
+                <p>The only supported listener protocol is HTTPS.</p>
+            </li><li class="listitem">
+                <p>The only supported action type for listener rules is
+                    <code class="code">forward</code>.</p>
+            </li><li class="listitem">
+                <p>The only supported target types are <code class="code">instance</code> and
+                    <code class="code">ip</code>.</p>
+            </li><li class="listitem">
+                <p>The load balancer parses gRPC requests and routes the gRPC calls to the
+                    appropriate target groups based on the package, service, and method.</p>
+            </li><li class="listitem">
+                <p>The load balancer supports unary, client-side streaming, server-side
+                    streaming, and bi-directional streaming.</p>
+            </li><li class="listitem">
+                <p>You must provide a custom health check method with the format
+                        <code class="code">/package.service/method</code>.</p>
+            </li><li class="listitem">
+                <p>You must specify the gRPC status codes to use when checking for a successful
+                    response from a target.</p>
+            </li><li class="listitem">
+                <p>You can't use Lambda functions as targets.</p>
+            </li></ul></div>
+
+        <div class="itemizedlist">
+            <h6 class="awsdocs-block-title">Considerations for the HTTP/2 protocol version</h6>
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>The only supported listener protocol is HTTPS.</p>
+            </li><li class="listitem">
+                <p>The only supported action type for listener rules is
+                    <code class="code">forward</code>.</p>
+            </li><li class="listitem">
+                <p>The only supported target types are <code class="code">instance</code> and
+                    <code class="code">ip</code>.</p>
+            </li><li class="listitem">
+                <p>The load balancer supports unary, client-side streaming, server-side
+                    streaming, and bi-directional streaming. The maximum number of streams per
+                    client HTTP/2 connection is 128.</p>
+            </li></ul></div>
+     
+        <h2 id="registered-targets">Registered targets</h2>
+
+        <p>Your load balancer serves as a single point of contact for clients and distributes
+            incoming traffic across its healthy registered targets. You can register each target
+            with one or more target groups.</p>
+
+        <p>If demand on your application increases, you can register additional targets with one
+            or more target groups in order to handle the demand. The load balancer starts routing 
+            traffic to a newly registered target as soon as the registration process completes and 
+            the target passes the first initial health check, irrespective of the configured threshold.</p>
+
+        <p>If demand on your application decreases, or you need to service your targets, you can
+            deregister targets from your target groups. Deregistering a target removes it from your
+            target group, but does not affect the target otherwise. The load balancer stops routing
+            requests to a target as soon as it is deregistered. The target enters the
+                <code class="code">draining</code> state until in-flight requests have completed. You can
+            register the target with the target group again when you are ready for it to resume
+            receiving requests.</p>
+
+        <p>If you are registering targets by instance ID, you can use your load balancer with an
+            Auto Scaling group. After you attach a target group to an Auto Scaling group, Auto Scaling registers your
+            targets with the target group for you when it launches them. For more information, see
+                <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/attach-load-balancer-asg.html">Attaching a load balancer to
+                your Auto Scaling group</a> in the <em>Amazon EC2 Auto Scaling User Guide</em>.</p>
+
+        <div class="itemizedlist">
+            <h6 class="awsdocs-block-title">Limits</h6>
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>You can't register the IP addresses of another Application Load Balancer in the same VPC. If the
+                    other Application Load Balancer is in a VPC that is peered to the load balancer VPC, you can
+                    register its IP addresses.</p>
+            </li><li class="listitem">
+                <p>You can't register instances by instance ID if they are in a VPC that is peered
+                    to the load balancer VPC (same Region or different Region). You can register these 
+                    instances by IP address.</p>
+            </li></ul></div>
+
+     
+        <h2 id="target-optimizer">Target Optimizer</h2>
+        <p> You can enable target optimizer on a target group. Target optimizer lets you accurately 
+            enforce a maximum number of concurrent requests on a target. It works with the help of an 
+            agent that you install and configure on targets. To enable target optimizer, you specify a 
+            target control port for the target group. This port is used for management traffic between 
+            the agents and load balancer. Target optimizer can only be enabled during target group creation. 
+            Target control port once specified cannot be modified. For more information, see 
+            <a href="./target-group-register-targets.html#register-targets-target-optimizer">Target Optimizer</a>.
+            </p>
+     
+        <h2 id="target-group-attributes">Target group attributes</h2>
+        <p>You can configure a target group by editing its attributes. For more
+            information, see <a href="./edit-target-group-attributes.html">Edit target group attributes</a>.</p>
+        <p>The following target group attributes are supported if the target group type is
+                <code class="code">instance</code> or <code class="code">ip</code>:</p>
+        <div class="variablelist">
+             
+             
+             
+             
+             
+             
+             
+             
+             
+             
+             
+             
+             
+             
+             
+        <dl>
+                <dt><span class="term"><code class="code">deregistration_delay.timeout_seconds</code></span></dt>
+                <dd>
+                    <p>The amount of time for Elastic Load Balancing to wait before deregistering a target. The
+                        range is 0–3600 seconds. The default value is 300 seconds.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">load_balancing.algorithm.type</code></span></dt>
+                <dd>
+                    <p>The routing algorithm determines how the load balancer selects
+                        targets when routing requests. The value is <code class="code">round_robin</code>, 
+                        <code class="code">least_outstanding_requests</code>, or <code class="code">weighted_random</code>. The default is
+                            <code class="code">round_robin</code>.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">load_balancing.algorithm.anomaly_mitigation</code></span></dt>
+                <dd>
+                    <p>Only available when <code class="code">load_balancing.algorithm.type</code> 
+                        is <code class="code">weighted_random</code>. Indicates whether anomaly 
+                        mitigation is enabled. The value is <code class="code">on</code> 
+                        or <code class="code">off</code>. The default is <code class="code">off</code>.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">load_balancing.cross_zone.enabled</code></span></dt>
+                <dd>
+                    <p>Indicates whether cross zone load balancing is enabled. The value is 
+                        <code class="code">true</code>, <code class="code">false</code> or <code class="code">use_load_balancer_configuration</code>. 
+                        The default is <code class="code">use_load_balancer_configuration</code>.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">slow_start.duration_seconds</code></span></dt>
+                <dd>
+                    <p>The time period, in seconds, during which the load balancer sends a newly
+                        registered target a linearly increasing share of the traffic to the target
+                        group. The range is 30–900 seconds (15 minutes). The default is 0
+                        seconds (disabled).</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">stickiness.enabled</code></span></dt>
+                <dd>
+                    <p>Indicates whether sticky sessions are enabled. The value is
+                            <code class="code">true</code> or <code class="code">false</code>. The default is
+                            <code class="code">false</code>.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">stickiness.app_cookie.cookie_name</code></span></dt>
+                <dd>
+                    <p>The name of the application cookie. The application cookie name can't
+                        have the following prefixes: <code class="code">AWSALB</code>, <code class="code">AWSALBAPP</code>, or
+                            <code class="code">AWSALBTG</code>; they're reserved for use by the load
+                        balancer.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">stickiness.app_cookie.duration_seconds</code></span></dt>
+                <dd>
+                    <p>The application-based cookie expiration period, in seconds. After this
+                        period, the cookie is considered stale. The minimum value is 1 second and
+                        the maximum value is 7 days (604800 seconds). The default value is 1 day
+                        (86400 seconds).</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">stickiness.lb_cookie.duration_seconds</code></span></dt>
+                <dd>
+                    <p>The duration-based cookie expiration period, in seconds. After this
+                        period, the cookie is considered stale. The minimum value is 1 second and
+                        the maximum value is 7 days (604800 seconds). The default value is 1 day
+                        (86400 seconds).</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">stickiness.type</code></span></dt>
+                <dd>
+                    <p>The type of stickiness. The possible values are <code class="code">lb_cookie</code> and
+                            <code class="code">app_cookie</code>.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">target_group_health.dns_failover.minimum_healthy_targets.count</code></span></dt>
+                <dd>
+                    <p>The minimum number of targets that must be healthy. If the number of
+                        healthy targets is below this value, mark the node as unhealthy in DNS, so
+                        that traffic is routed only to healthy nodes. The possible values are
+                            <code class="code">off</code> or an integer from 1 to the maximum number of targets.
+                        When <code class="code">off</code>, DNS fail away is disabled, meaning that even if all
+                        targets in the target group are unhealthy, the node is not removed from DNS.
+                        The default is 1.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">target_group_health.dns_failover.minimum_healthy_targets.percentage</code></span></dt>
+                <dd>
+                    <p>The minimum percentage of targets that must be healthy.
+                        If the percentage of healthy targets is below this value, mark the node as
+                        unhealthy in DNS, so that traffic is routed only to healthy nodes.
+                        The possible values are <code class="code">off</code> or an integer from 1 to 100. 
+                        When <code class="code">off</code>, DNS fail away is disabled, meaning that even if all 
+                        targets in the target group are unhealthy, the node is not removed from DNS. 
+                        The default is <code class="code">off</code>.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">target_group_health.unhealthy_state_routing.minimum_healthy_targets.count</code></span></dt>
+                <dd>
+                    <p>The minimum number of targets that must be healthy.  
+                        If the number of healthy targets is below this value, send traffic to all targets,
+                        including unhealthy targets.
+                        The range is 1 to the maximum number of targets. The default is 1.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">target_group_health.unhealthy_state_routing.minimum_healthy_targets.percentage</code></span></dt>
+                <dd>
+                    <p>The minimum percentage of targets that must be healthy. 
+                        If the percentage of healthy targets is below this value, send traffic to all targets,
+                        including unhealthy targets. The possible values are <code class="code">off</code> or an integer from 1 to 100.
+                        The default is <code class="code">off</code>.</p>
+                </dd>
+             
+                <dt><span class="term"><code class="code">routing.http2.rst_stream_error_forwarding.enabled</code></span></dt>
+                <dd>
+                    <p>Indicates whether the load balancer forwards an HTTP/2 or gRPC target's
+                            <code class="code">RST_STREAM</code> error code to the downstream client, instead of
+                        returning an HTTP 502 (Bad Gateway) response. This attribute applies only to
+                        target groups that use the <code class="code">HTTP2</code> or <code class="code">GRPC</code> protocol
+                        version. The value is <code class="code">true</code> or <code class="code">false</code>. The default
+                        is <code class="code">false</code>.</p>
+                </dd>
+            </dl></div>
+
+        <p>The following target group attribute is supported if the target group type is
+                <code class="code">lambda</code>:</p>
+        <div class="variablelist">
+             
+        <dl>
+                <dt><span class="term"><code class="code">lambda.multi_value_headers.enabled</code></span></dt>
+                <dd>
+                    <p>Indicates whether the request and response headers exchanged between the
+                        load balancer and the Lambda function include arrays of values or strings.
+                        The possible values are <code class="code">true</code> or <code class="code">false</code>. The default
+                        value is <code class="code">false</code>. For more information, see <a href="./lambda-functions.html#multi-value-headers">Multi-value headers</a>.</p>
+                </dd>
+            </dl></div>
+
+     
+        <h2 id="target-group-health">Target group health</h2>
+        
+        <p>By default, a target group is considered healthy as long as it has at least one
+            healthy target. If you have a large fleet, having only one healthy target serving
+            traffic is not sufficient. Instead, you can specify a minimum count or percentage of
+            targets that must be healthy, and what actions the load balancer takes when the healthy
+            targets fall below the specified threshold. This improves the availability of your
+            application.</p>
+        <div class="highlights" id="inline-topiclist"><h2 class="awsdocs-topiclist-title">Contents</h2><ul><li><p><a href="#unhealthy-state-actions">Unhealthy state actions</a></p></li><li><p><a href="#target-group-health-considerations">Requirements and considerations</a></p></li><li><p><a href="#target-group-health-monitoring">Monitoring</a></p></li><li><p><a href="#target-group-health-examples">Example</a></p></li><li><p><a href="#r53-dns-failover">Using Route 53 DNS failover for your load balancer</a></p></li></ul></div>
+
+         
+            <h3 id="unhealthy-state-actions">Unhealthy state actions</h3>
+            <p>You can configure healthy thresholds for the following actions:</p>
+            <div class="itemizedlist">
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><span class="topcom">DNS failover</span> – When the healthy targets in a zone
+                        fall below the threshold, we mark the IP addresses of the load balancer node
+                        for the zone as unhealthy in DNS. Therefore, when clients resolve the load
+                        balancer DNS name, the traffic is routed only to healthy zones.</p>
+                </li><li class="listitem">
+                    <p><span class="topcom">Routing failover</span> – When the healthy targets in a
+                        zone fall below the threshold, the load balancer sends traffic to all
+                        targets that are available to the load balancer node, including unhealthy
+                        targets. This increases the chances that a client connection succeeds,
+                        especially when targets temporarily fail to pass health checks, and reduces
+                        the risk of overloading the healthy targets.</p>
+                </li></ul></div>
+         
+        
+         
+            <h3 id="target-group-health-considerations">Requirements and considerations</h3>
+            <div class="itemizedlist">
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>If you enable target optimizer on the target group, we recommend you set the 
+                        health check port of the target group to be the same as the port in TARGET_CONTROL_DATA_ADDRESS. 
+                        This ensures that the target will fail health checks if the agent is unhealthy. 
+                        For more information, see <a href="./target-group-register-targets.html#register-targets-target-optimizer">Target Optimizer</a>.</p>
+                </li><li class="listitem">
+                    <p>You can't use this feature with target groups where the target is a
+                        Lambda function. If the Application Load Balancer is the target of a Network Load Balancer or Global Accelerator, do not
+                        configure a threshold for DNS failover.</p>
+                </li><li class="listitem">
+                    <p>If you specify both types of thresholds for an action
+                        (count and percentage), the load balancer takes the action when 
+                        either threshold is breached.</p>
+                </li><li class="listitem">
+                    <p>If you specify thresholds for both actions, the threshold for 
+                        DNS failover must be greater than or equal to the threshold for 
+                        routing failover, so that DNS failover occurs either with or 
+                        before routing failover.</p>
+                </li><li class="listitem">
+                    <p>If you specify the threshold as a percentage, we calculate the value
+                        dynamically, based on the total number of targets that are registered with
+                        the target groups.</p>
+                </li><li class="listitem">
+                    <p>The total number of targets is based on whether cross-zone load 
+                        balancing is off or on. If cross-zone load balancing is off, each 
+                        node sends traffic only to the targets in its own zone, which means
+                        that the thresholds apply to the number of targets in each enabled 
+                        zone separately. If cross-zone load balancing is on, each node 
+                        sends traffic to all targets in all enabled zones, which means
+                        that the specified thresholds apply to the total number targets in 
+                        all enabled zones. For more information, see <a href="./edit-target-group-attributes.html#modify-cross-zone">Cross-zone load balancing</a>.</p>
+                </li><li class="listitem">
+                    <p>When DNS failover occurs, it impacts all target groups 
+                        associated with the load balancer. Ensure that you have enough
+                        capacity in your remaining zones to handle this additional 
+                        traffic, especially if cross-zone load balancing is off.</p>
+                </li><li class="listitem">
+                    <p>With DNS failover, we remove the IP addresses of the unhealthy zones from
+                        the DNS hostname for the load balancer. However, the local client DNS cache
+                        might contain these IP addresses until the time-to-live (TTL) in the DNS
+                        record expires (60 seconds).</p>
+                </li><li class="listitem">
+                    <p>With DNS failover, if there are multiple target groups attached to an
+                        Application Load Balancer and one target group  is unhealthy in a zone, DNS health checks
+                        succeed if at least one other target group is healthy in that zone.</p>
+                </li><li class="listitem">
+                    <p>With DNS failover, if all load balancer zones are considered
+                        unhealthy, the load balancer sends traffic to all zones, including
+                        the unhealthy zones.</p>
+                </li><li class="listitem">
+                    <p>There are factors other than whether there are enough healthy targets that
+                        might lead to DNS failover, such as the health of the zone.</p>
+                </li></ul></div>
+         
+        
+         
+            <h3 id="target-group-health-monitoring">Monitoring</h3>
+            <p>To monitor the health of your target groups, see <a href="./load-balancer-cloudwatch-metrics.html#target-group-health-metric-table">CloudWatch metrics for target group health</a>.</p>
+         
+        
+         
+            <h3 id="target-group-health-examples">Example</h3>
+            
+            <p>The following example demonstrates how target group health settings are applied.</p>
+            
+            <div class="itemizedlist">
+                <h6 class="awsdocs-block-title">Scenario</h6>
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>A load balancer that supports two Availability Zones, A and B</p>
+                </li><li class="listitem">
+                    <p>Each Availability Zone contains 10 registered targets</p>
+                </li><li class="listitem">
+                    <p>The target group has the following target group health settings:</p>
+                    <div class="itemizedlist">
+                         
+                         
+                    <ul class="itemizedlist"><li class="listitem"><p>DNS failover - 50%</p></li><li class="listitem"><p>Routing failover - 50%</p></li></ul></div>
+                </li><li class="listitem">
+                    <p>Six targets fail in Availability Zone B</p>
+                </li></ul></div>
+
+            <div class="mediaobject">
+                 
+                    <img src="/images/elasticloadbalancing/latest/application/images/tg-health-example.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="A load balancer enabled for two zones. AZ A has 10 healthy targets and AZ B has 4 healthy targets and 6 unhealthy targets." />
+                 
+                 
+            </div>
+            
+            <div class="itemizedlist">
+                <h6 class="awsdocs-block-title">If cross-zone load balancing is off</h6>
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>The load balancer node in each Availability Zone can send traffic only 
+                        to the 10 targets in its Availability Zone.</p>
+                </li><li class="listitem">
+                    <p>There are 10 healthy targets in Availability Zone A, which meets the
+                        required percentage of healthy targets. The load balancer continues to
+                        distribute traffic between the 10 healthy targets.</p>
+                </li><li class="listitem">
+                    <p>There are only 4 healthy targets in Availability Zone B, which is 40% of
+                        the targets for the load balancer node in Availability Zone B. Because this
+                        is less than the required percentage of healthy targets, the load balancer
+                        takes the following actions:</p>
+                    <div class="itemizedlist">
+                         
+                         
+                    <ul class="itemizedlist"><li class="listitem">
+                            <p>DNS failover - Availability Zone B is marked as unhealthy in DNS.
+                                Because clients can't resolve the load balancer name to the load 
+                                balancer node in Availability Zone B, and Availability Zone A
+                                is healthy, clients send new connections to Availability Zone A.</p>
+                        </li><li class="listitem">
+                            <p>Routing failover - When new connections are sent explicitly to Availability 
+                                Zone B, the load balancer distributes traffic to all targets in Availability
+                                Zone B, including the unhealthy targets. This prevents outages among the
+                                remaining healthy targets.</p>
+                        </li></ul></div>
+                </li></ul></div>
+            
+            <div class="itemizedlist">
+                <h6 class="awsdocs-block-title">If cross-zone load balancing is on</h6>
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>Each load balancer node can send traffic to all 20 registered targets across
+                        both Availability Zones.</p>
+                </li><li class="listitem">
+                    <p>There are 10 healthy targets in Availability Zone A and 4 healthy targets
+                        in Availability Zone B, for a total of 14 healthy targets. This is 70% of
+                        the targets for the load balancer nodes in both Availability Zones, which
+                        meets the required percentage of healthy targets.</p>
+                </li><li class="listitem">
+                    <p>The load balancer distributes traffic between the 14 healthy targets in
+                        both Availability Zones.</p>
+                </li></ul></div>
+         
+        
+         
+            <h3 id="r53-dns-failover">Using Route 53 DNS failover for your load balancer</h3>
+            
+            <p>If you use Route 53 to route DNS queries to your load balancer, you can also
+                configure DNS failover for your load balancer using Route 53. In a failover
+                configuration, Route 53 checks the health of the target group targets for the load
+                balancer to determine whether they are available. If there are no healthy targets 
+                registered with the load balancer, or if the load balancer itself is unhealthy, 
+                Route 53 routes traffic to another available resource, such as a healthy load balancer 
+                or a static website in Amazon S3.</p>
+            
+            <p>For example, suppose that you have a web application for
+                <code class="code">www.example.com</code>, and you want redundant instances running behind
+                two load balancers residing in different Regions. You want the traffic to be
+                primarily routed to the load balancer in one Region, and you want to use the load
+                balancer in the other Region as a backup during failures. If you configure DNS
+                failover, you can specify your primary and secondary (backup) load balancers. Route 53
+                directs traffic to the primary load balancer if it is available, or to the secondary
+                load balancer otherwise.</p>
+            
+            <div class="itemizedlist">
+                <h6 class="awsdocs-block-title">How evaluate target health works</h6>
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>If evaluate target health is set to <code class="code">Yes</code> on an alias record
+                        for an Application Load Balancer, Route 53 evaluates the health of the resource specified by the
+                            <code class="code">alias target</code> value. Route 53 uses the target group health 
+                        checks.</p>
+                </li><li class="listitem">
+                    <p>If all target groups attached to an Application Load Balancer are healthy, Route 53 marks the
+                        alias record as healthy. If you configured a threshold for a target group
+                        and it meets its threshold, it passes health checks. Otherwise, if a target
+                        group contains at least one healthy target, it passes health checks. If
+                        health checks pass, Route 53 returns records according to your routing policy.
+                        If a failover routing policy is used, Route 53 returns the primary
+                        record.</p>
+                </li><li class="listitem">
+                    <p>If any of the target groups attached to an Application Load Balancer are unhealthy, the alias
+                        record fails the Route 53 health check (fail-open). If using evaluate target
+                        health, the failover routing policy redirects traffic to the secondary
+                        resource.</p>
+                </li><li class="listitem">
+                    <p>If all target groups attached to an Application Load Balancer are empty (no targets), Route 53
+                        considers the record unhealthy (fail-open). If using evaluate target health,
+                        the failover routing policy redirects traffic to the secondary
+                        resource.</p>
+                </li></ul></div>
+            
+            <p>For more information, see <a href="https://aws.amazon.com/blogs/networking-and-content-delivery/using-load-balancer-target-group-health-thresholds-to-improve-availability/" rel="noopener noreferrer" target="_blank"><span>Using load balancer target group health thresholds to improve availability</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> in the AWS Blog 
+                and <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-failover-configuring.html">Configuring DNS failover</a> in the
+                <em>Amazon Route 53 Developer Guide</em>.</p>
+         
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./delete-listener.html">Delete a listener</div><div id="next" class="next-link" accesskey="n" href="./create-target-group.html">Create a target group</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ELB&amp;topic_url=https://docs.aws.amazon.com/en_us/elasticloadbalancing/latest/application/load-balancer-target-groups.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=ELB&amp;topic_url=https://docs.aws.amazon.com/en_us/elasticloadbalancing/latest/application/load-balancer-target-groups.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

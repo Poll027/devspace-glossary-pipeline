@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Redeploy and roll back a deployment with CodeDeploy - AWS CodeDeploy</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="deployments-rollback-and-redeploy" /><meta name="default_state" content="deployments-rollback-and-redeploy" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/codedeploy/latest/userguide/deployments-rollback-and-redeploy.md" title="Markdown version" /><meta name="description" content="Learn how to redeploy a revision you previously deployed with CodeDeploy." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS CodeDeploy" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Automate code deployments to any instance using CodeDeploy, including Amazon EC2 instances and instances running on-premises, with this User Guide." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" hreflang="x-default" /><meta name="feedback-item" content="CodeDeploy" /><meta name="this_doc_product" content="AWS CodeDeploy" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'codedeploy'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Redeploy and roll back a deployment with CodeDeploy" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="deployments-rollback-and-redeploy.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Redeploy and roll back a deployment with CodeDeploy - AWS CodeDeploy</title><meta name="pdf" content="/pdfs/codedeploy/latest/userguide/codedeploy-user.pdf#deployments-rollback-and-redeploy" /><meta name="rss" content="aws-codedeploy-user-guide-updates.rss" /><meta name="forums" content="https://repost.aws/tags/TAP_gx1EAgRJuXWqSRorbHIw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CodeDeploy&amp;topic_url=https://docs.aws.amazon.com/en_us/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html" /><meta name="keywords" content="CodeDeploy User Guide,deployment,application,AWS,Developer Tools,Developer Tools Console,Developer Tools Services,Developer Tools AWS,AWS CodeDeploy,CI/CD,continuous integration,continuous delivery,DevOps" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS CodeDeploy",
+        "item" : "https://docs.aws.amazon.com/codedeploy/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/codedeploy/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Working with deployments in CodeDeploy",
+        "item" : "https://docs.aws.amazon.com/codedeploy/latest/userguide/deployments.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Redeploy and roll back a deployment with CodeDeploy",
+        "item" : "https://docs.aws.amazon.com/codedeploy/latest/userguide/deployments.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/codedeploy/latest/userguide/codedeploy-user.pdf#deployments-rollback-and-redeploy" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/codedeploy/index.html">AWS CodeDeploy</a><a href="welcome.html">User Guide</a></div><div id="page-toc-src"><a href="#deployments-rollback-and-redeploy-automatic-rollbacks">Automatic rollbacks</a><a href="#deployments-rollback-and-redeploy-manual-rollbacks">Manual rollbacks</a><a href="#deployments-rollback-and-redeploy-workflow">Rollback and redeployment workflow</a><a href="#deployments-rollback-and-redeploy-content-options">Rollback behavior with existing content</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="deployments-rollback-and-redeploy">Redeploy and roll back a deployment with CodeDeploy</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>CodeDeploy rolls back deployments by redeploying a previously deployed revision of an application
+    as a new deployment. These rolled-back deployments are technically new deployments, with new
+    deployment IDs, rather than restored versions of a previous deployment.</p><p>Deployments can be rolled back automatically or manually.</p><div class="highlights" id="inline-topiclist"><h2 class="awsdocs-topiclist-title">Topics</h2><ul><li><p><a href="#deployments-rollback-and-redeploy-automatic-rollbacks">Automatic rollbacks</a></p></li><li><p><a href="#deployments-rollback-and-redeploy-manual-rollbacks">Manual rollbacks</a></p></li><li><p><a href="#deployments-rollback-and-redeploy-workflow">Rollback and redeployment workflow</a></p></li><li><p><a href="#deployments-rollback-and-redeploy-content-options">Rollback behavior with existing content</a></p></li></ul></div>
+    <h2 id="deployments-rollback-and-redeploy-automatic-rollbacks">Automatic rollbacks</h2>
+
+    <p>You can configure a deployment group or deployment to automatically roll back when a
+      deployment fails or when a monitoring threshold you specify is met. In this case, the last
+      known good version of an application revision is deployed. You configure automatic rollbacks
+      when you create an application or create or update a deployment group.</p>
+    <p>When you create a new deployment, you can also choose to override the automatic rollback
+      configuration that were specified for the deployment group.</p>
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>You can use Amazon Simple Notification Service to receive a notification whenever a deployment is rolled back
+        automatically. For information, see <a href="./monitoring-sns-event-notifications.html">Monitoring Deployments with Amazon SNS Event Notifications</a>.</p></div></div>
+    <p>For more information about configuring automatic rollbacks, see <a href="./deployment-groups-configure-advanced-options.html">Configure advanced options for a deployment group</a>. </p>
+   
+    <h2 id="deployments-rollback-and-redeploy-manual-rollbacks">Manual rollbacks</h2>
+
+    <p>If you have not set up automatic rollbacks, you can manually roll back a deployment by
+      creating a new deployment that uses any previously deployed application revision and following
+      the steps to redeploy a revision. You might do this if an application has gotten into an
+      unknown state. Rather than spending a lot of time troubleshooting, you can redeploy the
+      application to a known working state. For more information, see <a href="./deployments-create.html">Create a deployment with CodeDeploy</a>. </p>
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>If you remove an instance from a deployment group, CodeDeploy does not uninstall anything
+        that might have already been installed on that instance.</p></div></div>
+   
+    <h2 id="deployments-rollback-and-redeploy-workflow">Rollback and redeployment workflow</h2>
+
+    <p>When automatic rollback is initiated, or when you manually initiate a redeployment or
+      manual rollback, CodeDeploy first tries to remove from each participating instance all files that
+      were last successfully installed. CodeDeploy does this by checking the cleanup file:</p>
+    <p>
+      <code>/opt/codedeploy-agent/deployment-root/deployment-instructions/<code class="replaceable">deployment-group-ID</code>-cleanup</code>
+      file (for Amazon Linux, Ubuntu Server, and RHEL instances) </p>
+    <p><code>C:\ProgramData\Amazon\CodeDeploy\deployment-instructions\<code class="replaceable">deployment-group-ID</code>-cleanup</code>
+      file (for Windows Server instances) </p>
+    <p>If it exists, CodeDeploy uses the cleanup file to remove from the instance all listed files
+      before starting the new deployment. </p>
+    <p>For example, the first two text files and two script files were already deployed to an
+      Amazon EC2 instance running Windows Server, and the scripts created two more text files during deployment
+      lifecycle events:</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (none)--><code class="nohighlight">c:\temp\a.txt (previously deployed by CodeDeploy)
+c:\temp\b.txt (previously deployed by CodeDeploy)
+c:\temp\c.bat (previously deployed by CodeDeploy)
+c:\temp\d.bat (previously deployed by CodeDeploy)
+c:\temp\e.txt (previously created by c.bat)
+c:\temp\f.txt (previously created by d.bat)</code></pre>
+    <p>The cleanup file will list only the first two text files and two script files:</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (none)--><code class="nohighlight">c:\temp\a.txt
+c:\temp\b.txt 
+c:\temp\c.bat 
+c:\temp\d.bat </code></pre>
+    <p>Before the new deployment, CodeDeploy will remove only the first two text files and the two
+      script files, leaving the last two text files untouched:</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (none)--><code class="nohighlight">c:\temp\a.txt will be removed
+c:\temp\b.txt will be removed
+c:\temp\c.bat will be removed
+c:\temp\d.bat will be removed
+c:\temp\e.txt will remain
+c:\temp\f.txt will remain</code></pre>
+    <p>As part of this process, CodeDeploy will not try to revert or otherwise reconcile any actions
+      taken by any scripts in previous deployments during subsequent redeployments, whether manual
+      or automatic rollbacks. For example, if the <code>c.bat</code> and
+        <code>d.bat</code> files contain logic to not re-create the
+        <code>e.txt</code> and <code>f.txt</code> files if they already exist, then
+      the old versions of <code>e.txt</code> and <code>f.txt</code> will remain
+      untouched whenever CodeDeploy runs <code>c.bat</code> and <code>d.bat</code> in
+      subsequent deployments. You can add logic to <code>c.bat</code> and
+        <code>d.bat</code> to always check for and delete old versions of
+        <code>e.txt</code> and <code>f.txt</code> before creating new ones. </p>
+   
+    <h2 id="deployments-rollback-and-redeploy-content-options">Rollback behavior with existing content</h2>
+
+    <p>As part of the deployment process, the CodeDeploy agent removes from each instance all the
+      files that the most recent deployment installed. If files that weren't part of a previous
+      deployment appear in target deployment locations, you can choose what CodeDeploy does with them
+      during the next deployment:</p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p><b>Fail the deployment</b> — An error is reported and the
+          deployment status is changed to Failed.</p>
+      </li><li class="listitem">
+        <p><b>Overwrite the content</b> — The version of the file from the
+          application revision replaces the version already on the instance.</p>
+      </li><li class="listitem">
+        <p><b>Retain the content</b> — The file in the target location is
+          kept and the version in the application revision is not copied to the instance. </p>
+      </li></ul></div>
+    <p>You can choose this behavior when you create a deployment. If creating a deployment in the
+      console, see <a href="./deployments-create-console.html">Create an EC2/On-Premises Compute Platform deployment (console)</a>. If creating a deployment with the AWS CLI, see
+        <a href="./deployments-create-cli.html">Create an EC2/On-Premises Compute Platform deployment (CLI)</a>.</p>
+    <p>You might choose to retain files that you want to be part of the next deployment without
+      having to add them to the application revision package. For example, you might upload files
+      directly to the instance that are required for the deployment but weren't added to the
+      application revision bundle. Or you might upload files to the instance if your applications
+      are already in your production environment but you want to use CodeDeploy for the first time to
+      deploy them.</p>
+    <p>In the case of rollbacks, where the most recent successfully deployed application revision
+      is redeployed due to a deployment failure, the content-handling option for that last
+      successful deployment is applied to the rollback deployment. </p>
+    <p>However, if the deployment that failed was configured to overwrite, instead of retain
+      files, an unexpected result can occur during the rollback. Specifically, the files you
+      expected to be retained might be removed by the failed deployment. The files are not on the
+      instance when the rollback deployment runs.</p>
+    <p>In the following example, there are three deployments. Any file that is overwritten
+      (deleted) during the failed second deployment is no longer available (cannot be retained) when
+      application revision 1 is deployed again during deployment 3:</p>
+    <div class="table-container"><div class="table-contents"><table id="d0e1"><thead>
+          <tr>
+            <th>
+              <p>Deployment</p>
+            </th>
+            <th>
+              <p>Application revision</p>
+            </th>
+            <th>
+              <p>Content overwrite option</p>
+            </th>
+            <th>
+              <p>Deployment status</p>
+            </th>
+            <th>
+              <p>Behavior and result</p>
+            </th>
+          </tr>
+        </thead>
+          <tr>
+            <td tabindex="-1">
+              <p>deployment 1</p>
+            </td>
+            <td tabindex="-1">
+              <p>application revision 1</p>
+            </td>
+            <td tabindex="-1">
+              <p>RETAIN</p>
+            </td>
+            <td tabindex="-1">
+              <p>Succeeded</p>
+            </td>
+            <td tabindex="-1">
+              <p>CodeDeploy detects files in the target locations that were not deployed by the
+                previous deployment. These files might be placed there intentionally to become part
+                of the current deployment. They are kept and recorded as part of the current
+                deployment package.</p>
+            </td>
+          </tr>
+          <tr>
+            <td tabindex="-1">
+              <p>deployment 2</p>
+            </td>
+            <td tabindex="-1">
+              <p>application revision 2</p>
+            </td>
+            <td tabindex="-1">
+              <p>OVERWRITE</p>
+            </td>
+            <td tabindex="-1">
+              <p>Failed</p>
+            </td>
+            <td tabindex="-1">
+              <p>During the deployment process, CodeDeploy deletes all the files that are part of the
+                previous successful deployment. This includes the files that were retained during
+                deployment 1.</p>
+              <p>However, the deployment fails for unrelated reasons. </p>
+            </td>
+          </tr>
+          <tr>
+            <td tabindex="-1">
+              <p>deployment 3</p>
+            </td>
+            <td tabindex="-1">
+              <p>application revision 1</p>
+            </td>
+            <td tabindex="-1">
+              <p>RETAIN</p>
+            </td>
+            <td tabindex="-1">
+              <p></p>
+            </td>
+            <td tabindex="-1">Because auto rollback is enabled for the deployment or deployment group, CodeDeploy
+              deploys the last known good application revision, application revision
+                1.<p>However, the files that you wanted to retain in deployment 1 were deleted
+                before deployment 2 failed and cannot be retrieved by AWS CodeDeploy. You can add them to
+                the instance yourself if they are required for application revision 1, or you can
+                create a new application revision.</p></td>
+          </tr>
+        </table></div></div>
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./deployments-stop.html">Stop a deployment</div><div id="next" class="next-link" accesskey="n" href="./deployments-cross-account.html">Deploy an application in a different AWS account</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CodeDeploy&amp;topic_url=https://docs.aws.amazon.com/en_us/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CodeDeploy&amp;topic_url=https://docs.aws.amazon.com/en_us/codedeploy/latest/userguide/deployments-rollback-and-redeploy.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

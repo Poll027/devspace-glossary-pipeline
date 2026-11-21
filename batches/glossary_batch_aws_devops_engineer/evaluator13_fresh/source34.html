@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Alarm evaluation - Amazon CloudWatch</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="alarm-evaluation" /><meta name="default_state" content="alarm-evaluation" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-evaluation.md" title="Markdown version" /><meta name="description" content="Understand how CloudWatch evaluates alarms including states, conditions, thresholds, and evaluation windows." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon CloudWatch" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Monitor your AWS services, collect and track metrics from AWS services and your own applications, and set alarms based on data from those metrics." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" hreflang="x-default" /><meta name="feedback-item" content="CloudWatch" /><meta name="this_doc_product" content="Amazon CloudWatch" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'cloudwatch'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Alarm evaluation" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="alarm-evaluation.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Alarm evaluation - Amazon CloudWatch</title><meta name="pdf" content="/pdfs/AmazonCloudWatch/latest/monitoring/acw-ug.pdf#alarm-evaluation" /><meta name="rss" content="amazon-cloudwatch-document-history.rss" /><meta name="forums" content="https://repost.aws/tags/TArz36ydKETWeIc1aO7QuRFw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon CloudWatch",
+        "item" : "https://docs.aws.amazon.com/cloudwatch/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Using Amazon CloudWatch alarms",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Alarms.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Concepts",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-concepts.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Alarm evaluation",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-concepts.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonCloudWatch/latest/monitoring/acw-ug.pdf#alarm-evaluation" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/cloudwatch/index.html">Amazon CloudWatch</a><a href="WhatIsCloudWatch.html">User Guide</a></div><div id="page-toc-src"><a href="#alarm-states">Metric alarm states</a><a href="#alarm-evaluation-state">Alarm evaluation state</a><a href="#alarm-evaluation-settings">Alarm evaluation settings</a><a href="#high-resolution-alarms">High-resolution alarms</a><a href="#evaluate-multiday-alarm">Example of evaluating a multi-day alarm</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="alarm-evaluation">Alarm evaluation</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div>
+    <h2 id="alarm-states">Metric alarm states</h2>
+    <p>A metric alarm has the following possible states:</p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p><code class="code">OK</code> – The metric or expression is within the defined threshold.</p>
+      </li><li class="listitem">
+        <p><code class="code">ALARM</code> – The metric or expression is outside of the defined threshold.</p>
+      </li><li class="listitem">
+        <p><code class="code">INSUFFICIENT_DATA</code> – The alarm has just started, the metric is not available, or not enough data is available for the metric to determine the alarm state.</p>
+      </li></ul></div>
+   
+    <h2 id="alarm-evaluation-state">Alarm evaluation state</h2>
+    <p>In addition to the alarm state, each alarm has an evaluation state that provides information about the alarm evaluation process. The following states may occur:</p>
+    <div class="itemizedlist">
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p><code class="code">PARTIAL_DATA</code> – Indicates that not all the available data was able to be retrieved due to quota limitations. For more information, see <a href="./cloudwatch-metrics-insights-alarms-partial-data.html">How partial data is handled</a>.</p>
+      </li><li class="listitem">
+        <p><code class="code">IN_WARM_UP</code> – Indicates that the alarm is in its warm-up
+          period and does not yet evaluate. The alarm remains in <code class="code">INSUFFICIENT_DATA</code>
+          and does not perform alarm actions until the warm-up period ends. For more information,
+          see <a href="./alarm-warm-up.html">Alarm warm-up periods</a>.</p>
+      </li><li class="listitem">
+        <p><code class="code">EVALUATION_ERROR</code> – Indicates configuration errors in alarm setup that require review and correction. Refer to StateReason field of the alarm for more details.</p>
+      </li><li class="listitem">
+        <p><code class="code">EVALUATION_FAILURE</code> – Indicates temporary CloudWatch issues. We recommend manual monitoring until the issue is resolved</p>
+      </li></ul></div>
+    <p>You can view the evaluation state in the alarm details in the console, or by using the <code class="code">describe-alarms</code> CLI command or <code class="code">DescribeAlarms</code> API.</p>
+  <h2 id="alarm-evaluation-settings">Alarm evaluation settings</h2>
+    
+    <p>When you create an alarm, you specify 3 settings to enable CloudWatch to evaluate when to change the alarm state:</p>
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p><b>Period</b> is the length of time to use to evaluate the metric or expression to create each individual data point for an alarm. It is expressed in seconds.</p>
+      </li><li class="listitem">
+        <p><b>Evaluation Periods</b> is the number of the most recent periods, or data points, to evaluate when determining alarm state.</p>
+      </li><li class="listitem">
+        <p><b>Datapoints to Alarm</b> is the number of data points within the Evaluation Periods that must be breaching to cause the alarm to go to the <code class="code">ALARM</code> state. The breaching data points don't have to be consecutive, but they must all be within the last number of data points equal to <b>Evaluation Period</b>.</p>
+      </li></ul></div>
+
+    <p>For any period of one minute or longer, an alarm is evaluated every minute and the evaluation is based on the window of time defined by the <b>Period</b> and <b>Evaluation Periods</b>. For example, if the <b>Period</b> is 5 minutes (300 seconds) and <b>Evaluation Periods</b> is 1, then at the end of minute 5 the alarm evaluates based on data from minutes 1 to 5. Then at the end of minute 6, the alarm is evaluated based on the data from minutes 2 to 6.</p>
+
+      <p>If the alarm period is 10 seconds, 20 seconds, or 30 seconds, the alarm is evaluated every
+          10 seconds. For more information, see <a href="#high-resolution-alarms">High-resolution alarms</a>.</p>
+      <p>If the number of evaluation periods multiplied by the length of each evaluation period
+          exceeds one day, the alarm is evaluated once per hour. For more details about how these
+          multi-day alarms are evaluated, see <a href="#evaluate-multiday-alarm">Example of evaluating a multi-day alarm</a>.</p>
+
+
+
+      <p>In the following figure, the alarm threshold for a metric alarm is set to 3 units.
+          Both <b>Evaluation Period</b> and <b>Datapoints to Alarm</b> are
+          3. That is, when all existing data points in the most recent 3 consecutive periods are
+          above the threshold, the alarm goes to <code class="code">ALARM</code> state. In the figure, this happens
+          in the third through fifth time periods. At period six, the value dips below the threshold, so
+          one of the periods being evaluated is not breaching, and the alarm state changes back to
+          <code class="code">OK</code>. During the ninth time period, the threshold is breached again, but for only
+          1 period. Consequently, the alarm state remains <code class="code">OK</code>.</p>
+
+      <div class="mediaobject">
+           
+              <img src="/images/AmazonCloudWatch/latest/monitoring/images/alarm_graph.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="Alarm threshold trigger alarm." />
+           
+           
+      </div>
+
+
+      <p>When you configure <b>Evaluation Periods</b> and <b>Datapoints to Alarm</b> as different values, you're setting an "M out of N" alarm. <b>Datapoints to Alarm</b> is ("M") and <b>Evaluation Periods</b> is ("N").The evaluation interval is the number of evaluation periods
+        multiplied by the period length. For example, if you configure 4 out of 5 data points with a
+        period of 1 minute, the evaluation interval is 5 minutes. If you configure 3 out of 3 data
+        points with a period of 10 minutes, the evaluation interval is 30 minutes.</p>
+
+      <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>If data points are missing soon after you create an alarm, and the metric was being
+              reported to CloudWatch before you created the alarm, CloudWatch retrieves the most recent data points
+              from before the alarm was created when evaluating the alarm.</p></div></div>
+
+      <p>By default, CloudWatch uses a <em>sliding window</em> for alarm
+        evaluation. Each time the alarm is evaluated, the window advances by one minute,
+        and the boundaries of the window are not aligned to the wall clock. You can
+        instead align the evaluation window to wall clock boundaries and time zones. For
+        more information, see <a href="./alarm-evaluation-window.html">Alarm evaluation window</a>.</p>
+
+   
+    <h2 id="high-resolution-alarms">High-resolution alarms</h2>
+
+    <p>If you set an alarm on a high-resolution metric, you can specify a high-resolution alarm
+      with a period of 10 seconds, 20 seconds, or 30 seconds. There is a higher charge for high-resolution alarms. For
+      more information about high-resolution metrics, see <a href="./publishingMetrics.html">Publish custom metrics (PutMetricData / EMF)</a>.</p>
+   
+        <h2 id="evaluate-multiday-alarm">Example of evaluating a multi-day alarm</h2>
+
+        <p>An alarm is a multi-day alarm if the number of evaluation periods multiplied by the
+            length of each evaluation period exceeds one day. Multi-day alarms are evaluated once per
+            hour. When multi-day alarms are evaluated, CloudWatch takes into account only the metrics up to
+            the current hour at the :00 minute when evaluating. This top-of-the-hour behavior, and
+            the following example, apply to alarms that use a sliding evaluation window, which is the
+            default.</p>
+
+        <p>For example, consider an alarm that monitors a job that runs every 3 days at
+            10:00.</p>
+        <div class="orderedlist">
+             
+             
+             
+             
+             
+        <ol><li>
+                <p>At 10:02, the job fails</p>
+            </li><li>
+                <p>At 10:03, the alarm evaluates and stays in <code class="code">OK</code> state, because the
+                    evaluation considers data only up to 10:00.</p>
+            </li><li>
+                <p>At 11:03, the alarm considers data up to 11:00 and goes into <code class="code">ALARM</code>
+                    state.</p>
+            </li><li>
+                <p>At 11:43, you correct the error and the job now runs successfully.</p>
+            </li><li>
+                <p>At 12:03, the alarm evaluates again, sees the successful job, and returns to
+                    <code class="code">OK</code> state.</p>
+            </li></ol></div>
+
+        <p>If the alarm instead uses a wall clock evaluation window, CloudWatch aligns the
+            evaluation window to the wall clock boundary that matches the period in the alarm's
+            selected time zone, rather than clamping to the top of each hour. For example, a
+            multi-day alarm with a one-day period evaluates complete calendar days that end at
+            midnight in the selected time zone, and an alarm with a one-week period evaluates
+            complete calendar weeks. The window advances by one full period when each boundary is
+            reached, so the alarm considers a newly completed calendar period only after that period
+            ends. For more information, see <a href="./alarm-evaluation-window.html">Alarm evaluation window</a>.</p>
+
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./alarm-data-queries.html">Alarm data queries</div><div id="next" class="next-link" accesskey="n" href="./alarm-evaluation-window.html">Alarm evaluation window</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/alarm-evaluation.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

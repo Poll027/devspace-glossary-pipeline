@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Publish custom metrics (PutMetricData / EMF) - Amazon CloudWatch</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="publishingMetrics" /><meta name="default_state" content="publishingMetrics" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.md" title="Markdown version" /><meta name="description" content="Walks through how to publish your own custom metrics in CloudWatch." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon CloudWatch" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Monitor your AWS services, collect and track metrics from AWS services and your own applications, and set alarms based on data from those metrics." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" hreflang="x-default" /><meta name="feedback-item" content="CloudWatch" /><meta name="this_doc_product" content="Amazon CloudWatch" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'cloudwatch'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Publish custom metrics (PutMetricData / EMF)" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="publishingMetrics.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Publish custom metrics (PutMetricData / EMF) - Amazon CloudWatch</title><meta name="pdf" content="/pdfs/AmazonCloudWatch/latest/monitoring/acw-ug.pdf#publishingMetrics" /><meta name="rss" content="amazon-cloudwatch-document-history.rss" /><meta name="forums" content="https://repost.aws/tags/TArz36ydKETWeIc1aO7QuRFw" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/publishingMetrics.html" /><meta name="keywords" content="metrics,OpenTelemetry,PromQL,CloudWatch Metrics Insights,monitor,CloudWatch,PutMetricData,Metrics Insights,classic" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon CloudWatch",
+        "item" : "https://docs.aws.amazon.com/cloudwatch/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Metrics in Amazon CloudWatch",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "CloudWatch Metrics (Classic)",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/metrics-classic.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Publish custom metrics (PutMetricData / EMF)",
+        "item" : "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/metrics-classic.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/AmazonCloudWatch/latest/monitoring/acw-ug.pdf#publishingMetrics" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/cloudwatch/index.html">Amazon CloudWatch</a><a href="WhatIsCloudWatch.html">User Guide</a></div><div id="page-toc-src"><a href="#high-resolution-metrics">High-resolution metrics</a><a href="#usingDimensions">Use dimensions</a><a href="#publishingDataPoints">Publish single data points</a><a href="#publishingDataPoints1">Publish statistic sets</a><a href="#publishingZero">Publish the value zero</a><a href="#CloudWatch-Stop-Publishing-Metrics">Stop publishing metrics</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="publishingMetrics">Publish custom metrics (PutMetricData / EMF)</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>You can publish your own custom metrics to CloudWatch using the
+    <code class="code">PutMetricData</code> API or the AWS CLI. This approach uses CloudWatch namespaces, metric
+    names, and dimensions.</p><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>For new implementations, we recommend using OpenTelemetry to publish custom metrics.
+      For more information, see <a href="./metrics-otel-send.html">Publish custom metrics with OpenTelemetry</a>.</p></div></div><div class="highlights" id="inline-topiclist"><h2 class="awsdocs-topiclist-title">Topics</h2><ul><li><p><a href="#high-resolution-metrics">High-resolution metrics</a></p></li><li><p><a href="#usingDimensions">Use dimensions</a></p></li><li><p><a href="#publishingDataPoints">Publish single data points</a></p></li><li><p><a href="#publishingDataPoints1">Publish statistic sets</a></p></li><li><p><a href="#publishingZero">Publish the value zero</a></p></li><li><p><a href="#CloudWatch-Stop-Publishing-Metrics">Stop publishing metrics</a></p></li></ul></div>
+    <h2 id="high-resolution-metrics">High-resolution metrics</h2>
+
+    <p>Each metric is one of the following:</p>
+    <div class="itemizedlist">
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>Standard resolution, with data having a one-minute granularity</p>
+      </li><li class="listitem">
+        <p>High resolution, with data at a granularity of one second</p>
+      </li></ul></div>
+    <p>Metrics produced by AWS services are standard resolution by default. When you publish
+      a custom metric, you can define it as either standard resolution or high resolution. When
+      you publish a high-resolution metric, CloudWatch stores it with a resolution of 1 second, and you
+      can read and retrieve it with a period of 1 second, 5 seconds, 10 seconds, 30 seconds, or
+      any multiple of 60 seconds.</p>
+    <p>High-resolution metrics can give you more immediate insight into your application's
+      sub-minute activity. Keep in mind that every <code class="code">PutMetricData</code> call for a custom
+      metric is charged, so calling <code class="code">PutMetricData</code> more often on a high-resolution
+      metric can lead to higher charges. For more information about CloudWatch pricing, see <a href="https://aws.amazon.com/cloudwatch/pricing/" rel="noopener noreferrer" target="_blank"><span>Amazon CloudWatch Pricing</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+    <p>If you set an alarm on a high-resolution metric, you can specify a high-resolution alarm
+      with a period of 10 seconds or 30 seconds, or you can set a regular alarm with a period of
+      any multiple of 60 seconds. There is a higher charge for high-resolution alarms with a
+      period of 10 or 30 seconds.</p>
+
+   
+    <h2 id="usingDimensions">Use dimensions</h2>
+
+
+    <p>In custom metrics, the <code class="code">--dimensions</code> parameter is common. A dimension
+      further clarifies what the metric is and what data it stores. You can have up to 30
+      dimensions assigned to one metric, and each dimension is defined by a name and value
+      pair.</p>
+    <p>How you specify a dimension is different when you use different commands. With <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/put-metric-data.html">put-metric-data</a>, you specify
+      each dimension as <code class="replaceable">MyName</code>=<code class="replaceable">MyValue</code>, and
+      with <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/get-metric-statistics.html">get-metric-statistics</a> or <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/put-metric-alarm.html">put-metric-alarm</a> you use the
+      format <code class="code">Name=</code><code class="replaceable">MyName</code>,
+        <code class="code">Value=</code><code class="replaceable">MyValue</code>. For example, the following command
+      publishes a <code class="code">Buffers</code> metric with 2 dimensions named <code class="code">InstanceId</code>
+      and <code class="code">InstanceType</code>.</p>
+
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="">aws cloudwatch put-metric-data --metric-name Buffers --namespace MyNameSpace --unit Bytes --value 231434333 --dimensions InstanceId=1-23456789,InstanceType=m1.small
+</code></pre>
+
+    <p>This command retrieves statistics for that same metric. Separate the Name and Value
+      parts of a single dimension with commas, but if you have multiple dimensions, use a space
+      between one dimension and the next.</p>
+
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="">aws cloudwatch get-metric-statistics --metric-name Buffers --namespace MyNameSpace --dimensions Name=InstanceId,Value=1-23456789 Name=InstanceType,Value=m1.small --start-time 2016-10-15T04:00:00Z --end-time 2016-10-19T07:00:00Z --statistics Average --period 60
+</code></pre>
+
+    <p>If a single metric includes multiple dimensions, you must specify a value for every
+      defined dimension when you use <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/get-metric-statistics.html">get-metric-statistics</a>.
+      For example, the Amazon S3 metric <code class="code">BucketSizeBytes</code> includes the dimensions
+        <code class="code">BucketName</code> and <code class="code">StorageType</code>, so you must specify both dimensions
+      with <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/get-metric-statistics.html">get-metric-statistics</a>.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight">aws cloudwatch get-metric-statistics --metric-name BucketSizeBytes --start-time 2017-01-23T14:23:00Z --end-time 2017-01-26T19:30:00Z --period 3600 --namespace AWS/S3 --statistics Maximum --dimensions Name=BucketName,Value=<code class="replaceable">amzn-s3-demo-bucket</code> Name=StorageType,Value=StandardStorage --output table</code></pre>
+
+    <p>To see what dimensions are defined for a metric, use the <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/list-metrics.html">list-metrics</a> command.</p>
+   
+    <h2 id="publishingDataPoints">Publish single data points</h2>
+
+
+    <p>To publish a single data point for a new or existing metric, use the <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/put-metric-data.html">put-metric-data</a> command with
+      one value and time stamp. For example, the following actions each publish one data
+      point.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight">aws cloudwatch put-metric-data --metric-name <code class="replaceable">PageViewCount</code> --namespace <code class="replaceable">MyService</code> --value 2 --timestamp <code class="replaceable">2016-10-20T12:00:00.000Z</code>
+aws cloudwatch put-metric-data --metric-name <code class="replaceable">PageViewCount</code> --namespace <code class="replaceable">MyService</code> --value 4 --timestamp <code class="replaceable">2016-10-20T12:00:01.000Z</code>
+aws cloudwatch put-metric-data --metric-name <code class="replaceable">PageViewCount</code> --namespace <code class="replaceable">MyService</code> --value 5 --timestamp <code class="replaceable">2016-10-20T12:00:02.000Z</code></code></pre>
+
+    <p>If you call this command with a new metric name, CloudWatch creates a metric for you.
+      Otherwise, CloudWatch associates your data with the existing metric that you specified.</p>
+    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>When you create a metric, it can take up to 2 minutes before you can retrieve
+        statistics for the new metric using the <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/get-metric-statistics.html">get-metric-statistics</a>
+        command. However, it can take up to 15 minutes before the new metric appears in the list
+        of metrics retrieved using the <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/list-metrics.html">list-metrics</a> command.</p></div></div>
+
+    <p>Although you can publish data points with time stamps as granular as one-thousandth of a
+      second, CloudWatch aggregates the data to a minimum granularity of 1 second. CloudWatch records the
+      average (sum of all items divided by number of items) of the values received for each
+      period, as well as the number of samples, maximum value, and minimum value for the same time
+      period. For example, the <code class="code">PageViewCount</code> metric from the previous examples
+      contains 3 data points with time stamps just seconds apart. If you have your period set
+      to 1 minute, CloudWatch aggregates the 3 data points because they all have time stamps within
+      a 1-minute period. </p>
+    
+    <p>You can use the <b>get-metric-statistics</b> command to retrieve statistics
+      based on the data points that you published.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight">aws cloudwatch get-metric-statistics --namespace <code class="replaceable">MyService</code> --metric-name <code class="replaceable">PageViewCount</code> \
+--statistics "Sum" "Maximum" "Minimum" "Average" "SampleCount" \
+--start-time <code class="replaceable">2016-10-20T12:00:00.000Z</code> --end-time <code class="replaceable">2016-10-20T12:05:00.000Z</code> --period 60</code></pre>
+    <p>The following is example output.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Datapoints": [
+        <span>{</span>
+            "SampleCount": 3.0,
+            "Timestamp": "2016-10-20T12:00:00Z",
+            "Average": 3.6666666666666665,
+            "Maximum": 5.0,
+            "Minimum": 2.0,
+            "Sum": 11.0,
+            "Unit": "None"
+        }
+    ],
+    "Label": "PageViewCount"
+}</code></pre>
+   
+    <h2 id="publishingDataPoints1">Publish statistic sets</h2>
+
+
+    <p>You can aggregate your data before you publish to CloudWatch. When you have multiple data
+      points per minute, aggregating data minimizes the number of calls to
+        <b>put-metric-data</b>. For example, instead of calling
+        <b>put-metric-data</b> multiple times for 3 data points that are within 3
+      seconds of each other, you can aggregate the data into a statistic set that you publish with
+      one call, using the <code class="code">--statistic-values</code> parameter.</p>
+    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight">aws cloudwatch put-metric-data --metric-name PageViewCount --namespace <code class="replaceable">MyService</code> --statistic-values Sum=11,Minimum=2,Maximum=5,SampleCount=3 --timestamp <code class="replaceable">2016-10-14T12:00:00.000Z</code></code></pre>
+    <p>CloudWatch needs raw data points to calculate percentiles. If you publish data using a
+      statistic set instead, you can't retrieve percentile statistics for this data unless one of
+      the following conditions is true:</p>
+    <div class="itemizedlist">
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>The <code class="code">SampleCount</code> of the statistic set is 1</p>
+      </li><li class="listitem">
+        <p>The <code class="code">Minimum</code> and the <code class="code">Maximum</code> of the statistic set are
+          equal</p>
+      </li></ul></div>
+   
+    <h2 id="publishingZero">Publish the value zero</h2>
+
+    
+    <p> When your data is more sporadic and you have periods that have no associated data, you
+      can choose to publish the value zero (<code class="code">0</code>) for that period or no value at all. If
+      you use periodic calls to <code class="code">PutMetricData</code> to monitor the health of your
+      application, you might want to publish zero instead of no value. For example, you can set a
+      CloudWatch alarm to notify you if your application fails to publish metrics every five minutes.
+      You want such an application to publish zeros for periods with no associated data. </p>
+    <p> You might also publish zeros if you want to track the total number of data points or if
+      you want statistics such as minimum and average to include data points with the value 0. </p>
+
+   
+    <h2 id="CloudWatch-Stop-Publishing-Metrics">Stop publishing metrics</h2>
+
+
+    <p>To stop publishing custom metrics to CloudWatch, change your application's or service's code
+      to stop using <b>PutMetricData</b>. CloudWatch doesn't pull metrics from
+      applications, it only receives what is pushed to it, so to stop publishing your metrics you
+      must stop them at the source.</p>
+
+
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./cloudwatch-metrics-basic-detailed.html">Basic and detailed monitoring</div><div id="next" class="next-link" accesskey="n" href="./query_with_cloudwatch-metrics-insights.html">Query metrics with CloudWatch Metrics Insights</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/publishingMetrics.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudWatch&amp;topic_url=https://docs.aws.amazon.com/en_us/AmazonCloudWatch/latest/monitoring/publishingMetrics.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

@@ -1,0 +1,15 @@
+
+### 75 security.audit_storage_access
+Inline: supplied audit principals: Supplied scaffolding: audit principals. The exercise provides this input or setup; independent implementation is not required.; least-privilege bucket access: Scoped S3 writer and reader permissions verified with approved and denied audit principals.
+tb1: Audit objects need approved write and read access without unintended readers. Inspect authorization as its own control, not as an effect of encryption or retention.
+tb2: S3 bucket policies can grant or deny object operations to specified principals and resource paths.
+tb3: Give approved audit writers and readers only their required actions on the intended bucket or object ARNs; inspect other applicable grants and denies.
+
+Test a write and read with approved identities and a read with the unapproved identity; encryption or retention settings do not replace authorization checks.
+tb4: Scope the supplied bucket policy to the approved writers/readers, required actions and intended bucket or object ARNs. Inspect other applicable grants and denies. Test an approved write, an approved read and an unapproved read, recording the identity and resource path for each. Those results verify the requested access boundary; encryption and retention settings do not replace these tests.
+tb5: Protected storage settings are not authorization evidence. Even with encryption or retention configured, inspect applicable grants/denies and test approved and unapproved object operations.
+Assess: distinguish_allowed_audit_writers_and_readers_from_denied_principals; verify_audit_object_authorization_with_approved_and_unapproved_identities
+Practice: {'type': 'tool_simulation', 'objective': 'Apply least-privilege access to one supplied S3 audit bucket by scoping its policy to approved writers and readers, required actions, and intended resource ARNs. Inspect other applicable grants and denies, then test an approved write, an approved read, and an unapproved read.', 'success': 'The approved writer can write to the intended audit-object path, the approved reader can read it, and the unapproved reader is denied. The policy grants only required access, and each test records its identity, action, resource path, and outcome rather than treating encryption or retention settings as authorization evidence.'}
+Visual: {'type': 'comparison', 'purpose': "Make the supplied policy's principal, action, and resource scope visible alongside three authorization-test results: approved write allowed, approved read allowed, and unapproved read denied."}
+Notes: ['Use supplied audit paths and policy; do not broaden principal access for convenience.']
+Media: null

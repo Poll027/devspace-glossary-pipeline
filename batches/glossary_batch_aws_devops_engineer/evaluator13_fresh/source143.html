@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Understanding command statuses - AWS Systems Manager</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="monitor-commands" /><meta name="default_state" content="monitor-commands" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/monitor-commands.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/monitor-commands.md" title="Markdown version" /><meta name="description" content="Monitor run command statuses about the different states a command experiences during processing and for each managed node that processed the command." /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS Systems Manager" /><meta name="guide" content="User Guide" /><meta name="abstract" content="AWS Systems Manager (formerly Amazon EC2 Systems Manager) is a unified interface that lets you centralize operational data and automate tasks across your AWS resources. Systems Manager shortens the time to detect and resolve operational problems in your infrastructure. Systems Manager gives you a complete view of your infrastructure performance and configuration, simplifies resource and application management, and lets you operate and manage your infrastructure at scale." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/monitor-commands.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/systems-manager/latest/userguide/monitor-commands.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/systems-manager/latest/userguide/monitor-commands.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/systems-manager/latest/userguide/monitor-commands.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/systems-manager/latest/userguide/monitor-commands.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/monitor-commands.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/monitor-commands.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/systems-manager/latest/userguide/monitor-commands.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/systems-manager/latest/userguide/monitor-commands.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/systems-manager/latest/userguide/monitor-commands.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/systems-manager/latest/userguide/monitor-commands.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/systems-manager/latest/userguide/monitor-commands.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/systems-manager/latest/userguide/monitor-commands.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/systems-manager/latest/userguide/monitor-commands.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/systems-manager/latest/userguide/monitor-commands.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/systems-manager/latest/userguide/monitor-commands.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/systems-manager/latest/userguide/monitor-commands.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/systems-manager/latest/userguide/monitor-commands.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/systems-manager/latest/userguide/monitor-commands.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/systems-manager/latest/userguide/monitor-commands.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/systems-manager/latest/userguide/monitor-commands.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/systems-manager/latest/userguide/monitor-commands.html" hreflang="x-default" /><meta name="feedback-item" content="Systems Manager" /><meta name="this_doc_product" content="AWS Systems Manager" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'systems-manager'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Understanding command statuses" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="monitor-commands.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Understanding command statuses - AWS Systems Manager</title><meta name="pdf" content="/pdfs/systems-manager/latest/userguide/systems-manager-ug.pdf#monitor-commands" /><meta name="rss" content="aws-systems-manager-user-guide-updates.rss" /><meta name="forums" content="https://repost.aws/tags/TA-UbbRGVYRWCDaCvae6itYg" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Systems%20Manager&amp;topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/monitor-commands.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/monitor-commands.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/monitor-commands.html" /><meta name="keywords" content="EC2 Systems Manager,Simple Systems Manager,SSM,Patch Manager,Parameter Store,Maintenance Window,Run Command,State Manager,Session Manager,SSM Agent,SSM Documents,Systems Manager,AWS Resource Groups,AppConfig,OpsCenter,Explorer,Change Calendar,Quick Setup,Change Manager,Fleet Manager" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS Systems Manager",
+        "item" : "https://docs.aws.amazon.com/systems-manager/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Using AWS Systems Manager tools",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-tools.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "AWS Systems Manager Node tools",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-instances-and-nodes.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "AWS Systems Manager Run Command",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "Understanding command statuses",
+        "item" : "https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/systems-manager/latest/userguide/systems-manager-ug.pdf#monitor-commands" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/systems-manager/index.html">AWS Systems Manager</a><a href="what-is-systems-manager.html">User Guide</a></div><div id="page-toc-src"><a href="#monitor-about-status">Run Command status</a><a href="#monitor-about-status-timeouts">Understanding command timeout values</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="monitor-commands">Understanding command statuses</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>Run Command reports detailed status information about the different
+            states a command experiences during processing and for each managed node that processed
+            the command. You can monitor command statuses using the following methods:</p><div class="itemizedlist">
+             
+             
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>Choose the <b>Refresh</b> icon on the
+                        <b>Commands</b> tab in the Run Command console interface.</p>
+            </li><li class="listitem">
+                <p>Call <a href="https://docs.aws.amazon.com/cli/latest/reference/ssm/list-commands.html">list-commands</a> or
+                        <a href="https://docs.aws.amazon.com/cli/latest/reference/ssm/list-command-invocations.html">list-command-invocations</a> using the AWS Command Line Interface (AWS CLI). Or call
+                        <a href="https://docs.aws.amazon.com/powershell/latest/reference/items/Get-SSMCommand.html">Get-SSMCommand</a> or <a href="https://docs.aws.amazon.com/powershell/latest/reference/items/Get-SSMCommandInvocation.html">Get-SSMCommandInvocation</a> using AWS Tools for Windows PowerShell.</p>
+            </li><li class="listitem">
+                <p>Configure Amazon EventBridge to respond to state or status changes.</p>
+            </li><li class="listitem">
+                <p>Configure Amazon Simple Notification Service (Amazon SNS) to send notifications for all status changes or
+                    specific statuses such as <code class="code">Failed</code> or <code class="code">TimedOut</code>.</p>
+            </li></ul></div>
+            <h2 id="monitor-about-status">Run Command status</h2>
+            <p>Run Command reports status details for three areas: plugins, invocations, and an
+                overall command status. A <em>plugin</em> is a code-execution block that
+                is defined in your command's SSM document. For more information about plugins, see
+                    <a href="./documents-command-ssm-plugin-reference.html">Command document plugin reference</a>.</p>
+            <p>When you send a command to multiple managed nodes at the same time, each copy of
+                the command targeting each node is a <em>command invocation</em>. For
+                example, if you use the <code class="code">AWS-RunShellScript</code> document and send an
+                    <code class="code">ifconfig</code> command to 20 Linux instances, that command has 20
+                invocations. Each command invocation individually reports status. The plugins for a
+                given command invocation individually report status as well. </p>
+            <p>Lastly, Run Command includes an aggregated command status for all plugins and
+                invocations. The aggregated command status can be different than the status reported
+                by plugins or invocations, as noted in the following tables.</p>
+            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>If you run commands to large numbers of managed nodes using the
+                        <code class="code">max-concurrency</code> or <code class="code">max-errors</code> parameters, command
+                    status reflects the limits imposed by those parameters, as described in the
+                    following tables. For more information about these parameters, see <a href="./send-commands-multiple.html">Run commands at scale</a>.</p></div></div>
+            <div class="table-container"><div class="table-contents disable-scroll"><table id="d0e1"><caption>Detailed status for command plugins and invocations</caption><thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td tabindex="-1">Pending</td>
+                            <td tabindex="-1">The command hasn't yet been sent to the managed node or hasn't
+                                been received by SSM Agent. If the command isn't received by the
+                                agent before the length of time passes that is equal to the sum of
+                                the <b>Timeout (seconds)</b> parameter and the
+                                    <b>Execution timeout</b> parameter, the status
+                                changes to <code class="code">Delivery Timed Out</code>.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">InProgress</td>
+                            <td tabindex="-1">Systems Manager is attempting to send the command to the managed node, or
+                                the command was received by SSM Agent and has started running on the
+                                instance. Depending on the result of all command plugins, the status
+                                changes to <code class="code">Success</code>, <code class="code">Failed</code>, <code class="code">Delivery
+                                    Timed Out</code>, or <code class="code">Execution Timed Out</code>. <em>Exception</em>: If the agent isn't running
+                                or available on the node, the command status remains at <code class="code">In
+                                    Progress</code> until the agent is available again, or until the
+                                execution timeout limit is reached. The status then changes to a
+                                terminal state.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">Delayed</td>
+                            <td tabindex="-1">The system attempted to send the command to the managed node but
+                                wasn't successful. The system retries again.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">Success</td>
+                            <td tabindex="-1">This status is returned under a variety of conditions. This
+                                status <em>doesn't</em> mean the command was processed
+                                on the node. For example, the command can be received by SSM Agent on
+                                the managed node and return an exit code of zero because of your
+                                PowerShell <code class="code">ExecutionPolicy</code> preventing the command from
+                                running. This is a terminal state. Conditions that result in a
+                                command returning a <code class="code">Success</code> status are: <div class="itemizedlist">
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                <ul class="itemizedlist"><li class="listitem">
+                                        <p>When targeting a single instance, the command was
+                                            received by SSM Agent on the managed node and returned an
+                                            exit code of zero.</p>
+                                    </li><li class="listitem">
+                                        <p>When targeting multiple instances, the number of
+                                            failed invocations has not crossed the error threshold
+                                            specified in the command.</p>
+                                    </li><li class="listitem">
+                                        <p>When targeting multiple instances, at least 1
+                                            invocation has succeeded while others have timed out.
+                                            The specified error threshold still applies.</p>
+                                    </li><li class="listitem">
+                                        <p>When targeting a tag, no instances are found
+                                            associated with the tag.</p>
+                                    </li><li class="listitem">
+                                        <p>When targeting a tag, the number of failed invocations
+                                            has not crossed the error threshold specified in the
+                                            command.</p>
+                                    </li><li class="listitem">
+                                        <p>When targeting a tag, at least 1 invocation has
+                                            succeeded while others have timed out. The specified
+                                            error threshold still applies.</p>
+                                    </li><li class="listitem">
+                                        <p>You have applications or policies enforced at the OS
+                                            level that prevent or override the execution of a
+                                            command resulting in an exit code of zero being
+                                            returned.</p>
+                                    </li></ul></div>
+                                <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>The same conditions apply when targeting resource groups.
+                                        To troubleshoot errors or get more information about the
+                                        command execution, send a command that handles errors or
+                                        exceptions by returning appropriate exit codes (non-zero
+                                        exit codes for command failure).</p></div></div></td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">DeliveryTimedOut</td>
+                            <td tabindex="-1">The command wasn't delivered to the managed node before the total
+                                timeout expired. Total timeouts don't count against the parent
+                                command’s <code class="code">max-errors</code> limit, but they do contribute to
+                                whether the parent command status is <code class="code">Success</code>,
+                                    <code class="code">Incomplete</code>, or <code class="code">Delivery Timed Out</code>.
+                                This is a terminal state.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">ExecutionTimedOut</td>
+                            <td tabindex="-1">Command automation started on the managed node, but the command
+                                wasn’t completed before the execution timeout expired. Execution
+                                timeouts count as a failure, which will send a non-zero reply and
+                                Systems Manager will exit the attempt to run the command automation, and
+                                report a failure status.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">Failed</td>
+                            <td tabindex="-1"> The command wasn't successful on the managed node. For a plugin,
+                                this indicates that the result code wasn't zero. For a command
+                                invocation, this indicates that the result code for one or more
+                                plugins wasn't zero. Invocation failures count against the
+                                    <code class="code">max-errors</code> limit of the parent command. This is a
+                                terminal state.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">Cancelled</td>
+                            <td tabindex="-1">The command was canceled before it was completed. This is a
+                                terminal state.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">Undeliverable</td>
+                            <td tabindex="-1">The command can't be delivered to the managed node. The node
+                                might not exist or it might not be responding. Undeliverable
+                                invocations don't count against the parent command’s
+                                    <code class="code">max-errors</code> limit, but they do contribute to whether
+                                the parent command status is <code class="code">Success</code> or
+                                    <code class="code">Incomplete</code>. For example, if all invocations in a
+                                command have the status <code class="code">Undeliverable</code>, then the command
+                                status returned is <code class="code">Failed</code>. However, if a command has
+                                five invocations, four of which return the status
+                                    <code class="code">Undeliverable</code> and one of which returns the status
+                                    <code class="code">Success</code>, then the parent command's status is
+                                    <code class="code">Success</code>. This is a terminal state.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">Terminated</td>
+                            <td tabindex="-1">The parent command exceeded its <code class="code">max-errors</code> limit and
+                                subsequent command invocations were canceled by the system. This is
+                                a terminal state.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">InvalidPlatform</td>
+                            <td tabindex="-1">The command was sent to a managed node that didn't match the
+                                required platforms specified by the chosen document. <code class="code">Invalid
+                                    Platform</code> doesn't count against the parent command’s
+                                max-errors limit, but it does contribute to whether the parent
+                                command status is Success or Failed. For example, if all invocations
+                                in a command have the status <code class="code">Invalid Platform</code>, then the
+                                command status returned is <code class="code">Failed</code>. However, if a
+                                command has five invocations, four of which return the status
+                                    <code class="code">Invalid Platform</code> and one of which returns the
+                                status <code class="code">Success</code>, then the parent command's status is
+                                    <code class="code">Success</code>. This is a terminal state.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">AccessDenied</td>
+                            <td tabindex="-1">The AWS Identity and Access Management (IAM) user or role initiating the command doesn't
+                                have access to the targeted managed node. <code class="code">Access Denied</code>
+                                doesn't count against the parent command’s <code class="code">max-errors</code>
+                                limit, but it does contribute to whether the parent command status
+                                is <code class="code">Success</code> or <code class="code">Failed</code>. For example, if all
+                                invocations in a command have the status <code class="code">Access Denied</code>,
+                                then the command status returned is <code class="code">Failed</code>. However, if
+                                a command has five invocations, four of which return the status
+                                    <code class="code">Access Denied</code> and one of which returns the status
+                                    <code class="code">Success</code>, then the parent command's status is
+                                    <code class="code">Success</code>. This is a terminal state.</td>
+                        </tr>
+                    </table></div></div>
+            <div class="table-container"><div class="table-contents disable-scroll"><table id="d0e2"><caption>Detailed status for a command</caption><thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td tabindex="-1">Pending</td>
+                            <td tabindex="-1">The command wasn't yet received by an agent on any managed
+                                nodes.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">InProgress</td>
+                            <td tabindex="-1">The command has been sent to at least one managed node but hasn't
+                                reached a final state on all nodes. </td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">Delayed</td>
+                            <td tabindex="-1">The system attempted to send the command to the node but wasn't
+                                successful. The system retries again.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">Success</td>
+                            <td tabindex="-1">The command was received by SSM Agent on all specified or targeted
+                                managed nodes and returned an exit code of zero. All command
+                                invocations have reached a terminal state, and the value of
+                                    <code class="code">max-errors</code> wasn't reached. This status
+                                    <em>doesn't </em>mean the command was successfully
+                                processed on all specified or targeted managed nodes. This is a
+                                terminal state. <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>To troubleshoot errors or get more information about the
+                                        command execution, send a command that handles errors or
+                                        exceptions by returning appropriate exit codes (non-zero
+                                        exit codes for command failure).</p></div></div></td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">DeliveryTimedOut</td>
+                            <td tabindex="-1">The command wasn't delivered to the managed node before the total
+                                timeout expired. The value of <code class="code">max-errors</code> or more
+                                command invocations shows a status of <code class="code">Delivery Timed
+                                    Out</code>. This is a terminal state.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">Failed</td>
+                            <td tabindex="-1">
+                                <p>The command wasn't successful on the managed node. The value
+                                    of <code class="code">max-errors</code> or more command invocations shows a
+                                    status of <code class="code">Failed</code>. This is a terminal state.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">Incomplete</td>
+                            <td tabindex="-1">The command was attempted on all managed nodes and one or more of
+                                the invocations doesn't have a value of <code class="code">Success</code>.
+                                However, not enough invocations failed for the status to be
+                                    <code class="code">Failed</code>. This is a terminal state.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">Cancelled</td>
+                            <td tabindex="-1">The command was canceled before it was completed. This is a
+                                terminal state.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">RateExceeded</td>
+                            <td tabindex="-1">The number of managed nodes targeted by the command exceeded the
+                                account quota for pending invocations. The system has canceled the
+                                command before executing it on any node. This is a terminal
+                                state.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">AccessDenied</td>
+                            <td tabindex="-1">The user or role initiating the command doesn't have access to
+                                the targeted resource group. <code class="code">AccessDenied</code> doesn't count
+                                against the parent command’s <code class="code">max-errors</code> limit, but does
+                                contribute to whether the parent command status is
+                                    <code class="code">Success</code> or <code class="code">Failed</code>. (For example, if
+                                all invocations in a command have the status
+                                    <code class="code">AccessDenied</code>, then the command status returned is
+                                    <code class="code">Failed</code>. However, if a command has 5 invocations, 4
+                                of which return the status <code class="code">AccessDenied</code> and 1 of which
+                                returns the status <code class="code">Success</code>, then the parent command's
+                                status is <code class="code">Success</code>.) This is a terminal state.</td>
+                        </tr>
+                        <tr>
+                            <td tabindex="-1">No Instances In Tag</td>
+                            <td tabindex="-1">The tag key-pair value or resource group targeted by the command
+                                doesn't match any managed nodes. This is a terminal state.</td>
+                        </tr>
+                    </table></div></div>
+         
+            <h2 id="monitor-about-status-timeouts">Understanding command timeout values</h2>
+            <p>Systems Manager enforces the following timeout values when running commands.</p>
+             
+                <h6 class="awsdocs-block-title">Total Timeout</h6>
+                <p>In the Systems Manager console, you specify the timeout value in the <b>Timeout
+                        (seconds)</b> field. After a command is sent, Run Command checks whether
+                    the command has expired or not. If a command reaches the command expiration
+                    limit (total timeout), it changes status to <code class="code">DeliveryTimedOut</code> for
+                    all invocations that have the status <code class="code">InProgress</code>,
+                        <code class="code">Pending</code> or <code class="code">Delayed</code>.</p>
+             
+            <div class="mediaobject">
+                 
+                    <img src="/images/systems-manager/latest/userguide/images/run-command-delivery-time-out-time-out-seconds.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="The Timeout (seconds) field in the Systems Manager console" style="max-width:20%" />
+                 
+                 
+            </div>
+            <p>On a more technical level, total timeout (<b>Timeout (seconds)</b>)
+                is a combination of two timeout values, as shown here: </p>
+            <p><code class="code">Total timeout = "Timeout(seconds)" from the console + "timeoutSeconds": "<span>{</span><span>{</span>
+                    executionTimeout }}" from your SSM document</code></p>
+            <p>For example, the default value of <b>Timeout (seconds)</b> in the
+                Systems Manager console is 600 seconds. If you run a command by using the
+                    <code class="code">AWS-RunShellScript</code> SSM document, the default value of
+                    <b>"timeoutSeconds": "<span>{</span><span>{</span> executionTimeout }}"</b> is 3600 seconds,
+                as shown in the following document sample:</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight ">
+  "executionTimeout": <span>{</span>
+      "type": "String",
+      "default": "3600",
+
+  "runtimeConfig": <span>{</span>
+    "aws:runShellScript": <span>{</span>
+      "properties": [
+        <span>{</span>
+          "timeoutSeconds": "<span>{</span><span>{</span> executionTimeout }}"
+</code></pre>
+            <p>This means the command runs for 4,200 seconds (70 minutes) before the system sets
+                the command status to <code class="code">DeliveryTimedOut</code>.</p>
+             
+                <h6 class="awsdocs-block-title">Execution Timeout</h6>
+                <p>In the Systems Manager console, you specify the execution timeout value in the
+                        <b>Execution Timeout</b> field, if available. Not all SSM
+                    documents require that you specify an execution timeout. The <b>Execution
+                        Timeout</b> field is only displayed when a corresponding input
+                    parameter has been defined in the SSM document. If specified, the command must
+                    complete within this time period.</p>
+             
+            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>Run Command relies on the SSM Agent document terminal response to determine
+                    whether the command was delivered to the agent. SSM Agent must send an
+                        <code class="code">ExecutionTimedOut</code> signal for an invocation or command to be
+                    marked as <code class="code">ExecutionTimedOut</code>.</p></div></div>
+            <div class="mediaobject">
+                 
+                    <img src="/images/systems-manager/latest/userguide/images/run-command-execution-timeout-console.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="The Execution Timeout field in the Systems Manager console" style="max-width:70%" />
+                 
+                 
+            </div>
+             
+                <h6 class="awsdocs-block-title">Default Execution Timeout</h6>
+                <p>If a SSM document doesn't require that you explicitly specify an execution
+                    timeout value, then Systems Manager enforces the hard-coded default execution
+                    timeout.</p>
+             
+
+             
+                <h6 class="awsdocs-block-title">How Systems Manager reports timeouts</h6>
+                <p>If Systems Manager receives an <code class="code">execution timeout</code> reply from SSM Agent on a
+                    target, then Systems Manager marks the command invocation as
+                    <code class="code">executionTimeout</code>.</p>
+             
+            <p>If Run Command doesn't receive a document terminal response from SSM Agent, the
+                command invocation is marked as <code class="code">deliveryTimeout</code>.</p>
+            <p>To determine timeout status on a target, SSM Agent combines all parameters and the
+                content of the SSM document to calculate for <code class="code">executionTimeout</code>. When
+                SSM Agent determines that a command has timed out, it sends
+                    <code class="code">executionTimeout</code> to the service.</p>
+            <p>The default for <b>Timeout (seconds)</b> is 3600 seconds. The
+                default for <b>Execution Timeout</b> is also 3600 seconds. Therefore,
+                the total default timeout for a command is 7200 seconds.</p>
+            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>SSM Agent processes <code class="code">executionTimeout</code> differently depending on the
+                    type of SSM document and the document version. </p></div></div>
+        <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./send-commands-reboot.html">Handling reboots when running commands</div><div id="next" class="next-link" accesskey="n" href="./run-command-walkthroughs.html">Run Command walkthroughs</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Systems Manager&amp;topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/monitor-commands.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=Systems Manager&amp;topic_url=https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/monitor-commands.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

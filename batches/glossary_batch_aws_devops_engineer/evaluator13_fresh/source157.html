@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Control traffic to your AWS resources using security groups - Amazon Virtual Private Cloud</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="vpc-security-groups" /><meta name="default_state" content="vpc-security-groups" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.md" title="Markdown version" /><meta name="description" content="Security groups act as virtual firewalls, controlling inbound and outbound traffic for associated VPC resources like EC2 instances. Customize security group rules to allow/deny traffic based on source, destination, port, and protocol." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon Virtual Private Cloud" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Use Amazon VPC to launch AWS resources into a virtual network that is a logically isolated section of the AWS cloud. Use Amazon VPC to launch AWS resources into a virtual network that is a logically isolated section of the AWS cloud." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/vpc/latest/userguide/vpc-security-groups.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/vpc/latest/userguide/vpc-security-groups.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/vpc/latest/userguide/vpc-security-groups.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/vpc/latest/userguide/vpc-security-groups.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/vpc/latest/userguide/vpc-security-groups.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/vpc/latest/userguide/vpc-security-groups.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/vpc/latest/userguide/vpc-security-groups.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/vpc/latest/userguide/vpc-security-groups.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/vpc/latest/userguide/vpc-security-groups.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/vpc/latest/userguide/vpc-security-groups.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/vpc/latest/userguide/vpc-security-groups.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/vpc/latest/userguide/vpc-security-groups.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/vpc-security-groups.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/vpc-security-groups.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/vpc/latest/userguide/vpc-security-groups.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/vpc/latest/userguide/vpc-security-groups.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/vpc/latest/userguide/vpc-security-groups.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/vpc/latest/userguide/vpc-security-groups.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html" hreflang="x-default" /><meta name="feedback-item" content="VPC" /><meta name="this_doc_product" content="Amazon Virtual Private Cloud" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'vpc'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Control traffic to your AWS resources using security groups" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="vpc-security-groups.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Control traffic to your AWS resources using security groups - Amazon Virtual Private Cloud</title><meta name="pdf" content="/pdfs/vpc/latest/userguide/vpc-ug.pdf#vpc-security-groups" /><meta name="rss" content="amazon-vpc-release-notes.rss" /><meta name="forums" content="https://repost.aws/tags/TATGuEiYydTVCPMhSnXFN6gA" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=VPC&amp;topic_url=https://docs.aws.amazon.com/en_us/vpc/latest/userguide/vpc-security-groups.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/vpc/latest/userguide/vpc-security-groups.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/vpc/latest/userguide/vpc-security-groups.html" /><meta name="keywords" content="VPC,Amazon VPC,network,route table,internet gateway,subnet,NAT,VPC security responsibility,VPC firewall,authorize VPC traffic,allow traffic with security groups,block traffic with security groups" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon VPC",
+        "item" : "https://docs.aws.amazon.com/vpc/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/vpc/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Managing security responsibilities for Amazon Virtual Private Cloud",
+        "item" : "https://docs.aws.amazon.com/vpc/latest/userguide/security.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Control traffic to your AWS resources using security groups",
+        "item" : "https://docs.aws.amazon.com/vpc/latest/userguide/security.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/vpc/latest/userguide/vpc-ug.pdf#vpc-security-groups" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/vpc/index.html">Amazon VPC</a><a href="what-is-amazon-vpc.html">User Guide</a></div><div id="page-toc-src"><a href="#security-group-basics">Security group basics</a><a href="#security-group-example-details">Security group example</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="vpc-security-groups">Control traffic to your AWS resources using security groups</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>A <em>security group</em> controls the traffic that is allowed to reach and leave
+		the resources that it is associated with. For example, after you associate a security group
+		with an EC2 instance, it controls the inbound and outbound traffic for the instance.</p><p>When you create a VPC, it comes with a default security group. You can create additional
+		security groups for a VPC, each with their own inbound and outbound rules. You can specify 
+		the source, port range, and protocol for each inbound rule. You can specify the destination, 
+		port range, and protocol for each outbound rule.</p><p>The following diagram shows a VPC with a subnet, an internet gateway, and a security group.
+	    The subnet contains an EC2 instance. The security group is assigned to the instance.
+	    The security group acts as a virtual firewall. The only traffic that reaches the instance
+	    is the traffic allowed by the security group rules. For example, if the security group
+	    contains a rule that allows ICMP traffic to the instance from your network, then you
+	    could ping the instance from your computer. If the security group does not contain a
+	    rule that allows SSH traffic, then you could not connect to your instance using SSH.</p><div class="mediaobject">
+		 
+			<img src="/images/vpc/latest/userguide/images/security-group-overview.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="VPC with 2 subnets, 2 security groups, servers in subnets associated with different security groups." />
+		 
+		 
+	</div><div class="highlights"><h2 class="awsdocs-topiclist-title">Contents</h2><ul><li><p><a href="#security-group-basics">Security group basics</a></p></li><li><p><a href="#security-group-example-details">Security group example</a></p></li><li><p><a href="./security-group-rules.html">Security group rules</a></p></li><li><p><a href="./default-security-group.html">Default security groups</a></p></li><li><p><a href="./creating-security-groups.html">Create a security group</a></p></li><li><p><a href="./working-with-security-group-rules.html">Configure security group rules</a></p></li><li><p><a href="./deleting-security-groups.html">Delete a security group</a></p></li><li><p><a href="./security-group-assoc.html">Associate security groups with multiple VPCs</a></p></li><li><p><a href="./security-group-sharing.html">Share security groups with AWS Organizations</a></p></li></ul></div>
+		<h6 class="awsdocs-block-title">Pricing</h6>
+		<p>There is no additional charge for using security groups.</p>
+	 
+    		<h2 id="security-group-basics">Security group basics</h2>
+    		
+    		<div class="itemizedlist">
+    			 
+    			 
+    			 
+    			
+    			 
+    			 
+    		<ul class="itemizedlist"><li class="listitem">
+    				<p>You can assign a security group to resources created in the same VPC as the security group or to resources in other VPCs if using the <a href="./security-group-assoc.html">Security Group VPC Association feature</a> to associate the security group to other VPCs in the same Region. You can also assign multiple security groups to a single resource.</p>
+    			</li><li class="listitem">
+    				<p>When you create a security group, you must provide it with a name and a
+    					description. The following rules apply:</p>
+    				<div class="itemizedlist">
+    					 
+    					 
+    					 
+    					 
+    					 
+    					 
+    				<ul class="itemizedlist"><li class="listitem">
+    						<p>A security group name must be unique within the VPC.</p>
+    					</li><li class="listitem">
+    						<p>Security group names are not case-sensitive.</p>
+    					</li><li class="listitem">
+    						<p>Names and descriptions can be up to 255 characters in length.</p>
+    					</li><li class="listitem">
+    						<p>Names and descriptions are limited to the following characters: a-z,
+    							A-Z, 0-9, spaces, and ._-:/()#,@[]+=&amp;;<span>{</span>}!$*.</p>
+    					</li><li class="listitem">
+    						<p>When the name contains trailing spaces, we trim the space at the end of the name. For
+    							example, if you enter "Test Security Group " for the name, we store it
+    							as "Test Security Group".</p>
+    					</li><li class="listitem">
+    						<p>A security group name can't start with <code class="code">sg-</code>.</p>
+    					</li></ul></div>
+    			</li><li class="listitem">
+    				<p>Security groups are stateful. For example, if you send a request from an
+    					instance, the response traffic for that request is allowed to reach the 
+    					instance regardless of the inbound security group rules. Responses to 
+    					allowed inbound traffic are allowed to leave the instance, regardless of 
+    					the outbound rules.</p>
+    			</li><li class="listitem">
+    				<p>Security groups do not filter traffic destined to and from the
+    					following:</p>
+    				<div class="itemizedlist">
+    					 
+    					 
+    					 
+    					 
+    					 
+    					 
+    					 
+    				<ul class="itemizedlist"><li class="listitem">
+    						<p>Amazon Domain Name Services (DNS)</p>
+    					</li><li class="listitem">
+    						<p>Amazon Dynamic Host Configuration Protocol (DHCP)</p>
+    					</li><li class="listitem">
+    						<p>Amazon EC2 instance metadata</p>
+    					</li><li class="listitem">
+    						<p>Amazon ECS task metadata endpoints</p>
+    					</li><li class="listitem">
+    						<p>License activation for Windows instances</p>
+    					</li><li class="listitem">
+    						<p>Amazon Time Sync Service</p>
+    					</li><li class="listitem">
+    						<p>Reserved IP addresses used by the default VPC router</p>
+    					</li></ul></div>
+    			</li><li class="listitem">
+    				<p>There are quotas on the number of security groups that you can create per VPC,
+    					the number of rules that you can add to each security group, and the number of
+    					security groups that you can associate with a network interface.</p>
+    				<p>For more
+    					information, see <a href="./amazon-vpc-limits.html">Amazon VPC quotas</a>.</p>
+    			</li></ul></div>
+    		
+    		<div class="itemizedlist">
+    			<h6 class="awsdocs-block-title">Best practices</h6>
+    			 
+    			 
+    			 
+    			 
+    			 
+    		<ul class="itemizedlist"><li class="listitem">
+    				<p>Authorize only specific IAM principals to create and modify security groups.</p>
+    			</li><li class="listitem">
+    				<p>Create the minimum number of security groups that you need, to decrease the 
+    					risk of error. Use each security group to manage access to resources that have 
+    					similar functions and security requirements.</p>
+    			</li><li class="listitem">
+    				<p>When you add inbound rules for ports 22 (SSH) or 3389 (RDP) so that you can access 
+    					your EC2 instances, authorize only specific IP address ranges. If you specify 
+    					0.0.0.0/0 (IPv4) and ::/ (IPv6), this enables anyone to access your instances 
+    					from any IP address using the specified protocol.</p>
+    			</li><li class="listitem">
+    				<p>Do not open large port ranges. Ensure that access through each port is restricted
+    					to the sources or destinations that require it.</p>
+    			</li><li class="listitem">
+    				<p>Consider creating network ACLs with rules similar to your security groups, to add
+    					an additional layer of security to your VPC. For more information about the differences
+    					between security groups and network ACLs, see <a href="./infrastructure-security.html#VPC_Security_Comparison">Compare security groups and network ACLs</a>.</p>
+    			</li></ul></div>
+    	 
+    	<h2 id="security-group-example-details">Security group example</h2>
+    	<div class="itemizedlist">
+    		<p>The following diagram shows a VPC with two security groups and two subnets. The
+				instances in subnet A have the same connectivity requirements, so they are
+				associated with security group 1. The instances in subnet B have the same
+				connectivity requirements, so they are associated with security group 2. The
+				security group rules allow traffic as follows:</p>
+    		 
+    		 
+    		 
+    		 
+    		 
+    	<ul class="itemizedlist"><li class="listitem">
+    			<p>The first inbound rule in security group 1 allows SSH traffic to the instances in subnet A
+    				from the specified address range (for example, a range in your own network).</p>
+    		</li><li class="listitem">
+    			<p>The second inbound rule in security group 1 allows the instances in subnet A to communicate 
+    				with each other using any protocol and port.</p>
+    		</li><li class="listitem">
+    			<p>The first inbound rule in security group 2 allows the instances in subnet B to communicate 
+    				with each other using any protocol and port.</p>
+    		</li><li class="listitem">
+    			<p>The second inbound rule in security group 2 allows the instances in subnet A to communicate
+    				with the instances in subnet B using SSH.</p>
+    		</li><li class="listitem">
+    			<p>Both security groups use the default outbound rule, which allows all traffic.</p>
+    		</li></ul></div>
+    	<div class="mediaobject">
+    		 
+    			<img src="/images/vpc/latest/userguide/images/security-group-details.png" class="aws-docs-img-whiteBg aws-docs-img-padding" alt="A VPC with two subnets, each associated with a different security group." style="max-width:100%" />
+    		 
+    		 
+    	</div>
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./infrastructure-security.html">Infrastructure security</div><div id="next" class="next-link" accesskey="n" href="./security-group-rules.html">Security group rules</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=VPC&amp;topic_url=https://docs.aws.amazon.com/en_us/vpc/latest/userguide/vpc-security-groups.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=VPC&amp;topic_url=https://docs.aws.amazon.com/en_us/vpc/latest/userguide/vpc-security-groups.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

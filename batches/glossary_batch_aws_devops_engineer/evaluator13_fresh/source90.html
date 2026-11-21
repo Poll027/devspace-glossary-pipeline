@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Creating rules using the Advanced Builder - Amazon EventBridge</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="eb-create-rule-wizard" /><meta name="default_state" content="eb-create-rule-wizard" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-create-rule-wizard.html" /><link rel="alternate" type="text/markdown" href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-create-rule-wizard.md" title="Markdown version" /><meta name="description" content="Learn how to create a rule using the Advanced Builder in EventBridge, including writing JSON event patterns and configuring targets." /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon EventBridge" /><meta name="guide" content="User Guide" /><meta name="abstract" content="Describes key concepts of Amazon EventBridge and provides instructions for using the features of Amazon EventBridge." /><meta name="guide-locale" content="en_us" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-create-rule-wizard.html" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="id-id" /><link rel="alternate" href="https://docs.aws.amazon.com/id_id/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="id" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="de-de" /><link rel="alternate" href="https://docs.aws.amazon.com/de_de/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="de" /><link rel="alternate" href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="en-us" /><link rel="alternate" href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="en" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="es-es" /><link rel="alternate" href="https://docs.aws.amazon.com/es_es/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="es" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="fr-fr" /><link rel="alternate" href="https://docs.aws.amazon.com/fr_fr/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="fr" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="it-it" /><link rel="alternate" href="https://docs.aws.amazon.com/it_it/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="it" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="ja-jp" /><link rel="alternate" href="https://docs.aws.amazon.com/ja_jp/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="ja" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="ko-kr" /><link rel="alternate" href="https://docs.aws.amazon.com/ko_kr/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="ko" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="pt-br" /><link rel="alternate" href="https://docs.aws.amazon.com/pt_br/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="pt" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_cn/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="zh-cn" /><link rel="alternate" href="https://docs.aws.amazon.com/zh_tw/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="zh-tw" /><link rel="alternate" href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-create-rule-wizard.html" hreflang="x-default" /><meta name="feedback-item" content="EventBridge" /><meta name="this_doc_product" content="Amazon EventBridge" /><meta name="this_doc_guide" content="User Guide" /><head xmlns="http://www.w3.org/1999/xhtml"> <script defer="" src="/assets/r/awsdocs-doc-page.2.0.0.js"></script><link href="/assets/r/awsdocs-doc-page.2.0.0.css" rel="stylesheet"/></head>
+<script defer="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'eventbridge'}"></script><meta id="panorama-serviceSubSection" value="User Guide" /><meta id="panorama-serviceConsolePage" value="Creating rules using the Advanced Builder" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><p><a href="eb-create-rule-wizard.md">View a markdown version of this page</a></p><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Creating rules using the Advanced Builder - Amazon EventBridge</title><meta name="pdf" content="/pdfs/eventbridge/latest/userguide/user-guide.pdf#eb-create-rule-wizard" /><meta name="rss" content="user-guide.rss" /><meta name="forums" content="https://repost.aws/tags/TAMOBQOnOWQCagAKR2zrk8xg" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=EventBridge&amp;topic_url=https://docs.aws.amazon.com/en_us/eventbridge/latest/userguide/eb-create-rule-wizard.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/en_us/eventbridge/latest/userguide/eb-create-rule-wizard.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/en_us/eventbridge/latest/userguide/eb-create-rule-wizard.html" /><meta name="keywords" content="EventBridge,Amazon EventBridge,event-driven computing,AWS events,events,event bus,event delivery,event transformation,rules,AWS service managed rules,rules that react to events" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon EventBridge",
+        "item" : "https://docs.aws.amazon.com/eventbridge/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "User Guide",
+        "item" : "https://docs.aws.amazon.com/eventbridge/latest/userguide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Amazon EventBridge event bus (default and Classic)",
+        "item" : "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-bus.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Rules in Amazon EventBridge",
+        "item" : "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rules.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Creating rules using the Advanced Builder",
+        "item" : "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rules.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="/pdfs/eventbridge/latest/userguide/user-guide.pdf#eb-create-rule-wizard" target="_blank" rel="noopener noreferrer" title="Open PDF"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">Documentation</a><a href="/eventbridge/index.html">Amazon EventBridge</a><a href="eb-what-is.html">User Guide</a></div><div id="page-toc-src"><a href="#eb-create-rule-define">Define the rule</a><a href="#eb-create-rule-event-pattern">Build the event pattern</a><a href="#eb-create-rule-target">Select targets</a><a href="#eb-create-rule-review">Configure tags and review rule</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="eb-create-rule-wizard">Creating rules using the Advanced Builder</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>To take action on events received by Amazon EventBridge, you can
+        create <a href="./eb-rules.html">rules</a>. When an event matches the <a href="./eb-event-patterns.html">event pattern</a> defined in your rule, EventBridge sends the
+        event to the specified <a href="./eb-targets.html">target</a> and triggers the action
+        defined in the rule.</p><p>The following steps walk you through how to create a rule that EventBridge uses to match events as they are sent to the specified event bus.</p><div class="highlights" id="inline-topiclist"><h2 class="awsdocs-topiclist-title">Steps</h2><ul><li><p><a href="#eb-create-rule-define">Define the rule</a></p></li><li><p><a href="#eb-create-rule-event-pattern">Build the event pattern</a></p></li><li><p><a href="#eb-create-rule-target">Select targets</a></p></li><li><p><a href="#eb-create-rule-review">Configure tags and review rule</a></p></li></ul></div>
+        <h2 id="eb-create-rule-define">Define the rule</h2>
+        <p>First, enter a name and description for your rule to identify it. You must also define
+            the event bus where your rule looks for events to match to an event pattern.</p>
+        
+        <div class="procedure"><h6 class="awsdocs-block-title">To define the rule detail</h6><ol><li><p>Open the Amazon EventBridge console at <a href="https://console.aws.amazon.com/events/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/events/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p></li><li>
+                <p>In the navigation pane, choose <b>Event buses</b>.</p>
+            </li><li>
+                <p>Choose the event bus that you want to use, and then choose <b>Rules</b>.</p>
+            </li><li>
+                <p>Choose <b>Create rule</b>.</p>
+            </li><li>
+                <p>On the rule builder selection page, choose <b>Advanced Builder</b>.</p>
+                <p>The Advanced Builder uses JSON patterns and configuration for rules and targets.
+                    To use the visual canvas instead, see <a href="./eb-create-rule-visual.html">Creating rules (Enhanced Builder)</a>.</p>
+            </li><li>
+                <p>Enter a <b>Name</b> and, optionally, a
+                        <b>Description</b> for the rule.</p>
+                <p>A rule can't have the same name as another rule in the same AWS Region and
+                    on the same event bus.</p>
+            </li><li>
+                <p>For <b>Event bus</b>, choose the event bus to associate with
+                    this rule. If you want this rule to match events that come from your account,
+                    select <b>AWS default event bus</b>. When an AWS service in
+                    your account emits an event, it always goes to your account’s default event
+                    bus.</p>
+            </li><li>
+                <p>For <b>Rule type</b>, choose <b>Rule with an event
+                        pattern</b>.</p>
+            </li><li>
+                <p>Choose <b>Next</b>.</p>
+            </li></ol></div>
+        
+     
+        <h2 id="eb-create-rule-event-pattern">Build the event pattern</h2>
+        <p>Next, build the event pattern. To do this, specify the event source, choose the basis
+            for the event pattern, and define the attributes and values to match on. You can also
+            generate the event pattern in JSON and test it against a sample event.</p>
+        
+        <div class="procedure"><h6 class="awsdocs-block-title">To build the event pattern</h6><ol><li>
+
+                <p>For <b>Event source</b>, choose <b>AWS events or EventBridge
+                        partner events</b>.</p>
+            </li><li>
+                <p>(Optional) In the <b>Sample events</b> section, choose a
+                    <b>Sample event type</b> against which you want to test your event pattern. </p>
+                <p>The following sample event types are available:</p>
+                <div class="itemizedlist">
+                     
+                     
+                     
+                <ul class="itemizedlist"><li class="listitem">
+                        <p><b>AWS events </b>– Select from events emitted
+                            from supported AWS services.</p>
+                    </li><li class="listitem">
+                        <p><b>EventBridge partner events</b> – Select from events
+                            emitted from third-party services that support EventBridge, such as
+                            Salesforce.</p>
+                    </li><li class="listitem">
+                        <p><b>Enter my own</b> – Enter your own event in
+                            JSON text.</p>
+                                           <p>You can also use an AWS or partner event as the starting point for creating your own custom event.</p>
+            <div class="orderedlist">
+                 
+                 
+                 
+                 
+                 
+                 
+            <ol><li><p>Select <b>AWS events</b> or <b>EventBridge partner events</b>.</p></li><li><p>Use the <b>Sample events</b> dropdown to select the event you want to use as a starting point for your custom event.</p>
+                    <p>EventBridge displays the sample event.</p></li><li><p>Select <b>Copy</b>.</p></li><li><p>Select <b>Enter my own</b> for <b>Event type.</b></p></li><li><p>Delete the sample event structure in the JSON editing pane, and paste the AWS or partner event in its place.</p></li><li><p>Edit the event JSON to create your own sample event.</p></li></ol></div>
+                    </li></ul></div>
+            </li><li>
+                <p>Choose a <b>Creation method</b>. You can create an event pattern
+                    from an EventBridge schema or template, or you can create a custom event
+                    pattern.</p>
+
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Existing schema</dt><dd tab-id="existing-schema">
+                            <p>To use an existing EventBridge schema to create the event pattern, do
+                                the following:</p>
+                            <div class="orderedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                            <ol><li>
+                                    <p>In the <b>Creation method</b> section, for
+                                        <b>Method</b>, select <b>Use
+                                            schema</b>.</p>
+                                </li><li>
+                                    <p>In the <b>Event pattern</b> section, for
+                                        <b>Schema type</b>, select
+                                        <b>Select schema from Schema
+                                            registry</b>.</p>
+                                </li><li>
+                                    <p>For <b>Schema registry</b>, choose the
+                                        dropdown box and enter the name of a schema registry, such
+                                        as <code class="code">aws.events</code>. You can also select an option
+                                        from the dropdown list that appears.</p>
+                                </li><li>
+                                    <p>For <b>Schema</b>, choose the dropdown box and
+                                        enter the name of the schema to use. For example,
+                                        <code class="code">aws.s3@ObjectDeleted</code>. You can also select an
+                                        option from the dropdown list that appears.</p>
+                                </li><li>
+                                    <p>In the <b>Models</b> section, choose the
+                                        <b>Edit</b> button next to any attribute to
+                                        open its properties. Set the <b>Relationship</b>
+                                        and <b>Value</b> fields as needed, then choose
+                                        <b>Set</b> to save the attribute.</p>
+                                    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>For information about an attribute's definition,
+                                            choose the <b>Info</b> icon next to the
+                                            attribute's name. For a reference on how to set
+                                            attribute properties in your event, open the
+                                            <b>Note</b> section of the attribute
+                                            properties dialog box.</p><p>To delete an attribute's properties, choose the
+                                            <b>Edit</b> button for that attribute,
+                                            then choose <b>Clear</b>.</p></div></div>
+                                </li><li>
+                                    <p>Choose <b>Generate event pattern in JSON</b>
+                                        to generate and validate your event pattern as JSON text.
+                                    </p>
+                                </li><li>
+                                    <p>(Optional) To test the sample event against your test pattern, choose <b>Test pattern</b>. </p>
+                                    <p>EventBridge displays a message box stating whether your sample event matches the event pattern.</p>
+                                    <p>You can also choose any of the following options:</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p><b>Copy</b> – Copy the event
+                                                pattern to your device's clipboard.</p>
+                                        </li><li class="listitem">
+                                            <p><b>Prettify</b> – Makes the
+                                                JSON text easier to read by adding line breaks,
+                                                tabs, and spaces.</p>
+                                        </li></ul></div>
+                                </li></ol></div>
+                        </dd>
+                    
+                    <dt>Custom schema</dt><dd tab-id="custom-schema">
+                            <p>To write a custom schema and convert it to an event pattern, do the
+                                following:</p>
+                            <div class="orderedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                            <ol><li>
+                                    <p>In the <b>Creation method</b> section, for
+                                        <b>Method</b>, choose <b>Use
+                                            schema</b>.</p>
+                                </li><li>
+                                    <p>In the <b>Event pattern</b> section, for
+                                        <b>Schema type</b>, choose <b>Enter
+                                            schema</b>.</p>
+                                </li><li>
+                                    <p>Enter your schema into the text box. You must format the
+                                        schema as valid JSON text.</p>
+                                </li><li>
+                                    <p>In the <b>Models</b> section, choose the
+                                        <b>Edit</b> button next to any attribute to
+                                        open its properties. Set the <b>Relationship</b>
+                                        and <b>Value</b> fields as needed, then choose
+                                        <b>Set</b> to save the attribute.</p>
+                                    <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>For information about an attribute's definition,
+                                            choose the <b>Info</b> icon next to the
+                                            attribute's name. For a reference on how to set
+                                            attribute properties in your event, open the
+                                            <b>Note</b> section of the attribute
+                                            properties dialog box.</p><p>To delete an attribute's properties, choose the
+                                            <b>Edit</b> button for that attribute,
+                                            then choose <b>Clear</b>.</p></div></div>
+                                </li><li>
+                                    <p>Choose <b>Generate event pattern in JSON</b>
+                                        to generate and validate your event pattern as JSON text.
+                                    </p>
+                                </li><li>
+                                    <p>(Optional) To test the sample event against your test pattern, choose <b>Test pattern</b>. </p>
+                                    <p>EventBridge displays a message box stating whether your sample event matches the event pattern.</p>
+                                    <p>You can also choose any of the following options:</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p><b>Copy</b> – Copy the event
+                                                pattern to your device's clipboard.</p>
+                                        </li><li class="listitem">
+                                            <p><b>Prettify</b> – Makes the
+                                                JSON text easier to read by adding line breaks,
+                                                tabs, and spaces.</p>
+                                        </li></ul></div>
+                                </li></ol></div>
+                        </dd>
+                    
+                    <dt>Event pattern</dt><dd tab-id="event-pattern">
+                            <p>To write a custom event pattern in JSON format, do the
+                                following:</p>
+                            <div class="orderedlist">
+                                 
+                                 
+                                 
+                            <ol><li>
+                                    <p>In the <b>Creation method</b> section, for
+                                        <b>Method</b>, choose <b>Custom pattern
+                                            (JSON editor)</b>.</p>
+                                </li><li>
+                                    <p>For <b>Event pattern</b>, enter your custom
+                                        event pattern in JSON-formatted text. </p>
+                                </li><li>
+                                    <p>(Optional) To test the sample event against your test pattern, choose <b>Test pattern</b>. </p>
+                                    <p>EventBridge displays a message box stating whether your sample event matches the event pattern.</p>
+                                    <p>You can also choose any of the following options:</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p><b>Copy</b> – Copy the event
+                                                pattern to your device's clipboard.</p>
+                                        </li><li class="listitem">
+                                            <p><b>Prettify</b> – Makes the
+                                                JSON text easier to read by adding line breaks,
+                                                tabs, and spaces.</p>
+                                        </li><li class="listitem">
+                                            <p><b>Event pattern form</b> –
+                                                Opens the event pattern in Pattern Builder. If the
+                                                pattern can't be rendered in Pattern Builder as-is,
+                                                EventBridge warns you before it opens Pattern
+                                                Builder.</p>
+                                        </li></ul></div>
+                                </li></ol></div>
+                        </dd>
+                </dl></awsdocs-tabs>
+            </li><li>
+                <p>Choose <b>Next</b>.</p>
+            </li></ol></div>
+      
+        <h2 id="eb-create-rule-target">Select targets</h2>
+        <p>Choose one or more targets to receive events that match the specified pattern. Targets
+            can include an EventBridge event bus, EventBridge API destinations, including SaaS partners such as
+            Salesforce, or another AWS service.</p>
+        
+        <div class="procedure"><h6 class="awsdocs-block-title">To select targets</h6><ol><li>
+                <p>For <b>Target type</b>, choose one of the following
+                    target types:</p>
+                
+                <awsdocs-tabs><dl style="display: none">
+                    <dt>Event bus</dt><dd tab-id="event-bus">
+                            <div class="orderedlist">
+                                 
+                                 
+                                 
+                                 
+                            <ol><li><p>Select <b>EventBridge event bus</b>.</p></li><li><p>Choose the event bus to use as the target.</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p>To use an event bus in the same AWS Region as this rule:
+                                            </p>
+                                            <div class="orderedlist">
+                                                 
+                                                 
+                                            <ol><li><p>Select <b>Event bus in the same account and
+                                                    Region</b>.</p></li><li><p>For <b>Event bus for
+                                                    target</b>, choose the dropdown box and enter the
+                                                    name of the event bus. You can also select the event bus from the
+                                                    dropdown list.</p>
+                                                    <p>For more information, see <a href="./eb-bus-to-bus.html">Sending events between event buses in the same account and Region in Amazon EventBridge</a>.</p>
+                                                </li></ol></div>
+                                        </li><li class="listitem">
+                                            <p>To use an event bus in a different AWS Region or account as this rule:</p>
+                                            <div class="orderedlist">
+                                                 
+                                                 
+                                            <ol><li><p>Select <b>Event bus in a different account or Region</b>.</p></li><li><p>For <b>Event bus as target</b>, enter the ARN of the event bus you want to use.</p>
+                                                    <p>For more information, see:
+                                                    </p>
+                                                    <div class="itemizedlist">
+                                                         
+                                                         
+                                                    <ul class="itemizedlist"><li class="listitem"><p><a href="./eb-cross-account.html">Sending and receiving events between AWS accounts in Amazon EventBridge</a></p></li><li class="listitem"><p><a href="./eb-cross-region.html">Sending and receiving events between AWS Regions in Amazon EventBridge</a></p></li></ul></div>
+                                                </li></ol></div>
+                                        </li></ul></div>
+                                </li><li>
+                                    <p>For many target types, 
+                                        EventBridge needs permissions to send events to the target. 
+                                        In these cases, EventBridge can create the IAM role needed for your rule to run. </p>
+                                    <p>For <b>Execution role</b>, do one of the following:</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p>To create a new execution role for this rule:</p>
+                                            <div class="orderedlist">
+                                                 
+                                                 
+                                            <ol><li><p>Select <b>Create
+                                                    a new role for this specific resource</b>.</p></li><li><p>Either enter
+                                                    a name for this execution role, or use the name generated by
+                                                    EventBridge.</p></li></ol></div>
+                                        </li><li class="listitem">
+                                            <p>To use an existing execution role for this rule:</p>
+                                            <div class="orderedlist">
+                                                 
+                                                 
+                                            <ol><li><p>Select <b>Use existing role</b>.</p></li><li><p>Enter or select the name of the execution role to use
+                                                    from the dropdown list.</p></li></ol></div>
+                                        </li></ul></div>
+                                </li><li>
+                                    <p>(Optional) For <b>Additional settings</b>, specify any of the optional settings available for your target type:</p>
+                                    <p>(Optional) For <b>Dead-letter queue</b>, choose whether to use a standard
+                                        Amazon SQS queue as a dead-letter queue. EventBridge sends events that match this rule to
+                                        the dead-letter queue if they are not successfully delivered to the target. Do
+                                        one of the following:</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p>Choose <b>None</b> to not use a dead-letter
+                                                queue.</p>
+                                        </li><li class="listitem">
+                                            <p>Choose <b>Select an Amazon SQS queue in the current AWS
+                                                account to use as the dead-letter queue</b> and then select
+                                                the queue to use from the drop-down list.</p>
+                                        </li><li class="listitem">
+                                            <p>Choose <b>Select an Amazon SQS queue in an other AWS
+                                                account as a dead-letter queue</b> and then enter
+                                                the ARN of the queue to use. You must attach a
+                                                resource-based policy to the queue that grants EventBridge
+                                                permission to send messages to it. </p>
+                                            <p>For more information, see <a href="./eb-rule-dlq.html#eb-dlq-perms">Granting permissions to the dead-letter queue</a>.</p>
+                                        </li></ul></div>
+                                </li></ol></div>
+
+                        </dd>
+                    
+                    <dt>API destination</dt><dd tab-id="api-destination">
+                            <div class="orderedlist">
+                                 
+                                 
+                                 
+                                 
+                            <ol><li><p>Select <b>EventBridge API destination</b>.</p></li><li><p>Choose a new or existing API destination:</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                        
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p>To use an existing API destination, select <b>Use an existing API destination</b>. Then select an API destination from
+                                                the dropdown list.</p>
+                                        </li><li class="listitem">
+                                            <p>To create a new API destination, select <b>Create a new
+                                                API destination</b>. Then, provide the following
+                                                details for the destination:</p>
+                                            <div class="itemizedlist">
+                                                 
+                                                 
+                                                 
+                                                 
+                                                 
+                                                 
+                                            <ul class="itemizedlist"><li class="listitem">
+                                                    <p><b>Name</b> – Enter a name for
+                                                        the destination. </p>
+                                                    <p>Names must be unique within your
+                                                        AWS account. Names can have up to 64 characters. Valid
+                                                        characters are <b>A-Z</b>,
+                                                        <b>a-z</b>, <b>0-9</b>, and <b>.</b>
+                                                        <b>_</b>
+                                                        <b>-</b> (hyphen).</p>
+                                                </li><li class="listitem">
+                                                    <p>(Optional) <b>Description</b> –
+                                                        Enter a description for the destination. </p>
+                                                    <p>Descriptions
+                                                        can have up to 512 characters.</p>
+                                                </li><li class="listitem">
+                                                    <p><b>API destination endpoint</b> –
+                                                        The URL endpoint for the target. </p>
+                                                    <p>The endpoint URL must
+                                                        start with <code class="userinput">https</code>. You can include
+                                                        the <code class="userinput">*</code> as a path parameter
+                                                        wildcard. You can set path parameters from the target's
+                                                        <code class="code">HttpParameters</code> attribute.</p>
+                                                </li><li class="listitem">
+                                                    <p><b>HTTP method</b> – Select the
+                                                        HTTP method used when you invoke the endpoint.</p>
+                                                </li><li class="listitem">
+                                                    <p>(Optional) <b>Invocation rate limit per
+                                                        second</b> – Enter the maximum number
+                                                        of invocations accepted for each second for this
+                                                        destination. </p>
+                                                    <p>This value must be greater than zero. By
+                                                        default, this value is set to 300.</p>
+                                                </li><li class="listitem">
+                                                    <p><b>Connection</b> – Choose to use a new or existing connection:
+                                                    </p>
+                                                    <div class="itemizedlist">
+                                                         
+                                                         
+                                                    <ul class="itemizedlist"><li class="listitem"><p>To use an
+                                                            existing connection, select <b>Use an existing
+                                                                connection</b> and select the connection from
+                                                            the dropdown list. </p></li><li class="listitem"><p>To create a new connection for this
+                                                            destination select <b>Create a new
+                                                                connection</b>, then define the connection's
+                                                            <b>Name</b>, <b>Destination
+                                                                type</b>, and <b>Authorization
+                                                                    type</b>. You can also add an optional
+                                                            <b>Description</b> for this
+                                                            connection.</p></li></ul></div>
+                                                </li></ul></div>
+                                        </li></ul></div>
+                                </li><li>
+                                    <p>For many target types, 
+                                        EventBridge needs permissions to send events to the target. 
+                                        In these cases, EventBridge can create the IAM role needed for your rule to run. </p>
+                                    <p>For <b>Execution role</b>, do one of the following:</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p>To create a new execution role for this rule:</p>
+                                            <div class="orderedlist">
+                                                 
+                                                 
+                                            <ol><li><p>Select <b>Create
+                                                    a new role for this specific resource</b>.</p></li><li><p>Either enter
+                                                    a name for this execution role, or use the name generated by
+                                                    EventBridge.</p></li></ol></div>
+                                        </li><li class="listitem">
+                                            <p>To use an existing execution role for this rule:</p>
+                                            <div class="orderedlist">
+                                                 
+                                                 
+                                            <ol><li><p>Select <b>Use existing role</b>.</p></li><li><p>Enter or select the name of the execution role to use
+                                                    from the dropdown list.</p></li></ol></div>
+                                        </li></ul></div>
+                                </li><li>
+                                    <p>(Optional) For <b>Additional settings</b>, specify any of the optional settings available for your target type:</p>
+                                    <p>Note that EventBridge may not display all of the following fields for a given AWS service.</p>
+                                    <div class="orderedlist">
+                                  
+                                 
+                                 
+                            <ol><li>
+            <p>(Optional) For Configure target input, choose how you want to customize the text
+                sent to the target for matching events. Choose one of the following:</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><b>Matched events</b> – EventBridge sends the entire
+                        original source event to the target. This is the default.</p>
+                </li><li class="listitem">
+                    <p><b>Part of the matched events</b> – EventBridge only sends
+                        the specified portion of the original source event to the target.</p>
+                    <p>Under <b>Specify the part of the matched event</b>, specify
+                        a JSON path that defines the part of the event you want EventBridge to send to the
+                        target.</p>
+                </li><li class="listitem">
+                    <p><b>Constant (JSON text)</b> – EventBridge sends only the
+                        specified JSON text to the target. No part of the original source event is
+                        sent.</p>
+                    <p>Under <b>Specify the constant in JSON</b>, specify the JSON
+                        text that you want EventBridge to send to the target instead of the event.</p>
+                </li><li class="listitem">
+                    <p><b>Input transformer</b> – Configure an input
+                        transformer to customize the text you want EventBridge send to the target. For more
+                        information, see <a href="./eb-transform-target-input.html">Amazon EventBridge input transformation</a>.</p>
+                    <div class="orderedlist">
+                         
+                         
+                    <ol><li>
+                            <p>Select <b>Configure input transformer</b>.</p>
+                        </li><li>
+                            <p>Configure the input transformer following the steps in <a href="./eb-transform-input-rule.html">Configuring an input transformer when creating a rule in EventBridge</a>.</p>
+                        </li></ol></div>
+                </li></ul></div> 
+        </li><li>
+                                    <p>(Optional) Under <b>Retry policy</b>,
+                                        specify how EventBridge should retry sending an event to a target
+                                        after an error occurs.</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p><b>Maximum age of event</b> –
+                                                Enter the maximum amount of time (in hours, minutes,
+                                                and seconds) for EventBridge to retain unprocessed events.
+                                                The default is 24 hours.</p>
+                                        </li><li class="listitem">
+                                            <p><b>Retry attempts</b> – Enter
+                                                the maximum number of times EventBridge should retry
+                                                sending an event to the target after an error
+                                                occurs. The default is 185 times.</p>
+                                        </li></ul></div>
+                                </li><li>
+                                    <p>(Optional) For <b>Dead-letter queue</b>,
+                                        choose whether to use a standard Amazon SQS queue as a
+                                        dead-letter queue. EventBridge sends events that match this rule to
+                                        the dead-letter queue if they are not successfully delivered
+                                        to the target. Do one of the following:</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p>Choose <b>None</b> to not use a
+                                                dead-letter queue.</p>
+                                        </li><li class="listitem">
+                                            <p>Choose <b>Select an Amazon SQS queue in the
+                                                  current AWS account to use as the dead-letter
+                                                  queue</b> and then select the queue to use
+                                                from the drop-down list.</p>
+                                        </li><li class="listitem">
+                                            <p>Choose <b>Select an Amazon SQS queue in an other
+                                                  AWS account as a dead-letter queue</b>
+                                                and then enter the ARN of the queue to use. You must
+                                                attach a resource-based policy to the queue that
+                                                grants EventBridge permission to send messages to it. </p>
+                                            <p>For more information, see <a href="./eb-rule-dlq.html#eb-dlq-perms">Granting permissions to the dead-letter queue</a>.</p>
+                                        </li></ul></div>
+                                </li></ol></div>
+                                </li></ol></div>
+       
+                            <p>For more information, see <a href="./eb-api-destinations.html">API destinations as targets in Amazon EventBridge</a>.</p>
+                        </dd>
+                    
+                    <dt>AWS service</dt><dd tab-id="aws-service">
+                            <div class="orderedlist">
+                                 
+                                 
+                                 
+                                
+
+                                 
+                            <ol><li><p>Select <b>AWS service</b>.</p></li><li>
+                                    <p>For <b>Select a target</b>, select an
+                                        AWS service to use as the target. </p>
+                                    
+                                </li><li>
+                                    <p>If you choose an AWS service that supports cross-account targets, you can select a target in the same account as the event bus, or a different account.</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem"><p>For a target in the same account, for <b>Target type</b> select <b>Target in this account</b>.</p>
+                                        <div class="orderedlist">
+                                             
+                                             
+                                        <ol><li><p>Provide the information
+                                                requested for the service you select.</p>
+                                                <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Note</div></div><div class="awsdocs-note-text"><p>The fields displayed vary depending on the service selected. For more information about available targets, see 
+                                                        <a href="./eb-targets.html#eb-console-targets">Event bus targets available in the EventBridge console</a>.</p></div></div></li><li>
+                                                <p>For many target types, 
+                                                    EventBridge needs permissions to send events to the target. 
+                                                    In these cases, EventBridge can create the IAM role needed for your rule to run. </p>
+                                                <p>For <b>Execution role</b>, do one of the following:</p>
+                                                <div class="itemizedlist">
+                                                     
+                                                     
+                                                <ul class="itemizedlist"><li class="listitem">
+                                                        <p>To create a new execution role for this rule:</p>
+                                                        <div class="orderedlist">
+                                                             
+                                                             
+                                                        <ol><li><p>Select <b>Create
+                                                                a new role for this specific resource</b>.</p></li><li><p>Either enter
+                                                                a name for this execution role, or use the name generated by
+                                                                EventBridge.</p></li></ol></div>
+                                                    </li><li class="listitem">
+                                                        <p>To use an existing execution role for this rule:</p>
+                                                        <div class="orderedlist">
+                                                             
+                                                             
+                                                        <ol><li><p>Select <b>Use existing role</b>.</p></li><li><p>Enter or select the name of the execution role to use
+                                                                from the dropdown list.</p></li></ol></div>
+                                                    </li></ul></div>
+                                                <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><div class="awsdocs-block-title">Role manager enabled</div></div><div class="awsdocs-note-text"><p>If role manager is enabled in your account, EventBridge attaches the role for you.
+                                                        EventBridge replaces the <b>Create a new role for this specific resource</b> and
+                                                        <b>Use existing role</b> options with a <b>Customize</b> option.
+                                                        To use a different role, choose <b>Customize</b>. For more information, see
+                                                        <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html">IAM role creation</a>
+                                                        in the <em>IAM User Guide</em>.</p></div></div>
+                                            </li></ol></div></li><li class="listitem"><p>For a target in a different account, for <b>Target type</b> select <b>Target in another AWS account</b>.</p>
+                                        <div class="orderedlist">
+                                             
+                                             
+                                             
+                                        <ol><li><p>Enter the ARN of the target resource to which you want to send events.</p></li><li><p>Provide any additional information
+                                                requested for the service you select.</p>
+                                            </li><li><p>Select the name of the execution role to use
+                                                from the dropdown list.</p></li></ol></div></li></ul></div>
+                                </li><li>
+                                    <p>(Optional) For <b>Additional settings</b>, specify any of the optional settings available for your target type:</p>
+                                    <div class="orderedlist">
+                                  
+                                 
+                                 
+                            <ol><li>
+            <p>(Optional) For Configure target input, choose how you want to customize the text
+                sent to the target for matching events. Choose one of the following:</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><b>Matched events</b> – EventBridge sends the entire
+                        original source event to the target. This is the default.</p>
+                </li><li class="listitem">
+                    <p><b>Part of the matched events</b> – EventBridge only sends
+                        the specified portion of the original source event to the target.</p>
+                    <p>Under <b>Specify the part of the matched event</b>, specify
+                        a JSON path that defines the part of the event you want EventBridge to send to the
+                        target.</p>
+                </li><li class="listitem">
+                    <p><b>Constant (JSON text)</b> – EventBridge sends only the
+                        specified JSON text to the target. No part of the original source event is
+                        sent.</p>
+                    <p>Under <b>Specify the constant in JSON</b>, specify the JSON
+                        text that you want EventBridge to send to the target instead of the event.</p>
+                </li><li class="listitem">
+                    <p><b>Input transformer</b> – Configure an input
+                        transformer to customize the text you want EventBridge send to the target. For more
+                        information, see <a href="./eb-transform-target-input.html">Amazon EventBridge input transformation</a>.</p>
+                    <div class="orderedlist">
+                         
+                         
+                    <ol><li>
+                            <p>Select <b>Configure input transformer</b>.</p>
+                        </li><li>
+                            <p>Configure the input transformer following the steps in <a href="./eb-transform-input-rule.html">Configuring an input transformer when creating a rule in EventBridge</a>.</p>
+                        </li></ol></div>
+                </li></ul></div> 
+        </li><li>
+                                    <p>(Optional) Under <b>Retry policy</b>,
+                                        specify how EventBridge should retry sending an event to a target
+                                        after an error occurs.</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p><b>Maximum age of event</b> –
+                                                Enter the maximum amount of time (in hours, minutes,
+                                                and seconds) for EventBridge to retain unprocessed events.
+                                                The default is 24 hours.</p>
+                                        </li><li class="listitem">
+                                            <p><b>Retry attempts</b> – Enter
+                                                the maximum number of times EventBridge should retry
+                                                sending an event to the target after an error
+                                                occurs. The default is 185 times.</p>
+                                        </li></ul></div>
+                                </li><li>
+                                    <p>(Optional) For <b>Dead-letter queue</b>,
+                                        choose whether to use a standard Amazon SQS queue as a
+                                        dead-letter queue. EventBridge sends events that match this rule to
+                                        the dead-letter queue if they are not successfully delivered
+                                        to the target. Do one of the following:</p>
+                                    <div class="itemizedlist">
+                                         
+                                         
+                                         
+                                    <ul class="itemizedlist"><li class="listitem">
+                                            <p>Choose <b>None</b> to not use a
+                                                dead-letter queue.</p>
+                                        </li><li class="listitem">
+                                            <p>Choose <b>Select an Amazon SQS queue in the
+                                                  current AWS account to use as the dead-letter
+                                                  queue</b> and then select the queue to use
+                                                from the drop-down list.</p>
+                                        </li><li class="listitem">
+                                            <p>Choose <b>Select an Amazon SQS queue in an other
+                                                  AWS account as a dead-letter queue</b>
+                                                and then enter the ARN of the queue to use. You must
+                                                attach a resource-based policy to the queue that
+                                                grants EventBridge permission to send messages to it. </p>
+                                            <p>For more information, see <a href="./eb-rule-dlq.html#eb-dlq-perms">Granting permissions to the dead-letter queue</a>.</p>
+                                        </li></ul></div>
+                                </li></ol></div>
+                                </li></ol></div>
+                        </dd>
+                </dl></awsdocs-tabs>
+                
+                
+            </li><li>
+                <p>(Optional) Choose <b>Add another target</b> to add another target for
+                    this rule.</p>
+            </li><li>
+                <p>Choose <b>Next</b>.</p>
+            </li></ol></div>
+
+     
+        <h2 id="eb-create-rule-review">Configure tags and review rule</h2>
+        <p>Finally, enter any desired tags for the rule, then review and create the rule.</p>
+        <div class="procedure"><h6 class="awsdocs-block-title">To configure tags, and review and create the rule</h6><ol><li>
+                <p>(Optional) Enter one or more tags for the rule. For more information, see
+                        <a href="./eb-tagging.html">Tagging resources in Amazon EventBridge</a>.</p>
+            </li><li>
+                <p>Choose <b>Next</b>.</p>
+            </li><li>
+                <p>Review the details for the new rule. To make changes to any section, choose
+                    the <b>Edit</b> button next to that section.</p>
+                <p>When satisfied with the rule details, choose <b>Create
+                    rule</b>.</p>
+            </li></ol></div>
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Warning" /> <strong>Javascript is disabled or is unavailable in your browser.</strong></p><p>To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Document Conventions</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./eb-create-rule-visual.html">Creating rules (Enhanced Builder)</div><div id="next" class="next-link" accesskey="n" href="./eb-delete-rule.html">Disabling or deleting a rule</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">Did this page help you? - Yes</div><div class="content"><p>Thanks for letting us know we're doing a good job!</p><p>If you've got a moment, please tell us what we did right so we can do more of it.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=EventBridge&amp;topic_url=https://docs.aws.amazon.com/en_us/eventbridge/latest/userguide/eb-create-rule-wizard.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">Did this page help you? - No</div><div class="content"><p>Thanks for letting us know this page needs work. We're sorry we let you down.</p><p>If you've got a moment, please tell us how we can make the documentation better.</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="Feedback" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=EventBridge&amp;topic_url=https://docs.aws.amazon.com/en_us/eventbridge/latest/userguide/eb-create-rule-wizard.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>
