@@ -104,7 +104,7 @@
           "id": "tb3",
           "purpose": "mechanism",
           "title": "How the check works",
-          "content": "IPv4 subnet sizes range from /16 to /28; AWS reserves the first four addresses and the last address of each subnet.\n\nChoose subnet ranges inside the VPC that do not intersect, and allow for the five reserved addresses when checking usable capacity.\n\nEach subnet resides entirely in one Availability Zone; create separate subnets for workloads in different Availability Zones.",
+          "content": "IPv4 subnet sizes range from /16 to /28. For ordinary AWS-provided IPv4 subnet ranges, AWS reserves the first four addresses and the last address. With BYOIP, you can use all addresses in the brought IPv4 range, including the network and broadcast addresses.\n\nChoose subnet ranges inside the VPC that do not intersect. When checking usable capacity for ordinary AWS-provided IPv4 ranges, allow for the five reserved addresses; do not apply that subtraction to a BYOIP range.\n\nEach subnet resides entirely in one Availability Zone; create separate subnets for workloads in different Availability Zones.",
           "fact_ids": [
             "f2",
             "f3",
@@ -115,7 +115,7 @@
           "id": "tb4",
           "purpose": "example",
           "title": "Work through one sandbox case",
-          "content": "Take a supplied VPC range of 10.20.0.0/16. Two candidate subnets are 10.20.1.0/24 and 10.20.2.0/24. They lie inside that VPC and do not intersect. A /24 contains 256 addresses; after the five AWS reservations, 251 remain usable. For 10.20.1.0/24, the reserved addresses are .0 through .3 and .255. Compare 251 with the supplied capacity requirement, not 256. Place the two separate subnets in the two intended Availability Zones. Now consider changing the second candidate to 10.20.1.128/25: that range lies inside the first subnet, so it fails the nonoverlap check even though it is inside the VPC. Containment and nonoverlap are distinct tests, and both must pass.",
+          "content": "For an ordinary AWS-provided IPv4 range, take a supplied VPC CIDR of 10.20.0.0/16. Two candidate subnets are 10.20.1.0/24 and 10.20.2.0/24. They lie inside that VPC and do not intersect. A /24 contains 256 addresses; after the five AWS reservations, 251 remain usable. For 10.20.1.0/24, the reserved addresses are .0 through .3 and .255. Compare 251 with the supplied capacity requirement, not 256. Place the two separate subnets in the two intended Availability Zones. Now consider changing the second candidate to 10.20.1.128/25: that range lies inside the first subnet, so it fails the nonoverlap check even though it is inside the VPC. Containment and nonoverlap are distinct tests, and both must pass.",
           "fact_ids": [
             "f1",
             "f2",
@@ -127,7 +127,7 @@
           "id": "tb5",
           "purpose": "misconception",
           "title": "Do not confuse the evidence",
-          "content": "A larger VPC does not make overlapping subnet ranges valid. Nor does an address count before reservations establish usable capacity. Check the VPC boundary, intersections with other subnets, and usable addresses separately; a subnet also belongs wholly to one Availability Zone.",
+          "content": "A larger VPC does not make overlapping subnet ranges valid. For ordinary AWS-provided IPv4 ranges, an address count before the five reservations does not establish usable capacity. BYOIP permits use of all addresses in the brought range, including network and broadcast addresses. Check the VPC boundary, intersections with other subnets, and usable addresses separately; a subnet also belongs wholly to one Availability Zone.",
           "fact_ids": [
             "f1",
             "f2",
@@ -1700,23 +1700,28 @@
           "id": "tb3",
           "purpose": "mechanism",
           "title": "How the check works",
-          "content": "EvaluationPeriods is the number of evaluated periods, and DatapointsToAlarm is the number of breaching datapoints required within that window.\n\nSet the supplied metric, statistic, period, comparison operator and threshold along with the evaluation counts; compare the resulting state with the supplied samples.\n\nMissing-data settings are breaching, notBreaching, ignore (retain current state), and missing (insufficient data when all datapoints are missing); missing is the default.",
+          "content": "EvaluationPeriods is the number of evaluated periods, and DatapointsToAlarm is the number of breaching datapoints required within that window.\n\nSet the supplied metric, statistic, period, comparison operator and threshold along with the evaluation counts; compare the resulting state with the supplied samples.\n\nMissing-data settings are breaching, notBreaching, ignore (retain current state), and missing (insufficient data when all datapoints are missing); missing is the default.\n\nBefore applying a missing-data setting, establish what CloudWatch retrieved. With the default sliding evaluation window, CloudWatch attempts to retrieve more datapoints than EvaluationPeriods. This evaluation range depends on the period and metric resolution. A wall clock evaluation window instead retrieves only the datapoints within its aligned window.\n\nIf the evaluation range contains at least EvaluationPeriods real datapoints, CloudWatch evaluates the most recent EvaluationPeriods real points, using older real points as needed. It ignores the missing-data setting in this case. If fewer real points are retrieved, CloudWatch includes all of them and fills only as many missing points as necessary using the configured treatment.",
           "fact_ids": [
             "f2",
             "f3",
-            "f4"
+            "f4",
+            "f5",
+            "f6",
+            "f7"
           ]
         },
         {
           "id": "tb4",
           "purpose": "example",
           "title": "Work through one sandbox case",
-          "content": "Suppose the approved samples for three evaluated periods are above, below and above the supplied threshold. Set EvaluationPeriods to 3 and DatapointsToAlarm to 2 for this example, alongside the supplied metric, statistic, period and comparison operator. There are two breaching datapoints in that window, matching the stated count requirement. Now examine the supplied missing-sample case with its selected missing-data policy. Do not silently treat a gap as a real zero or a real breach: use breaching, notBreaching, ignore or missing as configured. For the all-missing case, missing yields insufficient data; ignore retains the current state. Compare the resulting state with the supplied cases and retain the settings with the sample evidence.",
+          "content": "Suppose the approved samples for three evaluated periods are above, below and above the supplied threshold. Set EvaluationPeriods to 3 and DatapointsToAlarm to 2 for this example, alongside the supplied metric, statistic, period and comparison operator. There are two breaching datapoints in that window, matching the stated count requirement. Now examine the supplied missing-sample case with its selected missing-data policy. First check the retrieved evaluation range: if it supplies at least three real points, evaluate the most recent three real points and ignore the missing-data setting. Only when too few real points are retrieved should the configured treatment fill the minimum necessary gaps. Do not silently treat a gap as a real zero or a real breach. For the all-missing case, missing yields insufficient data; ignore retains the current state. Compare the resulting state with the supplied cases and retain the settings with the sample evidence.",
           "fact_ids": [
             "f1",
             "f2",
             "f3",
-            "f4"
+            "f4",
+            "f6",
+            "f7"
           ]
         },
         {
@@ -1727,6 +1732,16 @@
           "fact_ids": [
             "f2",
             "f4"
+          ]
+        },
+        {
+          "id": "tb6",
+          "purpose": "example",
+          "title": "An older breach amid missing points",
+          "content": "Partially missing data has an important exception: CloudWatch can enter ALARM even with fewer real datapoints than DatapointsToAlarm if the oldest breaching datapoint in the evaluation range is at least as old as DatapointsToAlarm and every more recent datapoint is breaching or missing. In the source’s three-out-of-three example, EvaluationPeriods and DatapointsToAlarm are both 3, the treatment is missing, and the evaluation range has five points. Read these sequences from oldest to newest: “missing, missing, missing, missing, breach” does not immediately cause ALARM, but “missing, missing, breach, missing, missing” does. The second sequence has an older breach followed only by missing points; the first has only a new breach. Do not infer the state solely by counting the available real breaches.",
+          "fact_ids": [
+            "f2",
+            "f8"
           ]
         }
       ],
@@ -1855,16 +1870,6 @@
           "content": "Security groups contain allow rules, not explicit deny rules. Also, a referenced source group does not contribute its own rule list to the destination group. Do not generalize the connection tests to traffic that security groups do not filter.",
           "fact_ids": [
             "f1",
-            "f4",
-            "m1"
-          ]
-        },
-        {
-          "id": "tb6",
-          "purpose": "misconception",
-          "title": "A boundary that changes the interpretation",
-          "content": "Security groups do not filter traffic to Amazon-provided DNS or EC2 instance metadata services.\n\nUsing a security-group ID as an allowed source does not import the referenced group’s rules into the destination group.",
-          "fact_ids": [
             "f4",
             "m1"
           ]
@@ -2410,11 +2415,12 @@
           "id": "tb3",
           "purpose": "mechanism",
           "title": "How the check works",
-          "content": "In a versioning-enabled bucket, a simple delete ordinarily creates a delete marker rather than removing prior versions; deleting a specified version permanently removes it.\n\nTo restore an overwritten object, copy the selected prior version to the same key to create a new current version; to undo a simple deletion, remove its delete marker to expose the preceding version.\n\nInspect noncurrent-version expiration and other lifecycle rules so required recoverable versions remain for the required window.",
+          "content": "In the S3 console, open the bucket’s Properties > Bucket Versioning > Edit > Enable > Save changes. Check the Bucket Versioning setting to verify it is enabled. Apply the supplied lifecycle JSON with the following command, substituting the approved bucket and policy file:\n\naws s3api put-bucket-lifecycle-configuration --bucket <bucket> --lifecycle-configuration file://<policy.json>\n\nThen retrieve the configuration to verify the configured rules:\n\naws s3api get-bucket-lifecycle-configuration --bucket <bucket>\n\nIn a versioning-enabled bucket, a simple delete ordinarily creates a delete marker rather than removing prior versions; deleting a specified version permanently removes it.\n\nTo restore an overwritten object, copy the selected prior version to the same key to create a new current version; to undo a simple deletion, remove its delete marker to expose the preceding version.\n\nInspect noncurrent-version expiration and other lifecycle rules so required recoverable versions remain for the required window.",
           "fact_ids": [
             "f2",
             "f3",
-            "f4"
+            "f4",
+            "f5"
           ]
         },
         {
@@ -4908,15 +4914,6 @@
             "f2",
             "m1"
           ]
-        },
-        {
-          "id": "tb6",
-          "purpose": "misconception",
-          "title": "A boundary that changes the interpretation",
-          "content": "Changing bucket default encryption does not re-encrypt objects that already exist; their individual encryption settings still matter.",
-          "fact_ids": [
-            "m1"
-          ]
         }
       ],
       "video_need": {
@@ -5357,19 +5354,9 @@
           "id": "tb5",
           "purpose": "misconception",
           "title": "Do not confuse the evidence",
-          "content": "Base64 encoding is not encryption. Also, ConfigMap-backed environment variables do not automatically update inside already-running containers after the ConfigMap changes. Test the intended consumer and protect secret values instead of exposing them for inspection.",
+          "content": "Base64 encoding is not encryption. Test the intended consumer and protect secret values instead of exposing them for inspection.",
           "fact_ids": [
-            "f4",
-            "m1"
-          ]
-        },
-        {
-          "id": "tb6",
-          "purpose": "misconception",
-          "title": "A boundary that changes the interpretation",
-          "content": "Environment variables populated from a ConfigMap do not automatically update inside already-running containers when the ConfigMap changes.",
-          "fact_ids": [
-            "m1"
+            "f4"
           ]
         }
       ],
@@ -7860,15 +7847,6 @@
             "f4",
             "m1"
           ]
-        },
-        {
-          "id": "tb6",
-          "purpose": "misconception",
-          "title": "A boundary that changes the interpretation",
-          "content": "Force-unlock is not a safe way to bypass another active state writer; it is reserved for a lock from a failed operation when automatic unlocking failed.",
-          "fact_ids": [
-            "m1"
-          ]
         }
       ],
       "video_need": {
@@ -7928,20 +7906,10 @@
           "id": "tb5",
           "purpose": "misconception",
           "title": "Do not confuse the evidence",
-          "content": "A notification is not approval authority, and approval of one revision is not the recorded approval of another. Verify the intended execution/revision stops and advances only after its authorized approval.",
+          "content": "Approval of one revision is not the recorded approval of another. Verify the intended execution/revision stops and advances only after its authorized approval.",
           "fact_ids": [
             "f2",
-            "f3",
-            "m1"
-          ]
-        },
-        {
-          "id": "tb6",
-          "purpose": "misconception",
-          "title": "A boundary that changes the interpretation",
-          "content": "Receiving an approval notification does not itself grant permission to approve the action; approval requires the appropriate authorization.",
-          "fact_ids": [
-            "m1"
+            "f3"
           ]
         }
       ],
