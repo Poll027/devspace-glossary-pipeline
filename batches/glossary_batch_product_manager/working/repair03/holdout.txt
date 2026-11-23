@@ -1,0 +1,210 @@
+https://amplitude.com/docs/feature-experiment/advanced-techniques/holdout-groups-exclude-users
+Holdout groups | Amplitude Docs
+DocsGet Started
+ProductsAdmin
+Developers
+Search docs…⌘ K/Full width
+Feature Experiment
+/
+Group Experiments
+/
+Holdout groups
+Holdout groups
+Sometimes you need to prevent a percentage of users from viewing an experiment. This matters most when you measure the long-term, combined effects of multiple experiments. Statistical significance in one experiment may not reflect the true, cumulative impact of your experimentation program.
+To exclude users from your experiments, create a holdout group. Holdout groups measure the long-term impact of your rolled-out variants and the lift of your experimentation program as a whole. A holdout group retains a set of users from previous experiments and shows them the winning combinations of past results. This group then gives you true measures of success for your previous experiments.
+Your holdout groups experience previous experiments. You can set up dependencies that control which experiments the holdout group sees. For more information, go to Flag dependencies.
+Plan availabilityHoldout groups is available as an add-on on the Growth and Enterprise plans.
+Create a holdout group
+Holdout groups can contain a mix of web experiments and feature experiments.
+When you use holdout groups, note the following:
+Set the holdout percentage between 1% and 10%: Withholding a significant part of your total traffic can extend the time your experiments need to reach a conclusion.
+Add experiments to a holdout group before they start running: Adding running experiments to a holdout group can compromise the integrity of your data because Amplitude unassigns users from the active experiments.
+Don't remove a running experiment from a holdout group: Removing a running experiment compromises the integrity of your data because Amplitude assigns users to the active experiments.
+Don't delete a holdout group with running experiments: To protect your running experiment's data, delete the holdout group after all experiments in the group conclude.To create a holdout group
+In the Experiment functionality, go to Experiments > Mutex and Holdouts tab.
+To add a new holdout group to your project, click Add a new holdout group.
+If you have existing groups, click Create A New Group, and then select Holdout Group.
+In the Holdout group settings modal, enter the name, description, and holdout percentage for the group. You can also view and change advanced settings such as the evaluation mode and bucketing key of your group.
+You can't change the holdout percentage after you create a group. This restriction ensures consistent bucketing and a consistent user experience.
+Click Add Experiment to add experiments to your holdout group.
+(Optional) Specify individuals or cohorts to include in or exclude from your holdout group. From either the Individuals or Cohorts tabs, add a user or cohort under Include in holdout or Exclude from holdout. This option ensures that Amplitude always holds out or never holds out specific users from the holdout group.
+Don't add the same users or cohorts to both the Include a holdout and Exclude from holdout slots. The Include a holdout slot determines inclusion.
+Click Add Group to finish the process.
+Manage holdout groups
+Manage your holdout groups from the Experiment Groups tab or from within an experiment:
+In the Mutex and Holdout tab, scroll down the table until you find the group you want to edit.
+Click the edit icon.
+Make your changes in the Holdout group settings modal and click Save.
+If you're within an experiment that's part of a holdout group, follow these steps:
+Click the name of the group you want to edit.
+Make your changes in the Holdout group settings modal and click Save.
+Analyze a holdout group
+Analyze your holdout groups using an Experiment Results chart.To create a pre-populated Experiment Results chart
+Navigate to the Experiments page and click the Mutex and Holdout tab.
+Find the holdout group you want to analyze and click the Analyze icon.
+Click Open in Chart.
+A new Experiment Results chart opens, with the following fields complete:
+Exposure event
+Segments for Holdout and On
+Statistical method set to T-test (Samples per variant needed set to 10,000)
+Analysis date range
+From here, select the primary metric and start analyzing the impact of your holdout group.
+Advanced use cases
+Streamline multiple experiments and holdout groups
+Adding an experiment to multiple holdout groups can limit the experiment's traffic. Experiment evaluates each user for each holdout group they belong to.
+For example, you have the following two holdout groups:
+Holdout group 1: This group contains Experiment A and Experiment B, with a holdout percentage of 5%.
+Holdout group 2: The second group contains Experiment A and Experiment C, also with a holdout percentage of 5%.
+Because Experiment A is part of both holdout groups (1 and 2), it receives the majority of the total traffic, or 0.95 * 0.95 = 0.9025 (90.25%).
+Instead of adding an experiment to multiple holdout groups, create a single group with all the relevant experiments. A single group distributes traffic more evenly across experiments.
+In the example above, you create one holdout group that contains all three experiments (A, B, and C).
+Manage experiments with holdout groups and mutual exclusion
+Adding an experiment to a holdout group and a mutual exclusion group further limits the amount of traffic to the experiment. Experiment evaluates each user for both the holdout group and the mutual exclusion group.
+For example, consider the following holdout group and mutual exclusion group:
+The holdout group has a holdout percentage of 5% and contains Experiment A.
+The mutual exclusion group directs half the traffic to Experiment A in slot 1, and the other half to Experiment B in slot 2.
+In this scenario, Experiment A receives about half of the total traffic, or 0.95 * 0.5 = 0.475 (47.5%).
+You can use holdout groups with mutual exclusion, but watch for the potential traffic limits as you plan and roll out your experiments.
+For more information, refer to mutual exclusion groups.Related:Holdout groups: Advanced use cases·Create a new experiment·Experiment Management API Holdout Group Endpoints·Experiment Management API Holdout Group Endpoints
+Was this helpful?
+For AI agents: a documentation index is available at /docs/llms.txt. Append .md to any page URL for markdown, or send Accept: text/markdown.On this page
+Plan availability
+Create a holdout group
+Manage holdout groups
+Analyze a holdout group
+Advanced use cases
+Streamline multiple experiments and holdout groups
+Manage experiments with holdout groups and mutual exclusion
+Copy Markdown
+On this page
+Plan availability
+Create a holdout group
+Manage holdout groups
+Analyze a holdout group
+Advanced use cases
+Streamline multiple experiments and holdout groups
+Manage experiments with holdout groups and mutual exclusion
+Products
+DataAnalyticsSession ReplayZoning InsightsHeatmapsAmplitude AIAgent AnalyticsWaveAI AssistantWeb ExperimentFeature ExperimentGuides and Surveys
+More
+Get Started
+Admin
+Developers
+SDKs
+APIs
+CLI
+Overview
+Get Started
+Overview
+Experiment Quick Start
+Feature vs Web use cases
+Functional comparison
+Key terms
+Creating Experiments
+Project-level permissions
+Define audience
+Configure delivery
+Notifications through Slack, Microsoft Teams, or Webhook
+Experiment Goals
+Group Experiments
+Mutually exclusive
+Holdout groups
+Estimate duration
+Feature Experiments
+Web Experiments
+Testing Experiments
+Test and launch
+Make a decision
+Run an A/A test
+Analyzing Experiments
+Overview
+The Experiment Analysis view
+Dimensional Analysis
+Advanced metric use cases
+Value calculation in Experiment Analysis charts
+Learn from your experiment
+Understand the cumulative exposures graph
+Troubleshooting
+Troubleshoot
+New Experiment Run
+Exposures w/o assignments
+Sample Ratio Mismatch
+Variant jumping
+Debug metric spikes and dips
+Instrument Experiment
+Configure
+Implement Web Experiment
+Event tracking
+SDK Catalog
+Evaluation
+Experiment Integrations
+Contentful
+Experiment Advanced Concepts
+Data model
+Performance and caching
+AWS CloudFront proxy
+Server-side rendering
+Bonferroni Correction
+JSON payloads
+Advanced settings
+Flag Prerequisites
+Flag Dependencies
+Statistics Method
+Sequential testing
+T-test
+Bayesian
+Multi-armed bandit
+Winsorization
+Language🇺🇸English
+Platform
+AI Agents
+AI Visibility
+AI Feedback
+Amplitude MCP
+Product Analytics
+Web Analytics
+Feature Experimentation
+Feature Management
+Web Experimentation
+Session Replay
+Guides and Surveys
+Activation
+Compare us
+Adobe
+Google Analytics
+Contentsquare
+Fullstory
+Heap
+LaunchDarkly
+Mixpanel
+Optimizely
+Pendo
+PostHog
+Resources
+Resource Library
+Blog
+Agent Prompt Library
+Product Updates
+Amp Champs
+Amplitude Academy
+Events
+Glossary
+llms.txt
+Partners & Support
+Status
+Contact Us
+Customer Help Center
+Community
+Developer Docs
+Partner Program
+Partner Directory
+Become an affiliate
+Company
+About Us
+Careers
+Press & News
+Investor Relations
+Diversity, Equity & Inclusion
+Terms of ServicePrivacy NoticeAcceptable Use PolicyLegalCookie Settings
+EnglishJapanese (日本語)Korean (한국어)
+© 2012–2026 Amplitude, Inc.. All rights reserved. Amplitude is a registered trademark of Amplitude, Inc.

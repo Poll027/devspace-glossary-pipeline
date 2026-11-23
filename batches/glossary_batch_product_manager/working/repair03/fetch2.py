@@ -1,0 +1,20 @@
+exec(open('batches/glossary_batch_product_manager/working/repair03/fetch.py').read().split('urls=')[0])
+urls={
+'values2':'https://www.atlassian.com/company/values',
+'position2':'https://www.atlassian.com/agile/product-management/product-positioning',
+'position3':'https://www.productplan.com/glossary/positioning-statement/',
+'jtbd2':'https://www.nngroup.com/articles/jobs-to-be-done/',
+'jtbd3':'https://www.productplan.com/glossary/job-stories/',
+'market2':'https://www.productplan.com/glossary/tam-sam-som/',
+'market3':'https://www.productplan.com/glossary/total-addressable-market-tam/',
+'market4':'https://www.atlassian.com/agile/product-management/market-sizing',
+'release2':'https://www.atlassian.com/agile/product-management/product-release',
+'release3':'https://www.productplan.com/glossary/release-planning/',
+'releasemgmt2':'https://www.atlassian.com/itsm/change-management/release-management',
+'flags2':'https://amplitude.com/docs/feature-experiment/workflow/make-decision-experiment',
+'flags3':'https://amplitude.com/blog/feature-flags',
+'pmf2':'https://amplitude.com/blog/how-to-measure-product-market-fit',
+'pmf3':'https://www.productplan.com/glossary/product-market-fit/',
+'pmf4':'https://www.svpg.com/product-market-fit/',
+}
+with concurrent.futures.ThreadPoolExecutor(max_workers=8) as e:list(e.map(fetch,urls.items()))

@@ -1,0 +1,108 @@
+# Define your experiment's goals
+URL: https://amplitude.com/docs/feature-experiment/workflow/define-goals
+Updated: 2026-10-21
+
+# Define your experiment's goals
+
+An experiment can't tell you anything without metrics to track against. Add metrics to your experiment in the Goals section of the experiment design panel.
+
+Define your primary metric and any secondary metrics.
+
+A primary metric determines whether to accept or reject your hypothesis, and whether your experiment succeeded or failed. Choose the right primary metric to evaluate experiment success. If you're new to A/B testing, follow these guidelines to choose a primary metric:
+
+- Identify the single user action that tells you if your [variant](https://amplitude.com/docs/feature-experiment/workflow/add-variants) is successful.
+- Measure an event that the change in your variant directly affects.
+- Pick an event that fully captures the user behavior you're trying to affect.
+
+Experiment supports multiple metrics for each experiment. Secondary metrics aren't required, but they improve the quality of your analysis and help you evaluate whether to roll out the experiment.
+
+> **Tip:** Revenue metrics
+>
+> A common mistake is defaulting to a revenue metric when your variant changes something unrelated to revenue. If your variant changes how your product page looks and functions, choose a metric on that page as your primary metric instead of a revenue metric that may sit several steps down the funnel.
+
+### Set up metrics for your experiment
+
+1. Open an existing experiment or [create an experiment](https://amplitude.com/docs/feature-experiment/workflow/create), then scroll to the Metrics section and select the **edit** icon.
+2. Select **Add metric**, then choose the metric you want from the drop-down list. Alternatively, select **Create a custom metric** to define your own.
+3. Specify whether the metric **should** or **should not** **Increase** or **Decrease**, and by what percentage.
+4. (Optional) For primary metrics, set the minimally acceptable goal. This is the smallest relative distance between the control and the variant needed to determine experiment success or failure.
+5. To add secondary metrics, select **Add Metric** and repeat the process.
+
+After you add your metrics, set your [variants](https://amplitude.com/docs/feature-experiment/workflow/add-variants).
+
+### Examples of success and guardrail metrics
+
+Success metrics measure the primary outcomes you want to improve:
+
+- **Conversion metrics:** Purchase completion rate, sign-up conversion, add-to-cart rate.
+- **Engagement metrics:** Daily active users, average session duration, feature adoption rate.
+- **Revenue metrics:** Average order value, revenue for each user, subscription upgrades.
+- **Retention metrics:** Day 7 retention rate, return user rate.
+
+Guardrail metrics monitor important metrics that shouldn't degrade during the experiment:
+
+- **Performance metrics:** Page load time, API response time, app crash rate.
+- **Quality metrics:** Error rate, failed transaction rate, support ticket volume.
+- **Core engagement:** Usage of key features unrelated to the experiment, overall session count.
+- **Business health:** Subscription cancellation rate, refund rate, negative review rate.
+
+For example, when testing a new checkout flow, your success metric might be "Purchase completion rate (Increase)," and your guardrail metrics could include "Checkout page load time (No increase)" and "Payment error rate (No increase)."
+
+### Duration estimator
+
+The duration estimator calculates the time and sample size you need to achieve significant results, based on your metric settings. Amplitude Experiment pre-populates industry defaults from historical data. You can adjust the confidence level, statistical power, minimum detectable effect, standard deviation, and test type.
+
+## Plan availability
+
+Primary and secondary metrics is available on all plans. Go to [Amplitude pricing](https://amplitude.com/pricing) for plan details.
+
+_Availability reflects the latest Amplitude plans. If your organization is on an older plan, your access may differ. Check your plan under [Plans & Billing in your organization settings](https://amplitude.com/docs/admin/account-management/account-settings#organizational-settings), or contact your Amplitude account representative._
+
+## Create a custom metric
+
+Create a new metric if no standard metric meets your needs.
+
+### Steps to create a custom metric
+
+1. Select **Create a custom metric**.
+2. Name the metric and add a description.
+3. Define the metric's type. A metric can be one of the following types:
+
+   - Unique conversions
+   - Event totals
+   - Formula
+   - Funnel conversions
+   - Return on retention
+   - Sum of property value
+   - Average of property value.
+4. Set the events you want by selecting **Add Event**, then choose your events.
+5. Set any key properties you want.
+6. Select **Save and Close**.
+
+> **Note:**
+>
+> By default, the Retention metric doesn't support [CUPED](https://amplitude.com/docs/feature-experiment/workflow/finalize-statistical-preferences), exposure attribution settings, or calendar day windows. The Retention metric calculates exposure attribution settings using any exposure and the nth day value based on 24-hour window increments, for up to two months.
+
+## Define the exposure event
+
+In your experiment, open the Design Experiment panel or the Analysis Settings and choose the **exposure event**. When a user triggers this event, Amplitude Experiment buckets them into the experiment. The Amplitude exposure event is the most accurate and reliable way to track user exposures to your experiment's variants, so use it when possible.
+
+Amplitude sends the `Amplitude exposure` event when your app calls `.variant()`. The event sets the user properties Amplitude Experiment uses for its analyses. When you use the Amplitude exposure event, the event triggers at the correct time.
+
+You can select a custom exposure event instead. Select **Custom Exposure**, then **Select event**. Custom exposure events carry a greater risk of triggering at the wrong time, which can cause a [sample ratio mismatch](https://amplitude.com/docs/feature-experiment/troubleshooting/sample-ratio-mismatch).
+
+For more information, refer to the [exposure events](https://amplitude.com/docs/feature-experiment/under-the-hood/event-tracking#exposure-events) article.
+
+## Use Aggregated Metrics in experiments
+
+In addition to event-based metrics, you can use [Aggregated Metrics (fka Warehouse Metrics)](https://amplitude.com/docs/data/warehouse-metrics) as goals in your experiments. Aggregated Metrics are precomputed metrics imported directly from your data warehouse into Amplitude, which keeps your source of truth consistent with your experimental analysis.
+
+Aggregated Metrics are valuable when your experiment goals involve business metrics that are difficult to calculate from behavioral events alone, such as:
+
+- **Revenue and financial metrics**: Average order value, credits remaining, or subscription revenue that require calculations across multiple data sources.
+- **Customer health metrics**: Customer lifetime value (LTV), health scores, or churn risk predictions modeled in your data warehouse.
+- **State metrics**: Current subscription tier, activation status, or account-level attributes that track user state rather than discrete events.
+
+When you add metrics to your experiment, Aggregated Metrics appear in the metrics picker with a warehouse icon. Use them as primary or secondary metrics, just like event-based metrics. Amplitude displays when each Aggregated Metric last synced and when the next sync is scheduled, so you can confirm your experiment results reflect the most current data.
+
+For more information about setting up and using Aggregated Metrics, refer to the [Aggregated Metrics (fka Warehouse Metrics) Overview](https://amplitude.com/docs/data/warehouse-metrics).
