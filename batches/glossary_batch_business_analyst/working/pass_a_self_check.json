@@ -1,0 +1,255 @@
+{
+  "artifact": "glossary_pass_a.part.all.json",
+  "entries": 99,
+  "teaching_blocks": 491,
+  "cross_reference_checks": "passed",
+  "fact_coverage_and_verbatim_hedge_preservation": "passed",
+  "SQL_example_queries_traced": 15,
+  "sql_traces": [
+    {
+      "concept_position": 42,
+      "query": "SELECT OrderID, Amount FROM Orders;",
+      "result": [
+        [
+          10,
+          40
+        ],
+        [
+          11,
+          60
+        ]
+      ]
+    },
+    {
+      "concept_position": 42,
+      "query": "SELECT * FROM Orders;",
+      "result": [
+        [
+          10,
+          101,
+          40
+        ],
+        [
+          11,
+          102,
+          60
+        ]
+      ]
+    },
+    {
+      "concept_position": 43,
+      "query": "SELECT Orders.OrderID, Customers.Name FROM Orders INNER JOIN Customers ON Orders.CustomerID = Customers.CustomerID;",
+      "result": [
+        [
+          10,
+          "North Stores"
+        ]
+      ]
+    },
+    {
+      "concept_position": 44,
+      "query": "SELECT Branch, SUM(Amount) FROM Orders GROUP BY Branch;",
+      "result": [
+        [
+          "North",
+          100
+        ],
+        [
+          "South",
+          30
+        ]
+      ]
+    },
+    {
+      "concept_position": 45,
+      "query": "SELECT Branch, SUM(Amount) FROM Orders WHERE Amount > 0 GROUP BY Branch HAVING SUM(Amount) > 90;",
+      "result": [
+        [
+          "North",
+          100
+        ]
+      ]
+    },
+    {
+      "concept_position": 46,
+      "query": "SELECT OrderID, Amount FROM Orders WHERE Amount IS NULL;",
+      "result": [
+        [
+          11,
+          null
+        ]
+      ]
+    },
+    {
+      "concept_position": 46,
+      "query": "SELECT OrderID, COALESCE(Amount, 0) FROM Orders;",
+      "result": [
+        [
+          10,
+          40
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          12,
+          0
+        ]
+      ]
+    },
+    {
+      "concept_position": 47,
+      "query": "SELECT a.CustomerID, b.OrderID FROM Customers AS a LEFT OUTER JOIN Orders AS b ON a.CustomerID = b.CustomerID;",
+      "result": [
+        [
+          101,
+          10
+        ],
+        [
+          101,
+          11
+        ],
+        [
+          102,
+          null
+        ]
+      ]
+    },
+    {
+      "concept_position": 48,
+      "query": "SELECT a.OrderID, b.CustomerID FROM Orders AS a RIGHT OUTER JOIN Customers AS b ON a.CustomerID = b.CustomerID;",
+      "result": [
+        [
+          10,
+          101
+        ],
+        [
+          11,
+          101
+        ],
+        [
+          null,
+          102
+        ]
+      ]
+    },
+    {
+      "concept_position": 49,
+      "query": "SELECT a.OrderID, b.CustomerID FROM Orders AS a FULL OUTER JOIN Customers AS b ON a.CustomerID = b.CustomerID;",
+      "result": [
+        [
+          10,
+          101
+        ],
+        [
+          11,
+          null
+        ],
+        [
+          null,
+          102
+        ]
+      ]
+    },
+    {
+      "concept_position": 50,
+      "query": "SELECT Branch, Amount FROM ReportRows ORDER BY Amount DESC, Branch ASC;",
+      "result": [
+        [
+          "East",
+          null
+        ],
+        [
+          "North",
+          100
+        ],
+        [
+          "South",
+          100
+        ],
+        [
+          "West",
+          30
+        ]
+      ]
+    },
+    {
+      "concept_position": 50,
+      "query": "SELECT Branch, Amount FROM ReportRows ORDER BY Amount DESC NULLS LAST, Branch ASC;",
+      "result": [
+        [
+          "North",
+          100
+        ],
+        [
+          "South",
+          100
+        ],
+        [
+          "West",
+          30
+        ],
+        [
+          "East",
+          null
+        ]
+      ]
+    },
+    {
+      "concept_position": 51,
+      "query": "SELECT Branch, SUM(Amount) AS total FROM Orders GROUP BY Branch ORDER BY total DESC, Branch LIMIT 2;",
+      "result": [
+        [
+          "North",
+          100
+        ],
+        [
+          "South",
+          80
+        ]
+      ]
+    },
+    {
+      "concept_position": 51,
+      "query": "SELECT Period, Metric, LAG(Metric) OVER (ORDER BY Period) FROM PeriodMetrics ORDER BY Period;",
+      "result": [
+        [
+          1,
+          10,
+          null
+        ],
+        [
+          2,
+          15,
+          10
+        ],
+        [
+          3,
+          8,
+          15
+        ]
+      ]
+    },
+    {
+      "concept_position": 51,
+      "query": "SELECT Period, SUM(Metric) OVER (ORDER BY Period ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) FROM PeriodMetrics ORDER BY Period;",
+      "result": [
+        [
+          1,
+          10
+        ],
+        [
+          2,
+          25
+        ],
+        [
+          3,
+          33
+        ]
+      ]
+    }
+  ],
+  "Excel_and_business_calculation_traces": "passed",
+  "manual_review": "All 99 authored examples checked for path scope, unsupported rules, closed lists, prerequisites, video independence and video-need proportionality. Removed two unsupported contrasts and drafting commentary. Tool UI paths retained from coverage facts. DAX and Tableau expressions traced arithmetically; native tools unavailable. SQL NULL-default convention checked separately from SQLite defaults."
+}
