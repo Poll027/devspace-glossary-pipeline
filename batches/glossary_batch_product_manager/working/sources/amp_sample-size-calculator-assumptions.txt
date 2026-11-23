@@ -1,0 +1,146 @@
+Avoiding assumptions when using sample size calculators
+Amplitude homeBlog/Insights/Avoiding assumptions when using sample size calculators
+Amplitude homeLoginContact salesGet started
+0%
+Blog/InsightsApr 6, 202611 min read
+Avoiding assumptions when using sample size calculators
+Five fallacies to watch out for to get better results from your experiment tools 
+Akhil Prakash
+Senior Machine Learning Scientist, Amplitude
+Copy Markdown
+Share
+Copy linkEmailPost to LinkedInPost to XPost to Facebook
+Before teams launch an experiment, they often turn to a sample size calculator. They plug in the effect size they hope to detect, set their false-positive and false-negative thresholds, and get a precise-looking sample size. Then they divide by daily traffic to determine how long to run the experiment, report that to their product manager, and treat it as the gold standard.
+However, sample size calculator results don’t always hold in practice. That’s because sample size calculators rely on certain assumptions about your experiment conditions. If those assumptions aren’t accurate, their output can’t be guaranteed.
+The numbers you get from a sample size calculator should be used as a ballpark estimate instead of the ground truth—by understanding the assumptions, you’ll be able to get reliable estimates.
+The problem with statistical assumptions
+Often in statistics, we make assumptions about population distribution. But since we never observe the whole population, we can never know if our assumptions are correct or not.
+Hoekstra et al. found that in statistics, “violations of assumptions are rarely checked for in the first place.” Even at the academic level, researchers often do not know what assumptions they are making and do not check them. “Although researchers might be tempted to think that most statistical procedures are relatively robust against most violations, several studies have shown that this is often not the case.”
+Not checking for assumptions can increase Type I and Type II error rates, so it’s paramount to be aware of the assumptions you’re making. Sometimes assumptions are unavoidable, but if you don’t recognize what you’re assuming, you won’t be prepared to adjust in the face of conflicting evidence.
+Assumption 1: Identical behavior over timeWhat really happens: Seasonality
+Over a given timeframe, it’s tempting to assume your users behave the same over time. However, in practice, there’s usually some amount of seasonality, or variation at regular intervals.
+Seasonality doesn’t have to be over a very long interval like, well, a season—it could be even at the day-of-week level. Depending on the product, the users who use the product on the weekend may behave differently from the people who use the product on weekdays (or may even be an entirely different population).
+For example, a map application may see more users who search for addresses on weekdays and more who search for restaurants on the weekend. If your sample size calculator says to run an experiment for three days, you’d end up capturing an uneven subset of users that could skew your results. Say address-searchers have a positive lift and restaurant-searchers have a negative lift; if you only test on three weekdays, you’re in trouble.Breaking the assumption: Run full cycles
+You can identify if you have seasonality by looking at a graph of lift vs. experiment exposure date. If you see a cyclic pattern (sine wave), then you have seasonality.
+To help avoid seasonal effects and the overweighting they can cause, you generally want to run your experiments for an integer number of business cycles.
+For example, if you start an experiment on a Monday and run it for 10 days, then you are giving your Monday data a weight of 2/10, but your Sunday data a weight of 1/10. This is one of the reasons you may see the general rule of thumb at your company of running an experiment for 2 weeks.
+Assumption 2: The central limit theorem applies cleanlyWhat really happens: Long-tailed metrics get skewed
+Say you’re experimenting with a long-tailed metric like revenue. The central limit theorem states that if you take enough samples, the sample mean is approximately normally distributed. The general rule of thumb for “enough samples” is >= 30.
+A common misconception is that the population distribution has to be normal. This is not true—the sampling distribution is what needs to be normally distributed. If the population distribution is normal, then the sample mean is normal, and you don’t need the central limit theorem (since the sum of normal distributions is a normal distribution).
+A general rule here is that the more non-normal-looking the population is, the more samples you need for the sample mean to be approximately normally distributed.
+For example, with revenue for many “freemium” products, often 99% of users contribute $0, and 1% of users contribute money. Here’s the distribution of the sample mean that comes from a distribution where 99% of the time the sample is 0, and 1% of the time we draw from an exponential distribution with rate 1. We see that even if we take 1,000 samples, the sample mean is not normally distributed.
+Breaking the assumption: Resampling
+We want to answer the question if the distribution of the sample mean is normally distributed or not, but we only have observed one sample mean.
+​​One method of solving this issue is to use bootstrapping. We sample our data with replacement and compute the mean on this simulated data. We do this a bunch of times, make a histogram, and see if it looks normally distributed. If it doesn’t, the normal approximation is unreliable.
+Assumption 3: You’re only testing one hypothesisWhat really happens: You might be testing more!
+When you set your sample size calculator to a 95% confidence level, it will give you a sample size under the assumption that you are doing a single-hypothesis test. However, you may actually have multiple hypotheses, and the sample size you get may be inaccurate.
+Say your experiment has three variants: one control and two treatments. If you break down the logic of your experiment, you’ll find you’re actually doing two hypothesis tests: control vs. treatment #1 and control vs. treatment #2.
+Because you are actually running two tests, you won’t get the 95% confidence level that you thought you were getting from your sample size calculator output.Breaking the assumption: Account for extra hypotheses
+One solution is to use Bonferroni correction. This works by dividing the false positive rate by the number of hypothesis tests you are running—essentially the same as multiplying the p-value by the number of hypothesis tests. Some other solutions include Tukey’s test, Dunnett's test, and Scheffé’s method.
+Assumption 4: The eligibility pool is static (stock sampling)What really happens: It can change as it depletes and refills
+If you set static conditions for targeting users in your experiment, you’ll always sample identically representative users, right? Not always. Users who are targeted at the beginning of an experiment may not match users targeted later because new types of users can become eligible, or flow into your experiment.
+Say you’re targeting users who have been on your platform for 30+ days, giving them a discount code. You design your experiment to only give one discount per user.
+On day 1, your target pool of 30+-day users is pretty large, and they’ll most likely have pretty similar characteristics. But by day 50, you’ll have already given most of those original 30+-day users a discount code—and the pool you’re drawing from will now contain more new users who have just entered the 30+-day cohort.
+Because the makeup of the cohort changes, their behaviors may change too. Your long-time users may have a positive lift from your treatment, but new users may have a negative lift, causing a skew in your results as more new users meet the eligibility requirements.Breaking the assumption: Run to equilibrium
+If you’re in a situation where it’s likely that your cohort composition shifted, plot cumulative exposures. You’ll see a steep spike at the start when you’re heavy on tenured users, followed by a steady, flatter slope as you shift toward newer users.
+If you are in this situation, you may want to run the experiment for longer than the sample size calculator says in order to discard data from before the equilibrium state is reached.
+Assumption 5: Users love (or hate) a new feature for the featureWhat really happens: Novelty effects
+Sometimes users aren’t reacting to a new feature because of the feature itself—they’re just reacting because it’s new. Novelty effects can come into play at the beginning of an experiment and throw off your results.
+For example, say you’re trying to improve click-through rate, so you make a button really big and prominent on your page. At the start of your test, people click on it a lot. Great! But then after two weeks, they stop clicking on it. What gives? You’re observing that the novelty of the big button has worn off.
+The opposite can also happen, where users are change-averse and won’t engage with the new feature since they don’t want to learn something new.
+Because of novelty effects, you can’t always trust that flashy new features will continue to exhibit their initial trends, throwing off your sample size calculator output.Breaking the assumption: Give them time to process
+One way to identify novelty effects is to segment results by new users vs returning users. Since the new users have not been in the product before, they can’t really have a novelty effect, so you use them as a baseline to see if long-term users are reacting to novelty.
+Another way is to make a chart that plots your metrics of interest versus days since exposure. If that chart has a steep dropoff, that could indicate a novelty effect.
+If you spot a novelty effect, you can account for it by running the experiment longer, finding an equilibrium state similar to how stock sampling is dealt with. You can also remove data from the first week each user was exposed to the experiment, looking just at how they react once the novelty has worn off.
+Treating calculators as guides, not guarantees
+Sample size calculators are useful tools, but they carry hidden assumptions that rarely match how products behave in the real world. Seasonality, skewed metrics, multiple comparisons, stock effects, and novelty effects all break the tidy statistical world that calculators assume.
+But this doesn’t mean you should stop using them. It means you should use them wisely. Treat the sample size they produce as a starting point, then layer in your understanding of your product, your users, and your data. The best experimentation programs combine mathematical rigor with practical judgment.
+Ready to put these assumption-breaking techniques into practice and run better tests? Design experiments that reflect how your users actually behave and generate results you can trust with Amplitude. Test it out with a free account.
+Tired of guessing what works?
+Ship every change with confidence using Amplitude Experiment.Run your first test
+Akhil Prakash
+Senior Machine Learning Scientist, Amplitude
+Akhil is a senior ML scientist at Amplitude. He focuses on using statistics and machine learning to bring product insights to the Experiment product.More from Akhil
+Topics
+Amplitude Feature ExperimentationAmplitude Web ExperimentationDataExperimentation
+Copy Markdown
+Share
+Copy linkEmailPost to LinkedInPost to XPost to Facebook
+Explore related content
+6 Data architecture decisions to make your product loop smarterInsights
+How I built my next career chapter at AmplitudeCompany
+What will you build with infinite engineers?Product
+How DigitalOcean Improves Developer Onboarding With WaveCustomers
+Platform
+Wave
+AI Agents
+Agent Analytics
+AI Feedback
+Amplitude MCP
+Product Analytics
+Web Analytics
+Feature Experimentation
+Feature Management
+Web Experimentation
+Session Replay
+Guides and Surveys
+Activation
+Heatmaps
+Compare us
+Adobe
+Google Analytics
+Contentsquare
+Fullstory
+Heap
+LaunchDarkly
+Mixpanel
+Optimizely
+Pendo
+PostHog
+Resources
+Resource Library
+Blog
+Agent Prompt Library
+Product Updates
+AI Early Access Program
+Integrations
+Events
+Amplitude Academy
+Glossary
+Amp Champs
+Free Chart Maker
+Partners & Support
+Status
+Contact Us
+Customer Help Center
+Community
+Developer Docs
+Partner Program
+Partner Directory
+Company
+About Us
+Careers
+Press & News
+Investor Relations
+Diversity, Equity & Inclusion
+LinkedInTwitterG2GitHubReddit
+View markdownCopy markdown
+Terms of ServicePrivacy NoticeAcceptable Use PolicyLegalCookie Settings
+EnglishJapanese (日本語)Korean (한국어)Español (LATAM)Español (Spain)Português (Brasil)Português (Portugal)FrançaisDeutsch
+© 2026 Amplitude, Inc. All rights reserved. Amplitude is a registered trademark of Amplitude, Inc.
+Pricing
+Solutions
+Explore
+Wave
+Headless
+Compare
+Integrations
+Heatmaps
+Data Governance
+Security & Privacy
+AI Agents
+Benchmarks
+Templates
+Sales Contact
+Academy & Training
+Customer Success
