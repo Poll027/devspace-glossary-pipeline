@@ -1,0 +1,11 @@
+# STOPPED glossary_batch_business_analyst
+
+03_coverage_brief:all the same blocking defects came back unchanged after a repair (not fixable by repair; check the evaluator finding):
+BLOCKING ba_doc.user_stories_acceptance_criteria@business_analyst: f4–f5 cite an unregistered Cucumber URL rather than a batch source_id -> Register the Gherkin reference in a declared source pack, update the manifest, and cite source_id#locator.
+BLOCKING ba_bpmn.decision_tables@business_analyst: f1–f5 cite an ISTQB PDF absent from the declared source pack -> Register the ISTQB syllabus, update the manifest, and cite its source_id#4.2.3.
+BLOCKING ba_dm.relationships_cardinality@business_analyst: f8–f11 cite a Microsoft Visio source absent from the declared source pack -> Register the crow’s-foot notation article, update the manifest, and replace its raw-URL references with source_id#locator.
+BLOCKING ba_dm.conceptual_vs_logical@business_analyst: f1–f4 cite IBM and Oracle sources absent from the declared source pack -> Register both sources, update the manifest, and cite their source_ids with the existing section locators.
+BLOCKING ba_gap.business_case@business_analyst: f8–f10 cite a Corporate Finance Institute source absent from the declared source pack -> Register the ROI article, update the manifest, and replace its raw-URL references with source_id#locator.
+BLOCKING ba_agile.user_story_writing@business_analyst: f4–f10 introduce Agile Alliance and XP123 references absent from the declared source pack -> Register both INVEST sources, update the manifest, and cite their source_ids with section locators.
+
+Spend so far $2.18. Fix the cause, then rerun the same command (finished stages are skipped).

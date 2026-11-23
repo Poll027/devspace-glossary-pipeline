@@ -1,0 +1,75 @@
+Join Your Data - TableauSkip to main content
+Tableau Desktop and Web Authoring Help
+Join Your DataApplies to: Tableau Cloud, Tableau Desktop, Tableau Server 
+It is often necessary to combine data from multiple places—different tables or even data sources—to perform a desired analysis. Depending on the structure of the data and the needs of the analysis, there are several ways to combine the tables. To learn more about the different ways to bring your data sets together, watch the Combining Data in Tableau Desktop(Link opens in a new window) training video (4 mins).
+Relationships vs Joins
+The default method in Tableau Desktop is to use relationships. Relationships preserve the original tables’ level of detail when combining information. Relationships also allow for context-based joins to be performed on a sheet-by-sheet basis, making each data source more flexible. Relationships are the recommended method of combining data in most instances. For more information, see How Relationships Differ from Joins.
+However, there may be times when you want to directly establish a join, either for control or for desired aspects of a join compared to a relationship, such as deliberate filtering or duplication.
+Note: Relationships eventually leverage joins (just behind the scenes). For example, a relationship across data sources will produce a cross-database join when the viz uses fields from tables in different data sources. As such, Improve Performance for Cross-Database Joins may be relevant.
+Common issues
+To view, edit, or create joins, you must open a logical table in the relationship canvas—the area you see when you first open or create a data source—and access the join canvas. 
+Published Tableau data sources can't be joined. To combine published data sources, use relationships.
+When joining tables, the fields that you join on must be the same data type. If you change the data type after you join the tables, the join will break. 
+Fields used in the join clause cannot be removed without breaking the join. To join data and be able to clean up duplicate fields, use Tableau Prep Builder instead of Tableau Desktop.
+Tip: While Tableau Desktop has the capability to create joins and do some basic data shaping, Tableau Prep Builder is designed for data preparation. If you need to do multiple joins, clean up field names, change data types, perform multiple pivots, or other sorts of involved data prep, consider using Tableau Prep Builder(Link opens in a new window). 
+Create a join
+To create a join, connect to the relevant data source or sources. See Connect to Your Data.
+These can be in the same data source (such as tables in a database or sheets in an Excel spreadsheet) or different data sources (this is known as a cross-database join). If you combined tables using a cross-database join, Tableau colors the tables in the canvas and the columns in the data grid to show you which connection the data comes from. 
+Note: Not all data sources support cross-database joins, including published Tableau data sources. To combine published data sources, edit the original data sources to natively contain the join or use a data blend.
+Drag the first table to the canvas. 
+Note that if you drag out a second table at this point a relationship will form. 
+Select Open from the menu or double-click the first table to open the join canvas (physical layer). 
+Double-clicking a table on the relationship canvas opens the join canvas
+Double-click or drag another table to the join canvas. 
+If your next table is from another data source entirely, in the left pane, under Connections, click the Add button ( in web authoring) to add a new connection to the Tableau data source. With that connection selected, drag the desired table to the join canvas. 
+Click the join icon to configure the join. Add one or more join clauses by selecting a field from one of the available tables used in the data source, choosing a join operator, and a field from the added table. 
+Note: You can delete an unwanted join clauses by clicking the "x" that displays when you hover over the right side of the join clause.
+When finished, close the join dialog and join canvas.
+After you've created a join, Join Your Data. To troubleshoot your join, see Join Your Data.
+Anatomy of a join
+Joins are defined by their type as well as the join clause. 
+Join types
+In general, there are four types of joins that you can use in Tableau: inner, left, right, and full outer. If you aren't sure what join type you want to use to combine data from multiple tables, you should use relationships.
+ Join Type
+ Result
+ Inner
+When you use an inner join to combine tables, the result is a table that contains values that have matches in both tables.
+When a value doesn't match across both tables, it is dropped entirely. 
+ Left
+When you use a left join to combine tables, the result is a table that contains all values from the left table and corresponding matches from the right table. 
+When a value in the left table doesn't have a corresponding match in the right table, you see a null value in the data grid.
+ Right 
+When you use a right join to combine tables, the result is a table that contains all values from the right table and corresponding matches from the left table.
+When a value in the right table doesn't have a corresponding match in the left table, you see a null value in the data grid.
+ Full outer
+When you use a full outer join to combine tables, the result is a table that contains all values from both tables. 
+When a value from either table doesn't have a match with the other table, you see a null value in the data grid.
+ Union
+Though union is not a type of join, union is another method for combining two or more tables by appending rows of data from one table to another. Ideally, the tables that you union have the same number of fields, and those fields have matching names and data types. For more information about union, see Union Your Data.
+Not all databases support all join types. If an option is unavailable in the join dialog, it is likely due to a constraint from your data source. 
+Join Clauses
+A join is performed by setting up one or more join clauses. The join clause tells Tableau which fields are shared between the tables and how to match the corresponding rows. For example, rows with the same ID are aligned in the results table. 
+Join clauses most often use the equality operator (=) which matches rows with the same values. It is also possible to perform non-equi joins, such as less than (<) and not equal (<>). 
+A join can also have multiple join clauses. For example, if First name and Last name are stored in separate columns, it may be beneficial to join only if “First name = First name” and “Last name = Last name”. Both conditions will have to be true for rows to be joined. Alternatively, if the goal was to return results when the last name is shared but the first name is not, the join clauses could be “First name <> First name” and “Last name = Last name”.
+Join clauses can also contain calculations. For example, the join clause could be the concatenation of the name fields “[First name] + [Last name] = [First name] + [Last name]”. Note that not all data source connections support calculations in join clauses. 
+About null values in join keys
+In general, joins are performed at the database level. If the fields used to join tables contain null values, most databases return data without the rows that contain the null values. However, for certain single-connection data sources, Tableau provides an additional option to allow you to join fields that contain null values with other fields that contain null values. 
+After you've set up your data source, on the data source page, select Data > Join null values to null values. 
+If the option is greyed out, it is not available for your data source. Note that if you add a second connection to a data source that uses this option, the join reverts back to the default behavior of excluding rows with null values. 
+Cross-database joins
+Tableau allows joins from tables in different data sources, albeit with some limitations from the database side on which platforms are compatible. Cross-database joins require a multi-connection data source—that is, you create a new connection to each database before you join the tables. 
+Once you've connected to the first source of data, use the Add option in the data pane to add another connection. 
+Note: If the connector you want is not available from the Connect list when you're trying to add another connection, cross-database joins are not supported for the combination of sources that you want to join. This includes connections to cube data (e.g., Microsoft Analysis Services), most extract-only data (e.g., Google Analytics and OData), and published Tableau Server data sources. 
+This creates a second connection rather than an entirely different data source. You can switch between the two (or more) connections while on the data source tab. 
+Once you move to a worksheet and begin analysis, the data source functions as a single, combined data source. This is in contrast to two independent data sources that can be toggled between on a worksheet. 
+The Book+ data source contains two connections with a cross-database join. It functions as a single data source. The Movie adaptations data source is an independent data source. 
+Note: Typically, joining tables from the same database yields better performance. This is because querying data that is stored on the same database takes less time and leverages the native capabilities of the database to perform the join. For more information on cross-database join performance, see Improve Performance for Cross-Database Joins.
+Other articles in this section Back to topThanks for your feedback!Your feedback has been successfully submitted. Thank you!
+Legal
+Terms of Service
+Privacy Information
+Responsible Disclosure
+Trust
+Contact
+Cookie Preferences
+Your Privacy Choices 
