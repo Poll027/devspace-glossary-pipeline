@@ -1,0 +1,1591 @@
+[
+ {
+  "index": 40,
+  "id": "ba_dm.biz_info_needs_mapping",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_dm.biz_info_needs_mapping",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "Business entities and their descriptive attributes give a model the information used to describe a business domain.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/guidance/star-schema \u2014 Understand star schema"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Identify the reporting or filtering information needed and match each item to the entity attributes that can supply it.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/guidance/star-schema \u2014 Understand star schema; Star schema relevance to Power BI semantic models"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose a stakeholder asks, \u201cWhich customer placed each order, and which requested delivery dates belong to those orders?\u201d Translate that information need into the entities and attributes that can supply it.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Business Information Needs Mapping",
+    "content": "Business entities and their descriptive attributes give a model the information used to describe a business domain.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Identify the reporting or filtering information needed and match each item to the entity attributes that can supply it.",
+    "fact_ids": [
+     "f2"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "example",
+    "title": "A business analysis example",
+    "content": "In this hypothetical domain, Customer.Name supplies the customer description, Order.RequestedDate supplies the requested date, and the established customer-order relationship connects the two. If the stakeholder wants to filter by branch, look for the entity attribute that actually records branch. If none has been identified, do not pretend the information is available just because the report needs it.\n\nRecord a mapping such as \u201ccustomer name \u2192 Customer.Name\u201d and \u201crequested delivery date \u2192 Order.RequestedDate.\u201d This makes the relationship between the reporting or filtering request and modeled information explicit. The mapping is conceptual work here; it does not require writing SQL or opening a dashboard tool.\n\nThe practical output is a supported account of which attributes provide the requested business information. A stakeholder phrase and an attribute name need not be identical, so explain the match in plain language. Conversely, matching words alone is not enough if the attribute describes something else. Keep the business question visible while checking the model\u2019s entities and descriptive attributes.",
+    "fact_ids": [
+     "f1",
+     "f2"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "Wanting a report does not establish that all needed attributes exist. Match each reporting or filtering need to attributes that can supply it; do not silently invent missing information or introduce query syntax before it is taught.",
+    "fact_ids": [
+     "f2"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "map_business_information_needs_to_entities_and_attributes"
+    }
+   ],
+   "practice_anchor": {
+    "type": "matching",
+    "objective": "Map the hypothetical stakeholder request for customer names and requested delivery dates to Customer.Name and Order.RequestedDate, identifying the established customer-order relationship that connects them. Flag a branch-filtering need as unsupported when no branch attribute is supplied.",
+    "success": "Each requested information item is matched to the entity attribute that supplies it, with a plain-language explanation. The customer-order relationship is identified, and the missing branch attribute is flagged rather than invented."
+   },
+   "visual_anchor": {
+    "type": "diagram",
+    "purpose": "Show the stakeholder's business question alongside Customer and Order, their Name and RequestedDate attributes, and the established customer-order relationship. Annotated arrows map each information need to its supplying attribute; a separate branch-filtering need is marked as unsupported because no branch attribute is provided."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Stay at needs-to-attributes mapping, not SQL or BI authoring.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 41,
+  "id": "sql.relational_model",
+  "previews": [
+   "ba_bi.data_model_relationships"
+  ],
+  "facts": {
+   "concept_id": "sql.relational_model",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A relation, also called a table, holds data where each row (also called a record or tuple) represents one group of related data values.",
+     "source_refs": [
+      "database_design_open_textbook#ch7-Relation"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "The columns of a table are also called fields or attributes.",
+     "source_refs": [
+      "database_design_open_textbook#ch7-Column"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "A table has a name distinct from every other table in the database, contains no duplicate rows, and the sequence of its rows and columns is insignificant.",
+     "source_refs": [
+      "database_design_open_textbook#ch7-Properties of a Table"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "A database is composed of multiple tables, each holding data.",
+     "source_refs": [
+      "database_design_open_textbook#ch7-Table"
+     ]
+    },
+    {
+     "id": "f5",
+     "statement": "Each table should contain information about one kind of thing only, such as the Branch or the Customer, rather than mixing unrelated things in one table.",
+     "source_refs": [
+      "database_design_open_textbook#ch10-Deletion Anomaly"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_001_data_analyst_pilot",
+   "used_by_path_ids": [
+    "data_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine the business keeps Customer data and Order data. In the relational model, each named table holds rows of related values. A Customer row could contain one customer\u2019s identifier, name, and contact information; its columns are the fields or attributes describing that kind of thing.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Relational Model",
+    "content": "A relation, also called a table, holds data where each row (also called a record or tuple) represents one group of related data values.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "The columns of a table are also called fields or attributes. A table has a name distinct from every other table in the database, contains no duplicate rows, and the sequence of its rows and columns is insignificant. A database is composed of multiple tables, each holding data. Each table should contain information about one kind of thing only, such as the Branch or the Customer, rather than mixing unrelated things in one table.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4",
+     "f5"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "example",
+    "title": "A business analysis example",
+    "content": "An Order table has its own distinct name and holds order data. Together, multiple tables compose the database. Keep each table about one kind of thing rather than mixing unrelated customer and vehicle descriptions in an arbitrary row.\n\nThe relation has no duplicate rows, and the sequence of rows and columns is insignificant to its relational meaning. If two customer rows are displayed in a different order, the display position is not itself a customer attribute. Do not use \u201cthe third row\u201d as the business identity of a customer.\n\nThe useful mental model is a named table with meaningful fields and related values in each record, within a database of multiple tables. The sample values are hypothetical and the treatment is the relational model. The model describes the data structure, not every behavior a database product may permit. First be able to identify a table, row, and column in the business data.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4",
+     "f5"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "A row is a group of related data values, not an arbitrary bundle of unrelated things. Table position is also not relational meaning: row and column sequence is insignificant. Keep the relational model distinct from assumptions about how a tool happens to display data.",
+    "fact_ids": [
+     "f3",
+     "f5"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2",
+      "f4",
+      "f5"
+     ],
+     "capability": "identify_correct_table_for_business_facts"
+    }
+   ],
+   "practice_anchor": {
+    "type": "matching",
+    "objective": "Sort a mixed set of hypothetical customer and order facts into a supplied schema: Customer contains customer identifier, name, and contact information; Order contains order data.",
+    "success": "Every customer fact is assigned to Customer and every order fact to Order, keeping each table about one kind of thing and grouping related values into appropriate records."
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Show separately named Customer and Order tables, with one Customer record annotated as a row and its identifier, name, and contact information annotated as columns. Make visible that each table holds facts about one kind of thing."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Do not introduce SQL commands or claim every SQL product forbids duplicate stored rows.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 42,
+  "id": "sql.select_statements",
+  "previews": [
+   "ba_sql.reporting_query_patterns"
+  ],
+  "facts": {
+   "concept_id": "sql.select_statements",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "SELECT retrieves data from a table; the select list names the desired output columns.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/tutorial-select.html \u2014 2.5 \u2014 Querying a Table"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Write SELECT column1, column2, column3 FROM table_name; to retrieve the named columns.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/tutorial-select.html \u2014 2.5 \u2014 Querying a Table"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "SELECT * FROM table_name; retrieves all columns.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/tutorial-select.html \u2014 2.5 \u2014 Querying a Table"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose Orders has columns OrderID, CustomerID, and Amount, and a stakeholder needs only identifiers and amounts. SELECT lets you name the desired output columns without asking for every field in the table.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "SQL SELECT Statements",
+    "content": "SELECT retrieves data from a table; the select list names the desired output columns.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Write SELECT column1, column2, column3 FROM table_name; to retrieve the named columns. SELECT * FROM table_name; retrieves all columns.",
+    "fact_ids": [
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "example",
+    "title": "A business analysis example",
+    "content": "For a hypothetical table with rows (10, 101, 40) and (11, 102, 60), write:\nSELECT OrderID, Amount FROM Orders;\n\nThe output contains OrderID and Amount: the value pairs are (10, 40) and (11, 60). CustomerID was not named in the select list, so it is not one of the output columns. These pairs describe the result contents, not a promised row order.\n\nIf you instead write:\nSELECT * FROM Orders;\nthen the result contains all three columns from this example table. The star means all columns, while the named-column form states which columns you want.\n\nRead the query as a request: retrieve OrderID and Amount from Orders. The SELECT list tells you what data appears in the output; FROM tells you the table being queried. The immediate BA use is retrieving the fields needed for a business question. This example does not yet filter, join, total, or sort the data: keep the distinction between choosing output columns and those later operations clear.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "SELECT * means all columns, not a special calculation or a chosen business subset. Naming two columns chooses those output fields. It does not by itself select particular rows or establish an output order.",
+    "fact_ids": [
+     "f3",
+     "f2"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "write_select_for_exact_required_columns"
+    },
+    {
+     "fact_ids": [
+      "f2",
+      "f3"
+     ],
+     "capability": "distinguish_named_column_selection_from_all_columns"
+    }
+   ],
+   "practice_anchor": {
+    "type": "live_code",
+    "objective": "Write a SELECT statement retrieving OrderID, CustomerID, and Amount from Orders using an explicit select list.",
+    "success": "The statement names OrderID, CustomerID, and Amount in the SELECT list and Orders after FROM, returning exactly those three columns.",
+    "live_code": {
+     "required_skill": "Retrieve three named columns from a single table using SELECT and FROM.",
+     "allowed_syntax": [
+      "SELECT column_name, column_name, column_name FROM table_name;",
+      "SELECT * FROM table_name;"
+     ],
+     "blocked_syntax": [
+      "WHERE",
+      "HAVING",
+      "GROUP BY",
+      "ORDER BY",
+      "INNER JOIN",
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "FULL OUTER JOIN",
+      "AS",
+      "CREATE TABLE",
+      "COUNT()",
+      "SUM()",
+      "AVG()",
+      "MIN()",
+      "MAX()",
+      "CAST()",
+      "COALESCE()",
+      "IS NULL"
+     ],
+     "starter_state_intent": "Provide an existing Orders table with columns OrderID, CustomerID, and Amount and rows (10, 101, 40) and (11, 102, 60), alongside an empty query editor.",
+     "observable_success": "The query explicitly lists OrderID, CustomerID, and Amount, uses FROM Orders, and ends with a semicolon. Its result contains all three requested columns and both supplied rows, with no row-order requirement."
+    }
+   },
+   "visual_anchor": {
+    "type": "code",
+    "purpose": "Make the comma-separated SELECT list and the source table after FROM visible in an annotated Orders query; contrast the explicit column list with * meaning all columns."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Teach only SELECT lists and FROM; no filtering, aggregation, aliases, or CREATE TABLE.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 43,
+  "id": "sql.inner_join",
+  "previews": [],
+  "facts": {
+   "concept_id": "sql.inner_join",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "For each row of T1, an INNER JOIN produces a joined row for each row of T2 that satisfies the join condition; rows from either table with no match are dropped.",
+     "source_refs": [
+      "postgresql_docs_table_expressions#7.2.1.1. Joined Tables"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "The join condition is written in an ON clause, a boolean expression of the same kind used in a WHERE clause, or as a USING clause when both tables use the same column name.",
+     "source_refs": [
+      "postgresql_docs_table_expressions#7.2.1.1. Joined Tables"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "INNER is the default kind of join; writing JOIN alone (without CROSS, LEFT, RIGHT, or FULL) means an INNER JOIN.",
+     "source_refs": [
+      "postgresql_docs_table_expressions#7.2.1.1. Joined Tables"
+     ]
+    }
+   ],
+   "optional_enrichment": [
+    {
+     "id": "f4",
+     "statement": "Joins of all types can be chained together, or nested, so a query can INNER JOIN across more than two tables.",
+     "source_refs": [
+      "postgresql_docs_table_expressions#7.2.1.1. Joined Tables"
+     ]
+    }
+   ],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_001_data_analyst_pilot",
+   "used_by_path_ids": [
+    "data_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine Customers contains (101, North Stores) and (102, South Stores), while Orders contains order 10 for customer 101 and order 11 for customer 999. A report needs an order identifier paired with its matching customer name.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Inner Join",
+    "content": "For each row of T1, an INNER JOIN produces a joined row for each row of T2 that satisfies the join condition; rows from either table with no match are dropped.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "The join condition is written in an ON clause, a boolean expression of the same kind used in a WHERE clause, or as a USING clause when both tables use the same column name. INNER is the default kind of join; writing JOIN alone (without CROSS, LEFT, RIGHT, or FULL) means an INNER JOIN.",
+    "fact_ids": [
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Write:\nSELECT Orders.OrderID, Customers.Name FROM Orders INNER JOIN Customers ON Orders.CustomerID = Customers.CustomerID;\n\nThe join condition compares the two customer identifiers. Order 10 matches customer 101, producing (10, North Stores). Order 11 has no matching customer row in this deliberately unmatched reporting example, so it is dropped. Customer 102 has no matching order and is also dropped. The unmatched value illustrates join behavior; it is not a valid foreign-key example under an enforced matching constraint.\n\nAn INNER JOIN produces a joined row for every satisfying pair, not simply one result for each input table. If multiple rows on the other side satisfy the condition, each matching pair contributes a joined row. The condition can be expressed with ON, or USING when both tables use the same column name. JOIN by itself, without a different join kind, means INNER JOIN.\n\nThe practical reporting question is therefore which matches the condition creates and which rows lack matches. Do that reasoning before assuming the result includes every customer or every order.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "An inner join does not preserve unmatched rows. Also, \u201cone match per row\u201d is not its general rule: each satisfying pair produces a joined row. In this sample there is one matching pair, but that is a property of the data, not a universal join limit.",
+    "fact_ids": [
+     "f1"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "write_inner_join_returning_only_matching_rows"
+    },
+    {
+     "fact_ids": [
+      "f1"
+     ],
+     "capability": "trace_matching_pairs_and_exclude_unmatched_rows"
+    },
+    {
+     "fact_ids": [
+      "f3"
+     ],
+     "capability": "recognize_join_as_default_inner_join"
+    }
+   ],
+   "practice_anchor": {
+    "type": "live_code",
+    "objective": "Write an INNER JOIN combining Orders and Customers on their shared CustomerID, returning Orders.OrderID and Customers.Name.",
+    "success": "The query returns (10, North Stores) only, excluding order 11 and customer 102 because they have no matching counterpart.",
+    "live_code": {
+     "required_skill": "Select columns from two tables and express their shared-key equality in an INNER JOIN condition.",
+     "allowed_syntax": [
+      "SELECT",
+      "FROM",
+      "INNER JOIN",
+      "JOIN",
+      "ON",
+      "USING (CustomerID)",
+      "table.column",
+      "=",
+      ",",
+      ";"
+     ],
+     "blocked_syntax": [
+      "WHERE",
+      "HAVING",
+      "GROUP BY",
+      "COUNT()",
+      "SUM()",
+      "AVG()",
+      "MIN()",
+      "MAX()",
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "FULL JOIN",
+      "ORDER BY",
+      "IS NULL",
+      "IS NOT NULL",
+      "COALESCE()"
+     ],
+     "starter_state_intent": "Provide Customers(CustomerID, Name) with (101, North Stores) and (102, South Stores), and Orders(OrderID, CustomerID) with (10, 101) and (11, 999). Use the deliberately unmatched reporting data without an enforced matching constraint, and provide an empty query editor.",
+     "observable_success": "Executing the learner's two-table INNER JOIN produces the selected OrderID and Name columns with exactly one row: (10, North Stores)."
+    }
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Show Customers and Orders beside the joined result, marking the CustomerID 101 matching pair and the unmatched customer 102 and order 11. Make visible that only the matching pair contributes (10, North Stores) to the result."
+   }
+  },
+  "media": {
+   "group_title": "Inner Join: Match Rows Across Two Tables",
+   "segments": [
+    {
+     "segment_id": "seg_sql.inner_join_9URM1_2S0ho_133_249",
+     "label": "Join employee tables using matching employee IDs",
+     "video_id": "9URM1_2S0ho",
+     "youtube_url": "https://www.youtube.com/watch?v=9URM1_2S0ho",
+     "review_url": "https://www.youtube.com/watch?v=9URM1_2S0ho&t=133s",
+     "start_seconds": 133,
+     "end_seconds": 249,
+     "summary": "A query combines EmployeeDemographics and EmployeeSalary using an ON condition that equates their EmployeeID columns. Writing JOIN alone means INNER JOIN. The resulting output includes columns from both tables for matching employee IDs. The explanation describes these matches as the tables' common or overlapping data; the match is determined by EmployeeID, not by equality of every column.",
+     "fact_ids": [
+      "f3"
+     ],
+     "transcript_ref": "9URM1_2S0ho:133-249"
+    },
+    {
+     "segment_id": "seg_sql.inner_join_SZCmhF81Jmg_120_180",
+     "label": "Keep only matching customer and order rows",
+     "video_id": "SZCmhF81Jmg",
+     "youtube_url": "https://www.youtube.com/watch?v=SZCmhF81Jmg",
+     "review_url": "https://www.youtube.com/watch?v=SZCmhF81Jmg&t=120s",
+     "start_seconds": 120,
+     "end_seconds": 180,
+     "summary": "An INNER JOIN returns matching rows and excludes rows without a match. In the example, Customers is called the left table and Orders the right table, based on their positions in the query. Regardless of those positions, the result contains only matches between the two tables.",
+     "fact_ids": [
+      "f1"
+     ],
+     "transcript_ref": "SZCmhF81Jmg:120-180"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch the first clip for ON syntax and JOIN's default meaning, and the second for exclusion of unmatched rows. The first clip's \u201coverlapping\u201d wording means matching employee IDs, not identical rows.",
+    "after": "The first clip omits USING and repeated-match detail; the second omits condition syntax, JOIN's default meaning, and repeated-match detail. The text covers these gaps, including one result row for every satisfying pair."
+   }
+  },
+  "notes": [
+   "Avoid outer joins and NULL behavior until their entries; unmatched sample intentionally has no enforced FK.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 44,
+  "id": "sql.aggregation_group_by",
+  "previews": [],
+  "facts": {
+   "concept_id": "sql.aggregation_group_by",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "GROUP BY creates one result group for rows with the same grouping-column values.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.3 \u2014 The GROUP BY and HAVING Clauses"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "SUM computes a total.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/tutorial-agg.html \u2014 2.7 \u2014 Aggregate Functions"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Write SELECT group_column, SUM(value_column) FROM table_name GROUP BY group_column; for one total per group.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.3 \u2014 The GROUP BY and HAVING Clauses"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "In the ordinary grouping pattern, list each selected column outside aggregate functions in GROUP BY.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.3 \u2014 The GROUP BY and HAVING Clauses"
+     ]
+    }
+   ],
+   "optional_enrichment": [
+    {
+     "id": "f5",
+     "statement": "COUNT(*) counts rows, and AVG computes an arithmetic mean.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/tutorial-agg.html \u2014 2.7 \u2014 Aggregate Functions"
+     ]
+    },
+    {
+     "id": "f6",
+     "statement": "Selected columns outside aggregate functions must be grouped unless they are functionally dependent on the grouping columns.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.3 \u2014 The GROUP BY and HAVING Clauses"
+     ]
+    }
+   ],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose Orders contains three hypothetical rows: North with Amount 40, North with Amount 60, and South with Amount 30. A stakeholder asks for total amount per branch, not the original order-level rows.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "SQL Aggregation and GROUP BY",
+    "content": "GROUP BY creates one result group for rows with the same grouping-column values.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "SUM computes a total. Write SELECT group_column, SUM(value_column) FROM table_name GROUP BY group_column; for one total per group. In the ordinary grouping pattern, list each selected column outside aggregate functions in GROUP BY.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Write:\nSELECT Branch, SUM(Amount) FROM Orders GROUP BY Branch;\n\nGROUP BY gathers rows with the same Branch value into one result group. SUM computes the total within each group. North contributes 40 + 60 = 100, and South contributes 30. The result contents are therefore (North, 100) and (South, 30), with no output order promised by this query.\n\nIn the ordinary grouping pattern, each selected column outside an aggregate function belongs in GROUP BY. Branch is the unaggregated selected column here, while Amount is inside SUM. If the required question changes to totals per branch and service category, the grouping needs to reflect those selected grouping columns rather than pretending one branch total also identifies a single category.\n\nThe practical change is the level of the result: several source rows can contribute to one grouped total. Explain that to a stakeholder who expects to see individual orders. The query is not deleting those source details; its requested output is a group-level summary.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "Selecting a group label and a total does not make every other source field meaningful at the group level. Follow the ordinary pattern of listing selected nonaggregate columns in GROUP BY. Also distinguish a per-group total from one original row\u2019s amount.",
+    "fact_ids": [
+     "f3"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2",
+      "f3",
+      "f4"
+     ],
+     "capability": "write_correct_per_group_sum_query"
+    }
+   ],
+   "practice_anchor": {
+    "type": "live_code",
+    "objective": "Write a query that groups Orders by Branch and sums Amount to produce one total per branch.",
+    "success": "The query selects Branch and SUM(Amount), reads from Orders, and groups by Branch. Its result contains (North, 100) and (South, 30), in either order.",
+    "live_code": {
+     "required_skill": "Use SELECT, FROM, SUM, and GROUP BY to calculate one total per group, listing the selected nonaggregate column in GROUP BY.",
+     "allowed_syntax": [
+      "SELECT",
+      "FROM",
+      "SUM(Amount)",
+      "GROUP BY Branch",
+      "Orders",
+      "Branch",
+      "Amount",
+      ",",
+      ";"
+     ],
+     "blocked_syntax": [
+      "WHERE",
+      "HAVING",
+      "ORDER BY",
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "FULL OUTER JOIN",
+      "CAST",
+      "COALESCE",
+      "IS NULL",
+      "IS NOT NULL"
+     ],
+     "starter_state_intent": "Provide an existing Orders table with columns Branch and Amount and three rows: (North, 40), (North, 60), and (South, 30). Provide an empty SQL editor for the grouping query.",
+     "observable_success": "Executing the query returns exactly two group-level rows: North with total 100 and South with total 30. Branch appears in both SELECT and GROUP BY, and Amount appears inside SUM."
+    }
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Show the three Orders rows beside the two grouped result rows, making visible how the repeated North values contribute 40 + 60 to one total of 100 while South contributes 30."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Stay with SUM and ordinary grouping; do not introduce other aggregates or vendor exceptions.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 45,
+  "id": "sql.where_having_filtering",
+  "previews": [],
+  "facts": {
+   "concept_id": "sql.where_having_filtering",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "WHERE selects input rows before grouping and aggregate calculation.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/tutorial-agg.html \u2014 2.7 \u2014 Aggregate Functions"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "HAVING selects groups after grouping and aggregate calculation.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/tutorial-agg.html \u2014 2.7 \u2014 Aggregate Functions"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Use SELECT group_column, SUM(value_column) FROM table_name WHERE row_condition GROUP BY group_column HAVING SUM(value_column) > threshold; to apply both kinds of filtering.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.3 \u2014 The GROUP BY and HAVING Clauses"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "In comparisons, = means equal, <> means not equal, and < or > means less or greater than.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/functions-comparison.html \u2014 9.2 \u2014 Comparison Functions and Operators"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine Orders has North amounts 40, 60, and -10, and South amount 30. The business question is \u201cWhich branches have more than 90 in positive order amounts?\u201d It contains a row-level condition and a group-level condition.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "SQL Filtering with WHERE and HAVING",
+    "content": "WHERE selects input rows before grouping and aggregate calculation.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "HAVING selects groups after grouping and aggregate calculation. Use SELECT group_column, SUM(value_column) FROM table_name WHERE row_condition GROUP BY group_column HAVING SUM(value_column) > threshold; to apply both kinds of filtering. In comparisons, = means equal, <> means not equal, and < or > means less or greater than.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Write:\nSELECT Branch, SUM(Amount) FROM Orders WHERE Amount > 0 GROUP BY Branch HAVING SUM(Amount) > 90;\n\nWHERE retains input rows with positive Amount before grouping. North\u2019s -10 row is excluded, leaving 40 and 60; South\u2019s 30 remains. GROUP BY then creates branch groups and SUM gives North 100 and South 30. HAVING retains groups whose total exceeds 90, leaving North with 100.\n\nThe order of those roles matters. The positive-amount condition applies to each input row, while the more-than-90 condition applies to the calculated group total. Describing both as simply \u201cfilters\u201d hides that distinction.\n\nThe comparison operators express the tests: = means equal, <> not equal, and < or > less or greater than. In this example, > 90 excludes a total equal to 90. Keep the query connected to the business question so the learner can tell which condition belongs before grouping and which belongs afterward.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "WHERE does not filter already-calculated groups in this pattern, and HAVING is not a substitute for the positive-row condition. Filtering inputs can change totals; filtering groups decides which calculated totals remain. An amount threshold and a total threshold are different requirements.",
+    "fact_ids": [
+     "f1",
+     "f2"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "choose_where_or_having_for_row_or_group_conditions"
+    }
+   ],
+   "practice_anchor": {
+    "type": "live_code",
+    "objective": "Write a query on Orders that retains positive Amount rows, groups them by Branch, and retains only branches whose summed Amount exceeds 90.",
+    "success": "The query applies Amount > 0 in WHERE and SUM(Amount) > 90 in HAVING, returning North with a total of 100 and excluding South.",
+    "live_code": {
+     "required_skill": "Apply a row condition before grouping and a group-total condition after aggregate calculation.",
+     "allowed_syntax": [
+      "SELECT",
+      "FROM",
+      "WHERE",
+      "GROUP BY",
+      "HAVING",
+      "SUM(Amount)",
+      "Branch",
+      "Amount",
+      "Orders",
+      "=",
+      "<>",
+      "<",
+      ">",
+      "Numeric literals",
+      "Comma-separated select expressions",
+      "Statement-ending semicolon"
+     ],
+     "blocked_syntax": [
+      "CAST",
+      "CONVERT",
+      "IS NULL",
+      "IS NOT NULL",
+      "COALESCE",
+      "NULLIF",
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "FULL OUTER JOIN",
+      "ORDER BY"
+     ],
+     "starter_state_intent": "Provide an Orders table with Branch and Amount columns containing (North, 40), (North, 60), (North, -10), and (South, 30), plus an empty SQL editor.",
+     "observable_success": "Executing the query returns only North with SUM(Amount) equal to 100. The query uses WHERE Amount > 0 before GROUP BY Branch and HAVING SUM(Amount) > 90 afterward."
+    }
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Make the filtering stages visible: the original Orders rows, the positive rows remaining after WHERE, branch totals of North 100 and South 30 after grouping, and only North 100 remaining after HAVING."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Keep the supported WHERE \u2192 grouping \u2192 HAVING ordering explicit.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 46,
+  "id": "sql.data_types_null_handling",
+  "previews": [],
+  "facts": {
+   "concept_id": "sql.data_types_null_handling",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "SQL column types distinguish integers, exact numeric values, text, dates, and Boolean values, among other types.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/datatype.html \u2014 8 \u2014 Data Types, Table 8.1"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Choose a column type whose value category and range fit the information being stored.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/datatype.html \u2014 8 \u2014 Data Types, Table 8.1"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "NULL represents an unknown value, and ordinary comparisons with NULL yield unknown rather than true or false.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/functions-comparison.html \u2014 9.2 \u2014 Comparison Functions and Operators"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "Use WHERE column_name IS NULL or WHERE column_name IS NOT NULL to test for missing values rather than = NULL.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/functions-comparison.html \u2014 9.2 \u2014 Comparison Functions and Operators"
+     ]
+    },
+    {
+     "id": "f5",
+     "statement": "COALESCE(value, replacement) returns the first non-NULL argument; use it in the SELECT list to substitute for a missing value.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/functions-conditional.html \u2014 9.18.2 \u2014 COALESCE"
+     ]
+    },
+    {
+     "id": "f6",
+     "statement": "WHERE retains only rows whose condition is true, so unknown results from NULL comparisons do not pass its filter.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.2 \u2014 The WHERE Clause"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose Orders has Amount values 40, NULL, and 0. The missing value is unknown; it is not the same as a known zero. SQL types also distinguish categories such as integer identifiers, exact monetary values, text, dates, and Boolean values. Choose types whose categories and ranges fit what the business stores.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "SQL Data Types and NULL Handling",
+    "content": "SQL column types distinguish integers, exact numeric values, text, dates, and Boolean values, among other types.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Choose a column type whose value category and range fit the information being stored. NULL represents an unknown value, and ordinary comparisons with NULL yield unknown rather than true or false. Use WHERE column_name IS NULL or WHERE column_name IS NOT NULL to test for missing values rather than = NULL. COALESCE(value, replacement) returns the first non-NULL argument; use it in the SELECT list to substitute for a missing value. WHERE retains only rows whose condition is true, so unknown results from NULL comparisons do not pass its filter.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4",
+     "f5",
+     "f6"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "To retrieve the missing-amount rows, use:\nSELECT OrderID, Amount FROM Orders WHERE Amount IS NULL;\nFor known amounts, use IS NOT NULL instead. Do not replace that test with = NULL. Ordinary comparisons involving NULL yield unknown, and WHERE keeps only rows whose condition is true.\n\nFor a display that explicitly substitutes zero when Amount is missing, write:\nSELECT OrderID, COALESCE(Amount, 0) FROM Orders;\nWith sample rows (10, 40), (11, NULL), and (12, 0), the displayed pairs are (10, 40), (11, 0), and (12, 0). COALESCE returns the first non-NULL argument. The display choice does not prove the original unknown amount was truly zero.\n\nLikewise, WHERE Amount > 0 keeps the 40 row, not the NULL row or the zero row. The NULL comparison is unknown rather than false or true, and unknown does not pass WHERE. Preserving that distinction matters when interpreting what a reporting filter excluded.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4",
+     "f5",
+     "f6"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "NULL is an unknown value, not automatically zero or empty text. A substitution in SELECT changes the returned display value, not the business meaning of the missing source value. Use IS NULL or IS NOT NULL for missing-value tests rather than ordinary equality.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4",
+     "f5"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f3",
+      "f6"
+     ],
+     "capability": "predict_null_comparison_filter_results"
+    },
+    {
+     "fact_ids": [
+      "f4"
+     ],
+     "capability": "apply_missing_value_tests"
+    },
+    {
+     "fact_ids": [
+      "f5"
+     ],
+     "capability": "predict_and_apply_coalesce_substitution"
+    }
+   ],
+   "practice_anchor": {
+    "type": "live_code",
+    "objective": "Write one query that selects OrderID and Amount from Orders for rows where Amount IS NULL, and another that selects OrderID with COALESCE(Amount, 0) for all rows.",
+    "success": "The missing-value query returns only (11, NULL). The substitution query returns (10, 40), (11, 0), and (12, 0), in any order, while the stored missing amount remains NULL.",
+    "live_code": {
+     "required_skill": "Use IS NULL in WHERE and COALESCE in the SELECT list to filter missing amounts and substitute returned values.",
+     "allowed_syntax": [
+      "SELECT",
+      "FROM",
+      "WHERE",
+      "IS NULL",
+      "IS NOT NULL",
+      "COALESCE(Amount, 0)",
+      "OrderID",
+      "Amount",
+      "Orders",
+      "integer literals",
+      "NULL",
+      ",",
+      ";"
+     ],
+     "blocked_syntax": [
+      "LEFT OUTER JOIN",
+      "RIGHT OUTER JOIN",
+      "FULL OUTER JOIN",
+      "ORDER BY"
+     ],
+     "starter_state_intent": "Provide a preloaded Orders table with columns OrderID and Amount and rows (10, 40), (11, NULL), and (12, 0), plus an empty query editor.",
+     "observable_success": "Executing the IS NULL query returns only OrderID 11 with its missing Amount. Executing the COALESCE query returns all three OrderIDs with amounts 40, 0, and 0 respectively, without modifying Orders."
+    }
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Show Orders with amounts 40, NULL, and 0 alongside the results of IS NULL, IS NOT NULL, Amount > 0, and COALESCE(Amount, 0), making missing values, known zeros, excluded rows, and substituted output distinguishable."
+   }
+  },
+  "media": {
+   "group_title": "Testing for missing and present values",
+   "segments": [
+    {
+     "segment_id": "seg_sql.data_types_null_handling_X_cPXHV2NQ4_2700_2800",
+     "label": "Find missing and present values with IS NULL and IS NOT NULL",
+     "video_id": "X_cPXHV2NQ4",
+     "youtube_url": "https://www.youtube.com/watch?v=X_cPXHV2NQ4",
+     "review_url": "https://www.youtube.com/watch?v=X_cPXHV2NQ4&t=2700s",
+     "start_seconds": 2700,
+     "end_seconds": 2800,
+     "summary": "A customer-score example demonstrates two missing-value checks. Starting with five customers, WHERE score IS NULL returns the customer whose score is missing. The missing-value test uses IS NULL, not equality. Changing the condition to WHERE score IS NOT NULL returns customers with recorded scores. These conditions filter the returned rows; they do not change the stored scores.",
+     "fact_ids": [
+      "f4"
+     ],
+     "transcript_ref": "X_cPXHV2NQ4:2700-2800"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch how the customer-score example separates missing scores from recorded scores using IS NULL and IS NOT NULL, rather than an equality test.",
+    "after": "The clip teaches missing-value tests. The text also covers type categories and selection, unknown comparison results, WHERE\u2019s true-only filtering, and COALESCE substitution without treating unknown amounts as known zeros."
+   }
+  },
+  "notes": [
+   "Avoid complete type catalogues or unintroduced casts; retain unknown-versus-zero distinction.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 47,
+  "id": "sql.left_outer_join",
+  "previews": [],
+  "facts": {
+   "concept_id": "sql.left_outer_join",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "LEFT OUTER JOIN returns matching combinations and preserves each unmatched left-table row.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.1.1 \u2014 Joined Tables"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "For an unmatched left row, columns from the right table are filled with NULL.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.1.1 \u2014 Joined Tables"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Write SELECT a.column_name, b.column_name FROM table_a AS a LEFT OUTER JOIN table_b AS b ON a.key_column = b.key_column; with the table to preserve on the left.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.1.1 \u2014 Joined Tables"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose Customers contains (101, North Stores) and (102, South Stores). Orders contains (10, 101) and (11, 101). The reporting question is \u201cList all customers, with their orders where any match.\u201d Put Customers on the left so that unmatched customer rows are preserved.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Left Outer Join",
+    "content": "LEFT OUTER JOIN returns matching combinations and preserves each unmatched left-table row.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "For an unmatched left row, columns from the right table are filled with NULL. Write SELECT a.column_name, b.column_name FROM table_a AS a LEFT OUTER JOIN table_b AS b ON a.key_column = b.key_column; with the table to preserve on the left.",
+    "fact_ids": [
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Write:\nSELECT a.CustomerID, b.OrderID FROM Customers AS a LEFT OUTER JOIN Orders AS b ON a.CustomerID = b.CustomerID;\n\nCustomer 101 has two matches, producing (101, 10) and (101, 11). Customer 102 has no matching order, so it still appears, with NULL for the right-table OrderID: (102, NULL). Here a and b are the table aliases used in the supplied join pattern.\n\nThe result combines matching rows and a preserved unmatched left row. It is not limited to one output row per customer: multiple matching orders produce multiple combinations. NULL in the unmatched row represents the missing right-side fields, not an order identifier equal to zero.\n\nThe important decision is which table must remain represented when there is no match. In this example that is Customers. Reversing the table placement without changing the intended join would change which side is guaranteed preservation, so read the FROM and LEFT OUTER JOIN sides together with the business question.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "\u201cLeft\u201d refers to table placement in the query, not business importance. A left outer join preserves unmatched left rows and supplies NULL right fields for them. It still returns matching combinations rather than collapsing all matches into one row.",
+    "fact_ids": [
+     "f1",
+     "f2"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2",
+      "f3"
+     ],
+     "capability": "write_left_outer_join_preserving_unmatched_left_rows"
+    }
+   ],
+   "practice_anchor": {
+    "type": "live_code",
+    "objective": "Write a LEFT OUTER JOIN that lists CustomerID from Customers and matching OrderID from Orders, preserving customers without orders.",
+    "success": "The query places Customers on the left, joins Orders on CustomerID, and returns (101, 10), (101, 11), and (102, NULL), regardless of result order.",
+    "live_code": {
+     "required_skill": "Select qualified columns and use a key equality condition in a LEFT OUTER JOIN with the table to preserve in FROM.",
+     "allowed_syntax": [
+      "SELECT",
+      "FROM",
+      "AS",
+      "LEFT JOIN",
+      "LEFT OUTER JOIN",
+      "ON",
+      "=",
+      "table_alias.column_name",
+      "comma-separated selected columns",
+      ";"
+     ],
+     "blocked_syntax": [
+      "RIGHT JOIN",
+      "RIGHT OUTER JOIN",
+      "FULL JOIN",
+      "FULL OUTER JOIN",
+      "ORDER BY",
+      "DISTINCT"
+     ],
+     "starter_state_intent": "Provide Customers with columns CustomerID and CustomerName and rows (101, North Stores) and (102, South Stores), plus Orders with columns OrderID and CustomerID and rows (10, 101) and (11, 101). Provide an empty SQL editor.",
+     "observable_success": "Executing the query returns CustomerID and OrderID with two matching rows for customer 101 and one preserved row for customer 102 whose OrderID is NULL."
+    }
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Show the Customers and Orders input tables beside the joined result, making the two matches for customer 101 and the preserved customer 102 row with NULL OrderID visible."
+   }
+  },
+  "media": {
+   "group_title": "Preserve customers with no matching orders",
+   "segments": [
+    {
+     "segment_id": "seg_sql.left_outer_join_aY7z4HcHm5M_1388_1575",
+     "label": "LEFT OUTER JOIN: retain customers without orders",
+     "video_id": "aY7z4HcHm5M",
+     "youtube_url": "https://www.youtube.com/watch?v=aY7z4HcHm5M",
+     "review_url": "https://www.youtube.com/watch?v=aY7z4HcHm5M&t=1388s",
+     "start_seconds": 1388,
+     "end_seconds": 1575,
+     "summary": "A left outer join keeps matching combinations and preserves unmatched rows from the left table. The table to preserve belongs in FROM; the right table follows LEFT JOIN. To retrieve all customers with any matching orders, the demonstration keeps customers on the left and changes the join to LEFT JOIN. The resulting customer list includes Martin and Peter, whose order fields contain NULL because no orders match. LEFT JOIN is the shorter spelling of LEFT OUTER JOIN. Left-table preservation reflects the query's requirement, not a table's inherent business importance.",
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "transcript_ref": "aY7z4HcHm5M:1388-1575"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch how table placement preserves customers without orders. The clip uses LEFT JOIN for LEFT OUTER JOIN; its language about table \u201cpriority\u201d means preservation in this query, not inherent business importance.",
+    "after": "The clip demonstrates preservation and NULL right-side fields, but does not teach the complete selected-column query pattern. Devspace's text supplies that pattern and explains how multiple matching orders produce multiple result rows."
+   }
+  },
+  "notes": [
+   "Keep table-preservation logic central; do not introduce reporting totals or distinct-row syntax.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 48,
+  "id": "sql.right_outer_join",
+  "previews": [],
+  "facts": {
+   "concept_id": "sql.right_outer_join",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "RIGHT OUTER JOIN returns matching combinations and preserves each unmatched right-table row.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.1.1 \u2014 Joined Tables"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "For an unmatched right row, columns from the left table are filled with NULL.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.1.1 \u2014 Joined Tables"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Write SELECT a.column_name, b.column_name FROM table_a AS a RIGHT OUTER JOIN table_b AS b ON a.key_column = b.key_column; with the table to preserve on the right.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.1.1 \u2014 Joined Tables"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Use a hypothetical report where Orders contains (10, 101) and (11, 101), and Customers contains (101, North Stores) and (102, South Stores). You want all customers represented even if a customer has no orders. With Customers placed on the right, a right outer join preserves that side.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Right Outer Join",
+    "content": "RIGHT OUTER JOIN returns matching combinations and preserves each unmatched right-table row.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "For an unmatched right row, columns from the left table are filled with NULL. Write SELECT a.column_name, b.column_name FROM table_a AS a RIGHT OUTER JOIN table_b AS b ON a.key_column = b.key_column; with the table to preserve on the right.",
+    "fact_ids": [
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Write:\nSELECT a.OrderID, b.CustomerID FROM Orders AS a RIGHT OUTER JOIN Customers AS b ON a.CustomerID = b.CustomerID;\n\nThe matching results include (10, 101) and (11, 101). Customer 102 has no matching order, so the result also includes (NULL, 102). The missing values are from the left table, Orders, because this is an unmatched right-table row.\n\nCompare table position with result interpretation. It is Customers that must remain represented for this business question, and Customers is on the right of RIGHT OUTER JOIN. The join returns matching combinations as well as preserved unmatched right rows. It does not imply that every right row has a real order.\n\nThe practical skill is choosing and reading preservation correctly. A report reader seeing NULL for OrderID should understand that the preserved customer lacked a matching left-table row under this condition. Do not turn that missing match into a fabricated order number.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "Right outer join preservation follows the right-hand table in the query. For an unmatched right row, left-table fields are NULL. That is the opposite missing-side placement from an unmatched left row in a left outer join.",
+    "fact_ids": [
+     "f1",
+     "f2"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f3"
+     ],
+     "capability": "write_right_join_preserving_required_table"
+    },
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "interpret_unmatched_right_rows_and_null_left_fields"
+    }
+   ],
+   "practice_anchor": {
+    "type": "live_code",
+    "objective": "Write a RIGHT OUTER JOIN between Orders and Customers that preserves every customer, including customers without matching orders, and selects OrderID and CustomerID.",
+    "success": "The query places Customers on the right, matches the tables using CustomerID, and returns (10, 101), (11, 101), and (NULL, 102), regardless of row order.",
+    "live_code": {
+     "required_skill": "Choose the preserved right-hand table and write an equality join condition using table aliases.",
+     "allowed_syntax": [
+      "SELECT",
+      "FROM",
+      "AS",
+      "RIGHT JOIN",
+      "RIGHT OUTER JOIN",
+      "ON",
+      "=",
+      "alias.column_name",
+      "comma-separated selected columns",
+      ";"
+     ],
+     "blocked_syntax": [
+      "FULL JOIN",
+      "FULL OUTER JOIN",
+      "ORDER BY"
+     ],
+     "starter_state_intent": "Provide Orders with columns OrderID and CustomerID and rows (10, 101) and (11, 101), plus Customers with columns CustomerID and CustomerName and rows (101, 'North Stores') and (102, 'South Stores'). Provide an empty SQL editor.",
+     "observable_success": "Executing the query returns both matching order-customer combinations and a row with NULL OrderID and CustomerID 102. Customers is the right-hand table and the ON condition compares the two CustomerID columns."
+    }
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Show Orders on the left, Customers on the right, and the resulting OrderID and CustomerID columns. Make both matches for customer 101 and the preserved customer 102 row with NULL OrderID visible."
+   }
+  },
+  "media": {
+   "group_title": "Right-side preservation and missing left-side matches",
+   "segments": [
+    {
+     "segment_id": "seg_sql.right_outer_join_T5VKCXJaIfM_57_144",
+     "label": "Trace a RIGHT JOIN: preserve orders and identify NULL customer fields",
+     "video_id": "T5VKCXJaIfM",
+     "youtube_url": "https://www.youtube.com/watch?v=T5VKCXJaIfM",
+     "review_url": "https://www.youtube.com/watch?v=T5VKCXJaIfM&t=57s",
+     "start_seconds": 57,
+     "end_seconds": 144,
+     "summary": "With Customers on the left and Orders on the right, the right join keeps every order and attaches matching customer information. Orders for customer IDs 1, 2, and 3 have matching customers. An order referencing customer ID 6 has no matching customer, so its left-side customer fields are NULL. The order remains in the result despite that missing match.",
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "transcript_ref": "T5VKCXJaIfM:57-144"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch which table is preserved: this clip places Orders on the right, unlike our example. The creator's \u201cempty\u201d means NULL in the missing customer fields, not an empty string.",
+    "after": "The clip explains preservation and NULL left-side fields but does not construct the query. Devspace's text supplies the syntax and places Customers on the right to preserve all customers."
+   }
+  },
+  "notes": [
+   "Do not describe right preservation as preserving the first FROM table.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 49,
+  "id": "sql.full_outer_join",
+  "previews": [],
+  "facts": {
+   "concept_id": "sql.full_outer_join",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "FULL OUTER JOIN returns matching combinations and preserves unmatched rows from both tables.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.1.1 \u2014 Joined Tables"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Columns on the missing side of an unmatched row are filled with NULL.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.1.1 \u2014 Joined Tables"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Write SELECT a.column_name, b.column_name FROM table_a AS a FULL OUTER JOIN table_b AS b ON a.key_column = b.key_column; to preserve unmatched rows on either side.",
+     "source_refs": [
+      "postgres_docs#https://www.postgresql.org/docs/current/queries-table-expressions.html \u2014 7.2.1.1 \u2014 Joined Tables"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine comparing two independently supplied extracts, rather than tables with an enforced foreign-key relationship. Orders contains (10, 101) and (11, 999); Customers contains (101, North Stores) and (102, South Stores). You want matching combinations plus unmatched rows from either extract.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Full Outer Join",
+    "content": "FULL OUTER JOIN returns matching combinations and preserves unmatched rows from both tables.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Columns on the missing side of an unmatched row are filled with NULL. Write SELECT a.column_name, b.column_name FROM table_a AS a FULL OUTER JOIN table_b AS b ON a.key_column = b.key_column; to preserve unmatched rows on either side.",
+    "fact_ids": [
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Write:\nSELECT a.OrderID, b.CustomerID FROM Orders AS a FULL OUTER JOIN Customers AS b ON a.CustomerID = b.CustomerID;\n\nThe matching pair produces (10, 101). Order 11 has no customer match, so it produces (11, NULL). Customer 102 has no order match, so it produces (NULL, 102). These are result contents, not a guaranteed sequence.\n\nFor each unmatched row, fields on the missing side are filled with NULL. The join therefore preserves unmatched rows from both tables instead of choosing only the left or the right side. The sample\u2019s unmatched identifier is deliberate reporting data; it would not satisfy a matching foreign-key constraint.\n\nThe business interpretation is that both extracts remain represented under the chosen condition, including rows needing further investigation. A full outer join does not itself repair unmatched references, infer missing customer details, or declare every preserved row valid. Its supported role here is returning matching combinations and preserving unmatched rows from either side.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "Preserving unmatched rows is not the same as resolving their missing match. Full outer join supplies NULL for fields from the absent side; it does not invent that side\u2019s data. Matching combinations still appear alongside the unmatched rows.",
+    "fact_ids": [
+     "f1",
+     "f2"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2",
+      "f3"
+     ],
+     "capability": "write_full_outer_join_preserving_both_tables"
+    }
+   ],
+   "practice_anchor": {
+    "type": "live_code",
+    "objective": "Write a FULL OUTER JOIN between Orders and Customers on CustomerID, selecting a.OrderID and b.CustomerID while retaining unmatched rows from both extracts.",
+    "success": "The query returns the matching pair (10, 101), the unmatched order (11, NULL), and the unmatched customer (NULL, 102), without requiring any particular result sequence.",
+    "live_code": {
+     "required_skill": "Use FULL OUTER JOIN with table aliases and an equality condition to preserve unmatched rows from both tables.",
+     "allowed_syntax": [
+      "SELECT",
+      "FROM",
+      "AS",
+      "FULL OUTER JOIN",
+      "ON",
+      "=",
+      "qualified column references",
+      "comma-separated selected columns",
+      "statement-ending semicolon"
+     ],
+     "blocked_syntax": [
+      "ORDER BY"
+     ],
+     "starter_state_intent": "Provide independently supplied Orders(OrderID, CustomerID) rows (10, 101) and (11, 999), and Customers(CustomerID, CustomerName) rows (101, 'North Stores') and (102, 'South Stores'). Provide an empty query editor and a SQL environment supporting FULL OUTER JOIN.",
+     "observable_success": "Executing the learner\u2019s statement produces exactly the three expected row combinations: (10, 101), (11, NULL), and (NULL, 102). Both unmatched rows remain, with NULL in the selected column from the missing side."
+    }
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Show the independent Orders and Customers extracts alongside the two-column join result. Distinguish the matching pair, the unmatched order, and the unmatched customer, making missing-side NULLs visible without implying a guaranteed result sequence."
+   }
+  },
+  "media": {
+   "group_title": "Preserving matches and unmatched rows from both tables",
+   "segments": [
+    {
+     "segment_id": "seg_sql.full_outer_join_aY7z4HcHm5M_2116_2346",
+     "label": "FULL OUTER JOIN: matching rows and missing-side NULLs",
+     "video_id": "aY7z4HcHm5M",
+     "youtube_url": "https://www.youtube.com/watch?v=aY7z4HcHm5M",
+     "review_url": "https://www.youtube.com/watch?v=aY7z4HcHm5M&t=2116s",
+     "start_seconds": 2116,
+     "end_seconds": 2346,
+     "summary": "A FULL OUTER JOIN retains matching combinations and unmatched rows from both tables. In the customers-and-orders example, an existing query is changed to FULL JOIN, an equivalent name for FULL OUTER JOIN. Matching customer and order data appear together. Customers without orders remain in the result with NULL in the order columns. An order without a matching customer also remains, with NULL in the customer columns. Neither table is the sole side whose unmatched rows are preserved.",
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "transcript_ref": "aY7z4HcHm5M:2116-2346"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch how the clip retains customers without orders and an order without a customer. It uses FULL JOIN, an equivalent name for Devspace\u2019s FULL OUTER JOIN.",
+    "after": "The clip demonstrates both-side preservation and missing-side NULLs, but does not build the complete SELECT\u2013FROM\u2013ON statement from scratch. The text supplies that syntax and a complete example."
+   }
+  },
+  "notes": [
+   "Use independent extracts for deliberate unmatched identifiers; do not imply valid FK orphans.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ }
+]

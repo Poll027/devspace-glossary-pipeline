@@ -1,0 +1,1368 @@
+[
+ {
+  "index": 30,
+  "id": "ba_bpmn.decision_tables",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_bpmn.decision_tables",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A decision table records how combinations of conditions produce outcomes, including complex logic such as business rules.",
+     "source_refs": [
+      "https://www.istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf#4.2.3 Decision Table Testing \u2014 page 41"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "To construct a decision table, put the conditions and resulting actions in rows and give each decision rule a column containing a unique condition combination and its associated actions.",
+     "source_refs": [
+      "https://www.istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf#4.2.3 Decision Table Testing \u2014 page 41"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "For a limited-entry decision table, mark a condition T when satisfied, F when not satisfied, and \u2013 when irrelevant to the outcome; mark an action X when it should occur and leave it blank when it should not occur.",
+     "source_refs": [
+      "https://www.istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf#4.2.3 Decision Table Testing \u2014 page 41"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "Check completeness by listing all condition combinations and confirming each feasible combination has a rule column with its resulting action; a feasible combination without a rule is a gap, while infeasible combinations can be removed.",
+     "source_refs": [
+      "https://www.istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf#4.2.3 Decision Table Testing \u2014 page 41"
+     ]
+    },
+    {
+     "id": "f5",
+     "statement": "Check consistency by comparing the outcomes assigned to the same feasible condition combination across the written rules and table; incompatible outcomes for that combination expose a contradiction that needs resolution.",
+     "source_refs": [
+      "https://www.istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf#4.2.3 Decision Table Testing \u2014 page 41"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine a hypothetical policy with two conditions: whether an order is urgent and whether approval is present. The written rule says an urgent approved order may proceed; an urgent unapproved order requests approval; a nonurgent order may proceed regardless of approval.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Decision Tables",
+    "content": "A decision table records how combinations of conditions produce outcomes, including complex logic such as business rules.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "To construct a decision table, put the conditions and resulting actions in rows and give each decision rule a column containing a unique condition combination and its associated actions. For a limited-entry decision table, mark a condition T when satisfied, F when not satisfied, and \u2013 when irrelevant to the outcome; mark an action X when it should occur and leave it blank when it should not occur. Check completeness by listing all condition combinations and confirming each feasible combination has a rule column with its resulting action; a feasible combination without a rule is a gap, while infeasible combinations can be removed. Check consistency by comparing the outcomes assigned to the same feasible condition combination across the written rules and table; incompatible outcomes for that combination expose a contradiction that needs resolution.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4",
+     "f5"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Construct a limited-entry decision table with condition rows \u201cUrgent?\u201d and \u201cApproved?\u201d and action rows \u201cProceed\u201d and \u201cRequest approval.\u201d Give each rule a column. Rule 1 has T/T and X for Proceed. Rule 2 has T/F and X for Request approval. Rule 3 has F/\u2013 and X for Proceed. Leave the other action cells blank. Here \u2013 means the approval condition is irrelevant to the nonurgent outcome, so Rule 3 covers F/T and F/F.\n\nCheck completeness by listing the feasible combinations T/T, T/F, F/T, and F/F. All four have an outcome in this example. If Rule 2 were missing, T/F would be a gap. Infeasible combinations could be removed in a different policy, but none are declared infeasible here.\n\nCheck consistency against the written rules. If another rule assigns Request approval instead of Proceed to T/T, the same feasible combination has incompatible outcomes. Record that contradiction for resolution rather than choosing one arbitrarily. The table\u2019s job is to expose condition-to-action logic, including gaps and contradictions, not conceal uncertainty behind a neat grid.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4",
+     "f5"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "A dash is not false: it means the condition is irrelevant to the outcome. Completeness and consistency are separate checks. A table can cover every feasible combination and still contradict the written rules by assigning incompatible outcomes to the same combination.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2",
+      "f3"
+     ],
+     "capability": "construct_condition_action_rule_columns"
+    },
+    {
+     "fact_ids": [
+      "f3",
+      "f4"
+     ],
+     "capability": "verify_coverage_of_all_feasible_combinations"
+    },
+    {
+     "fact_ids": [
+      "f5"
+     ],
+     "capability": "identify_incompatible_outcomes_for_same_combination"
+    }
+   ],
+   "practice_anchor": {
+    "type": "spreadsheet",
+    "objective": "Convert the three hypothetical order rules into a decision table using manual cell entry only: urgent approved orders proceed; urgent unapproved orders request approval; nonurgent orders proceed regardless of approval. Use Urgent? and Approved? as condition rows, Proceed and Request approval as action rows, and one column per rule.",
+    "success": "The table represents the rules as T/T, T/F, and F/\u2013, with X marking the appropriate action and other action cells blank. Expanding F/\u2013 confirms coverage of F/T and F/F, so all four feasible combinations have outcomes. Each outcome agrees with the written rules, with no incompatible outcomes assigned to the same combination."
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Make the condition rows, action rows, and three rule columns visible, alongside a completeness check listing T/T, T/F, F/T, and F/F. Show that F/\u2013 covers both F/T and F/F, distinguish a missing T/F rule as a gap, and identify conflicting outcomes for T/T as a contradiction."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Use conditions as rows and rules as columns; avoid reversing the brief convention.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 31,
+  "id": "ba_bpmn.decision_trees",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_bpmn.decision_trees",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A decision tree represents choices and possible outcomes with branches.",
+     "source_refs": [
+      "atlassian_agile#https://www.atlassian.com/work-management/project-management/decision-tree \u2014 What is a decision tree?"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Start with the initial decision, add branches for the possible answers, and continue with subsequent decisions and their outcomes.",
+     "source_refs": [
+      "atlassian_agile#https://www.atlassian.com/work-management/project-management/decision-tree \u2014 How to create a decision tree"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose a hypothetical dispatch decision first asks whether an order is urgent. If yes, it next asks whether approval is present. If no, it proceeds through the nonurgent outcome. A decision tree makes that sequence of choices and possible outcomes visible with branches.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Decision Trees",
+    "content": "A decision tree represents choices and possible outcomes with branches.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Start with the initial decision, add branches for the possible answers, and continue with subsequent decisions and their outcomes.",
+    "fact_ids": [
+     "f2"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Start with the initial decision \u201cUrgent?\u201d Add one branch for yes and another for no. On the yes branch, add the subsequent decision \u201cApproval present?\u201d and branches for its possible answers. The approved path ends at \u201cProceed\u201d; the unapproved path ends at \u201cRequest approval.\u201d In this exercise, the no-urgency branch ends at \u201cProceed.\u201d These are invented policy outcomes, not general rules for dispatch.\n\nRead a path from the initial decision through the relevant answers to its outcome. An urgent order without approval follows yes at the first decision and no at the second, reaching Request approval. This explanation ties branch labels to decisions instead of using unlabeled lines.\n\nThe useful output is sequential branching logic. Do not add a subsequent decision to every branch merely to make the drawing symmetrical; continue where the decision being represented requires it. The tree communicates choices and outcomes, not the statistical prediction methods that may use a similarly named structure elsewhere.",
+    "fact_ids": [
+     "f1",
+     "f2"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "A branch represents a possible answer or choice leading onward; it is not just decoration around a list of outcomes. Keep the initial and subsequent decisions visible so the reader can follow the sequence. This is business decision logic, not a machine-learning lesson.",
+    "fact_ids": [
+     "f1",
+     "f2"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "build_correctly_ordered_decision_tree"
+    }
+   ],
+   "practice_anchor": {
+    "type": "UI_edit",
+    "objective": "Arrange decision nodes, labeled answer branches, and outcome nodes on a diagram canvas to represent the hypothetical dispatch rule: check urgency first; for urgent orders, check approval; otherwise proceed.",
+    "success": "The diagram begins with Urgent? Its yes branch leads to Approval present?, whose yes branch ends at Proceed and whose no branch ends at Request approval. The no branch from Urgent? ends at Proceed. Each answer label is attached to the correct decision branch."
+   },
+   "visual_anchor": {
+    "type": "diagram",
+    "purpose": "Make the initial Urgent? decision, its yes/no branches, the subsequent Approval present? decision on the urgent branch, and the final Proceed or Request approval outcomes visible in their correct sequence."
+   }
+  },
+  "media": {
+   "group_title": "From an initial choice to branching outcomes",
+   "segments": [
+    {
+     "segment_id": "seg_ba_bpmn.decision_trees_LSWe7PPW02E_2_123",
+     "label": "Build a decision tree with choices, outcome branches, and endpoints",
+     "video_id": "LSWe7PPW02E",
+     "youtube_url": "https://www.youtube.com/watch?v=LSWe7PPW02E",
+     "review_url": "https://www.youtube.com/watch?v=LSWe7PPW02E&t=2s",
+     "start_seconds": 2,
+     "end_seconds": 123,
+     "summary": "A decision tree maps related choices and their possible outcomes through branches. Begin with the main decision and draw a branch for each possible action, then extend those branches to further possibilities. The example starts with choosing work or fishing. Work leads to keeping or losing a job; fishing leads to catching or not catching fish. The example assigns illustrative probabilities to these outcomes. Squares represent decisions, circles represent uncertain outcomes, and triangles mark endpoints where no further choices or uncertain outcomes remain.",
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "transcript_ref": "LSWe7PPW02E:2-123"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch how the initial decision branches into actions and then outcomes. The clip uses uncertain outcomes and probabilities; focus on the branching sequence rather than treating those additions as requirements for every tree.",
+    "after": "The clip illustrates both choices and branching construction. Devspace\u2019s text applies these ideas to sequential yes/no business rules, using the hypothetical dispatch example rather than uncertain outcomes."
+   }
+  },
+  "notes": [
+   "Avoid decision-table completeness rules being silently recast as tree-specific facts.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 32,
+  "id": "ba_dm.entities_attributes",
+  "previews": [
+   "ba_bi.star_schema_design"
+  ],
+  "facts": {
+   "concept_id": "ba_dm.entities_attributes",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "An entity is a business thing being described; its attributes are descriptive properties of that thing.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/guidance/star-schema \u2014 Understand star schema"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Identify the business things that need describing and list the descriptive attributes needed for each.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/guidance/star-schema \u2014 Understand star schema"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine a stakeholder saying, \u201cWe need to describe customers and their orders, including the customer name and each order\u2019s requested delivery date.\u201d Start by identifying the business things being described: Customer and Order. Then separate their descriptive properties.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Entities and Attributes",
+    "content": "An entity is a business thing being described; its attributes are descriptive properties of that thing.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Identify the business things that need describing and list the descriptive attributes needed for each.",
+    "fact_ids": [
+     "f2"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "example",
+    "title": "A business analysis example",
+    "content": "For this hypothetical domain, list Customer attributes such as customer name and contact number, and Order attributes such as requested delivery date and instruction text. The attribute belongs to the thing it describes. A requested delivery date describes an order in this example, while customer name describes a customer.\n\nRead another sentence: \u201cDispatch staff need the instruction text for an order.\u201d It adds a descriptive need for Order rather than automatically introducing a new entity called InstructionText. The question is which business thing needs describing and which properties are needed for that description.\n\nThe output can remain a plain list of entities with attributes. This step does not require keys, relationship symbols, or a database implementation. Those details come later. Focus first on distinguishing a business thing from a descriptive property of that thing, using the narrative as evidence rather than adding every imaginable attribute. The resulting list should answer what the business needs to describe in this example.",
+    "fact_ids": [
+     "f1",
+     "f2"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "An attribute is not automatically a separate entity because its name appears in a sentence. Ask whether it describes a business thing already identified. Conversely, do not merge unrelated business things into one vague entity just because they appear in the same narrative.",
+    "fact_ids": [
+     "f1",
+     "f2"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "identify_entities_from_business_narrative"
+    },
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "assign_descriptive_attributes_to_entities"
+    }
+   ],
+   "practice_anchor": {
+    "type": "field_selection",
+    "objective": "From a supplied hypothetical narrative describing Customer and Order, identify both entities and select three explicitly supported attributes for each. The narrative must supply three descriptive properties for each business thing.",
+    "success": "Customer and Order are identified as entities, each has three attributes supported by the narrative, and each attribute is assigned to the business thing it describes rather than treated as a separate entity."
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Make the distinction visible in an annotated two-column table: business thing (entity) and descriptive properties (attributes). Show Customer with customer name and contact number, and Order with requested delivery date and instruction text."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Keep keys and relationships for subsequent concepts; use ordinary business descriptions first.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 33,
+  "id": "datamodel.primary_keys",
+  "previews": [],
+  "facts": {
+   "concept_id": "datamodel.primary_keys",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A primary key constraint indicates that a column, or group of columns, can be used as a unique identifier for the rows of a table; this requires the values to be both unique and not null.",
+     "source_refs": [
+      "postgresql_docs_constraints#5.5.4. Primary Keys"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "A table can have at most one primary key, and a primary key can span more than one column (a composite key, composed of two or more attributes).",
+     "source_refs": [
+      "postgresql_docs_constraints#5.5.4. Primary Keys",
+      "database_design_open_textbook#ch8-Composite key"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Entity integrity requires that every table have a primary key, and that neither the primary key nor any part of it contain null values.",
+     "source_refs": [
+      "database_design_open_textbook#ch9-Entity integrity"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_001_data_analyst_pilot",
+   "used_by_path_ids": [
+    "data_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose a Customer table has rows for customers 101, 102, and 103. CustomerID is a candidate for the primary key if each row\u2019s value is unique and not null. CustomerName is less suitable in an example where two different customers share the name \u201cNorth Stores\u201d: the repeated name would not uniquely identify each row.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Primary Keys",
+    "content": "A primary key constraint indicates that a column, or group of columns, can be used as a unique identifier for the rows of a table; this requires the values to be both unique and not null.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "A table can have at most one primary key, and a primary key can span more than one column (a composite key, composed of two or more attributes). Entity integrity requires that every table have a primary key, and that neither the primary key nor any part of it contain null values.",
+    "fact_ids": [
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "A table has at most one primary key, but that key can span multiple columns. Imagine a separate table of branch-specific order numbers in which order number 7 occurs at both North and South branches. The pair BranchCode and OrderNumber can form a composite key if every pair is unique and neither part is null. One key composed of two attributes is not two primary keys.\n\nCheck the sample rows deliberately. Duplicate CustomerID values violate the uniqueness requirement. A missing CustomerID violates the not-null requirement. For a composite key, check the combination for uniqueness and every component for null values. A row with a known branch but a null order number does not meet entity integrity.\n\nThe practical result is identifying the column or column group that can uniquely identify a row while meeting the stated integrity conditions. A convenient-looking label is not enough: the actual values must satisfy uniqueness and non-null requirements.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "Unique is not the whole primary-key rule: values must also be not null, and no part of a composite primary key may be null. A composite key is one primary key spanning columns, not permission to assign several primary keys to a table.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1"
+     ],
+     "capability": "identify_unique_non_null_primary_key_candidates"
+    },
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "identify_valid_composite_primary_key"
+    },
+    {
+     "fact_ids": [
+      "f3"
+     ],
+     "capability": "reject_primary_key_candidates_with_null_components"
+    }
+   ],
+   "practice_anchor": {
+    "type": "field_selection",
+    "objective": "Select one valid primary key column or column group for each of three sample tables using CustomerID, CustomerName, or BranchCode and OrderNumber.",
+    "success": "Each selection uniquely identifies every sample row and contains no null values in any selected component. Select a single primary key per table, treating BranchCode and OrderNumber together as one composite key where neither column alone is unique."
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Make three sample tables visible with repeated customer names, duplicate or missing CustomerID values, and branch-specific order numbers. Highlight how uniqueness is checked for an entire column group while the not-null requirement applies to every component."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Distinguish candidate examples from declared keys; avoid CREATE TABLE syntax.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 34,
+  "id": "datamodel.foreign_keys_referential_integrity",
+  "previews": [],
+  "facts": {
+   "concept_id": "datamodel.foreign_keys_referential_integrity",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A foreign key constraint specifies that the values in a column (or group of columns) of one table must match values appearing in some row of another, referenced table.",
+     "source_refs": [
+      "postgresql_docs_constraints#5.5.5. Foreign Keys"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "A null foreign key value also satisfies referential integrity; a non-null one must match an existing primary key value in the referenced table.",
+     "source_refs": [
+      "database_design_open_textbook#ch9-Referential integrity"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "A row whose foreign key value is not found in the referenced table is called an orphan record; referential integrity is what prevents these.",
+     "source_refs": [
+      "database_design_open_textbook#ch9-Referential integrity"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_001_data_analyst_pilot",
+   "used_by_path_ids": [
+    "data_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine Customer has primary-key values 101 and 102. Order contains CustomerID to refer to a customer. An order with CustomerID 101 has a matching referenced row; a non-null CustomerID 999 does not in this hypothetical data.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Foreign Keys Referential Integrity",
+    "content": "A foreign key constraint specifies that the values in a column (or group of columns) of one table must match values appearing in some row of another, referenced table.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "A null foreign key value also satisfies referential integrity; a non-null one must match an existing primary key value in the referenced table. A row whose foreign key value is not found in the referenced table is called an orphan record; referential integrity is what prevents these.",
+    "fact_ids": [
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "The foreign-key constraint requires non-null referencing values to match a value in the referenced table. A row with 999 would be an orphan record if that value is absent from Customer. Referential integrity prevents that unmatched reference rather than making up a new customer to satisfy it.\n\nA null foreign-key value also satisfies referential integrity under this referential-integrity rule. That is different from primary-key rules, where null is not allowed. For the exercise, distinguish three cases: matching 101, unmatched non-null 999, and null. Do not describe all three as simply \u201cvalid customer values\u201d: null represents no known referenced value here, while 101 matches an existing customer.\n\nA foreign key can also use a group of columns when the reference requires it. The learner\u2019s immediate task is to check whether the referencing value or values match the required referenced row, while preserving the stated null exception. Keep the example about references and integrity rather than adding deletion or update behavior that has not been established.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "The foreign-key null rule differs from the primary-key rule. In this brief, null satisfies referential integrity; a non-null value must match. Do not treat an unmatched non-null value as an acceptable unknown.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1"
+     ],
+     "capability": "identify_foreign_key_and_referenced_primary_key"
+    },
+    {
+     "fact_ids": [
+      "f2",
+      "f3"
+     ],
+     "capability": "identify_referential_integrity_violation"
+    }
+   ],
+   "practice_anchor": {
+    "type": "field_selection",
+    "objective": "Using Customer with primary-key CustomerID values 101 and 102 and Order with CustomerID values 101, 999, and null, select the foreign-key field and identify the referencing value that violates referential integrity.",
+    "success": "Identifies Order.CustomerID as the foreign key referencing Customer.CustomerID, flags 999 as an unmatched non-null reference creating an orphan record, and distinguishes matching 101 and permitted null from the violation."
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Show Customer and Order side by side, with Customer.CustomerID marked as the primary key and Order.CustomerID as the foreign key. Make the matching reference 101, unmatched reference 999, and null reference visible and distinguish their referential-integrity status."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Do not invent cascade behavior or NULL prohibitions beyond the brief.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 35,
+  "id": "datamodel.one_to_many",
+  "previews": [],
+  "facts": {
+   "concept_id": "datamodel.one_to_many",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "In a one-to-many (1:M) relationship, one row on the 'one' side relates to many rows on the 'many' side; for example, one department has many employees.",
+     "source_refs": [
+      "database_design_open_textbook#ch8-Types of Relationships"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "In the Customer/Order example, a customer can place a minimum of zero and a maximum of many orders, while an order relates to a maximum of one customer, so Order is the 'many' side (the many side is optional, since a customer doesn't need to place an order to be a customer); the foreign key CustID is placed in the Order table and must match a valid CustID in the Customer table.",
+     "source_refs": [
+      "database_design_open_textbook#ch9-Optional relationships",
+      "database_design_open_textbook#ch9-Referential integrity"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_001_data_analyst_pilot",
+   "used_by_path_ids": [
+    "data_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose Customer has one row for customer 101 and one for customer 102. Order has three rows referencing 101 and no rows referencing 102. One customer can therefore relate to many orders, while the example allows a customer to have zero orders.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "One To Many",
+    "content": "In a one-to-many (1:M) relationship, one row on the 'one' side relates to many rows on the 'many' side; for example, one department has many employees.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "In the Customer/Order example, a customer can place a minimum of zero and a maximum of many orders, while an order relates to a maximum of one customer, so Order is the 'many' side (the many side is optional, since a customer doesn't need to place an order to be a customer); the foreign key CustID is placed in the Order table and must match a valid CustID in the Customer table.",
+    "fact_ids": [
+     "f2"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Identify Order as the many side. Its CustID foreign key stores the reference to a valid Customer CustID. The same customer identifier can appear on multiple order rows because those rows are different orders belonging to the same customer. The Customer side has the customer row being referenced.\n\nRead the allowed counts in both directions. Customer 101 has several orders; customer 102 has none and still exists as a customer. Each order relates to a maximum of one customer in the stated example. Do not reverse the relationship merely because the customer name is shown on an order report.\n\nThe useful modeling decision is not just naming \u201cone-to-many.\u201d It is identifying which thing can have many related instances and placing the reference on that many side. The zero-order customer also shows why \u201cmany\u201d should not be interpreted as requiring at least one order in this example. These counts are the business rules of the Customer/Order example, not universal counts for every relationship.",
+    "fact_ids": [
+     "f1",
+     "f2"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "One-to-many does not mean every one-side row already has several related rows. The stated customer example permits zero orders. Nor should the foreign key be placed on Customer just because that is the one side: CustID belongs in Order for this relationship.",
+    "fact_ids": [
+     "f1",
+     "f2"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "identify_one_to_many_direction"
+    },
+    {
+     "fact_ids": [
+      "f2"
+     ],
+     "capability": "determine_allowed_related_counts"
+    },
+    {
+     "fact_ids": [
+      "f2"
+     ],
+     "capability": "place_and_validate_many_side_foreign_key"
+    }
+   ],
+   "practice_anchor": {
+    "type": "field_selection",
+    "objective": "Model the stated Customer/Order relationship by selecting the one and many sides, assigning the allowed counts in each direction, and selecting the table that holds the CustID foreign key and the field it references.",
+    "success": "Customer is identified as the one side and Order as the many side. A customer may have zero to many orders, and an order relates to a maximum of one customer. Order.CustID references Customer.CustID, and every supplied Order.CustID matches an existing Customer.CustID."
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Show Customer rows for CustID 101 and 102 alongside three distinct Order rows referencing CustID 101 and none referencing 102. Highlight Order.CustID as the foreign key referencing Customer.CustID, making repeated references and the valid zero-order customer visible."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Preserve the zero-to-many customer example and maximum-one wording for an order.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 36,
+  "id": "datamodel.many_to_many_junction_tables",
+  "previews": [],
+  "facts": {
+   "concept_id": "datamodel.many_to_many_junction_tables",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A many-to-many (M:N) relationship cannot be implemented directly in the relational model; it is resolved into two one-to-many relationships using a composite entity, also called a junction or bridge table.",
+     "source_refs": [
+      "database_design_open_textbook#ch8-Many to many (M:N) relationships"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "The junction table must contain at least the primary keys of the two original tables, used as foreign keys, and may also contain additional attributes of its own.",
+     "source_refs": [
+      "database_design_open_textbook#ch8-Many to many (M:N) relationships"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "The combination of the two original tables' primary keys, brought in as foreign keys, will make the primary key of the junction table (or, together with another attribute, can form it).",
+     "source_refs": [
+      "database_design_open_textbook#ch8-Example of mapping an M:N binary relationship type"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_001_data_analyst_pilot",
+   "used_by_path_ids": [
+    "data_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine orders can include several products, and a product can appear in several orders. That is a many-to-many relationship. In the relational model described here, resolve it using a junction table rather than attempting to implement the many-to-many relationship directly.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Many To Many Junction Tables",
+    "content": "A many-to-many (M:N) relationship cannot be implemented directly in the relational model; it is resolved into two one-to-many relationships using a composite entity, also called a junction or bridge table.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "The junction table must contain at least the primary keys of the two original tables, used as foreign keys, and may also contain additional attributes of its own. The combination of the two original tables' primary keys, brought in as foreign keys, will make the primary key of the junction table (or, together with another attribute, can form it).",
+    "fact_ids": [
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "For this hypothetical model, create OrderProduct between Order and Product. It contains OrderID and ProductID, brought in from the original primary keys and used as foreign keys. It may also contain its own attribute, such as quantity. The two original tables now each have a one-to-many relationship with OrderProduct.\n\nExample junction rows are (Order 10, Product A, quantity 2), (Order 10, Product B, quantity 1), and (Order 11, Product A, quantity 3). Order 10 links to two products, and Product A links to two orders. The pair of original identifiers forms the junction primary key in this example. Where needed, those identifiers together with another attribute can form the key.\n\nThe important change is the representation of each association as a junction row. Quantity describes that association here, not every occurrence of Product A in every order. Keep both original references visible so the model does not lose one side of the relationship when resolving it.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "A junction table is not simply a copy of one original table. It contains at least both original primary keys as foreign keys, and its key uses their combination or that combination with another attribute. Resolving M:N produces two 1:M relationships.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1"
+     ],
+     "capability": "resolve_many_to_many_into_two_one_to_many_relationships"
+    },
+    {
+     "fact_ids": [
+      "f2"
+     ],
+     "capability": "select_both_original_primary_keys_as_junction_foreign_keys"
+    },
+    {
+     "fact_ids": [
+      "f3"
+     ],
+     "capability": "define_junction_primary_key_using_combined_original_identifiers"
+    }
+   ],
+   "practice_anchor": {
+    "type": "field_selection",
+    "objective": "Design OrderProduct for the hypothetical Order\u2013Product scenario by selecting its fields, marking both foreign keys, and selecting the fields that form its primary key. Include quantity as an attribute of each order\u2013product association.",
+    "success": "OrderProduct contains OrderID and ProductID as foreign keys referencing the original tables, quantity as an association attribute, and the pair OrderID\u2013ProductID as its primary key. Each original table has a one-to-many relationship with OrderProduct."
+   },
+   "visual_anchor": {
+    "type": "data_table",
+    "purpose": "Show OrderProduct with OrderID and ProductID marked as foreign keys and jointly as its primary key, alongside quantity. Include rows (10, A, 2), (10, B, 1), and (11, A, 3), making visible that one order can reference several products and one product can appear in several orders."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Do not introduce alternative surrogate-key designs beyond this brief.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 37,
+  "id": "ba_dm.relationships_cardinality",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_dm.relationships_cardinality",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "Relationship cardinality expresses how many instances on either side can be related.",
+     "source_refs": [
+      "uml_spec#https://www.omg.org/spec/UML/2.5.1/PDF \u2014 7.5.3 \u2014 Multiplicities"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "A one-to-many relationship has a column with unique values on one side and potentially repeated matching values on the other.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-create-and-manage-relationships \u2014 Cardinality"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "A many-to-many relationship permits repeated matching values on both sides.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-create-and-manage-relationships \u2014 Cardinality"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "Determine the relationship by checking whether each side permits one or multiple matching instances.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-create-and-manage-relationships \u2014 Cardinality"
+     ]
+    },
+    {
+     "id": "f8",
+     "statement": "In crow\u2019s-foot notation, a circle (ring) represents zero, a bar (dash) represents one, and a crow\u2019s-foot represents many.",
+     "source_refs": [
+      "https://support.microsoft.com/en-us/visio/create-a-diagram-with-crow-s-foot-database-notation#Symbols in crow\u2019s foot notation"
+     ]
+    },
+    {
+     "id": "f9",
+     "statement": "Pair a circle and bar for optional zero-or-one, two bars for mandatory exactly-one, a circle and crow\u2019s-foot for optional zero-or-many, or a bar and crow\u2019s-foot for mandatory one-or-many.",
+     "source_refs": [
+      "https://support.microsoft.com/en-us/visio/create-a-diagram-with-crow-s-foot-database-notation#Symbols in crow\u2019s foot notation"
+     ]
+    },
+    {
+     "id": "f10",
+     "statement": "At each relationship end, place the minimum symbol inward and the maximum symbol closest to the entity box.",
+     "source_refs": [
+      "https://support.microsoft.com/en-us/visio/create-a-diagram-with-crow-s-foot-database-notation#Symbols in crow\u2019s foot notation"
+     ]
+    },
+    {
+     "id": "f11",
+     "statement": "Draw a relationship line between the entities and annotate both ends with the symbol pair for the number of instances of that end\u2019s entity that can relate to an instance of the other entity.",
+     "source_refs": [
+      "https://support.microsoft.com/en-us/visio/create-a-diagram-with-crow-s-foot-database-notation#Symbols in crow\u2019s foot notation",
+      "uml_spec#https://www.omg.org/spec/UML/2.5.1/PDF \u2014 11.5.3.1 \u2014 Associations"
+     ]
+    }
+   ],
+   "optional_enrichment": [
+    {
+     "id": "f5",
+     "statement": "Write UML multiplicity as lower..upper: the lower bound is the minimum allowed number of related instances, the upper bound is the maximum, and * denotes an unlimited upper bound.",
+     "source_refs": [
+      "uml_spec#https://www.omg.org/spec/UML/2.5.1/PDF \u2014 7.5.3.2 \u2014 Multiplicities; 7.5.4.1 \u2014 Multiplicity Element"
+     ]
+    },
+    {
+     "id": "f6",
+     "statement": "Interpret 0..1 as optional with at most one related instance, 1 (equivalently 1..1) as exactly one, 0..* as zero or more, and 1..* as one or more.",
+     "source_refs": [
+      "uml_spec#https://www.omg.org/spec/UML/2.5.1/PDF \u2014 7.5.3.2 \u2014 Multiplicities; 7.5.4.1 \u2014 Multiplicity Element"
+     ]
+    },
+    {
+     "id": "f7",
+     "statement": "For a binary relationship, translate the business statement about how many instances of one entity can relate to a fixed instance of the other into lower and upper bounds, and place those bounds at the end whose instances are being counted; repeat from the opposite direction to annotate both ends.",
+     "source_refs": [
+      "uml_spec#https://www.omg.org/spec/UML/2.5.1/PDF \u2014 11.5.3.1 \u2014 Associations; 7.5.4.1 \u2014 Multiplicity Element"
+     ]
+    }
+   ],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose business rules say a customer may have zero or many orders, while each order must relate to exactly one customer. Cardinality expresses permitted counts, not merely the number of rows currently in a sample.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Relationships and Cardinality",
+    "content": "Relationship cardinality expresses how many instances on either side can be related.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "A one-to-many relationship has a column with unique values on one side and potentially repeated matching values on the other. A many-to-many relationship permits repeated matching values on both sides. Determine the relationship by checking whether each side permits one or multiple matching instances. In crow\u2019s-foot notation, a circle (ring) represents zero, a bar (dash) represents one, and a crow\u2019s-foot represents many. Pair a circle and bar for optional zero-or-one, two bars for mandatory exactly-one, a circle and crow\u2019s-foot for optional zero-or-many, or a bar and crow\u2019s-foot for mandatory one-or-many. At each relationship end, place the minimum symbol inward and the maximum symbol closest to the entity box. Draw a relationship line between the entities and annotate both ends with the symbol pair for the number of instances of that end\u2019s entity that can relate to an instance of the other entity.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4",
+     "f8",
+     "f9",
+     "f10",
+     "f11"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Check each direction: one customer can match multiple orders, and one order matches one customer. In crow\u2019s-foot notation, place circle plus crow\u2019s-foot at the Order end for zero-or-many orders per customer. Place two bars at the Customer end for mandatory exactly-one customer per order. At each end, put the minimum symbol inward and the maximum symbol closest to the entity box.\n\nThe symbols carry separate meanings: circle means zero, bar means one, and crow\u2019s-foot means many. Circle plus bar would mean optional zero-or-one; bar plus crow\u2019s-foot would mean mandatory one-or-many. Use the pair appropriate to the actual business rule instead of choosing whichever shape fits the available space.\n\nThe data perspective also helps: one-to-many has unique values on one side and potentially repeated matching values on the other; many-to-many permits repeated matching values on both sides. Determine the relationship by checking whether each side permits one or multiple matching instances. The example\u2019s mandatory order-to-customer rule is a hypothetical business rule for this diagram, not inferred solely from observing one current order.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4",
+     "f8",
+     "f9",
+     "f10",
+     "f11"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "A relationship end describes how many instances of that end\u2019s entity can relate to an instance of the opposite entity. Reading the crow\u2019s-foot as the count of customers instead of orders reverses the example. A current sample also does not by itself establish all permitted counts.",
+    "fact_ids": [
+     "f4",
+     "f8",
+     "f9",
+     "f10",
+     "f11"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2",
+      "f3",
+      "f4"
+     ],
+     "capability": "determine_relationship_cardinality_in_both_directions"
+    },
+    {
+     "fact_ids": [
+      "f8",
+      "f9"
+     ],
+     "capability": "select_crows_foot_pairs_for_permitted_counts"
+    },
+    {
+     "fact_ids": [
+      "f10",
+      "f11"
+     ],
+     "capability": "annotate_both_relationship_ends_with_correct_symbol_order"
+    }
+   ],
+   "practice_anchor": {
+    "type": "tool_simulation",
+    "objective": "Use entity boxes, relationship lines, and a crow\u2019s-foot symbol palette to determine and draw cardinality for two supplied hypothetical entity pairs: Customer\u2013Order and Customer\u2013Segment. Apply these rules: a customer may have zero or many orders, and each order must have exactly one customer; a customer may belong to zero or many segments, and each segment must contain one or many customers.",
+    "success": "Customer\u2013Order is identified as one-to-many, with two bars at Customer and circle plus crow\u2019s-foot at Order. Customer\u2013Segment is identified as many-to-many, with bar plus crow\u2019s-foot at Customer and circle plus crow\u2019s-foot at Segment. Both relationships have a connecting line, annotations at both ends, minimum symbols inward, and maximum symbols closest to the entity boxes."
+   },
+   "visual_anchor": {
+    "type": "diagram",
+    "purpose": "Make both annotated relationship ends visible for Customer\u2013Order and Customer\u2013Segment, with entity boxes, connecting lines, and clearly distinguishable minimum and maximum symbols. Show which opposite-entity instance each end\u2019s counts refer to."
+   }
+  },
+  "media": {
+   "group_title": "Read relationship counts and annotate both ends",
+   "segments": [
+    {
+     "segment_id": "seg_ba_dm.relationships_cardinality_ae9n0JNhKlg_375_525",
+     "label": "Determine minimum and maximum counts at each relationship end",
+     "video_id": "ae9n0JNhKlg",
+     "youtube_url": "https://www.youtube.com/watch?v=ae9n0JNhKlg",
+     "review_url": "https://www.youtube.com/watch?v=ae9n0JNhKlg&t=375s",
+     "start_seconds": 375,
+     "end_seconds": 525,
+     "summary": "Cardinality describes how many instances of one entity can relate to an instance of another. A circle represents zero, a bar represents one, and a crow\u2019s-foot represents many. Determine the minimum and maximum separately in each direction. In the customer\u2013order example, each order relates to exactly one customer, while a customer may have zero or many orders. In the order\u2013order item example, each item relates to exactly one order, while each order has one or many items. These counts express the business rules assumed in the examples.",
+     "fact_ids": [
+      "f1",
+      "f4",
+      "f8"
+     ],
+     "transcript_ref": "ae9n0JNhKlg:375-525"
+    },
+    {
+     "segment_id": "seg_ba_dm.relationships_cardinality_-0GctLQhcjY_402_526",
+     "label": "Recognize one-to-many and many-to-many from matching values",
+     "video_id": "-0GctLQhcjY",
+     "youtube_url": "https://www.youtube.com/watch?v=-0GctLQhcjY",
+     "review_url": "https://www.youtube.com/watch?v=-0GctLQhcjY&t=402s",
+     "start_seconds": 402,
+     "end_seconds": 526,
+     "summary": "Comparing matching CustomerID values illustrates relationship types. Two customer tables with unique CustomerID values on both sides illustrate one-to-one. Customers with unique CustomerID values matched to orders with repeated CustomerID values illustrate one-to-many; an individual customer having only one order does not change that classification. Reversing the sides gives many-to-one. In the final example, CustomerID repeats in both customer-segment records and orders, illustrating many-to-many: multiple orders can match multiple segment records for the same customer. These examples illustrate matching patterns; permitted counts must still follow the business rules.",
+     "fact_ids": [
+      "f2",
+      "f3"
+     ],
+     "transcript_ref": "-0GctLQhcjY:402-526"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch the first clip for counts in each direction; its \u201cvertical line\u201d is Devspace\u2019s bar. The second compares matching values. Treat example policies as hypothetical and sample rows as illustrations, not proof of every permitted count.",
+    "after": "The first clip does not explain unique-versus-repeated matching columns; the second does not teach crow\u2019s-foot notation. The text covers both perspectives, the standalone definition and directional method, all four symbol pairs, minimum/maximum placement, and how to draw and annotate both ends."
+   }
+  },
+  "notes": [
+   "Keep minimum/maximum symbol ordering explicit and do not confuse cardinality with observed row counts.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 38,
+  "id": "ba_dm.erd",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_dm.erd",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A model diagram can show entity types, their attributes, and relationships between instances.",
+     "source_refs": [
+      "uml_spec#https://www.omg.org/spec/UML/2.5.1/PDF \u2014 11.4 \u2014 Classes",
+      "uml_spec#https://www.omg.org/spec/UML/2.5.1/PDF \u2014 11.5 \u2014 Associations"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Draw named entity boxes with relevant attributes, clearly identify primary-key and foreign-key attributes, and connect related entities through each foreign key and its referenced key, marking the permitted multiplicities.",
+     "source_refs": [
+      "uml_spec#https://www.omg.org/spec/UML/2.5.1/PDF \u2014 11.4.4 \u2014 Notation",
+      "uml_spec#https://www.omg.org/spec/UML/2.5.1/PDF \u2014 11.5.4 \u2014 Notation",
+      "uml_spec#https://www.omg.org/spec/UML/2.5.1/PDF \u2014 7.5.4 \u2014 Notation",
+      "postgres_docs#https://www.postgresql.org/docs/current/ddl-constraints.html \u2014 5.5.4 Primary Keys; 5.5.5 Foreign Keys"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Use multiplicity labels such as 1, 0..1, 0..*, or 1..* to state the permitted numbers of related instances.",
+     "source_refs": [
+      "uml_spec#https://www.omg.org/spec/UML/2.5.1/PDF \u2014 7.5.4 \u2014 Notation"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine a business model containing Customer and Order. Draw a named box for each entity and list relevant attributes. For this hypothetical diagram, Customer contains CustomerID and Name; Order contains OrderID, CustomerID, and RequestedDate. Clearly identify CustomerID as Customer\u2019s primary key, OrderID as Order\u2019s primary key, and Order.CustomerID as a foreign key.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Entity-Relationship Diagrams",
+    "content": "A model diagram can show entity types, their attributes, and relationships between instances.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Draw named entity boxes with relevant attributes, clearly identify primary-key and foreign-key attributes, and connect related entities through each foreign key and its referenced key, marking the permitted multiplicities. Use multiplicity labels such as 1, 0..1, 0..*, or 1..* to state the permitted numbers of related instances.",
+    "fact_ids": [
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Connect the foreign-key attribute to its referenced key. Mark permitted multiplicities on the relationship: suppose every order belongs to exactly one customer and each customer may have zero or many orders. Use 1 at the Customer end and 0..* at the Order end for those rules. A 0..1 label would instead allow zero or one; 1..* would require one or many.\n\nRead the diagram back in business language. It says which things are described, what properties they have, how their instances relate, and how many related instances are permitted. The links should correspond to the identified keys rather than being arbitrary lines between boxes.\n\nThe result is an entity-relationship diagram, not just a list of tables. The particular attributes and mandatory customer rule are invented for this exercise. In actual modeling, use the established domain information and permitted counts rather than borrowing this example\u2019s rules automatically.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "Two boxes joined by an unlabeled line do not communicate the full permitted multiplicities. Likewise, identifying keys without connecting a foreign key to its referenced key leaves the intended relationship unclear. Keep both structural links and allowed counts visible.",
+    "fact_ids": [
+     "f2",
+     "f3"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "represent_entities_attributes_and_keys"
+    },
+    {
+     "fact_ids": [
+      "f2"
+     ],
+     "capability": "connect_foreign_keys_to_referenced_keys"
+    },
+    {
+     "fact_ids": [
+      "f3"
+     ],
+     "capability": "label_relationship_multiplicities_from_business_rules"
+    }
+   ],
+   "practice_anchor": {
+    "type": "external_proof",
+    "objective": "Draw and submit an ERD for the hypothetical Customer and Order scenario. Include CustomerID and Name in Customer, and OrderID, CustomerID, and RequestedDate in Order. Represent the rules that each order belongs to exactly one customer and each customer may have zero or many orders.",
+    "success": "The submitted diagram contains named Customer and Order boxes with the specified attributes; identifies Customer.CustomerID and Order.OrderID as primary keys and Order.CustomerID as a foreign key; connects Order.CustomerID to Customer.CustomerID; and labels the Customer end 1 and the Order end 0..*."
+   },
+   "visual_anchor": {
+    "type": "diagram",
+    "purpose": "Make the Customer and Order entity boxes, their attributes, primary-key and foreign-key markings, the connection between Order.CustomerID and Customer.CustomerID, and the permitted multiplicities at both relationship ends visible."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Avoid tool-specific ERD commands or additional notation not in the facts.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 39,
+  "id": "ba_dm.conceptual_vs_logical",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_dm.conceptual_vs_logical",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A conceptual data model is a high-level business view of the domain, describing important entity classes, their characteristics and constraints, and their relationships rather than a technical database implementation.",
+     "source_refs": [
+      "https://www.ibm.com/think/topics/data-modeling#Types of data models \u2014 Conceptual data models"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "A logical data model is a less abstract, implementation-independent view that details entities and relationships and their attributes, including attribute data types and lengths.",
+     "source_refs": [
+      "https://www.ibm.com/think/topics/data-modeling#Types of data models \u2014 Logical data models",
+      "https://docs.oracle.com/en/database/oracle/sql-developer-data-modeler/24.3/dmdug/data-modeler-concepts-usage.html#1.3.4 Logical Model; 1.3.4.3 Attributes"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Logical models can specify identifying keys: Oracle Data Modeler allows a primary unique identifier composed of attributes to identify an entity occurrence and foreign unique identifiers that refer to identifiers in another entity.",
+     "source_refs": [
+      "https://docs.oracle.com/en/database/oracle/sql-developer-data-modeler/24.3/dmdug/data-modeler-concepts-usage.html#1.3.4.4 Unique Identifiers (UIDs)"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "Classify a high-level business-domain overview as conceptual and a more detailed structure with typed attributes, identifiers, and specified relationships as logical, using its level of detail and implementation independence as evidence.",
+     "source_refs": [
+      "https://www.ibm.com/think/topics/data-modeling#Types of data models \u2014 Conceptual data models; Logical data models",
+      "https://docs.oracle.com/en/database/oracle/sql-developer-data-modeler/24.3/dmdug/data-modeler-concepts-usage.html#1.3.4 Logical Model; 1.3.4.3 Attributes; 1.3.4.4 Unique Identifiers (UIDs)"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose one model says the business describes customers and their orders, with customer characteristics and an order relationship. It gives a high-level view of the domain rather than a technical database implementation. Classify that as conceptual based on its business focus and abstraction.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Conceptual vs Logical Data Models",
+    "content": "A conceptual data model is a high-level business view of the domain, describing important entity classes, their characteristics and constraints, and their relationships rather than a technical database implementation.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "A logical data model is a less abstract, implementation-independent view that details entities and relationships and their attributes, including attribute data types and lengths. Logical models can specify identifying keys: Oracle Data Modeler allows a primary unique identifier composed of attributes to identify an entity occurrence and foreign unique identifiers that refer to identifiers in another entity. Classify a high-level business-domain overview as conceptual and a more detailed structure with typed attributes, identifiers, and specified relationships as logical, using its level of detail and implementation independence as evidence.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "example",
+    "title": "A business analysis example",
+    "content": "Another model details the attributes, including data types and lengths, identifiers, and specified relationships. Classify that as logical when it remains implementation-independent. For example, it might identify CustomerID as an entity identifier and give Name a text type and stated length. In Oracle Data Modeler, a primary unique identifier can be composed of attributes, and foreign unique identifiers refer to identifiers of another entity.\n\nThe distinction rests on level of detail, not on whether the model contains business words. Both can describe the same domain. A conceptual overview emphasizes important entity classes, characteristics, constraints, and relationships; a logical model supplies a less abstract structure without being a technical database implementation.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "Logical does not mean a specific implemented database. Both classifications here are distinct from technical implementation. Use the detail and implementation independence as evidence, not the drawing\u2019s title alone.",
+    "fact_ids": [
+     "f1",
+     "f2"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2",
+      "f4"
+     ],
+     "capability": "classify_model_by_detail_and_implementation_independence"
+    },
+    {
+     "fact_ids": [
+      "f2",
+      "f3",
+      "f4"
+     ],
+     "capability": "justify_logical_classification_using_attributes_and_identifiers"
+    }
+   ],
+   "practice_anchor": {
+    "type": "matching",
+    "objective": "Classify three customer-and-order model excerpts as conceptual or logical and state the distinguishing detail for each.",
+    "success": "All three excerpts are correctly classified, with each classification justified by the business-level overview or the implementation-independent detail of typed attributes, stated lengths, identifiers, and specified relationships."
+   },
+   "visual_anchor": {
+    "type": "comparison",
+    "purpose": "Show two annotated views of the same customer-and-order domain: a conceptual overview emphasizing entity classes, characteristics, constraints, and relationships, and a logical structure showing attribute types and lengths, identifiers, and specified relationships. Make the difference in detail visible while marking both as distinct from a technical database implementation."
+   }
+  },
+  "media": null,
+  "notes": [
+   "Do not expand to physical modeling or vendor implementation rules.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ }
+]

@@ -1,0 +1,107 @@
+DIVIDE function vs divide operator (/) in DAX - DAX | Microsoft Learn
+Skip to main content
+Skip to Ask Learn chat experience
+This browser is no longer supported.
+Upgrade to Microsoft Edge to take advantage of the latest features, security updates, and technical support.
+Download Microsoft Edge
+More info about Internet Explorer and Microsoft Edge
+Table of contents
+Exit editor mode
+Ask Learn
+Ask Learn
+Reading mode
+Table of contents
+Read in English
+Add
+Add to Plans
+Edit
+Copy Markdown
+Print
+Note
+Access to this page requires authorization. You can try
+signing in
+or
+changing directories
+.
+Access to this page requires authorization. You can try
+changing directories
+.
+DIVIDE function vs. divide operator (/)
+Feedback
+Summarize this article for me
+In this article
+As a data modeler, when you write a DAX expression to divide a numerator by a denominator, you can choose to use the
+DIVIDE
+function or the divide operator (/ - forward slash).
+When using the DIVIDE function, you must pass in numerator and denominator expressions. Optionally, you can pass in a value that represents an
+alternate result
+.
+DIVIDE(<numerator>, <denominator> [,<alternateresult>])
+The DIVIDE function was designed to automatically handle division by zero cases. If an alternate result is not passed in, and the denominator is zero or BLANK, the function returns BLANK. When an alternate result is passed in, it's returned instead of BLANK.
+The DIVIDE function is convenient because it saves your expression from having to first test the denominator value. The function is also better optimized for testing the denominator value than the
+IF
+function. The performance gain is significant since checking for division by zero is expensive. Further using DIVIDE results in a more concise and elegant expression.
+Example
+The following measure expression produces a safe division, but it involves using four DAX functions.
+Profit Margin =
+IF(
+    OR(
+        ISBLANK([Sales]),
+        [Sales] == 0
+    ),
+    BLANK(),
+    [Profit] / [Sales]
+)
+This measure expression achieves the same outcome, yet more efficiently and elegantly.
+Profit Margin =
+DIVIDE([Profit], [Sales])
+Recommendations
+It's recommended that you use the DIVIDE function whenever the denominator is an expression that
+could
+return zero or BLANK.
+In the case that the denominator is a constant value, we recommend that you use the divide operator. In this case, the division is guaranteed to succeed, and your expression will perform better because it will avoid unnecessary testing.
+Carefully consider whether the DIVIDE function should return an alternate value. For measures, it's usually a better design that they return BLANK. Returning BLANK is better because report visuals—by default—eliminate groupings when summarizations are BLANK. It allows the visual to focus attention on groups where data exists. When necessary, in Power BI, you can configure the visual to display all groups (that return values or BLANK) within the filter context by enabling the
+Show items with no data
+option.
+Related content
+Learning path:
+Use DAX in Power BI Desktop
+Questions?
+Try asking the Power BI Community
+Suggestions?
+Contribute ideas to improve Power BI
+Feedback
+Was this page helpful?
+Yes
+No
+No
+Need help with this topic?
+Want to try using Ask Learn to clarify or guide you through this topic?
+Ask Learn
+Ask Learn
+Suggest a fix?
+Additional resources
+Last updated on
+2022-09-20
+In this article
+Was this page helpful?
+Need help with this topic?
+Want to try using Ask Learn to clarify or guide you through this topic?
+Ask Learn
+Ask Learn
+Suggest a fix?
+en-us
+Your Privacy Choices
+Theme
+Light
+Dark
+High contrast
+AI Disclaimer
+Previous Versions
+Blog
+Contribute
+Privacy
+Consumer Health Privacy
+Terms of Use
+Trademarks
+© Microsoft 2026

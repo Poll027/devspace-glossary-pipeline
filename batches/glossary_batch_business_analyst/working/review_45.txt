@@ -1,0 +1,20 @@
+INDEX 45 sql.where_having_filtering previews []
+FACT f1 WHERE selects input rows before grouping and aggregate calculation.
+FACT f2 HAVING selects groups after grouping and aggregate calculation.
+FACT f3 Use SELECT group_column, SUM(value_column) FROM table_name WHERE row_condition GROUP BY group_column HAVING SUM(value_column) > threshold; to apply both kinds of filtering.
+FACT f4 In comparisons, = means equal, <> means not equal, and < or > means less or greater than.
+tb1 Imagine Orders has North amounts 40, 60, and -10, and South amount 30. The business question is “Which branches have more than 90 in positive order amounts?” It contains a row-level condition and a group-level condition.
+tb2 WHERE selects input rows before grouping and aggregate calculation.
+tb3 HAVING selects groups after grouping and aggregate calculation. Use SELECT group_column, SUM(value_column) FROM table_name WHERE row_condition GROUP BY group_column HAVING SUM(value_column) > threshold; to apply both kinds of filtering. In comparisons, = means equal, <> means not equal, and < or > means less or greater than.
+tb4 Write:
+SELECT Branch, SUM(Amount) FROM Orders WHERE Amount > 0 GROUP BY Branch HAVING SUM(Amount) > 90;
+
+WHERE retains input rows with positive Amount before grouping. North’s -10 row is excluded, leaving 40 and 60; South’s 30 remains. GROUP BY then creates branch groups and SUM gives North 100 and South 30. HAVING retains groups whose total exceeds 90, leaving North with 100.
+
+The order of those roles matters. The positive-amount condition applies to each input row, while the more-than-90 condition applies to the calculated group total. Describing both as simply “filters” hides that distinction.
+
+The comparison operators express the tests: = means equal, <> not equal, and < or > less or greater than. In this example, > 90 excludes a total equal to 90. Keep the query connected to the business question so the learner can tell which condition belongs before grouping and which belongs afterward.
+tb5 WHERE does not filter already-calculated groups in this pattern, and HAVING is not a substitute for the positive-row condition. Filtering inputs can change totals; filtering groups decides which calculated totals remain. An amount threshold and a total threshold are different requirements.
+{'assessment_anchors': [{'fact_ids': ['f1', 'f2'], 'capability': 'choose_where_or_having_for_row_or_group_conditions'}], 'practice_anchor': {'type': 'live_code', 'objective': 'Write a query on Orders that retains positive Amount rows, groups them by Branch, and retains only branches whose summed Amount exceeds 90.', 'success': 'The query applies Amount > 0 in WHERE and SUM(Amount) > 90 in HAVING, returning North with a total of 100 and excluding South.', 'live_code': {'required_skill': 'Apply a row condition before grouping and a group-total condition after aggregate calculation.', 'allowed_syntax': ['SELECT', 'FROM', 'WHERE', 'GROUP BY', 'HAVING', 'SUM(Amount)', 'Branch', 'Amount', 'Orders', '=', '<>', '<', '>', 'Numeric literals', 'Comma-separated select expressions', 'Statement-ending semicolon'], 'blocked_syntax': ['CAST', 'CONVERT', 'IS NULL', 'IS NOT NULL', 'COALESCE', 'NULLIF', 'LEFT JOIN', 'RIGHT JOIN', 'FULL OUTER JOIN', 'ORDER BY'], 'starter_state_intent': 'Provide an Orders table with Branch and Amount columns containing (North, 40), (North, 60), (North, -10), and (South, 30), plus an empty SQL editor.', 'observable_success': 'Executing the query returns only North with SUM(Amount) equal to 100. The query uses WHERE Amount > 0 before GROUP BY Branch and HAVING SUM(Amount) > 90 afterward.'}}, 'visual_anchor': {'type': 'data_table', 'purpose': 'Make the filtering stages visible: the original Orders rows, the positive rows remaining after WHERE, branch totals of North 100 and South 30 after grouping, and only North 100 remaining after HAVING.'}}
+None
+['Keep the supported WHERE → grouping → HAVING ordering explicit.', 'Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules.']

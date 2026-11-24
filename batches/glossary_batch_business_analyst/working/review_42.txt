@@ -1,0 +1,21 @@
+INDEX 42 sql.select_statements previews ['ba_sql.reporting_query_patterns']
+FACT f1 SELECT retrieves data from a table; the select list names the desired output columns.
+FACT f2 Write SELECT column1, column2, column3 FROM table_name; to retrieve the named columns.
+FACT f3 SELECT * FROM table_name; retrieves all columns.
+tb1 Suppose Orders has columns OrderID, CustomerID, and Amount, and a stakeholder needs only identifiers and amounts. SELECT lets you name the desired output columns without asking for every field in the table.
+tb2 SELECT retrieves data from a table; the select list names the desired output columns.
+tb3 Write SELECT column1, column2, column3 FROM table_name; to retrieve the named columns. SELECT * FROM table_name; retrieves all columns.
+tb4 For a hypothetical table with rows (10, 101, 40) and (11, 102, 60), write:
+SELECT OrderID, Amount FROM Orders;
+
+The output contains OrderID and Amount: the value pairs are (10, 40) and (11, 60). CustomerID was not named in the select list, so it is not one of the output columns. These pairs describe the result contents, not a promised row order.
+
+If you instead write:
+SELECT * FROM Orders;
+then the result contains all three columns from this example table. The star means all columns, while the named-column form states which columns you want.
+
+Read the query as a request: retrieve OrderID and Amount from Orders. The SELECT list tells you what data appears in the output; FROM tells you the table being queried. The immediate BA use is retrieving the fields needed for a business question. This example does not yet filter, join, total, or sort the data: keep the distinction between choosing output columns and those later operations clear.
+tb5 SELECT * means all columns, not a special calculation or a chosen business subset. Naming two columns chooses those output fields. It does not by itself select particular rows or establish an output order.
+{'assessment_anchors': [{'fact_ids': ['f1', 'f2'], 'capability': 'write_select_for_exact_required_columns'}, {'fact_ids': ['f2', 'f3'], 'capability': 'distinguish_named_column_selection_from_all_columns'}], 'practice_anchor': {'type': 'live_code', 'objective': 'Write a SELECT statement retrieving OrderID, CustomerID, and Amount from Orders using an explicit select list.', 'success': 'The statement names OrderID, CustomerID, and Amount in the SELECT list and Orders after FROM, returning exactly those three columns.', 'live_code': {'required_skill': 'Retrieve three named columns from a single table using SELECT and FROM.', 'allowed_syntax': ['SELECT column_name, column_name, column_name FROM table_name;', 'SELECT * FROM table_name;'], 'blocked_syntax': ['WHERE', 'HAVING', 'GROUP BY', 'ORDER BY', 'INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL OUTER JOIN', 'AS', 'CREATE TABLE', 'COUNT()', 'SUM()', 'AVG()', 'MIN()', 'MAX()', 'CAST()', 'COALESCE()', 'IS NULL'], 'starter_state_intent': 'Provide an existing Orders table with columns OrderID, CustomerID, and Amount and rows (10, 101, 40) and (11, 102, 60), alongside an empty query editor.', 'observable_success': 'The query explicitly lists OrderID, CustomerID, and Amount, uses FROM Orders, and ends with a semicolon. Its result contains all three requested columns and both supplied rows, with no row-order requirement.'}}, 'visual_anchor': {'type': 'code', 'purpose': 'Make the comma-separated SELECT list and the source table after FROM visible in an annotated Orders query; contrast the explicit column list with * meaning all columns.'}}
+None
+['Teach only SELECT lists and FROM; no filtering, aggregation, aliases, or CREATE TABLE.', 'Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules.']

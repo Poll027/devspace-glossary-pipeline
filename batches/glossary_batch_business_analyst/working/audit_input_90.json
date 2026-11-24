@@ -1,0 +1,1528 @@
+[
+ {
+  "index": 90,
+  "id": "ba_bi.star_schema_design",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_bi.star_schema_design",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A star schema separates tables describing business entities from tables storing observations or events.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/guidance/star-schema \u2014 Understand star schema"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Dimension tables describe entities and their attributes; their key columns identify rows.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/guidance/star-schema \u2014 Understand star schema"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Fact tables store observations or events with dimension keys and often numeric measures.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/guidance/star-schema \u2014 Understand star schema"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "Choose the fact table\u2019s grain so its rows describe a consistent level of detail.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/guidance/star-schema \u2014 Understand star schema"
+     ]
+    },
+    {
+     "id": "f5",
+     "statement": "Connect dimension tables to the central fact table through one-to-many relationships using the dimension\u2019s unique key.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/guidance/star-schema \u2014 Star schema relevance to Power BI semantic models"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose a BI model needs to report order amounts by customer and branch. A star schema separates the observations or events from tables that describe business entities.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Star Schema / Dimensional Modeling for BI",
+    "content": "A star schema separates tables describing business entities from tables storing observations or events.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Dimension tables describe entities and their attributes; their key columns identify rows. Fact tables store observations or events with dimension keys and often numeric measures. Choose the fact table\u2019s grain so its rows describe a consistent level of detail. Connect dimension tables to the central fact table through one-to-many relationships using the dimension\u2019s unique key.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4",
+     "f5"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "For this hypothetical model, choose the fact grain as one row per order. OrderFact stores order observations, dimension keys, and a numeric amount. CustomerDim and BranchDim describe their entities and attributes, with unique key columns identifying their rows. Connect those dimensions to the central fact table using one-to-many relationships through each dimension\u2019s unique key.\n\nThe grain decision keeps the fact rows at a consistent level of detail. Do not mix one row per order with one row per branch-month total in that same example fact table and then describe all rows as equivalent observations. The dimension tables provide descriptive information, while the fact table holds the chosen observations or events and often numeric measures.\n\nThe useful mental model is a central fact table surrounded by descriptive dimensions. Keys connect an observation to the relevant descriptions. The example uses numeric Amount; fact tables often have numeric measures, but their fields reflect the observations or events being modeled.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4",
+     "f5"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "A fact table and a dimension table are not interchangeable because both contain columns. Dimensions describe entities; facts store observations or events at a consistent grain. Mixing detail levels in the example would defeat that grain decision.",
+    "fact_ids": [
+     "f2",
+     "f3"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2",
+      "f3"
+     ],
+     "capability": "separate_business_events_from_descriptive_entities"
+    },
+    {
+     "fact_ids": [
+      "f3",
+      "f4"
+     ],
+     "capability": "define_consistent_fact_table_grain"
+    },
+    {
+     "fact_ids": [
+      "f2",
+      "f3"
+     ],
+     "capability": "assign_dimension_keys_attributes_and_fact_measures"
+    },
+    {
+     "fact_ids": [
+      "f5"
+     ],
+     "capability": "design_one_to_many_dimension_fact_connections"
+    }
+   ],
+   "practice_anchor": {
+    "type": "field_selection",
+    "objective": "Design a star schema for a hypothetical order-reporting process using one fact table and three dimensions: customer, branch, and order date. Declare one row per order, assign supplied descriptive fields and keys to the dimensions, and assign dimension keys and Amount to OrderFact.",
+    "success": "The design contains one central OrderFact and exactly three descriptive dimensions. Every fact row represents one order. Each dimension has a unique row-identifying key, OrderFact contains the corresponding dimension keys and Amount, and each dimension connects to OrderFact through a one-to-many relationship."
+   },
+   "visual_anchor": {
+    "type": "diagram",
+    "purpose": "Make a central OrderFact surrounded by customer, branch, and order-date dimensions visible. Show descriptive attributes, unique dimension keys, corresponding fact-table keys, one-to-many connections, and an explicit one-row-per-order grain annotation."
+   }
+  },
+  "media": {
+   "group_title": "Separate business events from descriptive dimensions",
+   "segments": [
+    {
+     "segment_id": "seg_ba_bi.star_schema_design_1CgG0t59WcM_21_205",
+     "label": "A central sales table surrounded by descriptive tables",
+     "video_id": "1CgG0t59WcM",
+     "youtube_url": "https://www.youtube.com/watch?v=1CgG0t59WcM",
+     "review_url": "https://www.youtube.com/watch?v=1CgG0t59WcM&t=21s",
+     "start_seconds": 21,
+     "end_seconds": 205,
+     "summary": "In a hypothetical chocolate business, a sales table records sales details but cannot alone explain a salesperson\u2019s team, a product\u2019s characteristics, or a geography\u2019s region. Separate salesperson, product, and geography tables supply those descriptions. Connections between the sales table and these surrounding tables form the star structure: business observations sit at the center, with descriptive business-entity tables around them.",
+     "fact_ids": [
+      "f1"
+     ],
+     "transcript_ref": "1CgG0t59WcM:21-205"
+    },
+    {
+     "segment_id": "seg_ba_bi.star_schema_design_TtxfKIe0HuQ_181_404",
+     "label": "Fact-table events and dimension-table descriptions",
+     "video_id": "TtxfKIe0HuQ",
+     "youtube_url": "https://www.youtube.com/watch?v=TtxfKIe0HuQ",
+     "review_url": "https://www.youtube.com/watch?v=TtxfKIe0HuQ&t=181s",
+     "start_seconds": 181,
+     "end_seconds": 404,
+     "summary": "A fact table records business events or activity. The sales example includes IDs linking to other tables, event dates, and numeric measures such as quantity and sales. Fact tables often contain numeric measures used in calculations. Dimension tables describe business entities: the product example includes attributes such as name, category, brand, and color. These descriptions provide context for filtering and grouping results. In sales by category, the sales numbers come from facts, while category comes from a dimension.",
+     "fact_ids": [
+      "f1",
+      "f3"
+     ],
+     "transcript_ref": "TtxfKIe0HuQ:181-404"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch the first clip\u2019s central sales table and surrounding descriptions, then the second clip\u2019s fact\u2013dimension contrast. The first creator\u2019s \u201ccentral\u201d and \u201couter concepts\u201d correspond here to the fact table and dimensions.",
+    "after": "The first clip illustrates the star structure; the second explains events, linked IDs, measures, and descriptive attributes. Neither establishes unique dimension keys, consistent fact grain, or one-to-many relationships; the text teaches those requirements."
+   }
+  },
+  "notes": [
+   "Preserve \u201coften\u201d for numeric measures; do not add unsupported dimensional modeling types.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 91,
+  "id": "ba_bi.data_model_relationships",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_bi.data_model_relationships",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "Model relationships propagate filters between related tables so a visual can use fields from multiple tables.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-create-and-manage-relationships \u2014 Understanding relationships"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Use Modeling > Manage relationships > New and choose the two tables and their matching columns.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-create-and-manage-relationships \u2014 Create a relationship manually"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Set cardinality according to the uniqueness of values on each side and check the active relationship setting.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-create-and-manage-relationships \u2014 Configure more options"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "Choose cross-filter direction deliberately: Single propagates filters in one direction and Both allows propagation in both directions.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-create-and-manage-relationships \u2014 Cross filter direction"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine a Power BI model with CustomerDim and OrderFact. A visual uses customer descriptions and order amounts, so the model relationship needs to propagate filters between related tables.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Data Model Relationships in BI Tools",
+    "content": "Model relationships propagate filters between related tables so a visual can use fields from multiple tables.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Use Modeling > Manage relationships > New and choose the two tables and their matching columns. Set cardinality according to the uniqueness of values on each side and check the active relationship setting. Choose cross-filter direction deliberately: Single propagates filters in one direction and Both allows propagation in both directions.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Use Modeling > Manage relationships > New and choose the two tables and matching columns. For this hypothetical data, CustomerDim.CustomerID is unique and OrderFact.CustomerID repeats across orders, so set cardinality according to that uniqueness and check the active relationship setting.\n\nChoose cross-filter direction deliberately. Single propagates filters in one direction; Both allows propagation in both directions. These are different choices, not an instruction to select Both whenever a report has more than one table. The direction must be considered for the intended filter behavior.\n\nThe useful output is a relationship whose matching columns, cardinality, active setting, and filtering direction are understood. If a report combines fields from both tables, explain how the relationship enables filters to reach related data rather than assuming that similar column names are enough. The example stops at the supported relationship settings and does not invent automatic conflict resolution or a universal recommendation for every model.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "A relationship is not just a line for display: it propagates filters. Also, Both is not automatically the best setting; it permits two-way propagation and should be chosen deliberately. Check uniqueness and the active setting rather than assuming them.",
+    "fact_ids": [
+     "f1",
+     "f4"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1"
+     ],
+     "capability": "explain_relationship_filter_propagation"
+    },
+    {
+     "fact_ids": [
+      "f2"
+     ],
+     "capability": "select_relationship_tables_and_matching_columns"
+    },
+    {
+     "fact_ids": [
+      "f3"
+     ],
+     "capability": "configure_cardinality_and_check_active_setting"
+    },
+    {
+     "fact_ids": [
+      "f4"
+     ],
+     "capability": "choose_cross_filter_direction_for_intended_behavior"
+    }
+   ],
+   "practice_anchor": {
+    "type": "tool_simulation",
+    "objective": "Configure a relationship between imported CustomerDim and OrderFact tables through Modeling > Manage relationships > New. Match CustomerID in both tables, use the supplied uniqueness information to set cardinality, check the active setting, and choose Single so CustomerDim filters OrderFact.",
+    "success": "The saved relationship connects CustomerDim.CustomerID to OrderFact.CustomerID, with CustomerDim on the one side and OrderFact on the many side. The relationship is active, and Single direction permits CustomerDim to filter OrderFact. The learner can explain why a CustomerDim filter reaches related orders and why the reverse propagation is not enabled."
+   },
+   "visual_anchor": {
+    "type": "UI_state",
+    "purpose": "Show the relationship settings and resulting model connection between CustomerDim.CustomerID and OrderFact.CustomerID, making the one-to-many cardinality, active setting, and Single filter direction from CustomerDim to OrderFact visible."
+   }
+  },
+  "media": {
+   "group_title": "How relationship direction controls filter propagation",
+   "segments": [
+    {
+     "segment_id": "seg_ba_bi.data_model_relationships_-0GctLQhcjY_528_646",
+     "label": "Single and Both cross-filter directions between related tables",
+     "video_id": "-0GctLQhcjY",
+     "youtube_url": "https://www.youtube.com/watch?v=-0GctLQhcjY",
+     "review_url": "https://www.youtube.com/watch?v=-0GctLQhcjY&t=528s",
+     "start_seconds": 528,
+     "end_seconds": 646,
+     "summary": "Relationship filter direction determines whether a filter can travel from one table to another. In the sales-and-segments example, Single direction from sales to segments lets a customer filter on sales affect the segments total, but filtering segments does not affect sales. Reversing Single direction reverses which table can filter the other. Both permits filters to propagate in either direction between these two tables. These settings control how related data responds to filtering; neither direction is presented here as a universal requirement.",
+     "fact_ids": [
+      "f1",
+      "f4"
+     ],
+     "transcript_ref": "-0GctLQhcjY:528-646"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch how filtering sales or segments affects the other table under Single and Both. Treat the clip\u2019s \u201ceverything filters everything\u201d wording as referring to this two-table example, not every table in any model.",
+    "after": "The clip demonstrates filter propagation and direction, but not relationship creation, cardinality configuration, or the active setting. The text covers those steps using CustomerDim and OrderFact."
+   }
+  },
+  "notes": [
+   "No unsupported defaults or claims that bidirectional filtering is universally preferred.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 92,
+  "id": "ba_bi.power_bi_design",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_bi.power_bi_design",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A Power BI report page contains visuals that communicate information from the model; a service dashboard is a separate collection of tiles.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/create-reports/service-dashboards-design-tips \u2014 Dashboard design best practices"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "In report view, choose fields from the Data pane and a visual type from Visualizations to add a visual to the canvas.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/visuals/power-bi-report-add-visualizations \u2014 Add visualizations to a Power BI report"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Arrange important information prominently and keep the page focused on the audience\u2019s question.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/create-reports/service-dashboards-design-tips \u2014 Consider your audience; Tell a story on one screen"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "Choose comparisons and trends appropriate to the need, avoid clutter, and keep display choices consistent.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/create-reports/service-dashboards-design-tips \u2014 Use the right visualization for the data"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose stakeholders need a Power BI page answering \u201cHow do order amounts compare across branches?\u201d A report page contains visuals communicating model information. A service dashboard is a separate collection of tiles, so do not use those names as if they described the same artifact.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Power BI Dashboard Design",
+    "content": "A Power BI report page contains visuals that communicate information from the model; a service dashboard is a separate collection of tiles.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "In report view, choose fields from the Data pane and a visual type from Visualizations to add a visual to the canvas. Arrange important information prominently and keep the page focused on the audience\u2019s question. Choose comparisons and trends appropriate to the need, avoid clutter, and keep display choices consistent.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "In report view, select fields from the Data pane and a visual type from Visualizations to add a visual to the canvas. For this hypothetical page, use Branch and Amount for the requested comparison. Arrange the most important information prominently and keep the page focused on that audience question.\n\nChoose comparisons or trends appropriate to the need, avoid clutter, and use consistent display choices. A second visual should have a clear role in answering the question instead of being added only because another chart is available. The example does not prescribe a universal number of visuals.\n\nThe useful output here is a focused report page, not a service dashboard created by renaming the canvas. The business question guides field choice and arrangement, while the tool actions explain how a beginner places a visual.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "A Power BI report page and a service dashboard are distinct. Selecting visuals on the report canvas does not by itself create a dashboard collection of tiles. Also, more visuals do not automatically improve the answer; keep the page focused and consistent.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f4"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1"
+     ],
+     "capability": "distinguish_report_page_from_service_dashboard"
+    },
+    {
+     "fact_ids": [
+      "f2"
+     ],
+     "capability": "select_fields_and_visual_type"
+    },
+    {
+     "fact_ids": [
+      "f3"
+     ],
+     "capability": "arrange_report_page_for_audience_question"
+    },
+    {
+     "fact_ids": [
+      "f4"
+     ],
+     "capability": "choose_appropriate_consistent_visuals"
+    }
+   ],
+   "practice_anchor": {
+    "type": "UI_edit",
+    "objective": "Design a one-page Power BI report layout answering the stakeholder question, \u201cHow do order amounts compare across branches?\u201d Start with a blank report canvas and an available model containing Branch and Amount. Select those fields from the Data pane, choose an appropriate comparison visual from Visualizations, and arrange the page around that question.",
+    "success": "The report page presents a clear comparison of Amount across Branch values, with the comparison prominently placed. Display choices are consistent, unnecessary visuals are absent, and any additional visual has a clear role in answering the stakeholder question."
+   },
+   "visual_anchor": {
+    "type": "UI_state",
+    "purpose": "Show a Power BI report canvas with a prominently positioned Branch\u2013Amount comparison visual, alongside the Data and Visualizations panes, making field choice, visual type, and focused page arrangement visible."
+   }
+  },
+  "media": {
+   "group_title": "Create and adjust visuals on a Power BI report page",
+   "segments": [
+    {
+     "segment_id": "seg_ba_bi.power_bi_design_c7LrqSxjJQQ_641_844",
+     "label": "Create a comparison visual and add a year slicer",
+     "video_id": "c7LrqSxjJQQ",
+     "youtube_url": "https://www.youtube.com/watch?v=c7LrqSxjJQQ",
+     "review_url": "https://www.youtube.com/watch?v=c7LrqSxjJQQ&t=641s",
+     "start_seconds": 641,
+     "end_seconds": 844,
+     "summary": "Selecting sales and customer category fields creates a column chart, which can be changed to a clustered bar chart through Visualizations. Choosing another visual type while the existing chart is selected changes that chart; clicking an empty canvas area first allows a separate visual to be added. A slicer using Year from the date hierarchy is changed to a dropdown, resized, and placed above the chart. Selecting a year updates the comparison. Formatting options adjust axis titles, data labels, chart title, alignment, size, and colors, while hovering over bars reveals additional information.",
+     "fact_ids": [
+      "f2"
+     ],
+     "transcript_ref": "c7LrqSxjJQQ:641-844"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch how field selection creates a visual and how Visualizations changes its type. The interface shown is older, so pane labels and formatting locations may differ.",
+    "after": "The clip demonstrates creating and formatting visuals. The text supplies the report-page versus service-dashboard distinction and fuller guidance on audience focus, prominence, appropriate comparisons or trends, clutter, and consistency."
+   }
+  },
+  "notes": [
+   "Explicitly distinguish report page from service dashboard; do not add pinning commands absent from the brief.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 93,
+  "id": "ba_bi.tableau_design",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_bi.tableau_design",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A Tableau dashboard combines views from worksheets in one place.",
+     "source_refs": [
+      "tableau_help#https://help.tableau.com/current/pro/desktop/en-us/dashboards_create.htm \u2014 Create a dashboard"
+     ]
+    },
+    {
+     "id": "f5",
+     "statement": "Build a worksheet bar chart by dragging a category dimension to Rows and a numeric measure to Columns (or vice versa), using Bar as the mark type; these field placements create the category/value view that can be placed on the dashboard.",
+     "source_refs": [
+      "tableau_help#https://help.tableau.com/current/pro/desktop/en-us/buildexamples_bar.htm \u2014 Build a Bar Chart \u2014 introductory field arrangements"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Select New Dashboard and drag sheets from the dashboard pane onto the canvas.",
+     "source_refs": [
+      "tableau_help#https://help.tableau.com/current/pro/desktop/en-us/dashboards_create.htm \u2014 Create a dashboard"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Choose a dashboard size suited to how the audience will view it, and arrange the most important view prominently.",
+     "source_refs": [
+      "tableau_help#https://help.tableau.com/current/pro/desktop/en-us/dashboards_best_practices.htm \u2014 Set an appropriate size; Place the most important view at the top-left"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "Limit the number of views to keep the dashboard focused and readable.",
+     "source_refs": [
+      "tableau_help#https://help.tableau.com/current/pro/desktop/en-us/dashboards_best_practices.htm \u2014 Limit the number of views"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine a Tableau dashboard for comparing order amounts across branches. First build a worksheet view suitable for that comparison. Drag the category dimension Branch to Rows and numeric measure Amount to Columns, or reverse those placements, and use Bar as the mark type. These placements create the category/value bar view for the example.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Tableau Dashboard Design",
+    "content": "A Tableau dashboard combines views from worksheets in one place.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Build a worksheet bar chart by dragging a category dimension to Rows and a numeric measure to Columns (or vice versa), using Bar as the mark type; these field placements create the category/value view that can be placed on the dashboard. Select New Dashboard and drag sheets from the dashboard pane onto the canvas. Choose a dashboard size suited to how the audience will view it, and arrange the most important view prominently. Limit the number of views to keep the dashboard focused and readable.",
+    "fact_ids": [
+     "f5",
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Select New Dashboard and drag the worksheet from the dashboard pane onto the canvas. A Tableau dashboard combines worksheet views in one place; it is not the same artifact as a single worksheet. Choose a dashboard size suited to how the audience will view it, then arrange the most important view prominently.\n\nLimit the views so the dashboard remains focused and readable. If another worksheet adds a useful perspective, give it a clear role. Do not add every worksheet simply because it exists. The particular layout and size are decisions for the audience, not mandatory measurements in this concept.\n\nThe useful output is a dashboard built from appropriate worksheet views, with the core comparison visible. The workflow makes both stages explicit: create the category/value worksheet and then place it on the dashboard. A beginner should not be expected to already know how the first chart comes into existence.",
+    "fact_ids": [
+     "f1",
+     "f5",
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "A dashboard combines worksheet views; creating a worksheet is not the same as creating the dashboard. Conversely, opening New Dashboard does not create a category/value chart until an appropriate worksheet view is available and placed there.",
+    "fact_ids": [
+     "f1",
+     "f5",
+     "f2"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f5"
+     ],
+     "capability": "select_worksheet_fields_for_category_comparison"
+    },
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "assemble_dashboard_from_worksheet_views"
+    },
+    {
+     "fact_ids": [
+      "f3",
+      "f4"
+     ],
+     "capability": "design_focused_audience_suited_dashboard_layout"
+    }
+   ],
+   "practice_anchor": {
+    "type": "UI_edit",
+    "objective": "Design a one-page Tableau dashboard for a stakeholder who needs to compare order amounts across branches. Create a worksheet with Branch on Rows and Amount on Columns, or the reverse, using Bar as the mark type. The stakeholder will review the dashboard on a laptop screen and needs the branch comparison readable on one page without scrolling. Place it on a new dashboard and choose a size and layout suited to that laptop viewing context.",
+    "success": "The dashboard contains the Branch/Amount bar-chart worksheet, placed through New Dashboard and the dashboard pane. Its size and layout make the branch comparison readable on one page on a laptop screen without scrolling, the branch comparison is prominent, and the included views remain focused on the reporting need."
+   },
+   "visual_anchor": {
+    "type": "UI_state",
+    "purpose": "Show the Branch/Amount worksheet with its Rows and Columns placements and Bar mark type, followed by a one-page dashboard containing that worksheet, with an audience-suited size and a prominent, readable branch comparison."
+   }
+  },
+  "media": {
+   "group_title": "Combine worksheet views in a Tableau dashboard",
+   "segments": [
+    {
+     "segment_id": "seg_ba_bi.tableau_design_j8FSP8XuFyk_877_931",
+     "label": "Create a dashboard and place existing worksheet views",
+     "video_id": "j8FSP8XuFyk",
+     "youtube_url": "https://www.youtube.com/watch?v=j8FSP8XuFyk",
+     "review_url": "https://www.youtube.com/watch?v=j8FSP8XuFyk&t=877s",
+     "start_seconds": 877,
+     "end_seconds": 931,
+     "summary": "A dashboard brings existing worksheet views together. Select New Dashboard, then use the size dropdown to choose Automatic; in this demonstration, that enlarges the canvas. Place worksheet views on the dashboard, including a sheet positioned at the top. Sheet names can be changed from the dashboard or within the worksheets, and the dashboard can be customized further.",
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "transcript_ref": "j8FSP8XuFyk:877-931"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch how existing worksheet views become dashboard content through New Dashboard and sheet placement. Automatic is the demonstrated size setting, not a requirement for every audience.",
+    "after": "The clip demonstrates combining worksheet views. The text also teaches worksheet bar-chart construction, choosing audience-suited dimensions, making the most important view prominent, and limiting views for readability."
+   }
+  },
+  "notes": [
+   "Include worksheet bar-chart construction; no invented dashboard size or worksheet count.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 94,
+  "id": "ba_bi.visual_design_principles",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_bi.visual_design_principles",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "Use chart types that fit the question: bars support category comparisons and lines support trends over time.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/visuals/power-bi-visualization-types-for-reports-and-q-and-a \u2014 Charts for comparison and trends \u2014 Bar and column charts; Line charts"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Place important information where readers are likely to notice it and keep the layout focused.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/create-reports/service-dashboards-design-tips \u2014 Tell a story on one screen"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Use color consistently and avoid unnecessary variety or decoration that distracts from the data.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/create-reports/service-dashboards-design-tips \u2014 Use the right visualization for the data"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "Reduce unnecessary views and labels so the intended comparison remains readable.",
+     "source_refs": [
+      "tableau_help#https://help.tableau.com/current/pro/desktop/en-us/dashboards_best_practices.htm \u2014 Limit the number of views; Make it easy to read"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose a stakeholder dashboard needs to compare branch amounts and show their change over time. Use bars for the category comparison and lines for the time trend. Choose each visual according to the question it serves.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Visual Design Principles for Dashboards",
+    "content": "Use chart types that fit the question: bars support category comparisons and lines support trends over time.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Place important information where readers are likely to notice it and keep the layout focused. Use color consistently and avoid unnecessary variety or decoration that distracts from the data. Reduce unnecessary views and labels so the intended comparison remains readable.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "example",
+    "title": "A business analysis example",
+    "content": "Place the most important information where readers are likely to notice it and keep the layout focused. In this hypothetical page, the branch comparison is the primary question, so give it prominence rather than burying it beneath unrelated views. The exact position is a layout choice for the example, not a universal pixel rule.\n\nUse color consistently and avoid unnecessary variation or decoration that distracts from the data. Reduce unnecessary views and labels so the intended comparison stays readable. Removing a distracting label does not mean removing information needed to interpret the chart; the aim is a clear comparison.\n\nThe useful output is a visual design whose chart type, prominence, color, and level of detail support the stakeholder question. Styling choices should not replace the answer. A dashboard full of differently colored charts can still fail to communicate which comparison matters if the layout and views do not remain focused.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "Decoration is not automatically information. Unnecessary color variety, views, and labels can distract from the intended comparison. But reducing clutter is not a license to remove needed context; preserve readability while keeping important information noticeable.",
+    "fact_ids": [
+     "f3",
+     "f4"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1"
+     ],
+     "capability": "identify_and_correct_chart_type_mismatch"
+    },
+    {
+     "fact_ids": [
+      "f2"
+     ],
+     "capability": "identify_and_correct_unfocused_layout"
+    },
+    {
+     "fact_ids": [
+      "f3"
+     ],
+     "capability": "identify_and_correct_distracting_color_and_decoration"
+    },
+    {
+     "fact_ids": [
+      "f4"
+     ],
+     "capability": "identify_and_reduce_unnecessary_views_and_labels"
+    }
+   ],
+   "practice_anchor": {
+    "type": "UI_edit",
+    "objective": "Redesign a cluttered chart comparing branch amounts by applying two visual design principles: use bars for the category comparison and reduce distracting color variety or unnecessary labels.",
+    "success": "The redesigned chart uses bars to compare branch amounts and either uses color consistently without unnecessary variety or removes unnecessary labels while preserving the information needed to interpret the comparison."
+   },
+   "visual_anchor": {
+    "type": "before_after",
+    "purpose": "Make visible how a cluttered branch-amount chart becomes a readable category comparison through an appropriate chart type and consistent color or reduced label clutter, while retaining necessary context."
+   }
+  },
+  "media": null,
+  "notes": [
+   "No unsupported color prescriptions, fixed layout rules, or chart count limits.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 95,
+  "id": "ba_bi.stakeholder_report_delivery",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_bi.stakeholder_report_delivery",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "Publish a Desktop report with Home > Publish and choose a destination workspace in the Power BI service.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-upload-desktop-files \u2014 Publish semantic models and reports from Power BI Desktop"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Select Share for a report or dashboard and specify recipients or an appropriate sharing link.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/collaborate-share/service-share-dashboards \u2014 Share a report or dashboard"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Choose whether recipients can reshare or build on the underlying data and grant only the permissions the audience needs.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/collaborate-share/service-share-dashboards \u2014 Manage permissions; Share a report"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "Sharing and access depend on license and capacity; sharing generally requires Pro or PPU, and free recipients require eligible Premium or Fabric capacity.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/collaborate-share/service-share-dashboards \u2014 License requirements"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine a Power BI Desktop report is ready for the operations audience. Use Home > Publish and choose the destination workspace in the Power BI service. Publishing is the named step for sending the Desktop report to that workspace; the audience still needs appropriate sharing and access.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Stakeholder-Facing Report Delivery",
+    "content": "Publish a Desktop report with Home > Publish and choose a destination workspace in the Power BI service.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Select Share for a report or dashboard and specify recipients or an appropriate sharing link. Choose whether recipients can reshare or build on the underlying data and grant only the permissions the audience needs. Sharing and access depend on license and capacity; sharing generally requires Pro or PPU, and free recipients require eligible Premium or Fabric capacity.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "Select Share for the report or dashboard and specify recipients or an appropriate sharing link. Choose whether recipients can reshare or build on the underlying data, granting only the permissions the audience needs. In this hypothetical case, readers need to consume the report, so do not enable broader permissions merely because the options are available.\n\nCheck licensing and capacity conditions. Sharing generally requires Pro or PPU, and free recipients require eligible Premium or Fabric capacity. These are qualified access conditions, not a promise that any recipient with a link can open every shared artifact.\n\nThe useful output is a published report shared to its intended audience with considered permissions and access prerequisites. Keep workspace selection, recipient or link selection, permission choices, and license/capacity checks distinct. A successful publish does not establish that each intended recipient satisfies the sharing conditions.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "A link does not by itself override licensing or capacity requirements. Publishing and sharing also address different steps. Grant reshare or build permissions only when needed, and preserve \u201cgenerally\u201d in the license statement rather than turning it into an unconditional universal rule.",
+    "fact_ids": [
+     "f3",
+     "f4"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1"
+     ],
+     "capability": "publish_report_to_destination_workspace"
+    },
+    {
+     "fact_ids": [
+      "f2"
+     ],
+     "capability": "configure_audience_appropriate_sharing"
+    },
+    {
+     "fact_ids": [
+      "f3"
+     ],
+     "capability": "grant_only_required_recipient_permissions"
+    },
+    {
+     "fact_ids": [
+      "f4"
+     ],
+     "capability": "check_license_and_capacity_access_conditions"
+    }
+   ],
+   "practice_anchor": {
+    "type": "tool_simulation",
+    "objective": "Publish the supplied finished operations report to the designated workspace and configure sharing for named operations stakeholders who need view-only access, using supplied publisher and recipient license and workspace-capacity details.",
+    "success": "Use Home > Publish and select the designated workspace; select Share and specify the named stakeholders using a specific-people link; leave reshare and build permissions disabled; and correctly determine whether the supplied license and capacity conditions support access, identifying any unmet prerequisite."
+   },
+   "visual_anchor": {
+    "type": "UI_state",
+    "purpose": "Make the destination workspace, named sharing recipients, specific-people link setting, and disabled reshare and build permissions visible, alongside the supplied license and capacity details used to check access."
+   }
+  },
+  "media": {
+   "group_title": "Share a report with audience-appropriate permissions",
+   "segments": [
+    {
+     "segment_id": "seg_ba_bi.stakeholder_report_delivery_d2b2btjoMhQ_53_217",
+     "label": "Select recipients and restrict report sharing permissions",
+     "video_id": "d2b2btjoMhQ",
+     "youtube_url": "https://www.youtube.com/watch?v=d2b2btjoMhQ",
+     "review_url": "https://www.youtube.com/watch?v=d2b2btjoMhQ&t=53s",
+     "start_seconds": 53,
+     "end_seconds": 217,
+     "summary": "For an already-published report, select Share, enter a recipient, and send a link, optionally with a message. Recipients can find shared reports under Browse > Shared with me. The sharing dialog offers links for people in the organization, people with existing access, or specific people, together with options to allow resharing or building content with the underlying data. In the demonstrated setup, the creator selects specific people and limits them to viewing. After applying the settings and sending the link, its audience is restricted to the named recipients.",
+     "fact_ids": [
+      "f2",
+      "f3"
+     ],
+     "transcript_ref": "d2b2btjoMhQ:53-217"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch how Share creates a recipient link and how the creator changes its audience and permissions. Focus on the specific-people, view-only setup rather than treating the demonstrated defaults as required settings.",
+    "after": "The clip demonstrates recipient selection and permission restrictions, but not Desktop publishing or full licensing and capacity conditions. The text covers Home > Publish, workspace selection, and the qualified Pro/PPU and eligible-capacity requirements."
+   }
+  },
+  "notes": [
+   "Avoid exhaustive licensing advice; retain stated Pro/PPU and eligible capacity qualifications.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 96,
+  "id": "ba_bi.power_bi_measures_dax",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_bi.power_bi_measures_dax",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A DAX measure calculates a result that changes with the current report filtering and selection context.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-measures \u2014 Understanding measures"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Use Modeling > New measure and enter MeasureName = SUM(TableName[NumericColumn]) to define a basic total that responds to report context.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-measures \u2014 Sales projection example; Understanding measures"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "A calculated column uses a DAX expression to calculate a value for each row rather than the measure\u2019s report-context result.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-calculated-columns \u2014 Introduction"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "Use New Column and write column_name = expression; the formula is applied across the table\u2019s rows.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-calculated-columns \u2014 Let\u2019s look at an example"
+     ]
+    },
+    {
+     "id": "f5",
+     "statement": "In standard Import mode, calculated-column values are materialized and refreshed when the underlying data is refreshed.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-calculated-columns \u2014 Materialization and performance"
+     ]
+    },
+    {
+     "id": "f6",
+     "statement": "For a classic date-column time-intelligence calculation, use a marked date table whose Date or date/time column contains unique, nonblank dates without gaps and spans full years, including the periods being compared.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/training/modules/dax-power-bi-time-intelligence/2-functions \u2014 Date table requirement",
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/guidance/model-date-tables \u2014 Opening date-table requirements"
+     ]
+    },
+    {
+     "id": "f7",
+     "statement": "Relate the date table to the metric table\u2019s relevant date column with an active relationship so that report filters on the date table propagate to the metric\u2019s rows.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/guidance/relationships-active-inactive \u2014 Active relationships; Inactive relationships \u2014 active OrderDate relationship and filter propagation"
+     ]
+    },
+    {
+     "id": "f8",
+     "statement": "Evaluate the base total measure in the current date filter context and obtain its corresponding prior-year value with PriorYear = CALCULATE([MeasureName], SAMEPERIODLASTYEAR('Date'[Date])), which evaluates that measure with the dates shifted one year back.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/training/modules/dax-power-bi-time-intelligence/2-functions \u2014 Comparisons over time",
+      "powerbi_docs#https://learn.microsoft.com/en-us/dax/sameperiodlastyear-function-dax \u2014 Definition; Example"
+     ]
+    },
+    {
+     "id": "f9",
+     "statement": "Compute year-over-year growth with Growth = DIVIDE([MeasureName] - [PriorYear], [PriorYear]) and format it as a percentage; without an alternate result, DIVIDE returns BLANK when the prior-year denominator is zero or blank.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/training/modules/dax-power-bi-time-intelligence/2-functions \u2014 Comparisons over time \u2014 Revenue YoY %",
+      "powerbi_docs#https://learn.microsoft.com/en-us/dax/best-practices/dax-divide-function-operator \u2014 DIVIDE syntax and zero or BLANK denominator behavior"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose OrderFact contains Amount and Quantity. A measure can total Amount while responding to current report filters. Use Modeling > New measure and enter:\nTotalAmount = SUM(OrderFact[Amount])\nWith hypothetical North amounts 40 and 60 and South amount 30, the unfiltered total is 130 and the North-filtered total is 100.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Power BI Measures and Calculated Columns (DAX)",
+    "content": "A DAX measure calculates a result that changes with the current report filtering and selection context.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Use Modeling > New measure and enter MeasureName = SUM(TableName[NumericColumn]) to define a basic total that responds to report context. A calculated column uses a DAX expression to calculate a value for each row rather than the measure\u2019s report-context result. Use New Column and write column_name = expression; the formula is applied across the table\u2019s rows. In standard Import mode, calculated-column values are materialized and refreshed when the underlying data is refreshed. For a classic date-column time-intelligence calculation, use a marked date table whose Date or date/time column contains unique, nonblank dates without gaps and spans full years, including the periods being compared. Relate the date table to the metric table\u2019s relevant date column with an active relationship so that report filters on the date table propagate to the metric\u2019s rows. Evaluate the base total measure in the current date filter context and obtain its corresponding prior-year value with PriorYear = CALCULATE([MeasureName], SAMEPERIODLASTYEAR('Date'[Date])), which evaluates that measure with the dates shifted one year back. Compute year-over-year growth with Growth = DIVIDE([MeasureName] - [PriorYear], [PriorYear]) and format it as a percentage; without an alternate result, DIVIDE returns BLANK when the prior-year denominator is zero or blank.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4",
+     "f5",
+     "f6",
+     "f7",
+     "f8",
+     "f9"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "A calculated column instead evaluates an expression for each row. Use New Column and enter:\nDoubleQuantity = OrderFact[Quantity] * 2\nRows with quantities 2 and 3 receive 4 and 6. In standard Import mode these values are materialized and refreshed when underlying data is refreshed; do not describe them as the same report-context calculation as a measure.\n\nFor the classic date-column prior-year pattern, first use a marked date table with unique, nonblank, gap-free dates spanning full years and the compared periods. Relate it actively to the fact table\u2019s relevant date column so date filters propagate. Then define:\nPriorYear = CALCULATE([TotalAmount], SAMEPERIODLASTYEAR('Date'[Date]))\nThis evaluates the base measure with dates shifted one year back. Define growth with:\nGrowth = DIVIDE([TotalAmount] - [PriorYear], [PriorYear])\nand format it as a percentage.\n\nFor an example current total of 120 and corresponding prior-year total of 100, growth is (120 \u2212 100) / 100 = 20%. Without an alternate result, DIVIDE returns BLANK when the denominator is zero or blank. Keep the date prerequisites visible: the formula is not a substitute for the marked date table and active relationship required by this pattern.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4",
+     "f5",
+     "f6",
+     "f7",
+     "f8",
+     "f9"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "Measures and calculated columns are not two names for the same evaluation. The measure responds to report context; the column calculates each row and, in standard Import mode, materializes values on refresh. For growth, divide the difference by prior year\u2014not current year\u2014and do not omit the date-table prerequisites.",
+    "fact_ids": [
+     "f4",
+     "f5",
+     "f6",
+     "f8"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "capability": "write_context_responsive_total_measure"
+    },
+    {
+     "fact_ids": [
+      "f1",
+      "f3",
+      "f4",
+      "f5"
+     ],
+     "capability": "distinguish_measures_from_calculated_columns"
+    },
+    {
+     "fact_ids": [
+      "f6",
+      "f7"
+     ],
+     "capability": "verify_date_model_prerequisites"
+    },
+    {
+     "fact_ids": [
+      "f8",
+      "f9"
+     ],
+     "capability": "write_and_interpret_year_over_year_growth"
+    }
+   ],
+   "practice_anchor": {
+    "type": "formula",
+    "objective": "In a supplied Power BI model containing OrderFact[Amount] and a marked 'Date' table with unique, nonblank, gap-free dates spanning full years and the compared periods, actively related to OrderFact\u2019s relevant date column, write TotalAmount, PriorYear, and Growth measures using the taught DAX patterns. Format Growth as a percentage.",
+    "success": "TotalAmount uses SUM(OrderFact[Amount]); PriorYear uses CALCULATE([TotalAmount], SAMEPERIODLASTYEAR('Date'[Date])); Growth uses DIVIDE([TotalAmount] - [PriorYear], [PriorYear]). The measures respond to the selected date context. A supplied current total of 120 and corresponding prior-year total of 100 produce 20%; a zero or blank prior-year denominator produces BLANK without an alternate result."
+   },
+   "visual_anchor": {
+    "type": "annotated_screenshot",
+    "purpose": "Make visible the measure definitions, a report-filter change affecting TotalAmount, and the contrast with row-level DoubleQuantity values. Show the marked date table and active relationship alongside a year-over-year result so the calculation\u2019s prerequisites remain explicit."
+   }
+  },
+  "media": {
+   "group_title": "How filter context shapes a measure",
+   "segments": [
+    {
+     "segment_id": "seg_ba_bi.power_bi_measures_dax_40xO1MD_CCs_38_109",
+     "label": "How a measure adds filters to the visual\u2019s context",
+     "video_id": "40xO1MD_CCs",
+     "youtube_url": "https://www.youtube.com/watch?v=40xO1MD_CCs",
+     "review_url": "https://www.youtube.com/watch?v=40xO1MD_CCs&t=38s",
+     "start_seconds": 38,
+     "end_seconds": 109,
+     "summary": "The example starts with monthly sales for 2021 in an Excel pivot table. CALCULATE adds an innovative-product filter to the measure, then adds a bulk-purchase filter. These conditions supplement the initial visual filter context. The same principle applies to Power BI visuals: CALCULATE can change the filter context in which a measure is evaluated.",
+     "fact_ids": [
+      "f1"
+     ],
+     "transcript_ref": "40xO1MD_CCs:38-109"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch how added product and purchase filters change the context for monthly sales. The clip uses an Excel pivot table to explain a principle that also applies to Power BI visuals.",
+    "after": "The clip explains filter context, not basic measure creation, calculated columns, Import-mode refresh, or year-over-year calculations. The text supplies those steps, including date-table requirements, an active relationship, prior-year comparison, percentage formatting, and zero-or-blank denominator behavior."
+   }
+  },
+  "notes": [
+   "Keep Import-mode qualification and classic date-column prerequisites; avoid unintroduced DAX functions.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 97,
+  "id": "ba_bi.tableau_calculated_fields",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_bi.tableau_calculated_fields",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A Tableau calculated field derives new data from existing fields without changing the original source.",
+     "source_refs": [
+      "tableau_help#https://help.tableau.com/current/pro/desktop/en-us/calculations_calculatedfields_create.htm \u2014 Why use calculated fields"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Choose Analysis > Create Calculated Field, name the field, enter an expression, and select OK.",
+     "source_refs": [
+      "tableau_help#https://help.tableau.com/current/pro/desktop/en-us/calculations_calculatedfields_create.htm \u2014 Create a calculated field"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "The source\u2019s Discount Ratio calculation is IIF([Sales] !=0, [Discount]/[Sales],0): it returns Discount divided by Sales when Sales is nonzero, and zero otherwise.",
+     "source_refs": [
+      "tableau_help#https://help.tableau.com/current/pro/desktop/en-us/calculations_calculatedfields_create.htm \u2014 Create a calculated field \u2014 Discount Ratio example"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "A basic calculation may operate at the row level or at the visualization\u2019s aggregate level, depending on its expression.",
+     "source_refs": [
+      "tableau_help#https://help.tableau.com/current/pro/desktop/en-us/calculations_calculatedfields_create.htm \u2014 Types of calculations"
+     ]
+    },
+    {
+     "id": "f5",
+     "statement": "Numeric calculated fields can be summed automatically when added to a view; change the aggregation if the intended metric requires a different one.",
+     "source_refs": [
+      "tableau_help#https://help.tableau.com/current/pro/desktop/en-us/calculations_calculatedfields_create.htm \u2014 Use a calculated field in the view"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Imagine a Tableau source with Sales and Discount. A calculated field derives new data from existing fields without changing the original source. Use Analysis > Create Calculated Field, name the field Discount Ratio, enter the expression, and select OK:\nIIF([Sales] !=0, [Discount]/[Sales],0)",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "Tableau Calculated Fields",
+    "content": "A Tableau calculated field derives new data from existing fields without changing the original source.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Choose Analysis > Create Calculated Field, name the field, enter an expression, and select OK. The Discount Ratio calculation is IIF([Sales] !=0, [Discount]/[Sales],0): it returns Discount divided by Sales when Sales is nonzero, and zero otherwise. A basic calculation may operate at the row level or at the visualization\u2019s aggregate level, depending on its expression. Numeric calculated fields can be summed automatically when added to a view; change the aggregation if the intended metric requires a different one.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4",
+     "f5"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "walkthrough",
+    "title": "A business analysis example",
+    "content": "For hypothetical rows with Sales 100 and Discount 10, and Sales 0 and Discount 0, the calculated values are 0.1 and 0. The expression returns Discount divided by Sales when Sales is nonzero, and zero otherwise. It does not establish that a missing value behaves like zero; this example uses known numeric values only.\n\nA basic calculation can operate at row level or at the visualization\u2019s aggregate level, depending on the expression. Numeric calculated fields can be summed automatically when added to a view, so inspect whether that aggregation fits the intended metric. With rows having ratios 0.1 and 0.2, summing the row ratios gives 0.3; do not label that automatically as the intended business discount metric.\n\nThe useful output is a calculated field with an understood expression and a deliberate view aggregation. Creating the field and deciding how to summarize it are separate analytical concerns.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4",
+     "f5"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "A calculated field does not modify the original source. Also, a numeric field\u2019s automatic sum is not proof that sum is the appropriate metric. Inspect the expression\u2019s level and choose aggregation for the business question rather than blindly accepting the initial view.",
+    "fact_ids": [
+     "f1",
+     "f3",
+     "f4"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f3"
+     ],
+     "capability": "write_discount_ratio_expression"
+    },
+    {
+     "fact_ids": [
+      "f3"
+     ],
+     "capability": "interpret_nonzero_and_zero_sales_results"
+    },
+    {
+     "fact_ids": [
+      "f4",
+      "f5"
+     ],
+     "capability": "distinguish_calculation_level_from_view_aggregation"
+    }
+   ],
+   "practice_anchor": {
+    "type": "formula",
+    "objective": "Write a Tableau calculated field named Discount Ratio using Sales and Discount. Return Discount divided by Sales when Sales is nonzero, and zero otherwise.",
+    "success": "The field uses IIF([Sales] !=0, [Discount]/[Sales],0), or an equivalent expression using the taught syntax, and produces 0.1 for Sales 100 with Discount 10 and 0 for Sales 0 with Discount 0."
+   },
+   "visual_anchor": {
+    "type": "UI_state",
+    "purpose": "Show the Tableau calculation editor with the field name Discount Ratio and its expression, alongside the resulting values for the hypothetical Sales and Discount rows. Make the view\u2019s selected aggregation visible so it can be distinguished from the field expression."
+   }
+  },
+  "media": {
+   "group_title": "Creating calculated fields without changing source data",
+   "segments": [
+    {
+     "segment_id": "seg_ba_bi.tableau_calculated_fields_9Mhe5UFwyQg_86_322",
+     "label": "Create a calculated field and transform displayed values while preserving the source",
+     "video_id": "9Mhe5UFwyQg",
+     "youtube_url": "https://www.youtube.com/watch?v=9Mhe5UFwyQg",
+     "review_url": "https://www.youtube.com/watch?v=9Mhe5UFwyQg&t=86s",
+     "start_seconds": 86,
+     "end_seconds": 322,
+     "summary": "Several routes open Tableau\u2019s calculation editor, including Analysis > Create Calculated Field. Naming a field, entering the constant 1, and selecting OK creates a numeric calculated field in the data pane. An equals sign on its icon distinguishes it from an original source field, and the created field is available on another worksheet. A separate example edits a customer first-name field directly in a view to display uppercase text. Adding the original first-name field again shows that the source values remain unchanged. This directly entered calculation is available only in that view.",
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "transcript_ref": "9Mhe5UFwyQg:86-322"
+    }
+   ],
+   "bridge_note": {
+    "before": "Watch for Analysis > Create Calculated Field, the naming and confirmation steps, and the unchanged original values. The clip\u2019s \u201cglobal\u201d and \u201clocal\u201d terms refer to worksheet availability.",
+    "after": "The clip demonstrates field creation and source preservation. It does not cover Discount Ratio, row-level versus aggregate-level expressions, or changing automatic aggregation; the text teaches these remaining decisions."
+   }
+  },
+  "notes": [
+   "No unsupported NULL or divide-by-zero claims beyond the IIF result; avoid new aggregation syntax.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ },
+ {
+  "index": 98,
+  "id": "ba_bi.semantic_layer",
+  "previews": [],
+  "facts": {
+   "concept_id": "ba_bi.semantic_layer",
+   "required_facts": [
+    {
+     "id": "f1",
+     "statement": "A Power BI semantic model contains data-model logic that can be used to build reports.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-understand \u2014 Power BI Desktop-developed models"
+     ]
+    },
+    {
+     "id": "f2",
+     "statement": "Reports can reuse an existing published semantic model rather than each creating separate data and calculation definitions.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-across-workspaces \u2014 Discover semantic models; Copy a report"
+     ]
+    },
+    {
+     "id": "f3",
+     "statement": "Define the shared business calculation as a measure in the common model and use that model for reports that need the same calculation.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-measures \u2014 Understanding measures",
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-across-workspaces \u2014 Discover semantic models"
+     ]
+    },
+    {
+     "id": "f4",
+     "statement": "Connect a new report to the existing shared semantic model; building content on a shared model requires Build permission.",
+     "source_refs": [
+      "powerbi_docs#https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-across-workspaces \u2014 Discover semantic models; Build permission for semantic models"
+     ]
+    }
+   ],
+   "optional_enrichment": [],
+   "misconceptions": [],
+   "created_in_batch_id": "glossary_batch_business_analyst",
+   "used_by_path_ids": [
+    "business_analyst"
+   ]
+  },
+  "text": [
+   {
+    "id": "tb1",
+    "purpose": "intro",
+    "content": "Suppose operations and sales each need a report using the same total-order-amount calculation. A Power BI semantic model contains data-model logic that reports can use. Reusing one published model avoids having each report create separate data and calculation definitions for this shared need.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb2",
+    "purpose": "definition",
+    "title": "BI Semantic Layer",
+    "content": "A Power BI semantic model contains data-model logic that can be used to build reports.",
+    "fact_ids": [
+     "f1"
+    ]
+   },
+   {
+    "id": "tb3",
+    "purpose": "mechanism",
+    "title": "How to apply it",
+    "content": "Reports can reuse an existing published semantic model rather than each creating separate data and calculation definitions. Define the shared business calculation as a measure in the common model and use that model for reports that need the same calculation. Connect a new report to the existing shared semantic model; building content on a shared model requires Build permission.",
+    "fact_ids": [
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb4",
+    "purpose": "example",
+    "title": "A business analysis example",
+    "content": "For this hypothetical arrangement, define the shared business calculation as a measure in the common model. Build both reports from that model when they need the same calculation. One report may focus on branches and another on customers while using the shared calculation definition.\n\nConnect a new report to the existing shared semantic model. Building content on it requires Build permission, so do not assume access to a finished report automatically grants authority to build new content from its model.\n\nThe useful mental model is shared data-model logic supporting multiple reports, rather than every report independently recreating the same business calculation. The example does not promise every report will display the same result under different filters; it is the common calculation definition that is reused. Keep the distinction between shared model, report, and required Build permission clear.",
+    "fact_ids": [
+     "f1",
+     "f2",
+     "f3",
+     "f4"
+    ]
+   },
+   {
+    "id": "tb5",
+    "purpose": "misconception",
+    "title": "Keep the distinction clear",
+    "content": "Sharing a calculation definition does not mean every differently filtered report displays an identical number. Reports reuse model logic. Also, building new content on the shared model requires Build permission; do not treat mere report access as that permission.",
+    "fact_ids": [
+     "f2",
+     "f4"
+    ]
+   }
+  ],
+  "anchors": {
+   "assessment_anchors": [
+    {
+     "fact_ids": [
+      "f1",
+      "f2",
+      "f3"
+     ],
+     "capability": "centralize_duplicate_report_calculations_in_a_shared_model"
+    },
+    {
+     "fact_ids": [
+      "f2",
+      "f4"
+     ],
+     "capability": "connect_reports_to_a_shared_model_with_build_permission"
+    }
+   ],
+   "practice_anchor": {
+    "type": "tool_simulation",
+    "objective": "In a simplified model-and-report configuration, consolidate the total-order-amount calculation duplicated in the operations and sales reports into one measure in a common published semantic model. Connect both reports to that model and specify the required Build permission.",
+    "success": "One shared total-order-amount measure is defined in the common model, and both reports use that model instead of maintaining separate calculation definitions. Build permission is identified as required for creating report content from the shared model; differently filtered reports need not display identical totals."
+   },
+   "visual_anchor": {
+    "type": "before_after",
+    "purpose": "Show the operations and sales reports initially maintaining separate total-order-amount definitions, then both connected to one published semantic model containing the shared measure. Mark Build permission as a requirement for creating report content, and distinguish a shared definition from potentially different filtered results."
+   }
+  },
+  "media": {
+   "group_title": "One shared semantic model, multiple reports",
+   "segments": [
+    {
+     "segment_id": "seg_ba_bi.semantic_layer_ENZm_7jWU4Q_183_345",
+     "label": "Reuse a published Power BI semantic model across reports",
+     "video_id": "ENZm_7jWU4Q",
+     "youtube_url": "https://www.youtube.com/watch?v=ENZm_7jWU4Q",
+     "review_url": "https://www.youtube.com/watch?v=ENZm_7jWU4Q&t=183s",
+     "start_seconds": 183,
+     "end_seconds": 345,
+     "summary": "A semantic model holds the data and model logic, including tables, source connections, transformations, relationships, measures, and field formatting. The presenter calls this object a dataset and distinguishes it from a report. After explaining publication to the Power BI service, he creates a report connected to an existing model rather than a separate model of its own. He adds a sales visualization, saves the report, and uses the lineage view to show that one model supplies four reports.",
+     "fact_ids": [
+      "f1",
+      "f2"
+     ],
+     "transcript_ref": "ENZm_7jWU4Q:183-345"
+    },
+    {
+     "segment_id": "seg_ba_bi.semantic_layer_3c7pMFloNeI_24_70",
+     "label": "Build permission for reports using a shared semantic model",
+     "video_id": "3c7pMFloNeI",
+     "youtube_url": "https://www.youtube.com/watch?v=3c7pMFloNeI",
+     "review_url": "https://www.youtube.com/watch?v=3c7pMFloNeI&t=24s",
+     "start_seconds": 24,
+     "end_seconds": 70,
+     "summary": "Shared semantic models let report creators reuse a model in a workspace, including for reports stored in another workspace. The presenter uses the term shared datasets. Creating a report from a shared model requires Build permission for the relevant user or group. Reusing existing models across reports helps reduce isolated, separately maintained data definitions.",
+     "fact_ids": [
+      "f2",
+      "f4"
+     ],
+     "transcript_ref": "3c7pMFloNeI:24-70"
+    }
+   ],
+   "bridge_note": {
+    "before": "Both clips use \u201cdataset\u201d for a Power BI semantic model. Watch the first for model reuse and lineage, and the second for the separate Build permission requirement.",
+    "after": "The first clip demonstrates reuse but omits Build permission; the second explains that requirement. Neither demonstrates defining the shared business measure. The text covers that centralization step as well as reuse and permission."
+   }
+  },
+  "notes": [
+   "Do not invent connection UI steps; distinguish shared definition from filtered result.",
+   "Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules."
+  ]
+ }
+]

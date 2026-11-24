@@ -1,0 +1,23 @@
+INDEX 50 sql.order_by_sorting previews []
+FACT f1 Without ORDER BY, a query’s output order is unspecified.
+FACT f2 ORDER BY column ASC sorts ascending and ORDER BY column DESC sorts descending; ASC is the default.
+FACT f3 Write ORDER BY first_column ASC, second_column DESC to sort by the first column and break its ties with the second.
+FACT f4 When not otherwise specified, NULL values sort last for ASC and first for DESC; NULLS FIRST or NULLS LAST overrides that placement.
+tb1 Suppose a reporting result contains North amount 100, South amount 100, and West amount 30. Without ORDER BY, its output order is unspecified. A stakeholder’s expectation that the biggest amounts appear first must be stated in the query.
+tb2 Without ORDER BY, a query’s output order is unspecified.
+tb3 ORDER BY column ASC sorts ascending and ORDER BY column DESC sorts descending; ASC is the default. Write ORDER BY first_column ASC, second_column DESC to sort by the first column and break its ties with the second. When not otherwise specified, NULL values sort last for ASC and first for DESC; NULLS FIRST or NULLS LAST overrides that placement.
+tb4 Write:
+SELECT Branch, Amount FROM ReportRows ORDER BY Amount DESC, Branch ASC;
+
+Amount DESC puts larger amounts first. Branch ASC breaks the 100 tie, so the example order is North, South, West. The second sort column matters only when the first values tie. ASC is the default when a direction is omitted.
+
+For the SQL NULL-ordering convention used here, NULL values sort last with ASC and first with DESC unless overridden. To place missing amounts last in a descending report, use:
+SELECT Branch, Amount FROM ReportRows ORDER BY Amount DESC NULLS LAST, Branch ASC;
+
+If an East row has NULL Amount, that explicit placement puts it after the non-NULL amounts. Treat the stated default as the documented SQL behavior used here, not a universal assertion about every database engine.
+
+The practical result is an ordering rule a report reader can understand: primary comparison, direction, tie-breaker, and where missing values belong. A consistent-looking order in one earlier result is not a substitute for specifying it.
+tb5 Observed output order is not a guarantee without ORDER BY. Also, descending does not automatically put NULL last under the documented default here. State NULLS FIRST or NULLS LAST when the report needs explicit placement.
+{'assessment_anchors': [{'fact_ids': ['f1', 'f2'], 'capability': 'specify_explicit_sort_column_and_direction'}, {'fact_ids': ['f2', 'f3'], 'capability': 'write_multi_column_sort_with_tie_breaker'}, {'fact_ids': ['f4'], 'capability': 'specify_null_placement_under_the_documented_convention'}], 'practice_anchor': {'type': 'live_code', 'objective': 'Write a query selecting Branch and Amount from ReportRows, sorting Amount descending and breaking equal-amount ties with Branch ascending.', 'success': 'The query uses ORDER BY Amount DESC, Branch ASC and returns North 100, South 100, then West 30.', 'live_code': {'required_skill': 'Apply a primary sort direction and a secondary tie-breaker direction in ORDER BY.', 'allowed_syntax': ['SELECT', 'FROM', 'column names', 'comma-separated column lists', 'ORDER BY', 'ASC', 'DESC', 'NULLS FIRST', 'NULLS LAST', 'statement-ending semicolon'], 'blocked_syntax': ['WITH', 'OVER', 'PARTITION BY', 'ROW_NUMBER()', 'RANK()', 'DENSE_RANK()'], 'starter_state_intent': 'Provide ReportRows with columns Branch and Amount and rows West 30, South 100, and North 100, alongside an editable SELECT Branch, Amount FROM ReportRows; statement.', 'observable_success': 'The completed query specifies Amount DESC before Branch ASC; its result places North before South because their amounts tie, and places West last.'}}, 'visual_anchor': {'type': 'data_table', 'purpose': 'Show ReportRows beside its ordered result, making the descending Amount comparison and ascending Branch tie-breaker visible. Include a separate East row with NULL Amount to contrast the documented descending default with explicit NULLS LAST.'}}
+None
+['NULL defaults are source/dialect-specific; do not generalize them to all SQL engines.', 'Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules.']

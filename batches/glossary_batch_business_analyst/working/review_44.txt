@@ -1,0 +1,20 @@
+INDEX 44 sql.aggregation_group_by previews []
+FACT f1 GROUP BY creates one result group for rows with the same grouping-column values.
+FACT f2 SUM computes a total.
+FACT f3 Write SELECT group_column, SUM(value_column) FROM table_name GROUP BY group_column; for one total per group.
+FACT f4 In the ordinary grouping pattern, list each selected column outside aggregate functions in GROUP BY.
+tb1 Suppose Orders contains three hypothetical rows: North with Amount 40, North with Amount 60, and South with Amount 30. A stakeholder asks for total amount per branch, not the original order-level rows.
+tb2 GROUP BY creates one result group for rows with the same grouping-column values.
+tb3 SUM computes a total. Write SELECT group_column, SUM(value_column) FROM table_name GROUP BY group_column; for one total per group. In the ordinary grouping pattern, list each selected column outside aggregate functions in GROUP BY.
+tb4 Write:
+SELECT Branch, SUM(Amount) FROM Orders GROUP BY Branch;
+
+GROUP BY gathers rows with the same Branch value into one result group. SUM computes the total within each group. North contributes 40 + 60 = 100, and South contributes 30. The result contents are therefore (North, 100) and (South, 30), with no output order promised by this query.
+
+In the ordinary grouping pattern, each selected column outside an aggregate function belongs in GROUP BY. Branch is the unaggregated selected column here, while Amount is inside SUM. If the required question changes to totals per branch and service category, the grouping needs to reflect those selected grouping columns rather than pretending one branch total also identifies a single category.
+
+The practical change is the level of the result: several source rows can contribute to one grouped total. Explain that to a stakeholder who expects to see individual orders. The query is not deleting those source details; its requested output is a group-level summary.
+tb5 Selecting a group label and a total does not make every other source field meaningful at the group level. Follow the ordinary pattern of listing selected nonaggregate columns in GROUP BY. Also distinguish a per-group total from one original row’s amount.
+{'assessment_anchors': [{'fact_ids': ['f1', 'f2', 'f3', 'f4'], 'capability': 'write_correct_per_group_sum_query'}], 'practice_anchor': {'type': 'live_code', 'objective': 'Write a query that groups Orders by Branch and sums Amount to produce one total per branch.', 'success': 'The query selects Branch and SUM(Amount), reads from Orders, and groups by Branch. Its result contains (North, 100) and (South, 30), in either order.', 'live_code': {'required_skill': 'Use SELECT, FROM, SUM, and GROUP BY to calculate one total per group, listing the selected nonaggregate column in GROUP BY.', 'allowed_syntax': ['SELECT', 'FROM', 'SUM(Amount)', 'GROUP BY Branch', 'Orders', 'Branch', 'Amount', ',', ';'], 'blocked_syntax': ['WHERE', 'HAVING', 'ORDER BY', 'LEFT JOIN', 'RIGHT JOIN', 'FULL OUTER JOIN', 'CAST', 'COALESCE', 'IS NULL', 'IS NOT NULL'], 'starter_state_intent': 'Provide an existing Orders table with columns Branch and Amount and three rows: (North, 40), (North, 60), and (South, 30). Provide an empty SQL editor for the grouping query.', 'observable_success': 'Executing the query returns exactly two group-level rows: North with total 100 and South with total 30. Branch appears in both SELECT and GROUP BY, and Amount appears inside SUM.'}}, 'visual_anchor': {'type': 'data_table', 'purpose': 'Show the three Orders rows beside the two grouped result rows, making visible how the repeated North values contribute 40 + 60 to one total of 100 while South contributes 30.'}}
+None
+['Stay with SUM and ordinary grouping; do not introduce other aggregates or vendor exceptions.', 'Use the supplied hypothetical business situation; do not treat its policies, numbers, or outcomes as universal rules.']

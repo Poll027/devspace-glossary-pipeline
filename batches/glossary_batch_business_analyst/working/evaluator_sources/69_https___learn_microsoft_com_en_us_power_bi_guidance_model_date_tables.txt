@@ -1,0 +1,176 @@
+Design guidance for date tables in Power BI Desktop - Power BI | Microsoft Learn
+Skip to main content
+Skip to Ask Learn chat experience
+This browser is no longer supported.
+Upgrade to Microsoft Edge to take advantage of the latest features, security updates, and technical support.
+Download Microsoft Edge
+More info about Internet Explorer and Microsoft Edge
+Table of contents
+Exit editor mode
+Ask Learn
+Ask Learn
+Reading mode
+Table of contents
+Read in English
+Add
+Add to Plans
+Edit
+Copy Markdown
+Print
+Note
+Access to this page requires authorization. You can try
+signing in
+or
+changing directories
+.
+Access to this page requires authorization. You can try
+changing directories
+.
+Design guidance for date tables in Power BI Desktop
+Feedback
+Summarize this article for me
+In this article
+This article describes good design practices for creating date tables in your data models when using Power BI Desktop.
+A date table is the most common table used for analysis. It stores one row per date, and it supports the common requirement to filter or group by specific periods of dates, like years, quarters, or months.
+What's more, in order to work with Data Analysis Expressions (DAX)
+time intelligence functions
+, your data model must have at least one
+date table
+. A date table is a model table that meets the following requirements:
+It must have a column of data type
+date
+(or
+date/time
+)—known as the
+date column
+.
+The date column must contain unique values.
+The date column must not contain BLANKs.
+The date column must not have any missing dates.
+The date column must span full years. A year isn't necessarily a calendar year (January-December).
+If using
+Classic time intelligence
+, the date table must be
+marked as a date table
+. This is not necessary if you use the recommended
+Calendar-based time intelligence
+, except in
+specific circumstances
+.
+You can use any of several techniques to add a date table to your model:
+Use Auto date/time
+Connect with Power Query
+(to an existing date
+dimension table
+)
+Generate with Power Query
+Generate with DAX
+Clone with DAX
+Tip
+A date table is perhaps the most consistent feature you'll add to any of your data models. Within an organization a date table should be consistently defined. So, whatever technique you decide to use, we recommend you create a
+Power BI Desktop template
+that includes a fully configured date table. Share the template with all data modelers in your organization. So, whenever someone develops a new data model, they can begin with a consistently defined date table.
+Use Auto date/time
+The
+Auto date/time
+option delivers convenient, fast, and easy-to-use time intelligence. Reports authors can work with time intelligence when filtering, grouping, and drilling down through calendar time periods.
+We recommended that you keep the Auto date/time option enabled only when you work with calendar time periods, and when you have simplistic model requirements in relation to time. You might also use this option when creating ad hoc models or performing data exploration or profiling. This approach, however, doesn't support a single date table design that can propagate filters to multiple tables. For more information, see
+Auto date/time guidance in Power BI Desktop
+.
+Connect with Power Query
+When your data source already has a date table, we recommend you use it as the source of your model date table. It's typically the case when you're connecting to a data warehouse, as it should already have a
+date dimension table
+. This way, your model uses a single source of truth for time in your organization.
+If you're developing a DirectQuery model and your data source doesn't include a date table, we strongly recommend you add a date table to the data source. It should meet all the modeling requirements of a date table. You can then use Power Query to connect to the date table. This way, your model calculations can use the DAX time intelligence capabilities.
+Generate with Power Query
+You can generate a date table by using Power Query. For more information, see Chris Webb's blog entry
+Generating A Date Dimension Table In Power Query
+.
+Tip
+If you don't have a data warehouse or other consistent definition for time in your organization, consider using Power Query to publish a
+dataflow
+. Then, have all data modelers connect to the dataflow to add date tables to their models. The dataflow becomes the single source of truth for time in your organization.
+If you need to generate a date table, consider doing it with DAX. You might find it's easier. What's more, it's likely to be more convenient, because DAX includes some built-in intelligence to simplify creating and managing date tables.
+Generate with DAX
+You can generate a date table in your model by creating a calculated table using either the
+CALENDAR
+or
+CALENDARAUTO
+DAX function. Each function returns a single-column table of dates. You can then extend the calculated table with calculated columns to support your date interval filtering and grouping requirements.
+Use the
+CALENDAR
+function when you want to define a date range. You pass in two values: the start date and end date. These values can be defined by other DAX functions, like
+MIN(Sales[OrderDate])
+or
+MAX(Sales[OrderDate])
+.
+Use the
+CALENDARAUTO
+function when you want the date range to automatically encompass all dates stored in the model. You can pass in a single optional parameter that's the end month of the year (if your year is a calendar year, which ends in December, you don't need to pass in a value). It's a helpful function because it ensures that full years of dates are returned and so meets the requirement for a marked date table. What's more, you don't need to extend the table with rows for future years. That's because When a data refresh completes, it triggers the recalculation of the table. A recalculation automatically extends the date range of the table when dates for a new year are loaded into the model.
+Tip
+For more information about creating calculated tables, including an example of how to create a date table, work through the
+Add calculated tables and columns to Power BI Desktop models
+learning module.
+Also, consider using a free open-source tool to help manage dates with DAX. For more information, see
+Bravo for Power BI
+.
+Clone with DAX
+When your data model already has a date table and you need another date table—when date is a
+role-playing dimension
+dimension, you can easily clone the existing date table. You can clone a table by creating a calculated table. The calculated table expression is simply the name of the existing date table.
+For example, to create a
+Ship Date
+table that clones the
+Date
+table, use the following calculated table expression.
+Ship Date = 'Date'
+Note
+When you clone a table with DAX, it only creates columns. It does not apply any model properties from the cloned table, like formats or descriptions. Also, hierarchies aren't cloned.
+Related content
+For more information related to this article, check out the following resources:
+Auto date/time in Power BI Desktop
+Auto date/time guidance in Power BI Desktop
+Implement time-based calculations in Power BI
+Set and use date tables in Power BI Desktop
+Self-service data prep in Power BI
+CALENDAR function (DAX)
+CALENDARAUTO function (DAX)
+Questions?
+Try asking the Fabric Community
+Suggestions?
+Contribute ideas to improve Fabric
+Feedback
+Was this page helpful?
+Yes
+No
+No
+Need help with this topic?
+Want to try using Ask Learn to clarify or guide you through this topic?
+Ask Learn
+Ask Learn
+Suggest a fix?
+Additional resources
+Last updated on
+2024-12-30
+In this article
+Was this page helpful?
+Need help with this topic?
+Want to try using Ask Learn to clarify or guide you through this topic?
+Ask Learn
+Ask Learn
+Suggest a fix?
+en-us
+Your Privacy Choices
+Theme
+Light
+Dark
+High contrast
+AI Disclaimer
+Previous Versions
+Blog
+Contribute
+Privacy
+Consumer Health Privacy
+Terms of Use
+Trademarks
+© Microsoft 2026
