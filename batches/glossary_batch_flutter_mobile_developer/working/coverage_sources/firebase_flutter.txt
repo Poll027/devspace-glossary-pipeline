@@ -1,0 +1,265 @@
+
+ Firebase
+ Documentation
+ Firebase for Flutter
+ Fundamentals
+ Send feedback
+ Get started with Firebase in your Flutter project
+ Stay organized with collections
+ Save and categorize content based on your preferences.
+Follow this guide to get started using Firebase plugins in your Flutter app.
+Prerequisites
+Install your preferred
+editor or IDE.
+Install Flutter 
+for your specific operating system, including the following:
+Flutter SDK
+Supporting libraries
+Platform-specific software and SDKs
+Platform-specific prerequisites:
+ Apple 
+Set up a physical Apple device or use a simulator to run your app.
+Make sure that your Flutter app targets the following platform versions or
+later:
+iOS 15
+macOS 11
+Do you want to use Cloud Messaging?
+For Cloud Messaging on Apple platforms, here are the prerequisites:
+Set up a physical Apple device.
+Obtain an Apple Push Notification Authentication Key for your
+Apple Developer account.
+Enable Push Notifications in Xcode under App > Capabilities.
+Note: If you're targeting macOS or macOS Catalyst, you must add the
+Keychain Sharing capability
+to your target. In Xcode, navigate to your target's
+Signing & Capabilities tab, and then click + Capabilities to add a
+new capability.
+ Android 
+Set up a device or emulator for running your app.
+Emulators 
+must use an emulator image with Google Play.
+Make sure that your app meets the following requirements:
+Targets API level
+24 (Nougat) or higher
+Uses Android 7.0 or higher
+ Web 
+No platform-specific prerequisites
+If you don't already have a Flutter app, you can complete the
+Get Started: Test Drive 
+to create a new Flutter app using your preferred editor or IDE.
+Step 1: Install the required command line tools
+If you haven't already,
+install the Firebase CLI.
+Log into Firebase using your Google Account by running the following
+command:
+firebase login
+Install the FlutterFire CLI by running the following command from any
+directory:
+dart pub global activate flutterfire_cli
+Step 2: Configure your apps to use Firebase
+Use the FlutterFire CLI to configure your Flutter apps to connect to Firebase.
+From your Flutter project directory, run the following command to start the
+app configuration workflow:
+flutterfire configure
+ What does this flutterfire configure workflow do?
+The flutterfire configure workflow does the following:
+Asks you to select the platforms (iOS, Android, Web) supported in your
+Flutter app. For each selected platform, the FlutterFire CLI creates a new
+Firebase app in your Firebase project.
+You can select either to use an existing Firebase project or to create a
+new Firebase project. If you already have apps registered in an existing
+Firebase project, the FlutterFire CLI will attempt to match them based on
+your current Flutter project configuration.
+Note: Here are some tips about setting up and managing your
+Firebase project:
+ Check out the
+ best practices
+ for adding apps to a Firebase project, including how to handle
+ multiple variants.
+ Enable Google Analytics
+ in your project, which provides an optimal experience using many
+ Firebase products, like Crashlytics and Remote Config.
+Creates a Firebase configuration file (firebase_options.dart) and adds it
+to your lib/ directory.
+Note: This Firebase config file contains unique, but non-secret
+identifiers for each platform you selected. Visit
+Understand Firebase Projects
+to learn more about this config file.
+(for Crashlytics or Performance Monitoring on Android) Adds the required
+product-specific Gradle plugins to your Flutter app.
+Note: For the FlutterFire CLI to add the appropriate Gradle plugin, the
+product's Flutter plugin must already be imported into your Flutter app.
+ After this initial running of flutterfire configure, you need
+ to re-run the command any time that you:
+ Start supporting a new platform in your Flutter app.
+ Start using a new Firebase service or product in your Flutter app,
+ especially if you start using sign-in with Google, Crashlytics,
+ Performance Monitoring, or Realtime Database.
+ Re-running the command ensures that your Flutter app's Firebase
+ configuration is up-to-date and (for Android) automatically adds any
+ required Gradle plugins to your app.
+Step 3: Initialize Firebase in your app
+From your Flutter project directory, run the following command to install
+the core plugin:
+flutter pub add firebase_core
+From your Flutter project directory, run the following command to ensure
+that your Flutter app's Firebase configuration is up-to-date:
+flutterfire configure
+In your lib/main.dart file, import the Firebase core plugin and the
+configuration file you generated earlier:
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+Also in your lib/main.dart file, initialize Firebase using the
+DefaultFirebaseOptions object exported by the configuration file:
+WidgetsFlutterBinding.ensureInitialized();
+await Firebase.initializeApp(
+ options: DefaultFirebaseOptions.currentPlatform,
+);
+runApp(const MyApp());
+Rebuild your Flutter application:
+flutter run
+If you'd rather use a demo project, you can start the
+Firebase Local Emulator Suite and in your lib/main.dart
+file initialize Firebase using demoProjectId (it should start with demo-):
+await Firebase.initializeApp(
+ demoProjectId: "demo-project-id",
+);
+Step 4: Add Firebase plugins
+You access Firebase in your Flutter app through the various
+Firebase Flutter plugins, one for each
+Firebase product (for example, Cloud Firestore, Authentication, Analytics, etc.).
+Since Flutter is a multi-platform framework, each Firebase plugin is applicable
+for Apple, Android, and web platforms. So, if you add any Firebase plugin to
+your Flutter app, it will be used by the Apple, Android, and web versions of
+your app.
+Here's how to add a Firebase Flutter plugin:
+From your Flutter project directory, run the following command:
+flutter pub add PLUGIN_NAME
+From your Flutter project directory, run the following command:
+flutterfire configure
+Running this command ensures that your Flutter app's Firebase configuration
+is up-to-date and, for Crashlytics and Performance Monitoring on Android, adds the
+required Gradle plugins to your app.
+Once complete, rebuild your Flutter project:
+flutter run
+You're all set! Your Flutter apps are registered and configured to use Firebase.
+ Special considerations for building web apps
+Review the following configuration options when targeting the web platform.
+Trusted Types support
+The Firebase SDK for Flutter supports using Trusted Types to help prevent
+DOM-based (client-side) XSS attacks. When you
+enable Trusted Type enforcement 
+for your app, the Firebase SDK injects its scripts into the DOM using custom
+Trusted Type policies, named flutterfire-firebase_core,
+flutterfire-firebase_auth, etc.
+Disable Firebase JavaScript SDK auto-injection
+By default, the Firebase Flutter SDK auto-injects the Firebase JavaScript SDK when
+building for the web. If you don't want the Firebase JavaScript SDK to be auto-injected,
+you can do the following:
+Ignore the auto-injection script by adding the following property inside a
+<script> tag within the web/index.html file in your Flutter project:
+<!-- Add this property inside a <script> tag within your "web/index.html" file in your Flutter project -->
+<!-- Put in the names of all the plugins you wish to ignore: -->
+window.flutterfire_ignore_scripts = ['analytics', 'firestore'];
+Load the script manually using one of the following options:
+Option 1: Add the SDK explicitly to your web/index.html file,
+inside the window.addEventListener callback:
+ window.addEventListener('load', async function (ev) {
+ window.firebase_firestore = await import("https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js");
+ window.firebase_analytics = await import("https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js");
+ _flutter.loader.loadEntrypoint().then(function (engineInitializer) {
+ // rest of the code
+Option 2: Download the plugin's Firebase JavaScript SDK code from the
+gstatic domain, and save them to a JavaScript file to be kept within
+your project and loaded in manually:
+ // "web/my-analytics.js" & "web/my-firestore.js" file loaded as a script into your "web/index.html" file:
+ window.addEventListener('load', async function (ev) {
+ window.firebase_analytics = await import("./my-analytics.js");
+ window.firebase_firestore = await import("./my-firestore.js");
+ _flutter.loader.loadEntrypoint().then(function (engineInitializer) {
+ // rest of the code
+Available plugins
+ Product
+ Plugin name
+ iOS
+ Android
+ Web
+ Other Apple(macOS, etc.)
+ Windows
+ Firebase AI Logic
+ 1
+ firebase_ai
+ beta
+ Analytics
+ firebase_analytics
+ beta
+ App Check
+ firebase_app_check
+ beta
+ Authentication
+ firebase_auth
+ beta
+ beta
+ Cloud Firestore
+ cloud_firestore
+ beta
+ beta
+ Cloud Functions
+ cloud_functions
+ beta
+ Cloud Messaging
+ firebase_messaging
+ beta
+ Cloud Storage
+ firebase_storage
+ beta
+ beta
+ Crashlytics
+ firebase_crashlytics
+ beta
+ In-App Messaging
+ firebase_in_app_messaging
+ Firebase installations
+ firebase_app_installations
+ beta
+ Performance Monitoring
+ firebase_performance
+ Realtime Database
+ firebase_database
+ beta
+ Remote Config
+ firebase_remote_config
+ beta
+ SQL Connect
+ 2
+ firebase_data_connect
+ DEPRECATED OR UNSUPPORTED LIBRARIES
+ Dynamic Links
+ firebase_dynamic_links
+ ML Model Downloader
+ firebase_ml_model_downloader
+ beta
+ 1 Firebase AI Logic was formerly called
+ "Vertex AI in Firebase" with the plugin
+ firebase_vertexai.
+ 2 Firebase SQL Connect was formerly called
+ "Firebase Data Connect".
+Caution: Firebase on Windows is not intended for production use cases, only
+local development workflows.
+Next steps
+Get hands-on experience with the
+Firebase Flutter Codelab.
+Prepare to launch your app:
+Set up budget alerts for your
+project in the Google Cloud console.
+Monitor the
+Usage and billing dashboard 
+in the Firebase console to get an overall picture of your project's
+usage across multiple Firebase services.
+Review the Firebase launch checklist.
+ Send feedback
+ Except as otherwise noted, the content of this page is licensed under the Creative Commons Attribution 4.0 License, and code samples are licensed under the Apache 2.0 License. For details, see the Google Developers Site Policies. Java is a registered trademark of Oracle and/or its affiliates.
+ Last updated 2026-11-24 UTC.
+ Need to tell us more?
+ [[["Easy to understand","easyToUnderstand","thumb-up"],["Solved my problem","solvedMyProblem","thumb-up"],["Other","otherUp","thumb-up"]],[["Missing the information I need","missingTheInformationINeed","thumb-down"],["Too complicated / too many steps","tooComplicatedTooManySteps","thumb-down"],["Out of date","outOfDate","thumb-down"],["Samples / code issue","samplesCodeIssue","thumb-down"],["Other","otherDown","thumb-down"]],["Last updated 2026-11-24 UTC."],[],[]]
+ 

@@ -1,0 +1,296 @@
+
+ -->
+ list
+ On this pagechevron_right
+ Tap, drag, and enter text
+ vertical_align_top
+ Tap, drag, and enter text
+ 1. Create a widget to test
+ 2. Enter text in the text field
+ 3. Ensure tapping a button adds the todo
+ 4. Ensure swipe-to-dismiss removes the todo
+ Complete example
+ Help improve Flutter! Take the Flutter Q4 Developer survey.
+ list
+ On this page
+ 1. Create a widget to test
+ 2. Enter text in the text field
+ 3. Ensure tapping a button adds the todo
+ 4. Ensure swipe-to-dismiss removes the todo
+ Complete example
+ Cookbookchevron_right
+ Testingchevron_right
+ Widgetchevron_right
+ Tap, drag, and enter text
+ Tap, drag, and enter text
+ How to test widgets for user interaction.
+ -->
+ more_vert
+ linkCopy link
+ content_copyCopy as Markdown
+ markdownView as Markdown
+ docsOpen on GitHub
+ bug_reportReport an issue
+ Many widgets not only display information, but also respond
+ to user interaction. This includes buttons that can be tapped,
+ and TextField
+ for entering text.
+ To test these interactions, you need a way to simulate them
+ in the test environment. For this purpose, use the
+ WidgetTester
+ library.
+ The WidgetTester provides methods for entering text,
+ tapping, and dragging.
+ enterText()
+ tap()
+ drag()
+ In many cases, user interactions update the state of the app. In the test
+ environment, Flutter doesn't automatically rebuild widgets when the state
+ changes. To ensure that the widget tree is rebuilt after simulating a user
+ interaction, call the pump()
+ or pumpAndSettle()
+ methods provided by the WidgetTester.
+ This recipe uses the following steps:
+ Create a widget to test.
+ Enter text in the text field.
+ Ensure tapping a button adds the todo.
+ Ensure swipe-to-dismiss removes the todo.
+ infoNote
+ This recipe uses the
+ material_ui package.
+ If your app doesn't already depend on it,
+ run flutter pub add material_ui from your app's directory.
+ 1. Create a widget to test
+ #
+ For this example,
+ create a basic todo app that tests three features:
+ Entering text into a TextField.
+ Tapping a FloatingActionButton to add the text to a list of todos.
+ Swiping-to-dismiss to remove the item from the list.
+ To keep the focus on testing,
+ this recipe won't provide a detailed guide on how to build the todo app.
+ To learn more about how this app is built,
+ see the relevant recipes:
+ Create and style a text field
+ Handle taps
+ Create a basic list
+ Implement swipe to dismiss
+ dart
+ class TodoList extends StatefulWidget {
+ const TodoList({super.key});
+​
+ @override
+ State<TodoList> createState() => _TodoListState();
+}
+​
+class _TodoListState extends State<TodoList> {
+ static const _appTitle = 'Todo List';
+ final todos = <String>[];
+ final controller = TextEditingController();
+​
+ @override
+ Widget build(BuildContext context) {
+ return MaterialApp(
+ title: _appTitle,
+ home: Scaffold(
+ appBar: AppBar(title: const Text(_appTitle)),
+ body: Column(
+ children: [
+ TextField(controller: controller),
+ Expanded(
+ child: ListView.builder(
+ itemCount: todos.length,
+ itemBuilder: (context, index) {
+ final todo = todos[index];
+​
+ return Dismissible(
+ key: Key('$todo$index'),
+ onDismissed: (direction) => todos.removeAt(index),
+ background: Container(color: Colors.red),
+ child: ListTile(title: Text(todo)),
+ );
+ },
+ ),
+ ),
+ ],
+ ),
+ floatingActionButton: FloatingActionButton(
+ onPressed: () {
+ setState(() {
+ todos.add(controller.text);
+ controller.clear();
+ });
+ },
+ child: const Icon(Icons.add),
+ ),
+ ),
+ );
+ }
+}
+ content_copy
+ 2. Enter text in the text field
+ #
+ Now that you have a todo app, begin writing the test.
+ Start by entering text into the TextField.
+ Accomplish this task by:
+ Building the widget in the test environment.
+ Using the enterText()
+ method from the WidgetTester.
+ dart
+ testWidgets('Add and remove a todo', (tester) async {
+ // Build the widget
+ await tester.pumpWidget(const TodoList());
+​
+ // Enter 'hi' into the TextField.
+ await tester.enterText(find.byType(TextField), 'hi');
+});
+ content_copy
+ infoNote
+ This recipe builds upon previous widget testing recipes.
+ To learn the core concepts of widget testing,
+ see the following recipes:
+ Introduction to widget testing
+ Finding widgets in a widget test
+ 3. Ensure tapping a button adds the todo
+ #
+ After entering text into the TextField, ensure that tapping
+ the FloatingActionButton adds the item to the list.
+ This involves three steps:
+ Tap the add button using the tap()
+ method.
+ Rebuild the widget after the state has changed using the
+ pump()
+ method.
+ Ensure that the list item appears on screen.
+ dart
+ testWidgets('Add and remove a todo', (tester) async {
+ // Enter text code...
+​
+ // Tap the add button.
+ await tester.tap(find.byType(FloatingActionButton));
+​
+ // Rebuild the widget after the state has changed.
+ await tester.pump();
+​
+ // Expect to find the item on screen.
+ expect(find.text('hi'), findsOneWidget);
+});
+ content_copy
+ 4. Ensure swipe-to-dismiss removes the todo
+ #
+ Finally, ensure that performing a swipe-to-dismiss action on the todo
+ item removes it from the list. This involves three steps:
+ Use the drag()
+ method to perform a swipe-to-dismiss action.
+ Use the pumpAndSettle()
+ method to continually rebuild the widget tree until the dismiss
+ animation is complete.
+ Ensure that the item no longer appears on screen.
+ dart
+ testWidgets('Add and remove a todo', (tester) async {
+ // Enter text and add the item...
+​
+ // Swipe the item to dismiss it.
+ await tester.drag(find.byType(Dismissible), const Offset(500, 0));
+​
+ // Build the widget until the dismiss animation ends.
+ await tester.pumpAndSettle();
+​
+ // Ensure that the item is no longer on screen.
+ expect(find.text('hi'), findsNothing);
+});
+ content_copy
+ Complete example
+ #
+ dart
+ import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
+​
+void main() {
+ testWidgets('Add and remove a todo', (tester) async {
+ // Build the widget.
+ await tester.pumpWidget(const TodoList());
+​
+ // Enter 'hi' into the TextField.
+ await tester.enterText(find.byType(TextField), 'hi');
+​
+ // Tap the add button.
+ await tester.tap(find.byType(FloatingActionButton));
+​
+ // Rebuild the widget with the new item.
+ await tester.pump();
+​
+ // Expect to find the item on screen.
+ expect(find.text('hi'), findsOneWidget);
+​
+ // Swipe the item to dismiss it.
+ await tester.drag(find.byType(Dismissible), const Offset(500, 0));
+​
+ // Build the widget until the dismiss animation ends.
+ await tester.pumpAndSettle();
+​
+ // Ensure that the item is no longer on screen.
+ expect(find.text('hi'), findsNothing);
+ });
+}
+​
+class TodoList extends StatefulWidget {
+ const TodoList({super.key});
+​
+ @override
+ State<TodoList> createState() => _TodoListState();
+}
+​
+class _TodoListState extends State<TodoList> {
+ static const _appTitle = 'Todo List';
+ final todos = <String>[];
+ final controller = TextEditingController();
+​
+ @override
+ Widget build(BuildContext context) {
+ return MaterialApp(
+ title: _appTitle,
+ home: Scaffold(
+ appBar: AppBar(title: const Text(_appTitle)),
+ body: Column(
+ children: [
+ TextField(controller: controller),
+ Expanded(
+ child: ListView.builder(
+ itemCount: todos.length,
+ itemBuilder: (context, index) {
+ final todo = todos[index];
+​
+ return Dismissible(
+ key: Key('$todo$index'),
+ onDismissed: (direction) => todos.removeAt(index),
+ background: Container(color: Colors.red),
+ child: ListTile(title: Text(todo)),
+ );
+ },
+ ),
+ ),
+ ],
+ ),
+ floatingActionButton: FloatingActionButton(
+ onPressed: () {
+ setState(() {
+ todos.add(controller.text);
+ controller.clear();
+ });
+ },
+ child: const Icon(Icons.add),
+ ),
+ ),
+ );
+ }
+}
+ content_copy
+ -->
+ Was this page's content helpful?
+ thumb_up
+ thumb_down
+ Unless stated otherwise, the documentation on this site reflects Flutter 3.50. Page last updated on 2026-11-10. 
+ View source
+ or report an issue.
+ 

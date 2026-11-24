@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en"><head><script type="text/javascript" src="https://www.googletagmanager.com/gtm.js?id=GTM-MX6DBN9" async="async"></script><script type="text/javascript" src="/static/hash-nhsnu2dk/js/gtm.js"></script><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no"/><meta name="generator" content="made with love by dartdoc"/><meta name="description" content="Navigation topic docs, for the Dart programming language."/><title>Navigation topic - Dart API</title><link rel="canonical" href="https://pub.dev/documentation/go_router/latest/topics/Navigation-topic.html"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&amp;display=swap"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/><link rel="stylesheet" href="/static/hash-nhsnu2dk/css/dartdoc.css"/><link rel="icon" href="/favicon.ico?hash=nk4nss8c7444fg0chird9erqef2vkhb8"/></head><body class="light-theme" data-base-href="../" data-using-base-href="false"><noscript><iframe class="-gtm-iframe" src="https://www.googletagmanager.com/ns.html?id=GTM-MX6DBN9" height="0" width="0"></iframe></noscript><script src="/static/hash-nhsnu2dk/js/dark-init.js"></script><div id="overlay-under-drawer"></div><header id="title"><span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span><a class="hidden-xs" href="/"><img class="-dart-logo-img" src="/static/hash-nhsnu2dk/img/dart-logo.svg" alt="" width="30" height="30" role="presentation" aria-label="Go to the landing page of pub.dev"/></a><ol class="breadcrumbs gt-separated dark hidden-xs"><li><a href="/packages/go_router">go_router package</a></li><li><a href="../index.html">documentation</a></li><li class="self-crumb">Navigation topic</li></ol><div class="self-name">Navigation topic</div><form class="search navbar-right" role="search"><input id="search-box" class="form-control typeahead" type="text" placeholder="Loading search..." autocomplete="off"/></form><button id="theme-button" class="toggle" aria-label="Light and dark mode toggle" title="Toggle between light and dark mode"><span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">dark_mode</span><span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">light_mode</span></button></header><main><div id="dartdoc-main-content" class="main-content">
+  <h1><span class="kind-category">Navigation</span> topic</h1>
+  
+<div class="desc markdown markdown-body">
+  <p>There are many ways to navigate between destinations in your app.</p>
+<h2 id="go-directly-to-a-destination">Go directly to a destination</h2>
+<p>Navigating to a destination in GoRouter will replace the current stack of screens with the screens configured to be displayed
+for the destination route. To change to a new screen, call <code>context.go()</code> with a URL:</p>
+<pre class="language-dart"><code>build(BuildContext context) {
+  return TextButton(
+    onPressed: () =&gt; context.go('/users/123'),
+  );
+}
+</code></pre>
+<p>This is shorthand for calling <code>GoRouter.of(context).go('/users/123)</code>.</p>
+<p>To build a URI with query parameters, you can use the <code>Uri</code> class from the Dart standard library:</p>
+<pre class="language-dart"><code>context.go(Uri(path: '/users/123', queryParameters: {'filter': 'abc'}).toString());
+</code></pre>
+<h2 id="imperative-navigation">Imperative navigation</h2>
+<p>GoRouter can push a screen onto the Navigator's history
+stack using <code>context.push()</code>, and can pop the current screen via
+<code>context.pop()</code>. However, imperative navigation is known to cause issues with
+the browser history.</p>
+<p>To learn more, see <a href="https://github.com/flutter/flutter/issues/99112" rel="ugc nofollow">issue
+#99112</a>.</p>
+<h2 id="using-the-link-widget">Using the Link widget</h2>
+<p>You can use a Link widget from the url_launcher package to create a link to destinations in
+your app. This is equivalent to calling <code>context.go()</code>, but renders a real link
+on the web.</p>
+<p>To add a Link to your app, follow the <a href="https://pub.dev/documentation/url_launcher/latest/link/Link-class.html">Link API
+documentation</a>
+from the url_launcher package.</p>
+<h2 id="using-named-routes">Using named routes</h2>
+<p>You can also use <a href="https://pub.dev/documentation/go_router/latest/topics/Named%20routes-topic.html">Named routes</a> to navigate instead of using URLs.</p>
+<h2 id="prevent-navigation">Prevent navigation</h2>
+<p>GoRouter and other Router-based APIs are not compatible with the
+<a href="https://api.flutter.dev/flutter/widgets/WillPopScope-class.html">WillPopScope</a>
+widget.</p>
+<p>See <a href="https://github.com/flutter/flutter/issues/102408" rel="ugc nofollow">issue #102408</a>
+for details on what such an API might look like in go_router.</p>
+<h2 id="disable-browser-history-tracking-when-navigating">Disable browser history tracking when navigating</h2>
+<p>To disable browser history tracking when navigating, use the <code>neglect</code> method
+of the <code>Router</code> class:</p>
+<pre class="language-dart"><code class="language-dart">ElevatedButton(
+  onPressed: () =&gt; Router.neglect(
+    context,
+    () =&gt; context.go('/destination'),
+  ),
+  child: ...
+),
+</code></pre>
+<p>To disable browser history tracking for the <strong>entire</strong> application, set the
+<code>routerNeglect</code> property of the <code>GoRouter</code> widget to <code>true</code>:</p>
+<pre class="language-dart"><code class="language-dart">final _router = GoRouter(
+  routerNeglect: true,
+  routes: [
+    ...
+  ],
+);
+</code></pre>
+<h2 id="imperative-navigation-with-navigator">Imperative navigation with Navigator</h2>
+<p>You can continue using the Navigator to push and pop pages. Pages displayed in
+this way are not deep-linkable and will be replaced if any parent page that is
+associated with a GoRoute is removed, for example when a new call to <code>go()</code>
+occurs.</p>
+<p>To push a screen using the imperative Navigator API, call
+<a href="https://api.flutter.dev/flutter/widgets/NavigatorState/push.html"><code>NavigatorState.push()</code></a>:</p>
+<pre class="language-dart"><code class="language-dart">Navigator.of(context).push(
+  MaterialPageRoute(
+    builder: (BuildContext context) {
+      return const DetailsScreen();
+    },
+  ),
+);
+</code></pre>
+<p>The behavior may change depends on the shell route in current screen and the new screen.</p>
+<p>If pushing a new screen without any shell route onto the current screen with shell route, the new
+screen is placed entirely on top of the current screen.</p>
+<p><img src="https://external-images.pub.dev/9NbZK%2BAuJ5BF0FQKX0mizvg%2BhQZ6q4S02OA5S%2BDKjDc%3D/1795478400000/https%3A%2F%2Fflutter.github.io%2Fassets-for-api-docs%2Fassets%2Fgo_router%2Fpush_regular_route.gif" alt="An animation shows a new screen push on top of current screen"></p>
+<p>If pushing a new screen with the same shell route as the current screen, the new
+screen is placed inside of the shell.</p>
+<p><img src="https://external-images.pub.dev/RjFX1xtQCOPxssRKQp3MCTw7HYQl3IFYkVkx5EtShMs%3D/1795478400000/https%3A%2F%2Fflutter.github.io%2Fassets-for-api-docs%2Fassets%2Fgo_router%2Fpush_same_shell.gif" alt="An animation shows pushing a new screen with the same shell as current screen"></p>
+<p>If pushing a new screen with the different shell route as the current screen, the new
+screen along with the shell is placed entirely on top of the current screen.</p>
+<p><img src="https://external-images.pub.dev/mgfQgHhpmV2l4mAocl0SQZ%2BR0%2Ff711IO1qLTuz2KHkQ%3D/1795478400000/https%3A%2F%2Fflutter.github.io%2Fassets-for-api-docs%2Fassets%2Fgo_router%2Fpush_different_shell.gif" alt="An animation shows pushing a new screen with the different shell as current screen"></p>
+<p>To try out the behavior yourself, see
+<a href="https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/push_with_shell_route.dart" rel="ugc nofollow">push_with_shell_route.dart</a>.</p>
+<h2 id="returning-values">Returning values</h2>
+<p>Waiting for a value to be returned:</p>
+<pre class="language-dart"><code class="language-dart">onTap: () async {
+  final bool? result = await context.push&lt;bool&gt;('/page2');
+  if(result ?? false)...
+}
+</code></pre>
+<p>Returning a value:</p>
+<pre class="language-dart"><code class="language-dart">onTap: () =&gt; context.pop(true)
+</code></pre>
+<h2 id="using-extra">Using extra</h2>
+<p>You can provide additional data along with navigation.</p>
+<pre class="language-dart"><code class="language-dart">context.go('/123', extra: 'abc');
+</code></pre>
+<p>and retrieve the data from GoRouterState</p>
+<pre class="language-dart"><code class="language-dart">final String extraString = GoRouterState.of(context).extra! as String;
+</code></pre>
+<p>The extra data will go through serialization when it is stored in the browser.
+If you plan to use complex data as extra, consider also providing a codec
+to GoRouter so that it won't get dropped during serialization.</p>
+<p>For an example on how to use complex data in extra with a codec, see
+<a href="https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/extra_codec.dart" rel="ugc nofollow">extra_codec.dart</a>.</p>
+</div>
+
+
+
+  <div class="summary offset-anchor" id="classes">
+    <h2>Classes</h2>
+    <dl>
+      <dt id="GoRouter">
+  <span class="name "><a href="../go_router/GoRouter-class.html">GoRouter</a></span> 
+    <span class="category get-started cp-0 linked" title="This is part of the Get started topic."><a href="../topics/Get started-topic.html">Get&nbsp;started</a></span>
+    <span class="category upgrading cp-1 linked" title="This is part of the Upgrading topic."><a href="../topics/Upgrading-topic.html">Upgrading</a></span>
+    <span class="category configuration cp-2 linked" title="This is part of the Configuration topic."><a href="../topics/Configuration-topic.html">Configuration</a></span>
+    <span class="category navigation cp-3 linked" title="This is part of the Navigation topic."><a href="../topics/Navigation-topic.html">Navigation</a></span>
+    <span class="category redirection cp-4 linked" title="This is part of the Redirection topic."><a href="../topics/Redirection-topic.html">Redirection</a></span>
+    <span class="category web cp-5 linked" title="This is part of the Web topic."><a href="../topics/Web-topic.html">Web</a></span>
+    <span class="category deep-linking cp-6 linked" title="This is part of the Deep linking topic."><a href="../topics/Deep linking-topic.html">Deep&nbsp;linking</a></span>
+    <span class="category named-routes cp-9 linked" title="This is part of the Named routes topic."><a href="../topics/Named routes-topic.html">Named&nbsp;routes</a></span>
+    <span class="category error-handling cp-10 linked" title="This is part of the Error handling topic."><a href="../topics/Error handling-topic.html">Error&nbsp;handling</a></span>
+    <span class="category state-restoration cp-11 linked" title="This is part of the State restoration topic."><a href="../topics/State restoration-topic.html">State&nbsp;restoration</a></span>
+
+</dt>
+<dd>
+  The route configuration for the app.
+</dd>
+
+    </dl>
+  </div>
+
+
+
+
+
+
+
+
+</div><div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left"><header id="header-search-sidebar" class="hidden-l"><form class="search-sidebar" role="search"><input id="search-sidebar" class="form-control typeahead" type="text" placeholder="Loading search..." autocomplete="off"/></form></header><ol id="sidebar-nav" class="breadcrumbs gt-separated dark hidden-l"><li><a href="/packages/go_router">go_router package</a></li><li><a href="../index.html">documentation</a></li><li class="self-crumb">Navigation topic</li></ol>
+  
+
+
+
+  <h5><span class="package-name">go_router</span> <span class="package-kind">package</span></h5>
+  <ol>
+      <li class="section-title">Topics</li>
+        <li><a href="../topics/Get started-topic.html">Get&nbsp;started</a></li>
+        <li><a href="../topics/Upgrading-topic.html">Upgrading</a></li>
+        <li><a href="../topics/Configuration-topic.html">Configuration</a></li>
+        <li><a href="../topics/Navigation-topic.html">Navigation</a></li>
+        <li><a href="../topics/Redirection-topic.html">Redirection</a></li>
+        <li><a href="../topics/Web-topic.html">Web</a></li>
+        <li><a href="../topics/Deep linking-topic.html">Deep&nbsp;linking</a></li>
+        <li><a href="../topics/Transition animations-topic.html">Transition&nbsp;animations</a></li>
+        <li><a href="../topics/Type-safe routes-topic.html">Type-safe&nbsp;routes</a></li>
+        <li><a href="../topics/Named routes-topic.html">Named&nbsp;routes</a></li>
+        <li><a href="../topics/Error handling-topic.html">Error&nbsp;handling</a></li>
+        <li><a href="../topics/State restoration-topic.html">State&nbsp;restoration</a></li>
+      <li class="section-title">Libraries</li>
+      <li><a href="../go_router/">go_router</a></li>
+</ol>
+
+</div><div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  <h5>Navigation topic</h5>
+  <ol>
+
+    <li class="section-title"><a href="../topics/Navigation-topic.html#classes">Classes</a></li>
+      <li><a href="../go_router/GoRouter-class.html">GoRouter</a></li>
+
+
+
+
+
+
+
+
+
+</ol>
+
+</div></main><footer><span class="no-break">go_router 18.1.4</span></footer><script src="/static/hash-nhsnu2dk/dartdoc/resources/highlight.pack.js"></script><script src="/static/hash-nhsnu2dk/dartdoc/resources/docs.dart.js"></script></body></html>

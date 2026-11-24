@@ -1,0 +1,690 @@
+
+ listOn this page
+ chevron_rightConstructors
+ vertical_align_top
+ Constructors
+ Types of constructorsGenerative constructors
+Default constructors
+Named constructors
+Constant constructors
+Redirecting constructors
+Factory constructors
+Redirecting factory constructors
+Constructor tear-offs
+ Concise constructor syntax
+ Instance variable initializationInitialize instance variables in the declaration
+Use initializing formal parameters
+Private named parameters
+Use an initializer list
+ Constructor inheritanceNon-default superclass constructors
+Super parameters
+ Dart 3.14 brings your workflow full circle with automated SDK migrations (dart migrate), a re-engineered DartPad, and faster WebAssembly. 
+ Learn more
+ list
+ On this page
+ Types of constructorsGenerative constructors
+Default constructors
+Named constructors
+Constant constructors
+Redirecting constructors
+Factory constructors
+Redirecting factory constructors
+Constructor tear-offs
+ Concise constructor syntax
+ Instance variable initializationInitialize instance variables in the declaration
+Use initializing formal parameters
+Private named parameters
+Use an initializer list
+ Constructor inheritanceNon-default superclass constructors
+Super parameters
+ Languagechevron_right
+ Constructors
+ Constructors
+ Everything about using constructors in Dart.
+ -->
+ more_vert
+ linkCopy link
+ content_copyCopy as Markdown
+ markdownView as Markdown
+ docsOpen on GitHub
+ bug_reportReport an issue
+ Constructors are special functions that create instances of classes.
+ Dart implements many types of constructors.
+ Except for default constructors,
+ these functions use the same name as their class.
+ Generative constructors
+ Creates new instances and initializes instance variables.
+ Default constructors
+ Used to create a new instance when a constructor hasn't been specified.
+ It doesn't take arguments and isn't named.
+ Named constructors
+ Clarifies the purpose of a constructor or
+ allows the creation of multiple constructors for the same class.
+ Constant constructors
+ Creates instances as compile-time constants.
+ Factory constructors
+ Either creates a new instance of a subtype or
+ returns an existing instance from cache.
+ Redirecting constructor
+ Forwards calls to another constructor in the same class.
+ Types of constructors
+ #
+ Generative constructors
+ #
+ To instantiate a class, use a generative constructor.
+ dart
+ class Point {
+ // Instance variables to hold the coordinates of the point.
+ double x;
+ double y;
+​
+ // Generative constructor with initializing formal parameters:
+ Point(this.x, this.y);
+}
+ -->
+ content_copy
+ Default constructors
+ #
+ If you don't declare a constructor, Dart uses the default constructor.
+ The default constructor is a generative constructor without arguments or name.
+ Named constructors
+ #
+ Use a named constructor to implement multiple constructors for a class
+ or to provide extra clarity:
+ dart
+ const double xOrigin = 0;
+const double yOrigin = 0;
+​
+class Point {
+ final double x;
+ final double y;
+​
+ // Sets the x and y instance variables
+ // before the constructor body runs.
+ Point(this.x, this.y);
+​
+ // Named constructor
+ Point.origin() : x = xOrigin, y = yOrigin;
+}
+ -->
+ content_copy
+ A subclass doesn't inherit a superclass's named constructor.
+ To create a subclass with a named constructor defined in the superclass,
+ implement that constructor in the subclass.
+ Constant constructors
+ #
+ If your class produces unchanging objects, make these
+ objects compile-time constants.
+ To make objects compile-time constants, define a const constructor
+ with all instance variables set as final.
+ dart
+ class ImmutablePoint {
+ static const ImmutablePoint origin = ImmutablePoint(0, 0);
+​
+ final double x, y;
+​
+ const ImmutablePoint(this.x, this.y);
+}
+ -->
+ content_copy
+ Constant constructors don't always create constants.
+ They might be invoked in a non-const context.
+ To learn more, consult the section on using constructors.
+ Redirecting constructors
+ #
+ A constructor might redirect to another constructor in the same class.
+ A redirecting constructor has an empty body.
+ The constructor uses this instead of the class name after a colon (:).
+ dart
+ class Point {
+ double x, y;
+​
+ // The main constructor for this class.
+ Point(this.x, this.y);
+​
+ // Delegates to the main constructor.
+ Point.alongXAxis(double x) : this(x, 0);
+}
+ -->
+ content_copy
+ Factory constructors
+ #
+ When encountering one of following two cases of implementing a constructor,
+ use the factory keyword:
+ The constructor doesn't always create a new instance of its class.
+ Although a factory constructor can't return null,
+ it might return:
+an existing instance from a cache instead of creating a new one
+a new instance of a subtype
+ You need to perform non-trivial work prior to constructing an instance.
+ This can include checking arguments or doing any other processing
+ that can't be handled in the initializer list.
+ lightbulbTip
+ You can also handle late initialization of a final variable
+ with late final
+ (carefully!).
+ The following example includes two factory constructors.
+ Logger factory constructor returns objects from a cache.
+ Logger.fromJson factory constructor initializes a final variable
+ from a JSON object.
+ dart
+ class Logger {
+ final String name;
+ bool mute = false;
+​
+ // _cache is library-private, thanks to
+ // the _ in front of its name.
+ static final Map<String, Logger> _cache = <String, Logger>{};
+​
+ factory Logger(String name) {
+ return _cache.putIfAbsent(name, () => Logger._internal(name));
+ }
+​
+ factory Logger.fromJson(Map<String, Object> json) {
+ return Logger(json['name'].toString());
+ }
+​
+ Logger._internal(this.name);
+​
+ void log(String msg) {
+ if (!mute) print(msg);
+ }
+}
+ -->
+ content_copy
+ warningWarning
+ Factory constructors can't access this.
+ Use a factory constructor as any other constructor:
+ dart
+ var logger = Logger('UI');
+logger.log('Button clicked');
+​
+var logMap = {'name': 'UI'};
+var loggerJson = Logger.fromJson(logMap);
+ -->
+ content_copy
+ Redirecting factory constructors
+ #
+ A redirecting factory constructor specifies a call to a constructor of another
+ class to use whenever someone makes a call to the redirecting constructor.
+ dart
+ factory Listenable.merge(List<Listenable> listenables) = _MergingListenable
+ -->
+ content_copy
+ Since ordinary factory constructors can create
+ and return instances of other classes as well,
+ redirecting factories seem unnecessary.
+ However, redirecting factories have several advantages:
+ An abstract class might provide a constant constructor
+ that uses the constant constructor of another class.
+ A redirecting factory constructor avoids the need for forwarders
+ to repeat the formal parameters and their default values.
+ Constructor tear-offs
+ #
+ Dart allows you to supply a constructor as a parameter without calling it.
+ Called a tear-off (as you tear off the parentheses)
+ serves as a closure that invokes the constructor with the same parameters.
+ If the tear-off is a constructor with the same
+ signature and return type as the method accepts,
+ you can use the tear-off as a parameter or variable.
+ Tear-offs differ from lambdas or anonymous functions.
+ Lambdas serve as a wrapper for the constructor,
+ whereas a tear-off is the constructor.
+ Use Tear-Offs
+ good
+ dart
+ // Use a tear-off for a named constructor:
+var strings = charCodes.map(String.fromCharCode);
+​
+// Use a tear-off for an unnamed constructor:
+var buffers = charCodes.map(StringBuffer.new);
+ -->
+ content_copy
+ Not Lambdas
+ bad
+ dart
+ // Instead of a lambda for a named constructor:
+var strings = charCodes.map((code) => String.fromCharCode(code));
+​
+// Instead of a lambda for an unnamed constructor:
+var buffers = charCodes.map((code) => StringBuffer(code));
+ -->
+ content_copy
+ For more discussion, watch this Decoding Flutter video on tear-offs.
+ Watch on YouTube in a new tab: "Dart Tear-offs | Decoding Flutter"
+ Concise constructor syntax
+ #
+ In Dart 3.13 and later, you can omit the class name
+ when declaring a generative or factory constructor inside the class body
+ by using the modifier new or factory directly:
+ new or new named
+ factory or factory named
+ Unlike traditional named constructors (such as Point.origin()),
+ concise named constructors don't use a dot
+ between the keyword (modifier) and the name.
+ dart
+ class Point {
+ double x, y;
+​
+ // Concise unnamed generative constructor.
+ new(this.x, this.y);
+​
+ // Concise named generative constructor.
+ new origin() : x = 0, y = 0;
+​
+ // Equivalent to `factory Point.clone(Point other)`.
+ factory clone(Point other) => Point(other.x, other.y);
+}
+ -->
+ content_copy
+ This syntax reduces verbosity and makes refactoring class names easier.
+ infoNote
+ With this syntax, a method named factory with no return type
+ (like factory () {}) is interpreted as an unnamed factory constructor.
+ The following table shows how to map traditional constructor syntax
+ to the concise constructor syntax (for a class named LongClassName):
+ Original Dart syntaxAbbreviated syntax
+ LongClassName() {}new() {}
+ LongClassName.name() {}new name() {}
+ const LongClassName();const new();
+ const LongClassName.name();const new name();
+ LongClassName(): this.other();new(): this.other();
+ LongClassName.name(): this();new name(): this();
+ const LongClassName(): this.other();
+ const new(): this.other();
+ const LongClassName.name(): this();
+ const new name(): this();
+ factory LongClassName() { ... }factory() { ... }
+ factory LongClassName.name() { ... }
+ factory name() { ... }
+ factory LongClassName() = D;factory() = D;
+ factory LongClassName.name() = D;factory name() = D;
+ const factory LongClassName() = D;const factory() = D;
+ const factory LongClassName.name() = D;
+ const factory name() = D;
+ For an even more concise syntax
+ where you define fields and constructors in a single line,
+ see Primary constructors.
+ Instance variable initialization
+ #
+ Dart provides several ways to initialize instance variables.
+ You can assign values in the declaration,
+ use initializing formal parameters,
+ or use an initializer list.
+ Initialize instance variables in the declaration
+ #
+ Initialize the instance variables when you declare the variables.
+ dart
+ class PointA {
+ double x = 1.0;
+ double y = 2.0;
+​
+ // The implicit default constructor sets these variables to (1.0,2.0)
+ // PointA();
+​
+ @override
+ String toString() {
+ return 'PointA($x,$y)';
+ }
+}
+ -->
+ content_copy
+ Use initializing formal parameters
+ #
+ To simplify the common pattern of assigning a constructor argument
+ to an instance variable, Dart has initializing formal parameters.
+ In the constructor declaration, include this.<propertyName>
+ and omit the body. The this keyword refers to the current instance.
+ When the name conflict exists, use this.
+ Otherwise, Dart style omits the this.
+ An exception exists for the generative constructor where
+ you must prefix the initializing formal parameter name with this.
+ As noted earlier in this guide, certain constructors
+ and certain parts of constructors can't access this. These include:
+ Factory constructors
+ The right-hand side of an initializer list
+ Arguments to a superclass constructor
+ Initializing formal parameters also allow you to initialize
+ non-nullable or final instance variables.
+ Both of these types of variables require initialization or a default value.
+ dart
+ class PointB {
+ final double x;
+ final double y;
+​
+ // Sets the x and y instance variables
+ // before the constructor body runs.
+ PointB(this.x, this.y);
+​
+ // Initializing formal parameters can also be optional.
+ PointB.optional([this.x = 0.0, this.y = 0.0]);
+}
+ -->
+ content_copy
+ This also works with named variables.
+ dart
+ class PointC {
+ double x; // must be set in constructor
+ double y; // must be set in constructor
+​
+ // Generative constructor with initializing formal parameters
+ // with default values
+ PointC.named({this.x = 1.0, this.y = 1.0});
+​
+ @override
+ String toString() {
+ return 'PointC.named($x,$y)';
+ }
+}
+​
+// Constructor using named variables.
+final pointC = PointC.named(x: 2.0, y: 2.0);
+ -->
+ content_copy
+ All variables introduced from initializing formal parameters are both
+ final and only in scope of the initialized variables.
+ To perform logic that you can't express in the initializer list,
+ create a factory constructor
+ or static method with that logic.
+ You can then pass the computed values to a normal constructor.
+ You can set constructor parameters as nullable to avoid initializing them.
+ dart
+ class PointD {
+ double? x; // null if not set in constructor
+ double? y; // null if not set in constructor
+​
+ // Generative constructor with initializing formal parameters
+ PointD(this.x, this.y);
+​
+ @override
+ String toString() {
+ return 'PointD($x,$y)';
+ }
+}
+ -->
+ content_copy
+ Private named parameters
+ #
+ merge_type
+ Version note
+ Using private named parameters as initializing formals
+ requires a language version of at least 3.12.
+ In Dart, fields starting with an underscore are private to their library.
+ To initialize a private field using a named parameter,
+ you can write manual assignment boilerplate
+ in the initializer list:
+ dart
+ class Point {
+ final double _x;
+ Point({required double x}) : _x = x;
+}
+ -->
+ content_copy
+ You can also initialize private fields directly
+ in the constructor parameter list.
+ When you prefix the named parameter with this._,
+ the compiler automatically strips the underscore for the caller,
+ allowing them to use a clean, public name:
+ dart
+ class Point {
+ final double _x;
+ Point({required this._x});
+}
+ -->
+ content_copy
+ In both cases,
+ the caller uses the public name x at the call site:
+ dart
+ var p = Point(x: 1.0);
+ -->
+ content_copy
+ Like regular named parameters, you can
+ make private named parameters optional or required.
+ You can also provide explicit default values.
+ In the following example, the _x parameter is optional and defaults to null.
+ The _y parameter is also optional but has an explicit default value of 
+ 0.0:
+ dart
+ class PointPrivate {
+ final double? _x; // Nullable field
+ final double _y; // Non-nullable field
+​
+ PointPrivate({this._x, this._y = 0.0});
+​
+ @override
+ String toString() => 'PointPrivate($_x, $_y)';
+}
+​
+void testPrivate() {
+ var p = PointPrivate(x: 1.0, y: 2.0);
+ print(p);
+}
+ -->
+ content_copy
+ Constraints
+ #
+ No conflicts: Neither the private name nor the generated public name
+ can match any other parameter name in the same constructor.
+ Initializing formals only: Named parameters in Dart generally
+ can't be private. This capability is an exception that only applies
+ to named parameters that are initializing formals (this._field).
+ You can't use private identifiers for regular named parameters.
+ Valid public name: The private name must map to a valid public identifier.
+ For example, this._ or this._2x are invalid
+ because they don't have valid public counterparts.
+ Usage in initializer lists
+ #
+ Within the constructor's initializer list,
+ reference the parameter using its private name:
+ dart
+ class PointPrivateAssert {
+ final double _x;
+​
+ PointPrivateAssert({required this._x}) : assert(_x >= 0);
+}
+ -->
+ content_copy
+ Interaction with super parameters
+ #
+ When extending a class that uses private named parameters,
+ subclasses use the public name for -->super parametersSuper parameterA constructor parameter that automatically passes
+an argument to the superclass constructor. Learn more.
+ In the following example, the Tool class defines the private field _price.
+ Even though the field is private,
+ its corresponding named parameter is public (price not _price).
+ To pass the value along,
+ the Hammer subclass uses the public price identifier:
+ dart
+ class Tool {
+ final int _price;
+ Tool({required this._price});
+}
+​
+class Hammer extends Tool {
+ // Forwards to the public 'price' argument
+ Hammer({required super.price});
+}
+ -->
+ content_copy
+ Use an initializer list
+ #
+ Before the constructor body runs, you can initialize instance variables.
+ Separate initializers with commas.
+ dart
+ // Initializer list sets instance variables before
+// the constructor body runs.
+Point.fromJson(Map<String, double> json) : x = json['x']!, y = json['y']! {
+ print('In Point.fromJson(): ($x, $y)');
+}
+ -->
+ content_copy
+ warningWarning
+ The right-hand side of an initializer list can't access this.
+ To validate inputs during development,
+ use assert in the initializer list.
+ dart
+ Point.withAssert(this.x, this.y) : assert(x >= 0) {
+ print('In Point.withAssert(): ($x, $y)');
+}
+ -->
+ content_copy
+ Initializer lists help set up final fields.
+ The following example initializes three final fields in an initializer list.
+ To execute the code, click Run.
+ -->
+ import 'dart:math';
+class Point {
+ final double x;
+ final double y;
+ final double distanceFromOrigin;
+ Point(double x, double y)
+ : x = x,
+ y = y,
+ distanceFromOrigin = sqrt(x * x + y * y);
+}
+void main() {
+ var p = Point(2, 3);
+ print(p.distanceFromOrigin);
+}
+ Constructor inheritance
+ #
+ Subclasses, or child classes, don't inherit constructors
+ from their superclass, or immediate parent class.
+ If a class doesn't declare a constructor, it can only use the
+ default constructor.
+ A class can inherit the parameters of a superclass.
+ These are called super parameters
+ Constructors work in a somewhat similar way to
+ how you call a chain of static methods.
+ Each subclass can call its superclass's constructor to initialize an instance,
+ like a subclass can call a superclass's static method.
+ This process doesn't "inherit" constructor bodies or signatures.
+ Non-default superclass constructors
+ #
+ Dart executes constructors in the following order:
+ initializer list
+ superclass's unnamed, no-arg constructor
+ main class's no-arg constructor
+ If the superclass lacks an unnamed, no-argument constructor,
+ call one of the constructors in the superclass.
+ Before the constructor body (if any),
+ specify the superclass constructor after a colon (:).
+ In the following example,
+ the Employee class constructor calls the named constructor
+ for its superclass, Person. To execute the following code, click Run.
+ -->
+ class Person {
+ String? firstName;
+ Person.fromJson(Map data) {
+ print('in Person');
+ }
+}
+class Employee extends Person {
+ // Person does not have a default constructor;
+ // you must call super.fromJson().
+ Employee.fromJson(Map data) : super.fromJson(data) {
+ print('in Employee');
+ }
+}
+void main() {
+ var employee = Employee.fromJson({});
+ print(employee);
+ // Prints:
+ // in Person
+ // in Employee
+ // Instance of 'Employee'
+}
+ As Dart evaluates the arguments to the superclass constructor before
+ invoking the constructor, an argument can be an expression like a
+ function call.
+ dart
+ class Employee extends Person {
+ Employee() : super.fromJson(fetchDefaultData());
+ // ···
+}
+ -->
+ content_copy
+ warningWarning
+ Arguments to the superclass constructor can't access this.
+ For example, arguments can call static methods
+ but not instance methods.
+ Super parameters
+ #
+ To avoid passing each parameter into the super invocation of a constructor,
+ use super-initializer parameters to forward parameters
+ to the specified or default superclass constructor.
+ You can't use this feature with
+ redirecting constructors.
+ Super-initializer parameters have syntax and semantics like
+ initializing formal parameters.
+ merge_type
+ Version note
+ Using super-initializer parameters
+ requires a language version of at least 2.17.
+ If you're using an earlier language version,
+ you must manually pass in all super constructor parameters.
+ If the super-constructor invocation includes positional arguments,
+ super-initializer parameters can't be positional.
+ dart
+ class Vector2d {
+ final double x;
+ final double y;
+​
+ Vector2d(this.x, this.y);
+}
+​
+class Vector3d extends Vector2d {
+ final double z;
+​
+ // Forward the x and y parameters to the default super constructor like:
+ // Vector3d(final double x, final double y, this.z) : super(x, y);
+ Vector3d(super.x, super.y, this.z);
+}
+ -->
+ content_copy
+ To further illustrate, consider the following example.
+ dart
+ // If you invoke the super constructor (`super(0)`) with any
+ // positional arguments, using a super parameter (`super.x`)
+ // results in an error.
+ Vector3d.xAxisError(super.x): z = 0, super(0); // BAD
+ -->
+ content_copy
+ This named constructor tries to set the x value twice:
+ once in the super constructor and once as a
+ positional super parameter.
+ As both address the x positional parameter, this results in an error.
+ When the super constructor has named arguments, you can split them
+ between named super parameters (super.y in the next example)
+ and named arguments to the super constructor invocation
+ (super.named(x: 0)).
+ dart
+ class Vector2d {
+ // ...
+ Vector2d.named({required this.x, required this.y});
+}
+​
+class Vector3d extends Vector2d {
+ final double z;
+​
+ // Forward the y parameter to the named super constructor like:
+ // Vector3d.yzPlane({required double y, required this.z})
+ // : super.named(x: 0, y: y);
+ Vector3d.yzPlane({required super.y, required this.z}) : super.named(x: 0);
+}
+ -->
+ content_copy
+ chevron_left
+ Previous
+ Classes
+ Next
+ Primary constructors
+ chevron_right
+ -->
+ Was this page's content helpful?
+ thumb_up
+ thumb_down
+ Unless stated otherwise, the documentation on this site reflects Dart 3.14. Page last updated on 2026-05-26. 
+ View source
+ or report an issue.
+ 

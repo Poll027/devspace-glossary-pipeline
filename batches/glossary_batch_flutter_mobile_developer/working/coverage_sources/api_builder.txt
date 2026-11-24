@@ -1,0 +1,115 @@
+
+ description
+ListView.builder constructor 
+ ListView.builder({ Key? key, 
+Axis scrollDirection = Axis.vertical, 
+bool reverse = false, 
+ScrollController? controller, 
+bool? primary, 
+ScrollPhysics? physics, 
+bool shrinkWrap = false, 
+EdgeInsetsGeometry? padding, 
+double? itemExtent, 
+ItemExtentBuilder? itemExtentBuilder, 
+Widget? prototypeItem, 
+required NullableIndexedWidgetBuilder itemBuilder, 
+ChildIndexGetter? findChildIndexCallback, 
+int? itemCount, 
+bool addAutomaticKeepAlives = true, 
+bool addRepaintBoundaries = true, 
+bool addSemanticIndexes = true, 
+@Deprecated('Use scrollCacheExtent instead. ' 'This feature was deprecated after v3.41.0-0.0.pre.') double? cacheExtent, 
+ScrollCacheExtent? scrollCacheExtent, 
+int? semanticChildCount, 
+DragStartBehavior dragStartBehavior = DragStartBehavior.start, 
+ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior, 
+String? restorationId, 
+Clip clipBehavior = Clip.hardEdge, 
+HitTestBehavior hitTestBehavior = HitTestBehavior.opaque, 
+})
+ Creates a scrollable, linear array of widgets that are created on demand.
+This constructor is appropriate for list views with a large (or infinite)
+number of children because the builder is called only for those children
+that are actually visible.
+Providing a non-null itemCount improves the ability of the ListView to
+estimate the maximum scroll extent.
+The itemBuilder callback will be called only with indices greater than
+or equal to zero and less than itemCount.
+It is legal for itemBuilder to return null. If it does, the scroll view
+will stop calling itemBuilder, even if it has yet to reach itemCount.
+By returning null, the ScrollPosition.maxScrollExtent will not be accurate
+unless the user has reached the end of the ScrollView. This can also cause the
+Scrollbar to grow as the user scrolls.
+For more accurate ScrollMetrics, consider specifying itemCount.
+The itemBuilder should always create the widget instances when called.
+Avoid using a builder that returns a previously-constructed widget; if the
+list view's children are created in advance, or all at once when the
+ListView itself is created, it is more efficient to use the ListView
+constructor. Even more efficient, however, is to create the instances on
+demand using this constructor's itemBuilder callback.
+The findChildIndexCallback corresponds to the
+SliverChildBuilderDelegate.findChildIndexCallback property. If null,
+a child widget may not map to its existing RenderObject when the order
+of children returned from the children builder changes.
+This may result in state-loss. This callback needs to be implemented if
+the order of the children may change at a later time.
+The addAutomaticKeepAlives argument corresponds to the
+SliverChildBuilderDelegate.addAutomaticKeepAlives property. The
+addRepaintBoundaries argument corresponds to the
+SliverChildBuilderDelegate.addRepaintBoundaries property. The
+addSemanticIndexes argument corresponds to the
+SliverChildBuilderDelegate.addSemanticIndexes property. None may be
+null.
+ Implementation
+ ListView.builder({
+ super.key,
+ super.scrollDirection,
+ super.reverse,
+ super.controller,
+ super.primary,
+ super.physics,
+ super.shrinkWrap,
+ super.padding,
+ this.itemExtent,
+ this.itemExtentBuilder,
+ this.prototypeItem,
+ required NullableIndexedWidgetBuilder itemBuilder,
+ ChildIndexGetter? findChildIndexCallback,
+ int? itemCount,
+ bool addAutomaticKeepAlives = true,
+ bool addRepaintBoundaries = true,
+ bool addSemanticIndexes = true,
+ @Deprecated(
+ 'Use scrollCacheExtent instead. '
+ 'This feature was deprecated after v3.41.0-0.0.pre.',
+ )
+ super.cacheExtent,
+ super.scrollCacheExtent,
+ int? semanticChildCount,
+ super.dragStartBehavior,
+ super.keyboardDismissBehavior,
+ super.restorationId,
+ super.clipBehavior,
+ super.hitTestBehavior,
+}) : assert(itemCount == null || itemCount >= 0),
+ assert(semanticChildCount == null || semanticChildCount <= itemCount!),
+ assert(
+ (itemExtent == null && prototypeItem == null) ||
+ (itemExtent == null && itemExtentBuilder == null) ||
+ (prototypeItem == null && itemExtentBuilder == null),
+ 'You can only pass one of itemExtent, prototypeItem and itemExtentBuilder.',
+ ),
+ childrenDelegate = SliverChildBuilderDelegate(
+ itemBuilder,
+ findChildIndexCallback: findChildIndexCallback,
+ childCount: itemCount,
+ addAutomaticKeepAlives: addAutomaticKeepAlives,
+ addRepaintBoundaries: addRepaintBoundaries,
+ addSemanticIndexes: addSemanticIndexes,
+ ),
+ super(semanticChildCount: semanticChildCount ?? itemCount);
+ Flutter
+ widgets
+ ListView
+ ListView.builder constructor
+ ListView class

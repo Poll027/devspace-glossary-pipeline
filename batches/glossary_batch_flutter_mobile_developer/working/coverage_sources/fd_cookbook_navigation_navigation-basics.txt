@@ -1,0 +1,319 @@
+
+ -->
+ list
+ On this pagechevron_right
+ Navigate to a new screen and back
+ vertical_align_top
+ Navigate to a new screen and back
+ 1. Create two routes
+ 2. Navigate to the second route using Navigator.push()
+ 3. Return to the first route using Navigator.pop()
+ Interactive example
+ Additional navigation methods
+ Help improve Flutter! Take the Flutter Q4 Developer survey.
+ list
+ On this page
+ 1. Create two routes
+ 2. Navigate to the second route using Navigator.push()
+ 3. Return to the first route using Navigator.pop()
+ Interactive example
+ Additional navigation methods
+ Cookbookchevron_right
+ Navigationchevron_right
+ Navigate to a new screen and back
+ Navigate to a new screen and back
+ How to navigate between routes.
+ -->
+ more_vert
+ linkCopy link
+ content_copyCopy as Markdown
+ markdownView as Markdown
+ docsOpen on GitHub
+ bug_reportReport an issue
+ Most apps contain several screens for displaying different
+ types of information. For example, an app might have a
+ screen that displays products. When the user taps the image
+ of a product, a new screen displays details about the
+ product.
+ infoTerminology
+ In Flutter, screens and pages are called routes.
+ The remainder of this recipe refers to routes.
+ In Android, a route is equivalent to an Activity.
+ In iOS, a route is equivalent to a ViewController.
+ In Flutter, a route is just a widget.
+ This recipe uses the Navigator
+ to navigate to a new route.
+ The next few sections show how to navigate between two routes,
+ using these steps:
+ Create two routes.
+ Navigate to the second route using Navigator.push().
+ Return to the first route using Navigator.pop().
+ 1. Create two routes
+ #
+ First, create two routes to work with. Since this is a basic example,
+ each route contains only a single button. Tapping the button on the
+ first route navigates to the second route. Tapping the button on the
+ second route returns to the first route.
+ First, set up the visual structure:
+ -->
+ Android
+ iOS
+ dart
+ class FirstRoute extends StatelessWidget {
+ const FirstRoute({super.key});
+​
+ @override
+ Widget build(BuildContext context) {
+ return Scaffold(
+ appBar: AppBar(title: const Text('First Route')),
+ body: Center(
+ child: ElevatedButton(
+ child: const Text('Open route'),
+ onPressed: () {
+ // Navigate to second route when tapped.
+ },
+ ),
+ ),
+ );
+ }
+}
+​
+class SecondRoute extends StatelessWidget {
+ const SecondRoute({super.key});
+​
+ @override
+ Widget build(BuildContext context) {
+ return Scaffold(
+ appBar: AppBar(title: const Text('Second Route')),
+ body: Center(
+ child: ElevatedButton(
+ onPressed: () {
+ // Navigate back to first route when tapped.
+ },
+ child: const Text('Go back!'),
+ ),
+ ),
+ );
+ }
+}
+ content_copy
+ dart
+ class FirstRoute extends StatelessWidget {
+ const FirstRoute({super.key});
+​
+ @override
+ Widget build(BuildContext context) {
+ return CupertinoPageScaffold(
+ navigationBar: const CupertinoNavigationBar(middle: Text('First Route')),
+ child: Center(
+ child: CupertinoButton(
+ child: const Text('Open route'),
+ onPressed: () {
+ // Navigate to second route when tapped.
+ },
+ ),
+ ),
+ );
+ }
+}
+​
+class SecondRoute extends StatelessWidget {
+ const SecondRoute({super.key});
+​
+ @override
+ Widget build(BuildContext context) {
+ return CupertinoPageScaffold(
+ navigationBar: const CupertinoNavigationBar(middle: Text('Second Route')),
+ child: Center(
+ child: CupertinoButton(
+ onPressed: () {
+ // Navigate back to first route when tapped.
+ },
+ child: const Text('Go back!'),
+ ),
+ ),
+ );
+ }
+}
+ content_copy
+ 2. Navigate to the second route using Navigator.push()
+ #
+ To switch to a new route, use the Navigator.push()
+ method. The push() method adds a Route to the stack of routes managed by
+ the Navigator. Where does the Route come from?
+ You can create your own, or use a platform-specific route
+ such as MaterialPageRoute
+ or CupertinoPageRoute.
+ A platform-specific route is useful because it transitions
+ to the new route using a platform-specific animation.
+ In the build() method of the FirstRoute widget,
+ update the onPressed() callback:
+ -->
+ Android
+ iOS
+ dart
+ // Within the `FirstRoute` widget:
+onPressed: () {
+ Navigator.push(
+ context,
+ MaterialPageRoute<void>(
+ builder: (context) => const SecondRoute(),
+ ),
+ );
+}
+ content_copy
+ dart
+ // Within the `FirstRoute` widget:
+onPressed: () {
+ Navigator.push(
+ context,
+ CupertinoPageRoute<void>(
+ builder: (context) => const SecondRoute(),
+ ),
+ );
+}
+ content_copy
+ 3. Return to the first route using Navigator.pop()
+ #
+ How do you close the second route and return to the first?
+ By using the Navigator.pop()
+ method.
+ The pop() method removes the current Route from the stack of
+ routes managed by the Navigator.
+ To implement a return to the original route, update the onPressed()
+ callback in the SecondRoute widget:
+ dart
+ // Within the SecondRoute widget
+onPressed: () {
+ Navigator.pop(context);
+}
+ content_copy
+ Interactive example
+ #
+ -->
+ Android
+ iOS
+ -->
+ // DartPad doesn't support `material_ui` yet,
+// so this example imports Material from the Flutter SDK.
+// To run locally, depend on `material_ui` and use this import instead:
+// import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
+void main() {
+ runApp(const MaterialApp(title: 'Navigation Basics', home: FirstRoute()));
+}
+class FirstRoute extends StatelessWidget {
+ const FirstRoute({super.key});
+ @override
+ Widget build(BuildContext context) {
+ return Scaffold(
+ appBar: AppBar(title: const Text('First Route')),
+ body: Center(
+ child: ElevatedButton(
+ child: const Text('Open route'),
+ onPressed: () {
+ Navigator.push(
+ context,
+ MaterialPageRoute<void>(
+ builder: (context) => const SecondRoute(),
+ ),
+ );
+ },
+ ),
+ ),
+ );
+ }
+}
+class SecondRoute extends StatelessWidget {
+ const SecondRoute({super.key});
+ @override
+ Widget build(BuildContext context) {
+ return Scaffold(
+ appBar: AppBar(title: const Text('Second Route')),
+ body: Center(
+ child: ElevatedButton(
+ onPressed: () {
+ Navigator.pop(context);
+ },
+ child: const Text('Go back!'),
+ ),
+ ),
+ );
+ }
+}
+ -->
+ // DartPad doesn't support `cupertino_ui` yet,
+// so this example imports Cupertino from the Flutter SDK.
+// To run locally, depend on `cupertino_ui` and use this import instead:
+// import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:flutter/cupertino.dart';
+void main() {
+ runApp(const CupertinoApp(title: 'Navigation Basics', home: FirstRoute()));
+}
+class FirstRoute extends StatelessWidget {
+ const FirstRoute({super.key});
+ @override
+ Widget build(BuildContext context) {
+ return CupertinoPageScaffold(
+ navigationBar: const CupertinoNavigationBar(middle: Text('First Route')),
+ child: Center(
+ child: CupertinoButton(
+ child: const Text('Open route'),
+ onPressed: () {
+ Navigator.push(
+ context,
+ CupertinoPageRoute<void>(
+ builder: (context) => const SecondRoute(),
+ ),
+ );
+ },
+ ),
+ ),
+ );
+ }
+}
+class SecondRoute extends StatelessWidget {
+ const SecondRoute({super.key});
+ @override
+ Widget build(BuildContext context) {
+ return CupertinoPageScaffold(
+ navigationBar: const CupertinoNavigationBar(middle: Text('Second Route')),
+ child: Center(
+ child: CupertinoButton(
+ onPressed: () {
+ Navigator.pop(context);
+ },
+ child: const Text('Go back!'),
+ ),
+ ),
+ );
+ }
+}
+ Additional navigation methods
+ #
+ The recipe in this topic shows you one way to navigate to a new screen and
+ back to the previous scene, using the push
+ and pop methods in the
+ Navigator
+ class, but there are several other Navigator static methods that
+ you can use. Here are a few of them:
+ pushAndRemoveUntil: Adds a navigation route to the stack and then removes
+ the most recent routes from the stack until a condition is met.
+ pushReplacement: Replaces the current route on the top of the
+ stack with a new one.
+ replace: Replace a route on the stack with another route.
+ replaceRouteBelow: Replace the route below a specific route on the stack.
+ popUntil: Removes the most recent routes that were added to the stack of
+ navigation routes until a condition is met.
+ removeRoute: Remove a specific route from the stack.
+ removeRouteBelow: Remove the route below a specific route on the
+ stack.
+ restorablePush: Restore a route that was removed from the stack.
+ -->
+ Was this page's content helpful?
+ thumb_up
+ thumb_down
+ Unless stated otherwise, the documentation on this site reflects Flutter 3.50. Page last updated on 2026-11-10. 
+ View source
+ or report an issue.
+ 

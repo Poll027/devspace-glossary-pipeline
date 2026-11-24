@@ -1,0 +1,547 @@
+@0 flutter_docs#tools/hot-reload:How-to-perform-a-hot-reload
+Run a supplied project with `flutter run` on a physical or virtual target in debug mode to use hot reload.
+After modifying a Dart source file, enter `r` in the running terminal or use the editor's hot-reload control and check the running app for the change.
+Hot reload preserves application state, whereas hot restart restarts the Flutter app and loses that state.
+A source change becomes visible only if the changed code executes again; use restart when the change requires application initialization to run again.
+@1 dart_language#variables
+`var name = value;` infers the variable's type from its initializer; an explicit declaration uses `Type name = value;`.
+An ordinary variable can be reassigned with `name = value;`, subject to its declared or inferred type.
+`final` permits a variable to be assigned once; `const` declares a compile-time constant and is implicitly final.
+Use `final` for a value that will not be reassigned and `var` for a local value that must be reassigned.
+@2 dart_language#tools/diagnostics
+Analyzer diagnostics identify source problems with a diagnostic name, message, and source location.
+Use the diagnostic's description and documented correction to edit the indicated source, then run `flutter analyze` again to check the correction. || flutter_docs#reference/flutter-cli
+@3 dart_language#operators
+Arithmetic operators `+`, `-`, `*`, `/`, `~/`, and `%` mean addition, subtraction, multiplication, division, integer division, and remainder respectively.
+Comparisons `==`, `!=`, `<`, `>`, `<=`, and `>=` produce boolean results for equality, inequality, and ordering tests.
+Combine boolean conditions using `&&` for conjunction, `||` for disjunction, and `!` for negation.
+Operator precedence determines expression grouping; parentheses explicitly choose the grouping.
+`&&` evaluates its right operand only when the left is true, and `||` evaluates its right operand only when the left is false.
+@4 dart_language#built-in-types:Strings
+Use single or double quotes to write a string literal.
+Write `$identifier` to interpolate a variable or `${expression}` to interpolate a more complex expression in a string.
+Interpolation obtains an object's string representation by calling its `toString()` method.
+Use a backslash to escape a matching quote within a quoted string.
+@5 dart_language#functions:Parameters
+Define a function with typed parameters and a return type, using `return expression;` in its body to produce a result.
+Required positional arguments bind in parameter order and must be supplied by the caller.
+Parameters inside `{...}` are named and are passed with `parameterName: value`; mark a named parameter `required` when callers must provide it.
+Parameters inside `[...]` are optional positional parameters; use `= constantValue` to supply a default when the caller omits an optional parameter.
+An arrow body `=> expression;` is shorthand for returning that expression.
+@6 dart_language#classes:Instance-variables
+Declare an instance's typed fields inside a class and access an instance member with `instance.member`.
+A generative constructor has the class's name and initializes a newly created instance. || dart_language#constructors:Generative-constructors
+Use initializing formal parameters such as `ClassName(this.field);` or `ClassName({required this.field});` to assign arguments to instance fields. || dart_language#constructors:Use-initializing-formal-parameters
+Initialize required non-nullable fields at declaration, with initializing formals, or in an initializer list before the constructor body runs. || dart_language#constructors:Initializer-list
+A `final` instance field is assigned once and cannot subsequently be reassigned.
+@7 flutter_api#widgets/Widget-class.html
+Widgets are immutable descriptions of part of a user interface, with their configuration held in final fields.
+Compose a widget tree by passing another widget to a `child` argument or a list of widgets to `children`, according to the receiving widget's API. || flutter_docs#ui:Basic-widgets
+To change a widget's configuration, create a new widget configuration rather than mutate the existing widget.
+@8 flutter_api#widgets/StatelessWidget-class.html
+A StatelessWidget describes UI using its configuration and the BuildContext passed to its build method.
+Implement `Widget build(BuildContext context)` to return the widget subtree derived from those inputs.
+The framework may call build after insertion, a configuration change, or a change to an inherited dependency; do not rely on build running only once.
+The build method should have no side effects beyond building a widget.
+@9 flutter_docs#ui/layout/constraints:Understanding-constraints
+A parent passes constraints down, children pass chosen sizes up, and parents position their children.
+Constraints specify minimum and maximum width and height, and a child chooses a size within those limits.
+For an overflow, inspect the parent's constraints and the child's requested size to identify which dimension cannot fit.
+Use an appropriate size-constraining widget to bound a child's dimensions rather than assume the child can choose an arbitrary size.
+@10 flutter_api#widgets/Row-class.html
+Row arranges its children horizontally; Column arranges its children vertically. || flutter_api#widgets/Column-class.html
+Set `mainAxisAlignment` to position children along the primary axis and `crossAxisAlignment` along the perpendicular axis.
+`start`, `end`, and `center` select alignment within an axis, while main-axis `spaceBetween`, `spaceAround`, and `spaceEvenly` distribute free space.
+For a Row, horizontal start depends on text direction; for a Column, vertical start depends on vertical direction.
+@11 flutter_docs#cookbook/design/themes:Create-an-app-theme
+Set `MaterialApp(theme: ThemeData(...))` to provide an application-wide Material theme.
+ThemeData supplies shared values such as a color scheme and text theme used by Material components.
+Read the nearest theme with `Theme.of(context)` when styling a widget with shared theme values.
+A local Theme can override the theme for its descendant subtree.
+@12 flutter_docs#ui/assets/assets-and-images:Specifying-assets
+Declare bundled asset paths under `flutter: assets:` in pubspec.yaml, preserving the required YAML indentation.
+An asset's path relative to pubspec.yaml provides its logical key in the asset bundle.
+Load a declared bundled image with `Image.asset('assetKey')`; the key must match the declared resource.
+@13 flutter_devtools#inspector:Select-widget-mode
+Open DevTools' Flutter Inspector while the application runs to inspect its live widget tree.
+Enable Select Widget Mode and select the affected area in the running app to locate its widget in the tree.
+Inspect the selected widget's properties and layout information, and use its source link to connect the visual symptom to application code.
+@14 dart_language#branches:If
+Use `if (booleanCondition) { ... }` to execute a block when its condition is true.
+Use `else` for the alternative branch and `else if` to test another condition when previous conditions were false.
+A condition must have type bool; values of other types are not implicitly treated as true or false. || dart_language#built-in-types:Booleans
+@15 dart_language#null-safety/understanding-null-safety:Using-nullable-types
+Append `?` to a type to allow null; an ordinary non-nullable type excludes null.
+Guard a local nullable variable with a null check before using it as non-null, allowing flow analysis to promote it where applicable.
+Use `value ?? fallback` to substitute a fallback when the value is null. || dart_language#operators:Conditional-expressions
+Use `?.` to access a member only when the receiver is not null.
+The postfix `!` asserts non-nullness at runtime and can throw if the value is null; it is not a substitute for handling an uncertain nullable value.
+@16 dart_language#collections
+A `List<T>` is an ordered collection with elements constrained to T; create a typed literal with `<T>[...]` and access elements using zero-based indexing.
+A `Set<T>` stores unique elements; create one with `<T>{...}` and add elements using `add`.
+A `Map<K, V>` associates unique keys with values; create `<K, V>{key: value}`, write with `map[key] = value`, and read with `map[key]`.
+A map lookup can return null when its key is absent, even when its value type is non-nullable.
+Adding an incompatible type to a typed collection is an error rather than an automatic conversion to the element type.
+@17 dart_language#loops:For-loops
+Use `for (var element in collection) { ... }` to process collection elements.
+Declare an accumulator before the loop and update it in the loop body to build a result from the elements.
+A conventional loop `for (initialization; condition; update) { ... }` repeats while its condition is true, performing the update after each iteration.
+`break` stops a loop and `continue` skips the remainder of the current iteration.
+@18 dart_language#functions:Lexical-closures
+A closure retains access to variables in the lexical scope where it was created.
+Pass a function value as a callback rather than calling it immediately with parentheses.
+Write an anonymous function with `(parameters) { ... }` or `(parameters) => expression` to use captured values when the callback is invoked.
+@19 flutter_api#widgets/Widget/canUpdate.html
+The framework can update an existing element with a new widget when their runtimeType and key are equal.
+Changing the widget type or key prevents that element from being updated with the new widget.
+Different configuration values alone do not prevent reuse when type and key still match.
+@20 flutter_api#widgets/State-class.html:Lifecycle
+A State instance can persist across multiple build calls and owns its state for that lifetime.
+Override initState, call `super.initState()`, and initialize owner-lifetime resources there rather than repeatedly in build.
+When an update changes a configuration-dependent resource, use didUpdateWidget to detach from the old resource and bind to the new one.
+Override dispose to release owned resources and call `super.dispose()` when the framework permanently removes the State.
+@21 flutter_api#widgets/State/setState.html
+Change local State fields within `setState(() { ... });` so the framework schedules a build reflecting the changed state.
+The setState callback runs synchronously and must not be async.
+Changing a field without setState might not schedule a build and might leave the displayed UI unchanged.
+@22 flutter_api#widgets/StatelessWidget-class.html:Performance-considerations
+Extract a repeated UI responsibility into a dedicated widget rather than a helper method that returns widgets.
+Expose differing inputs as final constructor parameters and use those parameters in build to preserve the extracted section's behavior.
+Pass a callback parameter for an action the extracted section delegates to its caller. || flutter_docs#ui/interactivity:Managing-state
+@23 flutter_docs#cookbook/forms/validation
+Create a Form with a stable `GlobalKey<FormState>` and place TextFormFields inside it.
+A TextFormField validator returns an error string for invalid input and null for valid input.
+Call the form state's `validate()` from the submit handler; it runs field validators and returns true only if no field reports an error.
+Place the submission action inside the successful-validation branch so an invalid form does not submit and one handler invocation performs one submission.
+@24 flutter_api#widgets/Flexible-class.html
+Row and Column can allocate remaining main-axis space to flexible children using flex factors.
+Wrap a child in Expanded to require it to fill its allocated space; wrap it in Flexible with the default loose fit to allow it to be smaller. || flutter_api#widgets/Expanded-class.html
+Set each child's `flex` to specify its proportion of remaining space relative to the other flexible children.
+Flex allocation requires bounded space along the main axis; an unbounded main-axis constraint cannot supply a finite remaining space. || flutter_api#widgets/Column-class.html:Troubleshooting
+@25 flutter_api#widgets/Stack-class.html
+Stack places children in shared space and paints them in list order, with later children above earlier children.
+Use Positioned inside Stack with `top`, `bottom`, `left`, or `right` to control a child's placement. || flutter_api#widgets/Positioned-class.html
+Specifying both opposite edges fixes a child's size on that axis; alternatively specify one edge and the corresponding width or height. || flutter_api#widgets/Positioned-class.html
+Stack uses non-positioned children to determine its size.
+@26 flutter_api#widgets/ListView-class.html
+A ListView scrolls a linear collection within a viewport so content beyond its visible area can be reached.
+For a dynamic collection, use `ListView.builder(itemCount: ..., itemBuilder: ...)` to build children on demand by index.
+Give a scrolling list a bounded viewport, using a constrained parent or Expanded within a bounded Column where appropriate. || flutter_api#widgets/Column-class.html:Troubleshooting
+@27 flutter_docs#ui/adaptive-responsive/general:Step-2-Measure
+Use `LayoutBuilder(builder: (context, constraints) { ... })` when a layout decision depends on the space available to that subtree.
+Use `MediaQuery.sizeOf(context)` for the app window's size rather than a local widget's available size.
+Compare the measured width with the required breakpoint and return the corresponding layout from the branch. || flutter_docs#ui/adaptive-responsive/general:Step-3-Branch
+@28 flutter_docs#ui/accessibility/ui-design-and-styling:Large-fonts
+Flutter text widgets respect the operating system's font-size setting, which changes the space required by text.
+Provide enough layout room for enlarged text rather than assume that the default text size will fit.
+Test the screen on a small target with the largest font setting and adjust its layout so required content remains accessible.
+@29 flutter_api#widgets/Semantics-class.html
+Semantics annotates the widget tree with meaning used by accessibility tools.
+Wrap a control with `Semantics(label: ..., child: ...)` to supply an accessible name when its visual representation is insufficient.
+Inspect the resulting semantics and test with a screen reader to verify the control is identified as intended. || flutter_docs#ui/accessibility/assistive-technologies:Testing-accessibility-on-mobile
+@30 flutter_docs#ui/accessibility/ui-design-and-styling:Tap-target-size
+The interactive tap area needs enough space independently of the visual decoration's size.
+Android recommends a minimum target of 48 by 48 dp and iOS 44 by 44 points.
+Increase the interactive control's area to meet the target requirement and verify it with Flutter's Accessibility Guideline API. || flutter_docs#ui/accessibility/accessibility-testing:Accessibility-Guideline-API
+@31 flutter_api#widgets/Widget/canUpdate.html
+A stable key combined with the same widget type lets the framework match an item's updated configuration to its element.
+Use a key based on an item's stable identity, rather than its current list position, for stateful children that can reorder. || flutter_docs#ui:Keys
+In `ListView.builder`, supply `findChildIndexCallback` to map a child's key to its current index when ordering can change; without it the child may not map to its existing render object and state can be lost. || flutter_api#widgets/ListView/ListView.builder.html
+@32 flutter_docs#data-and-backend/state-mgmt/simple:Lifting-state-up
+Keep state above the widgets that need to use it in the widget tree.
+For consumers in separate branches, choose a shared ancestor as the owner rather than duplicate the same state in each branch.
+Pass state down as configuration and pass callbacks down for children to request changes from the owner. || flutter_docs#ui/interactivity:Managing-state
+@33 flutter_docs#data-and-backend/state-mgmt/simple:ChangeNotifier
+A model can extend ChangeNotifier to expose state and notify listeners of changes.
+Implement a mutation method that updates the model's fields before calling `notifyListeners()`.
+Expose current model values through fields or getters so notified consumers can read the updated state.
+Call notifyListeners when a model change might change its consumers' UI, not merely because a value was read.
+@34 provider_docs#Reading-a-value
+Place a provider as an ancestor of all widgets that need the provided value.
+A lookup using BuildContext returns the nearest matching provider of the requested type.
+Use a context below the provider for lookup; a context above it cannot resolve the value that provider exposes.
+A non-nullable lookup throws when there is no matching provider.
+@35 provider_docs#Reading-a-value
+`context.read<T>()` retrieves the model without subscribing the calling widget to its changes.
+Inside an event callback, call `context.read<Model>().action()` to invoke a model action without registering a rebuild dependency.
+`Provider.of<T>(context, listen: false)` provides a non-listening lookup equivalent to read.
+Do not use a non-listening read as the mechanism for a build output that must update when the model changes.
+@36 provider_docs#Reading-a-value
+Use `context.watch<T>()` in build when the widget's output depends on changes to that model.
+Use `context.select<T, R>((model) => selectedValue)` to subscribe to a selected part rather than the entire model.
+Consumer provides a builder receiving the model and rebuilds that consumer when the provided model notifies.
+Keep a subscription near the UI that uses its data rather than subscribing a larger unrelated subtree.
+@37 provider_docs#Exposing-a-value
+Use `ChangeNotifierProvider(create: (_) => Model(), child: ...)` for a newly created model that the provider owns.
+ChangeNotifierProvider automatically disposes a model it creates when that provider leaves the tree. || flutter_docs#data-and-backend/state-mgmt/simple:ChangeNotifierProvider
+Use `ChangeNotifierProvider.value(value: existingModel, child: ...)` to expose an already-owned model rather than transfer its ownership through create.
+Create callbacks are lazy by default and run when the value is first requested; `lazy: false` opts out of that behavior.
+@38 flutter_architecture#guide:UI-layer
+In the recommended architecture, a view renders data and forwards interaction events rather than implement business or data-source logic.
+Move presentation state and interaction commands into an application-facing view model that exposes the values and callbacks the view needs.
+Place external data access in services and have repositories transform service data into application-facing values. || flutter_architecture#guide:Data-layer
+Refactor an event handler to call a command while keeping its input and observable outcome unchanged, rather than make the view perform the data operation itself.
+@39 flutter_docs#cookbook/testing/widget/introduction:Create-a-testWidgets-test
+Define a widget test using `testWidgets('description', (tester) async { ... });`, which supplies a WidgetTester.
+Use `await tester.pumpWidget(widget)` to build and render the widget under test.
+Include the required application ancestors, such as MaterialApp for a Material screen, in the tree passed to pumpWidget.
+Provide the widget's model dependencies above it in the harness so its lookups can resolve them. || provider_docs#Reading-a-value
+@40 flutter_docs#cookbook/testing/widget/finders
+Use `find.text('text')` to locate Text widgets displaying a given string.
+Use `find.byKey(key)` for a keyed widget or `find.byType(Type)` to locate widgets of a type.
+Assert a finder result with `expect(finder, findsOneWidget)` for one match or `findsNothing` for no match.
+Create the widget tree before evaluating a finder-based assertion. || flutter_docs#cookbook/testing/widget/introduction
+@41 flutter_docs#cookbook/testing/widget/tap-drag
+Simulate a tap using `await tester.tap(finder)` and text entry using `await tester.enterText(finder, text)`.
+Use `await tester.pump()` after an interaction to process a frame before checking the changed UI.
+Use `pumpAndSettle()` when a finite sequence of scheduled frames must finish, rather than assume a tap immediately rebuilds the test tree.
+Assert the observable UI after pumping to verify the interaction's effect.
+@42 dart_language#error-handling:Catch
+`throw` raises an exception and execution unwinds until a matching handler is found.
+Handle a known exception type with `try { ... } on ExpectedType catch (e) { ... }` rather than catch all failures indiscriminately.
+Use `catch (e, stackTrace)` when the handler needs both the exception and its trace.
+Use `rethrow` when a caught failure must propagate to another handler instead of be swallowed.
+A finally block executes for cleanup whether or not an exception was thrown.
+@43 flutter_docs#testing/errors:Errors-caught-by-Flutter
+Flutter catches errors from framework callbacks and reports them through FlutterError.onError; the default handler presents them in device logs.
+Read the reported exception and framework context, then inspect the call stack to locate the application call that caused the failure. || flutter_devtools#debugger:The-call-stack-and-variables
+Select the first relevant application frame and inspect that frame's source and variables rather than treat a framework reporting frame as the faulty application statement. || flutter_devtools#debugger:The-call-stack-and-variables
+@44 dart_async#What-is-a-future
+A Future represents an operation that is uncompleted or completed with either a value or an error.
+A `Future<T>` produces a value of type T on successful completion; the Future itself is not that eventual value.
+Register a success callback with `future.then(onValue, onError: onError)` to distinguish successful and failed completion. || dart_language#api.dart.dev/dart-async/Future/then.html
+Until a completion callback runs, the result remains pending rather than already successful or failed.
+@45 dart_async#Working-with-futures-async-and-await
+Declare an asynchronous function with `async` and a return type such as `Future<T>` or `Future<void>`.
+Inside an async function, use `await future` to obtain its completed value before executing dependent statements.
+Await suspends the asynchronous function while other asynchronous work can run; it does not synchronously block the application waiting for the result.
+Wrap an awaited operation in a typed try/catch to route its expected failure to the failure outcome. || dart_async#Handling-errors
+@46 dart_language#libraries:Using-libraries
+Import a supplied package library with `import 'package:package_name/library.dart';` so its exported names are available in the file.
+Use an import prefix `as prefix` and refer to `prefix.Symbol` to disambiguate conflicting names.
+Use `show` to expose selected imported names or `hide` to exclude selected names.
+An SDK library uses a `dart:` URI, while a package library uses a `package:` URI.
+@47 flutter_networking#fetch-data:Make-a-network-request
+Call `http.get(Uri.parse(endpoint), headers: headers)` for a GET request and await its Response.
+Call `http.post(uri, headers: headers, body: encodedBody)` for a POST request requiring a payload; JSON payloads can be encoded with `jsonEncode` and a matching content-type header. || flutter_networking#send-data:Sending-data-to-server
+Inspect the response's `statusCode` and `body` and branch according to the endpoint contract rather than assume every completed HTTP request succeeded.
+The fetch-data recipe accepts status 200, while the create-album recipe accepts 201; these are the recipes' endpoint contracts, not a universal single success code. || flutter_networking#send-data:Convert-the-http.Response-to-an-Album
+@48 flutter_docs#data-and-backend/serialization/json:Serializing-JSON-inside-model-classes
+Decode a JSON response with `jsonDecode` and map the resulting fields into a typed model rather than pass an untyped map through the application.
+Implement `Model.fromJson(Map<String, dynamic> json)` to read named keys and check or cast the values to the model's declared field types.
+Implement `Map<String, dynamic> toJson()` to return the corresponding wire keys and field values.
+Use `jsonEncode` on the model's JSON-compatible mapping, or on a model with toJson, to produce encoded JSON.
+Keep decode and encode key names and field types consistent with the data contract.
+@49 flutter_networking#fetch-data:Display-the-data
+Represent pending work as loading, a successful result as data, and failed completion as error rather than report success while waiting.
+Branch on completion state and error presence before reading the result; a FutureBuilder builder can distinguish waiting, an error, and completed data. || flutter_api#widgets/FutureBuilder-class.html:Builder-contract
+After successful completion, check a returned collection's `isEmpty` to distinguish empty results from results containing data. || dart_language#api.dart.dev/dart-core/List/isEmpty.html
+Publish the corresponding single presentation state at each transition: loading when a request begins and error, empty, or non-empty success when it completes.
+@50 flutter_api#widgets/State/setState.html
+Calling setState after State disposal is an error.
+Check `if (!mounted) return;` after awaited work and before a State update so a completion cannot update an unmounted owner. || flutter_api#widgets/State/mounted.html
+Where possible, cancel work or detach the completion source when the owner is disposed rather than rely only on checking mounted.
+@51 dart_language#api.dart.dev/dart-async/Future/timeout.html
+Use `future.timeout(Duration(...))` to bound how long the returned future waits for the source future.
+Without an onTimeout handler, exceeding the time limit completes the timeout future with TimeoutException.
+Timeout does not cancel the original operation; it may still finish after the timeout result has been delivered.
+Wire a retry action to invoke the request function again and update the displayed request state from that new attempt. || flutter_networking#send-data:Get-a-title-from-user-input
+@52 flutter_api#widgets/async.dart:_FutureBuilderState
+Asynchronous requests can finish in a different order from the order in which they were started.
+Assign a distinct identity to a new request, store it as the current identity, and capture it in that request's completion callbacks.
+Before publishing either a result or an error, compare the captured identity with the current identity and ignore a completion whose identity no longer matches.
+FutureBuilder uses callback identities to ignore callbacks after replacement of its future or disposal of its State.
+@53 dart_language#classes:Implicit-interfaces
+Every class implicitly defines an interface consisting of its instance members and the interfaces it implements.
+Declare `class Implementation implements Contract` and provide the APIs required by Contract rather than inherit its implementation.
+A caller typed as Contract can use an implementing instance through the members exposed by that contract.
+Use compatible member parameter and return types so the implementation satisfies the interface. || dart_language#type-system:Sound-return-types-and-parameter-types
+@54 flutter_architecture#guide:Repositories
+A repository provides application-facing data while hiding the service or storage details used to obtain it.
+Put source access and raw-data conversion in the data layer, and expose a repository method returning the application's data contract.
+Have the view model call the repository contract rather than make the UI depend on a concrete transport or storage API.
+Provide an alternative repository implementation through the same interface without changing the caller's contract. || dart_language#classes:Implicit-interfaces
+@55 flutter_docs#cookbook/testing/widget/introduction:Notes-about-the-pump-methods
+Await controlled asynchronous work before asserting a result that depends on its completion.
+In a widget test, pump after the work completes to render the state change before checking the UI.
+`pump(duration)` advances the test clock by the requested duration and schedules a frame; `pumpAndSettle()` pumps until no frames are scheduled.
+Use a finite known completion point rather than pumpAndSettle when ongoing activity continually schedules frames. || flutter_api#flutter_test/WidgetTester/pumpAndSettle.html
+@56 flutter_docs#cookbook/navigation/navigation-basics
+Navigator manages a stack of routes, with the current route at the top.
+Push a new screen with `Navigator.push(context, MaterialPageRoute(builder: (context) => Destination()))`.
+Return from the current route using `Navigator.pop(context)`, which removes the top route and reveals the route beneath it.
+@57 flutter_docs#cookbook/navigation/passing-data:Create-a-detail-screen
+Declare a destination's model input as a typed final field and require it through the screen's constructor.
+Construct the destination inside the route builder with `Destination(model: selectedModel)` to pass the intended model value.
+Read that model field in the destination's build method to render the selected data rather than rely on unrelated global state.
+@58 flutter_docs#cookbook/navigation/returning-data
+Await `Navigator.push<T>(...)` in the caller to obtain the route's completion result.
+Return a selection using `Navigator.pop(context, selectedValue)` in the destination.
+The returned value is nullable because route dismissal can occur without a selection; branch on null before using it as a selected value. || flutter_api#widgets/Navigator/push.html
+After awaiting route completion, check owner liveness before updating its UI. || flutter_api#widgets/State/mounted.html
+@59 go_router_docs#Configuration
+Create a GoRouter with a list of `GoRoute(path: ..., builder: ...)` definitions mapping locations to screen configurations.
+Use `MaterialApp.router(routerConfig: router)` to connect the router configuration to the application. || go_router_docs#Get-started
+Navigate to a configured location with `context.go(location)`; it replaces the stack with the screens configured for that location. || go_router_docs#Navigation:Go-directly-to-a-destination
+@60 go_router_docs#Configuration:Parameters
+Declare a path parameter with a colon-prefixed segment such as `:parameterName`, then read it from `state.pathParameters['parameterName']`.
+Read query-string values from `state.uri.queryParameters['parameterName']`.
+Treat route parameters as strings crossing into application data; use a checked conversion such as `int.tryParse(value)` for an integer parameter and handle null or invalid results before constructing the destination. || dart_language#api.dart.dev/dart-core/int/tryParse.html
+@61 go_router_docs#Error-handling
+An unmatched or unusable location can produce a GoException rather than a valid destination.
+Provide `errorBuilder: (context, state) => ErrorScreen(state.error)` to render a deliberate fallback for a routing exception.
+`onException` can choose a recovery navigation and takes precedence over errorBuilder and errorPageBuilder when provided.
+@62 flutter_docs#ui/navigation/deep-linking:Behavior
+A deep link conveys an external URL that must be mapped to an in-app route.
+GoRouter displays the configured screen matching the URL path received from the platform. || go_router_docs#Deep-linking
+Enable the documented Android app-link or iOS universal-link configuration and match the incoming path in the router. || flutter_docs#ui/navigation/deep-linking
+Verify cold-start entry as well as running-app entry because the platform delivers initial navigation differently on Android and iOS.
+@63 flutter_api#widgets/PopScope-class.html
+Use PopScope around a route and set `canPop` from the current back-navigation policy to allow or block route dismissal.
+`onPopInvokedWithResult` reports an attempted pop, and its `didPop` value indicates whether the route actually popped.
+For unsaved changes, prevent automatic dismissal and obtain confirmation before performing the permitted pop, rather than pop again when didPop is already true.
+On iOS with CupertinoRouteTransitionMixin, `canPop: false` prevents gesture detection and its callback is not invoked for that gesture; Android reports a blocked system-back attempt with didPop false.
+@64 flutter_docs#cookbook/testing/integration/introduction
+Use the integration_test package to exercise collaborating application components in a target runtime.
+Initialize the test binding with `IntegrationTestWidgetsFlutterBinding.ensureInitialized()` and start the app from a test under integration_test.
+Run the integration test on the selected device with `flutter test integration_test`.
+Use tester interactions, pump as required, and assert the journey's observable acceptance result rather than only that the app launched.
+@65 flutter_docs#packages-and-plugins/using-packages:Searching-for-packages
+Check a candidate package's documented capability and supported platforms against the needed feature and targets.
+Review its maintenance, documentation, popularity, and pub.dev quality information rather than select only by its name.
+Check that the package's SDK and platform requirements are compatible with the application before adopting it.
+@66 dart_language#tools/pub/dependencies:Version-constraints
+Dependency constraints specify the allowed versions from which pub must resolve a mutually compatible dependency graph.
+Caret syntax permits compatible versions up to the next breaking-version boundary, rather than pinning one exact version.
+Adjust incompatible constraints to a mutually supported range, then run `flutter pub get` to resolve dependencies. || flutter_docs#packages-and-plugins/using-packages
+The application's pubspec.lock records the resolved versions; retain it to make application dependency resolution reproducible. || dart_language#tools/pub/cmd/pub-get:Lockfile
+Forcing an unsupported version through dependency_overrides can break the application and is not proof of compatibility.
+@67 permission_handler_docs#Setup
+A plugin's Dart dependency alone may not complete its platform setup; follow its documented Android and iOS installation requirements.
+Check the plugin's required Flutter, Android, and Xcode versions and integration mode against the project configuration.
+For permission_handler, AndroidX support and the documented compile SDK are platform setup requirements; on iOS, follow the instructions for the project's Swift Package Manager or CocoaPods integration.
+Build and run on each required platform after applying its setup to verify the integration.
+@68 permission_handler_docs#Setup
+Android capability permissions required by permission_handler are added to AndroidManifest.xml; the main manifest generally covers application builds.
+On iOS, add the capability's corresponding usage-description key and explanation in Info.plist.
+Use the plugin's permission-to-key table and platform-specific setup rather than add every possible capability declaration.
+These declarations describe capability use but do not replace the user's runtime authorization decision. || permission_handler_docs#How-to-use
+@69 permission_handler_docs#How-to-use
+Read a capability's current status with `await Permission.capability.status`.
+Call `await Permission.capability.request()` when the feature needs authorization and use the returned status to decide whether to proceed.
+A request returns the new permission status; if permission was already granted, requesting it again does not display another authorization dialog.
+Limit permission requests to access relevant to the requested feature and respect the user's decision. || apple_review_guidelines#5.1.1-Data-Collection-and-Storage
+@70 permission_handler_docs#How-to-use
+A denied status can mean permission was not requested or was denied before; restricted means the operating system limits access, such as through parental controls.
+A permanentlyDenied request result means the user must change permission in system settings rather than receive another prompt.
+Branch on the request result and provide an unavailable-feature fallback for denied or restricted access rather than continue as if access were granted.
+Offer `openAppSettings()` for an appropriate permanently denied case instead of repeatedly presenting a permission prompt.
+On Android, the status getter reports denied even for permanent denial, so use the request result when distinguishing permanent denial.
+@71 flutter_docs#ui/adaptive-responsive/capabilities
+Device and platform capabilities are conditional; the application should not assume the same features are available on all targets.
+Use a capability check or the adapter's availability result and select an alternative behavior when the capability is absent rather than invoke it unconditionally.
+For a permission-backed service, authorization and service availability are separate checks; permission_handler exposes `serviceStatus.isEnabled` for supported services. || permission_handler_docs#How-to-use
+@72 flutter_platform_channels#Architectural-overview
+A method channel connects Dart and platform participants using an agreed channel name and method names.
+Construct `MethodChannel(channelName)` with the handler's channel name and pass the agreed method name to invokeMethod.
+Use arguments supported by the channel's codec; the standard codec supports values including booleans, numbers, strings, typed data, lists, maps, and null.
+Channel payloads are serialized across the boundary rather than carry arbitrary Dart application objects directly.
+@73 flutter_api#services/MethodChannel/invokeMethod.html
+Invoke a provided platform method with `await channel.invokeMethod<T>(methodName, arguments)`.
+The returned Future completes with a result that can be null, so validate nullability and the expected result type before using it.
+The generic T must match the returned value's runtime type or a runtime TypeError can occur.
+Decode nested list or map results according to the method contract rather than assume a deeply typed generic container is inferred automatically.
+@74 flutter_api#services/MethodChannel/invokeMethod.html
+A platform plugin failure completes invokeMethod with PlatformException; an unimplemented method completes it with MissingPluginException.
+Wrap the awaited invocation in typed handlers for PlatformException and MissingPluginException to give those outcomes distinct recovery behavior.
+Do not treat a missing handler as a valid method result or assume every channel failure came from the Dart caller's logic.
+@75 shared_preferences_docs#Readme
+Key-value preferences fit small, simple non-critical settings and support int, double, bool, String, and List<String>.
+An application file fits data that the application reads and writes as file contents. || flutter_docs#cookbook/persistence/reading-writing-files
+SQLite fits structured records needing queries and targeted insert, read, update, and delete operations. || flutter_persistence#sqlite
+Choose the mechanism according to the data shape and retrieval operations; preferences are not suitable for critical data because durable persistence is not guaranteed when a write returns.
+@76 shared_preferences_docs#SharedPreferencesAsync
+Use a preference key consistently with its typed setter and getter, such as `setBool(key, value)` and `getBool(key)`.
+Await an asynchronous setter before continuing with code that depends on the operation's completion.
+A missing preference can produce null; use a null check or `?? defaultValue` to supply the intended default.
+Use `remove(key)` when the stored setting should return to its absent/default state.
+@77 flutter_docs#cookbook/persistence/reading-writing-files
+Obtain an application documents directory with `getApplicationDocumentsDirectory()` and construct a File using that directory's path and the intended filename.
+Use `await file.writeAsString(contents)` to save text and `await file.readAsString()` to load it.
+Serialize structured content into text before writing and decode the text after reading when the file's contract is JSON. || flutter_docs#data-and-backend/serialization/json
+Handle expected missing-file or invalid-content failures according to the application's default/recovery contract rather than assume a saved file always exists and decodes successfully.
+@78 flutter_secure_storage_docs#Usage
+FlutterSecureStorage stores sensitive key-value data using platform-specific secure storage rather than ordinary preferences.
+Create a FlutterSecureStorage instance and write a secret with `await storage.write(key: key, value: secret)`.
+Read with `await storage.read(key: key)` and handle the nullable result when no value is available.
+Remove an obsolete secret with `await storage.delete(key: key)`.
+Apply the target platform's documented setup and accessibility configuration so stored data has the required availability and protection.
+@79 sqflite_docs#SQL-helpers
+A SQLite schema defines named tables, their columns, column types, and record identity constraints.
+Create a table in an openDatabase onCreate callback using `db.execute('CREATE TABLE ...')` with the fields required by the model.
+Use an INTEGER PRIMARY KEY for an integer row identity and map the model's fields to matching column names.
+SQLite storage types supported by sqflite include numeric values, String, Uint8List, and null; encode a bool as 0/1 rather than store a Dart bool directly.
+@80 sqflite_docs#SQL-helpers
+Convert a model to a map whose keys match the table's columns and whose values use supported storage types.
+Insert it with `await db.insert(tableName, modelMap)`.
+The insert helper returns the inserted row's integer id on a successful ordinary insert; store or return that id when later operations need the record's identity.
+Await the insert's completion rather than report a durable record was created before the operation succeeds.
+@81 sqflite_docs#SQL-helpers
+Use `await db.query(tableName, columns: selectedColumns, where: 'id = ?', whereArgs: [id])` to read records matching an identity.
+A query returns a list of row maps; check whether the list is empty before accessing a first row.
+Convert a result map into the application model using its column names and declared field types.
+Pass values through whereArgs rather than interpolate them into SQL predicates.
+@82 sqflite_docs#SQL-helpers
+Update matching rows with `await db.update(tableName, valuesMap, where: 'id = ?', whereArgs: [id])`.
+Use a predicate identifying the intended record so the mutation does not affect unrelated rows.
+The update helper returns the affected-row count; use it to distinguish a successful match from a missing record.
+Re-read the record when verification requires proving that the persisted fields changed and unrelated fields stayed unchanged. || sqflite_docs#SQL-helpers:getTodo
+@83 sqflite_docs#SQL-helpers
+Delete a selected record using `await db.delete(tableName, where: 'id = ?', whereArgs: [id])`.
+Keep the identity predicate in the delete operation so only the intended record is removed.
+Use the returned affected-row count to determine whether a row matched the deletion.
+A subsequent query for the deleted identity should return no row while queries for other identities still return their records.
+@84 sqflite_docs#doc/migration_example.md:2nd-version
+Increment openDatabase's version when changing the database schema; onCreate only handles a database that does not yet exist.
+Use `onUpgrade(db, oldVersion, newVersion)` to migrate an existing database and guard each migration step with its old-version condition.
+An additive column change can use `ALTER TABLE tableName ADD columnName columnType` to retain the existing table and records.
+Update onCreate to create the latest schema for fresh installations as well as add the upgrade path for existing installations.
+Verify the upgraded database by reading records created under the old schema; recreating a database from scratch does not test preservation.
+@85 sqflite_docs#Transaction
+Await each persistence operation and report success only after it completes successfully.
+An exception thrown out of a transaction causes rollback; completing its callback without an exception commits the transaction.
+Do not suppress a persistence exception inside the transaction when rollback is required; propagate it to the boundary that translates failure for the caller.
+Use the transaction object for operations inside `db.transaction((txn) async { ... })`, rather than call the database object and deadlock.
+@86 dart_language#api.dart.dev/dart-async/Stream-class.html
+Use `stream.listen(onData, onError: onError, onDone: onDone)` to receive repeated data, error, and completion events.
+The listen call returns a StreamSubscription that represents the listener's ownership of the subscription.
+Store the subscription and cancel it when its owner no longer needs updates; a canceled listener stops receiving events.
+If a State-owned source changes, cancel the old subscription before listening to the replacement and cancel the remaining subscription in dispose. || flutter_api#widgets/State-class.html:Lifecycle
+@87 firebase_flutter_firestore#docs/rules/basics
+Server-enforced access rules are the authority for whether a remote data operation is permitted.
+A client-side validation rule or hidden UI action does not substitute for a rule that denies the operation at the remote data boundary.
+An allow-all test configuration permits anyone to read and overwrite data, so remove it and enforce the intended access policy before production use. || firebase_flutter_firestore#Create-a-Cloud-Firestore-database
+Keep client checks for user feedback, but require the backend policy to protect the same operation even if those checks are bypassed.
+@88 firebase_flutter#Step-2-Configure-your-app-to-use-Firebase
+Run the FlutterFire configuration workflow for the required platforms and use its generated firebase_options.dart configuration.
+Import firebase_core and the generated options file, then call `WidgetsFlutterBinding.ensureInitialized()` before asynchronous Firebase initialization.
+Await `Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)` before starting application code that uses Firebase services.
+Rebuild and run the application after applying configuration so the target's platform integration is included.
+@89 firebase_flutter_auth#docs/auth/flutter/password-auth:Sign-in-a-user-with-an-email-address-and-password
+Await `FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password)` when email/password is the enabled sign-in provider.
+The sign-in Future supplies UserCredential on success; use successful completion rather than a button tap as the sign-in outcome.
+Handle FirebaseAuthException and its code to translate expected authentication failures into an application-facing error.
+Sign out with `await FirebaseAuth.instance.signOut()` and let the authentication-state owner reflect the result. || firebase_flutter_auth#docs/auth/flutter/password-auth:Next-steps
+@90 firebase_flutter_auth#Authentication-state
+Subscribe to `FirebaseAuth.instance.authStateChanges()` to receive the current sign-in state and subsequent sign-in or sign-out changes.
+The listener receives User?; null means signed out and a User means signed in.
+The stream emits an initial event after subscription, so initialize the application's session view from that event rather than presume a stored session exists.
+Cancel the owned subscription when its session-state owner ends. || dart_language#api.dart.dev/dart-async/Stream-class.html
+@91 go_router_docs#Redirection
+A router redirect callback can inspect application session state and return a permitted location when the requested route requires sign-in.
+Return null, or the original path, when the intended route is permitted so navigation continues without another redirect.
+Keep the sign-in location allowed while signed out, rather than redirect that location back to itself in a loop.
+Use routing for presentation but retain backend authorization for protected data; an app-side route gate is not the security boundary. || firebase_flutter_firestore#docs/rules/basics
+@92 firebase_flutter_firestore#Add-data
+Cloud Firestore stores documents inside collections and creates them implicitly when data is first written.
+Use `db.collection(collectionName).add(dataMap)` to write a new document with an automatically generated identity.
+For a contract requiring a known document identity, use the corresponding document reference's set operation instead. || firebase_flutter_firestore#docs/firestore/manage-data/add-data:Set-a-document
+Await the write and handle its failed completion rather than treat dispatch of a write as success.
+@93 firebase_flutter_firestore#Read-data
+Use `await db.collection(collectionName).get()` to obtain a QuerySnapshot of documents.
+Iterate the snapshot's docs and call each document's data() to retrieve its fields.
+Convert those fields into the application model and retain document identity when later operations require it. || firebase_flutter_firestore#docs/firestore/query-data/get-data
+An empty docs collection is a successful empty result, whereas failed completion is an error; handle them as distinct outcomes.
+@94 firebase_flutter_messaging#Handling-interaction
+For a notification that opens a terminated app, await `FirebaseMessaging.instance.getInitialMessage()` and handle its nullable RemoteMessage.
+For a notification that opens an app from the background, subscribe to `FirebaseMessaging.onMessageOpenedApp`.
+Extract destination data from RemoteMessage.data, validate it using the destination's route contract, and then navigate to the intended screen.
+Handle both entry paths because foreground message receipt via onMessage is not itself the notification-open interaction.
+@95 firebase_flutter_analytics#docs/analytics/events:Log-events
+Emit a custom analytics event with `FirebaseAnalytics.instance.logEvent(name: eventName, parameters: parameterMap)`.
+Use a stable event name and a defined parameter schema so repeated occurrences describe the same interaction consistently.
+Place the emission at the interaction's chosen completion point, rather than in build where rebuilding can produce extra events. || flutter_api#widgets/StatelessWidget-class.html:build
+Use only the event contract's necessary non-sensitive fields rather than pass entire user or application objects as telemetry. || apple_review_guidelines#5.1.1-Data-Collection-and-Storage
+@96 apple_review_guidelines#5.1.1-Data-Collection-and-Storage
+Identify what data the app and third-party SDKs collect, how they collect it, and how it is used.
+Minimize collected data to what is relevant to the task and obtain required consent for user or usage data collection.
+Keep analytics collection disabled when required consent has not been granted, and enable or suspend collection when the consent state changes. || firebase_flutter_analytics#docs/analytics/configure-data-collection
+Remove unnecessary personal fields from an event payload instead of rely on a collection toggle to make sensitive payloads safe.
+@97 flutter_devtools#performance:Using-the-Performance-view
+Measure Flutter performance in profile mode on a representative physical device rather than use debug-mode timing as production performance evidence.
+Run the application with `flutter run --profile`, open the DevTools Performance view, and record the target interaction.
+Inspect its frame timings and timeline while performing the same user journey that exhibits the symptom.
+Retain the capture and target conditions so a later measurement can be compared with the baseline.
+@98 flutter_devtools#performance:Flutter-frames-chart
+Each frame includes UI-thread work that builds the layer tree and raster-thread work that rasterizes it.
+At 60 Hz, a frame taking more than roughly 16 ms misses the frame budget; at 120 Hz, the budget is roughly 8 ms. || flutter_docs#perf/best-practices:Build-and-display-frames-in-16ms
+In the Performance view, select a slow frame and compare its UI and raster timings to identify which stage exceeded the budget.
+Use frame analysis and timeline events to identify the expensive operation before changing code.
+@99 flutter_docs#perf/best-practices:Control-build-cost
+Localize setState to the subtree whose appearance actually changes rather than trigger rebuilding an unnecessarily large tree.
+Split a large build method into widgets according to how its UI sections change.
+Use const widget configurations where possible so the framework can avoid redundant rebuild work for unchanged subtrees.
+With provider, use select for the specific model value needed by a consumer and use Consumer's child argument for an unchanged subtree. || provider_docs#My-widget-rebuilds-too-often
+Re-record the same interaction after narrowing rebuild scope to verify the change reduced measured build work. || flutter_devtools#performance
+@100 flutter_docs#perf/best-practices:Be-lazy
+For a large scrolling list, use ListView.builder so item widgets are created lazily instead of build all items at startup.
+Avoid unnecessary intrinsic-layout passes in list items because additional layout passes multiply work across many children.
+Reduce an expensive opacity, clipping, or offscreen-layer effect when timeline evidence shows it contributes to costly rendering. || flutter_docs#perf/best-practices:Minimize-expensive-operations
+Compare the same scroll capture before and after the change to verify frame cost improved without changing required visible behavior. || flutter_devtools#performance
+@101 flutter_devtools#memory:Root-object-retaining-path-and-reachability
+An object remains reachable, and cannot be collected, while a path of references from a root retains it.
+Take memory snapshots before and after the relevant feature interaction and use Diff Snapshots to locate unexpectedly retained instances.
+Inspect a retained instance's retaining path to find the owner or callback reference keeping it reachable.
+Dispose owned disposable resources and cancel owned subscriptions when their lifetime ends, then repeat the capture to check retention. || flutter_api#widgets/State-class.html:Lifecycle
+@102 flutter_docs#deployment/flavors
+An Android product flavor represents a configured variant of the application, such as staging or production.
+Declare the required flavors under productFlavors and their flavor dimension in the app's Gradle configuration.
+Select a variant with `flutter run --flavor flavorName` or the corresponding build command's `--flavor` option.
+Read the active flavor with Flutter's `appFlavor` value and choose that environment's endpoint or other configured values.
+For iOS, configure the corresponding Xcode schemes and build configurations and select the scheme's flavor from Flutter. || flutter_docs#deployment/flavors-ios
+@103 flutter_release_android#Application-ID
+Android applicationId identifies the app on the Play Store and device; it must match the intended application record and cannot change after Play Store upload.
+An iOS Bundle Identifier must match the registered App ID used for the App Store Connect application. || flutter_release_ios#Review-Xcode-project-settings
+Display names are user-facing labels and are separate from the platform identity; customize each in its own platform configuration. || flutter_docs#deployment/flavors:Create-a-distinct-app-display-name
+Check each intended environment's configured identity against its application record so variants do not accidentally share the wrong record.
+@104 flutter_release_android#Sign-the-app
+Configure release signing with the upload keystore, key alias, and passwords referenced by private keystore properties.
+Load those properties in Gradle and assign the release signing configuration rather than use the debug key for a distributable release.
+Keep keystore material and key.properties private and out of public source control.
+For iOS, select the registered Apple developer team and configure Xcode Signing & Capabilities so the bundle's signing and provisioning match its application identity. || flutter_release_ios#Review-Xcode-project-settings
+@105 flutter_release_android#Version-code-and-name
+Declare a Flutter application version in pubspec.yaml as `version: buildName+buildNumber`.
+Android uses the build name as versionName and the build number as versionCode.
+For iOS, build-name maps to CFBundleShortVersionString and build-number to CFBundleVersion; each uploaded build requires a unique build number. || flutter_release_ios#Update-the-app-build-and-version-numbers
+Override those values for a release with `--build-name` and `--build-number` and verify that the intended release values were used. || flutter_release_ios#Create-an-app-bundle
+@106 flutter_release_android#Build-an-app-bundle
+Run `flutter build appbundle` with the intended environment and release configuration to create the Android App Bundle.
+The release bundle is written under `build/app/outputs/bundle/release/` for the standard non-flavored release configuration.
+Test that bundle by generating and installing its APKs with bundletool or upload it to a Google Play testing track rather than try to install an AAB directly.
+Verify the installed build's core journey on the target device before promote it to production.
+@107 flutter_release_ios#Create-an-app-bundle
+Run `flutter build ipa` on the configured macOS/Xcode environment to create the iOS archive and IPA for distribution.
+The command outputs an xcarchive under `build/ios/archive/` and the IPA under `build/ios/ipa/`.
+Open the archive in Xcode, use Validate App, correct reported problems, and distribute the validated build to App Store Connect.
+Make the uploaded build available through TestFlight and verify the required application journey before App Store release. || flutter_release_ios#Release-your-app-on-TestFlight
+@108 apple_review_guidelines#Before-You-Submit
+Review the release as an actual user-facing application and resolve crashes, bugs, broken links, and incomplete behavior before submission.
+Test its release build on the intended supported targets and verify that backend services required by the journey are live and accessible.
+Provide working review access, such as a demo account or supported demo mode, for account-gated functionality.
+On Google Play, resolve errors reported in the release review summary before publishing; warnings should also be addressed where possible. || google_play_publish#Publish-a-draft-app
+@109 apple_review_guidelines#2.3-Accurate-Metadata
+Keep descriptions, screenshots, previews, and privacy information accurate to the submitted application's actual behavior.
+Explain non-obvious features and provide reviewer instructions, working credentials, and any required access in review notes. || apple_review_guidelines#Before-You-Submit
+Complete the store listing and app-content information required by Play Console before submitting its release. || google_play_publish#answer/9859152:Create-and-set-up-your-app
+Declare requested sensitive permissions and applicable app content accurately rather than omit functionality present in the build. || google_play_publish#answer/9859455:Prepare-your-app-for-review
+@110 apple_review_guidelines#5.1.1-Data-Collection-and-Storage
+Publish an accessible privacy policy describing collected data, its uses, third-party sharing, retention, deletion, and consent withdrawal.
+Inventory data collected or shared by the application and its third-party SDKs rather than report only collection written directly in application code.
+Map that actual inventory to the Google Play Data safety declarations, including the relevant collection, sharing, security, and deletion information. || google_play_publish#answer/10787469:Provide-information-for-Google-Play-Data-safety
+Check privacy declarations against the shipped permission and telemetry behavior and update them when the implementation changes.
+@111 flutter_release_android#Test-the-app-bundle
+Use a Google Play test track to distribute the Android bundle to the intended testers before production release.
+On Play Console, choose the appropriate audience: internal testers, selected closed testers, open testers, or production users. || google_play_publish#App-status
+For iOS, upload the IPA to App Store Connect and make the build available to the intended TestFlight audience. || flutter_release_ios#Release-your-app-on-TestFlight
+Prepare release notes describing the submitted changes and resolve the store's release review errors before rollout. || google_play_publish#answer/9859348:Prepare-and-roll-out-a-release
+Confirm the tested build and chosen release audience in the store's release flow rather than assume an uploaded file is already available to users. || google_play_publish#Publishing-status

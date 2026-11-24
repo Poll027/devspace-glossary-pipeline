@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"><head><script type="text/javascript" src="https://www.googletagmanager.com/gtm.js?id=GTM-MX6DBN9" async="async"></script><script type="text/javascript" src="/static/hash-nhsnu2dk/js/gtm.js"></script><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no"/><meta name="generator" content="made with love by dartdoc"/><meta name="description" content="Error handling topic docs, for the Dart programming language."/><title>Error handling topic - Dart API</title><link rel="canonical" href="https://pub.dev/documentation/go_router/latest/topics/Error%20handling-topic.html"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&amp;display=swap"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/><link rel="stylesheet" href="/static/hash-nhsnu2dk/css/dartdoc.css"/><link rel="icon" href="/favicon.ico?hash=nk4nss8c7444fg0chird9erqef2vkhb8"/></head><body class="light-theme" data-base-href="../" data-using-base-href="false"><noscript><iframe class="-gtm-iframe" src="https://www.googletagmanager.com/ns.html?id=GTM-MX6DBN9" height="0" width="0"></iframe></noscript><script src="/static/hash-nhsnu2dk/js/dark-init.js"></script><div id="overlay-under-drawer"></div><header id="title"><span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span><a class="hidden-xs" href="/"><img class="-dart-logo-img" src="/static/hash-nhsnu2dk/img/dart-logo.svg" alt="" width="30" height="30" role="presentation" aria-label="Go to the landing page of pub.dev"/></a><ol class="breadcrumbs gt-separated dark hidden-xs"><li><a href="/packages/go_router">go_router package</a></li><li><a href="../index.html">documentation</a></li><li class="self-crumb">Error handling topic</li></ol><div class="self-name">Error handling topic</div><form class="search navbar-right" role="search"><input id="search-box" class="form-control typeahead" type="text" placeholder="Loading search..." autocomplete="off"/></form><button id="theme-button" class="toggle" aria-label="Light and dark mode toggle" title="Toggle between light and dark mode"><span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">dark_mode</span><span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">light_mode</span></button></header><main><div id="dartdoc-main-content" class="main-content">
+  <h1><span class="kind-category">Error handling</span> topic</h1>
+  
+<div class="desc markdown markdown-body">
+  <p>There are several kinds of errors or exceptions in go_router.</p>
+<ul>
+<li>GoError and AssertionError</li>
+</ul>
+<p>This kind of errors are thrown when go_router is used incorrectly, for example, if the root
+<a href="https://pub.dev/documentation/go_router/latest/go_router/GoRoute/path.html">GoRoute.path</a> does
+not start with <code>/</code> or a builder in GoRoute is not provided. These errors should not be caught and
+must be fixed in code in order to use go_router.</p>
+<ul>
+<li>GoException</li>
+</ul>
+<p>This kind of exception are thrown when the configuration of go_router cannot handle incoming requests
+from users or other part of the code. For example, an GoException is thrown when user enter url that
+can't be parsed according to pattern specified in the <code>GoRouter.routes</code>. These exceptions can be
+handled in various callbacks.</p>
+<p>Once can provide a callback to <code>GoRouter.onException</code> to handle this exception. In this callback,
+one can choose to ignore, redirect, or push different pages depending on the situation.
+See <a href="https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/exception_handling.dart" rel="ugc nofollow">Exception Handling</a>
+on a runnable example.</p>
+<p>The <code>GoRouter.errorBuilder</code> and <code>GoRouter.errorPageBuilder</code> can also be used to handle exceptions.</p>
+<pre class="language-dart"><code class="language-dart">GoRouter(
+  /* ... */
+  errorBuilder: (context, state) =&gt; ErrorScreen(state.error),
+);
+</code></pre>
+<p>By default, go_router comes with default error screens for both <code>MaterialApp</code>
+and <code>CupertinoApp</code> as well as a default error screen in the case that none is
+used.</p>
+<p><strong>Note</strong> the <code>GoRouter.onException</code> supersedes other exception handling APIs.</p>
+</div>
+
+
+
+  <div class="summary offset-anchor" id="classes">
+    <h2>Classes</h2>
+    <dl>
+      <dt id="GoRouter">
+  <span class="name "><a href="../go_router/GoRouter-class.html">GoRouter</a></span> 
+    <span class="category get-started cp-0 linked" title="This is part of the Get started topic."><a href="../topics/Get started-topic.html">Get&nbsp;started</a></span>
+    <span class="category upgrading cp-1 linked" title="This is part of the Upgrading topic."><a href="../topics/Upgrading-topic.html">Upgrading</a></span>
+    <span class="category configuration cp-2 linked" title="This is part of the Configuration topic."><a href="../topics/Configuration-topic.html">Configuration</a></span>
+    <span class="category navigation cp-3 linked" title="This is part of the Navigation topic."><a href="../topics/Navigation-topic.html">Navigation</a></span>
+    <span class="category redirection cp-4 linked" title="This is part of the Redirection topic."><a href="../topics/Redirection-topic.html">Redirection</a></span>
+    <span class="category web cp-5 linked" title="This is part of the Web topic."><a href="../topics/Web-topic.html">Web</a></span>
+    <span class="category deep-linking cp-6 linked" title="This is part of the Deep linking topic."><a href="../topics/Deep linking-topic.html">Deep&nbsp;linking</a></span>
+    <span class="category named-routes cp-9 linked" title="This is part of the Named routes topic."><a href="../topics/Named routes-topic.html">Named&nbsp;routes</a></span>
+    <span class="category error-handling cp-10 linked" title="This is part of the Error handling topic."><a href="../topics/Error handling-topic.html">Error&nbsp;handling</a></span>
+    <span class="category state-restoration cp-11 linked" title="This is part of the State restoration topic."><a href="../topics/State restoration-topic.html">State&nbsp;restoration</a></span>
+
+</dt>
+<dd>
+  The route configuration for the app.
+</dd>
+
+    </dl>
+  </div>
+
+
+
+
+
+
+
+
+</div><div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left"><header id="header-search-sidebar" class="hidden-l"><form class="search-sidebar" role="search"><input id="search-sidebar" class="form-control typeahead" type="text" placeholder="Loading search..." autocomplete="off"/></form></header><ol id="sidebar-nav" class="breadcrumbs gt-separated dark hidden-l"><li><a href="/packages/go_router">go_router package</a></li><li><a href="../index.html">documentation</a></li><li class="self-crumb">Error handling topic</li></ol>
+  
+
+
+
+  <h5><span class="package-name">go_router</span> <span class="package-kind">package</span></h5>
+  <ol>
+      <li class="section-title">Topics</li>
+        <li><a href="../topics/Get started-topic.html">Get&nbsp;started</a></li>
+        <li><a href="../topics/Upgrading-topic.html">Upgrading</a></li>
+        <li><a href="../topics/Configuration-topic.html">Configuration</a></li>
+        <li><a href="../topics/Navigation-topic.html">Navigation</a></li>
+        <li><a href="../topics/Redirection-topic.html">Redirection</a></li>
+        <li><a href="../topics/Web-topic.html">Web</a></li>
+        <li><a href="../topics/Deep linking-topic.html">Deep&nbsp;linking</a></li>
+        <li><a href="../topics/Transition animations-topic.html">Transition&nbsp;animations</a></li>
+        <li><a href="../topics/Type-safe routes-topic.html">Type-safe&nbsp;routes</a></li>
+        <li><a href="../topics/Named routes-topic.html">Named&nbsp;routes</a></li>
+        <li><a href="../topics/Error handling-topic.html">Error&nbsp;handling</a></li>
+        <li><a href="../topics/State restoration-topic.html">State&nbsp;restoration</a></li>
+      <li class="section-title">Libraries</li>
+      <li><a href="../go_router/">go_router</a></li>
+</ol>
+
+</div><div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  <h5>Error handling topic</h5>
+  <ol>
+
+    <li class="section-title"><a href="../topics/Error handling-topic.html#classes">Classes</a></li>
+      <li><a href="../go_router/GoRouter-class.html">GoRouter</a></li>
+
+
+
+
+
+
+
+
+
+</ol>
+
+</div></main><footer><span class="no-break">go_router 18.1.4</span></footer><script src="/static/hash-nhsnu2dk/dartdoc/resources/highlight.pack.js"></script><script src="/static/hash-nhsnu2dk/dartdoc/resources/docs.dart.js"></script></body></html>

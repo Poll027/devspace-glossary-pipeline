@@ -1,0 +1,746 @@
+
+ Learn how Firestore can scale to power your enterprise applications, now with MongoDB compatibility. Learn more in Google Cloud.
+ Firebase
+ Documentation
+ Firestore
+ Build
+ Send feedback
+ Get started with Firestore Standard edition
+ Stay organized with collections
+ Save and categorize content based on your preferences.
+This quickstart shows you how to set up Cloud Firestore, add data, then view
+the data you just added in the Firebase console.
+Cloud Firestore supports mobile or web SDKs and server client libraries:
+Cloud Firestore supports SDKs for Android, iOS, and web and more. Combined with
+Cloud Firestore Security Rules and Firebase Authentication, the mobile and web SDKs support
+serverless app architectures where clients connect directly to your
+Cloud Firestore database.
+Cloud Firestore supports server client libraries for C#, Go, Java, Node.js, PHP,
+Python, and Ruby. Use these client libraries to set up privileged server
+environments with full access to your database. Learn more about these libraries
+in the Quickstart for server client libraries.
+ offline_bolt AI prompt for AI assistance
+ For AI assistance, copy the prompt below into your
+ AI coding agent
+ (like Gemini in Android Studio, Antigravity, Claude Code, Codex, and Cursor).
+ You can customize the prompt and iterate with your agent. Visit
+ Firebase agent skills
+ for detailed installation info.
+Help me use Firebase in my app.1. Make sure that **Firebase agent skills** are installed and updated. For Claude Code, Codex, or Cursor agents, help me install the Firebase plugin. For other agents, run `npx skills add firebase/agent-skills`. Always try to use **Firebase agent skills** for Firebase-related tasks.2. Help me set up and use Firebase for the backend of my app. Set up Firestore database in **Standard edition**. Help me to choose the best location for my database instance.
+Create a Cloud Firestore database
+If you haven't already, create a Firebase project: In the
+Firebase console, click Add project,
+then follow the on-screen instructions to create a Firebase project or to
+add Firebase services to an existing Google Cloud project.
+In the left panel, go to Databases & Storage >
+Firestore.
+Click Create database.
+Select a location for your database.
+If you aren't able to select a location, then your project's
+"location for default Google Cloud resources"
+has already been set. Some of your project's resources (like the default
+Cloud Firestore instance) share a common location dependency, and
+their location can be set either during project creation or when setting up
+another service that shares this location dependency.
+Select a starting mode for your Cloud Firestore Security Rules:
+Test mode
+Good for getting started with the mobile and web client libraries,
+but allows anyone to read and overwrite your data. After testing, make
+sure to review the Secure your data section.
+To get started with the web, Apple platforms, or Android SDK, select test mode.
+Production mode
+Denies all reads and writes from mobile and web clients.
+Your authenticated application servers (C#, Go, Java, Node.js, PHP,
+Python, or Ruby) can still access your database.
+To get started with the C#, Go, Java, Node.js, PHP, Python, or Ruby
+server client library, select production mode.
+Your initial set of Cloud Firestore Security Rules will apply to your default
+Cloud Firestore database. If you create multiple databases for your
+project, you can deploy Cloud Firestore Security Rules for each database.
+Click Create.
+ Cloud Firestore and App Engine:
+ With support for multiple databases, you can use both
+ Cloud Firestore and Datastore in the same project.
+ If you use App Engine, note that only the (default)
+ database in standard mode with Datastore or Firestore Native APIs can be
+ used with App Engine.
+When you enable Cloud Firestore, it also enables the API in the
+Cloud API Manager.
+Set up your development environment
+Add the required dependencies and client libraries to your app.
+Web
+ Follow the instructions to
+ add Firebase to your web app.
+ The Cloud Firestore SDK is available as an npm package.
+npm install firebase@13.4.0 --save
+ You'll need to import both Firebase and Cloud Firestore.
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+ Looking for a compact Firestore library, and only need simple REST/CRUD
+ capabilities? Try the 
+ Firestore Lite SDK, available only via npm.
+Web
+ Follow the instructions to
+ add Firebase to your web app.
+ Add the Firebase and Cloud Firestore libraries to your app:
+<script src="https://www.gstatic.com/firebasejs/13.4.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore-compat.js"></script>
+ The Cloud Firestore SDK is also available as an npm package.
+npm install firebase@13.4.0 --save
+ You'll need to manually require both Firebase and Cloud Firestore.
+import firebase from "firebase/compat/app";
+// Required for side-effects
+import "firebase/firestore";
+iOS+
+ Follow the instructions to
+ add Firebase to your Apple app.
+Use Swift Package Manager to install and manage Firebase dependencies.
+Visit our
+ installation guide
+ to learn about the different ways you can add Firebase SDKs to your Apple project, including
+ importing frameworks directly and using CocoaPods.
+ In Xcode, with your app project open, navigate to File > Swift Packages >
+ Add Package Dependency.
+ When prompted, add the Firebase Apple platforms SDK repository:
+ https://github.com/firebase/firebase-ios-sdk
+ Note: New projects should use the default (latest) SDK version, but you can
+ choose an older version if needed.
+ Choose the Firestore library.
+ When finished, Xcode will automatically begin resolving and downloading your
+ dependencies in the background.
+Android
+ Follow the instructions to
+ add Firebase to your Android app.
+ Using the
+ Firebase Android BoM,
+ declare the dependency for the Cloud Firestore library for Android in
+ your module (app-level) Gradle file
+ (usually app/build.gradle.kts or
+ app/build.gradle).
+dependencies {
+ // Import the BoM for the Firebase platform
+ implementation(platform("com.google.firebase:firebase-bom:35.2.0"))
+ // Declare the dependency for the Cloud Firestore library
+ // When using the BoM, you don't specify versions in Firebase library dependencies
+ implementation("com.google.firebase:firebase-firestore")
+}
+ By using the
+ Firebase Android BoM,
+ your app will always use compatible versions of the Firebase Android
+ libraries.
+ (Alternative)
+ Declare Firebase library dependencies without using the
+ BoM
+ If you choose not to use the Firebase BoM, you must specify each
+ Firebase library version in its dependency line.
+ Note that if you use multiple Firebase libraries in
+ your app, we highly recommend using the BoM to manage library
+ versions, which ensures that all versions are compatible.
+dependencies {
+ // Declare the dependency for the Cloud Firestore library
+ // When NOT using the BoM, you must specify versions in Firebase library dependencies
+ implementation("com.google.firebase:firebase-firestore:27.2.0")
+}
+ Looking for a Kotlin-specific library module? Starting with the
+ October 2023 release,
+ both Kotlin and Java developers can depend on the main library module
+ (for details, see the
+ FAQ about this initiative).
+Dart
+ If you haven't already, configure and
+ initialize Firebase in your Flutter app.
+ From the root of your Flutter project, run the following command to
+ install the plugin:
+flutter pub add cloud_firestore
+ Once complete, rebuild your Flutter application:
+flutter run
+ Optional: Improve iOS & macOS build times by including the
+ pre-compiled framework.
+ Currently, the Firestore SDK for iOS depends on code that can take
+ upwards of 5 minutes to build in Xcode. To reduce build times
+ significantly, you can use a pre-compiled version by adding this line to
+ the target 'Runner' do block in your Podfile:
+target 'Runner' do
+ use_frameworks!
+ use_modular_headers!
+ pod 'FirebaseFirestore',
+ :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git',
+ :tag => 'IOS_SDK_VERSION'
+ flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+ target 'RunnerTests' do
+ inherit! :search_paths
+ end
+end
+ Replace IOS_SDK_VERSION with the version of the Firebase iOS
+ SDK specified in firebase_core's
+ firebase_sdk_version.rb
+ file. If you're not using the latest version of
+ firebase_core, look for this file in your local Pub package
+ cache (usually ~/.pub-cache).
+ Additionally, ensure that you have upgraded CocoaPods to 1.9.1 or
+ higher: 
+gem install cocoapods
+ For more information see the
+ issue
+ on GitHub.
+C++
+ Follow the instructions to
+ add Firebase to your C++ project.
+ C++ interface for Android.
+ Gradle dependencies. Add the following to your module
+ (app-level) Gradle file (usually app/build.gradle):
+ android.defaultConfig.externalNativeBuild.cmake {
+ arguments "-DFIREBASE_CPP_SDK_DIR=$gradle.firebase_cpp_sdk_dir"
+ }
+ apply from: "$gradle.firebase_cpp_sdk_dir/Android/firebase_dependencies.gradle"
+ firebaseCpp.dependencies {
+ // earlier entries
+ auth
+ firestore
+ }
+ Binary dependencies. Similarly, the recommended way to get
+ the binary dependencies is to add the following to your CMakeLists.txt
+ file:
+ add_subdirectory(${FIREBASE_CPP_SDK_DIR} bin/ EXCLUDE_FROM_ALL)
+ set(firebase_libs firebase_auth firebase_firestore firebase_app)
+ # Replace the target name below with the actual name of your target,
+ # for example, "native-lib".
+ target_link_libraries(${YOUR_TARGET_NAME_HERE} "${firebase_libs}")
+ To set up desktop integration, see Add Firebase to your C++ project.
+Unity
+ Follow the instructions to
+ add Firebase to your Unity
+ project.
+ Use the Unity interface to configure your project to minify Android builds.
+ You must minify the build to avoid the message Error while merging dex archives.
+ The option can be found in Player Settings > Android > Publishing
+ Settings > Minify.
+ The options may differ in different versions of Unity so refer to the
+ official Unity documentation and the
+ Firebase Unity Build Debug Guide.
+ If, after enabling minification, the number of referenced methods still
+ exceeds the limit, another option is to enable multidex in:
+ mainTemplate.gradle if Custom Gradle Template under Player Settings is enabled
+ or, the module-level build.gradle file, if you use Android Studio to build the exported project.
+(Optional) Prototype and test with Firebase Local Emulator Suite
+For mobile developers, before talking about how your app writes to and reads
+from Cloud Firestore, let's introduce a set of tools you can use to
+prototype and test Cloud Firestore functionality:
+Firebase Local Emulator Suite. If you're trying out different data models,
+optimizing your security rules, or working to find the most cost-effective way
+to interact with the back-end, being able to work locally without deploying
+live services can be a great idea.
+A Cloud Firestore emulator is part of the Local Emulator Suite, which
+enables your app to interact with your emulated database content and config, as
+well as optionally your emulated project resources (functions, other databases,
+and security rules).
+Using the Cloud Firestore emulator involves just a few steps:
+Adding a line of code to your app's test config to connect to the emulator.
+From the root of your local project directory, running firebase emulators:start.
+Making calls from your app's prototype code using a Cloud Firestore platform
+SDK as usual.
+A detailed walkthrough involving Cloud Firestore and Cloud Functions is available. You should also have a look at the Local Emulator Suite introduction.
+Initialize Cloud Firestore
+Initialize an instance of Cloud Firestore:
+Web
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+// TODO: Replace the following with your app's Firebase project configuration
+// See: https://support.google.com/firebase/answer/7015592
+const firebaseConfig = {
+ FIREBASE_CONFIGURATION
+};
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
+Replace FIREBASE_CONFIGURATION with your web app's
+firebaseConfig.
+To persist data when the device loses its connection, see the Enable Offline Data documentation.
+Web
+import firebase from "firebase/app";
+import "firebase/firestore";
+// TODO: Replace the following with your app's Firebase project configuration
+// See: https://support.google.com/firebase/answer/7015592
+const firebaseConfig = {
+ FIREBASE_CONFIGURATION
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+// Initialize Cloud Firestore and get a reference to the service
+const db = firebase.firestore();
+Replace FIREBASE_CONFIGURATION with your web app's
+firebaseConfig.
+To persist data when the device loses its connection, see the Enable Offline Data documentation.
+Swift
+Note: This product is not available on watchOS and App Clip targets.
+import FirebaseCore
+import FirebaseFirestore
+FirebaseApp.configure()
+let db = Firestore.firestore()AppDelegate.swift
+ Objective-C
+Note: This product is not available on watchOS and App Clip targets.
+@import FirebaseCore;
+@import FirebaseFirestore;
+// Use Firebase library to configure APIs
+[FIRApp configure];
+FIRFirestore *defaultFirestore = [FIRFirestore firestore];AppDelegate.m
+Kotlin
+// Access a Cloud Firestore instance from your Activity
+val db = Firebase.firestoreDocSnippets.kt
+Java
+// Access a Cloud Firestore instance from your Activity
+FirebaseFirestore db = FirebaseFirestore.getInstance();DocSnippets.java
+Dart
+db = FirebaseFirestore.instance;
+ C++
+// Make sure the call to `Create()` happens some time before you call Firestore::GetInstance().
+App::Create();
+Firestore* db = Firestore::GetInstance();AppDelegate.mm
+Unity
+using Firebase.Firestore;
+using Firebase.Extensions;
+FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+Add data
+Cloud Firestore stores data in Documents, which are stored in Collections.
+Cloud Firestore creates collections and documents implicitly
+the first time you add data to the document. You do not need to explicitly
+create collections or documents.
+Create a new collection and a document using the following example code.
+ Web
+import { collection, addDoc } from "firebase/firestore"; 
+try {
+ const docRef = await addDoc(collection(db, "users"), {
+ first: "Ada",
+ last: "Lovelace",
+ born: 1815
+ });
+ console.log("Document written with ID: ", docRef.id);
+} catch (e) {
+ console.error("Error adding document: ", e);
+}add_ada_lovelace.js
+ Web
+ Learn
+ more about the tree-shakeable modular Web API and
+ its advantages over the namespaced API.
+db.collection("users").add({
+ first: "Ada",
+ last: "Lovelace",
+ born: 1815
+})
+.then((docRef) => {
+ console.log("Document written with ID: ", docRef.id);
+})
+.catch((error) => {
+ console.error("Error adding document: ", error);
+});test.firestore.js
+ Swift
+Note: This product is not available on watchOS and App Clip targets.
+// Add a new document with a generated ID
+do {
+ let ref = try await db.collection("users").addDocument(data: [
+ "first": "Ada",
+ "last": "Lovelace",
+ "born": 1815
+ ])
+ print("Document added with ID: \(ref.documentID)")
+} catch {
+ print("Error adding document: \(error)")
+}ViewController.swift
+ Objective-C
+Note: This product is not available on watchOS and App Clip targets.
+// Add a new document with a generated ID
+__block FIRDocumentReference *ref =
+ [[self.db collectionWithPath:@"users"] addDocumentWithData:@{
+ @"first": @"Ada",
+ @"last": @"Lovelace",
+ @"born": @1815
+ } completion:^(NSError * _Nullable error) {
+ if (error != nil) {
+ NSLog(@"Error adding document: %@", error);
+ } else {
+ NSLog(@"Document added with ID: %@", ref.documentID);
+ }
+ }];ViewController.m
+ Kotlin
+// Create a new user with a first and last name
+val user = hashMapOf(
+ "first" to "Ada",
+ "last" to "Lovelace",
+ "born" to 1815,
+)
+// Add a new document with a generated ID
+db.collection("users")
+ .add(user)
+ .addOnSuccessListener { documentReference ->
+ Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+ }
+ .addOnFailureListener { e ->
+ Log.w(TAG, "Error adding document", e)
+ }DocSnippets.kt
+ Java
+// Create a new user with a first and last name
+Map<String, Object> user = new HashMap<>();
+user.put("first", "Ada");
+user.put("last", "Lovelace");
+user.put("born", 1815);
+// Add a new document with a generated ID
+db.collection("users")
+ .add(user)
+ .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+ @Override
+ public void onSuccess(DocumentReference documentReference) {
+ Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+ }
+ })
+ .addOnFailureListener(new OnFailureListener() {
+ @Override
+ public void onFailure(@NonNull Exception e) {
+ Log.w(TAG, "Error adding document", e);
+ }
+ });DocSnippets.java
+ Dart
+// Create a new user with a first and last name
+final user = <String, dynamic>{
+ "first": "Ada",
+ "last": "Lovelace",
+ "born": 1815
+};
+// Add a new document with a generated ID
+db.collection("users").add(user).then((DocumentReference doc) =>
+ print('DocumentSnapshot added with ID: ${doc.id}'));firestore.dart
+C++
+// Add a new document with a generated ID
+Future<DocumentReference> user_ref =
+ db->Collection("users").Add({{"first", FieldValue::String("Ada")},
+ {"last", FieldValue::String("Lovelace")},
+ {"born", FieldValue::Integer(1815)}});
+user_ref.OnCompletion([](const Future<DocumentReference>& future) {
+ if (future.error() == Error::kErrorOk) {
+ std::cout << "DocumentSnapshot added with ID: " << future.result()->id()
+ << std::endl;
+ } else {
+ std::cout << "Error adding document: " << future.error_message() << std::endl;
+ }
+});snippets.cpp
+Unity
+DocumentReference docRef = db.Collection("users").Document("alovelace");
+Dictionary<string, object> user = new Dictionary<string, object>
+{
+ { "First", "Ada" },
+ { "Last", "Lovelace" },
+ { "Born", 1815 },
+};
+docRef.SetAsync(user).ContinueWithOnMainThread(task => {
+ Debug.Log("Added data to the alovelace document in the users collection.");
+});
+Now add another document to the users collection. Notice that this document
+includes a key-value pair (middle name) that does not appear in the first
+document. Documents in a collection can contain different sets of information.
+ Web
+// Add a second document with a generated ID.
+import { addDoc, collection } from "firebase/firestore"; 
+try {
+ const docRef = await addDoc(collection(db, "users"), {
+ first: "Alan",
+ middle: "Mathison",
+ last: "Turing",
+ born: 1912
+ });
+ console.log("Document written with ID: ", docRef.id);
+} catch (e) {
+ console.error("Error adding document: ", e);
+}add_alan_turing.js
+ Web
+ Learn
+ more about the tree-shakeable modular Web API and
+ its advantages over the namespaced API.
+// Add a second document with a generated ID.
+db.collection("users").add({
+ first: "Alan",
+ middle: "Mathison",
+ last: "Turing",
+ born: 1912
+})
+.then((docRef) => {
+ console.log("Document written with ID: ", docRef.id);
+})
+.catch((error) => {
+ console.error("Error adding document: ", error);
+});test.firestore.js
+ Swift
+Note: This product is not available on watchOS and App Clip targets.
+// Add a second document with a generated ID.
+do {
+ let ref = try await db.collection("users").addDocument(data: [
+ "first": "Alan",
+ "middle": "Mathison",
+ "last": "Turing",
+ "born": 1912
+ ])
+ print("Document added with ID: \(ref.documentID)")
+} catch {
+ print("Error adding document: \(error)")
+}ViewController.swift
+ Objective-C
+Note: This product is not available on watchOS and App Clip targets.
+// Add a second document with a generated ID.
+__block FIRDocumentReference *ref =
+ [[self.db collectionWithPath:@"users"] addDocumentWithData:@{
+ @"first": @"Alan",
+ @"middle": @"Mathison",
+ @"last": @"Turing",
+ @"born": @1912
+ } completion:^(NSError * _Nullable error) {
+ if (error != nil) {
+ NSLog(@"Error adding document: %@", error);
+ } else {
+ NSLog(@"Document added with ID: %@", ref.documentID);
+ }
+ }];ViewController.m
+ Kotlin
+// Create a new user with a first, middle, and last name
+val user = hashMapOf(
+ "first" to "Alan",
+ "middle" to "Mathison",
+ "last" to "Turing",
+ "born" to 1912,
+)
+// Add a new document with a generated ID
+db.collection("users")
+ .add(user)
+ .addOnSuccessListener { documentReference ->
+ Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+ }
+ .addOnFailureListener { e ->
+ Log.w(TAG, "Error adding document", e)
+ }DocSnippets.kt
+ Java
+// Create a new user with a first, middle, and last name
+Map<String, Object> user = new HashMap<>();
+user.put("first", "Alan");
+user.put("middle", "Mathison");
+user.put("last", "Turing");
+user.put("born", 1912);
+// Add a new document with a generated ID
+db.collection("users")
+ .add(user)
+ .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+ @Override
+ public void onSuccess(DocumentReference documentReference) {
+ Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+ }
+ })
+ .addOnFailureListener(new OnFailureListener() {
+ @Override
+ public void onFailure(@NonNull Exception e) {
+ Log.w(TAG, "Error adding document", e);
+ }
+ });DocSnippets.java
+ Dart
+// Create a new user with a first and last name
+final user = <String, dynamic>{
+ "first": "Alan",
+ "middle": "Mathison",
+ "last": "Turing",
+ "born": 1912
+};
+// Add a new document with a generated ID
+db.collection("users").add(user).then((DocumentReference doc) =>
+ print('DocumentSnapshot added with ID: ${doc.id}'));firestore.dart
+ C++
+db->Collection("users")
+ .Add({{"first", FieldValue::String("Alan")},
+ {"middle", FieldValue::String("Mathison")},
+ {"last", FieldValue::String("Turing")},
+ {"born", FieldValue::Integer(1912)}})
+ .OnCompletion([](const Future<DocumentReference>& future) {
+ if (future.error() == Error::kErrorOk) {
+ std::cout << "DocumentSnapshot added with ID: "
+ << future.result()->id() << std::endl;
+ } else {
+ std::cout << "Error adding document: " << future.error_message()
+ << std::endl;
+ }
+ });snippets.cpp
+Unity
+DocumentReference docRef = db.Collection("users").Document("aturing");
+Dictionary<string, object> user = new Dictionary<string, object>
+{
+ { "First", "Alan" },
+ { "Middle", "Mathison" },
+ { "Last", "Turing" },
+ { "Born", 1912 }
+};
+docRef.SetAsync(user).ContinueWithOnMainThread(task => {
+ Debug.Log("Added data to the aturing document in the users collection.");
+});
+Read data
+Use the data viewer in the
+Firebase console
+to quickly verify that you've added data to Cloud Firestore.
+You can also use the "get" method to retrieve the entire collection.
+ Web
+import { collection, getDocs } from "firebase/firestore"; 
+const querySnapshot = await getDocs(collection(db, "users"));
+querySnapshot.forEach((doc) => {
+ console.log(doc.id, "=>", doc.data());
+});get_all_users.js
+ Web
+ Learn
+ more about the tree-shakeable modular Web API and
+ its advantages over the namespaced API.
+db.collection("users").get().then((querySnapshot) => {
+ querySnapshot.forEach((doc) => {
+ console.log(doc.id, "=>", doc.data());
+ });
+});test.firestore.js
+ Swift
+Note: This product is not available on watchOS and App Clip targets.
+do {
+ let snapshot = try await db.collection("users").getDocuments()
+ for document in snapshot.documents {
+ print("\(document.documentID) => \(document.data())")
+ }
+} catch {
+ print("Error getting documents: \(error)")
+}ViewController.swift
+ Objective-C
+Note: This product is not available on watchOS and App Clip targets.
+[[self.db collectionWithPath:@"users"]
+ getDocumentsWithCompletion:^(FIRQuerySnapshot * _Nullable snapshot,
+ NSError * _Nullable error) {
+ if (error != nil) {
+ NSLog(@"Error getting documents: %@", error);
+ } else {
+ for (FIRDocumentSnapshot *document in snapshot.documents) {
+ NSLog(@"%@ => %@", document.documentID, document.data);
+ }
+ }
+ }];ViewController.m
+ Kotlin
+db.collection("users")
+ .get()
+ .addOnSuccessListener { result ->
+ for (document in result) {
+ Log.d(TAG, "${document.id} => ${document.data}")
+ }
+ }
+ .addOnFailureListener { exception ->
+ Log.w(TAG, "Error getting documents.", exception)
+ }DocSnippets.kt
+ Java
+db.collection("users")
+ .get()
+ .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+ @Override
+ public void onComplete(@NonNull Task<QuerySnapshot> task) {
+ if (task.isSuccessful()) {
+ for (QueryDocumentSnapshot document : task.getResult()) {
+ Log.d(TAG, document.getId() + " => " + document.getData());
+ }
+ } else {
+ Log.w(TAG, "Error getting documents.", task.getException());
+ }
+ }
+ });DocSnippets.java
+ Dart
+await db.collection("users").get().then((event) {
+ for (var doc in event.docs) {
+ print("${doc.id} => ${doc.data()}");
+ }
+});firestore.dart
+ C++
+Future<QuerySnapshot> users = db->Collection("users").Get();
+users.OnCompletion([](const Future<QuerySnapshot>& future) {
+ if (future.error() == Error::kErrorOk) {
+ for (const DocumentSnapshot& document : future.result()->documents()) {
+ std::cout << document << std::endl;
+ }
+ } else {
+ std::cout << "Error getting documents: " << future.error_message()
+ << std::endl;
+ }
+});snippets.cpp
+Unity
+CollectionReference usersRef = db.Collection("users");
+usersRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+{
+ QuerySnapshot snapshot = task.Result;
+ foreach (DocumentSnapshot document in snapshot.Documents)
+ {
+ Debug.Log(String.Format("User: {0}", document.Id));
+ Dictionary<string, object> documentDictionary = document.ToDictionary();
+ Debug.Log(String.Format("First: {0}", documentDictionary["First"]));
+ if (documentDictionary.ContainsKey("Middle"))
+ {
+ Debug.Log(String.Format("Middle: {0}", documentDictionary["Middle"]));
+ }
+ Debug.Log(String.Format("Last: {0}", documentDictionary["Last"]));
+ Debug.Log(String.Format("Born: {0}", documentDictionary["Born"]));
+ }
+ Debug.Log("Read all data from the users collection.");
+});
+Secure your data
+If you're using the web, Android, or Apple platforms SDK, use Firebase
+Authentication and
+Cloud Firestore Security Rules to secure your data in
+Cloud Firestore.
+Here are some basic rule sets you can use to get started. You can modify your
+security rules from the Firebase console
+in the Databases & Storage > Firestore >
+Rules tab.
+Auth required
+// Allow read/write access to a document keyed by the user's UID
+service cloud.firestore {
+ match /databases/{database}/documents {
+ match /users/{uid} {
+ allow read, write: if request.auth != null && request.auth.uid == uid;
+ }
+ }
+}
+Production mode
+// Deny read/write access to all users under any conditions
+service cloud.firestore {
+ match /databases/{database}/documents {
+ match /{document=**} {
+ allow read, write: if false;
+ }
+ }
+}
+Before you deploy your web, Android, or iOS app to production, also take steps
+to ensure that only your app clients can access your Cloud Firestore data.
+See the App Check documentation.
+If you're using one of the server SDKs, use Identity and Access Management
+(IAM) to secure your data
+in Cloud Firestore.
+Watch a video tutorial
+For detailed guidance on getting started with the Cloud Firestore
+mobile client libraries, watch one of the following video tutorials:
+Web
+iOS+
+Android
+You can find more videos in the Firebase
+YouTube channel.
+Next steps
+Deepen your knowledge with the following topics:
+Codelabs — Learn to use Cloud Firestore in a real app by
+following the codelab for Android, iOS, or
+web.
+Data model — Learn more about how data is
+structured in Cloud Firestore, including hierarchical data and subcollections.
+Add data — Learn more about creating and updating data in Cloud Firestore.
+Get data — Learn more about how to retrieve
+data.
+Perform simple and compound queries — Learn how to run simple and compound queries.
+Order and limit queries Learn how to order
+and limit the data returned by your queries.
+Firebase agent skills — Learn
+how to enhance your AI development tools to execute tasks more effectively and
+to use Cloud Firestore best practices (like writing Cloud Firestore Security Rules).
+ Send feedback
+ Except as otherwise noted, the content of this page is licensed under the Creative Commons Attribution 4.0 License, and code samples are licensed under the Apache 2.0 License. For details, see the Google Developers Site Policies. Java is a registered trademark of Oracle and/or its affiliates.
+ Last updated 2026-11-18 UTC.
+ Need to tell us more?
+ [[["Easy to understand","easyToUnderstand","thumb-up"],["Solved my problem","solvedMyProblem","thumb-up"],["Other","otherUp","thumb-up"]],[["Missing the information I need","missingTheInformationINeed","thumb-down"],["Too complicated / too many steps","tooComplicatedTooManySteps","thumb-down"],["Out of date","outOfDate","thumb-down"],["Samples / code issue","samplesCodeIssue","thumb-down"],["Other","otherDown","thumb-down"]],["Last updated 2026-11-18 UTC."],[],[]]
+ 

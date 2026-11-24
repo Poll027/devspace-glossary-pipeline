@@ -1,0 +1,166 @@
+
+ -->
+ list
+ On this pagechevron_right
+ Find widgets
+ vertical_align_top
+ Find widgets
+ 1. Find a Text widget
+ 2. Find a widget with a specific Key
+ 3. Find a specific widget instance
+ Summary
+ Complete example
+ Help improve Flutter! Take the Flutter Q4 Developer survey.
+ list
+ On this page
+ 1. Find a Text widget
+ 2. Find a widget with a specific Key
+ 3. Find a specific widget instance
+ Summary
+ Complete example
+ Cookbookchevron_right
+ Testingchevron_right
+ Widgetchevron_right
+ Find widgets
+ Find widgets
+ How to use the Finder classes for testing widgets.
+ -->
+ more_vert
+ linkCopy link
+ content_copyCopy as Markdown
+ markdownView as Markdown
+ docsOpen on GitHub
+ bug_reportReport an issue
+ To locate widgets in a test environment, use the Finder
+ classes. While it's possible to write your own Finder classes,
+ it's generally more convenient to locate widgets using the tools
+ provided by the flutter_test
+ package.
+ During a flutter run session on a widget test, you can also
+ interactively tap parts of the screen for the Flutter tool to
+ print the suggested Finder.
+ This recipe looks at the find
+ constant provided by
+ the flutter_test package, and demonstrates how
+ to work with some of the Finders it provides.
+ For a full list of available finders,
+ see the CommonFinders documentation.
+ If you're unfamiliar with widget testing and the role of
+ Finder classes,
+ review the Introduction to widget testing
+ recipe.
+ This recipe uses the following steps:
+ Find a Text widget.
+ Find a widget with a specific Key.
+ Find a specific widget instance.
+ infoNote
+ This recipe uses the
+ material_ui package.
+ If your app doesn't already depend on it,
+ run flutter pub add material_ui from your app's directory.
+ 1. Find a Text widget
+ #
+ In testing, you often need to find widgets that contain specific text.
+ This is exactly what the find.text() method is for. It creates a
+ Finder that searches for widgets that display a specific String
+ of text.
+ dart
+ testWidgets('finds a Text widget', (tester) async {
+ // Build an App with a Text widget that displays the letter 'H'.
+ await tester.pumpWidget(const MaterialApp(home: Scaffold(body: Text('H'))));
+​
+ // Find a widget that displays the letter 'H'.
+ expect(find.text('H'), findsOneWidget);
+});
+ content_copy
+ 2. Find a widget with a specific Key
+ #
+ In some cases, you might want to find a widget based on the Key that has been
+ provided to it. This can be handy if displaying multiple instances of the
+ same widget. For example, a ListView might display several
+ Text widgets that contain the same text.
+ In this case, provide a Key to each widget in the list. This allows
+ an app to uniquely identify a specific widget, making it easier to find
+ the widget in the test environment.
+ dart
+ testWidgets('finds a widget using a Key', (tester) async {
+ // Define the test key.
+ const testKey = Key('K');
+​
+ // Build a MaterialApp with the testKey.
+ await tester.pumpWidget(MaterialApp(key: testKey, home: Container()));
+​
+ // Find the MaterialApp widget using the testKey.
+ expect(find.byKey(testKey), findsOneWidget);
+});
+ content_copy
+ 3. Find a specific widget instance
+ #
+ Finally, you might be interested in locating a specific instance of a widget.
+ For example, this can be useful when creating widgets that take a child
+ property and you want to ensure you're rendering the child widget.
+ dart
+ testWidgets('finds a specific instance', (tester) async {
+ const childWidget = Padding(padding: EdgeInsets.zero);
+​
+ // Provide the childWidget to the Container.
+ await tester.pumpWidget(Container(child: childWidget));
+​
+ // Search for the childWidget in the tree and verify it exists.
+ expect(find.byWidget(childWidget), findsOneWidget);
+});
+ content_copy
+ Summary
+ #
+ The find constant provided by the flutter_test package provides
+ several ways to locate widgets in the test environment. This recipe
+ demonstrated three of these methods, and several more methods exist
+ for different purposes.
+ If the above examples do not work for a particular use-case,
+ see the CommonFinders documentation
+ to review all available methods.
+ Complete example
+ #
+ dart
+ import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
+​
+void main() {
+ testWidgets('finds a Text widget', (tester) async {
+ // Build an App with a Text widget that displays the letter 'H'.
+ await tester.pumpWidget(const MaterialApp(home: Scaffold(body: Text('H'))));
+​
+ // Find a widget that displays the letter 'H'.
+ expect(find.text('H'), findsOneWidget);
+ });
+​
+ testWidgets('finds a widget using a Key', (tester) async {
+ // Define the test key.
+ const testKey = Key('K');
+​
+ // Build a MaterialApp with the testKey.
+ await tester.pumpWidget(MaterialApp(key: testKey, home: Container()));
+​
+ // Find the MaterialApp widget using the testKey.
+ expect(find.byKey(testKey), findsOneWidget);
+ });
+​
+ testWidgets('finds a specific instance', (tester) async {
+ const childWidget = Padding(padding: EdgeInsets.zero);
+​
+ // Provide the childWidget to the Container.
+ await tester.pumpWidget(Container(child: childWidget));
+​
+ // Search for the childWidget in the tree and verify it exists.
+ expect(find.byWidget(childWidget), findsOneWidget);
+ });
+}
+ content_copy
+ -->
+ Was this page's content helpful?
+ thumb_up
+ thumb_down
+ Unless stated otherwise, the documentation on this site reflects Flutter 3.50. Page last updated on 2026-11-10. 
+ View source
+ or report an issue.
+ 

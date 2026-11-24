@@ -1,0 +1,45 @@
+
+ description
+push<T extends Object?> static method 
+ @optionalTypeArgs
+ @awaitNotRequired
+Future<T?>
+push<T extends Object?>( BuildContext context, 
+Route<T> route
+)
+ Push the given route onto the navigator that most tightly encloses the
+given context.
+The new route and the previous route (if any) are notified (see
+Route.didPush and Route.didChangeNext). If the Navigator has any
+Navigator.observers, they will be notified as well (see
+NavigatorObserver.didPush).
+Ongoing gestures within the current route are canceled when a new route is
+pushed.
+The T type argument is the type of the return value of the route.
+Returns a Future that completes to the result value passed to pop
+when the pushed route is popped off the navigator.
+Typical usage is as follows:
+ link
+ content_copy
+ void _openMyPage() {
+ Navigator.push<void>(
+ context,
+ MaterialPageRoute<void>(
+ builder: (BuildContext context) => const MyPage(),
+ ),
+ );
+}
+See also:
+restorablePush, which pushes a route that can be restored during
+state restoration.
+ Implementation
+ @optionalTypeArgs
+@awaitNotRequired
+static Future<T?> push<T extends Object?>(BuildContext context, Route<T> route) {
+ return Navigator.of(context).push(route);
+}
+ Flutter
+ widgets
+ Navigator
+ push<T extends Object?> static method
+ Navigator class

@@ -1,0 +1,295 @@
+
+ description
+StatelessWidget class 
+ abstract
+ A widget that does not require mutable state.
+A stateless widget is a widget that describes part of the user interface by
+building a constellation of other widgets that describe the user interface
+more concretely. The building process continues recursively until the
+description of the user interface is fully concrete (e.g., consists
+entirely of RenderObjectWidgets, which describe concrete RenderObjects).
+Stateless widget are useful when the part of the user interface you are
+describing does not depend on anything other than the configuration
+information in the object itself and the BuildContext in which the widget
+is inflated. For compositions that can change dynamically, e.g. due to
+having an internal clock-driven state, or depending on some system state,
+consider using StatefulWidget.
+Performance considerations
+The build method of a stateless widget is typically only called in three
+situations: the first time the widget is inserted in the tree, when the
+widget's parent changes its configuration (see Element.rebuild), and when
+an InheritedWidget it depends on changes.
+If a widget's parent will regularly change the widget's configuration, or if
+it depends on inherited widgets that frequently change, then it is important
+to optimize the performance of the build method to maintain a fluid
+rendering performance.
+There are several techniques one can use to minimize the impact of
+rebuilding a stateless widget:
+Minimize the number of nodes transitively created by the build method and
+any widgets it creates. For example, instead of an elaborate arrangement
+of Rows, Columns, Paddings, and SizedBoxes to position a single
+child in a particularly fancy manner, consider using just an Align or a
+CustomSingleChildLayout. Instead of an intricate layering of multiple
+Containers and with Decorations to draw just the right graphical
+effect, consider a single CustomPaint widget.
+Use const widgets where possible, and provide a const constructor for
+the widget so that users of the widget can also do so.
+Consider refactoring the stateless widget into a stateful widget so that
+it can use some of the techniques described at StatefulWidget, such as
+caching common parts of subtrees and using GlobalKeys when changing the
+tree structure.
+If the widget is likely to get rebuilt frequently due to the use of
+InheritedWidgets, consider refactoring the stateless widget into
+multiple widgets, with the parts of the tree that change being pushed to
+the leaves. For example instead of building a tree with four widgets, the
+inner-most widget depending on the Theme, consider factoring out the
+part of the build function that builds the inner-most widget into its own
+widget, so that only the inner-most widget needs to be rebuilt when the
+theme changes.
+When trying to create a reusable piece of UI, prefer using a widget
+rather than a helper method. For example, if there was a function used to
+build a widget, a State.setState call would require Flutter to entirely
+ rebuild the returned wrapping widget. If a Widget was used instead,
+ Flutter would be able to efficiently re-render only those parts that
+ really need to be updated. Even better, if the created widget is const,
+ Flutter would short-circuit most of the rebuild work.
+This video gives more explanations on why const constructors are important
+and why a Widget is better than a helper method.
+The following is a skeleton of a stateless widget subclass called GreenFrog.
+Normally, widgets have more constructor arguments, each of which corresponds
+to a final property.
+ link
+ content_copy
+ class GreenFrog extends StatelessWidget {
+ const GreenFrog({ super.key });
+ @override
+ Widget build(BuildContext context) {
+ return Container(color: const Color(0xFF2DBD3A));
+ }
+}
+This next example shows the more generic widget Frog which can be given
+a color and a child:
+ link
+ content_copy
+ class Frog extends StatelessWidget {
+ const Frog({
+ super.key,
+ this.color = const Color(0xFF2DBD3A),
+ this.child,
+ });
+ final Color color;
+ final Widget? child;
+ @override
+ Widget build(BuildContext context) {
+ return ColoredBox(color: color, child: child);
+ }
+}
+By convention, widget constructors only use named arguments. Also by
+convention, the first argument is key, and the last argument is child,
+children, or the equivalent.
+See also:
+StatefulWidget and State, for widgets that can build differently
+several times over their lifetime.
+InheritedWidget, for widgets that introduce ambient state that can
+be read by descendant widgets.
+ Inheritance
+ Object
+ DiagnosticableTree
+ Widget
+ StatelessWidget
+ Implementers
+ AboutDialog
+ AboutListTile
+ ActionChip
+ AdaptiveTextSelectionToolbar
+ AlertDialog
+ AnimatedIcon
+ Autocomplete
+ BackButtonIcon
+ Badge
+ Builder
+ ButtonBar
+ CallbackShortcuts
+ Card
+ CheckboxListTile
+ CheckboxMenuButton
+ CheckedModeBanner
+ Chip
+ ChoiceChip
+ CircleAvatar
+ CloseButtonIcon
+ Container
+ CupertinoAdaptiveTextSelectionToolbar
+ CupertinoDesktopTextSelectionToolbar
+ CupertinoFormRow
+ CupertinoFormSection
+ CupertinoLinearActivityIndicator
+ CupertinoListSection
+ CupertinoListTileChevron
+ CupertinoMagnifier
+ CupertinoMenuDivider
+ CupertinoMenuItem
+ CupertinoNavigationBarBackButton
+ CupertinoPickerDefaultSelectionOverlay
+ CupertinoPopupSurface
+ CupertinoSpellCheckSuggestionsToolbar
+ CupertinoTabBar
+ CupertinoTextSelectionToolbar
+ CupertinoTheme
+ DataTable
+ DefaultTextEditingShortcuts
+ DesktopTextSelectionToolbar
+ DesktopTextSelectionToolbarButton
+ DeviceOrientationBuilder
+ Dialog
+ DisplayFeatureSubScreen
+ Divider
+ Drawer
+ DrawerButtonIcon
+ DrawerHeader
+ DropdownMenuItem
+ EndDrawerButtonIcon
+ ExcludeFocus
+ ExcludeFocusTraversal
+ FilterChip
+ FloatingActionButton
+ FlutterLogo
+ GestureDetector
+ GridPaper
+ GridTile
+ GridTileBar
+ HeroMode
+ HtmlElementView
+ Icon
+ IconButton
+ ImageIcon
+ IndexedStack
+ InkResponse
+ InputChip
+ InspectorButton
+ KeyboardListener
+ KeyedSubtree
+ ListTile
+ Magnifier
+ MaterialButton
+ MenuBar
+ ModalBarrier
+ NavigationBar
+ NavigationDestination
+ NavigationDrawer
+ NavigationDrawerDestination
+ NavigationIndicator
+ NavigationToolbar
+ OrientationBuilder
+ PageStorage
+ PinnedHeaderSliver
+ Placeholder
+ PlatformSelectableRegionContextMenu
+ PositionedDirectional
+ PreferredSize
+ RadioMenuButton
+ RawMagnifier
+ RawView
+ ReorderableDragStartListener
+ SafeArea
+ Scrollbar
+ ScrollView
+ SimpleDialog
+ SimpleDialogOption
+ SingleChildScrollView
+ SliverConstrainedCrossAxis
+ SliverFillRemaining
+ SliverFillViewport
+ SliverPersistentHeader
+ SliverResizingHeader
+ SliverSafeArea
+ SliverVisibility
+ Spacer
+ SpellCheckSuggestionsToolbar
+ StatelessLeakingWidget
+ StretchEffect
+ Switch
+ SwitchListTile
+ Tab
+ TableCell
+ TabPageSelectorIndicator
+ TestWidgetsApp
+ Text
+ TextSelectionToolbar
+ TextSelectionToolbarTextButton
+ Theme
+ ToggleButtons
+ TooltipVisibility
+ TwoDimensionalScrollView
+ UnconstrainedBox
+ VerticalDivider
+ ViewAnchor
+ Visibility
+ Constructors
+ StatelessWidget({Key? key})
+ Initializes key for subclasses.
+ const
+ Properties
+ hashCode
+ → int
+ The hash code for this object.
+ no setterinherited
+ key
+ → Key?
+ Controls how one widget replaces another widget in the tree.
+ finalinherited
+ runtimeType
+ → Type
+ A representation of the runtime type of the object.
+ no setterinherited
+ Methods
+ build(BuildContext context)
+ → Widget
+ Describes the part of the user interface represented by this widget.
+ createElement()
+ → StatelessElement
+ Creates a StatelessElement to manage this widget's location in the tree.
+ override
+ debugDescribeChildren()
+ → List<DiagnosticsNode>
+ Returns a list of DiagnosticsNode objects describing this node's
+children.
+ inherited
+ debugFillProperties(DiagnosticPropertiesBuilder properties)
+ → void
+ Add additional properties associated with the node.
+ inherited
+ noSuchMethod(Invocation invocation)
+ → dynamic
+ Invoked when a nonexistent method or property is accessed.
+ inherited
+ toDiagnosticsNode({String? name, DiagnosticsTreeStyle? style})
+ → DiagnosticsNode
+ Returns a debug representation of the object that is used by debugging
+tools and by DiagnosticsNode.toStringDeep.
+ inherited
+ toString({DiagnosticLevel minLevel = DiagnosticLevel.info})
+ → String
+ A string representation of this object.
+ inherited
+ toStringDeep({String prefixLineOne = '', String? prefixOtherLines, DiagnosticLevel minLevel = DiagnosticLevel.debug, int wrapWidth = 65})
+ → String
+ Returns a string representation of this node and its descendants.
+ inherited
+ toStringShallow({String joiner = ', ', DiagnosticLevel minLevel = DiagnosticLevel.debug})
+ → String
+ Returns a one-line detailed description of the object.
+ inherited
+ toStringShort()
+ → String
+ A short, textual description of this widget.
+ inherited
+ Operators
+ operator ==(Object other)
+ → bool
+ The equality operator.
+ inherited
+ Flutter
+ widgets
+ StatelessWidget class
+ widgets library

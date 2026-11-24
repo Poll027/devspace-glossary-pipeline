@@ -1,0 +1,412 @@
+
+ -->
+ list
+ On this pagechevron_right
+ Send data to a new screen
+ vertical_align_top
+ Send data to a new screen
+ 1. Define a todo class
+ 2. Create a list of todosGenerate the list of todos
+Display the list of todos using a ListView
+ 3. Create a Todo screen to display the list
+ 4. Create a detail screen to display information about a todo
+ 5. Navigate and pass data to the detail screenInteractive example
+ Alternatively, pass the arguments using RouteSettingsCreate a detail screen to extract the arguments
+Navigate and pass the arguments to the detail screen
+Complete example
+ Help improve Flutter! Take the Flutter Q4 Developer survey.
+ list
+ On this page
+ 1. Define a todo class
+ 2. Create a list of todosGenerate the list of todos
+Display the list of todos using a ListView
+ 3. Create a Todo screen to display the list
+ 4. Create a detail screen to display information about a todo
+ 5. Navigate and pass data to the detail screenInteractive example
+ Alternatively, pass the arguments using RouteSettingsCreate a detail screen to extract the arguments
+Navigate and pass the arguments to the detail screen
+Complete example
+ Cookbookchevron_right
+ Navigationchevron_right
+ Send data to a new screen
+ Send data to a new screen
+ How to pass data to a new route.
+ -->
+ more_vert
+ linkCopy link
+ content_copyCopy as Markdown
+ markdownView as Markdown
+ docsOpen on GitHub
+ bug_reportReport an issue
+ Often, you not only want to navigate to a new screen,
+ but also pass data to the screen as well.
+ For example, you might want to pass information about
+ the item that's been tapped.
+ Remember: Screens are just widgets.
+ In this example, create a list of todos.
+ When a todo is tapped, navigate to a new screen (widget) that
+ displays information about the todo.
+ This recipe uses the following steps:
+ Define a todo class.
+ Display a list of todos.
+ Create a detail screen that can display information about a todo.
+ Navigate and pass data to the detail screen.
+ infoNote
+ This recipe uses the
+ material_ui package.
+ If your app doesn't already depend on it,
+ run flutter pub add material_ui from your app's directory.
+ 1. Define a todo class
+ #
+ First, you need a simple way to represent todos. For this example,
+ create a class that contains two pieces of data: the title and description.
+ dart
+ class Todo {
+ final String title;
+ final String description;
+​
+ const Todo(this.title, this.description);
+}
+ content_copy
+ 2. Create a list of todos
+ #
+ Second, display a list of todos. In this example, generate
+ 20 todos and show them using a ListView.
+ For more information on working with lists,
+ see the Use lists recipe.
+ Generate the list of todos
+ #
+ dart
+ final todos = List.generate(
+ 20,
+ (i) => Todo(
+ 'Todo $i',
+ 'A description of what needs to be done for Todo $i',
+ ),
+);
+ content_copy
+ Display the list of todos using a ListView
+ #
+ dart
+ ListView.builder(
+ itemCount: todos.length,
+ itemBuilder: (context, index) {
+ return ListTile(title: Text(todos[index].title));
+ },
+)
+ content_copy
+ So far, so good.
+ This generates 20 todos and displays them in a ListView.
+ 3. Create a Todo screen to display the list
+ #
+ For this, we create a StatelessWidget. We call it TodosScreen.
+ Since the contents of this page won't change during runtime,
+ we'll have to require the list
+ of todos within the scope of this widget.
+ We pass in our ListView.builder as body of the widget we're returning to build().
+ This'll render the list on to the screen for you to get going!
+ dart
+ class TodosScreen extends StatelessWidget {
+ // Requiring the list of todos.
+ const TodosScreen({super.key, required this.todos});
+​
+ final List<Todo> todos;
+​
+ @override
+ Widget build(BuildContext context) {
+ return Scaffold(
+ appBar: AppBar(title: const Text('Todos')),
+ //passing in the ListView.builder
+ body: ListView.builder(
+ itemCount: todos.length,
+ itemBuilder: (context, index) {
+ return ListTile(title: Text(todos[index].title));
+ },
+ ),
+ );
+ }
+}
+ content_copy
+ With Flutter's default styling, you're good to go without sweating about
+ things that you'd like to do later on!
+ 4. Create a detail screen to display information about a todo
+ #
+ Now, create the second screen. The title of the screen contains the
+ title of the todo, and the body of the screen shows the description.
+ Since the detail screen is a normal StatelessWidget,
+ require the user to enter a Todo in the UI.
+ Then, build the UI using the given todo.
+ dart
+ class DetailScreen extends StatelessWidget {
+ // In the constructor, require a Todo.
+ const DetailScreen({super.key, required this.todo});
+​
+ // Declare a field that holds the Todo.
+ final Todo todo;
+​
+ @override
+ Widget build(BuildContext context) {
+ // Use the Todo to create the UI.
+ return Scaffold(
+ appBar: AppBar(title: Text(todo.title)),
+ body: Padding(
+ padding: const EdgeInsets.all(16),
+ child: Text(todo.description),
+ ),
+ );
+ }
+}
+ content_copy
+ 5. Navigate and pass data to the detail screen
+ #
+ With a DetailScreen in place,
+ you're ready to perform the Navigation.
+ In this example, navigate to the DetailScreen when a user
+ taps a todo in the list. Pass the todo to the DetailScreen.
+ To capture the user's tap in the TodosScreen, write an onTap()
+ callback for the ListTile widget. Within the onTap() callback,
+ use the Navigator.push()
+ method.
+ dart
+ body: ListView.builder(
+ itemCount: todos.length,
+ itemBuilder: (context, index) {
+ return ListTile(
+ title: Text(todos[index].title),
+ // When a user taps the ListTile, navigate to the DetailScreen.
+ // Notice that you're not only creating a DetailScreen, you're
+ // also passing the current todo through to it.
+ onTap: () {
+ Navigator.push(
+ context,
+ MaterialPageRoute<void>(
+ builder: (context) => DetailScreen(todo: todos[index]),
+ ),
+ );
+ },
+ );
+ },
+),
+ content_copy
+ Interactive example
+ #
+ -->
+ // DartPad doesn't support `material_ui` yet,
+// so this example imports Material from the Flutter SDK.
+// To run locally, depend on `material_ui` and use this import instead:
+// import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
+class Todo {
+ final String title;
+ final String description;
+ const Todo(this.title, this.description);
+}
+void main() {
+ runApp(
+ MaterialApp(
+ title: 'Passing Data',
+ home: TodosScreen(
+ todos: List.generate(
+ 20,
+ (i) => Todo(
+ 'Todo $i',
+ 'A description of what needs to be done for Todo $i',
+ ),
+ ),
+ ),
+ ),
+ );
+}
+class TodosScreen extends StatelessWidget {
+ const TodosScreen({super.key, required this.todos});
+ final List<Todo> todos;
+ @override
+ Widget build(BuildContext context) {
+ return Scaffold(
+ appBar: AppBar(title: const Text('Todos')),
+ body: ListView.builder(
+ itemCount: todos.length,
+ itemBuilder: (context, index) {
+ return ListTile(
+ title: Text(todos[index].title),
+ // When a user taps the ListTile, navigate to the DetailScreen.
+ // Notice that you're not only creating a DetailScreen, you're
+ // also passing the current todo through to it.
+ onTap: () {
+ Navigator.push(
+ context,
+ MaterialPageRoute<void>(
+ builder: (context) => DetailScreen(todo: todos[index]),
+ ),
+ );
+ },
+ );
+ },
+ ),
+ );
+ }
+}
+class DetailScreen extends StatelessWidget {
+ // In the constructor, require a Todo.
+ const DetailScreen({super.key, required this.todo});
+ // Declare a field that holds the Todo.
+ final Todo todo;
+ @override
+ Widget build(BuildContext context) {
+ // Use the Todo to create the UI.
+ return Scaffold(
+ appBar: AppBar(title: Text(todo.title)),
+ body: Padding(
+ padding: const EdgeInsets.all(16),
+ child: Text(todo.description),
+ ),
+ );
+ }
+}
+ Alternatively, pass the arguments using RouteSettings
+ #
+ Repeat the first two steps.
+ Create a detail screen to extract the arguments
+ #
+ Next, create a detail screen that extracts and displays the title and description from the Todo. To access the 
+ Todo, use the ModalRoute.of()
+ method. This method returns the current route with the arguments.
+ dart
+ class DetailScreen extends StatelessWidget {
+ const DetailScreen({super.key});
+​
+ @override
+ Widget build(BuildContext context) {
+ final todo = ModalRoute.of(context)!.settings.arguments as Todo;
+​
+ // Use the Todo to create the UI.
+ return Scaffold(
+ appBar: AppBar(title: Text(todo.title)),
+ body: Padding(
+ padding: const EdgeInsets.all(16),
+ child: Text(todo.description),
+ ),
+ );
+ }
+}
+ content_copy
+ Navigate and pass the arguments to the detail screen
+ #
+ Finally, navigate to the DetailScreen when a user taps
+ a ListTile widget using Navigator.push().
+ Pass the arguments as part of the RouteSettings.
+ The DetailScreen extracts these arguments.
+ dart
+ ListView.builder(
+ itemCount: todos.length,
+ itemBuilder: (context, index) {
+ return ListTile(
+ title: Text(todos[index].title),
+ // When a user taps the ListTile, navigate to the DetailScreen.
+ // Notice that you're not only creating a DetailScreen, you're
+ // also passing the current todo through to it.
+ onTap: () {
+ Navigator.push(
+ context,
+ MaterialPageRoute<void>(
+ builder: (context) => const DetailScreen(),
+ // Pass the arguments as part of the RouteSettings. The
+ // DetailScreen reads the arguments from these settings.
+ settings: RouteSettings(arguments: todos[index]),
+ ),
+ );
+ },
+ );
+ },
+)
+ content_copy
+ Complete example
+ #
+ dart
+ import 'package:material_ui/material_ui.dart';
+​
+class Todo {
+ final String title;
+ final String description;
+​
+ const Todo(this.title, this.description);
+}
+​
+void main() {
+ runApp(
+ MaterialApp(
+ title: 'Passing Data',
+ home: TodosScreen(
+ todos: List.generate(
+ 20,
+ (i) => Todo(
+ 'Todo $i',
+ 'A description of what needs to be done for Todo $i',
+ ),
+ ),
+ ),
+ ),
+ );
+}
+​
+class TodosScreen extends StatelessWidget {
+ const TodosScreen({super.key, required this.todos});
+​
+ final List<Todo> todos;
+​
+ @override
+ Widget build(BuildContext context) {
+ return Scaffold(
+ appBar: AppBar(title: const Text('Todos')),
+ body: ListView.builder(
+ itemCount: todos.length,
+ itemBuilder: (context, index) {
+ return ListTile(
+ title: Text(todos[index].title),
+ // When a user taps the ListTile, navigate to the DetailScreen.
+ // Notice that you're not only creating a DetailScreen, you're
+ // also passing the current todo through to it.
+ onTap: () {
+ Navigator.push(
+ context,
+ MaterialPageRoute<void>(
+ builder: (context) => const DetailScreen(),
+ // Pass the arguments as part of the RouteSettings. The
+ // DetailScreen reads the arguments from these settings.
+ settings: RouteSettings(arguments: todos[index]),
+ ),
+ );
+ },
+ );
+ },
+ ),
+ );
+ }
+}
+​
+class DetailScreen extends StatelessWidget {
+ const DetailScreen({super.key});
+​
+ @override
+ Widget build(BuildContext context) {
+ final todo = ModalRoute.of(context)!.settings.arguments as Todo;
+​
+ // Use the Todo to create the UI.
+ return Scaffold(
+ appBar: AppBar(title: Text(todo.title)),
+ body: Padding(
+ padding: const EdgeInsets.all(16),
+ child: Text(todo.description),
+ ),
+ );
+ }
+}
+ content_copy
+ -->
+ Was this page's content helpful?
+ thumb_up
+ thumb_down
+ Unless stated otherwise, the documentation on this site reflects Flutter 3.50. Page last updated on 2026-11-10. 
+ View source
+ or report an issue.
+ 

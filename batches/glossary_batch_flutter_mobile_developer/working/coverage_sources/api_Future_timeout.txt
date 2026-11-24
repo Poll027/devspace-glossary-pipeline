@@ -1,0 +1,81 @@
+
+ description
+timeout abstract method 
+Future<T>
+timeout( Duration timeLimit, {
+FutureOr<T> onTimeout()?, 
+})
+ Stop waiting for this future after timeLimit has passed.
+Creates a new timeout future that completes
+with the same result as this future, the source future,
+if the source future completes in time.
+If the source future does not complete before timeLimit has passed,
+the onTimeout action is executed,
+and its result (whether it returns or throws)
+is used as the result of the timeout future.
+The onTimeout function must return a T or a Future<T>.
+If onTimeout returns a future, the alternative result future,
+the eventual result of the alternative result future is used
+to complete the timeout future,
+even if the source future completes
+before the alternative result future.
+It only matters that the source future did not complete in time.
+If onTimeout is omitted, a timeout will cause the returned future to
+complete with a TimeoutException.
+In either case, the source future can still complete normally
+at a later time.
+It just won't be used as the result of the timeout future
+unless it completes within the time bound.
+Even if the source future completes with an error,
+if that error happens after timeLimit has passed,
+the error is ignored, just like a value result would be.
+Examples:
+void main() async {
+ var result =
+ await waitTask("completed").timeout(const Duration(seconds: 10));
+ print(result); // Prints "completed" after 5 seconds.
+ result = await waitTask("completed")
+ .timeout(const Duration(seconds: 1), onTimeout: () => "timeout");
+ print(result); // Prints "timeout" after 1 second.
+ result = await waitTask("first").timeout(const Duration(seconds: 2),
+ onTimeout: () => waitTask("second"));
+ print(result); // Prints "second" after 7 seconds.
+ try {
+ await waitTask("completed").timeout(const Duration(seconds: 2));
+ } on TimeoutException {
+ print("throws"); // Prints "throws" after 2 seconds.
+ }
+ var printFuture = waitPrint();
+ await printFuture.timeout(const Duration(seconds: 2), onTimeout: () {
+ print("timeout"); // Prints "timeout" after 2 seconds.
+ });
+ await printFuture; // Prints "printed" after additional 3 seconds.
+ try {
+ await waitThrow("error").timeout(const Duration(seconds: 2));
+ } on TimeoutException {
+ print("throws"); // Prints "throws" after 2 seconds.
+ }
+ // StateError is ignored
+}
+/// Returns [string] after five seconds.
+Future<String> waitTask(String string) async {
+ await Future.delayed(const Duration(seconds: 5));
+ return string;
+}
+/// Prints "printed" after five seconds.
+Future<void> waitPrint() async {
+ await Future.delayed(const Duration(seconds: 5));
+ print("printed");
+}
+/// Throws a [StateError] with [message] after five seconds.
+Future<void> waitThrow(String message) async {
+ await Future.delayed(const Duration(seconds: 5));
+ throw Exception(message);
+}
+ Implementation
+ Future<T> timeout(Duration timeLimit, {FutureOr<T> onTimeout()?});
+ Dart
+ dart:async
+ Future<T>
+ timeout abstract method
+ Future class

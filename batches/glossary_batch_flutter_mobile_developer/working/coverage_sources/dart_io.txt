@@ -1,0 +1,471 @@
+
+ description
+ dart:io
+ library 
+ File, socket, HTTP, and other I/O support for non-web applications.
+Important: Browser-based apps can't use this library.
+Only the following can import and use the dart:io library:
+Servers
+Command-line scripts
+Flutter mobile apps
+Flutter desktop apps
+This library allows you to work with files, directories,
+sockets, processes, HTTP servers and clients, and more.
+Many operations related to input and output are asynchronous
+and are handled using Futures or Streams, both of which
+are defined in the dart:async
+library.
+To use the dart:io library in your code:
+import 'dart:io';
+For an introduction to I/O in Dart, see the dart:io library
+tour.
+File, Directory, and Link
+An instance of File, Directory, or Link represents a file,
+directory, or link, respectively, in the native file system.
+You can manipulate the file system through objects of these types.
+For example, you can rename a file or directory:
+File myFile = File('myFile.txt');
+myFile.rename('yourFile.txt').then((_) => print('file renamed'));
+Many methods provided by the File, Directory, and Link classes
+run asynchronously and return a Future.
+FileSystemEntity
+File, Directory, and Link all extend FileSystemEntity.
+In addition to being the superclass for these classes,
+FileSystemEntity has a number of static methods for working with paths.
+To get information about a path,
+you can use the FileSystemEntity static methods
+such as FileSystemEntity.isDirectory, FileSystemEntity.isFile,
+and FileSystemEntity.exists.
+Because file system access involves I/O, these methods
+are asynchronous and return a Future.
+FileSystemEntity.isDirectory(myPath).then((isDir) {
+ if (isDir) {
+ print('$myPath is a directory');
+ } else {
+ print('$myPath is not a directory');
+ }
+});
+HttpServer and HttpClient
+The classes HttpClient and HttpServer provide low-level HTTP
+functionality.
+Instead of using these classes directly, consider using more
+developer-friendly and composable APIs found in packages.
+For HTTP clients, look at package:http.
+For HTTP servers, look at
+Write HTTP servers on
+dart.dev.
+Process
+The Process class provides a way to run a process on
+the native machine.
+For example, the following code spawns a process that recursively lists
+the files under web.
+Process.start('ls', ['-R', 'web']).then((process) {
+ stdout.addStream(process.stdout);
+ stderr.addStream(process.stderr);
+ process.exitCode.then(print);
+});
+Using Process.start returns a Future,
+which completes with a Process object when the process has started.
+This Process object allows you to interact
+with the process while it is running.
+Using Process.run returns a Future,
+which completes with a ProcessResult object when the spawned process has
+terminated. This ProcessResult object collects the output and exit code
+from the process.
+When using Process.start,
+you need to read all data coming on the Process.stdout and Process.stderr
+streams, otherwise the system resources will not be freed.
+WebSocket
+The WebSocket class provides support for the web socket protocol. This
+allows full-duplex communications between client and server applications.
+A web socket server uses a normal HTTP server for accepting web socket
+connections. The initial handshake is a HTTP request which is then upgraded to a
+web socket connection.
+The server upgrades the request using WebSocketTransformer
+and listens for the data on the returned web socket.
+For example, here's a mini server that listens for 'ws' data
+on a WebSocket:
+runZoned(() async {
+ var server = await HttpServer.bind('127.0.0.1', 4040);
+ server.listen((HttpRequest req) async {
+ if (req.uri.path == '/ws') {
+ var socket = await WebSocketTransformer.upgrade(req);
+ socket.listen(handleMsg);
+ }
+ });
+}, onError: (e) => print("An error occurred."));
+The client connects to the WebSocket using the WebSocket.connect method
+and a URI that uses the Web Socket protocol.
+The client can write to the WebSocket with the WebSocket.add method.
+For example,
+var socket = await WebSocket.connect('ws://127.0.0.1:4040/ws');
+socket.add('Hello, World!');
+Check out the
+websocket_sample
+app, which uses WebSockets to communicate with a server.
+Socket and ServerSocket
+Clients and servers use Sockets to communicate using the TCP protocol.
+Use ServerSocket on the server side and Socket on the client.
+The server creates a listening socket using the bind() method and
+then listens for incoming connections on the socket. For example:
+ServerSocket.bind('127.0.0.1', 4041)
+ .then((serverSocket) {
+ serverSocket.listen((socket) {
+ socket.transform(utf8.decoder).listen(print);
+ });
+ });
+A client connects a Socket using the connect() method,
+which returns a Future.
+Using write(), writeln(), or writeAll() are the easiest ways to
+send data over the socket.
+For example:
+Socket.connect('127.0.0.1', 4041).then((socket) {
+ socket.write('Hello, World!');
+});
+Besides Socket and ServerSocket, the RawSocket and
+RawServerSocket classes are available for lower-level access
+to async socket IO.
+Standard output, error, and input streams
+This library provides the standard output, error, and input
+streams, named stdout, stderr, and stdin, respectively.
+The stdout and stderr streams are both IOSinks and have the same set
+of methods and properties.
+To write a string to stdout:
+stdout.writeln('Hello, World!');
+To write a list of objects to stderr:
+stderr.writeAll([ 'That ', 'is ', 'an ', 'error.', '\n']);
+The standard input stream is a true Stream, so it inherits
+properties and methods from the Stream class.
+To read text synchronously from the command line
+(the program blocks waiting for user to type information):
+String? inputText = stdin.readLineSync();
+ Classes
+ BytesBuilder 
+ Builds a list of bytes, allowing bytes and lists of bytes to be added at the
+end.
+ CompressionOptions 
+ Options controlling compression in a WebSocket.
+ ConnectionTask<S> 
+ A cancelable connection attempt.
+ ContentType 
+ A MIME/IANA media type used as the value of the
+HttpHeaders.contentTypeHeader header.
+ Cookie 
+ Representation of a cookie. For cookies received by the server as Cookie
+header values only name and value properties will be set. When building a
+cookie for the 'set-cookie' header in the server and when receiving cookies
+in the client as 'set-cookie' headers all fields can be used.
+ Datagram 
+ A data packet received by a RawDatagramSocket.
+ Directory 
+ A reference to a directory (or folder) on the file system.
+ File 
+ A reference to a file on the file system.
+ FileLock 
+ Type of lock when requesting a lock on a file.
+ FileMode 
+ The modes in which a File can be opened.
+ FileStat 
+ The result of calling the POSIX stat() function on a file system object.
+ FileSystemCreateEvent 
+ File system event for newly created file system objects.
+ FileSystemDeleteEvent 
+ File system event for deletion of file system objects.
+ FileSystemEntity 
+ The common superclass of File, Directory, and Link.
+ FileSystemEntityType 
+ The type of an entity on the file system,
+such as a file, directory, or link.
+ FileSystemEvent 
+ Base event class emitted by FileSystemEntity.watch.
+ FileSystemModifyEvent 
+ File system event for modifications of file system objects.
+ FileSystemMoveEvent 
+ File system event for moving of file system objects.
+ GZipCodec 
+ The GZipCodec encodes raw bytes to GZip compressed bytes and decodes GZip
+compressed bytes to raw bytes.
+ HeaderValue 
+ Representation of a header value in the form:
+ HttpClient 
+ An HTTP client for communicating with an HTTP server.
+ HttpClientBasicCredentials 
+ Represents credentials for basic authentication.
+ HttpClientBearerCredentials 
+ Represents credentials for bearer token authentication.
+ HttpClientCredentials 
+ Represents credentials for authentication in HttpClient.
+ HttpClientDigestCredentials 
+ Represents credentials for digest authentication.
+ HttpClientRequest 
+ HTTP request for a client connection.
+ HttpClientResponse 
+ HTTP response for a client connection.
+ HttpConnectionInfo 
+ Information about an HttpRequest, HttpResponse, HttpClientRequest, or
+HttpClientResponse connection.
+ HttpConnectionsInfo 
+ Summary statistics about an HttpServers current socket connections.
+ HttpDate 
+ Utility functions for working with dates with HTTP specific date
+formats.
+ HttpHeaders 
+ Headers for HTTP requests and responses.
+ HttpOverrides 
+ This class facilitates overriding HttpClient with a mock implementation.
+It should be extended by another class in client code with overrides
+that construct a mock implementation. The implementation in this base class
+defaults to the actual HttpClient implementation. For example:
+ HttpRequest 
+ A server-side object
+that contains the content of and information about an HTTP request.
+ HttpResponse 
+ An HTTP response, which returns the headers and data
+from the server to the client in response to an HTTP request.
+ HttpServer 
+ A server that delivers content, such as web pages, using the HTTP protocol.
+ HttpSession 
+ The HttpRequest.session of an HttpRequest.
+ HttpStatus 
+ HTTP status codes. Exported in dart:io and dart:html.
+ InterfaceAddress 
+ An InternetAddress bound to a NetworkInterface, extended with
+network configuration details.
+ InternetAddress 
+ An internet address or a Unix domain address.
+ InternetAddressType 
+ The type, or address family, of an InternetAddress.
+ IOOverrides 
+ Facilities for overriding various APIs of dart:io with mock
+implementations.
+ IOSink 
+ A combined byte and text output.
+ Link 
+ References to filesystem links.
+ NetworkInterface 
+ A NetworkInterface represents an active network interface on the current
+system. It contains a list of InterfaceAddresses that are bound to the
+interface.
+ Pipe 
+ An anonymous pipe that can be used to send data in a single direction i.e.
+data written to write can be read using read.
+ Platform 
+ Information about the environment in which the current program is running.
+ Process 
+ The means to execute a program.
+ ProcessInfo 
+ Methods for retrieving information about the current process.
+ ProcessResult 
+ The result of running a non-interactive
+process started with Process.run or Process.runSync.
+ ProcessSignal 
+ On Posix systems, ProcessSignal is used to send a specific signal
+to a child process, see Process.kill.
+ ProcessStartMode 
+ Modes for running a new process.
+ RandomAccessFile 
+ Random access to the data in a file.
+ RawDatagramSocket 
+ An unbuffered interface to a UDP socket.
+ RawSecureServerSocket 
+ A server socket providing a stream of low-level RawSecureSockets.
+ RawSecureSocket 
+ RawSecureSocket provides a secure (SSL or TLS) network connection.
+ RawServerSocket 
+ A listening socket.
+ RawSocket 
+ A TCP connection.
+ RawSocketEvent 
+ Events for the RawDatagramSocket, RawSecureSocket, and RawSocket.
+ RawSocketOption 
+ The RawSocketOption is used as a parameter to Socket.setRawOption and
+RawSocket.setRawOption to customize the behaviour of the underlying
+socket.
+ RawSynchronousSocket 
+ A low-level class for communicating synchronously over a TCP socket.
+ RawZLibFilter 
+ The RawZLibFilter class provides a low-level interface to zlib.
+ ReadPipe 
+ The "read" end of an Pipe created by Pipe.create.
+ RedirectInfo 
+ Redirect information.
+ ResourceHandle 
+ A wrapper around OS resource handle so it can be passed via Socket
+as part of SocketMessage.
+ SameSite 
+ Cookie cross-site availability configuration.
+ SecureServerSocket 
+ A server socket, providing a stream of high-level Sockets.
+ SecureSocket 
+ A TCP socket using TLS and SSL.
+ SecurityContext 
+ The object containing the certificates to trust when making
+a secure client connection, and the certificate chain and
+private key to serve from a secure server.
+ ServerSocket 
+ A listening socket.
+ Socket 
+ A TCP connection between two sockets.
+ SocketControlMessage 
+ Control message part of the SocketMessage received by a call to
+RawSocket.readMessage.
+ SocketDirection 
+ The SocketDirection is used as a parameter to Socket.close and
+RawSocket.close to close a socket in the specified direction(s).
+ SocketMessage 
+ A socket message received by a RawDatagramSocket.
+ SocketOption 
+ An option for a socket which is configured using Socket.setOption.
+ Stdin 
+ The standard input stream of the process.
+ StdioType 
+ The type of object a standard IO stream can be attached to.
+ Stdout 
+ An IOSink connected to either the standard out or error of the process.
+ SystemEncoding 
+ The system encoding is the current code page on Windows and UTF-8 on Linux
+and Mac.
+ TlsProtocolVersion 
+ A Transport Layer Security (TLS) version.
+ WebSocket 
+ A two-way HTTP communication object for client or server applications.
+ WebSocketStatus 
+ WebSocket status codes used when closing a WebSocket connection.
+ WebSocketTransformer 
+ The WebSocketTransformer provides the ability to upgrade a
+HttpRequest to a WebSocket connection. It supports both
+upgrading a single HttpRequest and upgrading a stream of
+HttpRequests.
+ WritePipe 
+ The "write" end of an Pipe created by Pipe.create.
+ X509Certificate 
+ X509Certificate represents an SSL certificate, with accessors to
+get the fields of the certificate.
+ ZLibCodec 
+ The ZLibCodec encodes raw bytes to ZLib compressed bytes and decodes ZLib
+compressed bytes to raw bytes.
+ ZLibDecoder 
+ The ZLibDecoder is used by ZLibCodec and GZipCodec to decompress data.
+ ZLibEncoder 
+ The ZLibEncoder encoder is used by ZLibCodec and GZipCodec to compress
+data.
+ ZLibOption 
+ Exposes ZLib options for input parameters.
+ Enums
+ HttpClientResponseCompressionState 
+ Enum that specifies the compression state of the byte stream of an
+HttpClientResponse.
+ Constants
+ gzip
+ → const GZipCodec
+ An instance of the default implementation of the GZipCodec.
+ systemEncoding
+ → const SystemEncoding
+ The current system encoding.
+ zlib
+ → const ZLibCodec
+ An instance of the default implementation of the ZLibCodec.
+ Properties
+ exitCode
+ ↔ int
+ Get the global exit code for the Dart VM.
+ getter/setter pair
+ pid
+ → int
+ Returns the PID of the current process.
+ no setter
+ stderr
+ → Stdout
+ The standard output stream of errors written by this program.
+ no setter
+ stdin
+ → Stdin
+ The standard input stream of data read by this program.
+ no setter
+ stdout
+ → Stdout
+ The standard output stream of data written by this program.
+ no setter
+ Functions
+ exit(int code)
+ → Never
+ Exit the Dart VM process immediately with the given exit code.
+ sleep(Duration duration)
+ → void
+ Sleep for the duration specified in duration.
+ stdioType(dynamic object)
+ → StdioType
+ Whether a stream is attached to a file, pipe, terminal, or
+something else.
+ Typedefs
+ BadCertificateCallback
+ = bool Function(X509Certificate cr, String host, int port)
+ Exceptions / Errors
+ CertificateException 
+ An exception that happens in the handshake phase of establishing
+a secure network connection, when looking up or verifying a
+certificate.
+ FileSystemException 
+ Exception thrown when a file operation fails.
+ HandshakeException 
+ An exception that happens in the handshake phase of establishing
+a secure network connection.
+ HttpException 
+ IOException 
+ Base class for all IO related exceptions.
+ OSError 
+ An Exception holding information about an error from the
+operating system.
+ PathAccessException 
+ Exception thrown when a file operation fails because the necessary access
+rights are not available.
+ PathExistsException 
+ Exception thrown when a file operation fails because the target path
+already exists.
+ PathNotFoundException 
+ Exception thrown when a file operation fails because a file or
+directory does not exist.
+ ProcessException 
+ RedirectException 
+ SignalException 
+ SocketException 
+ Exception thrown when a socket operation fails.
+ StdinException 
+ Exception thrown by some operations of Stdin
+ StdoutException 
+ Exception thrown by some operations of Stdout
+ TlsException 
+ A secure networking exception caused by a failure in the
+TLS/SSL protocol.
+ WebSocketException 
+ Dart
+ dart:io
+ Dart SDK
+ Libraries
+ Core
+ dart:async
+ dart:collection
+ dart:convert
+ dart:core
+ dart:developer
+ dart:math
+ dart:typed_data
+ VM
+ dart:ffi
+ dart:io
+ dart:isolate
+ dart:mirrors
+ Web
+ package:web
+ open_in_new
+ dart:js_interop
+ dart:js_interop_unsafe
+ Web (Legacy)
+ dart:html
+ dart:indexed_db
+ dart:js
+ dart:js_util
+ dart:svg
+ dart:web_audio
+ dart:web_gl
+ dart:io library

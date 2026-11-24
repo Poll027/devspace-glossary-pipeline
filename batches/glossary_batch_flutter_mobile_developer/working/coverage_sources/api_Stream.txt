@@ -1,0 +1,311 @@
+
+ description
+Stream<T> class 
+ abstract
+ mixin
+ A source of asynchronous data events.
+A Stream provides a way to receive a sequence of events.
+Each event is either a data event, also called an element of the stream,
+or an error event, which is a notification that something has failed.
+When a stream has emitted all its events,
+a single "done" event notifies the listener that the end has been reached.
+You produce a stream by calling an async* function, which then returns
+a stream. Consuming that stream will lead the function to emit events
+until it ends, and the stream closes.
+You consume a stream either using an await for loop, which is available
+inside an async or async* function, or by forwarding its events directly
+using yield* inside an async* function.
+Example:
+Stream<T> optionalMap<T>(
+ Stream<T> source , [T Function(T)? convert]) async* {
+ if (convert == null) {
+ yield* source;
+ } else {
+ await for (var event in source) {
+ yield convert(event);
+ }
+ }
+}
+When this function is called, it immediately returns a Stream<T> object.
+Then nothing further happens until someone tries to consume that stream.
+At that point, the body of the async* function starts running.
+If the convert function was omitted, the yield* will listen to the
+source stream and forward all events, date and errors, to the returned
+stream. When the source stream closes, the yield* is done,
+and the optionalMap function body ends too. This closes the returned
+stream.
+If a convert is supplied, the function instead listens on the source
+stream and enters an await for loop which
+repeatedly waits for the next data event.
+On a data event, it calls convert with the value and emits the result
+on the returned stream.
+If no error events are emitted by the source stream,
+the loop ends when the source stream does,
+then the optionalMap function body completes,
+which closes the returned stream.
+On an error event from the source stream,
+the await for re-throws that error, which breaks the loop.
+The error then reaches the end of the optionalMap function body,
+since it's not caught.
+That makes the error be emitted on the returned stream, which then closes.
+The Stream class also provides functionality which allows you to
+manually listen for events from a stream, or to convert a stream
+into another stream or into a future.
+The forEach function corresponds to the await for loop,
+just as Iterable.forEach corresponds to a normal for/in loop.
+Like the loop, it will call a function for each data event and break on an
+error.
+The more low-level listen method is what every other method is based on.
+You call listen on a stream to tell it that you want to receive
+events, and to register the callbacks which will receive those events.
+When you call listen, you receive a StreamSubscription object
+which is the active object providing the events,
+and which can be used to stop listening again,
+or to temporarily pause events from the subscription.
+There are two kinds of streams: "Single-subscription" streams and
+"broadcast" streams.
+A single-subscription stream allows only a single listener during the whole
+lifetime of the stream.
+It doesn't start generating events until it has a listener,
+and it stops sending events when the listener is unsubscribed,
+even if the source of events could still provide more.
+The stream created by an async* function is a single-subscription stream,
+but each call to the function creates a new such stream.
+Listening twice on a single-subscription stream is not allowed, even after
+the first subscription has been canceled.
+Single-subscription streams are generally used for streaming chunks of
+larger contiguous data, like file I/O.
+A broadcast stream allows any number of listeners, and it fires
+its events when they are ready, whether there are listeners or not.
+Broadcast streams are used for independent events/observers.
+If several listeners want to listen to a single-subscription stream,
+use asBroadcastStream to create a broadcast stream on top of the
+non-broadcast stream.
+On either kind of stream, stream transformations, such as where and
+skip, return the same type of stream as the one the method was called on,
+unless otherwise noted.
+When an event is fired, the listener(s) at that time will receive the event.
+If a listener is added to a broadcast stream while an event is being fired,
+that listener will not receive the event currently being fired.
+If a listener is canceled, it immediately stops receiving events.
+Listening on a broadcast stream can be treated as listening on a new stream
+containing only the events that have not yet been emitted when the listen
+call occurs.
+For example the first getter listens to the stream, then returns the first
+event that listener receives.
+This is not necessarily the first even emitted by the stream, but the first
+of the remaining events of the broadcast stream.
+When the "done" event is fired, subscribers are unsubscribed before
+receiving the event. After the event has been sent, the stream has no
+subscribers. Adding new subscribers to a broadcast stream after this point
+is allowed, but they will just receive a new "done" event as soon
+as possible.
+Stream subscriptions always respect "pause" requests. If necessary they need
+to buffer their input, but often, and preferably they can simply request
+their input to pause too.
+The default implementation of isBroadcast returns false.
+A broadcast stream inheriting from Stream must override isBroadcast
+to return true if it wants to signal that it behaves like a broadcast
+stream.
+ Implementers
+ CustomStream
+ ElementStream
+ HttpClientResponse
+ HttpRequest
+ HttpServer
+ RawDatagramSocket
+ RawSecureServerSocket
+ RawServerSocket
+ RawSocket
+ ReadPipe
+ ReceivePort
+ SecureServerSocket
+ ServerSocket
+ Socket
+ Stdin
+ StreamView
+ WebSocket
+ Annotations
+ @vmIsolateUnsendable
+ Constructors
+ Stream()
+ const
+ Stream.empty({@Since.new("3.2") bool broadcast})
+ Creates an empty broadcast stream.
+ const
+ factory
+ Stream.error(Object error, [StackTrace? stackTrace])
+ Creates a stream which emits a single error event before completing.
+ factory
+ Stream.eventTransformed(Stream source, EventSink mapSink(EventSink<T> sink))
+ Creates a stream where all events of an existing stream are piped through
+a sink-transformation.
+ factory
+ Stream.fromFuture(Future<T> future)
+ Creates a new single-subscription stream from the future.
+ factory
+ Stream.fromFutures(Iterable<Future<T>> futures)
+ Create a single-subscription stream from a group of futures.
+ factory
+ Stream.fromIterable(Iterable<T> elements)
+ Creates a stream that gets its data from elements.
+ factory
+ Stream.multi(void onListen(MultiStreamController<T>), {bool isBroadcast = false})
+ Creates a multi-subscription stream.
+ factory
+ Stream.periodic(Duration period, [T computation(int computationCount)?])
+ Creates a stream that repeatedly emits events at period intervals.
+ factory
+ Stream.value(T value)
+ Creates a stream which emits a single data event before closing.
+ factory
+ Properties
+ first
+ → Future<T>
+ The first element of this stream.
+ no setter
+ hashCode
+ → int
+ The hash code for this object.
+ no setterinherited
+ isBroadcast
+ → bool
+ Whether this stream is a broadcast stream.
+ no setter
+ isEmpty
+ → Future<bool>
+ Whether this stream contains any elements.
+ no setter
+ last
+ → Future<T>
+ The last element of this stream.
+ no setter
+ length
+ → Future<int>
+ The number of elements in this stream.
+ no setter
+ runtimeType
+ → Type
+ A representation of the runtime type of the object.
+ no setterinherited
+ single
+ → Future<T>
+ The single element of this stream.
+ no setter
+ Methods
+ any(bool test(T element))
+ → Future<bool>
+ Checks whether test accepts any element provided by this stream.
+ asBroadcastStream({void onListen(StreamSubscription<T> subscription)?, void onCancel(StreamSubscription<T> subscription)?})
+ → Stream<T>
+ Returns a multi-subscription stream that produces the same events as this.
+ asyncExpand<E>(Stream<E>? convert(T event))
+ → Stream<E>
+ Transforms each element into a sequence of asynchronous events.
+ asyncMap<E>(FutureOr<E> convert(T event))
+ → Stream<E>
+ Creates a new stream with each data event of this stream asynchronously
+mapped to a new event.
+ cast<R>()
+ → Stream<R>
+ Adapt this stream to be a Stream<R>.
+ contains(Object? needle)
+ → Future<bool>
+ Returns whether needle occurs in the elements provided by this stream.
+ distinct([bool equals(T previous, T next)?])
+ → Stream<T>
+ Skips data events if they are equal to the previous data event.
+ drain<E>([E? futureValue])
+ → Future<E>
+ Discards all data on this stream, but signals when it is done or an error
+occurred.
+ elementAt(int index)
+ → Future<T>
+ Returns the value of the indexth data event of this stream.
+ every(bool test(T element))
+ → Future<bool>
+ Checks whether test accepts all elements provided by this stream.
+ expand<S>(Iterable<S> convert(T element))
+ → Stream<S>
+ Transforms each element of this stream into a sequence of elements.
+ firstWhere(bool test(T element), {T orElse()?})
+ → Future<T>
+ Finds the first element of this stream matching test.
+ fold<S>(S initialValue, S combine(S previous, T element))
+ → Future<S>
+ Combines a sequence of values by repeatedly applying combine.
+ forEach(void action(T element))
+ → Future<void>
+ Executes action on each element of this stream.
+ handleError(Function onError, {bool test(dynamic error)?})
+ → Stream<T>
+ Creates a wrapper Stream that intercepts some errors from this stream.
+ join([String separator = ""])
+ → Future<String>
+ Combines the string representation of elements into a single string.
+ lastWhere(bool test(T element), {T orElse()?})
+ → Future<T>
+ Finds the last element in this stream matching test.
+ listen(void onData(T event)?, {Function? onError, void onDone()?, bool? cancelOnError})
+ → StreamSubscription<T>
+ Adds a subscription to this stream.
+ map<S>(S convert(T event))
+ → Stream<S>
+ Transforms each element of this stream into a new stream event.
+ noSuchMethod(Invocation invocation)
+ → dynamic
+ Invoked when a nonexistent method or property is accessed.
+ inherited
+ pipe(StreamConsumer<T> streamConsumer)
+ → Future
+ Pipes the events of this stream into streamConsumer.
+ reduce(T combine(T previous, T element))
+ → Future<T>
+ Combines a sequence of values by repeatedly applying combine.
+ singleWhere(bool test(T element), {T orElse()?})
+ → Future<T>
+ Finds the single element in this stream matching test.
+ skip(int count)
+ → Stream<T>
+ Skips the first count data events from this stream.
+ skipWhile(bool test(T element))
+ → Stream<T>
+ Skip data events from this stream while they are matched by test.
+ take(int count)
+ → Stream<T>
+ Provides at most the first count data events of this stream.
+ takeWhile(bool test(T element))
+ → Stream<T>
+ Forwards data events while test is successful.
+ timeout(Duration timeLimit, {void onTimeout(EventSink<T> sink)?})
+ → Stream<T>
+ Creates a new stream with the same events as this stream.
+ toList()
+ → Future<List<T>>
+ Collects all elements of this stream in a List.
+ toSet()
+ → Future<Set<T>>
+ Collects the data of this stream in a Set.
+ toString()
+ → String
+ A string representation of this object.
+ inherited
+ transform<S>(StreamTransformer<T, S> streamTransformer)
+ → Stream<S>
+ Applies streamTransformer to this stream.
+ where(bool test(T element))
+ → Stream<T>
+ Creates a new stream from this stream that discards some elements.
+ Operators
+ operator ==(Object other)
+ → bool
+ The equality operator.
+ inherited
+ Static Methods
+ castFrom<S, T>(Stream<S> source)
+ → Stream<T>
+ Adapts source to be a Stream<T>.
+ Dart
+ dart:async
+ Stream<T> class
+ dart:async library

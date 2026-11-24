@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en"><head><script type="text/javascript" src="https://www.googletagmanager.com/gtm.js?id=GTM-MX6DBN9" async="async"></script><script type="text/javascript" src="/static/hash-nhsnu2dk/js/gtm.js"></script><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no"/><meta name="generator" content="made with love by dartdoc"/><meta name="description" content="Configuration topic docs, for the Dart programming language."/><title>Configuration topic - Dart API</title><link rel="canonical" href="https://pub.dev/documentation/go_router/latest/topics/Configuration-topic.html"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&amp;display=swap"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/><link rel="stylesheet" href="/static/hash-nhsnu2dk/css/dartdoc.css"/><link rel="icon" href="/favicon.ico?hash=nk4nss8c7444fg0chird9erqef2vkhb8"/></head><body class="light-theme" data-base-href="../" data-using-base-href="false"><noscript><iframe class="-gtm-iframe" src="https://www.googletagmanager.com/ns.html?id=GTM-MX6DBN9" height="0" width="0"></iframe></noscript><script src="/static/hash-nhsnu2dk/js/dark-init.js"></script><div id="overlay-under-drawer"></div><header id="title"><span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span><a class="hidden-xs" href="/"><img class="-dart-logo-img" src="/static/hash-nhsnu2dk/img/dart-logo.svg" alt="" width="30" height="30" role="presentation" aria-label="Go to the landing page of pub.dev"/></a><ol class="breadcrumbs gt-separated dark hidden-xs"><li><a href="/packages/go_router">go_router package</a></li><li><a href="../index.html">documentation</a></li><li class="self-crumb">Configuration topic</li></ol><div class="self-name">Configuration topic</div><form class="search navbar-right" role="search"><input id="search-box" class="form-control typeahead" type="text" placeholder="Loading search..." autocomplete="off"/></form><button id="theme-button" class="toggle" aria-label="Light and dark mode toggle" title="Toggle between light and dark mode"><span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">dark_mode</span><span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">light_mode</span></button></header><main><div id="dartdoc-main-content" class="main-content">
+  <h1><span class="kind-category">Configuration</span> topic</h1>
+  
+<div class="desc markdown markdown-body">
+  <p>Create a GoRouter configuration by calling the <a href="https://pub.dev/documentation/go_router/latest/go_router/GoRouter-class.html">GoRouter</a> constructor and
+providing list of <a href="https://pub.dev/documentation/go_router/latest/go_router/GoRoute-class.html">GoRoute</a> objects:</p>
+<pre class="language-dart"><code class="language-dart">GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) =&gt; const Page1Screen(),
+    ),
+    GoRoute(
+      path: '/page2',
+      builder: (context, state) =&gt; const Page2Screen(),
+    ),
+  ],
+);
+</code></pre>
+<h1 id="goroute">GoRoute</h1>
+<p>To configure a GoRoute, a path template and builder must be provided. Specify a
+path template to handle by providing a <code>path</code> parameter, and a builder by
+providing either the <code>builder</code> or <code>pageBuilder</code> parameter:</p>
+<pre class="language-dart"><code class="language-dart">GoRoute(
+  path: '/users/:userId',
+  builder: (context, state) =&gt; const UserScreen(),
+),
+</code></pre>
+<p>To navigate to this route, use
+<a href="https://pub.dev/documentation/go_router/latest/go_router/GoRouter/go.html">go()</a>.
+To learn more about how navigation works, visit the
+<a href="https://pub.dev/documentation/go_router/latest/topics/Navigation-topic.html">Navigation</a>
+topic.</p>
+<h1 id="parameters">Parameters</h1>
+<p>To specify a path parameter, prefix a path segment with a <code>:</code> character,
+followed by a unique name, for example, <code>:userId</code>. You can access the value of
+the parameter by accessing it through the <a href="https://pub.dev/documentation/go_router/latest/go_router/GoRouterState-class.html">GoRouterState</a> object provided to
+the builder callback:</p>
+<pre class="language-dart"><code class="language-dart">GoRoute(
+  path: '/users/:userId',
+  builder: (context, state) =&gt; const UserScreen(id: state.pathParameters['userId']),
+),
+</code></pre>
+<p>Similarly, to access a <a href="https://en.wikipedia.org/wiki/Query_string" rel="ugc nofollow">query
+string</a> parameter (the part of URL
+after the <code>?</code>), use <a href="https://pub.dev/documentation/go_router/latest/go_router/GoRouterState-class.html">GoRouterState</a>. For example, a URL path such as
+<code>/users?filter=admins</code> can read the <code>filter</code> parameter:</p>
+<pre class="language-dart"><code class="language-dart">GoRoute(
+  path: '/users',
+  builder: (context, state) =&gt; const UsersScreen(filter: state.uri.queryParameters['filter']),
+),
+</code></pre>
+<h1 id="child-routes">Child routes</h1>
+<p>A matched route can result in more than one screen being displayed on a
+Navigator. This is equivalent to calling <code>push()</code>, where a new screen is
+displayed above the previous screen with a transition animation, and with an
+in-app back button in the <code>AppBar</code> widget, if it is used.</p>
+<p>To display a screen on top of another, add a child route by adding it to the
+parent route's <code>routes</code> list:</p>
+<pre class="language-dart"><code class="language-dart">GoRoute(
+  path: '/',
+  builder: (context, state) {
+    return HomeScreen();
+  },
+  routes: [
+    GoRoute(
+      path: 'details',
+      builder: (context, state) {
+        return DetailsScreen();
+      },
+    ),
+  ],
+)
+</code></pre>
+<h1 id="dynamic-routingconfig">Dynamic RoutingConfig</h1>
+<p>The <code>RoutingConfig</code> provides a way to update the GoRoute[s] after
+the <a href="https://pub.dev/documentation/go_router/latest/go_router/GoRouter-class.html">GoRouter</a> has already created. This can be done by creating a GoRouter
+with special constructor <code>GoRouter.routingConfig</code></p>
+<pre class="language-dart"><code class="language-dart">final ValueNotifier&lt;RoutingConfig&gt; myRoutingConfig = ValueNotifier&lt;RoutingConfig&gt;(
+  RoutingConfig(
+    routes: &lt;RouteBase&gt;[GoRoute(path: '/', builder: (_, __) =&gt; HomeScreen())],
+  ),
+);
+final GoRouter router = GoRouter.routingConfig(routingConfig: myRoutingConfig);
+</code></pre>
+<p>To change the GoRoute later, modify the value of the <code>ValueNotifier</code> directly.</p>
+<pre class="language-dart"><code class="language-dart">myRoutingConfig.value = RoutingConfig(
+  routes: &lt;RouteBase&gt;[
+    GoRoute(path: '/', builder: (_, __) =&gt; AlternativeHomeScreen()),
+    GoRoute(path: '/a-new-route', builder: (_, __) =&gt; SomeScreen()),
+  ],
+);
+</code></pre>
+<p>The value change is automatically picked up by GoRouter and causes it to reparse
+the current routes, i.e. RouteMatchList, stored in GoRouter. The RouteMatchList will
+reflect the latest change of the <code>RoutingConfig</code>.</p>
+<h1 id="nested-navigation">Nested navigation</h1>
+<p>Some apps display destinations in a subsection of the screen, for example, an
+app using a BottomNavigationBar that stays on-screen when navigating between
+destinations.</p>
+<p>To add an additional Navigator, use <a href="https://pub.dev/documentation/go_router/latest/go_router/ShellRoute-class.html">ShellRoute</a> and provide a builder that returns a widget:</p>
+<pre class="language-dart"><code class="language-dart">ShellRoute(
+  builder:
+      (BuildContext context, GoRouterState state, Widget child) {
+    return Scaffold(
+      body: child,
+      /* ... */
+      bottomNavigationBar: BottomNavigationBar(
+      /* ... */
+      ),
+    );
+  },
+  routes: &lt;RouteBase&gt;[
+    GoRoute(
+      path: 'details',
+      builder: (BuildContext context, GoRouterState state) {
+        return const DetailsScreen();
+      },
+    ),
+  ],
+),
+</code></pre>
+<p>The <code>child</code> widget is a Navigator configured to display the matching sub-routes.</p>
+<p>For more details, see the <a href="https://pub.dev/documentation/go_router/latest/go_router/ShellRoute-class.html">ShellRoute API
+documentation</a>.
+For a complete example, see the <a href="https://github.com/flutter/packages/tree/main/packages/go_router/example/lib/shell_route.dart" rel="ugc nofollow">ShellRoute
+sample</a>
+in the example/ directory.</p>
+<h1 id="stateful-nested-navigation">Stateful nested navigation</h1>
+<p>In addition to using nested navigation with for instance a BottomNavigationBar,
+many apps also require that state is maintained when navigating between
+destinations. To accomplish this, use <a href="https://pub.dev/documentation/go_router/latest/go_router/StatefulShellRoute-class.html">StatefulShellRoute</a> instead of
+<code>ShellRoute</code>.</p>
+<p>StatefulShellRoute creates separate <code>Navigator</code>s for each of its nested <a href="https://pub.dev/documentation/go_router/latest/go_router/StatefulShellBranch-class.html">branches</a>
+(i.e. parallel navigation trees), making it possible to build an app with
+stateful nested navigation. The constructor <a href="https://pub.dev/documentation/go_router/latest/go_router/StatefulShellRoute/StatefulShellRoute.indexedStack.html">StatefulShellRoute.indexedStack</a>
+provides a default implementation for managing the branch navigators, using an
+<code>IndexedStack</code>.</p>
+<p>When using StatefulShellRoute, routes aren't configured on the shell route
+itself. Instead, they are configured for each of the branches. Example:</p>
+
+<pre class="language-dart"><code class="language-dart">branches: &lt;StatefulShellBranch&gt;[
+  // The route branch for the first tab of the bottom navigation bar.
+  StatefulShellBranch(
+    navigatorKey: _sectionANavigatorKey,
+    routes: &lt;RouteBase&gt;[
+      GoRoute(
+        // The screen to display as the root in the first tab of the
+        // bottom navigation bar.
+        path: '/a',
+        builder: (BuildContext context, GoRouterState state) =&gt;
+            const RootScreen(label: 'A', detailsPath: '/a/details'),
+        routes: &lt;RouteBase&gt;[
+          // The details screen to display stacked on navigator of the
+          // first tab. This will cover screen A but not the application
+          // shell (bottom navigation bar).
+          GoRoute(
+            path: 'details',
+            builder: (BuildContext context, GoRouterState state) =&gt;
+                const DetailsScreen(label: 'A'),
+          ),
+        ],
+      ),
+    ],
+    // To enable preloading of the initial locations of branches, pass
+    // 'true' for the parameter `preload` (false is default).
+  ),
+</code></pre>
+<p>Similar to ShellRoute, a builder must be provided to build the actual shell
+Widget that encapsulates the branch navigation container. The latter is
+implemented by the class <a href="https://pub.dev/documentation/go_router/latest/go_router/StatefulNavigationShell-class.html">StatefulNavigationShell</a>,
+which is passed as the last argument to the builder function. Example:</p>
+
+<pre class="language-dart"><code class="language-dart">StatefulShellRoute.indexedStack(
+  builder:
+      (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
+        // Return the widget that implements the custom shell (in this case
+        // using a BottomNavigationBar). The StatefulNavigationShell is passed
+        // to be able access the state of the shell and to navigate to other
+        // branches in a stateful way.
+        return ScaffoldWithNavBar(navigationShell: navigationShell);
+      },
+</code></pre>
+<p>Within the custom shell widget, the StatefulNavigationShell is first and
+foremost used as the child, or body, of the shell. Secondly, it is also used for<br>
+handling stateful switching between branches, as well as providing the currently
+active branch index. Example:</p>
+
+<pre class="language-dart"><code class="language-dart">@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    // The StatefulNavigationShell from the associated StatefulShellRoute is
+    // directly passed as the body of the Scaffold.
+    body: navigationShell,
+    bottomNavigationBar: BottomNavigationBar(
+      // Here, the items of BottomNavigationBar are hard coded. In a real
+      // world scenario, the items would most likely be generated from the
+      // branches of the shell route, which can be fetched using
+      // `navigationShell.route.branches`.
+      items: const &lt;BottomNavigationBarItem&gt;[
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Section A'),
+        BottomNavigationBarItem(icon: Icon(Icons.work), label: 'Section B'),
+        BottomNavigationBarItem(icon: Icon(Icons.tab), label: 'Section C'),
+      ],
+      currentIndex: navigationShell.currentIndex,
+      // Navigate to the current location of the branch at the provided index
+      // when tapping an item in the BottomNavigationBar.
+      onTap: (int index) =&gt; navigationShell.goBranch(index),
+    ),
+  );
+}
+
+</code></pre>
+<p>For a complete example, see the <a href="https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/stateful_shell_route.dart" rel="ugc nofollow">Stateful Nested
+Navigation</a>
+in the example/ directory.
+For further details, see the <a href="https://pub.dev/documentation/go_router/latest/go_router/StatefulShellRoute-class.html">StatefulShellRoute API
+documentation</a>.</p>
+<h1 id="initial-location">Initial location</h1>
+<p>The initial location is shown when the app first opens and there is no deep link
+provided by the platform. To specify the initial location, provide the
+<code>initialLocation</code> parameter to the
+GoRouter constructor:</p>
+<pre class="language-dart"><code class="language-dart">GoRouter(
+  initialLocation: '/details',
+  /* ... */
+);
+</code></pre>
+<h1 id="logging">Logging</h1>
+<p>To enable log output, enable the <code>debugLogDiagnostics</code> parameter:</p>
+<pre class="language-dart"><code class="language-dart">final _router = GoRouter(
+  routes: [/* ... */],
+  debugLogDiagnostics: true,
+);
+</code></pre>
+</div>
+
+
+
+  <div class="summary offset-anchor" id="classes">
+    <h2>Classes</h2>
+    <dl>
+      <dt id="GoRoute">
+  <span class="name "><a href="../go_router/GoRoute-class.html">GoRoute</a></span> 
+    <span class="category get-started cp-0 linked" title="This is part of the Get started topic."><a href="../topics/Get started-topic.html">Get&nbsp;started</a></span>
+    <span class="category configuration cp-2 linked" title="This is part of the Configuration topic."><a href="../topics/Configuration-topic.html">Configuration</a></span>
+    <span class="category redirection cp-4 linked" title="This is part of the Redirection topic."><a href="../topics/Redirection-topic.html">Redirection</a></span>
+    <span class="category transition-animations cp-7 linked" title="This is part of the Transition animations topic."><a href="../topics/Transition animations-topic.html">Transition&nbsp;animations</a></span>
+    <span class="category named-routes cp-9 linked" title="This is part of the Named routes topic."><a href="../topics/Named routes-topic.html">Named&nbsp;routes</a></span>
+
+</dt>
+<dd>
+  A route that is displayed visually above the matching parent route using the
+<a href="https://api.flutter.dev/flutter/widgets/Navigator-class.html">Navigator</a>.
+</dd>
+
+      <dt id="GoRouter">
+  <span class="name "><a href="../go_router/GoRouter-class.html">GoRouter</a></span> 
+    <span class="category get-started cp-0 linked" title="This is part of the Get started topic."><a href="../topics/Get started-topic.html">Get&nbsp;started</a></span>
+    <span class="category upgrading cp-1 linked" title="This is part of the Upgrading topic."><a href="../topics/Upgrading-topic.html">Upgrading</a></span>
+    <span class="category configuration cp-2 linked" title="This is part of the Configuration topic."><a href="../topics/Configuration-topic.html">Configuration</a></span>
+    <span class="category navigation cp-3 linked" title="This is part of the Navigation topic."><a href="../topics/Navigation-topic.html">Navigation</a></span>
+    <span class="category redirection cp-4 linked" title="This is part of the Redirection topic."><a href="../topics/Redirection-topic.html">Redirection</a></span>
+    <span class="category web cp-5 linked" title="This is part of the Web topic."><a href="../topics/Web-topic.html">Web</a></span>
+    <span class="category deep-linking cp-6 linked" title="This is part of the Deep linking topic."><a href="../topics/Deep linking-topic.html">Deep&nbsp;linking</a></span>
+    <span class="category named-routes cp-9 linked" title="This is part of the Named routes topic."><a href="../topics/Named routes-topic.html">Named&nbsp;routes</a></span>
+    <span class="category error-handling cp-10 linked" title="This is part of the Error handling topic."><a href="../topics/Error handling-topic.html">Error&nbsp;handling</a></span>
+    <span class="category state-restoration cp-11 linked" title="This is part of the State restoration topic."><a href="../topics/State restoration-topic.html">State&nbsp;restoration</a></span>
+
+</dt>
+<dd>
+  The route configuration for the app.
+</dd>
+
+      <dt id="RoutingConfig">
+  <span class="name "><a href="../go_router/RoutingConfig-class.html">RoutingConfig</a></span> 
+    <span class="category configuration cp-2 linked" title="This is part of the Configuration topic."><a href="../topics/Configuration-topic.html">Configuration</a></span>
+
+</dt>
+<dd>
+  A set of parameters that defines routing in GoRouter.
+</dd>
+
+      <dt id="ShellRoute">
+  <span class="name "><a href="../go_router/ShellRoute-class.html">ShellRoute</a></span> 
+    <span class="category configuration cp-2 linked" title="This is part of the Configuration topic."><a href="../topics/Configuration-topic.html">Configuration</a></span>
+
+</dt>
+<dd>
+  A route that displays a UI shell around the matching child route.
+</dd>
+
+      <dt id="StatefulShellRoute">
+  <span class="name "><a href="../go_router/StatefulShellRoute-class.html">StatefulShellRoute</a></span> 
+    <span class="category configuration cp-2 linked" title="This is part of the Configuration topic."><a href="../topics/Configuration-topic.html">Configuration</a></span>
+
+</dt>
+<dd>
+  A route that displays a UI shell with separate <a href="https://api.flutter.dev/flutter/widgets/Navigator-class.html">Navigator</a>s for its
+sub-routes.
+</dd>
+
+    </dl>
+  </div>
+
+
+
+
+
+
+
+
+</div><div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left"><header id="header-search-sidebar" class="hidden-l"><form class="search-sidebar" role="search"><input id="search-sidebar" class="form-control typeahead" type="text" placeholder="Loading search..." autocomplete="off"/></form></header><ol id="sidebar-nav" class="breadcrumbs gt-separated dark hidden-l"><li><a href="/packages/go_router">go_router package</a></li><li><a href="../index.html">documentation</a></li><li class="self-crumb">Configuration topic</li></ol>
+  
+
+
+
+  <h5><span class="package-name">go_router</span> <span class="package-kind">package</span></h5>
+  <ol>
+      <li class="section-title">Topics</li>
+        <li><a href="../topics/Get started-topic.html">Get&nbsp;started</a></li>
+        <li><a href="../topics/Upgrading-topic.html">Upgrading</a></li>
+        <li><a href="../topics/Configuration-topic.html">Configuration</a></li>
+        <li><a href="../topics/Navigation-topic.html">Navigation</a></li>
+        <li><a href="../topics/Redirection-topic.html">Redirection</a></li>
+        <li><a href="../topics/Web-topic.html">Web</a></li>
+        <li><a href="../topics/Deep linking-topic.html">Deep&nbsp;linking</a></li>
+        <li><a href="../topics/Transition animations-topic.html">Transition&nbsp;animations</a></li>
+        <li><a href="../topics/Type-safe routes-topic.html">Type-safe&nbsp;routes</a></li>
+        <li><a href="../topics/Named routes-topic.html">Named&nbsp;routes</a></li>
+        <li><a href="../topics/Error handling-topic.html">Error&nbsp;handling</a></li>
+        <li><a href="../topics/State restoration-topic.html">State&nbsp;restoration</a></li>
+      <li class="section-title">Libraries</li>
+      <li><a href="../go_router/">go_router</a></li>
+</ol>
+
+</div><div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  <h5>Configuration topic</h5>
+  <ol>
+
+    <li class="section-title"><a href="../topics/Configuration-topic.html#classes">Classes</a></li>
+      <li><a href="../go_router/GoRoute-class.html">GoRoute</a></li>
+      <li><a href="../go_router/GoRouter-class.html">GoRouter</a></li>
+      <li><a href="../go_router/RoutingConfig-class.html">RoutingConfig</a></li>
+      <li><a href="../go_router/ShellRoute-class.html">ShellRoute</a></li>
+      <li><a href="../go_router/StatefulShellRoute-class.html">StatefulShellRoute</a></li>
+
+
+
+
+
+
+
+
+
+</ol>
+
+</div></main><footer><span class="no-break">go_router 18.1.4</span></footer><script src="/static/hash-nhsnu2dk/dartdoc/resources/highlight.pack.js"></script><script src="/static/hash-nhsnu2dk/dartdoc/resources/docs.dart.js"></script></body></html>

@@ -1,0 +1,326 @@
+
+ Firebase
+ Documentation
+ Firebase Security Rules
+ Build
+ Send feedback
+ Basic Security Rules
+ Stay organized with collections
+ Save and categorize content based on your preferences.
+Firebase Security Rules allow you to control access to your stored data. The flexible rules
+syntax means you can create rules that match anything, from all writes to the
+entire database to operations on a specific document.
+This guide describes some of the more basic use cases you might want to
+implement as you set up your app and safeguard your data. However, before you
+start writing rules, you might want to learn more about the
+language they're written in and their behavior.
+To access and update your rules, follow the steps outlined in
+Manage and deploy Firebase Security Rules.
+ offline_bolt AI prompt for AI assistance
+ For AI assistance, copy the prompt below into your
+ AI coding agent
+ (like Gemini in Android Studio, Antigravity, Claude Code, Codex, and Cursor).
+ You can customize the prompt and iterate with your agent. Visit
+ Firebase agent skills
+ for detailed installation info.
+Help me use Firebase in my app.1. Make sure that **Firebase agent skills** are installed and updated. For Claude Code, Codex, or Cursor agents, help me install the Firebase plugin. For other agents, run `npx skills add firebase/agent-skills`. Always try to use **Firebase agent skills** for Firebase-related tasks.2. Help me write, validate, and deploy Firebase Security Rules to protect my app's data.
+Default rules: Locked mode
+When you create a database or storage instance in the Firebase console,
+you choose whether your Firebase Security Rules restrict access to your data (Locked mode)
+or allow anyone access (Test mode). In Cloud Firestore and
+Realtime Database, the default rules for Locked mode deny access to all users.
+In Cloud Storage, only authenticated users can access the storage buckets.
+ Cloud Firestore 
+service cloud.firestore {
+ match /databases/{database}/documents {
+ match /{document=**} {
+ allow read, write: if false;
+ }
+ }
+}
+ Realtime Database 
+{
+ "rules": {
+ ".read": false,
+ ".write": false
+ }
+}
+ Cloud Storage 
+service firebase.storage {
+ match /b/{bucket}/o {
+ match /{allPaths=**} {
+ allow read, write: if false;
+ }
+ }
+}
+Development-environment rules
+While you're working on your app, you might want relatively open or unfettered
+access to your data. Just be sure to update your Security Rules before
+you deploy your app to production. Also remember that if you deploy your app,
+it's publicly accessible — even if you haven't launched it.
+Remember that Firebase allows clients direct access to your data, and
+Firebase Security Rules are the only safeguard blocking access for malicious users. Defining
+rules separately from product logic has a number of advantages: clients aren't
+responsible for enforcing security, buggy implementations won't compromise
+your data, and most importantly, you're not relying on an intermediary server
+to protect data from the world.
+All authenticated users
+While we don't recommend leaving your data accessible to any user that's
+signed in, it might be useful to set access to any authenticated user while
+you're developing your app.
+ Cloud Firestore 
+service cloud.firestore {
+ match /databases/{database}/documents {
+ match /some_collection/{document} {
+ allow read, write: if request.auth != null;
+ }
+ }
+}
+ Realtime Database 
+{
+ "rules": {
+ "some_path": {
+ ".read": "auth.uid !== null",
+ ".write": "auth.uid !== null"
+ }
+ }
+}
+ Cloud Storage 
+service firebase.storage {
+ match /b/{bucket}/o {
+ match /some_folder/{fileName} {
+ allow read, write: if request.auth != null;
+ }
+ }
+}
+Production-ready rules
+As you prepare to deploy your app, make sure your data is protected and
+that access is properly granted to your users. Use
+Authentication to set up user-based access and read directly
+from your database to set up data-based access.
+Consider writing rules as you structure your data, since the way
+you set up your rules impacts how you restrict access to data at different
+paths.
+Content-owner only access
+These rules restrict access to the authenticated owner of the content only. The
+data is only readable and writable by one user, and the data path contains the
+user's ID.
+When this rule works: This rule works well if data is siloed by user — if
+the only user that needs to access the data is the same user that created the
+data.
+When this rule doesn't work: This ruleset doesn't work when multiple users
+need to write or read the same data — users will overwrite data or be unable
+to access data they've created.
+To set up this rule: Create a rule that confirms the user requesting access
+to read or write data is the user that owns that data.
+ Cloud Firestore 
+service cloud.firestore {
+ match /databases/{database}/documents {
+ // Allow only authenticated content owners access
+ match /some_collection/{userId}/{document} {
+ allow read, write: if request.auth != null && request.auth.uid == userId
+ }
+ }
+}
+ Realtime Database 
+{
+ "rules": {
+ "some_path": {
+ "$uid": {
+ // Allow only authenticated content owners access to their data
+ ".read": "auth !== null && auth.uid === $uid",
+ ".write": "auth !== null && auth.uid === $uid"
+ }
+ }
+ }
+}
+ Cloud Storage 
+// Grants a user access to a node matching their user ID
+service firebase.storage {
+ match /b/{bucket}/o {
+ // Files look like: "user/<UID>/file.txt"
+ match /user/{userId}/{fileName} {
+ allow read, write: if request.auth != null && request.auth.uid == userId;
+ }
+ }
+}
+Mixed public and private access
+This rule allows anyone to read a dataset, but restricts the ability to
+create or modify data at a given path to the authenticated content owner only.
+When this rule works: This rule works well for apps that require publicly
+readable elements, but need to restrict edit access to those elements' owners.
+For example, a chat app or blog.
+When this rule doesn't work: Like the content-owner only rule, this ruleset
+doesn't work when multiple users need to edit the same data. Users will
+ultimately overwrite each other's data.
+To set up this rule: Create a rule that enables read access for all users
+(or all authenticated users), and confirms the user writing data is the owner.
+ Cloud Firestore 
+service cloud.firestore {
+ match /databases/{database}/documents {
+ // Allow public read access, but only content owners can write
+ match /some_collection/{document} {
+ // Allow public reads
+ allow read: if true
+ // Allow creation if the current user owns the new document
+ allow create: if request.auth.uid == request.resource.data.author_uid;
+ // Allow updates by the owner, and prevent change of ownership
+ allow update: if request.auth.uid == request.resource.data.author_uid
+ && request.auth.uid == resource.data.author_uid;
+ // Allow deletion if the current user owns the existing document
+ allow delete: if request.auth.uid == resource.data.author_uid;
+ }
+ }
+}
+ Realtime Database 
+{
+// Allow anyone to read data, but only authenticated content owners can
+// make changes to their data
+ "rules": {
+ "some_path": {
+ "$uid": {
+ ".read": true,
+ // or ".read": "auth.uid !== null" for only authenticated users
+ ".write": "auth.uid === $uid"
+ }
+ }
+ }
+}
+ Cloud Storage 
+service firebase.storage {
+ match /b/{bucket}/o {
+ // Files look like: "user/<UID>/file.txt"
+ match /user/{userId}/{fileName} {
+ allow read;
+ allow write: if request.auth.uid == userId;
+ }
+ }
+}
+Attribute-based and Role-based access
+For these rule to work, you must define and assign attributes to users in your
+data. Firebase Security Rules check the request against the data from your database or file's
+metadata to confirm or deny access.
+When this rule works: If you're assigning a role to users, this rule lets
+you limit access based on roles or specific groups of users. For example,
+if you were storing grades, you could assign different access levels to the
+"students" group (read their content only), the "teachers" group
+(read and write in their subject), and the "principals" group
+(read all content).
+When this rule doesn't work: In Realtime Database and Cloud Storage, your rules
+can't use the get() method that Cloud Firestore rules can incorporate.
+Consequently, you have to structure your database or file metadata to reflect
+the attributes you're using in your rules.
+To set up this rule: In Cloud Firestore, include a field in your users'
+documents that you can read, then structure your rule to read that
+field and conditionally grant access. In Realtime Database, create a data path that
+defines your app's users and grants them a role in a child node.
+You can also set up custom claims in Authentication
+and then retrieve that information from the
+auth.token variable in any Firebase Security Rules.
+Data-defined attributes and roles
+These rules only work in Cloud Firestore and Realtime Database.
+ Cloud Firestore 
+Remember that any time your rules include a read, like the rules below,
+you're billed for a read operation in Cloud Firestore.
+service cloud.firestore {
+ match /databases/{database}/documents {
+ // For attribute-based access control, Check a boolean `admin` attribute
+ allow write: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+ allow read: true;
+ // Alterntatively, for role-based access, assign specific roles to users
+ match /some_collection/{document} {
+ allow read: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Reader"
+ allow write: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Writer"
+ }
+ }
+}
+ Realtime Database 
+{
+ "rules": {
+ "some_path": {
+ "${subpath}": {
+ //
+ ".write": "root.child('users').child(auth.uid).child('role').val() === 'admin'",
+ ".read": true
+ }
+ }
+ }
+}
+Custom-claim attributes and roles
+To implement these rules, set up custom claims
+in Firebase Authentication and then use the claims in your rules.
+ Cloud Firestore 
+service cloud.firestore {
+ match /databases/{database}/documents {
+ // For attribute-based access control, check for an administrator claim
+ allow write: if request.auth.token.admin == true;
+ allow read: true;
+ // Alterntatively, for role-based access, assign specific roles to users
+ match /some_collection/{document} {
+ allow read: if request.auth.token.reader == "true";
+ allow write: if request.auth.token.writer == "true";
+ }
+ }
+}
+ Realtime Database 
+{
+ "rules": {
+ "some_path": {
+ "$uid": {
+ // Create a custom claim for each role or group
+ // you want to use
+ ".write": "auth.uid !== null && auth.token.writer === true",
+ ".read": "auth.uid !== null && auth.token.reader === true"
+ }
+ }
+ }
+}
+ Cloud Storage 
+service firebase.storage {
+ // Allow reads if the group ID in your token matches the file metadata's `owner` property
+ // Allow writes if the group ID is in the user's custom token
+ match /files/{groupId}/{fileName} {
+ allow read: if resource.metadata.owner == request.auth.token.groupId;
+ allow write: if request.auth.token.groupId == groupId;
+ }
+}
+Tenancy attributes
+Note: Multi-tenancy is only available for projects that have upgraded to
+Google Cloud Identity Platform (GCIP). See product comparison for details.
+To implement these rules, set up multitenancy in Google Cloud Identity Platform (GCIP)
+and then use the tenant in your rules. The following examples allow writes
+from a user in a specific tenant, for example, tenant2-m6tyz
+ Cloud Firestore 
+service cloud.firestore {
+ match /databases/{database}/documents {
+ // For tenant-based access control, check for a tenantID
+ allow write: if request.auth.token.firebase.tenant == 'tenant2-m6tyz';
+ allow read: true;
+ }
+}
+ Realtime Database 
+{
+ "rules": {
+ "some_path": {
+ "$uid": {
+ // Only allow reads and writes if user belongs to a specific tenant
+ ".write": "auth.uid !== null && auth.token.firebase.tenant === 'tenant2-m6tyz'",
+ ".read": "auth.uid !== null
+ }
+ }
+ }
+}
+ Cloud Storage 
+service firebase.storage {
+ // Only allow reads and writes if user belongs to a specific tenant
+ match /files/{tenantId}/{fileName} {
+ allow read: if request.auth != null;
+ allow write: if request.auth.token.firebase.tenant == tenantId;
+ }
+}
+ Send feedback
+ Except as otherwise noted, the content of this page is licensed under the Creative Commons Attribution 4.0 License, and code samples are licensed under the Apache 2.0 License. For details, see the Google Developers Site Policies. Java is a registered trademark of Oracle and/or its affiliates.
+ Last updated 2026-11-18 UTC.
+ Need to tell us more?
+ [[["Easy to understand","easyToUnderstand","thumb-up"],["Solved my problem","solvedMyProblem","thumb-up"],["Other","otherUp","thumb-up"]],[["Missing the information I need","missingTheInformationINeed","thumb-down"],["Too complicated / too many steps","tooComplicatedTooManySteps","thumb-down"],["Out of date","outOfDate","thumb-down"],["Samples / code issue","samplesCodeIssue","thumb-down"],["Other","otherDown","thumb-down"]],["Last updated 2026-11-18 UTC."],[],[]]
+ 
