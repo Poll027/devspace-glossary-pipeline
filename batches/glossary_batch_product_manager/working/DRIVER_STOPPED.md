@@ -33,7 +33,7 @@ jsonschema.exceptions.ValidationError: [] should be non-empty
 Failed validating 'minItems' in schema['properties']['proposals']['items']['properties']['covered_fact_ids']:
     {'type': 'array', 'minItems': 1, 'items': {'type': 'string'}}
 
-On instance['proposals'][15]['covered_fact_ids']:
+On instance['proposals'][11]['covered_fact_ids']:
     []
 Traceback (most recent call last):
   File "/home/azureuser/roles/product_manager/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/glm_generate.py", line 191, in <module>
@@ -45,4 +45,4 @@ Traceback (most recent call last):
 subprocess.CalledProcessError: Command '['/home/azureuser/env/bin/python', '/home/azureuser/roles/product_manager/glossary/00_GLOSSARY_PIPELINE_CORE/scripts/schema_check.py', 'segment_proposals.schema.json', '/home/azureuser/roles/product_manager/glossary/batches/glossary_batch_product_manager/segment_proposals.part.c5.json']' returned non-zero exit status 1.
 
 
-Spend so far $7.80. Fix the cause, then rerun the same command (finished stages are skipped).
+Spend so far $7.92. Fix the cause, then rerun the same command (finished stages are skipped).
