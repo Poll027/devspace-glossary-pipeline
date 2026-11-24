@@ -1,0 +1,314 @@
+{
+  "metadata": {
+    "artifact_type": "segment_judgments",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_business_analyst",
+    "run_id": "glossary_batch_business_analyst",
+    "prompt_version": "09_segment_judge@v1",
+    "model": "gpt-6.1-sol",
+    "generated_at": "2026-11-24T15:13:16.428112+00:00",
+    "source_snapshot_id": "glossary_batch_business_analyst",
+    "parent_artifact_hashes": {
+      "segment_proposals.part.c2.json": "16e28a99a497d0ad6fefb1f080ace0d86db615a872d0f1774dd6ef708a000ad0",
+      "coverage_briefs.json": "25c2c8c3ed4ea765041f2b61668dd92e8250d85b9f7f681b0c406be091e45f18",
+      "extracted_concepts.json": "e47407980123aaaf763001dd14ec60461e77f511adfe42a0cf188f48020a5bb1"
+    }
+  },
+  "batch_id": "glossary_batch_business_analyst",
+  "judgments": [
+    {
+      "proposal_id": "prop_-0GctLQhcjY_relationships_cardinality",
+      "verdict": "approved",
+      "final_start_seconds": 402,
+      "final_end_seconds": 526,
+      "confirmed_fact_ids": [
+        "f2",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read -0GctLQhcjY 372\u2013556s and the One-to-one / One-to-many / Many-to-many catalogue chapters. At 404\u2013430s the two customer tables and CustomerID are introduced within the cut; 435\u2013470s contrasts unique customer keys with Maria's repeated order keys; 492\u2013524s shows CustomerID repeated in segments and orders. This teaches f2 and f3, consistent with the Power BI Cardinality documentation. The incidental 'dimension' at 473s is immediately explained as flipping sides, so star-schema knowledge is not needed. Table/key comparisons provide visual value even though the 666s outro calls them sketches. Keep the proposed cut; stop before filter direction. No crow's-foot notation or optionality facts are confirmed."
+    },
+    {
+      "proposal_id": "prop_-0GctLQhcjY_data_model_relationships",
+      "verdict": "approved",
+      "final_start_seconds": 528,
+      "final_end_seconds": 646,
+      "confirmed_fact_ids": [
+        "f1",
+        "f4"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read -0GctLQhcjY 500\u2013670s and the Filter direction / Recap chapters. The proposed 530s start lands on 'direction', completing a sentence begun at 528s; move the start to 528s to include the introduction of filter direction. The cut itself reintroduces sales and segments and their totals at 546\u2013556s. At 560\u2013604s left-to-right Single changes the other table's total but the reverse filter does not travel; 606\u2013617s reverses Single; 623\u2013636s shows Both filtering either way. These are concrete visual filter-propagation demonstrations of f1 and f4, matching the Power BI documentation. Understanding the example does not require authoring a report or knowing DAX; the totals are displayed and explained. End at the recap boundary around 646s. No relationship-creation UI, active-setting or cardinality-configuration fact is confirmed."
+    },
+    {
+      "proposal_id": "prop_-C2olg3SfvU_one_to_many",
+      "verdict": "rejected_weak_visual",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 1,
+        "pacing": 3,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read -C2olg3SfvU 7\u2013146s and the Step 1 / Step 2 catalogue chapters. At 85s the speaker defines one record relating to many records; 90\u2013108s clearly contrasts one customer's many orders with one order's single customer. f1 is supported and there is no prerequisite leak. However this talking-head-only range spends 40\u201377s on generic table motivation before the definition, then repeats it at 111s. The explanation is competent rather than exceptionally clear enough to justify the talking-head exception in \u00a716. No diagram, displayed table, or annotated example is evidenced in this cut. Reject on visual teaching value; use a table/diagram-supported explanation instead. The cut does not teach foreign-key placement or zero-order optionality required by f2."
+    },
+    {
+      "proposal_id": "prop_ztHopE5Wnpc_many_to_many_junction_tables",
+      "verdict": "rejected_inaccurate",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 2,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 3,
+        "visual_teaching_value": 4,
+        "pacing": 1,
+        "boundary_quality": 2
+      },
+      "reasoning": "Read ztHopE5Wnpc 9390\u20139982s and the Designing Many-to-Many Relationships chapter. At 9430s the speaker names an intermediary/junction table, at 9485\u20139535s draws two one-to-many relationships, and 9708\u20139800s maps class/student IDs into association rows. This supports f1 and offers a genuine whiteboard mechanism. But at 9807\u20139835s he says that if John drops out, foreign-key constraints 'get rid of these' association rows, without specifying a cascading delete policy. Foreign keys alone do not automatically delete children: PostgreSQL's approved constraint documentation distinguishes default NO ACTION from explicitly selected ON DELETE CASCADE. The supplied cut therefore teaches an unsupported automatic-cleanup rule. It also opens with 'implement that' and spends almost nine minutes on spelling, naming jokes and repetitive parent/child analogy. A replacement compact, standalone example must establish the M:N problem and two 1:M resolution without implying automatic deletion; simply retaining the supplied end preserves the accuracy defect."
+    },
+    {
+      "proposal_id": "prop_ae9n0JNhKlg_relationships_cardinality",
+      "verdict": "approved",
+      "final_start_seconds": 375,
+      "final_end_seconds": 525,
+      "confirmed_fact_ids": [
+        "f1",
+        "f4",
+        "f8"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 5,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read ae9n0JNhKlg 345\u2013555s; catalogue has no chapters. At 375\u2013391s the speaker introduces cardinality as how many rows can relate. At 396\u2013415s zero/one/many are explicitly linked to circle/bar/crow's-foot symbols, matching Microsoft's Visio notation documentation. At 423\u2013481s the minimum/maximum question is asked in each direction for customers and orders, and 483\u2013525s repeats it for orders and items. The ERD drawing is the object being explained here, not a prerequisite for following these symbol definitions; no later ERD construction skill is needed. Approve the two complete examples. f1, f4 and f8 are supported; do not infer minimum-symbol placement or all four symbol-pair rules solely from the transcript. Boundary times are rounded near sentence transitions."
+    },
+    {
+      "proposal_id": "prop_9URM1_2S0ho_inner_join",
+      "verdict": "approved",
+      "final_start_seconds": 133,
+      "final_end_seconds": 249,
+      "confirmed_fact_ids": [
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 9URM1_2S0ho 103\u2013279s and the SQL Tables Overview / Inner Joins / Full Outer Joins chapters. Starting at 133s begins a new query: SELECT everything FROM EmployeeDemographics JOIN EmployeeSalary; 150\u2013159s explicitly states that JOIN defaults to INNER, confirming f3. The table names and EmployeeID equality are supplied inside the clip at 162\u2013190s, followed by execution and a readable combined output at 198\u2013245s. Thus earlier table-overview footage is helpful but not necessary. The diagram's 'common or overlapping' wording is illustrative, not a complete explanation of every matching pair, so only f3 is confirmed here. End at 249s before the full-outer-join command; no later join knowledge is needed. Query/output and join-diagram cues support the proposed visual value."
+    },
+    {
+      "proposal_id": "prop_v7cTKaMj3B8_inner_join",
+      "verdict": "approved",
+      "final_start_seconds": 300,
+      "final_end_seconds": 498,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read v7cTKaMj3B8 0\u2013528s; catalogue has no chapters. The full proposal is over eight minutes and repeats query construction and alias-formatting advice (124\u2013282s) before another complete results explanation. Tighten to the independently understandable table/result walkthrough beginning around 300s: 304\u2013360s reintroduces customers, orders and selected columns; 379\u2013414s identifies CustomerID and traces Maria's match; 419\u2013450s traces the next matches; 453\u2013475s excludes customers with no order; 478\u2013492s excludes the order whose customer is absent. This demonstrates f1 without needing to watch query construction. Both tables, the matching key and output labels are explained in the retained range. The ON-clause construction is outside the final cut, so remove proposed f2 from confirmed facts. End at 498s before the left-join transition. The roughly three-minute table walkthrough serves the worked-example role without the original repetition."
+    },
+    {
+      "proposal_id": "prop_SZCmhF81Jmg_inner_join",
+      "verdict": "approved",
+      "final_start_seconds": 120,
+      "final_end_seconds": 180,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read SZCmhF81Jmg 90\u2013210s and the INNER JOIN chapter (118\u2013178s). At 120\u2013134s a fresh topic is named; 141\u2013156s defines left/right and names customers/orders; 161\u2013177s explains that only matching rows are returned and all nonmatching rows are excluded. This is a conceptual explanation of f1, consistent with PostgreSQL's joined-table semantics, though it does not develop repeated matches or teach the ON clause. Table/result cues give the mental model visual support. The earlier join-key discussion is not required to follow the match-only rule, and left/right labels are taught inside the cut. Keep 120\u2013180s, ending before the left-join explanation."
+    },
+    {
+      "proposal_id": "prop_X_cPXHV2NQ4_data_types_null_handling",
+      "verdict": "approved",
+      "final_start_seconds": 2700,
+      "final_end_seconds": 2800,
+      "confirmed_fact_ids": [
+        "f4"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 5,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read X_cPXHV2NQ4 2543\u20132831s and the IS NULL / IS NOT NULL chapter. The proposed 2573s start catches 'zero', completing the prior division-by-zero example. Prefer the shorter standalone use case at 2700s: the speaker announces finding missing information, introduces the customer-score task, selects all five customers at 2720\u20132738s, and explicitly says not to use equals but IS NULL at 2743\u20132752s. At 2766\u20132798s the opposite task uses WHERE score IS NOT NULL and shows the nonmissing scores. This fully teaches f4 and matches PostgreSQL's comparison-predicate documentation. The retained query is introduced from SELECT, so prior NULLIF setup is unnecessary. End around 2800s after the completed analysis sentence, before anti-joins. No other NULL or data-type fact is confirmed."
+    },
+    {
+      "proposal_id": "prop_giKwmtsz1U8_left_outer_join",
+      "verdict": "approved",
+      "final_start_seconds": 63,
+      "final_end_seconds": 184,
+      "confirmed_fact_ids": [
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read giKwmtsz1U8 35\u2013211s and the How left join works chapter. The 65s proposal opens in the middle of 'let's understand'; start at 63s for the new results-walkthrough thought. At 70\u201395s customers/orders, their left/right positions and all four output columns are reintroduced. At 146\u2013153s Martin has no orders and SQL displays NULL; 162\u2013181s repeats the missing-right-side outcome for the other customer and summarizes NULL filling. This supports f2, matching PostgreSQL's LEFT OUTER JOIN documentation. The reference to an executed query does not require prior footage because the table/result mechanism and labels are supplied again. At 157\u2013160s 'empty' is immediately qualified as no value found/unknown; in this unmatched-row context it is not a claim that NULL equals an empty string. End at 184s before next-topic instructions. Only proposed f2 is confirmed."
+    },
+    {
+      "proposal_id": "prop_aY7z4HcHm5M_left_outer_join",
+      "verdict": "approved",
+      "final_start_seconds": 1388,
+      "final_end_seconds": 1575,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read aY7z4HcHm5M 1358\u20131605s and the LEFT JOIN chapter. At 1388s a fresh definition preserves all left rows and only matching right data; 1442\u20131478s explains the FROM/LEFT JOIN table order. The task at 1484\u20131507s explicitly asks for all customers including those without orders. The speaker changes the displayed customer/order query to LEFT JOIN, executes it at 1556s, and points out Martin/Peter and their NULL order fields at 1564\u20131574s. This teaches f1 and f2 and matches PostgreSQL's preservation/null-extension rules. Although the SQL is reused, the tables, relationship mechanism, task and relevant query change are explained within the cut, so earlier footage is not necessary to follow this example. Displayed syntax/results and circle diagrams provide visual support. Stop at the completed task at 1575s, before the table-reversal exercise; do not confirm the full selected-column syntax fact from this abbreviated editing workflow."
+    },
+    {
+      "proposal_id": "prop_aY7z4HcHm5M_right_outer_join",
+      "verdict": "approved",
+      "final_start_seconds": 1820,
+      "final_end_seconds": 1973,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read aY7z4HcHm5M 1791\u20132003s and the RIGHT JOIN chapter. Move the proposed 1821s start slightly earlier to 1820s to preserve 'Okay, so now what is exactly right join?' after the previous sentence. At 1825\u20131877s the speaker defines right preservation and left matching and explains FROM A RIGHT JOIN B. At 1883\u20131915s the new task explicitly includes orders without matching customers; 1921\u20131925s reopens the original orders to show four rows; 1932\u20131958s edits and executes RIGHT JOIN; 1961\u20131972s explains the NULL customer fields for the order without a known customer. f1 and f2 are supported. Customer/order labels and the changed preservation requirement are reintroduced, so prior left-join footage is not needed; left join itself is allowed knowledge here. End before the alternative-left-join exercise at 1973s. The unmatched order is an illustrative input to join semantics, not a recommendation to violate a foreign-key constraint."
+    },
+    {
+      "proposal_id": "prop_aY7z4HcHm5M_full_outer_join",
+      "verdict": "approved",
+      "final_start_seconds": 2116,
+      "final_end_seconds": 2346,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read aY7z4HcHm5M 2087\u20132376s and the FULL JOIN chapter. The 2117s proposal loses most of the opening question; start around 2116s after 'let's go' and before 'Okay, so now what is exactly a full join?' At 2119\u20132164s both-side preservation is explained; 2168\u20132228s introduces the customers/orders task, changes the visible query to FULL JOIN and explains matching data side by side and NULLs for no match. The subsequent table walkthrough reintroduces output columns at 2243\u20132253s, fills missing order columns for two customers at 2286\u20132299s, and adds the unmatched fourth order with NULL customer ID/name at 2305\u20132339s. This is a complete visual example of f1 and f2, consistent with PostgreSQL's FULL OUTER JOIN semantics. No blocked ordering/reporting knowledge is used. End at 2346s before use-case recap. Syntax creation from scratch is not confirmed."
+    },
+    {
+      "proposal_id": "prop_T5VKCXJaIfM_right_outer_join",
+      "verdict": "approved",
+      "final_start_seconds": 57,
+      "final_end_seconds": 144,
+      "confirmed_fact_ids": [
+        "f1",
+        "f2"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 4,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read T5VKCXJaIfM 30\u2013171s and the All Rows from Right / Matching Rows from Left chapters. The proposed 60s start completes an introduction begun at 57s; extend to 57s for that whole new thought. At 63\u201375s customers/orders and the selected output columns are reintroduced; 77\u201398s explains preservation of every order; 100\u2013121s walks the matching customer IDs; 122\u2013142s shows missing customer six producing NULL on the customer side and summarizes all orders plus matching customer information. Thus f1 and f2 are supported, consistent with PostgreSQL, and labels/logic are available without prior query footage. 'Empty' describes the absent customer side rather than teaching empty-string equality. The final cut ends before the full-outer-join transition. It does not claim f3 because it does not construct the query. The example is illustrative join input, not a foreign-key data-entry workflow."
+    },
+    {
+      "proposal_id": "prop_3dtDbmXFJWs_tableau_data_connection",
+      "verdict": "approved",
+      "final_start_seconds": 130,
+      "final_end_seconds": 237,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 5,
+        "pacing": 4,
+        "boundary_quality": 5
+      },
+      "reasoning": "Read 3dtDbmXFJWs 100\u2013266s and the Connect tableau with Text file chapter. At 130\u2013158s the starting Connect pane and Text File connector are introduced; 161\u2013173s selects Customers, clicks Open and reaches the Data Source page. At 190\u2013231s the speaker opens Text File Properties, inspects the semicolon delimiter, and explains synchronizing a changed delimiter with Tableau. This matches Tableau's Text File connector documentation and supports f1. The file and connector are named in the clip, so the earlier download/tutorial-plan discussion is unnecessary. The visible UI/file-property demonstration has strong workflow visual value and no later BI-design prerequisites. Extend the end by one second to 237s to finish 'ready to use a text file', before the Excel transition. Physical joins and extracts are not taught or confirmed."
+    }
+  ]
+}
