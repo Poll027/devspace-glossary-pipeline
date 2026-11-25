@@ -1,0 +1,629 @@
+Lead with Context, Not Control | ProductPlan
+@media not all and (prefers-reduced-motion: reduce){html.w-mod-js:not(.w-mod-ix3) :is([data-animate="stagger-children"] > *) {visibility: hidden !important;}}
+.optibase-hidden {
+display: none !important;
+}
+.w-richtext figure img {
+width: 100%;
+height: 400px;
+aspect-ratio: 16 / 9;
+object-fit: contain;
+}
+/* Stop the rich text block from sizing to its widest child */
+.rich-text-component {
+width: 100%;
+min-width: 0;
+align-self: stretch;
+}
+.w-richtext,
+.w-richtext .w-embed {
+min-width: 0;
+max-width: 100%;
+}
+/* Any embed that overflows now scrolls instead of getting clipped */
+.w-richtext .w-embed { overflow-x: auto; }
+.table-scroll-wrapper {
+overflow-x: auto;
+-webkit-overflow-scrolling: touch;
+min-width: 0;
+max-width: 100%;
+margin: 8px 0 24px 0;
+}
+.table-scroll-wrapper table {
+width: 100%;
+min-width: 560px;
+border-collapse: collapse;
+font-size: 15px;
+}
+.table-scroll-wrapper::-webkit-scrollbar { height: 8px; }
+.table-scroll-wrapper::-webkit-scrollbar-thumb { background: #c4c4c4; border-radius: 4px; }
+.table-scroll-wrapper::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 4px; }
+/* Col pad design mode indicator */
+html.wf-design-mode .row .col:has( .slot)::before,
+html.wf-design-mode .row .col:has( .slot)::after {
+content: "";
+position: absolute;
+top: 0;
+bottom: 0;
+width: calc(var(--_layout---grid--gap-main) / 2);
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='3' viewBox='0 0 3 3' fill='none'%3E%3Cg clip-path='url(%23clip0_481_2070)'%3E%3Cpath d='M2.99997 0.970703L0.969971 3.0007H2.02997L2.99997 2.0307V0.970703Z' fill='%23259d4d'/%3E%3Cpath d='M0.97 0L0 0.97V2.03L2.03 0H0.97Z' fill='%23259d4d'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_481_2070'%3E%3Crect width='3' height='3' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");    background-repeat: repeat;
+background-size: 4px;
+opacity: 0;
+pointer-events: none;
+}
+html.wf-design-mode .col:has(>.slot)::before {
+left: 0;
+}
+html.wf-design-mode .col:has(>.slot)::after {
+right: 0;
+}
+html.wf-design-mode .col:has(>.slot):hover::before,
+html.wf-design-mode .col:has(>.slot):hover::after {
+opacity: 0.5;
+}
+/* Remove pointer events on overlays for easier canvas editing */
+html.wf-design-mode .u-link-cover {
+pointer-events: none;
+}
+html.wf-design-mode .btn-text {
+pointer-events: auto;
+}
+/* Space tab panes */
+html.wf-design-mode .tabs-pane:has(+.tabs-pane) {
+margin-bottom: var(--_layout---grid--gap-main);
+}
+/* Text Selection Color */
+::selection {
+background: var(--primary--text);
+color: var(--primary--background);
+}
+::-moz-selection {
+background: var(--primary--text);
+color: var(--primary--background);
+}
+/* Apply font smoothing */
+body {
+-webkit-font-smoothing: antialiased;
+-moz-font-smoothing: antialiased;
+-o-font-smoothing: antialiased;
+}
+/* Ensure column stack on increased default browser font size (for accessibility) */
+body.font-size-increased .row {
+container-type: inline-size;
+}
+body.font-size-increased {
+@container (max-width: 40rem) {
+.col:not([data-wf--grid-column--column-size="shrink"]) {
+flex: 0 0 100% !important;
+max-width: 100% !important;
+}
+}
+}
+/* Rich text modifiers */
+.w-richtext>:first-child {
+margin-top: 0;
+}
+/* Line clamp modifiers */
+.u-text-clamp-1 {
+-webkit-line-clamp: 1;
+-webkit-box-orient: vertical;
+}
+.u-text-clamp-2 {
+-webkit-line-clamp: 2;
+-webkit-box-orient: vertical;
+}
+.u-text-clamp-3 {
+-webkit-line-clamp: 3;
+-webkit-box-orient: vertical;
+}
+/* Row/col gap modifiers */
+.row.row-gap-0 .col {
+--_layout---grid--gap-main: 0;
+}
+.row.row-gap-0:has( .col[class*="contain"]) .col {
+--_layout---grid--gap-main: 1px;
+}
+.row.row-gap-md .col {
+--_layout---grid--gap-main: var(--_layout---grid--gap-md);
+}
+.row.row-gap-sm .col {
+--_layout---grid--gap-main: var(--_layout---grid--gap-sm);
+}
+.row.row-gap-button .col {
+--_layout---grid--gap-main: var(--_layout---grid--gap-button);
+}
+/* Build mode modifiers */
+.slot .button:not([data-slider]) {
+align-self: flex-start;
+}
+.slot > *:last-child,
+.slot > .heading-component:last-child *,
+.slot > .rich-text-component:last-child .rich-text > *:last-child,
+.rich-text-component.u-mb-0 .rich-text > *:last-child,
+.eyebrow-component.u-mb-0 .eyebrow {
+margin-bottom: 0;
+}
+.slot.cc-column > .eyebrow-component {
+align-self: start;
+}
+.card:has(>.u-link-cover:focus-visible) {
+outline: 2px solid var(--primary--accent);
+outline-offset: 2px;
+}
+.section:has( > .container > .slot > [data-wf--image--settings-aspect-ratio="background"]),
+.page-wrapper:has( [data-wf--image--settings-aspect-ratio="background"]) {
+background: transparent !important;
+z-index: 1;
+}
+.card > .slot > [data-wf--image--settings-aspect-ratio="background"] {
+z-index: 0;
+}
+.card > .slot > *:not([data-wf--image--settings-aspect-ratio="background"]) {
+z-index: 1;
+}
+/* Load animation FOUS */
+html:not(.wf-design-mode) [data-animate="stagger-children"] > * {
+opacity: 0;
+visibility: hidden;
+}
+.u-text-list .w-dyn-item:not(:last-child) div::after {
+content: ", ";
+}
+.rich-text ul li {
+list-style: none;
+padding: 8px 0 8px 36px; /* left padding creates room for icon */
+position: relative;
+}
+.rich-text ul li::before {
+content: url(https://cdn.prod.website-files.com/69b699216b289f7f1545bc77/69bd4fb5d829bab298991b45_checkmark-brand.svg);
+width: 24px;
+height: 24px;
+position: absolute;
+left: 0;
+top: 10px; /* tweak to align vertically with first line */
+display: block;
+}
+/* wrapper: stacking context */
+.step-wrapper {
+width: 30px; height: 30px;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+/* ring: masked separately so it never touches the text */
+.step-ring {
+position: absolute; inset: 0;
+border-radius: 50%;
+padding: 2px; /* border thickness */
+background: linear-gradient(90deg, #FF776F, #FFB69F);
+-webkit-mask:
+linear-gradient(#fff 0 0) content-box,
+linear-gradient(#fff 0 0);
+-webkit-mask-composite: xor;
+mask-composite: exclude;
+}
+/* number: sibling, not child — mask never applies */
+.step-num {
+font-size: 16px; font-weight: 500;
+background: #1E1E1E;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+/* Reset apple form styles */
+input, textarea, select {
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none; border-radius: 0;
+background-image: none;
+}
+/* Adjust input autofill to brand colors */
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+background-color: var(--primary--background) !important;
+color: var(--primary--text) !important;
+-webkit-box-shadow: 0 0 0 50px var(--primary--background) inset;
+-webkit-text-fill-color: var(--primary--text);
+}
+/* Select input custom arrow */
+.input-group:has(.input.cc-select)::after {
+content: "";
+position: absolute;
+top: 50%;
+right: 1.5rem;
+border-top: 2px solid var(--primary--text);
+border-right: 2px solid var(--primary--text);
+transform: translateY(-90%) rotate(135deg);
+width: 0.4rem;
+height: 0.4rem;
+pointer-events: none;
+}
+.hs-fieldtype-intl-phone.hs-input select {
+background: center;
+}
+/* Marquee */
+@keyframes marquee-scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+@keyframes marquee-scroll-right { 0% { transform: translateX(-100%); } 100% { transform: translateX(0); } }
+@keyframes marquee-scroll-up { 0% { transform: translateY(0); } 100% { transform: translateY(-100%); } }
+@keyframes marquee-scroll-down { 0% { transform: translateY(-100%); } 100% { transform: translateY(0); } }
+.marquee-component[data-marquee-pause-on-hover="true"]:hover .marquee-group {
+animation-play-state: paused;
+}
+.marquee-component[data-marquee-reverse="false"] .marquee-group {
+animation: marquee-scroll-left var(--marquee-duration) linear infinite;
+}
+.marquee-component[data-marquee-reverse="true"] .marquee-group {
+animation: marquee-scroll-right var(--marquee-duration) linear infinite;
+}
+.marquee-component[data-wf--marquee--settings-orientation="vertical"][data-marquee-reverse="false"] .marquee-group {
+animation: marquee-scroll-down var(--marquee-duration) linear infinite;
+}
+.marquee-component[data-wf--marquee--settings-orientation="vertical"][data-marquee-reverse="true"] .marquee-group {
+animation: marquee-scroll-up var(--marquee-duration) linear infinite;
+}
+.marquee-component:not([data-wf--marquee--settings-orientation="vertical"])[data-marquee-fade-edges="true"] {
+-webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+.marquee-component[data-wf--marquee--settings-orientation="vertical"][data-marquee-fade-edges="true"] {
+-webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+/* Accordion */
+:root {
+interpolate-size: allow-keywords; /* To animate accordions */
+}
+details[open] .accordion-icon{
+transform: rotate(45deg);
+}
+summary::-webkit-details-marker {
+display: none; /* Hide older Safari's default disclosure arrow */
+}
+/* Modal */
+body:has(dialog[open]) {
+overflow: hidden !important;
+}
+dialog.modal[open] {
+animation: fadein 400ms ease-out forwards;
+}
+dialog.modal::backdrop {
+background: color-mix(in srgb, var(--_color---neutral--black) 80%, transparent);
+}
+@keyframes fadein{
+0%{
+opacity:0;
+}
+100%{
+opacity:1;
+}
+}
+dialog::-webkit-scrollbar {
+width: 10px;
+}
+dialog::-webkit-scrollbar-track {
+border-radius: 10px;
+background-color: transparent;
+}
+dialog::-webkit-scrollbar-thumb {
+border-radius: 10px;
+border: 2px solid var(--primary--background);
+background: var(--primary--text);
+}
+dialog::-webkit-scrollbar-thumb:window-inactive {
+background: var(--primary--text);
+}
+/* Slider */
+.swiper-button-disabled {
+opacity: 0.5;
+pointer-events: none;
+}
+[data-slider="component"] {
+--lg: 3; /* Desktop (992px+) */
+--md: 2; /* Tablet (768-991px) */
+--sm: 1; /* Mobile Landscape (480-767px) */
+--xs: 1; /* Mobile Portrait (0-479px) */
+--gap: 24px; /* Spacing between slides */
+--current-slides-per-view: var(--xs); /* Current active slides per view (changes with media queries) */
+}
+@media (min-width: 480px) and (max-width: 767px) {
+[data-slider="component"] {--current-slides-per-view: var(--sm);}
+}
+@media (min-width: 768px) and (max-width: 991px) {
+[data-slider="component"] {--current-slides-per-view: var(--md);}
+}
+@media (min-width: 992px) {
+[data-slider="component"] {--current-slides-per-view: var(--lg);}
+}
+[data-slider="component"] .swiper-slide {
+width: calc((100% - (var(--current-slides-per-view) - 1) * var(--gap)) / var(--current-slides-per-view)) !important;
+margin-right: var(--gap);
+}
+[data-slider-overflow="false"] {
+overflow: hidden;
+}
+[data-slider-overflow="true"] {
+overflow: visible !important;
+}
+[data-slider="component"] .swiper-wrapper:empty {
+min-height: 300px;
+}
+[data-slider="component"] .swiper-wrapper .w-dyn-list,
+[data-slider="component"] .swiper-wrapper .w-dyn-items,
+[data-slider="component"] .swiper-wrapper .w-dyn-item {
+display: contents;
+}
+/* Tab pane animations  */
+.tabs-pane {
+animation: tabsFadeIn 0.5s ease;
+}
+@keyframes tabsFadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+.tabs-pane[aria-hidden="true"] {
+display: none;
+}
+/* Vertical menu mods  */
+[data-wf--tabs-menu--settings-alignment="vertical"] .tabs-link {
+border-bottom: none;
+border-left: 2px solid var(--primary--border);
+}
+[data-wf--tabs-menu--settings-alignment="vertical"] .tabs-link.cc-active {
+border-color: var(--primary--text);
+}
+[data-wf--tabs-menu--settings-alignment="vertical"] .tabs-autoplay-progress {
+top: 0;
+right: auto;
+bottom: 0;
+left: -2px;
+width: 2px;
+height: 0%;
+}
+/* Autoplay animation  */
+.tabs-menu[data-tabs-autoplay="true"] .tabs-link[aria-selected="true"] .tabs-autoplay-progress {
+animation: autoplayProgress var(--autoplay-duration, 5s) linear forwards;
+}
+.tabs-component.autoplay-paused .tabs-menu[data-tabs-autoplay="true"] .tabs-link[aria-selected="true"] .tabs-autoplay-progress {
+animation-play-state: paused;
+}
+@keyframes autoplayProgress {
+from { width: 0%; }
+to { width: 100%; }
+}
+.tabs-component .tabs-menu[data-wf--tabs-menu--settings-alignment="vertical"][data-tabs-autoplay="true"] .tabs-link[aria-selected="true"] .tabs-autoplay-progress {
+animation: autoplayProgressVertical var(--autoplay-duration, 5s) linear forwards;
+}
+.tabs-component.autoplay-paused .tabs-menu[data-wf--tabs-menu--settings-alignment="vertical"][data-tabs-autoplay="true"] .tabs-link[aria-selected="true"] .tabs-autoplay-progress {
+animation-play-state: paused;
+}
+@keyframes autoplayProgressVertical {
+from { height: 0%; }
+to { height: 100%; }
+}
+/* Play/pause button  */
+.tabs-component.autoplay-paused .tabs-autoplay-toggle_pause {
+display: none;
+}
+.tabs-component.autoplay-paused .tabs-autoplay-toggle_play {
+display: flex;
+}
+/* Mobile dropdown */
+@media (max-width: 767px) {
+.tabs-menu[data-tab-mobile-dropdown="true"] .tabs-menu_dropdown-toggle {
+display: flex;
+}
+.tabs-menu[data-tab-mobile-dropdown="true"] .tabs-menu_dropdown-toggle.cc-open {
+border-radius: var(--_components---button--border-radius) var(--_components---button--border-radius) 0 0;
+}
+.tabs-menu[data-tab-mobile-dropdown="true"] .tabs-menu_dropdown-toggle.cc-open .tabs-menu_dropdown-arrow {
+transform: rotate(180deg);
+}
+.tabs-menu[data-tab-mobile-dropdown="true"] .tabs-menu_dropdown-menu {
+display: none;
+position: absolute;
+top: calc(100% - 1px);
+left: 0;
+right: 0;
+background: var(--primary--background);
+border: 1px solid var(--primary--border);
+border-radius: 0 0 var(--_components---button--border-radius) var(--_components---button--border-radius);
+z-index: 10;
+max-height: 300px;
+overflow-x: hidden;
+overflow-y: auto;
+}
+.tabs-menu[data-tab-mobile-dropdown="true"] .tabs-menu_dropdown-menu.cc-open {
+display: block;
+}
+.tabs-menu[data-tab-mobile-dropdown="true"] .slot.cc-tabs-menu {
+display: flex;
+flex-direction: column;
+}
+.tabs-menu[data-tab-mobile-dropdown="true"] .tabs-link {
+border: none;
+}
+.tabs-menu[data-tab-mobile-dropdown="true"] .tabs-link.cc-active {
+background-color: var(--primary--border);
+}
+}
+/* Mobile menu button animation */
+.nav-menu_btn.w--open .cc-top {
+transform: translateY(9px) rotate(45deg);
+}
+.nav-menu_btn.w--open .cc-middle {
+opacity: 0;
+transform: translateY(0);
+}
+.nav-menu_btn.w--open .cc-bottom {
+transform: translateY(-9px) rotate(-45deg);
+}
+/* When a nav dropdown is open.. */
+/* ..Rotate narrow */
+.nav-link.w--open .nav-dropdown_arrow {
+transform: rotate(180deg)
+}
+/* Lock body scroll when mobile nav is open */
+body:has( .w-nav-button.w--open) {
+overflow: hidden;
+}
+/* Nav CTA wrapper mode when nav menu hidden */
+@media (min-width: 992px) {
+.nav-menu + .nav-cta-wrapper {
+margin-left: 0;
+}
+}
+.nav-link.w-inline-block.w--current .nav-link_border {
+display: block;
+}
+.nav-link_border {
+display: none;
+}
+Skip to Main Content
+Solutions
+Customer &amp; Market Insights
+User Research
+Ideas Capture &amp; Management
+Product Prioritization
+Product Roadmaps
+Product Portfolios
+Product Intelligence Platform
+Industries
+Professional Services
+Finance &amp; Banking
+Insurance
+Retail &amp; Manufacturing
+SaaS
+Government &amp; Nonprofits
+Resources
+Blog / Content
+Blog
+Case Studies
+Videos
+Webinars &amp; Events
+Learning Center
+Templates
+Glossary
+Client Care
+Support Hub
+Implementation
+Client Success
+Security
+Security
+State of Product Management 2026
+Get 110+ pages of insights.
+Read Now
+Read Now
+Company
+About
+Careers
+Newsroom
+Contact Us
+Pricing
+SIGN IN
+Book a Demo
+Book a Demo
+Lead with Context, Not Control
+Adrian Bryant
+·
+August 31, 2021
+·
+Product Leadership
+Acquiring a consensus on product direction remains the number one challenge for product professionals, according to
+ProductPlan’s 2021 State of Product Management Annual Report
+. The art of product leader communication relies on the concept of responsibility without authority. Product managers who follow this concept understand the responsibility to influence others to achieve the organization’s product goals.The dynamic turns upside down as we progress through our careers and establish ourselves as product leaders. As product managers, we have the power to task others with responsibilities. We need to convince stakeholders in other departments to buy into strategies and get things done.The responsibility of managing a product team gives us a type of control that we’re not used to. We can give orders and hold people accountable, and we also have the authority to assign our direct reports with tasks.But should we treat our direct reports differently than our other coworkers and colleagues? Should we skip the niceties and consensus building within our own teams just because we can?
+Product Manager’s Control of Employee Expectations
+With your team, no one can stop you from giving orders and micromanaging staff. As a product manager, implementing an effective
+product strategy
+should remain a priority. Though you may have authority, it remains crucial that you wield this power responsibly.Remember your time as a junior team member or individual contributor. The product managers who provided clarity around
+expectations and responsibilities
+empowered their employees. In contrast, those who failed to exude product leader communication let their product team down. As a junior product team member, what you were looking for was the “why.” The “why” provided you the context to think and act strategically versus tactically. Now that the roles have switched, you want to set up your product team for success, by developing your own product leader communication strategies.By leading with context versus control, you position yourself to empower your staff to complete their tasks and reach their objectives. Autonomy provides employees with the freedom to solve problems and accomplish tasks utilizing their processes.You likely hired your team members because you believed they had a good head on their shoulders and the ability to fulfill the job responsibilities. After they get fully onboarded, you can tap into those abilities.When you grant your employees some level of autonomy, you convey to them that they have your trust. Trust can go a long way towards mitigating any cases of
+imposter syndrome
+and boosting employee confidence.
+Leading with context instead of control.
+Product managers who provide context instead of control open up the possibilities of potential solutions. If you’re always offering basic action plans, you’re limiting your product team's creativity. When you close off avenues that might be worth exploring, you ultimately miss out on opportunities that can lead to a better product.Finally, leading with context means you create alignment within your own team. You must ensure that you provide consistent messaging to external stakeholders. As a united front, you can then start tackling product initiatives. Your product team needs to understand the rationale and motivations for these initiatives and decisions.Plenty of opportunities exist to lead your team. By empowering them with knowledge, you refrain from bogging them down with directives.
+Recognizing the 0pportunities to lead your team.
+For example, let’s say you have a disgruntled customer bugging you to add a new feature. The request falls within the domain of an associate product manager. You could use a command approach: (1.) directing them to write up user stories based on sales team and customer services notes. (2.) Follow up to make sure it gets prioritized.In contrast, the alternative approach calls for you to lead with context. To achieve this, you can tell the associate PM that a particular customer may need more attention than a returning customer. You need to emphasize that they should do some research to understand the customer’s true pain points. The overall goal to solve and recommend one or more solutions permits them to do some real
+product management
+work.The customer’s request for a feature may relate to a symptom of a whole other issue, such as a lack of training. An effective product professional understands a small tweak takes less time than weeks of work. These revelations wouldn’t happen if you simply handed down a direct order from a project manager to an associate PM.Likewise, you can also be less prescriptive with how junior team members spend their time by emphasizing context over control. Moreover, you can provide them with adequate context to make those decisions for themselves.
+Utilizing metrics to measure success.
+In addition, product managers—who understand the
+metrics used to define and gauge success
+—can identify the gaps themselves and add value where they see opportunity. It puts the onus on them to consult with colleagues to see where they might need some extra help. Moreover, they can review the overall situation and identify the areas that require an active owner.If you take a holistic approach, junior staff can see the big picture and their contributions for maximum impact. While this may be too much leeway for newly hired staff, a solid contributor should quickly discern where they can do the most good.
+Setting the Stage for Successful Context-Based Leadership
+Context-driven management requires two key ingredients—clarity and communication. As any veteran product leader knows, there’s no better tool to facilitate that than the product roadmap.A
+theme-based roadmap
+articulates the initiatives that need prioritization. Roadmaps can also convey the intended outcomes, objectives, and goals the plan expects to achieve. An effective product roadmap can align stakeholders and provide an appropriate framework for managing your team.With a firm understanding of the roadmap, the entire product team operates from the same foundation by
+utilizing product software to remain in sync
+. In addition, the roadmap acts as a starting point where any decisions or conversations can provide context for the team.Product managers may have a hard time loosening the reins. For this reason, product managers need to
+develop their product leader communication skills
+. Frequent check-ins and updates can ease the discomfort you may have with letting go of some of that control. In addition, if the guidance fails to provide them enough context, you can ask them questions before they jump back.
+Creating an environment where the product team remains steeped in context ensures that the product team does not lose the product narrative. The entire team can play a role by remaining curious and seeking advice.
+Spend Time on What Matters Most
+We know from our 2021 State of Product Management report that product managers dislike mitigating issues through a reactive process instead of implementing a strategic process. Context-driven leadership can change that dynamic by forcing even the most junior members of the product team to think strategically.
+This mindset can also inform your
+hiring strategies
+as well. Leading with context only works when you have staff members capable of synthesizing information and making sound choices independently and not just blindly following detailed instructions.You may feel uncomfortable giving up control, but part of your job responsibility includes letting your team blossom and maximizing their potential. This concept mirrors the same basic tenet that underlies the
+entire Agile framework
+, where developers mitigate problems by developing solutions. Plus, it will give you more time to focus on strategic thinking, which 96% of product leaders say they don’t have enough time for.
+Your next roadmap starts here.
+The best product teams spend their energy on strategy, not status updates. See how ProductPlan gives your team a single, live, shareable roadmap that travels to where stakeholders work, stays in sync with engineering, and keeps everyone focused on what matters most.
+Book a Demo
+Book a Demo
+4.3/5 on G2
+The product intelligence platform helping teams plan, prioritize, and ship with confidence in the AI building era.
+Solutions
+Customer &amp; Market Insights
+User Research
+Ideas Capture &amp; Management
+Product Prioritization
+Product Roadmaps
+Product Portfolios
+PI Platform
+Industries
+Professional Services
+Finance &amp; Banking
+Insurance
+Retail &amp; Manufacturing
+SaaS
+Government &amp; Non-Profits
+Integrations
+Company
+About
+Careers
+Newsroom
+Contact Us
+Resources
+Blog
+Case Studies
+Videos
+Webinars &amp; Events
+Templates
+Glossary
+Downloads
+Email Courses
+Books &amp; Guides
+Clients
+Learning Center
+Support Hub
+Implementation
+Client Success
+Release Notes
+Status
+Compare
+vs Aha!
+vs Craft.io
+vs Productboard
+Developer / API
+API Reference
+API Docs
+Policies
+Privacy Notice
+Cookie Policy
+Security
+Legal Terms
+Terms of Use
+Participant Agreement
+SaaS Agreement
+Pricing
+Sign In
