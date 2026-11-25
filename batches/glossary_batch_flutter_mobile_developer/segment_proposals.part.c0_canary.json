@@ -1,0 +1,72 @@
+{
+  "metadata": {
+    "artifact_type": "segment_proposals",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_flutter_mobile_developer",
+    "run_id": "glossary_batch_flutter_mobile_developer",
+    "prompt_version": "08_segment_detection@v1",
+    "model": "bedrock:gpt-6.1-sol",
+    "generated_at": "2026-11-25T04:16:29.399960+00:00",
+    "source_snapshot_id": "glossary_batch_flutter_mobile_developer",
+    "parent_artifact_hashes": {
+      "video_candidates.json": "231254817eadcde331d749b9309b4bd9fac811fcb4616795b7459d2ea461953f",
+      "coverage_briefs.json": "ddf1e7cefe45cf477d81decaa5edccf6e771aa4072683a38d4e5faea3485db7e",
+      "extracted_concepts.json": "b873ddefe6939bebce3aa53d1702b610f2be16f20efbb7adb9eb236e29ff7861"
+    }
+  },
+  "batch_id": "glossary_batch_flutter_mobile_developer",
+  "proposals": [
+    {
+      "proposal_id": "prop_Pugt2VIB_uU_flutter_runtime_errors",
+      "concept_id": "flutter.flutter_runtime_errors",
+      "path_id": "flutter_mobile_developer",
+      "video_id": "Pugt2VIB_uU",
+      "start_seconds": 88,
+      "end_seconds": 155,
+      "label": "Trace a Flutter RangeError to the application source",
+      "role": "worked_example",
+      "covered_fact_ids": [
+        "f3"
+      ],
+      "visual_mode": "screen_demo",
+      "chapter_aligned": true,
+      "transcript_evidence": "line that mentions your own",
+      "issues": [
+        "Screen-demo visual mode is inferred from references to tapping the app, the red error screen, the Debug Console, editing code and hot reload; visuals were not independently reviewed.",
+        "Does not cover f1: FlutterError.onError and the default handler's device-log reporting are not explained.",
+        "Partially supports f2 by interpreting the exception and locating application source, but does not explicitly read or explain the reported framework context.",
+        "Supports f3 by selecting the first stack line mentioning main.dart and inspecting the index and list bounds, but does not explicitly contrast that application frame with a framework reporting frame.",
+        "The counter app already exists. The narration establishes the three-item list and invalid index within the range, but screen inspection is needed to confirm that understanding the failure does not depend on unseen setup.",
+        "The worked example is shorter than the typical duration band, but completes the correction and demonstrates the resulting label before the next topic begins at transcript timestamp 155."
+      ]
+    }
+  ],
+  "rejected_videos": [
+    {
+      "video_id": "zwPBMg3SHVU",
+      "concept_id": "flutter.project_iteration",
+      "reason": "No clean, prerequisite-safe segment exists. The opening refers to an already configured app and explains its reload problem through StatelessWidget implementation beginning at 44s, which is blocked for this concept. The completed edit/reload demonstration at 355\u2013429s depends on that earlier implementation and teaches widget composition and build behavior. The video does not demonstrate flutter run in debug mode or explain hot reload preserving state versus hot restart losing it. Its claim at 339\u2013347s that Flutter only needs to rebuild the widget whose code changed is technically misleading: hot reload can rebuild other existing widgets, not solely the edited widget."
+    },
+    {
+      "video_id": "zwPBMg3SHVU",
+      "concept_id": "flutter.stateless_build",
+      "reason": "No clean standalone range adequately teaches the required build contract. The creation sequence leads into blocked StatefulWidget/state discussion at 147\u2013187s; the build explanation beginning at 228s depends on the widget and existing screen code introduced earlier. The subsequent demonstration neither explains configuration and BuildContext inputs nor covers inherited-dependency rebuilds or side-effect-free build behavior. There are also factual problems, not merely coverage gaps: at 339\u2013347s the creator claims hot reload only needs to rebuild the edited widget, whereas other existing widgets can rebuild; at 470\u2013496s the creator presents @override as what makes the replacement build method take effect, although overriding works without that annotation. These inaccuracies make the video unsuitable for reinforcing the required contract."
+    },
+    {
+      "video_id": "UzTUc4nfMh4",
+      "concept_id": "flutter.project_iteration",
+      "reason": "No clean, prerequisite-safe segment covers the required facts. The explanation at 29\u201391 relies on untaught build methods, widgets, classes, fields, functions, and widget-tree rebuilding. The demonstration at 119\u2013240 requires existing code setup and teaches blocked class creation, StatelessWidget build behavior, and widget composition. At 246\u2013312 it deliberately introduces code errors and gives a technically incorrect account of hot reload: at 297\u2013306 it claims hot reload 'just reloads the build of the default route', then attributes the broken body to build-context routing. Hot reload is not limited to rebuilding the default route; compilation errors normally prevent changed code from being applied. The video should therefore be rejected rather than merely trimmed. It also does not demonstrate flutter run in debug mode (f1), a successful source edit followed by reload and verification (f2), state preservation versus state loss (f3), or the need to rerun initialization for certain changes (f4)."
+    },
+    {
+      "video_id": "OBIuSrg_Quo",
+      "concept_id": "flutter.analyzer_diagnostics",
+      "reason": "No clean standalone segment teaches the required diagnostic-correction workflow. The analyzer explanation at 57\u2013159 describes static analysis and lint configuration, but does not explain a diagnostic's name, message, and source location (f1). The fixes discussion at 165\u2013249 explains IDE quick fixes and bulk dart fix commands, but does not demonstrate consulting a diagnostic's description and documented correction, editing the indicated source, and rerunning flutter analyze to verify the correction (f2). The opening example also teaches super parameters and constructor conversion, requiring blocked Dart class knowledge. These are coverage and prerequisite gaps, not an identified factual contradiction."
+    },
+    {
+      "video_id": "Pugt2VIB_uU",
+      "concept_id": "flutter.analyzer_diagnostics",
+      "reason": "The typo chapter at 18\u201361 demonstrates a Problems-panel message, source location, correction hint and disappearing underline, but does not identify a diagnostic name or show documented correction followed by flutter analyze reanalysis. Its example also relies on setState method syntax and state-update vocabulary outside this concept's allowed knowledge. No other range supplies a standalone, prerequisite-safe analyzer workflow."
+    }
+  ]
+}

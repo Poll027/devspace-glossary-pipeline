@@ -1,0 +1,328 @@
+{
+  "metadata": {
+    "artifact_type": "segment_proposals",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_flutter_mobile_developer",
+    "run_id": "glossary_batch_flutter_mobile_developer",
+    "prompt_version": "08_segment_detection@v1",
+    "model": "bedrock:gpt-6.1-sol",
+    "generated_at": "2026-11-25T04:39:14.355055+00:00",
+    "source_snapshot_id": "glossary_batch_flutter_mobile_developer",
+    "parent_artifact_hashes": {
+      "video_candidates.json": "231254817eadcde331d749b9309b4bd9fac811fcb4616795b7459d2ea461953f",
+      "coverage_briefs.json": "ddf1e7cefe45cf477d81decaa5edccf6e771aa4072683a38d4e5faea3485db7e",
+      "extracted_concepts.json": "b873ddefe6939bebce3aa53d1702b610f2be16f20efbb7adb9eb236e29ff7861"
+    }
+  },
+  "batch_id": "glossary_batch_flutter_mobile_developer",
+  "proposals": [
+    {
+      "proposal_id": "prop_aQlP3Ey94oc_auth_route_access",
+      "concept_id": "flutter.auth_route_access",
+      "path_id": "flutter_mobile_developer",
+      "video_id": "aQlP3Ey94oc",
+      "start_seconds": 1,
+      "end_seconds": 184,
+      "label": "Choose login or dashboard with a session-dependent GoRouter redirect",
+      "role": "live_code_demo",
+      "covered_fact_ids": [
+        "f1"
+      ],
+      "visual_mode": "live_code",
+      "chapter_aligned": false,
+      "transcript_evidence": "depending on the value of this",
+      "issues": [
+        "Visual mode is inferred from references to editing main.dart, adding a redirect callback, hot restarting, and observing the resulting screens; visuals were not directly reviewed.",
+        "Authentication state is represented by a fixed boolean changed manually, not a live session subscription.",
+        "Partial f1 coverage: the callback selects a destination from simulated session state, but does not inspect whether the requested route requires sign-in.",
+        "Does not explicitly teach f2: returning null or the original requested path when navigation is permitted.",
+        "Does not explicitly teach f3: preserving access to the sign-in location while signed out and avoiding self-redirect loops. The demonstrated callback always selects one of two destinations; same-location redirect handling is not explained.",
+        "Does not cover f4: backend authorization remains necessary because a client-side route gate is not a security boundary.",
+        "Includes the screen setup and both observed outcomes so the example is standalone and complete; no creator chapters are supplied."
+      ]
+    },
+    {
+      "proposal_id": "prop_7i5YFxEZijo_profile_frame_investigation",
+      "concept_id": "flutter.profile_frame_investigation",
+      "path_id": "flutter_mobile_developer",
+      "video_id": "7i5YFxEZijo",
+      "start_seconds": 241,
+      "end_seconds": 583,
+      "label": "Use DevTools frame bars and timeline events to investigate a slow screen",
+      "role": "tool_workflow",
+      "covered_fact_ids": [
+        "f5",
+        "f6"
+      ],
+      "visual_mode": "screen_demo",
+      "chapter_aligned": false,
+      "transcript_evidence": "and this is actually based on peretto",
+      "issues": [
+        "Screen-demo visual mode is inferred from the narrated physical-phone demonstration, opening DevTools, clicking frame bars, and inspecting timeline events; visual footage was not supplied.",
+        "Partial coverage only: the range explains representative-device testing and why debug timing is misleading, but does not explicitly establish profile mode or demonstrate flutter run --profile. Required facts f1 and f2 are therefore not claimed.",
+        "Required facts f3 and f4 are not covered in this range. The UI/raster mechanism occurs earlier, and the transcript does not explicitly give the approximately 8 ms budget at 120 Hz.",
+        "Coverage of f5 is through identifying UI and raster frame bars, selecting a slow frame, and inspecting UI build timings; the transcript does not narrate a numerical comparison of both selected-frame timings.",
+        "The supplied transcript does not explicitly name the Performance view or narrate pressing its Record control.",
+        "The range finishes the initial diagnosis that build work is expensive, not the subsequent detailed widget investigation or code correction. Its end is the timestamped transition at 583 seconds; enabling Track Widget Builds begins at 588 seconds and is excluded to avoid entering blocked rebuild material.",
+        "At 342 seconds, the range is near the upper end of the tool-workflow duration target. The opening establishes the example and measurement conditions rather than assuming the earlier app demonstration."
+      ]
+    },
+    {
+      "proposal_id": "prop_xtBRVwk9uDA_profile_frame_investigation",
+      "concept_id": "flutter.profile_frame_investigation",
+      "path_id": "flutter_mobile_developer",
+      "video_id": "xtBRVwk9uDA",
+      "start_seconds": 326,
+      "end_seconds": 954,
+      "label": "Read frame budgets and investigate a slow UI frame in DevTools",
+      "role": "tool_workflow",
+      "covered_fact_ids": [
+        "f3",
+        "f4",
+        "f5",
+        "f6"
+      ],
+      "visual_mode": "screen_demo",
+      "chapter_aligned": false,
+      "transcript_evidence": "The UI side took significantly longer",
+      "issues": [
+        "Visual mode is inferred from references to frame bars, the running application, selecting frames, analysis tabs, and zooming into timeline events; visual footage was not supplied.",
+        "The range is 10 minutes 28 seconds, exceeding the usual tool-workflow target. It preserves the frame-budget explanation, overlay context explicitly referenced by the example, selected-frame comparison, frame analysis, and timeline inspection. Shorter chapter-only ranges introduce unresolved prior context.",
+        "The start is the first substantive caption of the Frames and frame budget chapter, five seconds after the catalogue chapter boundary.",
+        "This range does not cover f1 or the complete f2 workflow: profile-mode launch and representative physical-device guidance occur earlier. The supplied transcript also omits the spoken command at the apparent command-line demonstration.",
+        "At 377\u2013381 seconds, the supplied transcript says that everything below 60 milliseconds is not always fast enough 'anymore'. If spoken literally, this misleadingly implies 60 milliseconds was previously an acceptable 60 Hz budget, contradicting f4. It may be an auto-caption error for 16 milliseconds, but this cannot be verified here; reject the video if the literal statement is confirmed.",
+        "At 447 seconds, the creator briefly names rebuilding too much as a possible UI-side cause. The range does not teach identification of unnecessary widget rebuilds or a rebuild-reduction fix, but the judge should check this mention against the path's blocked-topic boundary.",
+        "The timeline investigation identifies the expensive build phase, not an individual expensive widget or application function. The range ends at the 954-second transition before the limitation introduced at 957 seconds and subsequent detailed widget tracing."
+      ]
+    },
+    {
+      "proposal_id": "prop_AGNrqAdizGg_bounded_rebuild_fix",
+      "concept_id": "flutter.bounded_rebuild_fix",
+      "path_id": "flutter_mobile_developer",
+      "video_id": "AGNrqAdizGg",
+      "start_seconds": 15,
+      "end_seconds": 142,
+      "label": "How const widget identity can reduce unchanged-subtree update work",
+      "role": "mental_model",
+      "covered_fact_ids": [
+        "f3"
+      ],
+      "visual_mode": "annotated_code",
+      "chapter_aligned": false,
+      "transcript_evidence": "Dart can reuse the same constant widget",
+      "issues": [
+        "Visual mode is a low-confidence inference from the counter example and comparisons of Text with const Text; the supplied transcript does not confirm on-screen code, and no thumbnail was supplied.",
+        "Partial concept coverage: moving state closer to changing widgets and splitting large widget trees are mentioned, but localized setState and change-based widget extraction are not demonstrated sufficiently to claim f1 or f2.",
+        "Provider select and Consumer's child argument are absent, so f4 is not covered.",
+        "DevTools rebuild activity and frame times before and after a change are recommended, but the same interaction is not re-recorded and no measured reduction is demonstrated; f5 is not claimed.",
+        "The segment starts with a self-contained counter example at 15 seconds, avoiding the opening reference to an earlier lesson. It ends at the 142-second caption boundary before the unrelated null-safety preview."
+      ]
+    },
+    {
+      "proposal_id": "prop_Vhm1Cv2uPko_build_environments",
+      "concept_id": "flutter.build_environments",
+      "path_id": "flutter_mobile_developer",
+      "video_id": "Vhm1Cv2uPko",
+      "start_seconds": 0,
+      "end_seconds": 33,
+      "label": "Why development, staging, and production use separate app flavors",
+      "role": "mental_model",
+      "covered_fact_ids": [
+        "f1"
+      ],
+      "visual_mode": "talking_head_only",
+      "chapter_aligned": true,
+      "transcript_evidence": "three android and ios flavors",
+      "issues": [
+        "Partial coverage only: this introduction supports f1 but does not cover f2, f3, f4, or f5, nor demonstrate running a supplied variant and verifying its selected inputs.",
+        "The 33-second range is shorter than the preferred mental-model duration; extending it would introduce app-icon generation and Firebase setup rather than strengthen this explanation.",
+        "The end boundary is the actual transition at 33 seconds into app-icon generation; exclude the caption beginning at that boundary.",
+        "Visual mode is a low-confidence inference. The supplied transcript has no explicit visual cues, and no thumbnail or reviewed visual evidence is supplied.",
+        "The later demonstration passes flavor strings through separate Dart entry points rather than reading Flutter's appFlavor value. That is a coverage gap for f4, not an explicit contradiction of it."
+      ]
+    },
+    {
+      "proposal_id": "prop_0zgDF81ZLrQ_store_submission",
+      "concept_id": "flutter.store_submission",
+      "path_id": "flutter_mobile_developer",
+      "video_id": "0zgDF81ZLrQ",
+      "start_seconds": 532,
+      "end_seconds": 848,
+      "label": "Complete an Apple production submission checklist and resolve blocking errors",
+      "role": "tool_workflow",
+      "covered_fact_ids": [
+        "f1",
+        "f5"
+      ],
+      "visual_mode": "screen_demo",
+      "chapter_aligned": false,
+      "transcript_evidence": "initiate the review process for your",
+      "issues": [
+        "Visual mode is inferred from repeated App Store Connect navigation, field-entry instructions, and 'here you can see' cues; visuals were not directly inspected.",
+        "Starts at the standalone navigation instruction at 532 rather than the catalogue chapter boundary at 530, which has no corresponding transcript line.",
+        "Coverage of f1 is partial: demonstrates selecting an existing build, completing listing and content declarations, resolving blocking errors, and submitting, but does not explicitly explain release notes.",
+        "Coverage of f5 is partial: demonstrates the production workflow, release-option selection, and country availability configuration, but does not explain the selected release option or verify eventual published status and availability. Google Play managed publishing is absent.",
+        "The ending distinguishes submission from completion by showing the app waiting for review, but does not explicitly explain the 'In review' state; f3 is not claimed.",
+        "Does not cover Google Play Publishing overview or unsent changes (f2), rejection correction or appeal (f4), or waiting for iOS build processing before selecting a build (f6).",
+        "Assumes an existing App Store Connect app and uploaded build. These are consistent with the allowed prerequisites, but supplied accounts and build fixtures would need to be available.",
+        "The walkthrough depicts a 2024 store interface; current field requirements and button names may differ.",
+        "The 316-second range retains the complete blocking-error resolution example and final submission state. The endpoint is the actual 848-second caption boundary where promotional content begins."
+      ]
+    },
+    {
+      "proposal_id": "prop_itY1VXp9pkc_store_submission",
+      "concept_id": "flutter.store_submission",
+      "path_id": "flutter_mobile_developer",
+      "video_id": "itY1VXp9pkc",
+      "start_seconds": 339,
+      "end_seconds": 602,
+      "label": "Prepare a Google Play listing, upload a release, and send changes for review",
+      "role": "tool_workflow",
+      "covered_fact_ids": [
+        "f2",
+        "f3"
+      ],
+      "visual_mode": "screen_demo",
+      "chapter_aligned": true,
+      "transcript_evidence": "We can now go to the publishing overview",
+      "issues": [
+        "Screen-demo visual mode is inferred from narrated console navigation, uploads, form entry, and visible status references; frames were not supplied.",
+        "The opening transitions from an earlier build demonstration. Use a supplied signed app bundle and developer account; the preceding code and signing sections are not needed for this console workflow.",
+        "Coverage of f2 is procedural: after uploading the bundle, the creator separately sends changes for review through Publishing overview at 583\u2013585. The exact 'Changes not yet sent for review' status label and its meaning are not explicitly explained.",
+        "Only partial f1 coverage: listing, app-content declarations, bundle upload, and resolution of a blocking countries/regions error are demonstrated. Explicit release-note entry is not established; 'initial release' may be a release name.",
+        "Only partial f5 coverage: production and country availability are selected, and the creator reports receiving a live-publication email. Testing-audience choice and managed publishing are not explained.",
+        "The video does not cover rejection correction or appeals (f4), or App Store Connect build processing and submission (f6). This is a Google Play supplement, not a complete lesson for all required facts.",
+        "The declarations are specific to the creator's simple calculator. Learners must use the supplied app's actual disclosures rather than copy the demonstrated negative answers.",
+        "The endpoint is the final supplied caption timestamp, 602. The live-publication email is reported before this boundary, but the final spoken phrase 'on the Google Play Store.' begins at the boundary and may be clipped."
+      ]
+    }
+  ],
+  "rejected_videos": [
+    {
+      "video_id": "TSr6LwKn9zA",
+      "concept_id": "flutter.auth_route_access",
+      "reason": "No clean standalone, prerequisite-safe segment was found. The redirect implementation at 283\u2013431 depends on routing code and a Riverpod-based project introduced earlier; Riverpod is not in this path's allowed knowledge. The listener explanation at 431\u2013643 relies on a previous video's custom service/controller architecture and introduces Firestore service updates at 530\u2013535, a blocked topic. The brief redirect recap at 779\u2013798 supports session-dependent destination selection, but refers to existing code without supplying its setup or completing a standalone example. The transcript does not establish returning null or the original path for permitted navigation (f2), keeping sign-in allowed without a self-redirect loop (f3), or retaining backend authorization as the security boundary (f4). These are coverage gaps, not confirmed factual contradictions."
+    },
+    {
+      "video_id": "EA7973HI93E",
+      "concept_id": "flutter.firestore_documents",
+      "reason": "No clean standalone segment serves this concept. At 358\u2013382, the explanation incorrectly attributes document creation to obtaining a document reference: calling doc/document only obtains a reference; the subsequent write creates the document. This is a factual error, not merely missing coverage. The demo also uses legacy document()/setData() APIs, never demonstrates get() with absent-document/data checks (f2), and never explains ordinary-set overwrite semantics or merge preservation (f3\u2013f4). Its write implementation depends on a collection reference and project setup introduced previously. The final console demonstration confirms registration-created fields, but does not demonstrate the required document-backed read/edit/write workflow."
+    },
+    {
+      "video_id": "mtNA1neFNVo",
+      "concept_id": "flutter.firestore_documents",
+      "reason": "No standalone segment covers the required document read/write facts f1\u2013f5. The video explains collections and document fields and demonstrates only a collection reference; it never addresses a document by ID, reads a DocumentSnapshot, checks absent data, writes a payload, demonstrates merge preservation, or awaits write completion. It defers document operations to the next lesson at 370 seconds. It also makes a technically incorrect claim at 326\u2013348 seconds that obtaining a collection reference creates a nonexistent collection; a reference alone does not create stored data. The opening setup additionally instructs enabling unrestricted test-mode access rather than working under supplied security rules."
+    },
+    {
+      "video_id": "vR2q7at97Cs",
+      "concept_id": "flutter.foreground_notifications",
+      "reason": "No verifiable standalone segment covers the target using the supplied messaging setup. The explanation at 287\u2013306 supports foreground notifications not appearing by default (f3), but does not teach the onMessage subscription, payload and metadata access, or subscription cancellation (f1, f2, f4). The messaging-service chapter at 563\u2013792 is largely music-only captions; its code and prerequisite safety cannot be established from the supplied evidence. The foreground test at 875\u2013918 depends on a token and custom services established earlier, so it is not standalone. It demonstrates a local notification rather than establishing the specified in-app response."
+    },
+    {
+      "video_id": "w9WyLhhFInE",
+      "concept_id": "flutter.foreground_notifications",
+      "reason": "No clean standalone range adequately teaches the required foreground-message handling. The explanation beginning at 472 demonstrates onMessage and reads notification title/body, but never teaches RemoteMessage.data (f2), the Android/iOS default of no visible foreground notification (f3), or cancellation of the owned subscription on disposal (f4). At 558 the explanation moves into notification-detail navigation, making the completed example dependent on an excluded responsibility. The runtime demonstration also interleaves receipt with navigation. There are explicit technical inaccuracies elsewhere in the video: at 1109\u20131112 it claims the device's messaging token is always the same, although FCM tokens can rotate; at 978\u2013995 it incorrectly presents enabling notification-display permission as necessary for receiving messages, conflating display authorization with foreground message delivery. These are source-quality problems, not merely missing coverage."
+    },
+    {
+      "video_id": "TaWt5oBc3wU",
+      "concept_id": "flutter.notification_open_navigation",
+      "reason": "No transcript is available (transcript_available: false). Chapter metadata alone cannot establish standalone boundaries, required-fact coverage, prerequisite safety, or verbatim transcript evidence."
+    },
+    {
+      "video_id": "zkkfIgQdwe0",
+      "concept_id": "flutter.notification_open_navigation",
+      "reason": "No transcript is available (transcript_available: false). Cannot verify standalone segment boundaries, required-fact coverage, prerequisite safety, or verbatim transcript evidence."
+    },
+    {
+      "video_id": "7i5YFxEZijo",
+      "concept_id": "flutter.resource_lifetime_leaks",
+      "reason": "The video does not teach resource-lifetime leak investigation. It contains no baseline retained-instance or subscription counts, repeated route-visit accumulation comparison, retaining-path inspection, or disposal/cancellation correction verified against baseline. Brief mentions of garbage collection and image memory consumption do not cover the required facts."
+    },
+    {
+      "video_id": "AGNrqAdizGg",
+      "concept_id": "flutter.unnecessary_rebuilds",
+      "reason": "No clean standalone segment teaches the required rebuild investigation. The video does not enable Track Widget Builds, correlate a single state change with instrumented notifications or setState, or trace an overly broad dependency to an unrelated subtree. Its main explanation instead teaches const-based rebuild reduction, which belongs to the blocked flutter.bounded_rebuild_fix concept on this path. The brief parent-rebuild setup before that explanation is insufficient to cover the required diagnostic facts."
+    },
+    {
+      "video_id": "N1mBJDt8Lqw",
+      "concept_id": "flutter.unnecessary_rebuilds",
+      "reason": "No standalone range teaches the required dependency-tracing investigation. The diagnostic section at 10\u201336 seconds suggests printing from build, tapping once, and checking DevTools build counts, but does not enable Track Widget Builds or identify named timeline events (f1), correlate events with instrumented notifications or setState (f2), or trace the dependency or ancestor invalidation reaching an unrelated subtree (f3). It only gestures toward comparing unchanged widget data with rebuilds (f4). At the actual transcript timestamp 36, the video transitions to rebuild-reduction fixes, which are blocked for this concept; extending the diagnostic range therefore cannot supply the missing coverage safely."
+    },
+    {
+      "video_id": "PKGguGUwSYE",
+      "concept_id": "flutter.bounded_rebuild_fix",
+      "reason": "The video provides a high-level performance overview, not a bounded rebuild-reduction fix. It covers jank, frame timelines, battery usage, and space-related issues, but does not explain localizing setState, splitting build methods by changing UI sections, const configurations, provider select or Consumer.child, or re-recording an interaction to verify reduced build work. None of the required facts f1\u2013f5 is covered. The brief mention of the widget Rebuild Tracker at 236 seconds supplies no demonstration or fix. No standalone segment serves this concept; the space-related section also introduces blocked resource-lifetime leak content at 218\u2013224 seconds."
+    },
+    {
+      "video_id": "qSXfSPV4yDw",
+      "concept_id": "flutter.bounded_rebuild_fix",
+      "reason": "No technically sound standalone segment covers the intended bounded rebuild fix. The relevant chapter (68\u2013259s) misleadingly attributes avoided recreation and rebuilds to extracting a widget-returning method into a widget class alone. At 196\u2013204s it states that when the parent rebuilds, Flutter will not recreate every list item unnecessarily; extraction alone does not guarantee this without unchanged widget instances, const configurations, or appropriately localized state/subscriptions. This is an accuracy problem, not merely a coverage gap. The reported reduction from approximately 300 to 57 builds does not establish re-recording the same interaction with unchanged visible behavior. The transcript also does not teach localizing setState, const configurations, provider select, or Consumer's child argument. Later chapters address other performance concerns rather than the required rebuild-scope fix."
+    },
+    {
+      "video_id": "C018m-GIlWM",
+      "concept_id": "flutter.resource_lifetime_leaks",
+      "reason": "No clean standalone segment teaches the required leak-investigation workflow. The transcript does not explain root-based reachability (f1), baseline counts and repeated route-entry/exit comparisons (f2), or retaining-path inspection to identify a leaking owner (f3). At 252\u2013266 it advises disposing resources, but does not demonstrate subscription cancellation or verification that counts return to baseline (f4); the surrounding animation discussion also relies on untaught animation-controller knowledge. The DevTools section covers access and general chart interpretation rather than retained-instance investigation. At 519\u2013529, it misleadingly presents chart activity after an action as sufficient to identify a memory leak; allocation activity alone does not establish persistent retention. These are substantive coverage and accuracy issues, not problems that trimming can resolve."
+    },
+    {
+      "video_id": "vyhxHlx8bik",
+      "concept_id": "flutter.application_identifiers",
+      "reason": "No verifiable standalone segment covers the intended facts. The severely garbled auto-captions suggest a package-renaming tool walkthrough at 53\u2013119 seconds, but do not establish Android defaultConfig.applicationId, post-upload identity immutability, namespace and MainActivity package/directory updates, or comparison with supplied service and store registrations. The Xcode references at 108\u2013119 seconds do not clearly establish Runner target > General > Bundle Identifier. The display-name section also lacks intelligible evidence distinguishing display name from platform identity. Chapter titles cannot resolve these transcript gaps, and no clean, fact-supported range can be proposed from the supplied evidence."
+    },
+    {
+      "video_id": "4f1AO-f-jYQ",
+      "concept_id": "flutter.application_identifiers",
+      "reason": "The video teaches generating identifiers for a new project with flutter create --org, rather than configuring an existing application's identifiers to match supplied registrations. At 173\u2013195 seconds it inspects generated Android and iOS identifiers, but does not demonstrate setting Android defaultConfig.applicationId, changing namespace and MainActivity package/directory placement, or setting the Runner target's Bundle Identifier in General settings. It also omits applicationId immutability after Play Store upload and checking identifiers against intended registrations while distinguishing them from display names. No standalone range adequately teaches a required fact for this target."
+    },
+    {
+      "video_id": "BbRBV6MvLqE",
+      "concept_id": "flutter.build_environments",
+      "reason": "No transcript is available (transcript_available: false). Cannot verify required fact coverage, prerequisite safety, standalone boundaries, or verbatim transcript evidence; rejected under the stage's no-transcript rule."
+    },
+    {
+      "video_id": "EyQfuKvVUGY",
+      "concept_id": "flutter.build_environments",
+      "reason": "No clean standalone segment teaches selection from supplied environment configuration. The video implements a custom singleton and separate Dart entry points rather than reading Flutter's appFlavor (f4). It does not demonstrate flutter run --flavor or a build command's --flavor option (f3), or explain selecting an iOS scheme through that option (f5); at 821\u2013823 it defers build commands to the description. The run-configuration and testing sections depend on the custom entry points and configuration created earlier, so trimming to those sections leaves missing setup. The Android section creates flavors rather than teaching use of supplied configuration (f2). There is also a technical concern at 522: the narration says to duplicate the build target, whereas the subsequent scheme assignment refers to build configurations; targets and configurations are distinct, so this instruction is misleading as spoken."
+    },
+    {
+      "video_id": "Zgk6u9T18Xg",
+      "concept_id": "flutter.android_signed_bundle",
+      "reason": "No clean standalone signing workflow is supported by the supplied transcript. The keystore chapter begins with unresolved instructions about copying a path and using a custom command introduced earlier but never specified in the captions. The properties and Gradle sections rely on copying unexplained on-screen content; the transcript does not establish the key alias, property-loading logic, or replacement of debug signing with release signing. Keeping keystore material and key.properties out of public source control is not taught, and example passwords are spoken without a disposable-fixture or redaction explanation. The build/output section at 394\u2013470 demonstrates bundle generation and its output location, but depends on the preceding signing setup and cannot independently establish that the bundle uses the intended upload-signing configuration. These are coverage and standalone-clarity problems, not a confirmed technical contradiction. Store upload begins at timestamp 474 and is blocked for this concept."
+    },
+    {
+      "video_id": "VQ2bUbZxd7s",
+      "concept_id": "flutter.android_signed_bundle",
+      "reason": "No clean, standalone range covers the signed-bundle workflow. A continuous signing-to-bundle segment necessarily includes technically incorrect SDK guidance: at 389\u2013394 the video attributes Play's API-level requirement to compileSdk rather than targetSdk, and at 438\u2013444 it conflates minSdk with the API level used to compile the app. These are factual contradictions, not coverage omissions. The signing-only section ends before bundle generation; the build chapter starts at 582 with unresolved prior setup ('now that you have prepared your'). Privacy guidance at 332\u2013337 covers key.properties but does not explicitly protect the keystore material. Reject rather than propose a misleading complete workflow or a context-dependent fragment."
+    },
+    {
+      "video_id": "x0d8Jx3HvdI",
+      "concept_id": "flutter.ios_distribution_build",
+      "reason": "No clean standalone segment adequately covers the required facts. The video does not demonstrate selecting an Apple developer team or configuring Signing & Capabilities (f1), running flutter build ipa (f2), or locating its archive and IPA outputs (f3). The upload walkthrough at transcript timestamps 156\u2013188 shows Xcode Product > Archive and distribution to App Store Connect, but omits Validate App and correcting validation problems, so it only partially covers f4. Extending the range adds native-project production setup, App Store Connect app-record creation, or TestFlight management rather than the missing Flutter distribution-build instruction."
+    },
+    {
+      "video_id": "i3BEo-jxxRo",
+      "concept_id": "flutter.ios_distribution_build",
+      "reason": "The video contains a technical error: at 324\u2013332 it says a connected iPhone is required to enable archiving. Xcode can archive for a generic iOS device destination without a connected physical device. It also omits `flutter build ipa` (f2), both required output directories (f3), and the explicit Validate App and problem-correction workflow (f4). The signing section demonstrates team selection but does not independently establish signing/provisioning identity matching; it relies on the earlier identifier and App Store Connect setup. No clean standalone range adequately teaches the required distribution-build workflow."
+    },
+    {
+      "video_id": "0zgDF81ZLrQ",
+      "concept_id": "flutter.review_readiness",
+      "reason": "No clean standalone review-readiness mini-lesson exists. Sign-in credentials are mentioned at 505\u2013514 and 574\u2013581, but both passages are embedded in TestFlight or production submission workflows, which teach the blocked flutter.store_submission concept. Neither demonstrates working reviewer access. The video does not verify a release main flow, resolve runtime failures, test supported release targets, check backend availability, or discuss Google Play release-summary errors."
+    },
+    {
+      "video_id": "iE2bpP56QKc",
+      "concept_id": "flutter.review_readiness",
+      "reason": "No standalone segment covers the required review-readiness facts. The video demonstrates iOS packaging and submission, not verification of a release main flow, correction of user-facing failures, backend availability, working reviewer access, or Google Play release-review errors. The TestFlight discussion at 520\u2013547 concerns tester distribution rather than demonstrating release verification and is embedded in the blocked store-submission workflow. Additionally, the instruction at 414\u2013416 to run 'flutter build release' is technically incorrect: release is not a Flutter build subcommand; an iOS release build uses 'flutter build ios --release'."
+    },
+    {
+      "video_id": "miWvNAFpmew",
+      "concept_id": "flutter.review_readiness",
+      "reason": "No clean standalone review-readiness segment exists within this path's prerequisites. At 204\u2013230 seconds, reviewer test access is mentioned within an App Store Connect submission-form walkthrough, but working access is not verified; the example instead unchecks the sign-in requirement and supplies sign-in notes. At 505\u2013552 seconds, production configuration and app-name fixes depend on an existing Expo/EAS setup and lead directly into uploading a new build. These passages teach the blocked flutter.store_submission workflow or require untaught tooling. The video does not demonstrate a release main-flow test, supported-target testing, backend accessibility verification, or Google Play release-review error resolution."
+    },
+    {
+      "video_id": "g0GNuoCOtaQ",
+      "concept_id": "flutter.store_submission",
+      "reason": "Reject for technical accuracy and current-workflow mismatch. At 1231\u20131240, the video says review 'can take up to 48 hours' and that approval results in Play Store listing. Review can take longer, and approval must not be equated with publication when managed publishing is enabled. The demonstrated rollout workflow does not explain Changes not yet sent for review or sending changes through Publishing overview (f2). It also omits rejection recovery (f4), managed publishing and verification of published availability (f5), and iOS build processing (f6). Although 1242\u20131251 correctly distinguishes an app still in review from a published app (f3), this brief status observation is the conclusion of an existing-release walkthrough, not a sufficient standalone submission mini-lesson. The longer preparation-and-rollout range would retain the misleading review and publication guidance."
+    }
+  ]
+}

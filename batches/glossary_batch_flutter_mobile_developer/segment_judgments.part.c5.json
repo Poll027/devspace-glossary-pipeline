@@ -1,0 +1,155 @@
+{
+  "metadata": {
+    "artifact_type": "segment_judgments",
+    "artifact_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "batch_id": "glossary_batch_flutter_mobile_developer",
+    "run_id": "glossary_batch_flutter_mobile_developer",
+    "prompt_version": "09_segment_judge@v1",
+    "model": "gpt-6.1-sol",
+    "generated_at": "2026-11-25T04:41:38.813516+00:00",
+    "source_snapshot_id": "glossary_batch_flutter_mobile_developer",
+    "parent_artifact_hashes": {
+      "segment_proposals.part.c5.json": "b6ef205d31e1f4e272b317a5fbb1afc890dd2b793309365a49ff2c40b34acdcf",
+      "coverage_briefs.json": "ddf1e7cefe45cf477d81decaa5edccf6e771aa4072683a38d4e5faea3485db7e",
+      "extracted_concepts.json": "b873ddefe6939bebce3aa53d1702b610f2be16f20efbb7adb9eb236e29ff7861"
+    }
+  },
+  "batch_id": "glossary_batch_flutter_mobile_developer",
+  "judgments": [
+    {
+      "proposal_id": "prop_aQlP3Ey94oc_auth_route_access",
+      "verdict": "approved",
+      "final_start_seconds": 1,
+      "final_end_seconds": 185,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 2,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read the complete 1.26\u2013188.94 transcript and the catalogue (no chapters; embeddable). At 10\u201330 the speaker explains choosing login or dashboard from application state; 36\u201358 introduces both simple screens; 60\u2013117 creates isLoggedIn=false and adds the context/state redirect callback; 119\u2013148 returns dashboard or slash; 149\u2013181 shows the login result, switches to true, hot restarts, and shows dashboard. This teaches f1's session-dependent permitted-destination mechanism, using an explicitly simulated Boolean; it is not evidence for a live auth subscription or selective protection of individual requested routes. No blocked knowledge is needed: routes, callbacks and conditionals are allowed. Official go_router Redirection documentation supports state-dependent redirects. f2\u2013f4 are not taught: no null/permitted-route branch, loop explanation or backend authorization discussion. ADVISORY: treat this as an introductory state-selection example, not a complete production guard. Narrated file editing and observed screen results support live-code visual value, not direct frame verification. Extend the end to 185 to finish the redirect recap before the thanks at 184.62; the original 184 boundary falls inside the final phrase."
+    },
+    {
+      "proposal_id": "prop_7i5YFxEZijo_profile_frame_investigation",
+      "verdict": "approved",
+      "final_start_seconds": 325,
+      "final_end_seconds": 684,
+      "confirmed_fact_ids": [
+        "f5",
+        "f6"
+      ],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 5,
+        "pacing": 3,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 211\u2013613 around the proposed range, then 578\u2013754 to find a complete investigation endpoint, and the catalogue chapters (343\u2013750: You don\u2019t want to see this; embed enabled). The proposed end 583 interrupts \u201cwe don\u2019t have a lot more information ... so to really see what\u2019s going on\u201d. The usable cut begins with the explicit debug-timing caution at 325.7, omitting the 242\u2013322 simulator/Geekbench digression. At 351\u2013395 a physical Samsung A10s demonstrates slow photo scrolling; 396\u2013470 opens DevTools and distinguishes the UI and raster bars; 479\u2013503 selects a bad frame; 527\u2013580 follows UI timeline events into build/layout/paint and identifies build as costly. Continue through 588\u2013630 enabling Track Widget Builds, re-recording the interaction and explaining tracing overhead, then 636\u2013681 identifying a Column constructing 50 photo-list items rather than lazy list construction. End at 684, after that diagnosis and before \u201clet\u2019s change this\u201d. This confirms f5 and f6 rather than merely a generic tour. Official DevTools documentation supports selected-frame timeline tracing and the tracing-overhead warning. Diagnosing eager list construction needs already-allowed scrolling/layout knowledge, not the later bounded rebuild fix or resource leaks. f1/f2 are not fully taught (no profile launch command). Screen-sharing, frame selection and event-tree inspection provide strong screen-demo cues; no direct visual review is claimed. ADVISORY: replaced the unfinished proposed ending with the completed diagnosis; the 359-second workflow retains necessary tracing evidence."
+    },
+    {
+      "proposal_id": "prop_xtBRVwk9uDA_profile_frame_investigation",
+      "verdict": "approved",
+      "final_start_seconds": 637,
+      "final_end_seconds": 958,
+      "confirmed_fact_ids": [
+        "f5",
+        "f6"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 5,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 296\u2013984 around the original proposal, including all of Frames and frame budget, Performance Overlay, Finding Slow UI Frames, Frame Analysis and the selected Timeline Events portion; catalogue confirms those chapters and embedding. The original 326\u2013954 range runs over ten minutes and includes a separate overlay lesson. Start instead at the new real-example thought at 637.4: an animation stutters, recording shows red bars, 688\u2013718 selects a frame and compares expensive UI with cheap raster work, and 718\u2013753 checks similar neighboring frames. At 765\u2013807 frame analysis isolates build rather than layout/paint/raster; 808\u2013847 explains that diagnostic hints are not a complete diagnosis. At 867\u2013938 timeline events locate the same long build operation and surrounding phases, and 940\u2013958 completes the explanation of expanding events and inspecting durations without losing frame context. This independently teaches f5 and f6 in a 321-second workflow. End at 958 after \u201cframe you are investigating\u201d, before the deeper widget-tracing limitation. Drop f3/f4 because their layer-tree/raster and 60/120-Hz explanation at 341\u2013430 is outside this shorter approved cut; they were supported in the original but do not belong to the final range. The example requires no later rebuild fix: it diagnoses build cost without changing code. Official DevTools frame-analysis/timeline documentation supports the workflow. Strong narrated chart/tab manipulation and chapter cues establish screen-demo value, with no claim to have inspected actual frames. ADVISORY: reduce the overly broad original cut and its confirmed-fact list rather than retain the overlay detour."
+    },
+    {
+      "proposal_id": "prop_AGNrqAdizGg_bounded_rebuild_fix",
+      "verdict": "approved",
+      "final_start_seconds": 15,
+      "final_end_seconds": 143,
+      "confirmed_fact_ids": [
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 2,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 5,
+        "visual_teaching_value": 3,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read the whole 0\u2013151.7 transcript; catalogue has no chapters, enables embedding, and identifies a focused const/rebuild explanation. At 15\u201341 the counter-screen example introduces an unchanged title and a changing number; 43\u201364 explains exact widget-object identity allowing the parent update path to skip an unchanged child subtree. At 64\u201385 it carefully distinguishes this from preventing parent builds, caching a rendered image, or avoiding dependency/constraint-triggered work. The second text/const-text comparison at 88\u2013105 and the 131\u2013143 recap corroborate f3. This agrees with Flutter\u2019s const/unchanged-subtree optimization guidance and requires only allowed widget-element identity and state knowledge. Mentions of localizing state, splitting widgets and before/after DevTools measurement at 110\u2013128 are brief enrichment, not complete demonstrations of f1/f2/f5; do not add those facts. Narrated code comparisons support an annotated-code teaching mode, but no actual code frames were supplied, so visual score is moderate rather than certain. ADVISORY: end at 143, immediately before the next-short/null-safety promotion; 142 risks clipping \u201chigher frames per second\u201d."
+    },
+    {
+      "proposal_id": "prop_Vhm1Cv2uPko_build_environments",
+      "verdict": "rejected_weak_visual",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [
+        "f1"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 2,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 1,
+        "pacing": 4,
+        "boundary_quality": 2
+      },
+      "reasoning": "Read 0.24\u201365.82 and the catalogue chapter Flutter Flavors Intro (0\u201353), with embedding enabled. At 0\u201315 the speaker describes separating development from production and multiple app versions from one codebase; 16\u201335 names Android/iOS development, staging and production and defines their intended users. This supports f1\u2019s configured-variant mental model, consistent with official Android flavors documentation, but none of f2\u2013f5 is demonstrated. The proposed end 33 clips \u201cproduction is for the end user\u201d, which ends around 35. The source offers no console, configuration, command, code or diagram cues in this opening; the supplied mode is talking_head_only, and actual frames were not reviewed. This is a short generic introduction to an applied build-variant task, not an exceptionally clear visual/conceptual explanation warranting the \u00a716 talking-head exception. BLOCKING: insufficient visual teaching value for this segment; replace it with a variant-selection/configuration screen demonstration. Merely extending to 35 fixes the sentence but not the visual rejection."
+    },
+    {
+      "proposal_id": "prop_0zgDF81ZLrQ_store_submission",
+      "verdict": "rejected_fact_mismatch",
+      "final_start_seconds": null,
+      "final_end_seconds": null,
+      "confirmed_fact_ids": [],
+      "scores": {
+        "technical_accuracy": 4,
+        "fact_coverage": 1,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 4,
+        "pacing": 3,
+        "boundary_quality": 2
+      },
+      "reasoning": "Read 502\u2013863.5 including the complete production chapter (530\u2013862); catalogue permits embedding. At 532\u2013588 the workflow enters App Store Connect, adds screenshots/listing data, selects an existing build and supplies review contact/login information. \u201cNotes about our app\u201d at 583 concerns app review information, not established release notes. At 588\u2013599 it chooses an unnamed second release option with no explanation. At 604\u2013817 it resolves age-rating/content-rights, privacy, category, price and country-availability errors. At 819\u2013846 it adds for review, submits, and ends waiting for App Store review. The workflow is coherent and screen-demo cues are strong, and required app/build/account preparation is allowed. However neither proposed fact is fully verified: f1\u2019s release notes are not established, while f5\u2019s published-status/availability verification and Google Play managed-publishing timing control are entirely absent. Configuring countries and clicking an unexplained release option is not verifying publication. Official Google Play publishing guidance distinguishes submission/review from publication and defines managed publishing; this Apple tutorial cannot supply that part. BLOCKING: claimed f1/f5 coverage overstates the source; replace with a segment that demonstrates those required facts or retain this only against a separately justified narrower fact, without altering the generator artifact here. The proposed end 848 also clips the deployment recap that runs to about 851; changing the boundary does not fix the fact mismatch."
+    },
+    {
+      "proposal_id": "prop_itY1VXp9pkc_store_submission",
+      "verdict": "approved",
+      "final_start_seconds": 339,
+      "final_end_seconds": 604,
+      "confirmed_fact_ids": [
+        "f2",
+        "f3"
+      ],
+      "scores": {
+        "technical_accuracy": 5,
+        "fact_coverage": 3,
+        "prerequisite_safety": 5,
+        "standalone_clarity": 4,
+        "visual_teaching_value": 5,
+        "pacing": 4,
+        "boundary_quality": 4
+      },
+      "reasoning": "Read 309\u2013605.74 (the final supplied caption); catalogue Play Console chapter starts at 339 and Publish the app at 532, and embedding is enabled. At 339\u2013365 the console/account/new-app transition stands independently given the already-allowed signed bundle; the prior signing code is not needed. At 370\u2013530 the creator fills app access, content rating, audience, data safety, category and listing fields, explicitly telling viewers at 407\u2013413 to use answers that apply to them. At 532\u2013580 he selects production, uploads the bundle and resolves the missing-countries blocker. Crucially, upload is followed by a separate action at 583.84\u2013590.76: go to Publishing overview and send changes for review. At 590\u2013599 he reads \u201cin review\u201d and says to wait for Google; only afterward does 599\u2013605 report a live-publication email and store presence. That operational distinction supports f2 and the explicit review-versus-published contrast supports f3, consistent with the official Google Play status definitions. The exact \u201cChanges not yet sent for review\u201d label is not spoken; do not describe it as a visible verified label. f1\u2019s release notes and f5\u2019s managed publishing are not confirmed. Console navigation/upload/status narration supplies strong visual-workflow cues; no direct frame verification is claimed. ADVISORY: extend to catalogue duration 604 to retain the final \u201con the Google Play Store\u201d phrase that starts at 602.14; auto-caption end 605.74 overshoots the declared video duration, so do not invent a longer media duration. The review workflow itself is complete before this final caption."
+    }
+  ]
+}
