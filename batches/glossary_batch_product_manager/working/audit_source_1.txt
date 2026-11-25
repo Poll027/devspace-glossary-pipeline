@@ -1,0 +1,224 @@
+https://amplitude.com/docs/feature-experiment/workflow/experiment-learnings
+Learn from your experiment | Amplitude DocsDocsGet StartedProductsAdminDevelopersSearch docs…⌘ K/Full widthFeature Experiment
+/
+Learn from your experiment
+Learn from your experiment
+You've designed your experiment, rolled it out to your users, and given them enough time to interact with your new variants. Now, check if your hypothesis was correct.
+The Activity tab tells you at a glance whether your experiment produced statistically significant results and what those results are. Experiment automatically uses the information you provided during the design and rollout phases, which avoids repeated effort. The Activity tab breaks results out by variant and provides a detailed tabular breakdown.
+Note
+Depending on your experiment, some Activity tab cards may not appear.
+Filter card
+On the Filter card, set criteria that update the analysis on the page. Filter your experiment results with the following:
+Date.
+Segment.
+Property.
+Date filter
+The date filter defaults to your experiment's analysis start and end dates. Adjust the range to scope experiment results to those specific dates. A scheduled stop stops variant delivery. It doesn't replace this analysis filter.
+Segment filter
+The segment filter lets you select predefined segments, or create one ad-hoc. Predefined segments include:
+ExperimentAll exposed users. Users who saw a variant.
+Testers. Users added as testers during experiment configuration.
+Exclude testers. Excludes users added as testers during experiment configuration.
+Exclude users who variant jumped. Excludes users who saw more than one variant.
+Exclude testers and variant jumpers. Excludes users added as testers and users who saw more than one variant.
+
+AmplitudeNew user. Users who triggered at least one new user event during the selected date range.
+Mobile web. Users who triggered events on the web from a mobile device.
+Desktop web. Users who triggered events on the web from a desktop device.
+
+Support for segments
+The Testers, Exclude Testers, and variant jumpers segments are available on feature experiments that use Remote evaluation.
+The Exclude users who variant jumped segment and exclude testers and variant jumpers segment are available on experiment types other than multi-armed bandit.
+These segments update in real time.
+Click the segment icon and then click Create Segment to open the Segment builder, then define a new segment. Segments you create in one experiment are available across all other experiments and appear in the All Saved Segments category.
+Property filter
+Filter your experiment results based on user properties. For example, create a filter that excludes users from a specific country or geographic region, or users that have a specific account type on your platform.
+Click Add filter to build a property filter.
+Data Quality card
+Availability
+Data Quality is available to organizations with access to Experiment who have recommendations enabled.
+Amplitude doesn't generate p-values or confidence intervals for experiments using binary metrics (for example, unique conversions) until each variant has 100 users and 25 conversions. Experiments using non-binary metrics need only to reach 100 users per variant.
+When you expand a category, or click Guide, the Data Quality Guide opens in a side panel where you can address or dismiss issues.
+Summary card
+Availability
+Summary is available to organizations with access to Experiment who have recommendations enabled.
+The Summary card describes your experiment's hypothesis and tells you if it reached statistical significance.
+Statistical significance and Amplitude
+Amplitude considers an experiment statistically significant (stat sig) when Amplitude can confidently say the results are unlikely to have occurred by random chance. More technically, statistical significance is when Amplitude rejects the null hypothesis. That may sound subjective, but it's grounded in statistics. Statistical significance relies on a variant's p-value, which represents the likelihood that your results occurred by chance. A lower p-value means your results are probably not random, and there's evidence to support your hypothesis. If this value drops below a threshold, Amplitude considers the experiment statistically significant.
+The Summary card displays a badge labeled Significant if the experiment reached statistical significance, and a badge labeled Not Significant if it didn't. This card can display several badges at the same time:
+Inconclusive: The test was inconclusive for the primary metric.
+Above Goal or Below Goal: The primary metric's mean was either above or below its goal, depending on the direction of the test (increase = above, decrease = below).
+Above Control or Below Control: The primary metric's mean was either above or below the control's mean, depending on the direction of the test (increase = above, decrease = below). These badges only apply to stat sig results.
+Analysis card
+The top of the Analysis card shows an overview that explains how your experiment performed, broken down by metric and variant. Below the overview, a collection of experiment results charts, which you can analyze by metric, display information about:
+Confidence intervals.
+Cumulative exposure.
+Event totals.
+Mean value over time.
+For more information, refer to Dig deeper into experimentation data with Experiment Results.
+Chart filtering
+The Experiment Results chart on the Activity tab responds to the selections you make in the Filter card.
+Click Open in Chart to open a copy of the Experiment Results in a new chart.
+If you run an A/B/n test, Amplitude Experiment displays the confidence interval and p-value for the control against each treatment individually. To view the comparison between two non-control treatments, either change the control variant or open the test in Analytics and create a chart using the two treatments you want.
+If needed, adjust the experiment's confidence level. The default is 95%. You can also choose between a sequential test and a T-test.
+Lowering your experiment's confidence level makes it more likely that your experiment reaches statistical significance. However, this increases the likelihood of a false positive.
+Group by
+Early AccessThis feature is in Early Access. This feature may continue to evolve. This documentation may not yet reflect the latest updates.
+Group-bys in Experiment charts may slow query performance. For more information, refer to Limitations.
+When you run an experiment, you often want to know if the experiment affected different users differently, that is, whether heterogeneous treatment effects exist. One way to find out is to filter for Platform = iOS, then Platform = Android, then Platform = Web. Grouping results by Platform achieves the same result with fewer clicks. For more information, refer to Group-bys: How Amplitude prunes and orders chart results.
+Group-by settings on the dashboard are temporary. Refreshing the dashboard resets any group-bys you define.
+Diagnostics card
+The Diagnostics card provides information about how your experiment is delivering. The Diagnostics card shows charts about:
+Assignment events (cumulative and non-cumulative).
+Exposure events (cumulative and non-cumulative).
+Assignment to exposure conversion.
+Variant jumping.
+Anonymous exposures (cumulative and non-cumulative).
+Exposures without Assignments (cumulative and non-cumulative).
+For more control, open any of these charts in the Analysis Chart modality.
+Enable notifications
+You can receive notifications about your experiments in a dedicated Slack channel or through a webhook. Go to Integrate Slack and then Experiment Notifications to set up these notification alerts.
+You can set up a notification for the following events:
+Experiment about to start: Amplitude sends this notification when your scheduled experiment is about to start.
+Experiment end reached: Amplitude sends this notification when your experiment is complete.
+SRM detected: Amplitude sends this notification if it identifies a sample ratio mismatch issue.
+Long-running experiments: Amplitude sends this notification when your long-running experiment is complete.
+Statsig for the recommendation metric is reached: Amplitude sends this notification when your experiment's recommendation metric reaches stat sig.
+Amplitude Experiment sends a notification to the editors of the experiment.
+Next steps
+No experiment is a failure. Even if you didn't get the results you hoped for, you can still learn from the process. Use your results as a starting point for asking questions about the changes you made, the outcomes you saw, what your customers expect from your product, and how you can deliver on those expectations.
+In general, the next step is to decide whether to run another experiment that supports your hypothesis to gather more evidence, or to implement the variant that delivered the best results. You can also export your experiment to the Experiment Analysis in Amplitude Analytics for a deeper review, where you can segment users and generate more insights.
+Related:Dimensional Analysis·Advanced metric use cases·Value calculation in Experiment Analysis charts·The Experiment Analysis viewWas this helpful?
+For AI agents: a documentation index is available at /docs/llms.txt. Append .md to any page URL for markdown, or send Accept: text/markdown.
+On this pageFilter card
+Date filter
+Segment filter
+Property filter
+Data Quality card
+Summary card
+Analysis card
+Group by
+Diagnostics card
+Enable notifications
+Next steps
+Copy MarkdownOn this page
+Filter cardDate filter
+Segment filter
+Property filter
+
+Data Quality card
+Summary card
+Analysis cardGroup by
+
+Diagnostics card
+Enable notifications
+Next steps
+Products
+DataAnalyticsSession ReplayZoning InsightsHeatmapsAmplitude AIAgent AnalyticsWaveAI AssistantWeb ExperimentFeature ExperimentGuides and SurveysMore
+Get Started
+Admin
+Developers
+SDKs
+APIs
+CLI
+Overview
+Get StartedOverview
+Experiment Quick Start
+Feature vs Web use cases
+Functional comparison
+Key terms
+Creating ExperimentsProject-level permissions
+Define audience
+Configure delivery
+Notifications through Slack, Microsoft Teams, or Webhook
+Experiment Goals
+Group Experiments
+Estimate duration
+Feature Experiments
+Web Experiments
+Testing ExperimentsTest and launch
+Make a decision
+Run an A/A test
+Analyzing ExperimentsOverview
+The Experiment Analysis view
+Dimensional Analysis
+Advanced metric use cases
+Value calculation in Experiment Analysis charts
+Learn from your experiment
+Understand the cumulative exposures graph
+TroubleshootingTroubleshoot
+New Experiment Run
+Exposures w/o assignments
+Sample Ratio Mismatch
+Variant jumping
+Debug metric spikes and dips
+Instrument ExperimentConfigure
+Implement Web Experiment
+Event tracking
+SDK Catalog
+Evaluation
+Experiment IntegrationsContentful
+Experiment Advanced ConceptsData model
+Performance and caching
+AWS CloudFront proxy
+Server-side rendering
+Bonferroni Correction
+JSON payloads
+Advanced settings
+Flag Prerequisites
+Flag Dependencies
+Statistics MethodSequential testing
+T-test
+Bayesian
+Multi-armed bandit
+Winsorization
+Language🇺🇸EnglishPlatform
+AI Agents
+AI Visibility
+AI Feedback
+Amplitude MCP
+Product Analytics
+Web Analytics
+Feature Experimentation
+Feature Management
+Web Experimentation
+Session Replay
+Guides and Surveys
+Activation
+Compare us
+Adobe
+Google Analytics
+Contentsquare
+Fullstory
+Heap
+LaunchDarkly
+Mixpanel
+Optimizely
+Pendo
+PostHog
+Resources
+Resource Library
+Blog
+Agent Prompt Library
+Product Updates
+Amp Champs
+Amplitude Academy
+Events
+Glossary
+llms.txt
+Partners & Support
+Status
+Contact Us
+Customer Help Center
+Community
+Developer Docs
+Partner Program
+Partner Directory
+Become an affiliate
+Company
+About Us
+Careers
+Press & News
+Investor Relations
+Diversity, Equity & Inclusion
+Terms of ServicePrivacy NoticeAcceptable Use PolicyLegalCookie SettingsEnglishJapanese (日本語)Korean (한국어)© 2012–2026 Amplitude, Inc.. All rights reserved. Amplitude is a registered trademark of Amplitude, Inc.

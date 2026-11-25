@@ -1,0 +1,149 @@
+https://help.amplitude.com/hc/en-us/articles/115001580108-Analyze-A-B-test-results-in-Amplitude
+Analyze A/B test results in Amplitude | Amplitude DocsDocsGet StartedProductsAdminDevelopersSearch docs…⌘ K/Full widthGet Started
+/
+Analyze A/B test results in Amplitude
+Analyze A/B test results in Amplitude
+To analyze A/B test results in Amplitude, tag each user with the experiment variation they experienced as a user property, then compare how each variation performs in the AB Test View. A/B testing runs controlled, randomized experiments to improve a website or application metric, and the AB Test View measures that impact by comparing how each experiment group behaves in your application.
+For example, you can show two different onboarding flows to different groups of new users, then use the results to identify the flow that drives more users to complete onboarding. You can also test different checkout flows to see which generates more sales.
+Note
+Use the AB Test View to analyze experiments you instrument yourself with user properties. If you want Amplitude to assign variations and run the experiment for you, use Amplitude Experiment instead.
+Instrument your experiments
+Instrument your experiments before you analyze results. Amplitude recommends using user properties to associate a user with a given experiment variation. User properties reflect traits about each individual person using your product. Use them to segment your analysis in Amplitude Analytics.
+Two main methods update a user property:
+SDKs and HTTP API: Update user properties on event action.
+How: Send user properties with each event through Amplitude's SDKs or HTTP API.
+Pros: User properties take effect when your app sends the event. The properties stay with the user for all subsequent events until you explicitly update the values.
+Cons: These events count toward your monthly event volume. The events also count users as active users by default. Mark any A/B testing-related events as inactive events.
+
+Identify API: Update user properties without sending an event.
+How: Amplitude's Identify API updates a user property without sending an event.
+Pros: Updates a user property asynchronously without sending an event. The update doesn't affect your monthly event volume count.
+Cons: The user property doesn't take effect until the user takes an action. This isn't an issue for most experiments. The delay may affect experiments that track whether inactive users return to your application.
+
+For example, suppose you're trying to bring users who have been inactive for more than seven days back to your app, and you're testing whether an email drives that return. If you use the Identify API to update a user property, the update only applies to users who return and trigger an event in your application. If a user remains inactive after receiving the email, the user property doesn't apply to that user. As a result, that inactive user isn't part of the experiment group that received the email, because the user property never attached. In situations like these, update user properties on an event action instead (for example, an event called Email Sent).
+Learn more about how Amplitude syncs user properties.
+How many user properties to send
+Amplitude users tend to take one of two approaches when instrumenting split tests:
+Use one user property per experiment
+All user properties arrive as key-value pairs. This approach sets the experiment name as the key and all variations of the experiment as the potential values.
+User Property Key: Experiment 1 User Property Value: variation_a
+Pros: You can select experiments to segment by from the user segmentation tab. Cons: The list of user properties can grow long, depending on the number of active experiments.
+Use one user property for all experiments
+All user properties arrive as key-value pairs. This approach sets the key to Split Tests (or something similar) and stores the values in an array.
+User Property: Split Tests User Property Value: [experiment_1_value, experiment_2_value]
+You can segment on the user property Split Tests by selecting the appropriate value or test group in the chart's segmentation module.
+Pros: You have only one user property related to split testing (rather than one per experiment), so your user property list stays manageable in the dashboard. Cons: Arrays can't exceed 10,000 characters when you use append or prepend. If an array exceeds this limit, Amplitude doesn't record any characters past the threshold.
+Note
+This feature doesn't support merged or transformed properties.
+Amplitude also offers a full integration with Optimizely that updates user properties for each experiment.
+Viewing results in Amplitude
+Review the results of your split tests after user properties update for each experiment group. Use the AB Test View to conduct this analysis.
+Compare the activity between experiment groups in the segments module of the chart control panel. To do this, add your experimental groups.
+Related:User property definitions·Optimize your Amplitude workflow to improve user engagement·Event property definitions·Questions your engineer might ask youWas this helpful?
+For AI agents: a documentation index is available at /docs/llms.txt. Append .md to any page URL for markdown, or send Accept: text/markdown.
+On this pageInstrument your experiments
+How many user properties to send
+Use one user property per experiment
+Use one user property for all experiments
+Viewing results in Amplitude
+Copy MarkdownOn this page
+Instrument your experiments
+How many user properties to sendUse one user property per experiment
+Use one user property for all experiments
+
+Viewing results in Amplitude
+Products
+DataAnalyticsSession ReplayZoning InsightsHeatmapsAmplitude AIAgent AnalyticsWaveAI AssistantWeb ExperimentFeature ExperimentGuides and SurveysMore
+Get Started
+Admin
+Developers
+SDKs
+APIs
+CLI
+Overview
+What is Amplitude?
+QuickstartsInstall Amplitude
+Finish core setup
+Quickstarts by role
+Quick guides
+Set Up AmplitudeCreate a new account
+Create a project
+Plan your implementation
+Instrumentation pre-work
+Instrument AmplitudeGet Data into Amplitude
+Autocapture for fast insights
+What events do you need
+Track your progress
+Engineer questions
+Cross-platform vs. separate
+Build a ChartThe Amplitude Home page
+Create your first chart
+Spaces
+Start from a template
+Get Value from AmplitudeUser activity
+Acquisition channels
+Feature adoption
+Conversion rate of a flow
+Migrate to AmplitudeMigrate From Adobe
+Migrate from Mixpanel
+Migrate From mParticle
+Migrate from Segment
+Google Analytics
+Additional ReadingHelpful definitions
+User property definitions
+Event property definitions
+Browser compatibility
+Organize your team
+Optimize your workflow
+Analyze A/B test results
+Cookies and consent (legacy)
+Language🇺🇸EnglishPlatform
+AI Agents
+AI Visibility
+AI Feedback
+Amplitude MCP
+Product Analytics
+Web Analytics
+Feature Experimentation
+Feature Management
+Web Experimentation
+Session Replay
+Guides and Surveys
+Activation
+Compare us
+Adobe
+Google Analytics
+Contentsquare
+Fullstory
+Heap
+LaunchDarkly
+Mixpanel
+Optimizely
+Pendo
+PostHog
+Resources
+Resource Library
+Blog
+Agent Prompt Library
+Product Updates
+Amp Champs
+Amplitude Academy
+Events
+Glossary
+llms.txt
+Partners & Support
+Status
+Contact Us
+Customer Help Center
+Community
+Developer Docs
+Partner Program
+Partner Directory
+Become an affiliate
+Company
+About Us
+Careers
+Press & News
+Investor Relations
+Diversity, Equity & Inclusion
+Terms of ServicePrivacy NoticeAcceptable Use PolicyLegalCookie SettingsEnglishJapanese (日本語)Korean (한국어)© 2012–2026 Amplitude, Inc.. All rights reserved. Amplitude is a registered trademark of Amplitude, Inc.

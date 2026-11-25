@@ -1,0 +1,89 @@
+INDEX 74 metrics_and_analytics.holdout_groups VIDEO wMO5mfrU7-Q CUT 206-320
+ROLE mental_model
+FACTS [{"id": "f1", "statement": "A holdout group excludes a subset of users from specified experiments to provide a comparison baseline.", "source_refs": ["amplitude_playbook#https://amplitude.com/docs/feature-experiment/advanced-techniques/holdout-groups-exclude-users :: # Holdout groups"]}, {"id": "f2", "statement": "Comparing target outcomes for exposed users with the held-out baseline helps estimate the change\u2019s incremental effect over time.", "source_refs": ["amplitude_playbook#https://amplitude.com/docs/feature-experiment/advanced-techniques/holdout-groups-exclude-users :: # Holdout groups"]}, {"id": "f3", "statement": "Define the eligible audience, holdout size, excluded changes, comparison metric, and observation period.", "source_refs": ["amplitude_playbook#https://amplitude.com/docs/feature-experiment/advanced-techniques/holdout-groups-exclude-users :: Create a holdout group"]}, {"id": "f4", "statement": "In Amplitude, set a holdout percentage between 1% and 10% when creating the group; withholding more traffic can extend experiment duration, and the percentage cannot be changed after creation.", "source_refs": ["amplitude_playbook#https://amplitude.com/docs/feature-experiment/advanced-techniques/holdout-groups-exclude-users :: Create a holdout group"]}, {"id": "f5", "statement": "Keep assignment and exclusions consistent through the observation period so baseline users do not receive the treatment.", "source_refs": ["amplitude_playbook#https://amplitude.com/docs/feature-experiment/advanced-techniques/holdout-groups-exclude-users :: # Holdout groups"]}]
+CHAPTERS []
+CATALOGUE {"video_id": "wMO5mfrU7-Q", "youtube_url": "https://www.youtube.com/watch?v=wMO5mfrU7-Q", "channel_id": "UCB02fDSj9GR4rhb1APMNclw", "title": "Holdout Experiments: Patterns, Trade offs, and Lessons from Real Projects - Data Science Festival", "publish_date": "2026-06-07", "duration_seconds": 2212, "language": "en-US", "playable_in_embed": true, "caption_tracks": [{"lang": "en-orig", "kind": "auto"}, {"lang": "en", "kind": "auto"}], "thumbnail_urls": ["https://i.ytimg.com/vi/wMO5mfrU7-Q/maxresdefault.jpg"], "transcript_available": true, "fetched_at": "2026-11-24T15:40:34.971072+00:00", "fetch_tool": "yt-dlp 2026.08.19", "judged_ranges": []}
+TRANSCRIPT with 30s margins
+172.72-177.28 And sometimes features interact. Those
+175.28-178.68 could be positive interactions where we
+177.28-180.80 have synergies and one feature
+178.68-183.80 reinforces the other one, but sometimes
+180.80-185.80 we have cannibalization effects when
+183.80-188.00 feature number two actually diminishes
+185.80-191.52 the return from feature number one.
+188.00-193.72 And because AB testing only has a single
+191.52-195.20 change in the experience, you really
+193.72-197.96 know nothing about interaction with
+195.20-200.40 other features, and AB test miss it.
+197.96-202.92 Luckily, we have holdouts, and holdouts
+200.40-205.08 attempt to resolve this issue and show
+202.92-206.36 us the long-term effects and cumulative
+205.08-209.16 effects.
+206.36-209.16 In theory,
+209.72-215.64 holdout is
+212.04-216.80 a group of people who have no change in
+215.64-219.04 their
+216.80-220.32 experience in the app for a prolonged
+219.04-223.20 amount of time.
+220.32-225.24 So, they reuse the same logic we use for
+223.20-227.68 AB testing where we have a control
+225.24-229.96 experience where nothing has changed,
+227.68-233.24 but kind of
+229.96-235.12 increase the duration. So, people for a
+233.24-236.56 prolonged amount of time will not see
+235.12-238.36 any changes.
+236.56-240.08 While you also have an experiment pool,
+238.36-241.88 I will refer to it as a sandbox
+240.08-244.72 throughout the presentation, you don't
+241.88-246.48 want to miss this rapid decision-making.
+244.72-248.64 So, when you run a holdout, you split
+246.48-250.08 your population into two big chunks. The
+248.64-252.48 first one is experiment pool, the
+250.08-254.72 sandbox, where you keep iterating and
+252.48-258.08 running more AB tests. But the holdout
+254.72-260.52 group is preserved so that you can make
+258.08-261.92 any comparisons later on and do this
+260.52-264.44 causal inference trick where you
+261.92-266.64 attribute the downstream effect to the
+264.44-269.24 change in the behavior.
+266.64-271.40 This all sounds good in theory.
+269.24-272.88 Why can't we run all our changes through
+271.40-274.60 holdouts?
+272.88-277.36 Well, because there are
+274.60-279.56 pretty real costs to this. First of all,
+277.36-281.40 you withhold your features from a
+279.56-283.08 certain proportion of people for some
+281.40-284.32 time. And with holdouts, when you
+283.08-286.36 measure long-term effects, this could be
+284.32-287.60 3 months, could be 12 months, which is
+286.36-290.04 not ideal.
+287.60-292.56 Secondly, because you have to maintain
+290.04-294.84 those two branches of experience,
+292.56-297.08 your engineers and other teams should
+294.84-298.72 know about the holdout and preserve
+297.08-301.16 those two branches in the code base. And
+298.72-303.56 this just adds some overhead and
+301.16-305.76 coordination for your product
+303.56-307.00 development uh life cycle.
+305.76-308.28 But they're still useful. You can
+307.00-310.72 measure long-term effects and cumulative
+308.28-313.80 effects. So, I guess it's always a
+310.72-315.64 trade-off. If you really need or want to
+313.80-316.96 measure long-term effects, you can use
+315.64-319.64 holdouts,
+316.96-321.76 but please be mindful of costs.
+319.64-324.56 Again, this is theory. How did we
+321.76-327.16 actually use it at Deliveroo?
+324.56-329.88 I've structured this into three big kind
+327.16-332.04 of patterns of holdout analysis.
+329.88-334.20 They start from the easiest one, which
+332.04-336.96 is the feature-level holdout. It's like
+334.20-338.36 an AB test on steroids. You just
+336.96-340.16 have a prolonged exposure to your
+338.36-341.68 feature and make the inference about
+340.16-343.04 long-term effects.
+341.68-344.40 Then, when you want to measure
+343.04-346.96 cumulative effects, you need multiple
+344.40-348.88 features so that they have interactions.
+346.96-350.40 And this is a multi-feature holdout.
+348.88-352.36 Imagine a team they're working on a
