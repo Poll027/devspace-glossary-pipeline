@@ -1,0 +1,335 @@
+PHP: if - Manual
+Downloads
+Documentation
+Get Involved
+Help
+Search docs
+Laracon EU 2027
+Getting Started
+Introduction
+A simple tutorial
+Language Reference
+Basic syntax
+Types
+Variables
+Constants
+Expressions
+Operators
+Control Structures
+Functions
+Classes and Objects
+Namespaces
+Enumerations
+Error Handling
+Fibers
+Generators
+Attributes
+References Explained
+Predefined Variables
+Predefined Exceptions
+Predefined Interfaces and Classes
+Predefined Attributes
+Context options and parameters
+Supported Protocols and Wrappers
+Security
+Introduction
+General considerations
+Installed as CGI binary
+Installed as an Apache module
+Session Security
+Filesystem Security
+Database Security
+Error Reporting
+User Submitted Data
+Hiding PHP
+Keeping Current
+Features
+HTTP authentication with PHP
+Cookies
+Sessions
+Handling file uploads
+Using remote files
+Connection handling
+Persistent Database Connections
+Command line usage
+Garbage Collection
+DTrace Dynamic Tracing
+Function Reference
+Affecting PHP's Behaviour
+Audio Formats Manipulation
+Authentication Services
+Command Line Specific Extensions
+Compression and Archive Extensions
+Cryptography Extensions
+Database Extensions
+Date and Time Related Extensions
+File System Related Extensions
+Human Language and
+Character Encoding Support
+Image Processing and Generation
+Mail Related Extensions
+Mathematical Extensions
+Non-Text MIME Output
+Process Control Extensions
+Other Basic Extensions
+Other Services
+Search Engine Extensions
+Server Specific Extensions
+Session Extensions
+Text Processing
+Variable and Type Related Extensions
+Web Services
+Windows Only Extensions
+XML Manipulation
+GUI Extensions
+Keyboard Shortcuts?
+This help
+j
+Next menu item
+k
+Previous menu item
+g p
+Previous man page
+g n
+Next man page
+G
+Scroll to bottom
+g g
+Scroll to top
+g h
+Goto homepage
+g s
+Goto search
+(current page)
+/
+Focus search box
+else »
+« Introduction
+Preface
+Language Reference
+Control Structures
+Change language:
+English
+German
+Spanish
+French
+Italian
+Japanese
+Brazilian Portuguese
+Russian
+Turkish
+Ukrainian
+Chinese (Simplified)
+Other
+SECTION  if
+(PHP 4, PHP 5, PHP 7, PHP 8)
+The if construct is one of the most important
+features of many languages, PHP included.  It allows for
+conditional execution of code fragments.  PHP features an
+if structure that is similar to that of C:
+if (expr)
+statement
+As described in the section about
+expressions, expression is evaluated to its
+Boolean value.  If expression evaluates to true,
+PHP will execute statement, and if it evaluates
+to false - it'll ignore it. More information about what values evaluate
+to false can be found in the 'Converting to boolean'
+section.
+The following example would display a is bigger
+than b if $a is bigger
+than $b:
+<?php
+$a = 3;
+$b = 1;
+if ($a > $b)
+echo "a is bigger than b\n";
+The above example will output:
+a is bigger than b
+Often you'd want to have more than one statement to be executed
+conditionally.  Of course, there's no need to wrap each statement
+with an if clause.  Instead, you can group
+several statements into a statement group.  For example, this code
+would display a is bigger than b
+if $a is bigger than
+$b, and would then assign the value of
+$a into $b:
+<?php
+$a = 3;
+$b = 1;
+if ($a > $b) {
+echo "a is bigger than b\n";
+$b = $a;
+}
+var_dump($b);
+The above example will output:
+a is bigger than b
+int(3)
+If statements can be nested infinitely within other
+if statements, which provides you with complete
+flexibility for conditional execution of the various parts of your
+program.
+SECTION  Found A Problem?
+Learn How To Improve This Page
+•
+Submit a Pull Request
+•
+Report a Bug
+＋add a note
+SECTION  User Contributed Notes 5 notes
+up
+down
+198
+robk ¶
+13 years ago
+easy way to execute conditional html / javascript / css / other language code with php if else:
+<?php if (condition): ?>
+html code to run if condition is true
+<?php else: ?>
+html code to run if condition is false
+<?php endif ?>
+up
+down
+47
+techguy14 at gmail dot com ¶
+15 years ago
+You can have 'nested' if statements withing a single if statement, using additional parenthesis.
+For example, instead of having:
+<?php
+if( $a == 1 || $a == 2 ) {
+if( $b == 3 || $b == 4 ) {
+if( $c == 5 || $ d == 6 ) {
+//Do something here.
+}
+}
+}
+?>
+You could just simply do this:
+<?php
+if( ($a==1 || $a==2) && ($b==3 || $b==4) && ($c==5 || $c==6) ) {
+//do that something here.
+}
+?>
+Hope this helps!
+up
+down
+8
+georgy dot moshkin at techsponsor dot io ¶
+2 years ago
+Left-to-right evaluation of && operators has one useful feature: evaluation stops after first "false" operand is encountered.
+This feature can be useful for creating following construction:
+$someVar==123 is not evaluated, so there will be no warnings such as "Undefined variable $someVar":
+<?php
+// $someVar=123; - commented line
+if ((!empty($someVar))&&($someVar==123))
+{
+echo $someVar;
+}
+?>
+Function someFunc($someVar) will not be called:
+<?php
+// $someVar=123; - commented line
+if ((!empty($someVar))&&(someFunc($someVar)))
+{
+echo $someVar;
+}
+?>
+This will give "Warning: Undefined variable $someVar" error. Order matters:
+<?php
+// $someVar=123;
+if ((someFunc($someVar))&&(!empty($someVar)))
+{
+echo $someVar;
+}
+?>
+up
+down
+24
+grawity at gmail dot com ¶
+18 years ago
+re: #80305
+Again useful for newbies:
+if you need to compare a variable with a value, instead of doing
+<?php
+if ($foo == 3) bar();
+?>
+do
+<?php
+if (3 == $foo) bar();
+?>
+this way, if you forget a =, it will become
+<?php
+if (3 = $foo) bar();
+?>
+and PHP will report an error.
+up
+down
+11
+Christian L. ¶
+15 years ago
+An other way for controls is the ternary operator (see Comparison Operators) that can be used as follows:
+<?php
+$v = 1;
+$r = (1 == $v) ? 'Yes' : 'No'; // $r is set to 'Yes'
+$r = (3 == $v) ? 'Yes' : 'No'; // $r is set to 'No'
+echo (1 == $v) ? 'Yes' : 'No'; // 'Yes' will be printed
+// and since PHP 5.3
+$v = 'My Value';
+$r = ($v) ?: 'No Value'; // $r is set to 'My Value' because $v is evaluated to TRUE
+$v = '';
+echo ($v) ?: 'No Value'; // 'No Value' will be printed because $v is evaluated to FALSE
+?>
+Parentheses can be left out in all examples above.
+＋add a note
+Control Structures
+Introduction
+if
+else
+elseif/else if
+Alternative syntax for control structures
+while
+do-​while
+for
+foreach
+break
+continue
+switch
+match
+declare
+return
+require
+include
+require_​once
+include_​once
+goto
+throw
+try...catch
+finally
+PHP is developed and maintained by a global community of contributors.
+The PHP Foundation helps fund this work.
+If PHP is part of your business or projects, consider sponsoring the Foundation.
+Linkedin
+@php@fosstodon.org
+GitHub
+Donate
+SECTION  PHP
+My PHP.net
+Downloads
+Contact
+Other PHP.net sites
+SECTION  Learn
+Documentation
+Get Involved
+Help
+SECTION  The PHP Foundation
+About the Foundation
+Sponsor
+Contact
+SECTION  Legal
+Privacy policy
+Copyright © 2001-2026 The PHP Documentation Group.
+↑ and ↓ to navigate •
+Enter to select •
+Esc to close • / to open
+Press Enter without
+selection to search using Google

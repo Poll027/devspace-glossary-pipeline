@@ -1,0 +1,661 @@
+PHP: Function parameters and arguments - Manual
+Downloads
+Documentation
+Get Involved
+Help
+Search docs
+Laracon EU 2027
+Getting Started
+Introduction
+A simple tutorial
+Language Reference
+Basic syntax
+Types
+Variables
+Constants
+Expressions
+Operators
+Control Structures
+Functions
+Classes and Objects
+Namespaces
+Enumerations
+Error Handling
+Fibers
+Generators
+Attributes
+References Explained
+Predefined Variables
+Predefined Exceptions
+Predefined Interfaces and Classes
+Predefined Attributes
+Context options and parameters
+Supported Protocols and Wrappers
+Security
+Introduction
+General considerations
+Installed as CGI binary
+Installed as an Apache module
+Session Security
+Filesystem Security
+Database Security
+Error Reporting
+User Submitted Data
+Hiding PHP
+Keeping Current
+Features
+HTTP authentication with PHP
+Cookies
+Sessions
+Handling file uploads
+Using remote files
+Connection handling
+Persistent Database Connections
+Command line usage
+Garbage Collection
+DTrace Dynamic Tracing
+Function Reference
+Affecting PHP's Behaviour
+Audio Formats Manipulation
+Authentication Services
+Command Line Specific Extensions
+Compression and Archive Extensions
+Cryptography Extensions
+Database Extensions
+Date and Time Related Extensions
+File System Related Extensions
+Human Language and
+Character Encoding Support
+Image Processing and Generation
+Mail Related Extensions
+Mathematical Extensions
+Non-Text MIME Output
+Process Control Extensions
+Other Basic Extensions
+Other Services
+Search Engine Extensions
+Server Specific Extensions
+Session Extensions
+Text Processing
+Variable and Type Related Extensions
+Web Services
+Windows Only Extensions
+XML Manipulation
+GUI Extensions
+Keyboard Shortcuts?
+This help
+j
+Next menu item
+k
+Previous menu item
+g p
+Previous man page
+g n
+Next man page
+G
+Scroll to bottom
+g g
+Scroll to top
+g h
+Goto homepage
+g s
+Goto search
+(current page)
+/
+Focus search box
+Returning values »
+« User-defined functions
+Preface
+Language Reference
+Functions
+Change language:
+English
+German
+Spanish
+French
+Italian
+Japanese
+Brazilian Portuguese
+Russian
+Turkish
+Ukrainian
+Chinese (Simplified)
+Other
+SECTION  Function parameters and arguments
+The function parameters are declared in the function signature.
+Information may be passed to functions via the argument list,
+which is a comma-delimited list of expressions. The arguments are
+evaluated from left to right and the result is assigned to the parameters of
+the function, before the function is actually called
+(eager evaluation).
+PHP supports passing arguments by value (the default), passing by
+reference, and default argument
+values. Variable-length
+argument lists and Named Arguments
+are also supported.
+Note:
+As of PHP 7.3.0, it is possible to have a trailing comma in the argument
+list for a function calls:
+<?php
+$v = foo(
+$arg_1,
+$arg_2,
+);
+As of PHP 8.0.0, the list of function parameters may include a trailing comma, which
+will be ignored. That is particularly useful in cases where the list of parameters is
+long or contains long variable names, making it convenient to list parameters vertically.
+Example #1 Function parameter list with trailing comma
+<?php
+function takes_many_args(
+$first_arg,
+$second_arg,
+$a_very_long_argument_name,
+$arg_with_default = 5,
+$again = 'a default string', // This trailing comma was not permitted before 8.0.0.
+)
+{
+// ...
+}
+SECTION  Passing arguments by reference
+By default, function arguments are passed by value (so that if
+the value of the argument within the function is changed, it does
+not get changed outside of the function). To allow a function to modify its
+arguments, they must be passed by reference.
+To have an argument to a function always passed by reference, prepend an
+ampersand (&) to the parameter name in the function definition:
+Example #2 Passing function arguments by reference
+<?php
+function add_some_extra(&$string)
+{
+$string .= 'and something extra.';
+}
+$str = 'This is a string, ';
+add_some_extra($str);
+echo $str;    // outputs 'This is a string, and something extra.'
+It is an error to pass a constant expression as an argument to a parameter
+that expects to be passed by reference.
+SECTION  Default parameter values
+A function may define default values for parameters using syntax similar
+to assigning a variable. The default is used only when the parameter's argument is
+not passed. Note that passing null does not
+assign the default value.
+Example #3 Use of default parameters in functions
+<?php
+function makecoffee($type = "cappuccino")
+{
+return "Making a cup of $type.\n";
+}
+echo makecoffee();
+echo makecoffee(null);
+echo makecoffee("espresso");
+The above example will output:
+Making a cup of cappuccino.
+Making a cup of .
+Making a cup of espresso.
+Default parameter values may be scalar values, arrays,
+the special type null, and as of PHP 8.1.0, objects using the
+new ClassName() syntax.
+Example #4 Using non-scalar types as default values
+<?php
+function makecoffee($types = array("cappuccino"), $coffeeMaker = NULL)
+{
+$device = is_null($coffeeMaker) ? "hands" : $coffeeMaker;
+return "Making a cup of ".join(", ", $types)." with $device.\n";
+}
+echo makecoffee();
+echo makecoffee(array("cappuccino", "lavazza"), "teapot");
+The above example will output:
+Making a cup of cappuccino with hands.
+Making a cup of cappuccino, lavazza with teapot.
+Example #5 Using objects as default values (as of PHP 8.1.0)
+<?php
+class DefaultCoffeeMaker {
+public function brew() {
+return "Making coffee.\n";
+}
+}
+class FancyCoffeeMaker {
+public function brew() {
+return "Crafting a beautiful coffee just for you.\n";
+}
+}
+function makecoffee($coffeeMaker = new DefaultCoffeeMaker)
+{
+return $coffeeMaker->brew();
+}
+echo makecoffee();
+echo makecoffee(new FancyCoffeeMaker);
+The above example will output:
+Making coffee.
+Crafting a beautiful coffee just for you.
+The default value must be a constant expression, not (for
+example) a variable, a class member or a function call.
+Note that any optional parameters should be specified after any
+required parameters, otherwise they cannot be omitted from calls.
+Consider the following example:
+Example #6 Incorrect usage of default function parameters
+<?php
+function makeyogurt($container = "bowl", $flavour)
+{
+return "Making a $container of $flavour yogurt.\n";
+}
+echo makeyogurt("raspberry"); // "raspberry" is $container, not $flavour
+The above example will output:
+Deprecated: makeyogurt(): Optional parameter $container declared before required parameter $flavour is implicitly treated as a required parameter in script on line 2
+Fatal error: Uncaught ArgumentCountError: Too few arguments to function makeyogurt(), 1 passed in script on line 7 and exactly 2 expected in script:2
+Stack trace:
+#0 script(7): makeyogurt('raspberry')
+#1 {main}
+thrown in script on line 2
+Now, compare the above with this:
+Example #7 Correct usage of default function parameters
+<?php
+function makeyogurt($flavour, $container = "bowl")
+{
+return "Making a $container of $flavour yogurt.\n";
+}
+echo makeyogurt("raspberry"); // "raspberry" is $flavour
+The above example will output:
+Making a bowl of raspberry yogurt.
+As of PHP 8.0.0, named arguments
+can be used to skip over multiple optional parameters.
+Example #8 Correct usage of default function parameters
+<?php
+function makeyogurt($container = "bowl", $flavour = "raspberry", $style = "Greek")
+{
+return "Making a $container of $flavour $style yogurt.\n";
+}
+echo makeyogurt(style: "natural");
+The above example will output:
+Making a bowl of raspberry natural yogurt.
+As of PHP 8.0.0, declaring mandatory parameters after optional parameters
+is deprecated. This can generally be resolved by
+dropping the default value, since it will never be used.
+One exception to this rule are parameters of the form
+Type $param = null, where the null default makes the type implicitly
+nullable. This usage is deprecated as of PHP 8.4.0, and an explicit
+nullable type
+should be used instead.
+Example #9 Declaring optional parameters after mandatory parameters
+<?php
+function foo($a = [], $b) {}     // Default not used; deprecated as of PHP 8.0.0
+function foo($a, $b) {}          // Functionally equivalent, no deprecation notice
+function bar(A $a = null, $b) {} // As of PHP 8.1.0, $a is implicitly required
+// (because it comes before the required one),
+// but implicitly nullable (deprecated as of PHP 8.4.0),
+// because the default parameter value is null
+function bar(?A $a, $b) {}       // Recommended
+Note:
+As of PHP 7.1.0, omitting a parameter which does not specify a default
+throws an ArgumentCountError; in previous versions
+it raised a Warning.
+Note:
+Parameters that expect the argument by reference may have a default value.
+SECTION  Variable-length argument lists
+PHP has support for variable-length argument lists in
+user-defined functions by using the
+... token.
+Parameter lists may include the
+... token to denote that the function accepts a
+variable number of arguments. The arguments will be passed into the
+given variable as an array:
+Example #10 Using ... to access variable arguments
+<?php
+function sum(...$numbers) {
+$acc = 0;
+foreach ($numbers as $n) {
+$acc += $n;
+}
+return $acc;
+}
+echo sum(1, 2, 3, 4);
+The above example will output:
+10
+... can also be used when calling functions to unpack
+an array or Traversable variable or
+literal into the argument list:
+Example #11 Using ... to provide arguments
+<?php
+function add($a, $b) {
+return $a + $b;
+}
+echo add(...[1, 2])."\n";
+$a = [1, 2];
+echo add(...$a);
+The above example will output:
+3
+3
+You may specify normal positional parameters before the
+... token. In this case, only the trailing arguments
+that don't match a positional argument will be added to the array
+generated by ....
+It is also possible to add a
+type declaration before the
+... token. If this is present, then all arguments
+captured by ... must match that parameter type.
+Example #12 Type declared variable arguments
+<?php
+function total_intervals($unit, DateInterval ...$intervals) {
+$time = 0;
+foreach ($intervals as $interval) {
+$time += $interval->$unit;
+}
+return $time;
+}
+$a = new DateInterval('P1D');
+$b = new DateInterval('P2D');
+echo total_intervals('d', $a, $b).' days';
+// This will fail, since null isn't a DateInterval object.
+echo total_intervals('d', null);
+The above example will output:
+3 days
+Fatal error: Uncaught TypeError: total_intervals(): Argument #2 must be of type DateInterval, null given, called in script on line 15 and defined in script:2
+Stack trace:
+#0 script(15): total_intervals('d', NULL)
+#1 {main}
+thrown in script on line 2
+Finally, variable arguments can also be passed
+by reference by
+prefixing the ... with an ampersand
+(&).
+SECTION  Named Arguments
+PHP 8.0.0 introduced named arguments as an extension of the existing
+positional parameters. Named arguments allow passing arguments to a
+function based on the parameter name, rather than the parameter position.
+This makes the meaning of the argument self-documenting, makes the
+arguments order-independent and allows skipping default values arbitrarily.
+Named arguments are passed by prefixing the value with the parameter name
+followed by a colon. Using reserved keywords as parameter names is allowed.
+The parameter name must be an identifier, specifying dynamically
+is not allowed.
+Example #13 Named argument syntax
+<?php
+myFunction(paramName: $value);
+array_foobar(array: $value);
+// NOT supported.
+function_name($variableStoringParamName: $value);
+Example #14 Positional arguments versus named arguments
+<?php
+// Using positional arguments:
+array_fill(0, 100, 50);
+// Using named arguments:
+array_fill(start_index: 0, count: 100, value: 50);
+The order in which the named arguments are passed does not matter.
+Example #15 Same example as above with a different order of parameters
+<?php
+array_fill(value: 50, count: 100, start_index: 0);
+Named arguments can be combined with positional arguments. In this case,
+the named arguments must come after the positional arguments.
+It is also possible to specify only some of the optional arguments of a
+function, regardless of their order.
+Example #16 Combining named arguments with positional arguments
+<?php
+htmlspecialchars($string, double_encode: false);
+// Same as
+htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8', false);
+Passing an argument to the same named parameter multiple times results in an
+Error exception.
+Example #17 Error thrown when passing an argument to the same named parameter multiple times
+<?php
+function foo($param) { ... }
+foo(param: 1, param: 2);
+// Error: Named parameter $param overwrites previous argument
+foo(1, param: 2);
+// Error: Named parameter $param overwrites previous argument
+As of PHP 8.1.0, it is possible to use named arguments after unpacking the arguments.
+A named argument must not override an already unpacked argument.
+Example #18 Use named arguments after unpacking
+<?php
+function foo($a, $b, $c = 3, $d = 4) {
+return $a + $b + $c + $d;
+}
+var_dump(foo(...[1, 2], d: 40)); // 46
+var_dump(foo(...['b' => 2, 'a' => 1], d: 40)); // 46
+var_dump(foo(...[1, 2], b: 20)); // Fatal error. Named parameter $b overwrites previous argument
+Some internal functions document an alternative signature, such as
+session_set_save_handler(), whose parameter names do not
+exist in the function itself. These names cannot be used as named
+arguments and result in an error.
+SECTION  Found A Problem?
+Learn How To Improve This Page
+•
+Submit a Pull Request
+•
+Report a Bug
+＋add a note
+SECTION  User Contributed Notes 10 notes
+up
+down
+140
+php at richardneill dot org ¶
+11 years ago
+To experiment on performance of pass-by-reference and pass-by-value, I used this  script. Conclusions are below.
+#!/usr/bin/php
+<?php
+function sum($array,$max){   //For Reference, use:  "&$array"
+$sum=0;
+for ($i=0; $i<2; $i++){
+#$array[$i]++;        //Uncomment this line to modify the array within the function.
+$sum += $array[$i];
+}
+return ($sum);
+}
+$max = 1E7                  //10 M data points.
+$data = range(0,$max,1);
+$start = microtime(true);
+for ($x = 0 ; $x < 100; $x++){
+$sum = sum($data, $max);
+}
+$end =  microtime(true);
+echo "Time: ".($end - $start)." s\n";
+/* Run times:
+#    PASS BY    MODIFIED?   Time
+-    -------    ---------   ----
+1    value      no          56 us
+2    reference  no          58 us
+3    valuue     yes         129 s
+4    reference  yes         66 us
+Conclusions:
+1. PHP is already smart about zero-copy / copy-on-write. A function call does NOT copy the data unless it needs to; the data is
+only copied on write. That's why  #1 and #2 take similar times, whereas #3 takes 2 million times longer than #4.
+[You never need to use &$array to ask the compiler to do a zero-copy optimisation; it can work that out for itself.]
+2. You do use &$array  to tell the compiler "it is OK for the function to over-write my argument in place, I don't need the original
+any more." This can make a huge difference to performance when we have large amounts of memory to copy.
+(This is the only way it is done in C, arrays are always passed as pointers)
+3. The other use of & is as a way to specify where data should be *returned*. (e.g. as used by exec() ).
+(This is a C-like way of passing pointers for outputs, whereas PHP functions normally return complex types, or multiple answers
+in an array)
+4. It's  unhelpful that only the function definition has &. The caller should have it, at least as syntactic sugar. Otherwise
+it leads to unreadable code: because the person reading the function call doesn't expect it to pass by reference. At the moment,
+it's necessary to write a by-reference function call with a comment, thus:
+$sum = sum($data,$max);  //warning, $data passed by reference, and may be modified.
+5. Sometimes, pass by reference could be at the choice of the caller, NOT the function definitition. PHP doesn't allow it, but it
+would be meaningful for the caller to decide to pass data in as a reference. i.e. "I'm done with the variable, it's OK to stomp
+on it in memory".
+*/
+?>
+up
+down
+15
+Simmo at 9000 dot 000 ¶
+4 years ago
+For anyone just getting started with php or searching, for an understanding, on what this page describes as a "... token" in Variable-length arguments:
+https://www.php.net/manual/en/functions.arguments.php#functions.variable-arg-list
+<?php
+func($a, ...$b)
+?>
+The 3 dots, or elipsis, or "...", or dot dot dot is sometimes called the "spread operator" in other languages.
+As this is only used in function arguments, it is probably not technically an true operator in PHP.  (As of 8.1 at least?).
+(With having an difficult to search for name like "... token", I hope this note helps someone).
+up
+down
+33
+gabriel at figdice dot org ¶
+10 years ago
+A function's argument that is an object, will have its properties modified by the function although you don't need to pass it by reference.
+<?php
+$x = new stdClass();
+$x->prop = 1;
+function f ( $o ) // Notice the absence of &
+{
+$o->prop ++;
+}
+f($x);
+echo $x->prop; // shows: 2
+?>
+This is different for arrays:
+<?php
+$y = [ 'prop' => 1 ];
+function g( $a )
+{
+$a['prop'] ++;
+echo $a['prop'];  // shows: 2
+}
+g($y);
+echo $y['prop'];  // shows: 1
+?>
+up
+down
+15
+LilyWhite ¶
+5 years ago
+It is worth noting that you can use functions as function arguments
+<?php
+function run($op, $a, $b) {
+return $op($a, $b);
+}
+$add = function($a, $b) {
+return $a + $b;
+};
+$mul = function($a, $b) {
+return $a * $b;
+};
+echo run($add, 1, 2), "\n";
+echo run($mul, 1, 2);
+?>
+Output:
+3
+2
+up
+down
+19
+boan dot web at outlook dot com ¶
+8 years ago
+Quote:
+"The declaration can be made to accept NULL values if the default value of the parameter is set to NULL."
+But you can do this (PHP 7.1+):
+<?php
+function foo(?string $bar) {
+//...
+}
+foo(); // Fatal error
+foo(null); // Okay
+foo('Hello world'); // Okay
+?>
+up
+down
+16
+Hayley Watson ¶
+9 years ago
+There are fewer restrictions on using ... to supply multiple arguments to a function call than there are on using it to declare a variadic parameter in the function declaration. In particular, it can be used more than once to unpack arguments, provided that all such uses come after any positional arguments.
+<?php
+$array1 = [[1],[2],[3]];
+$array2 = [4];
+$array3 = [[5],[6],[7]];
+$result = array_merge(...$array1); // Legal, of course: $result == [1,2,3];
+$result = array_merge($array2, ...$array1); // $result == [4,1,2,3]
+$result = array_merge(...$array1, $array2); // Fatal error: Cannot use positional argument after argument unpacking.
+$result = array_merge(...$array1, ...$array3); // Legal! $result == [1,2,3,5,6,7]
+?>
+The Right Thing for the error case above would be for $result==[1,2,3,4], but this isn't yet (v7.1.8) supported.
+up
+down
+4
+Luna ¶
+3 years ago
+When using named arguments and adding default values only to some of the arguments, the arguments with default values must be specified at the end or otherwise PHP throws an error:
+<?php
+function test1($a, $c, $b = 2)
+{
+return $a + $b + $c;
+}
+function test2($a, $b = 2, $c)
+{
+return $a + $b + $c;
+}
+echo test1(a: 1, c: 3)."\n"; // Works
+echo test2(a: 1, c: 3)."\n"; // ArgumentCountError: Argument #2 ($b) not passed
+?>
+I assume that this happens because internally PHP rewrites the calls to something like test1(1, 3) and test2(1, , 3). The first call is valid, but the second obviously isn't.
+up
+down
+4
+Hayley Watson ¶
+9 years ago
+If you use ... in a function's parameter list, you can use it only once for obvious reasons. Less obvious is that it has to be on the LAST parameter; as the manual puts it: "You may specify normal positional arguments BEFORE the ... token. (emphasis mine).
+<?php
+function variadic($first, ...$most, $last)
+{/*etc.*/}
+variadic(1, 2, 3, 4, 5);
+?>
+results in a fatal error, even though it looks like the Thing To Do™ would be to set $first to 1, $most to [2, 3, 4], and $last to 5.
+up
+down
+1
+pascal at diethelm dot me ¶
+1 month ago
+Note that named arguments do not need a corresponding parameter with the same name, if  ... is used in the function, as is shown in the following example:
+function myfunc(...$args) {
+var_dump($args);
+}
+myfunc(a:10, b:'text', c:1/3);
+Output produced by var_dump:
+array (size=3)
+'a' => int 10
+'b' => string 'text' (length=4)
+'c' => float 0.3333333333333333
+up
+down
+-1
+admin at monkacres dot se ¶
+5 months ago
+Remember, that you are not allowed to use reserved keywords as variable names. This might be a reason that your code isn't working.
+＋add a note
+Functions
+User-​defined functions
+Function parameters and arguments
+Returning values
+Variable functions
+Internal (built-​in) functions
+Anonymous functions
+Arrow Functions
+First class callable syntax
+Partial function application
+PHP is developed and maintained by a global community of contributors.
+The PHP Foundation helps fund this work.
+If PHP is part of your business or projects, consider sponsoring the Foundation.
+Linkedin
+@php@fosstodon.org
+GitHub
+Donate
+SECTION  PHP
+My PHP.net
+Downloads
+Contact
+Other PHP.net sites
+SECTION  Learn
+Documentation
+Get Involved
+Help
+SECTION  The PHP Foundation
+About the Foundation
+Sponsor
+Contact
+SECTION  Legal
+Privacy policy
+Copyright © 2001-2026 The PHP Documentation Group.
+↑ and ↓ to navigate •
+Enter to select •
+Esc to close • / to open
+Press Enter without
+selection to search using Google

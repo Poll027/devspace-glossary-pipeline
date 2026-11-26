@@ -1,0 +1,348 @@
+PHP: Returning values - Manual
+Downloads
+Documentation
+Get Involved
+Help
+Search docs
+Laracon EU 2027
+Getting Started
+Introduction
+A simple tutorial
+Language Reference
+Basic syntax
+Types
+Variables
+Constants
+Expressions
+Operators
+Control Structures
+Functions
+Classes and Objects
+Namespaces
+Enumerations
+Error Handling
+Fibers
+Generators
+Attributes
+References Explained
+Predefined Variables
+Predefined Exceptions
+Predefined Interfaces and Classes
+Predefined Attributes
+Context options and parameters
+Supported Protocols and Wrappers
+Security
+Introduction
+General considerations
+Installed as CGI binary
+Installed as an Apache module
+Session Security
+Filesystem Security
+Database Security
+Error Reporting
+User Submitted Data
+Hiding PHP
+Keeping Current
+Features
+HTTP authentication with PHP
+Cookies
+Sessions
+Handling file uploads
+Using remote files
+Connection handling
+Persistent Database Connections
+Command line usage
+Garbage Collection
+DTrace Dynamic Tracing
+Function Reference
+Affecting PHP's Behaviour
+Audio Formats Manipulation
+Authentication Services
+Command Line Specific Extensions
+Compression and Archive Extensions
+Cryptography Extensions
+Database Extensions
+Date and Time Related Extensions
+File System Related Extensions
+Human Language and
+Character Encoding Support
+Image Processing and Generation
+Mail Related Extensions
+Mathematical Extensions
+Non-Text MIME Output
+Process Control Extensions
+Other Basic Extensions
+Other Services
+Search Engine Extensions
+Server Specific Extensions
+Session Extensions
+Text Processing
+Variable and Type Related Extensions
+Web Services
+Windows Only Extensions
+XML Manipulation
+GUI Extensions
+Keyboard Shortcuts?
+This help
+j
+Next menu item
+k
+Previous menu item
+g p
+Previous man page
+g n
+Next man page
+G
+Scroll to bottom
+g g
+Scroll to top
+g h
+Goto homepage
+g s
+Goto search
+(current page)
+/
+Focus search box
+Variable functions »
+« Function parameters and arguments
+Preface
+Language Reference
+Functions
+Change language:
+English
+German
+Spanish
+French
+Italian
+Japanese
+Brazilian Portuguese
+Russian
+Turkish
+Ukrainian
+Chinese (Simplified)
+Other
+SECTION  Returning values
+Values are returned by using the optional return statement. Any
+type may be returned, including arrays and objects. This causes the
+function to end its execution immediately and pass control back to
+the line from which it was called. See return
+for more information.
+Note:
+If the return is omitted the value null will be
+returned.
+SECTION  Use of return
+Example #1 Use of return
+<?php
+function square($num)
+{
+return $num * $num;
+}
+echo square(4);   // outputs '16'.
+A function can not return multiple values, but similar results can be
+obtained by returning an array.
+Example #2 Returning an array to get multiple values
+<?php
+function small_numbers()
+{
+return [0, 1, 2];
+}
+// Array destructuring will collect each member of the array individually
+[$zero, $one, $two] = small_numbers();
+var_dump($zero, $one, $two);
+// Prior to 7.1.0, the only equivalent alternative is using list() construct
+list($zero, $one, $two) = small_numbers();
+To return a reference from a function, use the reference operator & in
+both the function declaration and when assigning the returned value to a
+variable:
+Example #3 Returning a reference from a function
+<?php
+function &returns_reference()
+{
+return $someref;
+}
+$newref =& returns_reference();
+For more information on references, please check out References Explained.
+SECTION  Found A Problem?
+Learn How To Improve This Page
+•
+Submit a Pull Request
+•
+Report a Bug
+＋add a note
+SECTION  User Contributed Notes 5 notes
+up
+down
+25
+rstaveley at seseit dot com ¶
+16 years ago
+Developers with a C background may expect pass by reference semantics for arrays. It may be surprising that  pass by value is used for arrays just like scalars. Objects are implicitly passed by reference.
+<?php
+# (1) Objects are always passed by reference and returned by reference
+class Obj {
+public $x;
+}
+function obj_inc_x($obj) {
+$obj->x++;
+return $obj;
+}
+$obj = new Obj();
+$obj->x = 1;
+$obj2 = obj_inc_x($obj);
+obj_inc_x($obj2);
+print $obj->x . ', ' . $obj2->x . "\n";
+# (2) Scalars are not passed by reference or returned as such
+function scalar_inc_x($x) {
+$x++;
+return $x;
+}
+$x = 1;
+$x2 = scalar_inc_x($x);
+scalar_inc_x($x2);
+print $x . ', ' . $x2 . "\n";
+# (3) You have to force pass by reference and return by reference on scalars
+function &scalar_ref_inc_x(&$x) {
+$x++;
+return $x;
+}
+$x = 1;
+$x2 =& scalar_ref_inc_x($x);    # Need reference here as well as the function sig
+scalar_ref_inc_x($x2);
+print $x . ', ' . $x2 . "\n";
+# (4) Arrays use pass by value sematics just like scalars
+function array_inc_x($array) {
+$array{'x'}++;
+return $array;
+}
+$array = array();
+$array['x'] = 1;
+$array2 = array_inc_x($array);
+array_inc_x($array2);
+print $array['x'] . ', ' . $array2['x'] . "\n";
+# (5) You have to force pass by reference and return by reference on arrays
+function &array_ref_inc_x(&$array) {
+$array{'x'}++;
+return $array;
+}
+$array = array();
+$array['x'] = 1;
+$array2 =& array_ref_inc_x($array); # Need reference here as well as the function sig
+array_ref_inc_x($array2);
+print $array['x'] . ', ' . $array2['x'] . "\n";
+up
+down
+15
+ryan dot jentzsch at gmail dot com ¶
+9 years ago
+PHP 7.1 allows for void and null return types by preceding the type declaration with a ? -- (e.g. function canReturnNullorString(): ?string)
+However resource is not allowed as a return type:
+<?php
+function fileOpen(string $fileName, string $mode): resource
+{
+$handle = fopen($fileName, $mode);
+if ($handle !== false)
+{
+return $handle;
+}
+}
+$resourceHandle = fileOpen("myfile.txt", "r");
+?>
+Errors with:
+Fatal error: Uncaught TypeError: Return value of fileOpen() must be an instance of resource, resource returned.
+up
+down
+13
+nick at itomic.com ¶
+23 years ago
+Functions which return references, may return a NULL value. This is inconsistent with the fact that function parameters passed by reference can't be passed as NULL (or in fact anything which isnt a variable).
+i.e.
+<?php
+function &testRet()
+{
+return NULL;
+}
+if (testRet() === NULL)
+{
+echo "NULL";
+}
+?>
+parses fine and echoes NULL
+up
+down
+5
+bgalloway at citycarshare dot org ¶
+18 years ago
+Be careful about using "do this thing or die()" logic in your return lines.  It doesn't work as you'd expect:
+<?php
+function myfunc1() {
+return('thingy' or die('otherthingy'));
+}
+function myfunc2() {
+return 'thingy' or die('otherthingy');
+}
+function myfunc3() {
+return('thingy') or die('otherthingy');
+}
+function myfunc4() {
+return 'thingy' or 'otherthingy';
+}
+function myfunc5() {
+$x = 'thingy' or 'otherthingy'; return $x;
+}
+echo myfunc1(). "\n". myfunc2(). "\n". myfunc3(). "\n". myfunc4(). "\n". myfunc5(). "\n";
+?>
+Only myfunc5() returns 'thingy' - the rest return 1.
+up
+down
+0
+Anonymous ¶
+29 days ago
+<?php
+declare(strict_types=1);
+function foo(?int $x): ?int {
+$x *= 2;
+}
+var_dump(foo(10));   // must be NULL?
+var_dump(foo(null)); // must be NULL?
+?>
+This causes:
+PHP Fatal error:  Uncaught TypeError: foo(): Return value must be of type ?int, none returned in ...
+PHP 8.2.12 (cli) (built: Oct 24 2023 21:15:15) (ZTS Visual C++ 2019 x64)
+＋add a note
+Functions
+User-​defined functions
+Function parameters and arguments
+Returning values
+Variable functions
+Internal (built-​in) functions
+Anonymous functions
+Arrow Functions
+First class callable syntax
+Partial function application
+PHP is developed and maintained by a global community of contributors.
+The PHP Foundation helps fund this work.
+If PHP is part of your business or projects, consider sponsoring the Foundation.
+Linkedin
+@php@fosstodon.org
+GitHub
+Donate
+SECTION  PHP
+My PHP.net
+Downloads
+Contact
+Other PHP.net sites
+SECTION  Learn
+Documentation
+Get Involved
+Help
+SECTION  The PHP Foundation
+About the Foundation
+Sponsor
+Contact
+SECTION  Legal
+Privacy policy
+Copyright © 2001-2026 The PHP Documentation Group.
+↑ and ↓ to navigate •
+Enter to select •
+Esc to close • / to open
+Press Enter without
+selection to search using Google

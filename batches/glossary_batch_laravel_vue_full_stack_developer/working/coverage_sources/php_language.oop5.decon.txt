@@ -1,0 +1,893 @@
+PHP: Constructors and Destructors - Manual
+Downloads
+Documentation
+Get Involved
+Help
+Search docs
+Laracon EU 2027
+Getting Started
+Introduction
+A simple tutorial
+Language Reference
+Basic syntax
+Types
+Variables
+Constants
+Expressions
+Operators
+Control Structures
+Functions
+Classes and Objects
+Namespaces
+Enumerations
+Error Handling
+Fibers
+Generators
+Attributes
+References Explained
+Predefined Variables
+Predefined Exceptions
+Predefined Interfaces and Classes
+Predefined Attributes
+Context options and parameters
+Supported Protocols and Wrappers
+Security
+Introduction
+General considerations
+Installed as CGI binary
+Installed as an Apache module
+Session Security
+Filesystem Security
+Database Security
+Error Reporting
+User Submitted Data
+Hiding PHP
+Keeping Current
+Features
+HTTP authentication with PHP
+Cookies
+Sessions
+Handling file uploads
+Using remote files
+Connection handling
+Persistent Database Connections
+Command line usage
+Garbage Collection
+DTrace Dynamic Tracing
+Function Reference
+Affecting PHP's Behaviour
+Audio Formats Manipulation
+Authentication Services
+Command Line Specific Extensions
+Compression and Archive Extensions
+Cryptography Extensions
+Database Extensions
+Date and Time Related Extensions
+File System Related Extensions
+Human Language and
+Character Encoding Support
+Image Processing and Generation
+Mail Related Extensions
+Mathematical Extensions
+Non-Text MIME Output
+Process Control Extensions
+Other Basic Extensions
+Other Services
+Search Engine Extensions
+Server Specific Extensions
+Session Extensions
+Text Processing
+Variable and Type Related Extensions
+Web Services
+Windows Only Extensions
+XML Manipulation
+GUI Extensions
+Keyboard Shortcuts?
+This help
+j
+Next menu item
+k
+Previous menu item
+g p
+Previous man page
+g n
+Next man page
+G
+Scroll to bottom
+g g
+Scroll to top
+g h
+Goto homepage
+g s
+Goto search
+(current page)
+/
+Focus search box
+Visibility »
+« Autoloading Classes
+Preface
+Language Reference
+Classes and Objects
+Change language:
+English
+German
+Spanish
+French
+Italian
+Japanese
+Brazilian Portuguese
+Russian
+Turkish
+Ukrainian
+Chinese (Simplified)
+Other
+SECTION  Constructors and Destructors
+SECTION  Constructor
+function __construct(mixed ...$values = ""): void
+PHP allows developers to declare constructor methods for classes.
+Classes which have a constructor method call this method on each
+newly-created object, so it is suitable for any initialization that the
+object may need before it is used.
+Note:
+Parent constructors are not called implicitly if the child class defines
+a constructor.  In order to run a parent constructor, a call to
+parent::__construct() within the child constructor is
+required. If the child does not define a constructor then it may be inherited
+from the parent class just like a normal class method (if it was not declared
+as private).
+Example #1 Constructors in inheritance
+<?php
+class BaseClass {
+function __construct() {
+print "In BaseClass constructor\n";
+}
+}
+class SubClass extends BaseClass {
+function __construct() {
+parent::__construct();
+print "In SubClass constructor\n";
+}
+}
+class OtherSubClass extends BaseClass {
+// inherits BaseClass's constructor
+}
+// In BaseClass constructor
+$obj = new BaseClass();
+// In BaseClass constructor
+// In SubClass constructor
+$obj = new SubClass();
+// In BaseClass constructor
+$obj = new OtherSubClass();
+?>
+Unlike other methods, __construct()
+is exempt from the usual
+signature compatibility rules
+when being extended.
+Constructors are ordinary methods which are called during the instantiation of their
+corresponding object.  As such, they may define an arbitrary number of arguments, which
+may be required, may have a type, and may have a default value. Constructor arguments
+are called by placing the arguments in parentheses after the class name.
+Example #2 Using constructor arguments
+<?php
+class Point {
+protected int $x;
+protected int $y;
+public function __construct(int $x, int $y = 0) {
+$this->x = $x;
+$this->y = $y;
+}
+}
+// Pass both parameters.
+$p1 = new Point(4, 5);
+// Pass only the required parameter. $y will take its default value of 0.
+$p2 = new Point(4);
+// With named parameters (as of PHP 8.0):
+$p3 = new Point(y: 5, x: 4);
+?>
+If a class has no constructor, or the constructor has no required arguments, the parentheses
+may be omitted.
+SECTION  Old-style constructors
+Prior to PHP 8.0.0, classes in the global namespace will interpret a method named
+the same as the class as an old-style constructor.  That syntax is deprecated,
+and will result in an E_DEPRECATED error but still call that function as a constructor.
+If both __construct() and a same-name method are
+defined, __construct() will be called.
+In namespaced classes, or any class as of PHP 8.0.0, a method named
+the same as the class never has any special meaning.
+Always use __construct() in new code.
+SECTION  Constructor Promotion
+As of PHP 8.0.0, constructor parameters may also be promoted to correspond to an
+object property.  It is very common for constructor parameters to be assigned to
+a property in the constructor but otherwise not operated upon.  Constructor promotion
+provides a short-hand for that use case.  The example above could be rewritten as the following.
+Example #3 Using constructor property promotion
+<?php
+class Point {
+public function __construct(protected int $x, protected int $y = 0) {
+}
+}
+When a constructor argument includes a modifier, PHP will interpret it as
+both an object property and a constructor argument, and assign the argument value to
+the property.  The constructor body may then be empty or may contain other statements.
+Any additional statements will be executed after the argument values have been assigned
+to the corresponding properties.
+Not all arguments need to be promoted. It is possible to mix and match promoted and not-promoted
+arguments, in any order.  Promoted arguments have no impact on code calling the constructor.
+Note:
+Using a visibility modifier (public,
+protected or private) is the most likely way to apply property
+promotion, but any other single modifier (such as readonly) will have the same effect.
+Note:
+Object properties may not be typed callable due to engine ambiguity that this would
+introduce. Promoted arguments, therefore, may not be typed callable either. Any
+other type declaration is permitted, however.
+Note:
+As promoted properties are desugared to both a property as well as a function parameter, any
+and all naming restrictions for both properties as well as parameters apply.
+Note:
+Attributes placed on a
+promoted constructor argument will be replicated to both the property
+and argument.  Default values on a promoted constructor argument will be replicated only to the argument and not the property.
+SECTION  New in initializers
+As of PHP 8.1.0, objects can be used as default parameter values,
+static variables, and global constants, as well as in attribute arguments.
+Objects can also be passed to define() now.
+Note:
+The use of a dynamic or non-string class name or an anonymous class is not allowed.
+The use of argument unpacking is not allowed.
+The use of unsupported expressions as arguments is not allowed.
+Example #4 Using new in initializers
+<?php
+// All allowed:
+static $x = new Foo;
+const C = new Foo;
+function test($param = new Foo) {}
+#[AnAttribute(new Foo)]
+class Test {
+public function __construct(
+public $prop = new Foo,
+) {}
+}
+// All not allowed (compile-time error):
+function test(
+$a = new (CLASS_NAME_CONSTANT)(), // dynamic class name
+$b = new class {}, // anonymous class
+$c = new A(...[]), // argument unpacking
+$d = new B($abc), // unsupported constant expression
+) {}
+?>
+SECTION  Static creation methods
+PHP only supports a single constructor per class.  In some cases, however, it may be
+desirable to allow an object to be constructed in different ways with different inputs.
+The recommended way to do so is by using static methods as constructor wrappers.
+Example #5 Using static creation methods
+<?php
+$some_json_string = '{ "id": 1004, "name": "Elephpant" }';
+$some_xml_string = "<animal><id>1005</id><name>Elephpant</name></animal>";
+class Product {
+private ?int $id;
+private ?string $name;
+private function __construct(?int $id = null, ?string $name = null) {
+$this->id = $id;
+$this->name = $name;
+}
+public static function fromBasicData(int $id, string $name): static {
+$new = new static($id, $name);
+return $new;
+}
+public static function fromJson(string $json): static {
+$data = json_decode($json, true);
+return new static($data['id'], $data['name']);
+}
+public static function fromXml(string $xml): static {
+$data = simplexml_load_string($xml);
+$new = new static();
+$new->id = (int) $data->id;
+$new->name = $data->name;
+return $new;
+}
+}
+$p1 = Product::fromBasicData(5, 'Widget');
+$p2 = Product::fromJson($some_json_string);
+$p3 = Product::fromXml($some_xml_string);
+var_dump($p1, $p2, $p3);
+The constructor may be made private or protected to prevent it from being called externally.
+If so, only a static method will be able to instantiate the class. Because they are in the
+same class definition they have access to private methods, even if not of the same object
+instance. The private constructor is optional and may or may not make sense depending on
+the use case.
+The three public static methods then demonstrate different ways of instantiating the object.
+fromBasicData() takes the exact parameters that are needed, then creates the
+object by calling the constructor and returning the result.
+fromJson() accepts a JSON string and does some pre-processing on it itself
+to convert it into the format desired by the constructor. It then returns the new object.
+fromXml() accepts an XML string, preprocesses it, and then creates a bare
+object.  The constructor is still called, but as all of the parameters are optional the method
+skips them.  It then assigns values to the object properties directly before returning the result.
+In all three cases, the static keyword is translated into the name of the class the code is in.
+In this case, Product.
+SECTION  Destructor
+function __destruct(): void
+PHP possesses a destructor concept similar to that of other
+object-oriented languages, such as C++. The destructor method will be
+called as soon as there are no other references to a particular object,
+or in any order during the shutdown sequence.
+Example #6 Destructor Example
+<?php
+class MyDestructableClass
+{
+function __construct() {
+print "In constructor\n";
+}
+function __destruct() {
+print "Destroying " . __CLASS__ . "\n";
+}
+}
+$obj = new MyDestructableClass();
+Like constructors, parent destructors will not be called implicitly by
+the engine. In order to run a parent destructor, one would have to
+explicitly call parent::__destruct() in the destructor
+body. Also like constructors, a child class may inherit the parent's
+destructor if it does not implement one itself.
+The destructor will be called even if script execution is stopped using
+exit(). Calling exit() in a destructor
+will prevent the remaining shutdown routines from executing.
+If a destructor creates new references to its object, it will not be called
+a second time when the reference count reaches zero again or during the
+shutdown sequence.
+As of PHP 8.4.0, when
+cycle collection
+occurs during the execution of a
+Fiber, the destructors of objects
+scheduled for collection are executed in a separate Fiber, called the
+gc_destructor_fiber.
+If this Fiber is suspended, a new one will be created to execute any
+remaining destructors.
+The previous gc_destructor_fiber will no longer be
+referenced by the garbage collector and may be collected if it is not
+referenced elsewhere.
+Objects whose destructor is suspended will not be collected until the
+destructor returns or the Fiber itself is collected.
+Note:
+Destructors called during the script shutdown have HTTP headers already
+sent. The working directory in the script shutdown phase can be different
+with some SAPIs (e.g. Apache).
+Note:
+Attempting to throw an exception from a destructor (called in the time of
+script termination) causes a fatal error.
+SECTION  Found A Problem?
+Learn How To Improve This Page
+•
+Submit a Pull Request
+•
+Report a Bug
+＋add a note
+SECTION  User Contributed Notes 13 notes
+up
+down
+170
+david dot scourfield at llynfi dot co dot uk ¶
+15 years ago
+Be aware of potential memory leaks caused by circular references within objects.  The PHP manual states "[t]he destructor method will be called as soon as all references to a particular object are removed" and this is precisely true: if two objects reference each other (or even if one object has a field that points to itself as in $this->foo = $this) then this reference will prevent the destructor being called even when there are no other references to the object at all.  The programmer can no longer access the objects, but they still stay in memory.
+Consider the following example:
+<?php
+header("Content-type: text/plain");
+class Foo {
+/**
+* An indentifier
+* @var string
+*/
+private $name;
+/**
+* A reference to another Foo object
+* @var Foo
+*/
+private $link;
+public function __construct($name) {
+$this->name = $name;
+}
+public function setLink(Foo $link){
+$this->link = $link;
+}
+public function __destruct() {
+echo 'Destroying: ', $this->name, PHP_EOL;
+}
+}
+// create two Foo objects:
+$foo = new Foo('Foo 1');
+$bar = new Foo('Foo 2');
+// make them point to each other
+$foo->setLink($bar);
+$bar->setLink($foo);
+// destroy the global references to them
+$foo = null;
+$bar = null;
+// we now have no way to access Foo 1 or Foo 2, so they OUGHT to be __destruct()ed
+// but they are not, so we get a memory leak as they are still in memory.
+//
+// Uncomment the next line to see the difference when explicitly calling the GC:
+// gc_collect_cycles();
+//
+// see also: http://www.php.net/manual/en/features.gc.php
+//
+// create two more Foo objects, but DO NOT set their internal Foo references
+// so nothing except the vars $foo and $bar point to them:
+$foo = new Foo('Foo 3');
+$bar = new Foo('Foo 4');
+// destroy the global references to them
+$foo = null;
+$bar = null;
+// we now have no way to access Foo 3 or Foo 4 and as there are no more references
+// to them anywhere, their __destruct() methods are automatically called here,
+// BEFORE the next line is executed:
+echo 'End of script', PHP_EOL;
+?>
+This will output:
+Destroying: Foo 3
+Destroying: Foo 4
+End of script
+Destroying: Foo 1
+Destroying: Foo 2
+But if we uncomment the gc_collect_cycles(); function call in the middle of the script, we get:
+Destroying: Foo 2
+Destroying: Foo 1
+Destroying: Foo 3
+Destroying: Foo 4
+End of script
+As may be desired.
+NOTE: calling gc_collect_cycles() does have a speed overhead, so only use it if you feel you need to.
+up
+down
+33
+domger at freenet dot de ¶
+9 years ago
+The __destruct magic method must be public.
+public function __destruct()
+{
+;
+}
+The method will automatically be called externally to the instance.  Declaring __destruct as protected or private will result in a warning and the magic method will not be called.
+Note: In PHP 5.3.10 i saw strange side effects while some Destructors were declared as protected.
+up
+down
+6
+Hayley Watson ¶
+3 years ago
+There are other advantages to using static factory methods to wrap object construction instead of bare constructor calls.
+As well as allowing for different methods to use in different scenarios, with more relevant names both for the methods and the parameters and without the constructor having to handle different sets of arguments of different types:
+* You can do all your input validation before attempting to construct the object.
+* The object itself can bypass that input validation when constructing new instances of its own class, since you can ensure that it knows what it's doing.
+* With input validation/preprocessing moved to the factory methods, the constructor itself can often be reduced to "set these properties to these arguments", meaning the constructor promotion syntax becomes more useful.
+* Having been hidden away from users, the constructor's signature can be a bit uglier without becoming a pain for them. Heh.
+* Static methods can be lifted and passed around as first class closures, to be called in the normal fashion wherever functions can be called, without the special "new" syntax.
+* The factory method need not return a new instance of that exact class. It could return a pre-existing instance that would do the same job as the new one would (especially useful in the case of immutable "value type" objects by reducing duplication); or a simpler or more specific subclass to do the job with less overhead than a more generic instance of the original class. Returning a subclass means LSP still holds.
+up
+down
+27
+spleen ¶
+18 years ago
+It's always the easy things that get you -
+Being new to OOP, it took me quite a while to figure out that there are TWO underscores in front of the word __construct.
+It is __construct
+Not _construct
+Extremely obvious once you figure it out, but it can be sooo frustrating until you do.
+I spent quite a bit of needless time debugging working code.
+I even thought about it a few times, thinking it looked a little long in the examples, but at the time that just seemed silly(always thinking "oh somebody would have made that clear if it weren't just a regular underscore...")
+All the manuals I looked at, all the tuturials I read, all the examples I browsed through  - not once did anybody mention this!
+(please don't tell me it's explained somewhere on this page and I just missed it,  you'll only add to my pain.)
+I hope this helps somebody else!
+up
+down
+7
+iwwp at outlook dot com ¶
+6 years ago
+To better understand the __destrust method:
+class A {
+protected $id;
+public function __construct($id)
+{
+$this->id = $id;
+echo "construct {$this->id}\n";
+}
+public function __destruct()
+{
+echo "destruct {$this->id}\n";
+}
+}
+$a = new A(1);
+echo "-------------\n";
+$aa = new A(2);
+echo "=============\n";
+The output content:
+construct 1
+-------------
+construct 2
+=============
+destruct 2
+destruct 1
+up
+down
+3
+mmulej at gmail dot com ¶
+4 years ago
+*<Double post> I can't edit my previous note to elaborate on modifiers. Please excuse me.*
+If both parent and child classes have a method with the same name defined, and it is called in parent's constructor, using `parent::__construct()` will call the method in the child.
+<?php
+class A {
+public function __construct() {
+$this->method();
+}
+public function method() {
+echo 'A' . PHP_EOL;
+}
+}
+class B extends A {
+public function __construct() {
+parent::__construct();
+}
+}
+class C extends A {
+public function __construct() {
+parent::__construct();
+}
+public function method() {
+echo 'C' . PHP_EOL;
+}
+}
+$b = new B; // A
+$c = new C; // C
+?>
+In this example both A::method and C::method are public.
+You may change A::method to protected, and C::method to protected or public and it will still work the same.
+If however you set A::method as private, it doesn't matter whether C::method is private, protected or public. Both $b and $c will echo 'A'.
+up
+down
+5
+david at synatree dot com ¶
+18 years ago
+When a script is in the process of die()ing, you can't count on the order in which __destruct() will be called.
+For a script I have been working on, I wanted to do transparent low-level encryption of any outgoing data.  To accomplish this, I used a global singleton class configured like this:
+class EncryptedComms
+{
+private $C;
+private $objs = array();
+private static $_me;
+public static function destroyAfter(&$obj)
+{
+self::getInstance()->objs[] =& $obj;
+/*
+Hopefully by forcing a reference to another object to exist
+inside this class, the referenced object will need to be destroyed
+before garbage collection can occur on this object.  This will force
+this object's destruct method to be fired AFTER the destructors of
+all the objects referenced here.
+*/
+}
+public function __construct($key)
+{
+$this->C = new SimpleCrypt($key);
+ob_start(array($this,'getBuffer'));
+}
+public static function &getInstance($key=NULL)
+{
+if(!self::$_me && $key)
+self::$_me = new EncryptedComms($key);
+else
+return self::$_me;
+}
+public function __destruct()
+{
+ob_end_flush();
+}
+public function getBuffer($str)
+{
+return $this->C->encrypt($str);
+}
+}
+In this example, I tried to register other objects to always be destroyed just before this object.  Like this:
+class A
+{
+public function __construct()
+{
+EncryptedComms::destroyAfter($this);
+}
+}
+One would think that the references to the objects contained in the singleton would be destroyed first, but this is not the case.  In fact, this won't work even if you reverse the paradigm and store a reference to EncryptedComms in every object you'd like to be destroyed before it.
+In short, when a script die()s, there doesn't seem to be any way to predict the order in which the destructors will fire.
+up
+down
+9
+Per Persson ¶
+14 years ago
+As of PHP 5.3.10 destructors are not run on shutdown caused by fatal errors.
+For example:
+<?php
+class Logger
+{
+protected $rows = array();
+public function __destruct()
+{
+$this->save();
+}
+public function log($row)
+{
+$this->rows[] = $row;
+}
+public function save()
+{
+echo '<ul>';
+foreach ($this->rows as $row)
+{
+echo '<li>', $row, '</li>';
+}
+echo '</ul>';
+}
+}
+$logger = new Logger;
+$logger->log('Before');
+$nonset->foo();
+$logger->log('After');
+?>
+Without the $nonset->foo(); line, Before and After will both be printed, but with the line neither will be printed.
+One can however register the destructor or another method as a shutdown function:
+<?php
+class Logger
+{
+protected $rows = array();
+public function __construct()
+{
+register_shutdown_function(array($this, '__destruct'));
+}
+public function __destruct()
+{
+$this->save();
+}
+public function log($row)
+{
+$this->rows[] = $row;
+}
+public function save()
+{
+echo '<ul>';
+foreach ($this->rows as $row)
+{
+echo '<li>', $row, '</li>';
+}
+echo '</ul>';
+}
+}
+$logger = new Logger;
+$logger->log('Before');
+$nonset->foo();
+$logger->log('After');
+?>
+Now Before will be printed, but not After, so you can see that a shutdown occurred after Before.
+up
+down
+6
+prieler at abm dot at ¶
+19 years ago
+i have written a quick example about the order of destructors and shutdown functions in php 5.2.1:
+<?php
+class destruction {
+var $name;
+function destruction($name) {
+$this->name = $name;
+register_shutdown_function(array(&$this, "shutdown"));
+}
+function shutdown() {
+echo 'shutdown: '.$this->name."\n";
+}
+function __destruct() {
+echo 'destruct: '.$this->name."\n";
+}
+}
+$a = new destruction('a: global 1');
+function test() {
+$b = new destruction('b: func 1');
+$c = new destruction('c: func 2');
+}
+test();
+$d = new destruction('d: global 2');
+?>
+this will output:
+shutdown: a: global 1
+shutdown: b: func 1
+shutdown: c: func 2
+shutdown: d: global 2
+destruct: b: func 1
+destruct: c: func 2
+destruct: d: global 2
+destruct: a: global 1
+conclusions:
+destructors are always called on script end.
+destructors are called in order of their "context": first functions, then global objects
+objects in function context are deleted in order as they are set (older objects first).
+objects in global context are deleted in reverse order (older objects last)
+shutdown functions are called before the destructors.
+shutdown functions are called in there "register" order. ;)
+regards, J
+up
+down
+3
+bolshun at mail dot ru ¶
+18 years ago
+Ensuring that instance of some class will be available in destructor of some other class is easy: just keep a reference to that instance in this other class.
+up
+down
+1
+Yousef Ismaeil cliprz[At]gmail[Dot]com ¶
+13 years ago
+<?php
+/**
+* a funny example Mobile class
+*
+* @author Yousef Ismaeil Cliprz[At]gmail[Dot]com
+*/
+class Mobile {
+/**
+* Some device properties
+*
+* @var string
+* @access public
+*/
+public $deviceName,$deviceVersion,$deviceColor;
+/**
+* Set some values for Mobile::properties
+*
+* @param string device name
+* @param string device version
+* @param string device color
+*/
+public function __construct ($name,$version,$color) {
+$this->deviceName = $name;
+$this->deviceVersion = $version;
+$this->deviceColor = $color;
+echo "The ".__CLASS__." class is stratup.<br /><br />";
+}
+/**
+* Some Output
+*
+* @access public
+*/
+public function printOut () {
+echo 'I have a '.$this->deviceName
+.' version '.$this->deviceVersion
+.' my device color is : '.$this->deviceColor;
+}
+/**
+* Umm only for example we will remove Mobile::$deviceName Hum not unset only to check how __destruct working
+*
+* @access public
+*/
+public function __destruct () {
+$this->deviceName = 'Removed';
+echo '<br /><br />Dumpping Mobile::deviceName to make sure its removed, Olay :';
+var_dump($this->deviceName);
+echo "<br />The ".__CLASS__." class is shutdown.";
+}
+}
+// Oh ya instance
+$mob = new Mobile('iPhone','5','Black');
+// print output
+$mob->printOut();
+?>
+The Mobile class is stratup.
+I have a iPhone version 5 my device color is : Black
+Dumpping Mobile::deviceName to make sure its removed, Olay :
+string 'Removed' (length=7)
+The Mobile class is shutdown.
+up
+down
+-3
+Jonathon Hibbard ¶
+16 years ago
+Please be aware of when using __destruct() in which you are unsetting variables...
+Consider the following code:
+<?php
+class my_class {
+public $error_reporting = false;
+function __construct($error_reporting = false) {
+$this->error_reporting = $error_reporting;
+}
+function __destruct() {
+if($this->error_reporting === true) $this->show_report();
+unset($this->error_reporting);
+}
+?>
+The above will result in an error:
+Notice: Undefined property: my_class::$error_reporting in my_class.php on line 10
+It appears as though the variable will be unset BEFORE it actually can execute the if statement.  Removing the unset will fix this.  It's not needed anyways as PHP will release everything anyways, but just in case you run across this, you know why ;)
+up
+down
+-3
+Reza Mahjourian ¶
+20 years ago
+Peter has suggested using static methods to compensate for unavailability of multiple constructors in PHP.  This works fine for most purposes, but if you have a class hierarchy and want to delegate parts of initialization to the parent class, you can no longer use this scheme.  It is because unlike constructors, in a static method you need to do the instantiation yourself.  So if you call the parent static method, you will get an object of parent type which you can't continue to initialize with derived class fields.
+Imagine you have an Employee class and a derived HourlyEmployee class and you want to be able to construct these objects out of some XML input too.
+<?php
+class Employee {
+public function __construct($inName) {
+$this->name = $inName;
+}
+public static function constructFromDom($inDom)
+{
+$name = $inDom->name;
+return new Employee($name);
+}
+private $name;
+}
+class HourlyEmployee extends Employee {
+public function __construct($inName, $inHourlyRate) {
+parent::__construct($inName);
+$this->hourlyRate = $inHourlyRate;
+}
+public static function constructFromDom($inDom)
+{
+// can't call parent::constructFromDom($inDom)
+// need to do all the work here again
+$name = $inDom->name;  // increased coupling
+$hourlyRate = $inDom->hourlyrate;
+return new EmployeeHourly($name, $hourlyRate);
+}
+private $hourlyRate;
+}
+?>
+The only solution is to merge the two constructors in one by adding an optional $inDom parameter to every constructor.
+＋add a note
+Classes and Objects
+Introduction
+The Basics
+Properties
+Property Hooks
+Class Constants
+Autoloading Classes
+Constructors and Destructors
+Visibility
+Object Inheritance
+Scope Resolution Operator (::)
+Static Keyword
+Class Abstraction
+Object Interfaces
+Traits
+Anonymous classes
+Overloading
+Object Iteration
+Magic Methods
+Final Keyword
+Object Cloning
+Comparing Objects
+Late Static Bindings
+Objects and references
+Object Serialization
+Covariance and Contravariance
+Lazy Objects
+OOP Changelog
+PHP is developed and maintained by a global community of contributors.
+The PHP Foundation helps fund this work.
+If PHP is part of your business or projects, consider sponsoring the Foundation.
+Linkedin
+@php@fosstodon.org
+GitHub
+Donate
+SECTION  PHP
+My PHP.net
+Downloads
+Contact
+Other PHP.net sites
+SECTION  Learn
+Documentation
+Get Involved
+Help
+SECTION  The PHP Foundation
+About the Foundation
+Sponsor
+Contact
+SECTION  Legal
+Privacy policy
+Copyright © 2001-2026 The PHP Documentation Group.
+↑ and ↓ to navigate •
+Enter to select •
+Esc to close • / to open
+Press Enter without
+selection to search using Google

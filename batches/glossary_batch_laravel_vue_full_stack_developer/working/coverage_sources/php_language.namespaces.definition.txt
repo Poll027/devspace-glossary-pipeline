@@ -1,0 +1,317 @@
+PHP: Namespaces - Manual
+Downloads
+Documentation
+Get Involved
+Help
+Search docs
+Laracon EU 2027
+Getting Started
+Introduction
+A simple tutorial
+Language Reference
+Basic syntax
+Types
+Variables
+Constants
+Expressions
+Operators
+Control Structures
+Functions
+Classes and Objects
+Namespaces
+Enumerations
+Error Handling
+Fibers
+Generators
+Attributes
+References Explained
+Predefined Variables
+Predefined Exceptions
+Predefined Interfaces and Classes
+Predefined Attributes
+Context options and parameters
+Supported Protocols and Wrappers
+Security
+Introduction
+General considerations
+Installed as CGI binary
+Installed as an Apache module
+Session Security
+Filesystem Security
+Database Security
+Error Reporting
+User Submitted Data
+Hiding PHP
+Keeping Current
+Features
+HTTP authentication with PHP
+Cookies
+Sessions
+Handling file uploads
+Using remote files
+Connection handling
+Persistent Database Connections
+Command line usage
+Garbage Collection
+DTrace Dynamic Tracing
+Function Reference
+Affecting PHP's Behaviour
+Audio Formats Manipulation
+Authentication Services
+Command Line Specific Extensions
+Compression and Archive Extensions
+Cryptography Extensions
+Database Extensions
+Date and Time Related Extensions
+File System Related Extensions
+Human Language and
+Character Encoding Support
+Image Processing and Generation
+Mail Related Extensions
+Mathematical Extensions
+Non-Text MIME Output
+Process Control Extensions
+Other Basic Extensions
+Other Services
+Search Engine Extensions
+Server Specific Extensions
+Session Extensions
+Text Processing
+Variable and Type Related Extensions
+Web Services
+Windows Only Extensions
+XML Manipulation
+GUI Extensions
+Keyboard Shortcuts?
+This help
+j
+Next menu item
+k
+Previous menu item
+g p
+Previous man page
+g n
+Next man page
+G
+Scroll to bottom
+g g
+Scroll to top
+g h
+Goto homepage
+g s
+Goto search
+(current page)
+/
+Focus search box
+Sub-namespaces »
+« Overview
+Preface
+Language Reference
+Namespaces
+Change language:
+English
+German
+Spanish
+French
+Italian
+Japanese
+Brazilian Portuguese
+Russian
+Turkish
+Ukrainian
+Chinese (Simplified)
+Other
+SECTION  Defining namespaces
+(PHP 5 >= 5.3.0, PHP 7, PHP 8)
+Although any valid PHP code can be contained within a namespace, only the following
+types of code are affected by namespaces: classes (including abstract classes, traits and enums), interfaces,
+functions and constants.
+Namespaces are declared using the namespace
+keyword. A file containing a namespace must declare the namespace
+at the top of the file before any other code - with one exception: the
+declare keyword.
+Example #1 Declaring a single namespace
+<?php
+namespace MyProject;
+const CONNECT_OK = 1;
+class Connection { /* ... */ }
+function connect() { /* ... */ }
+Note:
+Fully qualified names (i.e. names starting with a backslash) are not allowed in namespace
+declarations, because such constructs are interpreted as relative namespace expressions.
+The only code construct allowed before a namespace declaration is the
+declare statement, for defining encoding of a source file. In addition,
+no non-PHP code may precede a namespace declaration, including extra whitespace:
+Example #2 Declaring a single namespace
+<html>
+<?php
+namespace MyProject; // fatal error - namespace must be the first statement in the script
+In addition, unlike any other PHP construct, the same namespace may be defined
+in multiple files, allowing splitting up of a namespace's contents across the filesystem.
+SECTION  Found A Problem?
+Learn How To Improve This Page
+•
+Submit a Pull Request
+•
+Report a Bug
+＋add a note
+SECTION  User Contributed Notes 10 notes
+up
+down
+209
+kuzawinski dot marcin at NOSPAM dot gmail dot com ¶
+12 years ago
+If your code looks like this:
+<?php
+namespace NS;
+?>
+...and you still get "Namespace declaration statement has to be the very first statement in the script" Fatal error, then you probably use UTF-8 encoding (which is good) with Byte Order Mark, aka BOM (which is bad). Try to convert your files to "UTF-8 without BOM", and it should be ok.
+up
+down
+148
+danbettles at yahoo dot co dot uk ¶
+17 years ago
+Regarding constants defined with define() inside namespaces...
+define() will define constants exactly as specified.  So, if you want to define a constant in a namespace, you will need to specify the namespace in your call to define(), even if you're calling define() from within a namespace.  The following examples will make it clear.
+The following code will define the constant "MESSAGE" in the global namespace (i.e. "\MESSAGE").
+<?php
+namespace test;
+define('MESSAGE', 'Hello world!');
+?>
+The following code will define two constants in the "test" namespace.
+<?php
+namespace test;
+define('test\HELLO', 'Hello world!');
+define(__NAMESPACE__ . '\GOODBYE', 'Goodbye cruel world!');
+?>
+up
+down
+83
+FatBat ¶
+13 years ago
+Expanding on @danbettles note, it is better to always be explicit about which constant to use.
+<?php
+namespace NS;
+define(__NAMESPACE__ .'\foo','111');
+define('foo','222');
+echo foo;  // 111.
+echo \foo;  // 222.
+echo \NS\foo  // 111.
+echo NS\foo  // fatal error. assumes \NS\NS\foo.
+?>
+up
+down
+68
+huskyr at gmail dot com ¶
+17 years ago
+"A file containing a namespace must declare the namespace at the top of the file before any other code"
+It might be obvious, but this means that you *can* include comments and white spaces before the namespace keyword.
+<?php
+// Lots
+// of
+// interesting
+// comments and white space
+namespace Foo;
+class Bar {
+}
+?>
+up
+down
+10
+anisgazig at gmail dot com ¶
+5 years ago
+namespace statement  is defined at first of the php files. But
+before namespace declaration only three elements allowed.
+1.declare statement
+2.spaces
+3.comments
+up
+down
+48
+jeremeamia at gmail dot com ¶
+17 years ago
+You should not try to create namespaces that use PHP keywords. These will cause parse errors.
+Examples:
+<?php
+namespace Project/Classes/Function; // Causes parse errors
+namespace Project/Abstract/Factory; // Causes parse errors
+?>
+up
+down
+1
+dino at tuxweb dot it ¶
+4 years ago
+Please note that a PHP Namespace declaration cannot start with a number.
+It took some time for me to debug...
+up
+down
+6
+Anonymous ¶
+18 years ago
+@ RS: Also, you can specify how your __autoload() function looks for the files. That way another users namespace classes cannot overwrite yours unless they replace your file specifically.
+up
+down
+1
+anisgazig at gmail dot com ¶
+5 years ago
+Namespace name are case-insensitive.
+namespace App
+and
+namespace app
+are same meaning.
+Besides, Namespace keword are case-insensitive.
+Namespace App
+namespace App
+and
+NAMESPACE App
+are same meaning.
+up
+down
+0
+Baptiste ¶
+18 years ago
+There is nothing wrong with PHP namespaces, except that those 2 instructions give a false impression of package management.
+... while they just correspond to the "with()" instruction of Javascript.
+By contrast, a package is a namespace for its members, but it offers more (like deployment facilities), and a compiler knows exactly what classes are in a package, and where to find them.
+＋add a note
+Namespaces
+Overview
+Namespaces
+Sub-​namespaces
+Defining multiple namespaces in the same file
+Basics
+Namespaces and dynamic language features
+namespace keyword and _​_​NAMESPACE_​_​
+Aliasing and Importing
+Global space
+Fallback to global space
+Name resolution rules
+FAQ
+PHP is developed and maintained by a global community of contributors.
+The PHP Foundation helps fund this work.
+If PHP is part of your business or projects, consider sponsoring the Foundation.
+Linkedin
+@php@fosstodon.org
+GitHub
+Donate
+SECTION  PHP
+My PHP.net
+Downloads
+Contact
+Other PHP.net sites
+SECTION  Learn
+Documentation
+Get Involved
+Help
+SECTION  The PHP Foundation
+About the Foundation
+Sponsor
+Contact
+SECTION  Legal
+Privacy policy
+Copyright © 2001-2026 The PHP Documentation Group.
+↑ and ↓ to navigate •
+Enter to select •
+Esc to close • / to open
+Press Enter without
+selection to search using Google

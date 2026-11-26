@@ -1,0 +1,117 @@
+# Align by the actual input concept order, not an assumed curriculum after row 74.
+old=data
+mapping={75:77,76:78,78:97,79:93,80:76,81:81,83:98,84:80,85:105,86:88,87:99,88:89,89:86,90:95,91:83,93:106,95:102,96:110,97:84,99:92,100:91,102:100,105:87}
+data={i:copy.deepcopy(old[i]) for i in range(75)}
+for previous,current in mapping.items():data[current]=copy.deepcopy(old[previous])
+add(75,'laravel_sanctum#configuring-your-first-party-domains',
+ 'Sanctum classifies first-party SPA requests using the stateful domains configured in config/sanctum.php.',
+ 'Include the SPA host and its port in the stateful configuration when the SPA origin includes that port.',
+ ('laravel_sanctum#spa-authentication','The first-party SPA and API must share the same top-level domain; different subdomains are supported.'),
+ ('laravel_sanctum#sanctum-middleware','Call $middleware->statefulApi() inside bootstrap/app.php’s withMiddleware callback to let first-party SPA requests use Laravel session authentication.'),
+ ('laravel_sanctum#spa-authentication','Send Accept: application/json and ensure the browser request supplies a Referer or Origin header so the SPA request boundary can be classified.'))
+add(79,'vue_router_docs#guide/essentials/history-mode/HTML5-Mode',
+ 'createWebHistory uses normal-looking URLs, but a direct request to a nested client route reaches the host before Vue Router starts.',
+ 'Configure the host to return the SPA index.html for a requested client route that does not match a static file.',
+ 'For the documented nginx setup, try_files $uri $uri/ /index.html preserves existing files before falling back to the SPA entrypoint.',
+ 'Verify a direct nested URL and a reload as well as in-app navigation, since client-side navigation alone does not test the host fallback.',
+ ('vue_router_docs#guide/essentials/history-mode/Caveat','A catch-all host fallback also serves the SPA for unknown routes; configure a client not-found route instead of assuming the host still returns a normal 404 page.'))
+add(82,L('queries','where-clauses'),
+ 'PDO binds query values, not column names, so filter and sort columns must come from trusted choices rather than arbitrary user input.',
+ (L('validation','rule-in'),'Validate a requested filter or sort choice with Rule::in($allowedChoices) so unsupported input is rejected before it is used in query construction.'),
+ (L('validation','working-with-validated-input'),'Use the validated filter and sort inputs instead of copying unvalidated request fields into query structure.'),
+ (L('queries','where-clauses'),'Map an accepted filter option to a trusted column and apply its submitted value with where(column, operator, value).'),
+ (L('queries','ordering'),'Map an accepted sort option to a trusted column and an allowed asc or desc direction before passing it to orderBy.'))
+add(85,L('eloquent-relationships','many-to-many-table-structure'),
+ 'A many-to-many association uses an intermediate pivot table containing a foreign key for each related model, allowing both models to have multiple memberships.',
+ (L('eloquent-relationships','many-to-many-model-structure'),'Define a relationship method returning $this->belongsToMany(Related::class), with pivot-table and key arguments when the conventions do not match.'),
+ (L('eloquent-relationships','attaching-detaching'),'$model->relationship()->attach($id) inserts a pivot membership, while ->detach($id) removes that membership without deleting either related model.'),
+ (L('eloquent-relationships','syncing-associations'),'->sync($ids) makes the pivot membership match the supplied identifier list and removes existing memberships absent from that list.'),
+ (L('eloquent-relationships','syncing-associations'),'Use ->syncWithoutDetaching($ids) when omitted existing memberships should be retained rather than removed.'))
+# Login precedes logout and fixation defense: do not teach those later boundaries here.
+data[88]=data[88][:2]
+data[88].append((L('authentication','authenticating-users'),'Auth::attempt returns true for accepted credentials and false for rejected credentials; use that result to select the login endpoint’s specified success or failure response.'))
+data[88].append((L('responses','json-responses'),'Return the login contract’s JSON body and status with response()->json($body, $status) after checking the authentication result.'))
+add(90,'laravel_sanctum#issuing-api-tokens',
+ 'Add Laravel\\Sanctum\\HasApiTokens to the user model to support Sanctum personal access tokens.',
+ '$user->createToken($name) returns a NewAccessToken object, whose plainTextToken is the newly issued credential sent to the non-SPA client.',
+ 'Sanctum stores a SHA-256 hash of the token; deliver its plaintext value immediately after issuance rather than expecting to retrieve it from the stored hash later.',
+ 'The client sends Authorization: Bearer followed by the token value to authenticate its API requests.',
+ ('laravel_sanctum#revoking-tokens','$user->tokens()->where("id", $tokenId)->delete() revokes a selected token by removing its stored credential; tokens not deleted by that selection remain present.'),
+ ('laravel_sanctum#revoking-tokens','$user->tokens()->delete() revokes every stored token belonging to that user.'))
+# The input's component-test practice is specifically input-and-submit.
+data[91]=[old[100][0],old[101][0],old[101][1],old[101][2],old[100][-1]]
+data[92].append((V('reusability/composables','accepting-reactive-state'),'Clear stale request-error state before starting the next request, then replace it with the new response’s field mapping on a 422 outcome.'))
+# State ownership precedes Pinia mechanics; use only the approved shared-boundary vocabulary.
+data[93]=[
+ (V('scaling-up/state-management','why-do-we-need-state-management'),'When multiple views depend on the same state, independent copies or prop chains can make synchronization difficult; place that shared state at a boundary covering its consumers.'),
+ (V('scaling-up/state-management','simple-state-management-with-reactivity-api'),'Use one shared source of truth for values genuinely needed by multiple components rather than duplicating those values in each view.'),
+ (V('components/props','one-way-data-flow'),'Keep a component-owned edit draft local when other views do not need that unconfirmed value.'),
+ (V('scaling-up/state-management','simple-state-management-with-reactivity-api'),'Separate each component’s local state from the shared values used across component instances; only the cross-view values need the shared store boundary.')]
+add(94,L('eloquent-resources','writing-resources'),
+ 'Define related output explicitly in a resource’s toArray result so the relationship contract chooses which keys and related fields are public.',
+ 'When the contract requires only a related identifier, return that identifier field rather than serializing the whole related model.',
+ (L('eloquent-resources','conditional-relationships'),'Use RelatedResource::collection($this->whenLoaded(relationshipName)) for a related collection that should be included only when the controller has loaded it.'),
+ (L('eloquent-resources','conditional-relationships'),'whenLoaded removes that output key when the relationship is not loaded, so check the contract’s omitted-versus-included requirement.'),
+ (L('eloquent-relationships','eager-loading'),'Load the chosen included relationship through with(relationshipName) at the parent query boundary rather than triggering per-item lazy relationship queries.'))
+add(96,L('authentication','logging-out'),
+ 'Call Auth::logout() to remove the authenticated user information from the session.',
+ 'Invalidate the session with $request->session()->invalidate() so its existing data and session identifier are no longer used.',
+ 'Regenerate the CSRF token with $request->session()->regenerateToken() after logout as recommended by Laravel.',
+ (L('session','deleting-data'),'invalidate flushes the session data and regenerates the session ID, making it stronger than merely clearing a client-side user display.'),
+ (L('http-tests','available-assertions'),'After logout, verify an unauthenticated state with assertGuest() rather than inferring logout from the visible navigation alone.'))
+# Store state is distinct from the later actions concept.
+data[97]=[old[78][0],old[78][1],old[78][2],old[78][4]]
+data[97].append(('pinia_docs#core-concepts/Destructuring-from-a-Store','Destructuring state directly from a store breaks its reactive connection; use storeToRefs(store) when destructuring state or getters into local refs.'))
+data[98].append(('laravel_sanctum#csrf-protection','For a cookie-authenticated mutation, URL-decode the XSRF-TOKEN cookie value and send it as X-XSRF-TOKEN when using fetch, which does not automatically copy that cookie into a CSRF header.'))
+data[99]=old[87][1:]
+data[99].append((L('routing','route-groups'),'Use Route::middleware("auth:sanctum")->group(function () { ... }) to apply the authentication boundary to every API route inside the group.'))
+add(101,L('routing','cors'),
+ 'Laravel’s global HandleCors middleware handles CORS OPTIONS requests from the configured CORS settings.',
+ 'Run php artisan config:publish cors to create config/cors.php for the application’s CORS configuration.',
+ ('laravel_docs#routing/cors -> published config/cors.php/allowed_origins (framework 12.x config/cors.php)','Set allowed_origins to the explicit approved origins and supports_credentials to true for credentialed API access, rather than retaining the wildcard origin default.'),
+ ('laravel_docs#routing/cors -> linked https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS#requests_with_credentials','A credentialed cross-origin response must return a specific Access-Control-Allow-Origin and Access-Control-Allow-Credentials: true; a wildcard origin does not permit browser access to that response.'),
+ ('laravel_docs#routing/cors -> linked https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS#preflighted_requests','Verify the allowed origin’s preflight for the required method and headers, and verify that a disallowed origin does not receive permission to access the response.'))
+add(103,L('authentication','authenticating-users'),
+ 'Regenerate the session after a successful Auth::attempt to prevent session fixation.',
+ 'Call $request->session()->regenerate() inside the successful authentication branch, after credentials have been accepted.',
+ (L('session','regenerating-the-session-id'),'Session ID regeneration changes the session identifier while preserving authenticated session data, unlike invalidate which removes all session data.'),
+ (L('session','regenerating-the-session-id'),'Verify that the successful login uses the regenerated session identifier instead of continuing with the pre-login identifier.'))
+add(104,'pinia_docs#core-concepts/actions/Actions',
+ 'Define actions as methods in an options store’s actions object to encapsulate shared state transitions.',
+ 'An action accesses the store through this, so assign this.property inside it to update consumer-visible shared state.',
+ 'Actions can take arguments and can be asynchronous, awaiting a request before applying its confirmed result to the store.',
+ 'Call store.actionName(input) from a consumer rather than independently reproducing the shared transition in each component.',
+ ('pinia_docs#core-concepts/state/Accessing-the-state','Components reading the same store properties observe the action’s updated shared state.'))
+data[105].append(('vue_router_docs#guide/advanced/navigation-guards/Global-Before-Guards','A redirect location can include query: { redirect: to.fullPath } to preserve the intended destination for the login flow instead of losing the protected route the user requested.'))
+add(107,'laravel_sanctum#spa-authentication',
+ 'Sanctum’s first-party SPA cookie model requires the SPA and API to share the same top-level domain, even if they use different subdomains.',
+ ('laravel_sanctum#configuring-your-first-party-domains','Configure the deployed SPA host in Sanctum’s stateful domains, retaining a port when it is part of the deployed origin.'),
+ ('laravel_sanctum#cors-and-cookies','Set the session domain to cover the deployed SPA and API subdomains and enable credentialed CORS for the approved SPA origin.'),
+ ('laravel_docs#session/configuration -> config/session.php/secure (framework 12.x config/session.php)','For an HTTPS deployment, set SESSION_SECURE_COOKIE=true so the browser only sends the session cookie over an HTTPS connection.'),
+ ('laravel_sanctum#cors-and-cookies','Ensure the production client sends credentials so a correctly scoped session cookie is actually included in requests.'))
+add(108,V('essentials/watchers','basic-example'),
+ 'Await the mutation before applying its successful result to the visible screen so the UI does not claim that an unconfirmed save completed.',
+ (V('essentials/reactivity-fundamentals','ref'),'Assign the confirmed saved record to the screen’s reactive record state so bindings reflect the server result.'),
+ (V('essentials/list','replacing-an-array'),'For a reactive record list, replace the stored array with the new confirmed list or a mapped replacement for the matching saved record.'),
+ (V('reusability/composables','accepting-reactive-state'),'Alternatively re-fetch the relevant data after successful mutation and replace the screen’s result with that confirmed response.'),
+ (V('essentials/watchers','basic-example'),'On a failed mutation, record error feedback instead of applying the success-state update.'))
+add(109,L('http-tests','assert-unauthorized'),
+ 'Use 401 for an unauthenticated request under the specified API failure contract; assertUnauthorized() verifies that status.',
+ (L('authorization','via-the-gate-facade'),'A denied authorization enforced by Gate::authorize returns 403, distinguishing lack of permission from lack of authentication.'),
+ (L('routing','implicit-binding'),'An implicit model binding that cannot find the requested model returns 404, distinguishing a missing resource from an authorization denial.'),
+ (L('responses','json-responses'),'Return the contract’s JSON error body with its selected 401, 403 or 404 status through response()->json($body, $status).'),
+ (L('http-tests','testing-json-apis'),'Verify each applicable failure outcome with its status and required JSON fields rather than treating every failed request as the same error.'))
+add(111,L('deployment','the-health-route'),
+ 'Begin a deployment smoke check with the configured health route to verify that Laravel boots without throwing exceptions.',
+ (L('authentication','authenticating-users'),'Check login with the disposable acceptance identity and use the resulting authenticated session for the protected workflow.'),
+ (L('controllers','actions-handled-by-resource-controllers'),'Exercise create, read, update and delete for disposable records through the deployed resource interface so the smoke check covers each CRUD operation.'),
+ (L('http-tests','testing-json-apis'),'Record the HTTP status and public JSON fields for each endpoint outcome against the acceptance contract, not just the screen’s appearance.'),
+ (L('logging','contextual-information'),'If a step fails, compare its request and response evidence with matching server log context to identify the deployment boundary reached.'),
+ ('vue_router_docs#guide/essentials/history-mode/HTML5-Mode','Include a direct protected-screen URL or reload to verify the deployed SPA host fallback as well as in-app navigation.'))
+add(112,'laravel_sanctum#logging-in',
+ 'A later SPA request may receive 401 or 419 after the session expires, and the frontend should send the user back through login.',
+ (L('authorization','via-the-gate-facade'),'A 403 response means the action is forbidden, not simply that the session needs another login.'),
+ (FETCH+'handling_the_response','Inspect the received HTTP status before parsing it as successful data so the recovery flow can distinguish unauthenticated and forbidden outcomes.'),
+ ('vue_router_docs#guide/advanced/navigation-guards/Global-Before-Guards','Redirect a user needing authentication to login while preserving the requested destination for recovery.'),
+ (V('essentials/conditional','v-if'),'Display a forbidden-state branch for 403 rather than repeatedly restarting login or replacing the protected screen with success data.'))
+misconceptions={k:v for k,v in misconceptions.items() if k<75}

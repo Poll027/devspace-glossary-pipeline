@@ -1,0 +1,498 @@
+Database Testing | Laravel 12.x - The clean stack for Artisans and agents
+Home
+⌘K
+Version MasterVersion 13.xVersion 12.xVersion 11.xVersion 10.xVersion 9.xVersion 8.xVersion 7.xVersion 6.xVersion 5.8Version 5.7Version 5.6Version 5.5Version 5.4Version 5.3Version 5.2Version 5.1Version 5.0Version 4.2vMasterv13.xv12.xv11.xv10.xv9.xv8.xv7.xv6.xv5.8v5.7v5.6v5.5v5.4v5.3v5.2v5.1v5.0v4.2
+Switch to light mode
+Skip to content
+SECTION  Prologue
+Release Notes
+Upgrade Guide
+Contribution Guide
+SECTION  Getting Started
+Installation
+Configuration
+Agentic Development
+Directory Structure
+Frontend
+Starter Kits
+Deployment
+SECTION  Architecture Concepts
+Request Lifecycle
+Service Container
+Service Providers
+Facades
+SECTION  The Basics
+Routing
+Middleware
+CSRF Protection
+Controllers
+Requests
+Responses
+Views
+Blade Templates
+Asset Bundling
+URL Generation
+Session
+Validation
+Error Handling
+Logging
+SECTION  Digging Deeper
+Artisan Console
+Broadcasting
+Cache
+Collections
+Concurrency
+Context
+Contracts
+Events
+File Storage
+Helpers
+HTTP Client
+Localization
+Mail
+Notifications
+Package Development
+Processes
+Queues
+Rate Limiting
+Search
+Strings
+Task Scheduling
+SECTION  Security
+Authentication
+Authorization
+Email Verification
+Encryption
+Hashing
+Password Reset
+SECTION  Database
+Getting Started
+Query Builder
+Pagination
+Migrations
+Seeding
+Redis
+MongoDB
+SECTION  Eloquent ORM
+Getting Started
+Relationships
+Collections
+Mutators / Casts
+API Resources
+Serialization
+Factories
+SECTION  AI
+AI SDK
+MCP
+Boost
+SECTION  Testing
+Getting Started
+HTTP Tests
+Console Tests
+Browser Tests
+Database
+Mocking
+SECTION  Packages
+Cashier (Stripe)
+Cashier (Paddle)
+Dusk
+Envoy
+Fortify
+Folio
+Homestead
+Horizon
+Mix
+Octane
+Passport
+Pennant
+Pint
+Precognition
+Prompts
+Pulse
+Reverb
+Sail
+Sanctum
+Scout
+Socialite
+Telescope
+Valet
+SECTION  API Documentation
+SECTION  Changelog
+WARNING You're browsing the documentation for an old version of Laravel. Consider upgrading your project to Laravel 13.x.
+SECTION  Database Testing
+Introduction
+Resetting the Database After Each Test
+Model Factories
+Running Seeders
+Available Assertions
+SECTION introduction Introduction
+Laravel provides a variety of helpful tools and assertions to make it easier to test your database driven applications. In addition, Laravel model factories and seeders make it painless to create test database records using your application's Eloquent models and relationships. We'll discuss all of these powerful features in the following documentation.
+SECTION resetting-the-database-after-each-test Resetting the Database After Each Test
+Before proceeding much further, let's discuss how to reset your database after each of your tests so that data from a previous test does not interfere with subsequent tests. Laravel's included Illuminate\Foundation\Testing\RefreshDatabase trait will take care of this for you. Simply use the trait on your test class:
+Pest
+PHPUnit
+1<?php
+2
+3use Illuminate\Foundation\Testing\RefreshDatabase;
+4
+5pest()->use(RefreshDatabase::class);
+6
+7test('basic example', function () {
+8    $response = $this->get('/');
+9
+10    // ...
+11});
+<?php
+use Illuminate\Foundation\Testing\RefreshDatabase;
+pest()->use(RefreshDatabase::class);
+test('basic example', function () {
+$response = $this->get('/');
+// ...
+});
+1<?php
+2
+3namespace Tests\Feature;
+4
+5use Illuminate\Foundation\Testing\RefreshDatabase;
+6use Tests\TestCase;
+7
+8class ExampleTest extends TestCase
+9{
+10    use RefreshDatabase;
+11
+12    /**
+13     * A basic functional test example.
+14     */
+15    public function test_basic_example(): void
+16    {
+17        $response = $this->get('/');
+18
+19        // ...
+20    }
+21}
+<?php
+namespace Tests\Feature;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+class ExampleTest extends TestCase
+{
+use RefreshDatabase;
+/**
+* A basic functional test example.
+*/
+public function test_basic_example(): void
+{
+$response = $this->get('/');
+// ...
+}
+}
+The Illuminate\Foundation\Testing\RefreshDatabase trait does not migrate your database if your schema is up to date. Instead, it will only execute the test within a database transaction. Therefore, any records added to the database by test cases that do not use this trait may still exist in the database.
+If you would like to totally reset the database, you may use the Illuminate\Foundation\Testing\DatabaseMigrations or Illuminate\Foundation\Testing\DatabaseTruncation traits instead. However, both of these options are significantly slower than the RefreshDatabase trait.
+SECTION model-factories Model Factories
+When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a set of default attributes for each of your Eloquent models using model factories.
+To learn more about creating and utilizing model factories to create models, please consult the complete model factory documentation. Once you have defined a model factory, you may utilize the factory within your test to create models:
+Pest
+PHPUnit
+1use App\Models\User;
+2
+3test('models can be instantiated', function () {
+4    $user = User::factory()->create();
+5
+6    // ...
+7});
+use App\Models\User;
+test('models can be instantiated', function () {
+$user = User::factory()->create();
+// ...
+});
+1use App\Models\User;
+2
+3public function test_models_can_be_instantiated(): void
+4{
+5    $user = User::factory()->create();
+6
+7    // ...
+8}
+use App\Models\User;
+public function test_models_can_be_instantiated(): void
+{
+$user = User::factory()->create();
+// ...
+}
+SECTION running-seeders Running Seeders
+If you would like to use database seeders to populate your database during a feature test, you may invoke the seed method. By default, the seed method will execute the DatabaseSeeder, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the seed method:
+Pest
+PHPUnit
+1<?php
+2
+3use Database\Seeders\OrderStatusSeeder;
+4use Database\Seeders\TransactionStatusSeeder;
+5use Illuminate\Foundation\Testing\RefreshDatabase;
+6
+7pest()->use(RefreshDatabase::class);
+8
+9test('orders can be created', function () {
+10    // Run the DatabaseSeeder...
+11    $this->seed();
+12
+13    // Run a specific seeder...
+14    $this->seed(OrderStatusSeeder::class);
+15
+16    // ...
+17
+18    // Run an array of specific seeders...
+19    $this->seed([
+20        OrderStatusSeeder::class,
+21        TransactionStatusSeeder::class,
+22        // ...
+23    ]);
+24});
+<?php
+use Database\Seeders\OrderStatusSeeder;
+use Database\Seeders\TransactionStatusSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+pest()->use(RefreshDatabase::class);
+test('orders can be created', function () {
+// Run the DatabaseSeeder...
+$this->seed();
+// Run a specific seeder...
+$this->seed(OrderStatusSeeder::class);
+// ...
+// Run an array of specific seeders...
+$this->seed([
+OrderStatusSeeder::class,
+TransactionStatusSeeder::class,
+// ...
+]);
+});
+1<?php
+2
+3namespace Tests\Feature;
+4
+5use Database\Seeders\OrderStatusSeeder;
+6use Database\Seeders\TransactionStatusSeeder;
+7use Illuminate\Foundation\Testing\RefreshDatabase;
+8use Tests\TestCase;
+9
+10class ExampleTest extends TestCase
+11{
+12    use RefreshDatabase;
+13
+14    /**
+15     * Test creating a new order.
+16     */
+17    public function test_orders_can_be_created(): void
+18    {
+19        // Run the DatabaseSeeder...
+20        $this->seed();
+21
+22        // Run a specific seeder...
+23        $this->seed(OrderStatusSeeder::class);
+24
+25        // ...
+26
+27        // Run an array of specific seeders...
+28        $this->seed([
+29            OrderStatusSeeder::class,
+30            TransactionStatusSeeder::class,
+31            // ...
+32        ]);
+33    }
+34}
+<?php
+namespace Tests\Feature;
+use Database\Seeders\OrderStatusSeeder;
+use Database\Seeders\TransactionStatusSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+class ExampleTest extends TestCase
+{
+use RefreshDatabase;
+/**
+* Test creating a new order.
+*/
+public function test_orders_can_be_created(): void
+{
+// Run the DatabaseSeeder...
+$this->seed();
+// Run a specific seeder...
+$this->seed(OrderStatusSeeder::class);
+// ...
+// Run an array of specific seeders...
+$this->seed([
+OrderStatusSeeder::class,
+TransactionStatusSeeder::class,
+// ...
+]);
+}
+}
+Alternatively, you may instruct Laravel to automatically seed the database before each test that uses the RefreshDatabase trait. You may accomplish this by defining a $seed property on your base test class:
+1<?php
+2
+3namespace Tests;
+4
+5use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+6
+7abstract class TestCase extends BaseTestCase
+8{
+9    /**
+10     * Indicates whether the default seeder should run before each test.
+11     *
+12     * @var bool
+13     */
+14    protected $seed = true;
+15}
+<?php
+namespace Tests;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+abstract class TestCase extends BaseTestCase
+{
+/**
+* Indicates whether the default seeder should run before each test.
+*
+* @var bool
+*/
+protected $seed = true;
+}
+When the $seed property is true, the test will run the Database\Seeders\DatabaseSeeder class before each test that uses the RefreshDatabase trait. However, you may specify a specific seeder that should be executed by defining a $seeder property on your test class:
+1use Database\Seeders\OrderStatusSeeder;
+2
+3/**
+4 * Run a specific seeder before each test.
+5 *
+6 * @var string
+7 */
+8protected $seeder = OrderStatusSeeder::class;
+use Database\Seeders\OrderStatusSeeder;
+/**
+* Run a specific seeder before each test.
+*
+* @var string
+*/
+protected $seeder = OrderStatusSeeder::class;
+SECTION available-assertions Available Assertions
+Laravel provides several database assertions for your Pest or PHPUnit feature tests. We'll discuss each of these assertions below.
+SECTION assert-database-count assertDatabaseCount
+Assert that a table in the database contains the given number of records:
+1$this->assertDatabaseCount('users', 5);
+$this->assertDatabaseCount('users', 5);
+SECTION assert-database-empty assertDatabaseEmpty
+Assert that a table in the database contains no records:
+1$this->assertDatabaseEmpty('users');
+$this->assertDatabaseEmpty('users');
+SECTION assert-database-has assertDatabaseHas
+Assert that a table in the database contains records matching the given key / value query constraints:
+1$this->assertDatabaseHas('users', [
+2    'email' => '[email protected]',
+3]);
+$this->assertDatabaseHas('users', [
+'email' => '[email protected]',
+]);
+SECTION assert-database-missing assertDatabaseMissing
+Assert that a table in the database does not contain records matching the given key / value query constraints:
+1$this->assertDatabaseMissing('users', [
+2    'email' => '[email protected]',
+3]);
+$this->assertDatabaseMissing('users', [
+'email' => '[email protected]',
+]);
+SECTION assert-deleted assertSoftDeleted
+The assertSoftDeleted method may be used to assert a given Eloquent model has been "soft deleted":
+1$this->assertSoftDeleted($user);
+$this->assertSoftDeleted($user);
+SECTION assert-not-deleted assertNotSoftDeleted
+The assertNotSoftDeleted method may be used to assert a given Eloquent model hasn't been "soft deleted":
+1$this->assertNotSoftDeleted($user);
+$this->assertNotSoftDeleted($user);
+SECTION assert-model-exists assertModelExists
+Assert that a given model or collection of models exist in the database:
+1use App\Models\User;
+2
+3$user = User::factory()->create();
+4
+5$this->assertModelExists($user);
+use App\Models\User;
+$user = User::factory()->create();
+$this->assertModelExists($user);
+SECTION assert-model-missing assertModelMissing
+Assert that a given model or collection of models do not exist in the database:
+1use App\Models\User;
+2
+3$user = User::factory()->create();
+4
+5$user->delete();
+6
+7$this->assertModelMissing($user);
+use App\Models\User;
+$user = User::factory()->create();
+$user->delete();
+$this->assertModelMissing($user);
+SECTION expects-database-query-count expectsDatabaseQueryCount
+The expectsDatabaseQueryCount method may be invoked at the beginning of your test to specify the total number of database queries that you expect to be run during the test. If the actual number of executed queries does not exactly match this expectation, the test will fail:
+1$this->expectsDatabaseQueryCount(5);
+2
+3// Test...
+$this->expectsDatabaseQueryCount(5);
+// Test...
+Copy as markdown
+SECTION  On this page
+Introduction
+Resetting the Database After Each Test
+Model Factories
+Running Seeders
+Available Assertions
+Laravel is the most productive way to
+build, deploy, and monitor software.
+First name
+Last name
+Email address
+Stay updated
+By submitting this form, you agree to our terms. You can opt-out anytime.
+© 2026 Laravel
+Legal
+Status
+Products
+Cloud
+Forge
+Nightwatch
+Vapor
+Nova
+Packages
+Cashier
+Dusk
+Horizon
+Octane
+Scout
+Pennant
+Pint
+Sail
+Sanctum
+Socialite
+Telescope
+Pulse
+Reverb
+Echo
+Resources
+Documentation
+Starter Kits
+Release Notes
+Blog
+News
+Community
+Larabelles
+Learn
+Jobs
+Careers
+Trust
+Partners
+Steadfast Collective
+Pixel
+Tighten
+R3
+Redberry
+CACI Limited
+Curotec
+Jump24
+Kirschbaum
+64 Robots
+See All

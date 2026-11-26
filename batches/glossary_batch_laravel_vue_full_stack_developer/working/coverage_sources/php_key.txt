@@ -1,0 +1,343 @@
+PHP: array_key_exists - Manual
+Downloads
+Documentation
+Get Involved
+Help
+Search docs
+Laracon EU 2027
+Getting Started
+Introduction
+A simple tutorial
+Language Reference
+Basic syntax
+Types
+Variables
+Constants
+Expressions
+Operators
+Control Structures
+Functions
+Classes and Objects
+Namespaces
+Enumerations
+Error Handling
+Fibers
+Generators
+Attributes
+References Explained
+Predefined Variables
+Predefined Exceptions
+Predefined Interfaces and Classes
+Predefined Attributes
+Context options and parameters
+Supported Protocols and Wrappers
+Security
+Introduction
+General considerations
+Installed as CGI binary
+Installed as an Apache module
+Session Security
+Filesystem Security
+Database Security
+Error Reporting
+User Submitted Data
+Hiding PHP
+Keeping Current
+Features
+HTTP authentication with PHP
+Cookies
+Sessions
+Handling file uploads
+Using remote files
+Connection handling
+Persistent Database Connections
+Command line usage
+Garbage Collection
+DTrace Dynamic Tracing
+Function Reference
+Affecting PHP's Behaviour
+Audio Formats Manipulation
+Authentication Services
+Command Line Specific Extensions
+Compression and Archive Extensions
+Cryptography Extensions
+Database Extensions
+Date and Time Related Extensions
+File System Related Extensions
+Human Language and
+Character Encoding Support
+Image Processing and Generation
+Mail Related Extensions
+Mathematical Extensions
+Non-Text MIME Output
+Process Control Extensions
+Other Basic Extensions
+Other Services
+Search Engine Extensions
+Server Specific Extensions
+Session Extensions
+Text Processing
+Variable and Type Related Extensions
+Web Services
+Windows Only Extensions
+XML Manipulation
+GUI Extensions
+Keyboard Shortcuts?
+This help
+j
+Next menu item
+k
+Previous menu item
+g p
+Previous man page
+g n
+Next man page
+G
+Scroll to bottom
+g g
+Scroll to top
+g h
+Goto homepage
+g s
+Goto search
+(current page)
+/
+Focus search box
+array_key_first »
+« array_is_list
+Preface
+Function Reference
+Variable and Type Related Extensions
+Arrays
+Array Functions
+Change language:
+English
+German
+Spanish
+French
+Italian
+Japanese
+Brazilian Portuguese
+Russian
+Turkish
+Ukrainian
+Chinese (Simplified)
+Other
+SECTION  array_key_exists
+(PHP 4 >= 4.0.7, PHP 5, PHP 7, PHP 8)
+array_key_exists — Checks if the given key or index exists in the array
+SECTION  Description
+function array_key_exists(string|int|float|bool|resource|null $key, array $array): bool
+array_key_exists() returns true if the
+given key is set in the array.
+key can be any value possible
+for an array index.
+SECTION  Parameters
+key
+Value to check.
+array
+An array with keys to check.
+SECTION  Return Values
+Returns true on success or false on failure.
+Note:
+array_key_exists() will search for the keys in the first dimension only.
+Nested keys in multidimensional arrays will not be found.
+SECTION  Changelog
+Version
+Description
+8.5.0
+Using null in the key parameter is deprecated, use an empty string instead.
+8.0.0
+The key parameter now accepts
+bool, float, int,
+null, resource, and
+string as arguments.
+8.0.0
+Passing an object to the array parameter is no longer supported.
+7.4.0
+Passing an object to the array parameter has been deprecated. Use property_exists() instead.
+SECTION  Examples
+Example #1 array_key_exists() example
+<?php
+$searchArray = ['first' => 1, 'second' => 4];
+var_dump(array_key_exists('first', $searchArray));
+?>
+The above example will output:
+bool(true)
+Example #2 array_key_exists() vs isset()
+isset() does not return true for array keys
+that correspond to a null value, while
+array_key_exists() does.
+<?php
+$searchArray = ['first' => null, 'second' => 4];
+var_dump(isset($searchArray['first']));
+var_dump(array_key_exists('first', $searchArray));
+?>
+The above example will output:
+bool(false)
+bool(true)
+SECTION  See Also
+isset() - Determine if a variable is declared and is different than null
+array_keys() - Return all the keys or a subset of the keys of an array
+in_array() - Checks if a value exists in an array
+property_exists() - Checks if the object or class has a property
+SECTION  Found A Problem?
+Learn How To Improve This Page
+•
+Submit a Pull Request
+•
+Report a Bug
+＋add a note
+SECTION  User Contributed Notes 2 notes
+up
+down
+12
+Julian ¶
+3 years ago
+When you want to check multiple array keys:
+<?php
+$array = [];
+$array['a'] = '';
+$array['b'] = '';
+$array['c'] = '';
+$array['d'] = '';
+$array['e'] = '';
+// all given keys a,b,c exists in the supplied array
+var_dump(array_keys_exists(['a','b','c'], $array)); // bool(true)
+function array_keys_exists(array $keys, array $array): bool
+{
+$diff = array_diff_key(array_flip($keys), $array);
+return count($diff) === 0;
+}
+up
+down
+11
+Rumour ¶
+3 years ago
+In PHP7+ to find if a value is set in a multidimensional array with a fixed number of dimensions, simply use the Null Coalescing Operator: ??
+So for a three dimensional array where you are not sure about any of the keys actually existing
+<?php
+// instead of:
+$exists = array_key_exists($key1, $arr) && array_key_exists($key2, $arr[$key1]) && array_key_exists($key3, $arr[$key1][$key2]) ;
+// use:
+$exists =  array_key_exists($key3, $arr[$key1][$key2]??[]) ;
+?>
+＋add a note
+Array Functions
+array
+array_​all
+array_​any
+array_​change_​key_​case
+array_​chunk
+array_​column
+array_​combine
+array_​count_​values
+array_​diff
+array_​diff_​assoc
+array_​diff_​key
+array_​diff_​uassoc
+array_​diff_​ukey
+array_​fill
+array_​fill_​keys
+array_​filter
+array_​find
+array_​find_​key
+array_​first
+array_​flip
+array_​intersect
+array_​intersect_​assoc
+array_​intersect_​key
+array_​intersect_​uassoc
+array_​intersect_​ukey
+array_​is_​list
+array_​key_​exists
+array_​key_​first
+array_​key_​last
+array_​keys
+array_​last
+array_​map
+array_​merge
+array_​merge_​recursive
+array_​multisort
+array_​pad
+array_​pop
+array_​product
+array_​push
+array_​rand
+array_​reduce
+array_​replace
+array_​replace_​recursive
+array_​reverse
+array_​search
+array_​shift
+array_​slice
+array_​splice
+array_​sum
+array_​udiff
+array_​udiff_​assoc
+array_​udiff_​uassoc
+array_​uintersect
+array_​uintersect_​assoc
+array_​uintersect_​uassoc
+array_​unique
+array_​unshift
+array_​values
+array_​walk
+array_​walk_​recursive
+arsort
+asort
+compact
+count
+current
+end
+extract
+in_​array
+key
+key_​exists
+krsort
+ksort
+list
+natcasesort
+natsort
+next
+pos
+prev
+range
+reset
+rsort
+shuffle
+sizeof
+sort
+uasort
+uksort
+usort
+Deprecated
+each
+PHP is developed and maintained by a global community of contributors.
+The PHP Foundation helps fund this work.
+If PHP is part of your business or projects, consider sponsoring the Foundation.
+Linkedin
+@php@fosstodon.org
+GitHub
+Donate
+SECTION  PHP
+My PHP.net
+Downloads
+Contact
+Other PHP.net sites
+SECTION  Learn
+Documentation
+Get Involved
+Help
+SECTION  The PHP Foundation
+About the Foundation
+Sponsor
+Contact
+SECTION  Legal
+Privacy policy
+Copyright © 2001-2026 The PHP Documentation Group.
+↑ and ↓ to navigate •
+Enter to select •
+Esc to close • / to open
+Press Enter without
+selection to search using Google

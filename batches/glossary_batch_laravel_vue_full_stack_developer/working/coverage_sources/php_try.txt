@@ -1,0 +1,318 @@
+PHP: try...catch - Manual
+Downloads
+Documentation
+Get Involved
+Help
+Search docs
+Laracon EU 2027
+Getting Started
+Introduction
+A simple tutorial
+Language Reference
+Basic syntax
+Types
+Variables
+Constants
+Expressions
+Operators
+Control Structures
+Functions
+Classes and Objects
+Namespaces
+Enumerations
+Error Handling
+Fibers
+Generators
+Attributes
+References Explained
+Predefined Variables
+Predefined Exceptions
+Predefined Interfaces and Classes
+Predefined Attributes
+Context options and parameters
+Supported Protocols and Wrappers
+Security
+Introduction
+General considerations
+Installed as CGI binary
+Installed as an Apache module
+Session Security
+Filesystem Security
+Database Security
+Error Reporting
+User Submitted Data
+Hiding PHP
+Keeping Current
+Features
+HTTP authentication with PHP
+Cookies
+Sessions
+Handling file uploads
+Using remote files
+Connection handling
+Persistent Database Connections
+Command line usage
+Garbage Collection
+DTrace Dynamic Tracing
+Function Reference
+Affecting PHP's Behaviour
+Audio Formats Manipulation
+Authentication Services
+Command Line Specific Extensions
+Compression and Archive Extensions
+Cryptography Extensions
+Database Extensions
+Date and Time Related Extensions
+File System Related Extensions
+Human Language and
+Character Encoding Support
+Image Processing and Generation
+Mail Related Extensions
+Mathematical Extensions
+Non-Text MIME Output
+Process Control Extensions
+Other Basic Extensions
+Other Services
+Search Engine Extensions
+Server Specific Extensions
+Session Extensions
+Text Processing
+Variable and Type Related Extensions
+Web Services
+Windows Only Extensions
+XML Manipulation
+GUI Extensions
+Keyboard Shortcuts?
+This help
+j
+Next menu item
+k
+Previous menu item
+g p
+Previous man page
+g n
+Next man page
+G
+Scroll to bottom
+g g
+Scroll to top
+g h
+Goto homepage
+g s
+Goto search
+(current page)
+/
+Focus search box
+finally »
+« throw
+Preface
+Language Reference
+Control Structures
+Change language:
+English
+German
+Spanish
+French
+Italian
+Japanese
+Brazilian Portuguese
+Russian
+Turkish
+Ukrainian
+Chinese (Simplified)
+Other
+SECTION  try...catch
+SECTION  try
+(PHP 5, PHP 7, PHP 8)
+A try block delimits a segment of code which might throw
+a Throwable error that needs handling.
+A try block must have at least one corresponding
+catch or finally block.
+When a Throwable error is thrown in a try block,
+PHP will attempt to find the first matching catch block to handle the
+error. If none can be found, the call stack is unwound until a matching
+catch block is found or the global scope is reached.
+An uncaught object is then passed to the exception handler set with
+set_exception_handler(), if one is set; otherwise,
+the script terminates with a fatal error.
+SECTION  catch
+(PHP 5, PHP 7, PHP 8)
+A catch block defines how to respond to a thrown Throwable error.
+It specifies one or more subclasses of Throwable
+(most commonly Exception) it can handle, and
+optionally a variable to which the exception is assigned.
+The first catch block
+that matches the class of the thrown Throwable
+object will handle the error.
+Normal execution resumes after the catch block without entering any other matching catch blocks.
+Note:
+It is not recommended to catch Error
+objects, as they signal a programming error.
+Example #1 Catching an Exception
+<?php
+try {
+throw new Exception('Error');
+} catch (Exception $e) {
+echo 'Caught exception: ', $e->getMessage(), "\n";
+}
+// Continue execution
+echo "Hello World\n";
+The above example will output:
+Caught exception: Error
+Hello World
+As of PHP 7.1.0, a catch block may specify a union of
+Throwable subclasses that the block should handle
+using the pipe (|) character. This is useful when
+different exceptions from different class hierarchies are handled in the same way.
+Example #2 Catching a union of classes to handle
+<?php
+class MyException extends Exception { }
+class MyOtherException extends Exception { }
+class Test {
+public function testing() {
+try {
+throw new MyException();
+} catch (MyException | MyOtherException $e) {
+var_dump(get_class($e));
+}
+}
+}
+$foo = new Test;
+$foo->testing();
+The above example will output:
+string(11) "MyException"
+Multiple catch blocks can be used to handle different classes of
+Throwable errors in different ways.
+Example #3 Multiple catch blocks
+<?php
+try {
+do_something_io_related();
+} catch (FileNotFoundException $e) {
+// Only catch FileNotFoundException and do something in this case
+} catch (MissingPermissionException $e) {
+// Only catch MissingPermissionException and do something different in this case
+}
+Throwables can be thrown (or re-thrown) within a catch block.
+Example #4 Nested Exception
+<?php
+class MyException extends Exception { }
+class Test {
+public function testing() {
+try {
+try {
+throw new MyException('foo!');
+} catch (MyException $e) {
+// rethrow it
+throw $e;
+}
+} catch (Exception $e) {
+var_dump($e->getMessage());
+}
+}
+}
+$foo = new Test;
+$foo->testing();
+The above example will output:
+string(4) "foo!"
+Caution
+An object thrown inside a catch block will not
+be caught by an adjacent catch block.
+Example #5 Sequential catch blocks
+<?php
+class A extends Exception {}
+class B extends Exception {}
+try {
+throw new A;
+} catch (A $e) {
+throw new B;
+} catch (B) {
+echo 'Hello';
+}
+The above example will output
+something similar to:
+Fatal error: Uncaught B in /in/K8Tl9:9
+Stack trace:
+#0 {main}
+thrown in /in/K8Tl9 on line 9
+As of PHP 8.0.0, the variable name for a caught
+Throwable is optional.
+If not specified, the catch block will still execute but will not
+have access to the thrown object.
+Example #6 Omitting the caught variable
+Only permitted as of PHP 8.0.0.
+<?php
+class SpecificException extends Exception {}
+function test() {
+throw new SpecificException('Oopsie');
+}
+try {
+test();
+} catch (SpecificException) {
+print "A SpecificException was thrown, but we don't care about the details.";
+}
+The above example will output:
+A SpecificException was thrown, but we don't care about the details.
+See the error handling
+section for the Throwable hierarchy and
+how to define custom exceptions.
+SECTION  Found A Problem?
+Learn How To Improve This Page
+•
+Submit a Pull Request
+•
+Report a Bug
+＋add a note
+SECTION  User Contributed Notes
+There are no user contributed notes for this page.
+Control Structures
+Introduction
+if
+else
+elseif/else if
+Alternative syntax for control structures
+while
+do-​while
+for
+foreach
+break
+continue
+switch
+match
+declare
+return
+require
+include
+require_​once
+include_​once
+goto
+throw
+try...catch
+finally
+PHP is developed and maintained by a global community of contributors.
+The PHP Foundation helps fund this work.
+If PHP is part of your business or projects, consider sponsoring the Foundation.
+Linkedin
+@php@fosstodon.org
+GitHub
+Donate
+SECTION  PHP
+My PHP.net
+Downloads
+Contact
+Other PHP.net sites
+SECTION  Learn
+Documentation
+Get Involved
+Help
+SECTION  The PHP Foundation
+About the Foundation
+Sponsor
+Contact
+SECTION  Legal
+Privacy policy
+Copyright © 2001-2026 The PHP Documentation Group.
+↑ and ↓ to navigate •
+Enter to select •
+Esc to close • / to open
+Press Enter without
+selection to search using Google

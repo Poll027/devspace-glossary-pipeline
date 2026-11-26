@@ -1,0 +1,726 @@
+PHP: var_dump - Manual
+Downloads
+Documentation
+Get Involved
+Help
+Search docs
+Laracon EU 2027
+Getting Started
+Introduction
+A simple tutorial
+Language Reference
+Basic syntax
+Types
+Variables
+Constants
+Expressions
+Operators
+Control Structures
+Functions
+Classes and Objects
+Namespaces
+Enumerations
+Error Handling
+Fibers
+Generators
+Attributes
+References Explained
+Predefined Variables
+Predefined Exceptions
+Predefined Interfaces and Classes
+Predefined Attributes
+Context options and parameters
+Supported Protocols and Wrappers
+Security
+Introduction
+General considerations
+Installed as CGI binary
+Installed as an Apache module
+Session Security
+Filesystem Security
+Database Security
+Error Reporting
+User Submitted Data
+Hiding PHP
+Keeping Current
+Features
+HTTP authentication with PHP
+Cookies
+Sessions
+Handling file uploads
+Using remote files
+Connection handling
+Persistent Database Connections
+Command line usage
+Garbage Collection
+DTrace Dynamic Tracing
+Function Reference
+Affecting PHP's Behaviour
+Audio Formats Manipulation
+Authentication Services
+Command Line Specific Extensions
+Compression and Archive Extensions
+Cryptography Extensions
+Database Extensions
+Date and Time Related Extensions
+File System Related Extensions
+Human Language and
+Character Encoding Support
+Image Processing and Generation
+Mail Related Extensions
+Mathematical Extensions
+Non-Text MIME Output
+Process Control Extensions
+Other Basic Extensions
+Other Services
+Search Engine Extensions
+Server Specific Extensions
+Session Extensions
+Text Processing
+Variable and Type Related Extensions
+Web Services
+Windows Only Extensions
+XML Manipulation
+GUI Extensions
+Keyboard Shortcuts?
+This help
+j
+Next menu item
+k
+Previous menu item
+g p
+Previous man page
+g n
+Next man page
+G
+Scroll to bottom
+g g
+Scroll to top
+g h
+Goto homepage
+g s
+Goto search
+(current page)
+/
+Focus search box
+var_export »
+« unset
+Preface
+Function Reference
+Variable and Type Related Extensions
+Variable handling
+Variable handling Functions
+Change language:
+English
+German
+Spanish
+French
+Italian
+Japanese
+Brazilian Portuguese
+Russian
+Turkish
+Ukrainian
+Chinese (Simplified)
+Other
+SECTION  var_dump
+(PHP 4, PHP 5, PHP 7, PHP 8)
+var_dump — Dumps information about a variable
+SECTION  Description
+function var_dump(mixed $value, mixed ...$values): void
+This function displays structured information about one or more
+expressions that includes its type and value. Arrays and objects are
+explored recursively with values indented to show structure.
+All public, private and protected properties of objects will be returned in
+the output unless the object implements a
+__debugInfo() method.
+Tip
+As with anything that outputs
+its result directly to the browser, the output-control functions can be used to capture
+the output of this function, and save it in a
+string (for example).
+SECTION  Parameters
+value
+The expression to dump.
+values
+Further expressions to dump.
+SECTION  Return Values
+No value is returned.
+SECTION  Examples
+Example #1 var_dump() example
+<?php
+$a = array(1, 2, array("a", "b", "c"));
+var_dump($a);
+?>
+The above example will output:
+array(3) {
+[0]=>
+int(1)
+[1]=>
+int(2)
+[2]=>
+array(3) {
+[0]=>
+string(1) "a"
+[1]=>
+string(1) "b"
+[2]=>
+string(1) "c"
+}
+}
+<?php
+$b = 3.1;
+$c = true;
+var_dump($b, $c);
+?>
+The above example will output:
+float(3.1)
+bool(true)
+SECTION  See Also
+print_r() - Prints human-readable information about a variable
+debug_zval_dump() - Dumps a string representation of an internal zval structure to output
+var_export() - Outputs or returns a parsable string representation of a variable
+__debugInfo()
+SECTION  Found A Problem?
+Learn How To Improve This Page
+•
+Submit a Pull Request
+•
+Report a Bug
+＋add a note
+SECTION  User Contributed Notes 14 notes
+up
+down
+164
+rich dot schu at gmail dot com ¶
+18 years ago
+Keep in mind if you have xdebug installed it will limit the var_dump() output of array elements and object properties to 3 levels deep.
+To change the default, edit your xdebug.ini file and add the folllowing line:
+xdebug.var_display_max_depth=n
+More information here:
+http://www.xdebug.org/docs/display
+up
+down
+139
+edwardzyang at thewritingpot dot com ¶
+21 years ago
+If you're like me and uses var_dump whenever you're debugging, you might find these two "wrapper" functions helpful.
+This one automatically adds the PRE tags around the var_dump output so you get nice formatted arrays.
+<?php
+function var_dump_pre($mixed = null) {
+echo '<pre>';
+var_dump($mixed);
+echo '</pre>';
+return null;
+}
+?>
+This one returns the value of var_dump instead of outputting it.
+<?php
+function var_dump_ret($mixed = null) {
+ob_start();
+var_dump($mixed);
+$content = ob_get_contents();
+ob_end_clean();
+return $content;
+}
+?>
+Fairly simple functions, but they're infinitely helpful (I use var_dump_pre() almost exclusively now).
+up
+down
+41
+b dot bergloev at gmail dot com ¶
+12 years ago
+I post a new var_dump function with colors and collapse features. It can also adapt to terminal output if you execute it from there. No need to wrap it in a pre tag to get it to work in browsers.
+<?php
+function dump_debug($input, $collapse=false) {
+$recursive = function($data, $level=0) use (&$recursive, $collapse) {
+global $argv;
+$isTerminal = isset($argv);
+if (!$isTerminal && $level == 0 && !defined("DUMP_DEBUG_SCRIPT")) {
+define("DUMP_DEBUG_SCRIPT", true);
+echo '<script language="Javascript">function toggleDisplay(id) {';
+echo 'var state = document.getElementById("container"+id).style.display;';
+echo 'document.getElementById("container"+id).style.display = state == "inline" ? "none" : "inline";';
+echo 'document.getElementById("plus"+id).style.display = state == "inline" ? "inline" : "none";';
+echo '}</script>'."\n";
+}
+$type = !is_string($data) && is_callable($data) ? "Callable" : ucfirst(gettype($data));
+$type_data = null;
+$type_color = null;
+$type_length = null;
+switch ($type) {
+case "String":
+$type_color = "green";
+$type_length = strlen($data);
+$type_data = "\"" . htmlentities($data) . "\""; break;
+case "Double":
+case "Float":
+$type = "Float";
+$type_color = "#0099c5";
+$type_length = strlen($data);
+$type_data = htmlentities($data); break;
+case "Integer":
+$type_color = "red";
+$type_length = strlen($data);
+$type_data = htmlentities($data); break;
+case "Boolean":
+$type_color = "#92008d";
+$type_length = strlen($data);
+$type_data = $data ? "TRUE" : "FALSE"; break;
+case "NULL":
+$type_length = 0; break;
+case "Array":
+$type_length = count($data);
+}
+if (in_array($type, array("Object", "Array"))) {
+$notEmpty = false;
+foreach($data as $key => $value) {
+if (!$notEmpty) {
+$notEmpty = true;
+if ($isTerminal) {
+echo $type . ($type_length !== null ? "(" . $type_length . ")" : "")."\n";
+} else {
+$id = substr(md5(rand().":".$key.":".$level), 0, 8);
+echo "<a href=\"javascript:toggleDisplay('". $id ."');\" style=\"text-decoration:none\">";
+echo "<span style='color:#666666'>" . $type . ($type_length !== null ? "(" . $type_length . ")" : "") . "</span>";
+echo "</a>";
+echo "<span id=\"plus". $id ."\" style=\"display: " . ($collapse ? "inline" : "none") . ";\">&nbsp;&#10549;</span>";
+echo "<div id=\"container". $id ."\" style=\"display: " . ($collapse ? "" : "inline") . ";\">";
+echo "<br />";
+}
+for ($i=0; $i <= $level; $i++) {
+echo $isTerminal ? "|    " : "<span style='color:black'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+}
+echo $isTerminal ? "\n" : "<br />";
+}
+for ($i=0; $i <= $level; $i++) {
+echo $isTerminal ? "|    " : "<span style='color:black'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+}
+echo $isTerminal ? "[" . $key . "] => " : "<span style='color:black'>[" . $key . "]&nbsp;=>&nbsp;</span>";
+call_user_func($recursive, $value, $level+1);
+}
+if ($notEmpty) {
+for ($i=0; $i <= $level; $i++) {
+echo $isTerminal ? "|    " : "<span style='color:black'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+}
+if (!$isTerminal) {
+echo "</div>";
+}
+} else {
+echo $isTerminal ?
+$type . ($type_length !== null ? "(" . $type_length . ")" : "") . "  " :
+"<span style='color:#666666'>" . $type . ($type_length !== null ? "(" . $type_length . ")" : "") . "</span>&nbsp;&nbsp;";
+}
+} else {
+echo $isTerminal ?
+$type . ($type_length !== null ? "(" . $type_length . ")" : "") . "  " :
+"<span style='color:#666666'>" . $type . ($type_length !== null ? "(" . $type_length . ")" : "") . "</span>&nbsp;&nbsp;";
+if ($type_data != null) {
+echo $isTerminal ? $type_data : "<span style='color:" . $type_color . "'>" . $type_data . "</span>";
+}
+}
+echo $isTerminal ? "\n" : "<br />";
+};
+call_user_func($recursive, $input);
+}
+?>
+up
+down
+6
+stlawson *AT* joyfulearthtech *DOT* com ¶
+15 years ago
+<?php
+/**
+* Better GI than print_r or var_dump -- but, unlike var_dump, you can only dump one variable.
+* Added htmlentities on the var content before echo, so you see what is really there, and not the mark-up.
+*
+* Also, now the output is encased within a div block that sets the background color, font style, and left-justifies it
+* so it is not at the mercy of ambient styles.
+*
+* Inspired from:     PHP.net Contributions
+* Stolen from:       [highstrike at gmail dot com]
+* Modified by:       stlawson *AT* JoyfulEarthTech *DOT* com
+*
+* @param mixed $var  -- variable to dump
+* @param string $var_name  -- name of variable (optional) -- displayed in printout making it easier to sort out what variable is what in a complex output
+* @param string $indent -- used by internal recursive call (no known external value)
+* @param unknown_type $reference -- used by internal recursive call (no known external value)
+*/
+function do_dump(&$var, $var_name = NULL, $indent = NULL, $reference = NULL)
+{
+$do_dump_indent = "<span style='color:#666666;'>|</span> &nbsp;&nbsp; ";
+$reference = $reference.$var_name;
+$keyvar = 'the_do_dump_recursion_protection_scheme'; $keyname = 'referenced_object_name';
+// So this is always visible and always left justified and readable
+echo "<div style='text-align:left; background-color:white; font: 100% monospace; color:black;'>";
+if (is_array($var) && isset($var[$keyvar]))
+{
+$real_var = &$var[$keyvar];
+$real_name = &$var[$keyname];
+$type = ucfirst(gettype($real_var));
+echo "$indent$var_name <span style='color:#666666'>$type</span> = <span style='color:#e87800;'>&amp;$real_name</span><br>";
+}
+else
+{
+$var = array($keyvar => $var, $keyname => $reference);
+$avar = &$var[$keyvar];
+$type = ucfirst(gettype($avar));
+if($type == "String") $type_color = "<span style='color:green'>";
+elseif($type == "Integer") $type_color = "<span style='color:red'>";
+elseif($type == "Double"){ $type_color = "<span style='color:#0099c5'>"; $type = "Float"; }
+elseif($type == "Boolean") $type_color = "<span style='color:#92008d'>";
+elseif($type == "NULL") $type_color = "<span style='color:black'>";
+if(is_array($avar))
+{
+$count = count($avar);
+echo "$indent" . ($var_name ? "$var_name => ":"") . "<span style='color:#666666'>$type ($count)</span><br>$indent(<br>";
+$keys = array_keys($avar);
+foreach($keys as $name)
+{
+$value = &$avar[$name];
+do_dump($value, "['$name']", $indent.$do_dump_indent, $reference);
+}
+echo "$indent)<br>";
+}
+elseif(is_object($avar))
+{
+echo "$indent$var_name <span style='color:#666666'>$type</span><br>$indent(<br>";
+foreach($avar as $name=>$value) do_dump($value, "$name", $indent.$do_dump_indent, $reference);
+echo "$indent)<br>";
+}
+elseif(is_int($avar)) echo "$indent$var_name = <span style='color:#666666'>$type(".strlen($avar).")</span> $type_color".htmlentities($avar)."</span><br>";
+elseif(is_string($avar)) echo "$indent$var_name = <span style='color:#666666'>$type(".strlen($avar).")</span> $type_color\"".htmlentities($avar)."\"</span><br>";
+elseif(is_float($avar)) echo "$indent$var_name = <span style='color:#666666'>$type(".strlen($avar).")</span> $type_color".htmlentities($avar)."</span><br>";
+elseif(is_bool($avar)) echo "$indent$var_name = <span style='color:#666666'>$type(".strlen($avar).")</span> $type_color".($avar == 1 ? "TRUE":"FALSE")."</span><br>";
+elseif(is_null($avar)) echo "$indent$var_name = <span style='color:#666666'>$type(".strlen($avar).")</span> {$type_color}NULL</span><br>";
+else echo "$indent$var_name = <span style='color:#666666'>$type(".strlen($avar).")</span> ".htmlentities($avar)."<br>";
+$var = $var[$keyvar];
+}
+echo "</div>";
+}
+?>
+up
+down
+10
+anon ¶
+21 years ago
+var_dump(get_defined_vars());
+will dump all defined variables to the browser.
+up
+down
+4
+highstrike at gmail dot com ¶
+18 years ago
+made 2 nifty functions based of what some people contributed here. Hope you find them usefull
+usage ... call for the dump function. EG: dump($array, "Array dump");
+<?php
+////////////////////////////////////////////////////////
+// Function:         dump
+// Inspired from:     PHP.net Contributions
+// Description: Helps with php debugging
+function dump(&$var, $info = FALSE)
+{
+$scope = false;
+$prefix = 'unique';
+$suffix = 'value';
+if($scope) $vals = $scope;
+else $vals = $GLOBALS;
+$old = $var;
+$var = $new = $prefix.rand().$suffix; $vname = FALSE;
+foreach($vals as $key => $val) if($val === $new) $vname = $key;
+$var = $old;
+echo "<pre style='margin: 0px 0px 10px 0px; display: block; background: white; color: black; font-family: Verdana; border: 1px solid #cccccc; padding: 5px; font-size: 10px; line-height: 13px;'>";
+if($info != FALSE) echo "<b style='color: red;'>$info:</b><br>";
+do_dump($var, '$'.$vname);
+echo "</pre>";
+}
+////////////////////////////////////////////////////////
+// Function:         do_dump
+// Inspired from:     PHP.net Contributions
+// Description: Better GI than print_r or var_dump
+function do_dump(&$var, $var_name = NULL, $indent = NULL, $reference = NULL)
+{
+$do_dump_indent = "<span style='color:#eeeeee;'>|</span> &nbsp;&nbsp; ";
+$reference = $reference.$var_name;
+$keyvar = 'the_do_dump_recursion_protection_scheme'; $keyname = 'referenced_object_name';
+if (is_array($var) && isset($var[$keyvar]))
+{
+$real_var = &$var[$keyvar];
+$real_name = &$var[$keyname];
+$type = ucfirst(gettype($real_var));
+echo "$indent$var_name <span style='color:#a2a2a2'>$type</span> = <span style='color:#e87800;'>&amp;$real_name</span><br>";
+}
+else
+{
+$var = array($keyvar => $var, $keyname => $reference);
+$avar = &$var[$keyvar];
+$type = ucfirst(gettype($avar));
+if($type == "String") $type_color = "<span style='color:green'>";
+elseif($type == "Integer") $type_color = "<span style='color:red'>";
+elseif($type == "Double"){ $type_color = "<span style='color:#0099c5'>"; $type = "Float"; }
+elseif($type == "Boolean") $type_color = "<span style='color:#92008d'>";
+elseif($type == "NULL") $type_color = "<span style='color:black'>";
+if(is_array($avar))
+{
+$count = count($avar);
+echo "$indent" . ($var_name ? "$var_name => ":"") . "<span style='color:#a2a2a2'>$type ($count)</span><br>$indent(<br>";
+$keys = array_keys($avar);
+foreach($keys as $name)
+{
+$value = &$avar[$name];
+do_dump($value, "['$name']", $indent.$do_dump_indent, $reference);
+}
+echo "$indent)<br>";
+}
+elseif(is_object($avar))
+{
+echo "$indent$var_name <span style='color:#a2a2a2'>$type</span><br>$indent(<br>";
+foreach($avar as $name=>$value) do_dump($value, "$name", $indent.$do_dump_indent, $reference);
+echo "$indent)<br>";
+}
+elseif(is_int($avar)) echo "$indent$var_name = <span style='color:#a2a2a2'>$type(".strlen($avar).")</span> $type_color$avar</span><br>";
+elseif(is_string($avar)) echo "$indent$var_name = <span style='color:#a2a2a2'>$type(".strlen($avar).")</span> $type_color\"$avar\"</span><br>";
+elseif(is_float($avar)) echo "$indent$var_name = <span style='color:#a2a2a2'>$type(".strlen($avar).")</span> $type_color$avar</span><br>";
+elseif(is_bool($avar)) echo "$indent$var_name = <span style='color:#a2a2a2'>$type(".strlen($avar).")</span> $type_color".($avar == 1 ? "TRUE":"FALSE")."</span><br>";
+elseif(is_null($avar)) echo "$indent$var_name = <span style='color:#a2a2a2'>$type(".strlen($avar).")</span> {$type_color}NULL</span><br>";
+else echo "$indent$var_name = <span style='color:#a2a2a2'>$type(".strlen($avar).")</span> $avar<br>";
+$var = $var[$keyvar];
+}
+}
+?>
+up
+down
+5
+php at mikeboers dot com ¶
+19 years ago
+Howdy!
+I am working on a pretty large project where I needed to dump a human readable form of whatever into the log files... and I thought var_export was too difficult to read. BigueNique at yahoo dot ca has a nice solution, although I needed to NOT modify whatever was being passed to dump.
+So borrowing heavily from BigueNique's (just reworked his function) and someone's idea over in the object cloning page, I came up with the following function.
+It makes a complete copy of whatever object you initially pass it, including all recursive definitions and outside objects references, then does the same thing as BigueNique's function. I also heavily reworked what it output, to suit my needs.
+<?php
+function var_log(&$varInput, $var_name='', $reference='', $method = '=', $sub = false) {
+static $output ;
+static $depth ;
+if ( $sub == false ) {
+$output = '' ;
+$depth = 0 ;
+$reference = $var_name ;
+$var = serialize( $varInput ) ;
+$var = unserialize( $var ) ;
+} else {
+++$depth ;
+$var =& $varInput ;
+}
+// constants
+$nl = "\n" ;
+$block = 'a_big_recursion_protection_block';
+$c = $depth ;
+$indent = '' ;
+while( $c -- > 0 ) {
+$indent .= '|  ' ;
+}
+// if this has been parsed before
+if ( is_array($var) && isset($var[$block])) {
+$real =& $var[ $block ] ;
+$name =& $var[ 'name' ] ;
+$type = gettype( $real ) ;
+$output .= $indent.$var_name.' '.$method.'& '.($type=='array'?'Array':get_class($real)).' '.$name.$nl;
+// havent parsed this before
+} else {
+// insert recursion blocker
+$var = Array( $block => $var, 'name' => $reference );
+$theVar =& $var[ $block ] ;
+// print it out
+$type = gettype( $theVar ) ;
+switch( $type ) {
+case 'array' :
+$output .= $indent . $var_name . ' '.$method.' Array ('.$nl;
+$keys=array_keys($theVar);
+foreach($keys as $name) {
+$value=&$theVar[$name];
+var_log($value, $name, $reference.'["'.$name.'"]', '=', true);
+}
+$output .= $indent.')'.$nl;
+break ;
+case 'object' :
+$output .= $indent.$var_name.' = '.get_class($theVar).' {'.$nl;
+foreach($theVar as $name=>$value) {
+var_log($value, $name, $reference.'->'.$name, '->', true);
+}
+$output .= $indent.'}'.$nl;
+break ;
+case 'string' :
+$output .= $indent . $var_name . ' '.$method.' "'.$theVar.'"'.$nl;
+break ;
+default :
+$output .= $indent . $var_name . ' '.$method.' ('.$type.') '.$theVar.$nl;
+break ;
+}
+// $var=$var[$block];
+}
+-- $depth ;
+if( $sub == false )
+return $output ;
+}
+// var_log( $var, '$name' ) ;
+?>
+Hope it works well for you!
+up
+down
+4
+egorinsk at gmail com ¶
+17 years ago
+Note that var_dump reset()'s array internal pointer!
+up
+down
+3
+david at exposito dot mobi ¶
+16 years ago
+If you want to save exactly the content of an array into a variable to save ir later for example, use this:
+<?php $xml = var_export($xml, true); ?>
+You'll have in your same variable the content readable, instead of written down or anything else
+up
+down
+2
+Anonymous ¶
+10 years ago
+Be careful this outputs to stdout stream (1) instead of the proper stderr stream (2).
+up
+down
+5
+thriller dot ze at gmail dot com ¶
+19 years ago
+As Bryan said, it is possible to capture var_dump() output to a string. But it's not quite exact if the dumped variable contains HTML code.
+You can use this instead:
+<?php
+echo '<pre>'; // This is for correct handling of newlines
+ob_start();
+var_dump($var);
+$a=ob_get_contents();
+ob_end_clean();
+echo htmlspecialchars($a,ENT_QUOTES); // Escape every HTML special chars (especially > and < )
+echo '</pre>';
+?>
+up
+down
+3
+vladimir at pixeltomorrow dot com ¶
+19 years ago
+You can also use the PEAR package available at http://pear.php.net/package/Var_Dump
+which parses the variable content in a very pleasant manner, a lot more easier to "follow" than the built-in var_dump() function.
+Of course there are many others, but I prefer this one, because it's simply to use.
+Just add at the begining of your file:
+<?php
+require('Var_Dump.php'); // make sure the pear package path is set in php.ini
+Var_Dump::displayInit(array('display_mode' => 'HTML4_Text'), array('mode' => 'normal','offset' => 4));
+?>
+then, instead of simply using var_dump($foo), use:
+<?php
+Var_Dump::display($foo);
+?>
+Read the documentation if you're looking for different output layouts.
+Cheers!
+Vladimir Ghetau
+up
+down
+1
+kobrasrealm at gmail dot com ¶
+15 years ago
+I wrote this dandy little function for using var_dump() on HTML documents so I don't have to view the source.
+<?php
+function htmldump($variable, $height="9em") {
+echo "<pre style=\"border: 1px solid #000; height: {$height}; overflow: auto; margin: 0.5em;\">";
+var_dump($variable);
+echo "</pre>\n";
+}
+?>
+You can pass arguments like this:
+<?php
+$sql = mysql_query("SELECT id, name, value FROM table WHERE cond = 'value'");
+$s = mysql_fetch_assoc($sql);
+// Dump variable containing the result of the MySQL query
+var_dump($s);
+?>
+The second parameter lets you specify the height of the box. Default is 9em, but if you're expecting a huge output you'll probably want a higher value.
+<?php
+var_dump($s, "17em");
+?>
+Happy var_dumping.
+up
+down
+-2
+fabien dot villepinte at gmail dot com ¶
+7 years ago
+It's important to note that the output depends on the precision directive.
+<?php
+var_dump(10000000000000.5); // float(10000000000000)
+ini_set('precision',-1);
+var_dump(10000000000000.5); // float(10000000000000.5)
+?>
+＋add a note
+Variable handling Functions
+boolval
+debug_​zval_​dump
+doubleval
+empty
+floatval
+get_​debug_​type
+get_​defined_​vars
+get_​resource_​id
+get_​resource_​type
+gettype
+intval
+is_​array
+is_​bool
+is_​callable
+is_​countable
+is_​double
+is_​float
+is_​int
+is_​integer
+is_​iterable
+is_​long
+is_​null
+is_​numeric
+is_​object
+is_​real
+is_​resource
+is_​scalar
+is_​string
+isset
+print_​r
+serialize
+settype
+strval
+unserialize
+unset
+var_​dump
+var_​export
+PHP is developed and maintained by a global community of contributors.
+The PHP Foundation helps fund this work.
+If PHP is part of your business or projects, consider sponsoring the Foundation.
+Linkedin
+@php@fosstodon.org
+GitHub
+Donate
+SECTION  PHP
+My PHP.net
+Downloads
+Contact
+Other PHP.net sites
+SECTION  Learn
+Documentation
+Get Involved
+Help
+SECTION  The PHP Foundation
+About the Foundation
+Sponsor
+Contact
+SECTION  Legal
+Privacy policy
+Copyright © 2001-2026 The PHP Documentation Group.
+↑ and ↓ to navigate •
+Enter to select •
+Esc to close • / to open
+Press Enter without
+selection to search using Google

@@ -1,0 +1,159 @@
+Programmatic Navigation | Vue Router
+Skip to content
+Vue Router
+Search
+Guide
+API
+v4.x/v5.x
+v3.x
+Links
+Discussions
+Changelog
+Vue.js Certification
+English
+简体中文
+Português
+Русский
+Menu
+Return to top
+Sidebar Navigation
+SECTION  Setup
+Introduction
+Installation
+SECTION  Essentials
+Getting Started
+Dynamic Route Matching
+Routes' Matching Syntax
+Named Routes
+Nested Routes
+Programmatic Navigation
+Named Views
+Redirect and Alias
+Passing Props to Route Components
+Active links
+Different History modes
+SECTION  Advanced
+Navigation guards
+Route Meta Fields
+Data Fetching
+Composition API
+RouterView slot
+Displaying a different route
+Transitions
+Scroll Behavior
+Scroll Restoration (experimental)
+Lazy Loading Routes
+Typed Routes
+Extending RouterLink
+Navigation Failures
+Dynamic Routing
+SECTION  File-Based Routing
+Getting Started
+File Conventions
+Configuration
+Extending Routes
+HMR
+ESLint
+Router Resolver (experimental)
+Param Parsers (experimental)
+Vapor Mode (experimental)
+URL Encoding (experimental)
+SECTION  Data Loaders
+Introduction
+Defining Data Loaders
+Reloading data
+Navigation Aware
+Error Handling
+Organizing Loaders
+Nested Loaders
+Cancelling a load
+Nuxt
+SSR
+Basic Loader
+Colada Loader
+RFC
+SECTION  Migration
+Migrating to v5
+Migrating from Vue 2
+On this page
+Complete guide to
+Mastering Pinia
+written by its creator
+The official
+Vue.js Certification
+Get certified!
+SECTION Programmatic-Navigation Programmatic Navigation ​
+Watch a free video lesson on Vue School
+Aside from using <router-link> to create anchor tags for declarative navigation, we can do this programmatically using the router's instance methods.
+SECTION Navigate-to-a-different-location Navigate to a different location ​
+Note: The examples below refer to the router instance as router. Inside a component, you can access the router using the $router property, e.g. this.$router.push(...). If you're using the Composition API, the router is accessible by calling useRouter().
+To navigate to a different URL, use router.push. This method pushes a new entry into the history stack, so when the user clicks the browser back button they will be taken to the previous URL.
+This is the method called internally when you click a <router-link>, so clicking <router-link :to="..."> is the equivalent of calling router.push(...).
+DeclarativeProgrammatic
+<router-link :to="...">router.push(...)
+The argument can be a string path, or a location descriptor object. Examples:
+js
+// literal string path
+router.push('/users/eduardo')
+// object with path
+router.push({ path: '/users/eduardo' })
+// named route with params to let the router build the url
+router.push({ name: 'user', params: { username: 'eduardo' } })
+// with query, resulting in /register?plan=private
+router.push({ path: '/register', query: { plan: 'private' } })
+// with hash, resulting in /about#team
+router.push({ path: '/about', hash: '#team' })
+Note: params are ignored if a path is provided, which is not the case for query, as shown in the example above. Instead, you need to provide the name of the route or manually specify the whole path with any parameter:
+js
+const username = 'eduardo/san martin'
+// we can manually build the url but we will have to handle the encoding ourselves
+router.push(`/user/${encodeURIComponent(username)}`) // -> /user/eduardo%2Fsan%20martin
+// same as
+router.push({ path: `/user/${encodeURIComponent(username)}` }) // -> /user/eduardo%2Fsan%20martin
+// if possible use `name` and `params` to benefit from automatic URL encoding
+router.push({ name: 'user', params: { username } }) // -> /user/eduardo%2Fsan%20martin
+// `params` cannot be used alongside `path`
+router.push({ path: '/user', params: { username } }) // -> /user
+When building a string path or an object with path, provide an encoded path. Use encodeURIComponent for each dynamic segment (each section between /). Note that encodeURIComponent encodes the / character. The same rule applies to <RouterLink>:
+vue
+<RouterLink :to="`/user/${encodeURIComponent(username)}`">User</RouterLink>
+<RouterLink
+:to="{ path: `/user/${encodeURIComponent(username)}` }"
+>User</RouterLink>
+<!-- Prefer this form when a matching named route exists -->
+<RouterLink :to="{ name: 'user', params: { username } }">User</RouterLink>
+When specifying params, provide a string or number for a regular param. For repeatable params, always provide an array, even when it has one item. To remove an optional repeatable param, provide an empty array ([]) or null. Any other type (like objects or booleans) will be automatically stringified. For other optional params, provide null to remove it.
+Since the prop to accepts the same kind of object as router.push, the exact same rules apply to both of them.
+router.push and all the other navigation methods return a Promise that allows us to wait till the navigation is finished and to know if it succeeded or failed. We will talk more about that in Navigation Handling.
+SECTION Replace-current-location Replace current location ​
+It acts like router.push, the only difference is that it navigates without pushing a new history entry, as its name suggests - it replaces the current entry.
+DeclarativeProgrammatic
+<router-link :to="..." replace>router.replace(...)
+It's also possible to directly add a property replace: true to the to argument that is passed to router.push:
+js
+router.push({ path: '/home', replace: true })
+// equivalent to
+router.replace({ path: '/home' })
+SECTION Traverse-history Traverse history ​
+Watch a free video lesson on Vue School
+This method takes a single integer as parameter that indicates by how many steps to go forward or go backward in the history stack, similar to window.history.go(n).
+Examples
+js
+// go forward by one record, the same as router.forward()
+router.go(1)
+// go back by one record, the same as router.back()
+router.go(-1)
+// go forward by 3 records
+router.go(3)
+// fails silently if there aren't that many records
+router.go(-100)
+router.go(100)
+SECTION History-Manipulation History Manipulation ​
+You may have noticed that router.push, router.replace and router.go are counterparts of window.history.pushState, window.history.replaceState and window.history.go, and they do imitate the window.history APIs.
+Therefore, if you are already familiar with Browser History APIs, manipulating history will feel familiar when using Vue Router.
+It is worth mentioning that Vue Router navigation methods (push, replace, go) work consistently no matter the history option passed when creating the router instance.
+Suggest changes to this pagePager
+Previous pageNested Routes
+Next pageNamed Views
+Released under the MIT License.
+Copyright © 2014-present Evan You, Eduardo San Martin Morote

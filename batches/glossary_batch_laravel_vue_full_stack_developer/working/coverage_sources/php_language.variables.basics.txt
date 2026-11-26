@@ -1,0 +1,295 @@
+PHP: Basics - Manual
+Downloads
+Documentation
+Get Involved
+Help
+Search docs
+Laracon EU 2027
+Getting Started
+Introduction
+A simple tutorial
+Language Reference
+Basic syntax
+Types
+Variables
+Constants
+Expressions
+Operators
+Control Structures
+Functions
+Classes and Objects
+Namespaces
+Enumerations
+Error Handling
+Fibers
+Generators
+Attributes
+References Explained
+Predefined Variables
+Predefined Exceptions
+Predefined Interfaces and Classes
+Predefined Attributes
+Context options and parameters
+Supported Protocols and Wrappers
+Security
+Introduction
+General considerations
+Installed as CGI binary
+Installed as an Apache module
+Session Security
+Filesystem Security
+Database Security
+Error Reporting
+User Submitted Data
+Hiding PHP
+Keeping Current
+Features
+HTTP authentication with PHP
+Cookies
+Sessions
+Handling file uploads
+Using remote files
+Connection handling
+Persistent Database Connections
+Command line usage
+Garbage Collection
+DTrace Dynamic Tracing
+Function Reference
+Affecting PHP's Behaviour
+Audio Formats Manipulation
+Authentication Services
+Command Line Specific Extensions
+Compression and Archive Extensions
+Cryptography Extensions
+Database Extensions
+Date and Time Related Extensions
+File System Related Extensions
+Human Language and
+Character Encoding Support
+Image Processing and Generation
+Mail Related Extensions
+Mathematical Extensions
+Non-Text MIME Output
+Process Control Extensions
+Other Basic Extensions
+Other Services
+Search Engine Extensions
+Server Specific Extensions
+Session Extensions
+Text Processing
+Variable and Type Related Extensions
+Web Services
+Windows Only Extensions
+XML Manipulation
+GUI Extensions
+Keyboard Shortcuts?
+This help
+j
+Next menu item
+k
+Previous menu item
+g p
+Previous man page
+g n
+Next man page
+G
+Scroll to bottom
+g g
+Scroll to top
+g h
+Goto homepage
+g s
+Goto search
+(current page)
+/
+Focus search box
+Predefined Variables »
+« Variables
+Preface
+Language Reference
+Variables
+Change language:
+English
+German
+Spanish
+French
+Italian
+Japanese
+Brazilian Portuguese
+Russian
+Turkish
+Ukrainian
+Chinese (Simplified)
+Other
+SECTION  Basics
+Variables in PHP are represented by a dollar sign followed by the
+name of the variable. The variable name is case-sensitive.
+A valid variable name starts with a letter
+(A-Z, a-z, or the bytes from 128 through 255)
+or underscore, followed
+by any number of letters, numbers, or underscores. As a regular
+expression, it would be expressed thus:
+^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$
+Note:
+Variable names are compared as bytes, not as characters. PHP does not
+interpret or validate the encoding of the bytes from 128 through 255, and
+two names refer to the same variable only when their bytes are identical.
+One consequence is that names written in UTF-8 work, because every byte of
+a UTF-8 multi-byte sequence falls inside the accepted range. The same holds
+for any encoding whose non-ASCII bytes all fall in that range, and for byte
+sequences that are not valid text in any encoding. Encodings that use bytes
+below 128 within a multi-byte sequence, such as Shift-JIS or UTF-16, do not.
+Another is that two names which display identically may be distinct.
+ä encoded as U+00E4 and as a
+followed by the combining diaeresis U+0308 are different variables, as are
+a name with and without a trailing U+00A0 NO-BREAK SPACE.
+Note:
+$this is a special variable that can't be
+assigned.
+Prior to PHP 7.1.0, indirect assignment (e.g. by using
+variable variables)
+was possible.
+Tip
+See also the
+Userland Naming Guide.
+Example #1 Valid variable names
+<?php
+$var = 'Bob';
+$Var = 'Joe';
+echo "$var, $Var";      // outputs "Bob, Joe"
+$_4site = 'not yet';    // valid; starts with an underscore
+$täyte = 'mansikka';    // valid; 'ä' is (Extended) ASCII 228.
+Example #2 Invalid variable names
+<?php
+$4site = 'not yet';     // invalid; starts with a number
+PHP accepts a sequence of any bytes as a variable name. Variable
+names that do not follow the above-mentioned naming rules can only be
+accessed dynamically at runtime. See
+variable variables
+for information on how to access them.
+Example #3 Accessing obscure variable names
+<?php
+${'invalid-name'} = 'bar';
+$name = 'invalid-name';
+echo ${'invalid-name'}, " ", $$name;
+The above example will output:
+bar bar
+By default, variables are always assigned by value. That is to say,
+when an expression is assigned to a variable, the entire value of
+the original expression is copied into the destination
+variable. This means, for instance, that after assigning one
+variable's value to another, changing one of those variables will
+have no effect on the other. For more information on this kind of
+assignment, see the chapter on Expressions.
+PHP also offers another way to assign values to variables:
+assign by reference.
+This means that the new variable simply references (in other words,
+"becomes an alias for" or "points to") the original variable.
+Changes to the new variable affect the original, and vice versa.
+To assign by reference, simply prepend an ampersand (&) to the
+beginning of the variable which is being assigned (the source
+variable). For instance, the following code snippet outputs 'My
+name is Bob' twice:
+<?php
+$foo = 'Bob';              // Assign the value 'Bob' to $foo
+$bar = &$foo;              // Reference $foo via $bar.
+$bar = "My name is $bar";  // Alter $bar...
+echo $bar . PHP_EOL;
+echo $foo . PHP_EOL;       // $foo is altered too.
+One important thing to note is that only variables may be
+assigned by reference.
+<?php
+$original = 25;
+$ref1 = &$original;        // This is a valid assignment.
+$ref2 = &(24 * 7);         // Invalid; references an unnamed expression.
+<?php
+// Note the lack of & indicating a returned reference in the function declaration.
+// i.e. the function does not return a reference, so the result cannot be assigned by reference
+function test()
+{
+$original = 25;
+return $original;
+}
+// Note: A notice is issued, but the non-reference value is assigned
+$result1 = &test();        // Invalid because test() doesn't return a variable by reference.
+var_dump($result1);
+// This function is defined as returning a reference, but does not return a variable
+function &test2()
+{
+return 26;             // Invalid because the returned value isn't a variable reference.
+}
+// Note: The non-reference value is assigned
+$result2 = &test2();
+var_dump($result2);
+It is not necessary to declare variables in PHP, however, it is a very
+good practice. Accessing an undefined variable will result in an
+E_WARNING (prior to PHP 8.0.0, E_NOTICE).
+An undefined variable has a default value of null.
+The isset() language
+construct can be used to detect if a variable has already been initialized.
+Example #4 Default value of an uninitialized variable
+<?php
+// Unset AND unreferenced (no use context) variable.
+var_dump($unset_var);
+The above example will output:
+Warning: Undefined variable $unset_var in ...
+NULL
+PHP allows array autovivification (automatic creation of new arrays)
+from an undefined variable.
+Appending an element to an undefined variable will create a new array and
+will not generate a warning.
+Example #5 Autovivification of an array from an undefined variable
+<?php
+$unset_array[] = 'value'; // Does not generate a warning.
+var_dump($unset_array);
+Warning
+Relying on the default value of an uninitialized variable is problematic
+when including one file in another which uses the same
+variable name.
+A variable can be destroyed by using the unset()
+language construct.
+For information on variable-related functions, see the
+Variable Functions Reference.
+SECTION  Found A Problem?
+Learn How To Improve This Page
+•
+Submit a Pull Request
+•
+Report a Bug
+＋add a note
+SECTION  User Contributed Notes
+There are no user contributed notes for this page.
+Variables
+Basics
+Predefined Variables
+Variable scope
+Variable variables
+Variables From External Sources
+PHP is developed and maintained by a global community of contributors.
+The PHP Foundation helps fund this work.
+If PHP is part of your business or projects, consider sponsoring the Foundation.
+Linkedin
+@php@fosstodon.org
+GitHub
+Donate
+SECTION  PHP
+My PHP.net
+Downloads
+Contact
+Other PHP.net sites
+SECTION  Learn
+Documentation
+Get Involved
+Help
+SECTION  The PHP Foundation
+About the Foundation
+Sponsor
+Contact
+SECTION  Legal
+Privacy policy
+Copyright © 2001-2026 The PHP Documentation Group.
+↑ and ↓ to navigate •
+Enter to select •
+Esc to close • / to open
+Press Enter without
+selection to search using Google

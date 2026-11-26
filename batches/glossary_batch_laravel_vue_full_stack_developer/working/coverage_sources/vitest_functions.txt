@@ -1,0 +1,159 @@
+Mocking Functions | Vitest
+Skip to content
+Main Navigation GuidesAPIConfigBlog
+v5.1.2
+v5.1.2
+Releases Notes
+Contributing
+Team
+Releases
+unreleased
+v4.x
+v3.x
+v2.x
+v1.x
+Search⌘CtrlK
+English
+简体中文
+Appearance
+English
+简体中文
+Menu
+Return to top Sidebar Navigation
+SECTION  Introduction
+Why Vitest
+Getting Started
+Features
+SECTION  Learn
+Writing Tests
+Using Matchers
+Testing Async Code
+Setup and Teardown
+Mock Functions
+Snapshot Testing
+Testing in Practice
+Debugging Tests
+Writing Tests with AI
+SECTION  Browser Mode
+Why Browser Mode
+Getting Started
+Multiple Setups
+Component Testing
+Visual Regression Testing
+Trace View
+Playwright Traces
+ARIA Snapshots
+SECTION  Authoring
+Test Context
+Test Run Lifecycle
+Snapshot
+SECTION  Mocking
+Dates
+Functions
+Globals
+Modules
+File System
+Requests
+Timers
+Classes
+Test Tags
+Test Annotations
+Extending Matchers
+Testing Types
+Benchmarking
+In-Source Testing
+SECTION  Workflow
+CLI
+Test Filtering
+Test Projects
+Test Environment
+Parallelism
+Reporters
+Vitest UI
+IDE Integration
+SECTION  Quality & Debugging
+Coverage
+Debugging
+Common Errors
+SECTION  Performance
+Profiling Test Performance
+Improving Performance
+OpenTelemetry
+SECTION  Recipes
+Database Transaction per Test
+Cancelling Long-Running Operations Gracefully
+Waiting for Async Conditions
+Type Narrowing in Tests
+Custom Assertion Helpers
+Watching Non-Imported Files
+Extending Browser Locators
+Schema-Driven Assertions
+Auto-Cleanup with `using`
+Conditional Mocking with `vi.when`
+Per-File Isolation Settings
+Parallel and Sequential Test Files
+Running Only Affected Tests
+SECTION  Advanced
+Getting Started
+Running Tests via API
+Extending Reporters
+Custom Pool
+Benchmark Provider
+SECTION  Migration
+Migrating to Vitest 5.0
+Migrating from Jest
+Migrating from Mocha + Chai + Sinon
+Comparisons
+On this page
+SECTION mocking-functions Mocking Functions ​
+Mocking functions can be split up into two different categories: spying and mocking.
+If you need to observe the behaviour of a method on an object, you can use vi.spyOn() to create a spy that tracks calls to that method.
+If you need to pass down a custom function implementation as an argument or create a new mocked entity, you can use vi.fn() to create a mock function.
+Both vi.spyOn and vi.fn share the same methods.
+TIP
+If you need a mock to return different values depending on the arguments it receives, vi.when() lets you define argument-specific behaviors without writing your own if/else logic. See the Conditional Mocking recipe for details.
+SECTION example Example ​
+js
+import { afterEach, describe, expect, it, vi } from 'vitest'
+const messages = {
+items: [
+{ message: 'Simple test message', from: 'Testman' },
+// ...
+],
+addItem(item) {
+messages.items.push(item)
+messages.callbacks.forEach(callback => callback(item))
+},
+onItem(callback) {
+messages.callbacks.push(callback)
+},
+getLatest, // can also be a `getter or setter if supported`
+}
+function getLatest(index = messages.items.length - 1) {
+return messages.items[index]
+}
+it('should get the latest message with a spy', () => {
+const spy = vi.spyOn(messages, 'getLatest')
+expect(spy.getMockName()).toEqual('getLatest')
+expect(messages.getLatest()).toEqual(
+messages.items.at(-1),
+)
+expect(spy).toHaveBeenCalledTimes(1)
+spy.mockImplementationOnce(() => 'access-restricted')
+expect(messages.getLatest()).toEqual('access-restricted')
+expect(spy).toHaveBeenCalledTimes(2)
+})
+it('passing down the mock', () => {
+const callback = vi.fn()
+messages.onItem(callback)
+messages.addItem({ message: 'Another test message', from: 'Testman' })
+expect(callback).toHaveBeenCalledWith({
+message: 'Another test message',
+from: 'Testman',
+})
+})
+Suggest changes to this page
+Last updated: Pager
+Previous pageDates
+Next pageGlobals
+© 2026 VoidZero Inc. and Vitest contributors.

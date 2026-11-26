@@ -1,0 +1,139 @@
+Lifecycle Hooks | Vue.js
+Skip to content
+Vue.js
+SearchMain Navigation
+Docs
+Quick StartGuideTutorialExamplesAPIGlossaryError ReferenceVue 2 DocsMigration from Vue 2Playground
+Ecosystem
+ResourcesThemesUI ComponentsPlugins CollectionCertificationJobsT-Shirt Shop
+Official LibrariesVue RouterPiniaTooling Guide
+Video CoursesVue MasteryVue School
+HelpDiscord ChatGitHub DiscussionsDEV Community
+NewsBlogTwitterEventsNewsletters
+About
+FAQTeamReleasesCommunity GuideCode of ConductPrivacy PolicyThe Documentary
+Support
+SponsorPartners
+简体中文
+日本語
+Українська
+Français
+Deutsch
+한국어
+Português
+বাংলা
+Italiano
+فارسی
+Русский
+Čeština
+繁體中文
+Polski
+Help Us Translate!
+githubtwitterdiscord
+Appearance
+githubtwitterdiscord
+Menu
+On this page
+API Preference
+OptionsComposition?Sidebar Navigation
+SECTION  Getting Started
+Introduction
+Quick Start
+SECTION  Essentials
+Creating an Application
+Template Syntax
+Reactivity Fundamentals
+Computed Properties
+Class and Style Bindings
+Conditional Rendering
+List Rendering
+Event Handling
+Form Input Bindings
+Watchers
+Template Refs
+Components Basics
+Lifecycle Hooks
+SECTION  Components In-Depth
+Registration
+Props
+Events
+Component v-model
+Fallthrough Attributes
+Slots
+Provide / inject
+Async Components
+SECTION  Reusability
+Composables
+Custom Directives
+Plugins
+SECTION  Built-in Components
+Transition
+TransitionGroup
+KeepAlive
+Teleport
+Suspense
+SECTION  Scaling Up
+Single-File Components
+Tooling
+Routing
+State Management
+Testing
+Server-Side Rendering (SSR)
+SECTION  Best Practices
+Production Deployment
+Performance
+Accessibility
+Security
+SECTION  TypeScript
+Overview
+TS with Composition API
+TS with Options API
+SECTION  Extra Topics
+Ways of Using Vue
+Composition API FAQ
+Reactivity in Depth
+Rendering Mechanism
+Render Functions & JSX
+Vue and Web Components
+Animation Techniques
+Get Security Updates for Vue 2
+On this pageTable of Contents for current page
+Registering Lifecycle Hooks
+Lifecycle Diagram
+Sponsors
+Become a Sponsor
+Are you an LLM? You can read better optimized documentation at /guide/essentials/lifecycle.md for this page in Markdown format
+SECTION lifecycle-hooks Lifecycle Hooks ​
+Each Vue component instance goes through a series of initialization steps when it's created - for example, it needs to set up data observation, compile the template, mount the instance to the DOM, and update the DOM when data changes. Along the way, it also runs functions called lifecycle hooks, giving users the opportunity to add their own code at specific stages.
+SECTION registering-lifecycle-hooks Registering Lifecycle Hooks ​
+For example, the onMountedmounted hook can be used to run code after the component has finished the initial rendering and created the DOM nodes:
+vue
+<script setup>
+import { onMounted } from 'vue'
+onMounted(() => {
+console.log(`the component is now mounted.`)
+})
+</script>
+js
+export default {
+mounted() {
+console.log(`the component is now mounted.`)
+}
+}
+There are also other hooks which will be called at different stages of the instance's lifecycle, with the most commonly used being onMounted, onUpdated, and onUnmounted.mounted, updated, and unmounted.
+All lifecycle hooks are called with their this context pointing to the current active instance invoking it. Note this means you should avoid using arrow functions when declaring lifecycle hooks, as you won't be able to access the component instance via this if you do so.
+When calling onMounted, Vue automatically associates the registered callback function with the current active component instance. This requires these hooks to be registered synchronously during component setup. For example, do not do this:
+js
+setTimeout(() => {
+onMounted(() => {
+// this won't work.
+})
+}, 100)
+Do note this doesn't mean that the call must be placed lexically inside setup() or <script setup>. onMounted() can be called in an external function as long as the call stack is synchronous and originates from within setup().
+SECTION lifecycle-diagram Lifecycle Diagram ​
+Below is a diagram for the instance lifecycle. You don't need to fully understand everything going on right now, but as you learn and build more, it will be a useful reference.
+Consult the Lifecycle Hooks API referenceLifecycle Hooks API reference for details on all lifecycle hooks and their respective use cases.
+And that's the end of Vue's Essentials. Congratulations! There's still more to learn, but first, we recommend taking a break to play with Vue yourself - build something fun, or check out some of the Examples if you haven't already.
+Once you feel comfortable with the knowledge you've just digested, move on with the guide to learn more about components in depth.
+Edit this page on GitHub PreviousComponents BasicsNext Registration
+Lifecycle Hooks has loaded

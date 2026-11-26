@@ -1,0 +1,867 @@
+Getting started with CSS - Learn web development | MDN
+Skip to main content
+Skip to search
+MDN
+HTML
+HTML: Markup language
+HTML reference
+Elements
+Global attributes
+Attributes
+See all…
+HTML guides
+Responsive images
+HTML cheatsheet
+Date & time formats
+See all…
+Markup languages
+SVG
+MathML
+XML
+CSS
+CSS: Styling language
+CSS reference
+Properties
+Selectors
+At-rules
+Values
+See all…
+CSS guides
+Box model
+Animations
+Flexbox
+Colors
+See all…
+Layout cookbook
+Column layouts
+Centering an element
+Card component
+See all…
+JavaScriptJS
+JavaScript: Scripting language
+JS reference
+Standard built-in objects
+Expressions & operators
+Statements & declarations
+Functions
+See all…
+JS guides
+Control flow & error handling
+Loops and iteration
+Working with objects
+Using classes
+See all…
+Web APIs
+Web APIs: Programming interfaces
+Web API reference
+File system API
+Fetch API
+Geolocation API
+HTML DOM API
+Push API
+Service worker API
+See all…
+Web API guides
+Using the Web animation API
+Using the Fetch API
+Working with the History API
+Using the Web speech API
+Using web workers
+All
+All web technology
+Technologies
+Accessibility
+HTTP
+URI
+Web extensions
+WebAssembly
+WebDriver
+See all…
+Topics
+Media
+Performance
+Privacy
+Security
+Progressive web apps
+Learn
+Learn web development
+Frontend developer course
+Getting started modules
+Core modules
+MDN Curriculum
+Check out the video course from Scrimba, our partner
+Learn HTML
+Structuring content with HTML module
+Learn CSS
+CSS styling basics module
+CSS layout module
+Learn JavaScript
+Dynamic scripting with JavaScript module
+Tools
+Discover our tools
+Playground
+HTTP Observatory
+Border-image generator
+Border-radius generator
+Box-shadow generator
+Color format converter
+Color mixer
+Shape generator
+About
+Get to know MDN better
+About MDN
+Advertise with us
+Community
+MDN on GitHub
+Blog
+Toggle sidebar
+Learn
+Core learning modules
+CSS styling basics
+CSS getting started
+Theme
+OS default
+Light
+Dark
+English (US)
+Remember language
+Learn more
+Deutsch
+English (US)
+Español
+Français
+日本語
+한국어
+Português (do Brasil)
+Русский
+中文 (简体)
+正體中文 (繁體)
+SECTION  Getting started with CSS
+Previous
+Overview: CSS styling basics
+Next
+In this article, we will get you to take a simple HTML document and apply CSS to it, learning some practical details of the language along the way. We will also review some additional CSS syntax features you've not looked at yet.
+Prerequisites:
+Basic software installed, basic knowledge of
+working with files, and HTML basics (study
+Introduction to HTML.)
+Learning outcomes:
+Applying CSS to an HTML document.
+Practical experience of writing basic CSS.
+Working knowledge of fundamental selector types and combinators.
+The concept of state as it applies to CSS.
+Familiarity with other CSS syntax features such as at-rules, functions, shorthand properties, and whitespace.
+SECTION  In this article
+Starting with some HTML
+Adding CSS to our document
+Using common selectors
+Other CSS syntax features
+Summary
+SECTION starting_with_some_html Starting with some HTML
+Our starting point is an HTML document. You can copy the code from below if you want to work on your own computer. Save the code below as index.html in a folder on your machine.
+html
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Getting started with CSS</title>
+</head>
+<body>
+<h1>I am a level one heading</h1>
+<p>
+This is a paragraph of text. In the text is a
+<span>span element</span> and also a
+<a href="https://example.com">link</a>.
+</p>
+<p>
+This is the second paragraph. It contains an <em>emphasized</em> element.
+</p>
+<ul>
+<li>Item <span>one</span></li>
+<li>Item two</li>
+<li>Item <em>three</em></li>
+</ul>
+</body>
+</html>
+This renders like so:
+Note:
+If you are reading this on a device or an environment where you can't easily create files, then don't worry — click the "Play" button in the live sample above to open it in the MDN Playground. There, you can edit the CSS & HTML code as instructed further down and see the combined results live.
+SECTION adding_css_to_our_document Adding CSS to our document
+The very first thing we need to do is to tell the HTML document that we have some CSS rules we want it to use. There are three different ways to apply CSS to an HTML document that you'll commonly come across — external stylesheets, internal stylesheets, and inline styles. Let's look at these now.
+If you are working through this article using the MDN Playground, you won't be able to follow the steps detailed in this section in the same way as people writing the code on their local computers. This is because MDN Playground handles adding the CSS to the HTML implicitly in the background. You should however still read through the section to be aware of the content.
+SECTION external_stylesheets External stylesheets
+An external stylesheet contains CSS in a separate file with a .css extension. This is the most common and useful method of bringing CSS to a document. You can link a single CSS file to multiple web pages, styling all of them with the same CSS stylesheet.
+Create a file in the same folder as your HTML document and save it as styles.css.
+To link styles.css to index.html, add the following line somewhere inside the <head> of the HTML document:
+html
+<link rel="stylesheet" href="styles.css" />
+This <link> element tells the browser that we have a stylesheet, using the rel attribute, and the location of that stylesheet as the value of the href attribute. You can test that the CSS works by adding a rule to styles.css. Using your code editor, add the following to your CSS file:
+css
+h1 {
+color: red;
+}
+Save your HTML and CSS files and reload the page in a web browser. The level one heading at the top of the document should now be red. If that happens, congratulations — you have successfully applied some CSS to an HTML document. If that doesn't happen, carefully check that you've typed everything correctly.
+SECTION locating_stylesheets_in_different_places Locating stylesheets in different places
+In the example above, the CSS file is in the same folder as the HTML document, but you could place it somewhere else and adjust the path (in the same way as HTML images). Here are three examples:
+html
+<!-- In a subdirectory called styles in the current directory -->
+<link rel="stylesheet" href="styles/style.css" />
+<!-- In a subdirectory called general, which is in a subdirectory called styles, in the current directory -->
+<link rel="stylesheet" href="styles/general/style.css" />
+<!-- Go back one directory level, then in a subdirectory called styles -->
+<link rel="stylesheet" href="../styles/style.css" />
+SECTION internal_stylesheets Internal stylesheets
+Internal stylesheets are contained within <style> elements, which go inside the HTML <head>. Let's create one now.
+In your HTML document, add the following snippet somewhere between the <head> and </head> tags:
+html
+<style>
+p {
+color: purple;
+}
+</style>
+Save and refresh, and you should see all your paragraphs turn purple.
+In some circumstances, internal stylesheets can be useful. For example, perhaps you're working with a content management system where you are blocked from modifying external CSS files.
+However, for sites with more than one page, internal stylesheets are less efficient than external stylesheets. To apply uniform CSS styling to multiple pages using internal stylesheets, you must repeat the internal stylesheet across every web page. The efficiency penalty carries over to site maintenance too. With CSS in internal stylesheets, there is the risk that even one simple styling change may require edits to multiple web pages.
+Before you move on, remove the <style> element and its contents from your example HTML.
+SECTION inline_styles Inline styles
+Inline styles are CSS declarations that affect a single HTML element, contained within a style attribute. Let's try implementing one now.
+Add a style attribute to the <span> element in your HTML, so that it looks like the following:
+html
+<span style="color: purple; font-weight: bold">span element</span>
+Save and refresh, and you should see just the text inside the <span> turn purple and bold. Try adding some more declarations inside your style attribute (separated by semi-colons), or some additional style attributes to other elements.
+Once you are done experimenting, remove all your style attributes.
+Avoid using CSS in this way if possible. It is a bad practice. First, it is the least efficient implementation of CSS for maintenance. One styling change might require multiple edits within a single web page. Second, inline CSS also mixes (CSS) presentational code with HTML and content, making everything more difficult to read and understand. Separating code and content makes maintenance easier for all who work on the website.
+You might have to resort to using inline styles if your working environment is very restrictive. For example, perhaps your CMS only allows you to edit the HTML body. You may also see a lot of inline styles in HTML email to achieve compatibility with as many email clients as possible. It is also fairly common to set inline styles when dynamically applying style using JavaScript.
+SECTION using_common_selectors Using common selectors
+In this section we will take a brief tour through some of the more common types of selector you will encounter.
+SECTION selecting_html_elements Selecting HTML elements
+By making our heading red, we have already demonstrated that we can target and style an HTML element. We do this by targeting an element selector (also known as a type selector) — this is a selector that directly matches an HTML element name. To target all paragraphs in the document, you would use the selector p. To turn all paragraphs green, you would use:
+css
+p {
+color: green;
+}
+You can target multiple selectors at the same time by separating the selectors with a comma. If you wanted all paragraphs and all list items to be green, your rule would look like this:
+css
+p,
+li {
+color: green;
+}
+Try this out in the example below (click "Play") or in your local copy:
+<h1>I am a level one heading</h1>
+<p>
+This is a paragraph of text. In the text is a <span>span element</span> and
+also a <a href="http://example.com">link</a>.
+</p>
+<p>This is the second paragraph. It contains an <em>emphasized</em> element.</p>
+<ul>
+<li>Item one</li>
+<li>Item two</li>
+<li>Item <em>three</em></li>
+</ul>
+css
+h1 {
+color: red;
+}
+p,
+li {
+}
+The following interactive lesson teaches basic CSS concepts and provides some practice.
+SECTION adding_a_class Adding a class
+So far, we have styled elements based on their HTML element names. This works as long as you want all of the elements of that type in your document to look the same. To select a subset of the elements without changing the others, you can add a class to your HTML element and target that class in your CSS.
+In your HTML document, add a class attribute to the second list item. Your list will now look like this:
+html
+<ul>
+<li>Item one</li>
+<li class="special">Item two</li>
+<li>Item <em>three</em></li>
+</ul>
+In your CSS, you can target the class of special by creating a selector that starts with a period. Add the following to your CSS file:
+css
+.special {
+color: orange;
+font-weight: bold;
+}
+Save and refresh to see what the result is.
+You can now apply the class of special to other elements on your page that you want to have the same look as this list item. Add a class of special to the <span> inside the paragraph, then reload your page: It should also now be orange and bold.
+SECTION styling_things_based_on_their_location_in_a_document Styling things based on their location in a document
+There are times when you will want something to look different based on where it is in the document. There are a number of selectors that can help you here, but for now we will look at just a couple. In our document, there are two <em> elements — one inside a paragraph and the other inside a list item. To select only an <em> that is nested inside an <li> element, you can use a selector called the descendant combinator, which takes the form of a space between two other selectors.
+Add the following rule to your stylesheet:
+css
+li em {
+color: rebeccapurple;
+}
+This selector will select any <em> element that is a descendant of an <li>. So in your example document, you should find that the <em> in the third list item is now purple, but the one inside the paragraph is unchanged.
+Something else you might like to try is styling a paragraph when it comes directly after a heading at the same hierarchy level in the HTML. To do so, place a + (a next-sibling combinator) between the selectors.
+Try adding this rule to your stylesheet as well:
+css
+h1 + p {
+font-size: 200%;
+}
+The live example below includes the two rules above. Try adding a rule to make a span red if it is inside a paragraph. You will know if you have it right because the span in the first paragraph will be red, but the one in the first list item will not change color.
+<h1>I am a level one heading</h1>
+<p>
+This is a paragraph of text. In the text is a <span>span element</span> and
+also a <a href="http://example.com">link</a>.
+</p>
+<p>This is the second paragraph. It contains an <em>emphasized</em> element.</p>
+<ul>
+<li>Item <span>one</span></li>
+<li>Item two</li>
+<li>Item <em>three</em></li>
+</ul>
+css
+li em {
+color: rebeccapurple;
+}
+h1 + p {
+font-size: 200%;
+}
+Note:
+As you can see, CSS gives us several ways to target elements, and we've only scratched the surface so far! We will be taking a proper look at all of these selectors and many more later on in the course.
+SECTION styling_things_based_on_state Styling things based on state
+The final type of styling we shall take a look at in this tutorial is the ability to style things based on their state. A straightforward example of this is when styling links. When we style a link, we need to target the <a> (anchor) element. This has different states depending on whether it is unvisited, visited, being hovered over, focused via the keyboard, or in the process of being clicked (activated). You can use CSS to target these different states — the CSS below styles unvisited links pink and visited links green.
+css
+a:link {
+color: pink;
+}
+a:visited {
+color: green;
+}
+You can change the way the link looks when the user hovers over it, for example by removing the underline, which is achieved by the next rule:
+css
+a:hover {
+text-decoration: none;
+}
+In the example below, you can play with different values for the various states of a link. We have added the rules above to it, and now realize that the pink color is quite light and hard to read — why not change that to a better color? Can you make the links bold?
+<h1>I am a level one heading</h1>
+<p>
+This is a paragraph of text. In the text is a <span>span element</span> and
+also a <a href="http://example.com">link</a>.
+</p>
+<p>This is the second paragraph. It contains an <em>emphasized</em> element.</p>
+<ul>
+<li>Item one</li>
+<li>Item two</li>
+<li>Item <em>three</em></li>
+</ul>
+css
+a:link {
+color: pink;
+}
+a:visited {
+color: green;
+}
+a:hover {
+text-decoration: none;
+}
+We have removed the underline on our link on hover. You could remove the underline from all states of a link. It is worth remembering however that in a real site, you want to ensure that visitors know that a link is a link. Leaving the underline in place can be an important clue for people to realize that some text inside a paragraph can be clicked on — this is the behavior they are used to. As with everything in CSS, there is the potential to make the document less accessible with your changes — we will aim to highlight potential pitfalls in appropriate places.
+Note:
+You will often see mention of accessibility in these lessons and across MDN. When we talk about accessibility we are referring to the requirement for our webpages to be understandable and usable by everyone, whether they are using a computer with a mouse or trackpad, a phone with a touchscreen, navigating only using the keyboard, or via a screen reader, which reads out the content of the document.
+SECTION combining_selectors_and_combinators Combining selectors and combinators
+It is worth noting that you can combine multiple selectors and combinators together. For example:
+css
+/* selects any <span> that is inside a <p>, which is inside an <article>  */
+article p span {
+}
+/* selects any <p> that comes directly after a <ul>, which comes directly after an <h1>  */
+h1 + ul + p {
+}
+You can combine multiple types together, too. Try adding the following into your code:
+css
+h1 + p .special {
+color: yellow;
+background-color: black;
+padding: 5px;
+}
+This will style any element with a class of special, which is inside a <p>, which comes just after an <h1>. Phew! This should target the <span class="special">span element</span> element in your code.
+Don't worry if this seems complicated at the moment — you'll soon start to get the hang of it as you write more CSS.
+SECTION other_css_syntax_features Other CSS syntax features
+Now we've played with a few CSS features, we'll give you a high-level tour of some of the other CSS syntax features you'll encounter during the course. If you want to look up more details on any of these, you can try typing the feature name into the search field at the top of this page, or browse the MDN CSS reference.
+To experiment with the code snippets in each case, you could add the provided HTML and CSS to the local example or MDN Playground instance you worked on above.
+SECTION functions Functions
+While most values are relatively simple keywords or numeric values, there are some values that take the form of a function.
+SECTION the_calc_function The calc() function
+An example would be the calc() function, which can do simple math within CSS:
+html
+<div class="outer"><div class="box">The inner box is 90% - 30px.</div></div>
+css
+.outer {
+border: 5px solid black;
+}
+.box {
+padding: 10px;
+width: calc(90% - 30px);
+background-color: rebeccapurple;
+color: white;
+}
+This renders as:
+A function consists of the function name, and parentheses to enclose the values for the function. In the case of the calc() example above, the values define the width of this box to be 90% of the containing block width, minus 30 pixels.
+SECTION transform_functions Transform functions
+Another example would be the various values for the transform property, such as rotate().
+html
+<div class="box"></div>
+css
+.box {
+margin: 30px;
+width: 100px;
+height: 100px;
+background-color: rebeccapurple;
+transform: rotate(0.8turn);
+}
+The output from the above code looks like this:
+Look up different values of properties listed below. Try writing CSS rules that apply styling to different HTML elements using the following functions:
+transform
+background-image, in particular gradient values
+color, in particular rgb and hsl values
+SECTION rules @rules
+CSS @rules (pronounced "at-rules") provide instructions for how CSS should behave. One common @rule that you are likely to encounter is @media, which is used to create media queries. Media queries use conditional logic for applying CSS styling.
+In the example below, the stylesheet defines a default pink background for the <body> element. However, a media query follows that sets a blue background on the <body> element if the browser viewport is wider than 30em.
+css
+body {
+background-color: pink;
+}
+@media (width >= 30em) {
+body {
+background-color: blue;
+}
+}
+SECTION shorthand_properties Shorthand properties
+Some properties like font, background, padding, border, and margin are called shorthand properties. This is because shorthand properties set several values in a single line.
+For example, this one line of code:
+css
+/* In 4-value shorthands like padding and margin, the values are applied
+in the order top, right, bottom, left (clockwise from the top). There are also other
+shorthand types, for example 2-value shorthands, which set padding/margin
+for top/bottom, then left/right */
+padding: 10px 15px 15px 5px;
+is equivalent to these four lines of code:
+css
+padding-top: 10px;
+padding-right: 15px;
+padding-bottom: 15px;
+padding-left: 5px;
+This one line:
+css
+background: red url("bg-graphic.png") 10px 10px repeat-x fixed;
+is equivalent to these five lines:
+css
+background-color: red;
+background-image: url("bg-graphic.png");
+background-position: 10px 10px;
+background-repeat: repeat-x;
+background-attachment: fixed;
+Later in the course, you will encounter many other examples of shorthand properties. For now, try using the declarations above (or others you might know about) in your own code to become more familiar with how they work.
+SECTION css_comments CSS Comments
+As with any coding work, it is best practice to write comments in your CSS. This helps you to remember how the code works as you come back later to make fixes or enhancement. It also helps others understand the code.
+CSS comments begin with /* and end with */. In the example below, comments mark the start of distinct sections of code. This helps to navigate the codebase as it gets larger. With this kind of commenting in place, searching for comments in your code editor becomes a way to efficiently find a section of code.
+css
+/* Handle basic element styling */
+/* ---------------------------- */
+body {
+font:
+1em/150% "Helvetica",
+"Arial",
+sans-serif;
+padding: 1em;
+margin: 0 auto;
+max-width: 33em;
+}
+@media (width >= 70em) {
+/* Increase the global font size on larger screens or windows
+for better readability */
+body {
+font-size: 130%;
+}
+}
+h1 {
+font-size: 1.5em;
+}
+/* Handle specific elements nested in the DOM */
+div p,
+#id::first-line {
+background-color: red;
+border-radius: 3px;
+}
+div p {
+margin: 0;
+padding: 1em;
+}
+div p + p {
+padding-top: 0;
+}
+"Commenting out" code is also useful for temporarily disabling sections of code for testing. In the example below, the rules for .special are disabled by "commenting out" the code.
+css
+/* .special {
+color: red;
+} */
+p {
+color: blue;
+}
+Try adding comments to your CSS.
+SECTION white_space_in_css White space in CSS
+White space means actual spaces, tabs and new lines. Just as browsers ignore extra white space in HTML, browsers ignore extra white space inside CSS. The benefit of white space is that it makes it easier for you to read the code.
+In the example below, each declaration (and rule start/end) has its own line. This is arguably a good way to write CSS. It makes it easier to maintain and understand CSS.
+css
+body {
+font:
+1em/150% "Helvetica",
+"Arial",
+sans-serif;
+padding: 1em;
+margin: 0 auto;
+max-width: 33em;
+}
+@media (width >= 70em) {
+body {
+font-size: 130%;
+}
+}
+h1 {
+font-size: 1.5em;
+}
+The next example shows the same CSS in a more compressed format, with all extra white space removed. Although the two examples work the same, the one below is more difficult to read.
+css
+body{font:1em/150% "Helvetica","Arial",sans-serif;padding:1em;margin:0 auto;max-width:33em;}
+@media(width>=70em){body{font-size:130%;}}
+h1{font-size:1.5em;}
+Bear in mind that some white space changes can cause errors. Property names never contain whitespace, while property values that expect white space between multiple values will be invalid if that space is removed. For example, these declarations are valid CSS:
+css
+margin: 0 auto;
+padding-left: 10px;
+But these declarations are invalid:
+css
+margin: 0auto;
+padding- left: 10px;
+Do you see the spacing errors? First, 0auto is not recognized as a valid value for the margin property. The entry 0auto is meant to be two separate values: 0 and auto. Second, the browser does not recognize padding- as a valid property. The correct property name (padding-left) doesn't have a space in it.
+You should always make sure to separate distinct values from one another by at least one space. Keep property names and property values together as single unbroken strings.
+To find out how spacing can break CSS, try playing with spacing inside your test CSS.
+SECTION summary Summary
+In this article, we have taken a look at a number of ways in which you can style a document using CSS. We will be developing this knowledge as we move through the rest of the lessons. However, you now already know enough to style text and apply CSS based on different ways of targeting elements in the document.
+Next up, we'll give you a challenge to test your newfound knowledge.
+Previous
+Overview: CSS styling basics
+Next
+SECTION feedback
+Help improve MDN
+Was this page helpful to you?
+Yes
+No
+Learn how to contribute
+This page was last modified on Nov 7, 2025 by MDN contributors.
+View this page on GitHub • Report a problem with this content
+Filter sidebar
+Clear filter input
+Learn web development
+MDN curriculum
+Getting started modules
+Environment setup
+Installing software
+Browsing the web
+Code editors
+Dealing with files
+Command line
+Your first website
+What will it look like?
+Creating the content
+Styling the content
+Adding interactivity
+Publishing
+Web standards
+How the web works
+The web standards model
+How browsers load websites
+Soft skills
+Research and learning
+Collaboration and teamwork
+Workflows and processes
+Finding a job
+Core modules
+Structuring content with HTML
+Basic HTML syntax
+Web page metadata
+Headings and paragraphs
+Emphasis and importance
+Lists
+Test: HTML text basics
+Advanced text features
+Test: Advanced HTML text
+Challenge: Letter markup
+Structuring documents
+Creating links
+Test: Links
+Challenge: Bird watching site
+Images
+Test: Images
+Video and audio
+Test: Audio and video
+Challenge: Splash page
+Table basics
+Table accessibility
+Challenge: Planet data table
+Forms and buttons
+Test: Forms and buttons
+Challenge: Feedback form
+Debugging HTML
+Test: HTML tests index
+Additional tutorials
+Vector graphics
+Embedding technologies
+CSS styling basics
+What is CSS?
+CSS getting started
+Challenge: Biography page
+Basic selectors
+Attribute selectors
+Pseudo-classes and elements
+Combinators
+Test: Selectors
+Box model
+Test: Box model
+Handling conflicts
+Test: Cascade
+Challenge: Fixing blog styles
+Values and units
+Test: Values and units
+Sizing
+Test: Sizing
+Backgrounds and borders
+Test: Backgrounds and borders
+Overflow
+Test: Overflow
+Challenge: Sizing and decorating
+Images, media, forms
+Test: Images and forms
+Styling tables
+Challenge: Styling color scheme search
+Debugging CSS
+Test: Styling basics tests index
+Additional tutorials
+Advanced styling effects
+Cascade layers
+Multiple text directions
+Organizing your CSS
+CSS text styling
+Text and font fundamentals
+Styling lists
+Styling links
+Web fonts
+Challenge: Community school homepage
+CSS layout
+Introduction
+Floats
+Test: Floats
+Positioning
+Test: Positioning
+Flexbox
+Test: Flexbox
+CSS grid layout
+Test: CSS grid
+Challenge: Fundamental layout
+Responsive web design
+Media queries
+Test: RWD & media queries
+Challenge: mobile-first
+Test: Layout tests index
+Additional tutorials
+Multiple-column layout
+Practical positioning examples
+Legacy layout methods
+Supporting older browsers
+Dynamic scripting with JavaScript
+What is JavaScript?
+JavaScript walkthrough
+Troubleshooting
+Variables
+Test: Variables
+Numbers and operators
+Test: Math
+Strings
+String methods
+Test: Strings
+Arrays
+Test: Arrays
+Challenge: Story generator
+Conditionals
+Test: Conditionals
+Loops
+Test: Loops
+Functions
+Build your own function
+Function return values
+Test: Functions
+Events
+Event bubbling
+Test: Events
+Objects
+Test: Objects
+DOM scripting
+Challenge: Image gallery
+Network requests
+JSON
+Test: JSON
+Challenge: House data UI
+Debugging and error handling
+Test: JavaScript tests index
+JavaScript frameworks and libraries
+Introduction
+Framework features
+React getting started
+React ToDo app
+React components
+React events and state
+React editing, filtering, conditional UI
+React accessibility
+React resources
+Accessibility
+What is accessibility?
+Accessibility tools
+Accessible HTML
+Test: HTML a11y
+Accessible CSS and JS
+Test: CSS/JS a11y
+WAI-ARIA
+Test: WAI-ARIA
+Accessible multimedia
+Mobile accessibility
+Challenge: A11y debugging
+Test: A11y tests index
+Design for developers
+Version control
+Extension modules
+Advanced JavaScript objects
+Object prototypes
+Object-oriented programming
+Classes in JavaScript
+Test: Object-oriented JavaScript
+Object building practice
+Challenge: Bouncing balls features
+Test: OOJS tests index
+Client-side web APIs
+Introduction
+Video and audio
+Drawing graphics
+Client-side storage
+Third-party APIs
+Asynchronous JavaScript
+Introduction
+Using promises
+Implementing promise-based APIs
+Introducing workers
+Challenge: Animation sequence
+Web forms
+Your first form
+How to structure a web form
+Basic native form controls
+The HTML5 input types
+Other form controls
+Styling web forms
+Advanced form styling
+Customizable selects
+Customizable listboxes
+UI pseudo-classes
+Client-side form validation
+Sending form data
+Additional tutorials
+Custom form controls
+JS form submission
+Forms in legacy browsers
+UI methods & controls
+Understanding client-side tools
+Overview
+Package management
+Sample toolchain
+Deploying our app
+Server-side websites
+First steps
+Introduction
+Client-server overview
+Server-side frameworks
+Website security
+Django (Python)
+Django introduction
+Dev environment setup
+1: Local library tutorial
+2: Skeleton website
+3: Models
+4: Django admin site
+5: Home page
+6: Generic list and detail views
+7: Sessions framework
+8: Authentication and permissions
+9: Forms
+10: Testing
+11: Deploying
+Django security
+Challenge: Django blog
+Express (Node.js)
+Express/Node introduction
+Dev environment setup
+1: Local library tutorial
+2: Skeleton website
+3: Using databases with Mongoose
+4: Routes and controllers
+5: Displaying data
+6: Working with forms
+7: Deploying
+Additional tutorials
+Apache .htaccess
+Server MIME type config
+Plain Node.js server
+Web performance
+The "why" of web performance
+What is web performance?
+Perceived performance
+Measuring performance
+Multimedia: Images
+Multimedia: video
+Performant JavaScript
+Performant HTML
+Performant CSS
+Performance business case
+Best practices & tips
+Testing
+Introduction
+Testing strategies
+Common HTML and CSS problems
+Feature detection
+Automated testing
+Automation environment setup
+Further resources
+How to solve common problems
+Common CSS problems
+Common HTML problems
+Common JavaScript problems
+Design and accessibility
+Tools and setup
+Web mechanics
+About
+Resources for educators
+Changelog
+MDN
+Your blueprint for a better internet.
+MDN
+About
+Blog
+Mozilla careers
+Advertise with us
+MDN Plus
+Product help
+Contribute
+MDN Community
+Community resources
+Writing guidelines
+MDN Discord
+MDN on GitHub
+Developers
+Web technologies
+Learn web development
+Guides
+Tutorials
+Glossary
+Hacks blog
+Mozilla
+Website Privacy Notice
+Telemetry Settings
+Legal
+Community Participation Guidelines
+Portions of this content are ©1998–2026 by individual mozilla.org contributors. Content available under a Creative Commons license.

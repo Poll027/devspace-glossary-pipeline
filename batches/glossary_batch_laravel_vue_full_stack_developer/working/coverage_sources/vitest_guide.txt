@@ -1,0 +1,199 @@
+Getting Started | Guide | Vitest
+Skip to content
+Main Navigation GuidesAPIConfigBlog
+v5.1.2
+v5.1.2
+Releases Notes
+Contributing
+Team
+Releases
+unreleased
+v4.x
+v3.x
+v2.x
+v1.x
+Search⌘CtrlK
+English
+简体中文
+Appearance
+English
+简体中文
+Menu
+Return to top Sidebar Navigation
+SECTION  Introduction
+Why Vitest
+Getting Started
+Features
+SECTION  Learn
+Writing Tests
+Using Matchers
+Testing Async Code
+Setup and Teardown
+Mock Functions
+Snapshot Testing
+Testing in Practice
+Debugging Tests
+Writing Tests with AI
+SECTION  Browser Mode
+Why Browser Mode
+Getting Started
+Multiple Setups
+Component Testing
+Visual Regression Testing
+Trace View
+Playwright Traces
+ARIA Snapshots
+SECTION  Authoring
+Test Context
+Test Run Lifecycle
+Snapshot
+SECTION  Mocking
+Dates
+Functions
+Globals
+Modules
+File System
+Requests
+Timers
+Classes
+Test Tags
+Test Annotations
+Extending Matchers
+Testing Types
+Benchmarking
+In-Source Testing
+SECTION  Workflow
+CLI
+Test Filtering
+Test Projects
+Test Environment
+Parallelism
+Reporters
+Vitest UI
+IDE Integration
+SECTION  Quality & Debugging
+Coverage
+Debugging
+Common Errors
+SECTION  Performance
+Profiling Test Performance
+Improving Performance
+OpenTelemetry
+SECTION  Recipes
+Database Transaction per Test
+Cancelling Long-Running Operations Gracefully
+Waiting for Async Conditions
+Type Narrowing in Tests
+Custom Assertion Helpers
+Watching Non-Imported Files
+Extending Browser Locators
+Schema-Driven Assertions
+Auto-Cleanup with `using`
+Conditional Mocking with `vi.when`
+Per-File Isolation Settings
+Parallel and Sequential Test Files
+Running Only Affected Tests
+SECTION  Advanced
+Getting Started
+Running Tests via API
+Extending Reporters
+Custom Pool
+Benchmark Provider
+SECTION  Migration
+Migrating to Vitest 5.0
+Migrating from Jest
+Migrating from Mocha + Chai + Sinon
+Comparisons
+On this page
+SECTION getting-started Getting Started ​
+SECTION overview Overview ​
+Vitest (pronounced as "veetest") is a next generation testing framework powered by Vite.
+You can learn more about the rationale behind the project in the Why Vitest section.
+SECTION trying-vitest-online Trying Vitest Online ​
+You can try Vitest online on StackBlitz. It runs Vitest directly in the browser, and it is almost identical to the local setup but doesn't require installing anything on your machine.
+SECTION adding-vitest-to-your-project Adding Vitest to Your Project ​Learn how to install by Video
+npmyarnpnpmbundeno
+bash
+npm install -D vitest
+bash
+yarn add -D vitest vite
+bash
+pnpm add -D vitest
+bash
+bun add -D vitest
+bash
+deno add -D vitest
+TIP
+Vitest requires Vite >=v6.4.0 and Node >=v22.12.0
+It is recommended that you install a copy of vitest in your package.json, using one of the methods listed above. However, if you would prefer to run vitest directly, you can use npx vitest (the npx tool comes with npm and Node.js).
+The npx tool will execute the specified command. By default, npx will first check if the command exists in the local project's binaries. If it is not found there, npx will look in the system's $PATH and execute it if found. If the command is not found in either location, npx will install it in a temporary location prior to execution.
+Vitest and third party integrations can use .vitest directory to store generated artifacts. It's recommended to add this in your .gitignore.
+.gitignore
+sh
+# Vitest reports and artifacts
+.vitest/
+SECTION writing-tests Writing Tests ​
+As an example, we will write a simple test that verifies the output of a function that adds two numbers.
+sum.js
+js
+export function sum(a, b) {
+return a + b
+}
+sum.test.js
+js
+import { expect, test } from 'vitest'
+import { sum } from './sum.js'
+test('adds 1 + 2 to equal 3', () => {
+expect(sum(1, 2)).toBe(3)
+})
+TIP
+By default, tests must contain .test. or .spec. in their file name.
+Next, in order to execute the test, add the following section to your package.json:
+package.json
+json
+{
+"scripts": {
+"test": "vitest"
+}
+}
+Finally, run npm run test, yarn test or pnpm test, depending on your package manager, and Vitest will print this message:
+txt
+✓ sum.test.js (1)
+✓ adds 1 + 2 to equal 3
+Test Files  1 passed (1)
+Tests  1 passed (1)
+Start at  02:15:44
+Duration  311ms
+WARNING
+If you are using Bun as your package manager, make sure to use bun run test command instead of bun test, otherwise Bun will run its own test runner.
+Your first test is passing! Continue to Writing Tests to learn about organizing tests, reading test output, and the core testing patterns you'll use every day.
+To run tests once without watching for file changes, use vitest run. You can also pass additional flags like --reporter or --coverage. For a full list of CLI options, run npx vitest --help or see the CLI guide.
+SECTION configuring-vitest Configuring Vitest ​
+Vitest reads your vite.config.* by default, so your existing Vite plugins and configuration work out-of-the-box. You can also create a dedicated vitest.config.* for test-specific settings. See the Config Reference for details.
+SECTION ide-integrations IDE Integrations ​
+We also provided an official extension for Visual Studio Code to enhance your testing experience with Vitest.
+Install from VS Code Marketplace
+Learn more about IDE Integrations
+SECTION examples Examples ​
+ExampleSourcePlayground
+basicGitHubPlay Online
+fastifyGitHubPlay Online
+in-source-testGitHubPlay Online
+litGitHubPlay Online
+vueGitHubPlay Online
+markoGitHubPlay Online
+preactGitHubPlay Online
+qwikGitHubPlay Online
+reactGitHubPlay Online
+solidGitHubPlay Online
+svelteGitHubPlay Online
+profilingGitHubNot Available
+typecheckGitHubPlay Online
+projectsGitHubPlay Online
+SECTION community Community ​
+If you have questions or need help, reach out to the community at Discord and GitHub Discussions.
+Suggest changes to this page
+Last updated: Pager
+Previous pageWhy Vitest
+Next pageWriting Tests
+© 2026 VoidZero Inc. and Vitest contributors.

@@ -1,0 +1,522 @@
+PHP: finally - Manual
+Downloads
+Documentation
+Get Involved
+Help
+Search docs
+Laracon EU 2027
+Getting Started
+Introduction
+A simple tutorial
+Language Reference
+Basic syntax
+Types
+Variables
+Constants
+Expressions
+Operators
+Control Structures
+Functions
+Classes and Objects
+Namespaces
+Enumerations
+Error Handling
+Fibers
+Generators
+Attributes
+References Explained
+Predefined Variables
+Predefined Exceptions
+Predefined Interfaces and Classes
+Predefined Attributes
+Context options and parameters
+Supported Protocols and Wrappers
+Security
+Introduction
+General considerations
+Installed as CGI binary
+Installed as an Apache module
+Session Security
+Filesystem Security
+Database Security
+Error Reporting
+User Submitted Data
+Hiding PHP
+Keeping Current
+Features
+HTTP authentication with PHP
+Cookies
+Sessions
+Handling file uploads
+Using remote files
+Connection handling
+Persistent Database Connections
+Command line usage
+Garbage Collection
+DTrace Dynamic Tracing
+Function Reference
+Affecting PHP's Behaviour
+Audio Formats Manipulation
+Authentication Services
+Command Line Specific Extensions
+Compression and Archive Extensions
+Cryptography Extensions
+Database Extensions
+Date and Time Related Extensions
+File System Related Extensions
+Human Language and
+Character Encoding Support
+Image Processing and Generation
+Mail Related Extensions
+Mathematical Extensions
+Non-Text MIME Output
+Process Control Extensions
+Other Basic Extensions
+Other Services
+Search Engine Extensions
+Server Specific Extensions
+Session Extensions
+Text Processing
+Variable and Type Related Extensions
+Web Services
+Windows Only Extensions
+XML Manipulation
+GUI Extensions
+Keyboard Shortcuts?
+This help
+j
+Next menu item
+k
+Previous menu item
+g p
+Previous man page
+g n
+Next man page
+G
+Scroll to bottom
+g g
+Scroll to top
+g h
+Goto homepage
+g s
+Goto search
+(current page)
+/
+Focus search box
+Functions »
+« try...catch
+Preface
+Language Reference
+Control Structures
+Change language:
+English
+German
+Spanish
+French
+Italian
+Japanese
+Brazilian Portuguese
+Russian
+Turkish
+Ukrainian
+Chinese (Simplified)
+Other
+SECTION  finally
+(PHP 5 >= 5.5.0, PHP 7, PHP 8)
+A finally block may also be specified after or instead of catch blocks.
+Code within the finally block will always be executed after the try and
+catch blocks, even if a return or yield statement is encountered,
+or if a Throwable error is not caught or is rethrown.
+It will be executed prior to resuming the normal execution flow.
+The only exception to this rule is when the script is terminated abruptly,
+such as by a call to exit() or by a fatal error
+(for example, when the maximum execution time is exceeded).
+Example #1 Throwable error handling with a finally block
+<?php
+function inverse($x) {
+return 1/$x;
+}
+try {
+echo inverse(5) . "\n";
+} catch (DivisionByZeroError $e) {
+echo 'Caught error: ', $e->getMessage(), "\n";
+} finally {
+echo "First finally.\n";
+}
+try {
+echo inverse(0) . "\n";
+} catch (DivisionByZeroError $e) {
+echo 'Caught error: ', $e->getMessage(), "\n";
+} finally {
+echo "Second finally.\n";
+}
+// Continue execution
+echo "Hello World\n";
+Output of the above example in PHP 8:
+0.2
+First finally.
+Caught error: Division by zero
+Second finally.
+Hello World
+When the call stack is unwound after a Throwable error
+has been thrown, all finally blocks it encounters along the way will be executed.
+In other words, nested finally blocks are executed even if the
+Throwable error is not caught by an adjacent
+catch block.
+Example #2 All finally blocks will be executed
+<?php
+try {
+try {
+throw new Exception();
+} finally {
+echo "Inner finally\n";
+}
+} catch (Exception $e) {
+} finally {
+echo "Outer finally\n";
+}
+The above example will output:
+Inner finally
+Outer finally
+SECTION  Interaction between a finally block and a return statement
+One notable interaction is between the finally block and a return statement.
+If a return statement is encountered inside either the try or the catch block,
+the finally block will still be executed. Moreover, the return statement is
+evaluated when encountered, but the result will be returned after the finally block
+is executed. Additionally, if the finally block also contains a return statement,
+the value from the finally block is returned.
+Example #3 Interaction between return in finally block and a previous return
+<?php
+function testReturnTry() {
+try {
+echo 'Within try', "\n";
+return 'try';
+} finally {
+echo 'Within finally', "\n";
+return 'finally';
+}
+}
+function testReturnCatch() {
+try {
+throw new Exception('foo');
+} catch (Exception $e) {
+echo 'Within catch', "\n";
+return 'catch';
+} finally {
+echo 'Within finally', "\n";
+return 'finally';
+}
+}
+echo testReturnTry(), "\n";
+echo testReturnCatch(), "\n";
+The above example will output:
+Within try
+Within finally
+finally
+Within catch
+Within finally
+finally
+Example #4 Interaction between the finally block and return
+<?php
+function testReturnTry() {
+try {
+return 'try';
+} finally {
+echo 'finally ';
+}
+}
+function testReturnCatch() {
+try {
+throw new Exception('foo');
+} catch (Exception $e) {
+return 'catch';
+} finally {
+echo 'finally ';
+}
+}
+echo testReturnTry(), "\n";
+echo testReturnCatch(), "\n";
+The above example will output:
+finally try
+finally catch
+A return statement in a finally block also discards any exception that
+is being propagated when the finally block is executed:
+an exception thrown in the try block that is not caught,
+or an exception thrown or rethrown in a catch block.
+No error is reported, and the function returns the value from the
+finally block as if no exception had been thrown.
+Example #5 A return in a finally block discards a rethrown exception
+<?php
+function process() {
+try {
+throw new Exception('Original exception');
+} catch (Exception $e) {
+echo 'Caught: ', $e->getMessage(), "\n";
+throw $e;
+} finally {
+echo 'Within finally', "\n";
+return 'finally';
+}
+}
+try {
+echo process(), "\n";
+} catch (Exception $e) {
+echo 'This is never reached', "\n";
+}
+The above example will output:
+Caught: Original exception
+Within finally
+finally
+Unlike return, leaving a finally block with a
+break,
+continue
+or goto
+statement is not allowed, and results in a compile-time fatal error.
+Loops entirely contained within the finally block may still use
+break and continue.
+SECTION  Interaction between a finally block and an exception thrown in a try block
+If both the try block and the finally block throw an exception,
+the exception thrown from the finally block is the one that is propagated,
+and the exception thrown from the try block will be used as its previous exception.
+Example #6 Exception in try and in finally
+<?php
+try {
+try {
+throw new Exception(message: 'Third', previous: new Exception('Fourth'));
+} finally {
+throw new Exception(message: 'First', previous: new Exception('Second'));
+}
+} catch (Exception $e) {
+var_dump(
+$e->getMessage(),
+$e->getPrevious()->getMessage(),
+$e->getPrevious()->getPrevious()->getMessage(),
+$e->getPrevious()->getPrevious()->getPrevious()->getMessage(),
+);
+}
+The above example will output:
+string(5) "First"
+string(6) "Second"
+string(5) "Third"
+string(6) "Fourth"
+SECTION
+Behaviour of a finally block in a
+Generator
+If, during the traversal of a generator, a Throwable
+error is thrown, the finally block within the generator will be executed,
+as it is the previous element of the call stack.
+Example #7
+finally block being run when an Exception
+has been thrown
+<?php
+function generate()
+{
+try {
+yield 1;
+yield 2;
+} catch (Exception $e) {
+echo 'catch';
+} finally {
+echo "finally\n";
+}
+}
+try {
+foreach (generate() as $i) {
+echo $i, "\n";
+throw new Exception();
+}
+} catch (Exception $e) {
+echo 'outer catch';
+}
+The above example will output
+something similar to:
+1
+finally
+outer catch
+It is possible to yield within a finally block, but if a
+Throwable error occurs and is not caught within
+the foreach, a Cannot yield from finally in a force-closed
+generator Error is thrown.
+Example #8
+Error when yielding in a finally block when an
+Exception has been thrown
+<?php
+function generate()
+{
+try {
+yield 1;
+yield 2;
+} catch (Exception $e) {
+echo 'catch';
+} finally {
+echo "finally\n";
+yield 3;
+}
+}
+try {
+foreach (generate() as $i) {
+echo $i, "\n";
+throw new Exception();
+}
+} catch (Exception $e) {
+echo 'outer catch';
+}
+The above example will output
+something similar to:
+1
+finally
+Fatal error: Uncaught Exception in /in/GbFmu:19
+Stack trace:
+#0 {main}
+Next Error: Cannot yield from finally in a force-closed generator in /in/GbFmu:12
+Stack trace:
+#0 /in/GbFmu(19): generate()
+#1 {main}
+thrown in /in/GbFmu on line 12
+SECTION  Interaction between a finally block and a call to exit()
+When exit() is called within a try or a catch block,
+all finally blocks are skipped.
+Example #9 Interaction between a finally block and exit() called in a try block
+<?php
+try {
+echo 'quit';
+exit(0);
+} finally {
+echo 'finally';
+}
+The above example will output:
+quit
+Example #10 Interaction between a finally block and exit() called in a catch block
+<?php
+try {
+throw new Exception('foo');
+} catch (Exception $e) {
+echo 'catch';
+exit(0);
+} finally {
+echo 'finally ';
+}
+The above example will output:
+catch
+Example #11 All finally blocks are skipped when exit() is called
+<?php
+try {
+try {
+echo 'quit';
+exit(0);
+} finally {
+echo 'inner finally ';
+}
+} finally {
+echo 'outer finally';
+}
+The above example will output:
+quit
+When exit() is called within a finally block,
+all outer finally blocks are skipped.
+Example #12 Skipping an outer finally block by calling exit()
+<?php
+try {
+try {
+echo 'try', "\n";
+} finally {
+echo 'inner finally ';
+exit(0);
+}
+} finally {
+echo 'outer finally';
+}
+The above example will output:
+try
+inner finally
+SECTION  Edge case of calling exit() in a foreach over a generator
+This one edge case behaviour is highly dependent on which version of PHP
+the code is executed with.
+<?php
+function generate()
+{
+try {
+yield 1;
+yield 2;
+} catch (Exception $e) {
+echo 'catch';
+} finally {
+echo "inner finally\n";
+}
+}
+try {
+foreach (generate() as $i) {
+echo $i, "\n";
+exit(0);
+}
+} finally {
+echo "outer finally\n";
+}
+Output of the above example prior to PHP 7.1.14, in PHP 7.2.0 and 7.2.1,
+and as of PHP 8.0.0
+1
+inner finally
+Output of the above example as of PHP 7.1.14 and 7.2.2,
+and prior to PHP 8.0.0
+1
+SECTION  Found A Problem?
+Learn How To Improve This Page
+•
+Submit a Pull Request
+•
+Report a Bug
+＋add a note
+SECTION  User Contributed Notes
+There are no user contributed notes for this page.
+Control Structures
+Introduction
+if
+else
+elseif/else if
+Alternative syntax for control structures
+while
+do-​while
+for
+foreach
+break
+continue
+switch
+match
+declare
+return
+require
+include
+require_​once
+include_​once
+goto
+throw
+try...catch
+finally
+PHP is developed and maintained by a global community of contributors.
+The PHP Foundation helps fund this work.
+If PHP is part of your business or projects, consider sponsoring the Foundation.
+Linkedin
+@php@fosstodon.org
+GitHub
+Donate
+SECTION  PHP
+My PHP.net
+Downloads
+Contact
+Other PHP.net sites
+SECTION  Learn
+Documentation
+Get Involved
+Help
+SECTION  The PHP Foundation
+About the Foundation
+Sponsor
+Contact
+SECTION  Legal
+Privacy policy
+Copyright © 2001-2026 The PHP Documentation Group.
+↑ and ↓ to navigate •
+Enter to select •
+Esc to close • / to open
+Press Enter without
+selection to search using Google

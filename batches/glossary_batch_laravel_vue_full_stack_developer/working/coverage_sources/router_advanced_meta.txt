@@ -1,0 +1,148 @@
+Route Meta Fields | Vue Router
+Skip to content
+Vue Router
+Search
+Guide
+API
+v4.x/v5.x
+v3.x
+Links
+Discussions
+Changelog
+Vue.js Certification
+English
+简体中文
+Português
+Русский
+Menu
+Return to top
+Sidebar Navigation
+SECTION  Setup
+Introduction
+Installation
+SECTION  Essentials
+Getting Started
+Dynamic Route Matching
+Routes' Matching Syntax
+Named Routes
+Nested Routes
+Programmatic Navigation
+Named Views
+Redirect and Alias
+Passing Props to Route Components
+Active links
+Different History modes
+SECTION  Advanced
+Navigation guards
+Route Meta Fields
+Data Fetching
+Composition API
+RouterView slot
+Displaying a different route
+Transitions
+Scroll Behavior
+Scroll Restoration (experimental)
+Lazy Loading Routes
+Typed Routes
+Extending RouterLink
+Navigation Failures
+Dynamic Routing
+SECTION  File-Based Routing
+Getting Started
+File Conventions
+Configuration
+Extending Routes
+HMR
+ESLint
+Router Resolver (experimental)
+Param Parsers (experimental)
+Vapor Mode (experimental)
+URL Encoding (experimental)
+SECTION  Data Loaders
+Introduction
+Defining Data Loaders
+Reloading data
+Navigation Aware
+Error Handling
+Organizing Loaders
+Nested Loaders
+Cancelling a load
+Nuxt
+SSR
+Basic Loader
+Colada Loader
+RFC
+SECTION  Migration
+Migrating to v5
+Migrating from Vue 2
+On this page
+Complete guide to
+Mastering Pinia
+written by its creator
+The official
+Vue.js Certification
+Get certified!
+SECTION Route-Meta-Fields Route Meta Fields ​
+Watch a free video lesson on Vue School
+Sometimes, you might want to attach arbitrary information to routes like： transition names, or roles to control who can access the route, etc. This can be achieved through the meta property which accepts an object of properties and can be accessed on the route location and navigation guards. You can define meta properties like this:
+js
+const routes = [
+{
+path: '/posts',
+component: PostsLayout,
+children: [
+{
+path: 'new',
+component: PostsNew,
+// only authenticated users can create posts
+meta: { requiresAuth: true },
+},
+{
+path: ':id',
+component: PostsDetail,
+// anybody can read a post
+meta: { requiresAuth: false },
+},
+],
+},
+]
+So how do we access this meta field?
+First, each route object in the routes configuration is called a route record. Route records may be nested. Therefore when a route is matched, it can potentially match more than one route record.
+For example, with the above route config, the URL /posts/new will match both the parent route record (path: '/posts') and the child route record (path: 'new').
+All route records matched by a route are exposed on the route object (and also route objects in navigation guards) as the route.matched Array. We could loop through that array to check all meta fields, but Vue Router also provides you a route.meta that is a non-recursive merge of all meta fields from parent to child. Meaning you can simply write:
+js
+router.beforeEach((to, from) => {
+// instead of having to check every route record with
+// to.matched.some(record => record.meta.requiresAuth)
+if (to.meta.requiresAuth && !auth.isLoggedIn()) {
+// this route requires auth, check if logged in
+// if not, redirect to login page.
+return {
+path: '/login',
+// save the location we were at to come back later
+query: { redirect: to.fullPath },
+}
+}
+})
+SECTION TypeScript TypeScript ​
+It is possible to type the meta field by extending the RouteMeta interface from vue-router:
+ts
+// This can be directly added to any of your `.ts` files like `router.ts`
+// It can also be added to a `.d.ts` file. Make sure it's included in
+// project's tsconfig.json "files"
+import 'vue-router'
+// To ensure it is treated as a module, add at least one `export` statement
+export {}
+declare module 'vue-router' {
+interface RouteMeta {
+// is optional
+isAdmin?: boolean
+// must be declared by every route
+requiresAuth: boolean
+}
+}
+Suggest changes to this pagePager
+Previous pageNavigation guards
+Next pageData Fetching
+Released under the MIT License.
+Copyright © 2014-present Evan You, Eduardo San Martin Morote
